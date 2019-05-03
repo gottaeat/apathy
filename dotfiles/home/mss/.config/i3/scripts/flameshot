@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+x() {
+  echo 'x'
+}
+
+case $BLOCK_BUTTON in
+  1) flameshot gui ;;
+esac
+
+x

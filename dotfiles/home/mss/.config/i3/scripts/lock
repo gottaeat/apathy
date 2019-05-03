@@ -1,0 +1,3 @@
+#!/bin/bash
+scrot-blur -B 5 -i /home/mss/.config/i3/meh.png /tmp/screen.png
+i3lock -e -u -n -i /tmp/screen.png

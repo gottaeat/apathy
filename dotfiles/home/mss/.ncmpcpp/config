@@ -1,0 +1,96 @@
+# ncmpcpp config - rmrfmss
+
+#### non-visual settings ####
+## mpd settings ##
+mpd_host = mpdboi
+mpd_port = 6600
+mpd_connection_timeout = 120
+mpd_music_dir = /mnt/mss/stuff/media/music
+mpd_crossfade_time = 5
+
+## ncmpcpp related ##
+ncmpcpp_directory = ~/.ncmpcpp
+lyrics_directory = ~/.ncmpcpp/lyrics
+
+screen_switcher_mode = playlist, browser, visualizer, clock
+startup_screen = playlist
+clock_display_seconds = yes
+
+playlist_disable_highlight_delay = 5
+message_delay_time = 1
+
+volume_change_step = 5
+display_volume_level = yes
+display_bitrate = yes
+display_remaining_time = no
+jump_to_now_playing_song_at_start = yes
+
+colors_enabled = yes
+mouse_support = yes
+mouse_list_scroll_whole_page = yes
+ask_before_clearing_playlists = yes
+
+#### visual settings ####
+## interface style ##
+user_interface = classic
+playlist_display_mode = columns
+browser_display_mode = columns
+
+header_visibility = no
+song_columns_list_format = (20)[white]{a:artist} (50)[white]{t|f:title} (20)[cyan]{b:album} (7f)[magenta]{l:length}
+progressbar_look = -»-
+tags_separator = " | "
+empty_tag_marker = <none>
+
+playlist_show_mpd_host = yes
+playlist_shorten_total_times = yes
+
+browser_sort_mode = name
+song_status_format = {%a - %t}|{%f}
+browser_sort_format = {%n}|{%a - %t}|{%f} {%l}
+song_window_title_format = {%a - %t}|{%f}
+
+# visualizer settings
+visualizer_fifo_path = /tmp/mpd.fifo
+visualizer_output_name = visualizer thingy
+visualizer_in_stereo = yes
+visualizer_sync_interval = 30
+visualizer_type = spectrum
+visualizer_look = +l
+visualizer_color = magenta
+
+# alternative mode header lines
+#alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
+#alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($4%y$9)}}|{%D}
+
+## colors ##
+current_item_prefix = $(white)$r
+current_item_suffix = $/r$(end)
+
+current_item_inactive_column_prefix = $(white)$r
+current_item_inactive_column_suffix = $/r$(end)
+
+now_playing_prefix = $(blue)$b
+now_playing_suffix = $(blue)$/b
+#browser_playlist_prefix = "$2playlist$9 "
+
+selected_item_prefix = $2
+selected_item_suffix = $2
+#modified_item_prefix = $3> $9
+
+empty_tag_color = cyan
+header_window_color = magenta
+volume_color = green
+state_line_color = cyan
+state_flags_color = cyan:b
+main_window_color = white
+color1 = white
+color2 = green
+progressbar_color = cyan:b
+progressbar_elapsed_color = magenta:b
+statusbar_color = green
+statusbar_time_color = cyan
+player_state_color = cyan
+alternative_ui_separator_color = black:b
+window_border_color = green
+active_window_border = red

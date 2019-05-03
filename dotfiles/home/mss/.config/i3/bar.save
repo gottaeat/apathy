@@ -1,0 +1,93 @@
+#global properties (gets applied to every block)
+command=/usr/libexec/i3blocks/$BLOCK_NAME
+separator_block_width=10
+markup=none
+
+[focused window]
+#command=~/.config/i3/scripts/title
+command=xtitle -t 30 -s
+interval=persist
+
+[bw]
+command=~/.config/i3/scripts/bw
+interval=1
+color=#dc8cc3
+
+[layout]
+command=~/.config/i3/scripts/layout
+interval=1
+
+[cpu]
+command=~/.config/i3/scripts/cpu
+interval=1
+color=#ffff00
+separator=false
+separator_block_width=5
+min_width=xxxxxx
+
+[package_temp]
+command=sensors | grep 'Package id 0:' | sed 's/Package id 0:  +//g' | sed 's/  (high = +80.0°C, crit = +100.0°C)//g'
+interval=1
+color=#ffff00
+separator=false
+separator_block_width=8
+
+[memory]
+interval=1
+color=#ffff00
+
+[mediaplayer]
+command=~/.config/i3/scripts/mediaplayer | awk -v len=6<n0 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+interval=1
+signal=1
+
+[weather]
+command=~/.config/i3/scripts/weather
+interval=1800
+color=#709080
+
+[time]
+command=date '+%a %I:%M:%S%P %d/%m/%Y'
+interval=1
+color=#72d5a3
+
+[master-alsa]
+command=~/.config/i3/scripts/master-alsa
+interval=1
+signal=1
+separator=false
+
+[capture-alsa]
+command=~/.config/i3/scripts/capture-alsa
+interval=1
+signal=1
+
+[host]
+command=cat /etc/hostname
+interval=once
+color=#dc8cc3
+separator_block_width=2
+separator=false
+
+[on]
+command=printf 'on'
+interval=once
+color=#ffffff
+separator_block_width=2
+separator=false
+
+[kernel]
+command=uname -r
+interval=once
+color=#e62063
+
+[uptime]
+command=~/.config/i3/scripts/uptime
+interval=60
+color=#dc8cc3
+
+[flameshot]
+command=~/.config/i3/scripts/flameshot
+interval=once
+color=#72d5a3
+separator=true

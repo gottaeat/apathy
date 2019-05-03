@@ -1,0 +1,7 @@
+#!/bin/env bash
+
+TITLE=$(xtitle -t 30 -s)
+#DISPLAY=$(echo $TITLE | awk '{print tolower($0)}')
+
+#echo $DISPLAY
+echo $TITLE

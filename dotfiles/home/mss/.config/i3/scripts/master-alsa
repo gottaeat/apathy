@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+if [[ -z "$STEP" ]] ; then
+    STEP="${1:-3dB}"
+fi
+
+volume() {
+  amixer -D default get Master
+}
+
+format() {
+  
+  perl_filter='if (/.*\[(\d+%)\] (\[(-?\d+.\d+dB)\] )?\[(on|off)\]/)'
+  perl_filter+='{CORE::say $4 eq "off" ? "m" : "'
+  perl_filter+=$([[ $STEP = *dB ]] && echo '$3' || echo '$1')
+  perl_filter+='"; exit}'
+  output=$(perl -ne "$perl_filter")
+  echo "$LABEL$output"
+}
+
+case $BLOCK_BUTTON in
+  1) gui-mixer ;;
+  3) amixer -q -D default sset Master toggle ;;
+  4) amixer -q -D default sset Master ${STEP}+ unmute ;;
+  5) amixer -q -D default sset Master ${STEP}- unmute ;;
+esac
+
+volume | format
