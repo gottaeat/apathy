@@ -52,19 +52,13 @@ done
 if [ "$(id -u)" -ne 0 ]; then
 	echo -e " ${C1}[!]${NC} this script must be run by root." >&2
 	exit 1
-fi
-
-if [[ -z "$PROG" ]]; then
+elif [[ -z "$PROG" ]]; then
 	echo -e " ${C1}[!]${NC} no program selected." 1>&2
 	exit 1
-fi
-
-if [[ -z "$PART" ]]; then
+elif [[ -z "$PART" ]]; then
 	echo -e " ${C1}[!]${NC} no partition selected." 1>&2
 	exit 1
-fi
-
-if [[ -z "$USERX" ]]; then
+elif [[ -z "$USERX" ]]; then
 	echo -e " ${C1}[!]${NC} no user selected." 1>&2
 	exit 1
 fi
