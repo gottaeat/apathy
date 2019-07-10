@@ -38,7 +38,7 @@
 [d]	** gnutls-3.6.6
 [d]	*** nettle-3.4.1
 
-[d]	* iptables-1.8.2 ---> installed it, no config or init script.
+[d]	* iptables-1.8.2	--> configured with a proper basic-ish ruleset
 [d]	* dosfstools-4.1 
 
 [d]	* lsof-4.91

@@ -1,6 +1,9 @@
-### planned to be built
-* rss reader	--> built newsboat
+### planned to be built/set/configured
+* [d] rss reader		--> built newsboat
+* [d] set up iptables		--> done
 * url launcher
+* framebuffer pdf reader
+* mutt
 
 ### dbus removal garbage
 #### bin and lib still linked against libdbus:
