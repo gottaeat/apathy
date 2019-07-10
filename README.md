@@ -336,7 +336,12 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	* iftop
 [d]	** libpcap-1.9.0
 
+[d]	* xdg-utils-1.1.3 
 
+[d]	* elinks	-> binary from arch
+[d]	** tre
+[d]	** liblua5.1.5	-> binary from arch
+[d]	** libidn-1.35
 ```
 ---------------------------------------------------------
 #### python:
