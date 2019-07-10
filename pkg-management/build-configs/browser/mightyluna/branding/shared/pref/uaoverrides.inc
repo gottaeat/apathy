@@ -1,5 +1,5 @@
 // msslinux useragent
-pref("general.useragent.override", "Mozilla/5.0 (X11; mssLinux; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0");
+pref("general.useragent.override", "Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0");
 
 // privacy
 pref("extensions.blocklist.enabled", false);
