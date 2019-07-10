@@ -1,0 +1,4 @@
+#!/bin/env bash
+ptemp=$(sensors | grep 'Package id 0:' | sed 's/Package id 0:  +//g;s/°C  (high = +80.0°C, crit = +100.0°C)//g')
+
+echo ${ptemp}c

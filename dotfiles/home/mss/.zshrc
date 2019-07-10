@@ -3,7 +3,7 @@ export ZSH="/home/mss/.oh-my-zsh"
 export GNT="/mnt/dev/gentoo"
 
 # path and lang
-export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
+export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin:/mss/bin"
 export LANG="en_US.utf8"
 
 # stuff taken from gentoo

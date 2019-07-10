@@ -31,14 +31,14 @@ bindsym $mod+space		focus mode_toggle
 # resize mode
 mode "resize" 
 {
-bindsym Left	resize shrink width	5 px or 5 ppt
-bindsym Down	resize grow height	5 px or 5 ppt
-bindsym Up	resize shrink height	5 px or 5 ppt
-bindsym Right	resize grow width	5 px or 5 ppt
-bindsym h	resize shrink width	5 px or 5 ppt
-bindsym j	resize grow height	5 px or 5 ppt
-bindsym k	resize shrink height	5 px or 5 ppt
-bindsym l	resize grow width	5 px or 5 ppt
+bindsym Left	resize shrink width	1 px or 1 ppt
+bindsym Down	resize grow height	1 px or 1 ppt
+bindsym Up	resize shrink height	1 px or 1 ppt
+bindsym Right	resize grow width	1 px or 1 ppt
+bindsym h	resize shrink width	1 px or 1 ppt
+bindsym j	resize grow height	1 px or 1 ppt
+bindsym k	resize shrink height	1 px or 1 ppt
+bindsym l	resize grow width	1 px or 1 ppt
 bindsym Return				mode "default"
 bindsym Escape				mode "default"
 bindsym $mod+r				mode "default"
@@ -61,7 +61,6 @@ set $ws10	10:X
 
 # assign windows to specific workspaces
 assign [class="Nightly"]		$ws2
-assign [class="Firefox"]		$ws2
 assign [class="Steam"]			$ws3
 assign [class="discord"]		$ws4
 assign [class="Transmission-gtk"]	$ws5
@@ -108,10 +107,6 @@ for_window [class="^.*"] border pixel 1
 
 # enable floating for certain windows 
 for_window [class="Steam"]		floating enable
-for_window [class="VirtualBox"]		floating enable
-for_window [class="VirtualBox Manager"]	floating enable
-for_window [class="VirtualBox Machine"]	floating enable
-for_window [class="Gui-mixer"]		floating enable
 for_window [class="Lxappearance"]	floating enable
 for_window [class="Nitrogen"]		floating enable
 
@@ -141,7 +136,7 @@ colors {
 ### personal binds ###
 #general binds
 bindsym	$mod+p		exec scrot -e 'mv $f ~/screenshots/'
-bindsym $mod+Shift+p	exec maim -s | xclip -selection clipboard -t image/png
+bindsym $mod+Shift+p	exec maim -s -u | xclip -selection clipboard -t image/png
 bindsym	$mod+d		exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d	exec /home/mss/.config/i3/dmenu/menuboi 
 bindsym	$mod+Shift+k	exec xtrlock

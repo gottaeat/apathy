@@ -3,18 +3,10 @@
 export SUDO_ASKPASS=/home/mss/.config/i3/dmenu/dsudo
 
 dboi='dmenu'
-sel=$(echo -e "kill-i3\ngshell\nsteam" | $dboi)
+sel=$(echo -e "kill-i3" | $dboi)
 
 case "$sel" in
 	kill-i3)
 	i3-msg exit					&
-	;;
-
-	gshell)
-	sudo -A /home/mss/.config/i3/dmenu/gshell	&
-	;;
-
-	steam)
-	sudo -A /home/mss/.config/i3/dmenu/steam	&
 	;;
 esac

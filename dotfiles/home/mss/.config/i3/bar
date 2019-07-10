@@ -21,11 +21,17 @@ separator_block_width=5
 min_width=xxxxxx
 
 [package_temp]
-command=sensors | grep 'Package id 0:' | sed 's/Package id 0:  +//g' | sed 's/  (high = +80.0°C, crit = +100.0°C)//g'
+command=~/.config/i3/scripts/ptemp
 interval=1
 color=#e3e3e3
 separator=false
 separator_block_width=8
+
+[fan]
+command=~/.config/i3/scripts/fan
+interval=1
+color=#e3e3e3
+separator=false
 
 [memory]
 command=~/.config/i3/scripts/memory

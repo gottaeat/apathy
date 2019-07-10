@@ -32,6 +32,7 @@
 
 ! urxvt garbage
 URxvt*termName:		rxvt-unicode-256color
+URxvt*internalBorder:	7
 URxvt*scrollBar:	false
 URxvt*scrollBar_right:	false
 URxvt*transparent:	false
