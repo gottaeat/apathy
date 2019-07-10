@@ -357,6 +357,9 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** glew
 
 [d]	* xclip
+
+[d]	* imagemagick-7.0.8-27
+[d]	** little-cms-2.9
 ```
 ---------------------------------------------------------
 #### python:
