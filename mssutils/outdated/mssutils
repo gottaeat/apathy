@@ -12,14 +12,14 @@ check_root (){
 update (){
  check_root
  echo " * running /usr/sbin/make-ca -g."	&&
- make-ca -g > /dev/null 2>&1			&& echo " ** done" &&
+ make-ca -g > /dev/null 2>&1			&&
  echo " * running /usr/sbin/update-pciids."	&&
- update-pciids > /dev/null 2>&1			&& echo " ** done" &&
+ update-pciids > /dev/null 2>&1			&&
  echo " * running /usr/sbin/ntpd -q -g."	&&
- ntpd -q -g > /dev/null 2>&1			&& echo " ** done" &&
+ ntpd -q -g > /dev/null 2>&1			&&
  echo " * running the usbutils thingy"		&&
  wget http://www.linux-usb.org/usb.ids -O /usr/share/hwdata/usb.ids\
- > /dev/null 2>&1				&& echo " ** done"
+ > /dev/null 2>&1				&&
  echo " *** system is up to date."
 }
 

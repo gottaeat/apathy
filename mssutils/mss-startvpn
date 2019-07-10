@@ -1,0 +1,12 @@
+#!/bin/env bash
+echo " * getting pass." &&
+passboi=$(curl -s https://freevpn.me/accounts | grep -o 'Password.*' | cut -c-26 | awk '{print $2}')
+
+echo " * setting pass." &&
+sed -i "2s/.*/$passboi/" /mnt/mss/stuff/techy-bits/openvpn/auth.txt &&
+
+echo " * pass set, auth.txt:" &&
+cat /mnt/mss/stuff/techy-bits/openvpn/auth.txt
+
+echo " * connecting to $1"
+sudo openvpn --config $1

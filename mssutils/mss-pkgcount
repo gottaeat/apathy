@@ -1,0 +1,17 @@
+#!/bin/env bash
+count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
+gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
+gitstat_pre=$(cd $repo && git status -s)
+
+if [ -z "$gitdf_pre" ]
+ then gitdf="there's no difference."
+ else gitdf=$(echo -e "\n\n$gitdf_pre")
+fi
+
+if [ -z "$gitstat_pre" ]
+ then gitstat="clean."
+ else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+fi
+
+echo -e "\n * local package count\t: $count\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"

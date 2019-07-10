@@ -1,0 +1,6 @@
+#!/bin/env bash
+cl_cc=$(clang --version | head -1 | cut -d "(" -f1 | sed 's/version //g')
+gn_cc=$(gcc --version | head -1 | sed 's/(GCC) //g')
+ru_cc=$(rustc --version)
+
+echo -e " * $cl_cc\n * $gn_cc\n * $ru_cc"
