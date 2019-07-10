@@ -13,5 +13,6 @@ set backspace=2
 set mouse=
 
 syntax on
+au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
 colorscheme elflord

@@ -2,17 +2,14 @@
 #[sda1][vfat][efi partition]
 /dev/sda1	/boot/efi	vfat		auto,noatime				0	0
 
-#[sda2][ext4][gentoo install]
-/dev/sda2	/mnt/dev/gentoo	ext4		rw,relatime,data=ordered		0	2
+#[sda2][ext4][stuff storage]
+/dev/sda2	/mnt/mss/stuff	ext4		rw,relatime,data=ordered		0	2
 
-#[sda4][ext4][stuff storage]
-/dev/sda4	/mnt/mss/stuff	ext4		rw,relatime,data=ordered		0	3
+#[sda3][ext4][msslinux install]
+/dev/sda3	/		ext4		defaults				1	1
 
-#[sda5][ext4][lfs install]
-/dev/sda5	/		ext4		defaults				1	1
-
-#[sda6][swap][lfs swap]
-/dev/sda6	swap		swap		pri=100					0	0
+#[sda4][swap][msslinux swap]
+/dev/sda4	swap		swap		pri=100					0	0
 
 ## lfs specific defaults
 proc		/proc		proc		nosuid,noexec,nodev			0	0
@@ -20,11 +17,7 @@ sysfs		/sys		sysfs		nosuid,noexec,nodev			0	0
 devpts		/dev/pts	devpts		gid=5,mode=620				0	0
 tmpfs		/run		tmpfs		defaults				0	0
 devtmpfs	/dev		devtmpfs	mode=0755,nosuid			0	0
-shm		/dev/shm	tmpfs		defaults,size=10G			0	0
 
 ## devices
 #[sdd][vfat][bberry storage]
 UUID=0162-9A3F /mnt/dev/bberry vfat noauto,dmask=000,fmask=0111,user 0 0
-
-## chroot garbage
-/dev/sda4	/mnt/dev/gentoo/mnt/mss/stuff	ext4	rw,relatime,data=ordered	0	0
