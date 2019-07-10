@@ -455,7 +455,8 @@
 
 [d]	* dnscrypt-proxy-2.0.25	--> binary from dev
 [d]	* start-stop-daemon	--> from (https://github.com/daleobrien/start-stop-daemon)
-[d]	* ranger		--> binary from dev
+[d]	* ~~ranger~~		--> binary from dev --> removed, replaced with fbv
+[d]	* fbv
 ```
 ---------------------------------------------------------
 #### python:
