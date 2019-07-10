@@ -7,7 +7,7 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 
 yes.
 
-![yes](assets/yes.jpg)
+![yes](assets/fetch.jpg)
 
 #### stuff that requires me to run periodically:
 uwu i'll set a cronjob once i'm done, don't yell at me.
@@ -229,7 +229,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* firefox-66.4
+[d]	* firefox-66.5		-> /opt install
 [d]	** autoconf-2.13
 [d]	** cbindgen-0.8.0
 [d]	** nodejs-10.15.1
