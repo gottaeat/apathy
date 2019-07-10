@@ -228,7 +228,7 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 ---------------------------------------------------------
 ### compilers and languages:
 ```
-[d]	* llvm-7.0.1 + clang + compiler-rt --> rebuilt for ld.gold
+[d]	* llvm-7.0.1 + clang + compiler-rt --> updated to 8.0.0
 [d]	** cmake-3.13.4
 [d]	*** libuv-1.26.0
 [d]	*** libarchive-3.3.3
