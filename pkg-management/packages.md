@@ -375,7 +375,7 @@
 
 [d]	* mpv
 
-[d]	* mpd
+[d]	* mpd			--> rebuilt without dbus support
 [d]	** libcue
 [d]	** mpg123
 [d]	** libmpdclient
@@ -389,8 +389,8 @@
 [d]	** strace
 [d]	** libnl
 
-[d]	* iftop
-[d]	** libpcap-1.9.0
+[d]	* iftop			--> rebuilt without dbus support
+[d]	** libpcap-1.9.0	--> rebuilt without dbus support
 
 [d]	* xdg-utils-1.1.3 
 
