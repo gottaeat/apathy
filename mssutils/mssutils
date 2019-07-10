@@ -55,12 +55,12 @@ ch (){
  
  export GNT="/mnt/dev/gentoo"
  echo " * mounting and chrooting to: $GNT"
- mount -Rv	/dev	$GNT/dev
- mount -Rv	/proc	$GNT/proc
- mount -Rv	/sys	$GNT/sys
- mount -Rv	/run	$GNT/run
- chroot          $GNT    /bin/zsh
- umount -lv      $GNT/{dev,proc,sys,run}
+ mount -R	/dev	$GNT/dev	&&
+ mount -R	/proc	$GNT/proc	&&
+ mount -R	/sys	$GNT/sys	&&
+ mount -R	/run	$GNT/run	&&
+ chroot		$GNT	/bin/zsh	&&
+ umount -lv	$GNT/{dev,proc,sys,run}
  echo " * exited from chroot and umounted dirs."
 }
 
@@ -74,6 +74,30 @@ kerninst (){
  cp -iv arch/x86/boot/bzImage    /boot/vmlinuz
  cp -iv System.map               /boot/System.map
  cp -iv .config                  /boot/config
+}
+
+# pkgcount
+pkgcount (){
+ count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+ repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
+ gitdf_pre=$(diff /mss/raw-packages.txt $repo/lists/raw-packages.txt)
+ gitstat_pre=$(cd $repo && git status -s)
+
+ if [ -z "$gitdf_pre" ]
+ then
+   gitdf="there's no difference."
+ else
+   gitdf=$(echo -e "\n\n$gitdf_pre")
+ fi
+
+ if [ -z "$gitstat_pre" ]
+ then
+   gitstat="clean."
+ else
+   gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+ fi
+
+ echo -e " * local package count: $count\n * local and git diff : $gitdf\n * git repo status    : $gitstat"
 }
 ### end functions ###
 
@@ -94,6 +118,7 @@ while test $# -gt 0; do
   -u|update)	shift; update;				shift;;
   -c|ch)	shift; ch;				shift;;
   -k|kerninst)	shift; kerninst;			shift;;
+  -p|pkgcount)  shift; pkgcount;			shift;;
   *)		echo "$1 is not a recognized flag!";	break;;
  esac
 done
