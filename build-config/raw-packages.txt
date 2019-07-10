@@ -353,7 +353,7 @@ automake-1.16.1
 xz-5.2.4
 kmod-26
 gettext-0.19.8.1
-libelffromelfutils-0.176
+libelf (from elfutils-0.176)
 libffi-3.2.1
 openssl-1.1.1a
 python-3.7.2
