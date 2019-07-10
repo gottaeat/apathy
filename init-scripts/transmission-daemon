@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# description	: starts transmission-daemon as user:pass mss:mss.
+# author	: mssx86 - mssftw@protonmail.com
+# version	: mssLinux 1.2
+# default-start	: 3 4 5
+# default-stop	: 0 1 2 6
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "mssLinux - starting transmission-da."
+  start_daemon /usr/bin/transmission-daemon -g /home/mss/.config/transmission-daemon -t -u mss -v mss -p 9091 -a "127.0.0.1"
+  evaluate_retval
+  ;;
+
+ stop)
+  log_info_msg "mssLinux - stopping transmission-da."
+  killproc /usr/bin/transmission-daemon
+  evaluate_retval
+  ;;
+
+ restart)
+  ${0} stop
+  sleep 1
+  ${0} start
+  ;;
+
+ status)
+  transmission-remote -n mss:mss -l
+  ;;
+ *)
+  echo "Usage: ${0} {start|stop|restart|status}"
+  exit 1
+  ;;
+esac
+exit 0
