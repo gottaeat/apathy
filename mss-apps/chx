@@ -7,8 +7,9 @@ while test $# -gt 0; do
 	case "$1" in
 	-h|--help)
 		echo "chroot and run programs while allowing x access." && echo
-		echo "specify program by -p or --program."
-		echo "specify chroot dir by -d or --dir."
+		echo "specify program by	-p or --program."
+		echo "specify chroot dir by	-d or --dir."
+		echo "specify user by		-u or --user."
 		exit 0
 		;;
 
@@ -78,10 +79,11 @@ read REPLY
 
 if [ "$REPLY" = "yes" ]; then
 	echo -e " ${C1}[*]${NC} mounting the good stuff."
-	mount -v -t proc /proc	"${PART}/proc" > /dev/null 2>&1 &&
-	mount -vR /sys		"${PART}/sys" > /dev/null 2>&1 &&
-	mount -vR /dev		"${PART}/dev" > /dev/null 2>&1 &&
-	mount -vR /run		"${PART}/run" > /dev/null 2>&1 &&
+	mount -t proc /proc	"${PART}/proc"			&&
+	mount -R /sys		"${PART}/sys"			&&
+	mount -R /dev		"${PART}/dev"			&&
+	mount -R /run		"${PART}/run"			&&
+	mount	 /dev/sda4	"${PART}/mnt/mss/stuff"		&&
 	echo -e " ${C1}[*]${NC} mounted the good stuff."
 
 elif [ "$REPLY" = "no" ]; then
@@ -105,10 +107,11 @@ read REPLY
 
 if [ "$REPLY" = "yes" ]; then
 	echo -e " ${C1}[*]${NC} umounting the good stuff."
-	umount -vl "${PART}/proc" > /dev/null 2>&1 &&
-	umount -vl "${PART}/sys" > /dev/null 2>&1 &&
-	umount -vl "${PART}/dev" > /dev/null 2>&1 &&
-	umount -vl "${PART}/run" > /dev/null 2>&1 &&
+	umount -l "${PART}/proc"		&&
+	umount -l "${PART}/sys"			&&
+	umount -l "${PART}/dev"			&&
+	umount -l "${PART}/run"			&&
+	umount -l "${PART}/mnt/mss/stuff}"	&&
 	echo -e " ${C1}[d]${NC} umounted the good stuff."
 
 elif [ "$REPLY" = "no" ]; then
