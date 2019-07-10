@@ -1,38 +1,38 @@
 #!/bin/sh
+# mpd init script for sysvinit + start-stop-daemon
+# mssLinux 1.2 - mssx86 (mssftw@protonmail.com)
 
-# description	: starts mpd.
-# author	: mssx86 - mssftw@protonmail.com
-# version	: mssLinux 1.2
-# default-start	: 3 4 5
-# default-stop	: 0 1 2 6
-
+set -e
 . /lib/lsb/init-functions
 
-case "${1}" in
+NAME=mpd
+PIDFILE=/run/$NAME.pid
+DAEMON=/usr/bin/mpd
+DAEMON_OPTS="-p $PIDFILE /etc/mpd.conf"
+USER=mpd
+
+export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
+
+case "$1" in
  start)
-  log_info_msg "mssLinux - starting mpd."
-  start_daemon /usr/bin/mpd /etc/mpd.conf
+  log_info_msg "mssLinux - starting $NAME."
+  start-stop-daemon --start --quiet -b --chuid $USER --exec $DAEMON $DAEMON_OPTS
   evaluate_retval
   ;;
-
  stop)
-  log_info_msg "mssLinux - stopping mpd."
-  killproc /usr/bin/mpd 
+  log_info_msg "mssLinux - starting $NAME."
+  start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" 
   evaluate_retval
   ;;
-
  restart)
   ${0} stop
   sleep 1
   ${0} start
   ;;
-
  status)
-  statusproc /usr/bin/mpd 
+  statusproc $DAEMON
   ;;
  *)
-  echo "Usage: ${0} {start|stop|restart|status}"
+  echo "Usage: "$1" {start|stop|restart}"
   exit 1
-  ;;
 esac
-exit 0

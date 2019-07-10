@@ -5,22 +5,23 @@
 set -e
 . /lib/lsb/init-functions
 
-NAME=transmission-daemon
-DAEMON=/usr/bin/transmission-daemon
-DAEMON_OPTS="-g /home/mss/.config/transmission-daemon"
-USER=mss
+NAME=dnscrypt-proxy
+PIDFILE=/run/$NAME.pid
+DAEMON=/opt/dnscrypt-proxy/dnscrypt-proxy
+DAEMON_OPTS=""
+USER=root
 
 export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
  start)
   log_info_msg "mssLinux - starting $NAME."
-  start-stop-daemon --start --quiet  --chuid $USER --exec $DAEMON -- $DAEMON_OPTS
+  start-stop-daemon --start --quiet -b -m --pidfile $PIDFILE --chuid $USER --exec $DAEMON
   evaluate_retval
   ;;
  stop)
-  log_info_msg "mssLinux - stopping $NAME."
-  kill $(pidof transmission-daemon)
+  log_info_msg "mssLinux - starting $NAME."
+  start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
   evaluate_retval
   ;;
  restart)
@@ -29,7 +30,7 @@ case "$1" in
   ${0} start
   ;;
  status)
-  transmission-remote -n mss:mss -l
+  statusproc $DAEMON
   ;;
  *)
   echo "Usage: "$1" {start|stop|restart}"
