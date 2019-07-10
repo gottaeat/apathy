@@ -81,9 +81,3 @@ color=#525252
 command=~/.config/i3/scripts/uptime
 interval=60
 color=#ababab
-
-[flameshot]
-command=~/.config/i3/scripts/chx-flame
-interval=once
-color=#ababab
-separator=true

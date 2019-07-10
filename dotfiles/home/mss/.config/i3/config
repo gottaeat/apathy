@@ -131,6 +131,7 @@ colors
 ### binds ###
 #general binds
 bindsym	$mod+p		exec scrot -e 'mv $f ~/screenshots/'
+bindsym $mod+Shift+p	exec maim -s | xclip -selection clipboard -t image/png
 bindsym	$mod+d		exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d	exec /home/mss/.config/i3/dmenu/menuboi 
 bindsym	$mod+l		exec lock
