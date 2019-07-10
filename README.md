@@ -344,6 +344,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** libidn-1.35
 
 [d]	* zsh-5.7.1
+[d]	* expect-5.45.4 
 ```
 ---------------------------------------------------------
 #### python:
