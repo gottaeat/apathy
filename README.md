@@ -328,6 +328,15 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 
 [d]	* mpc
 [d]	* ncmpcpp
+
+[d]	* htop
+[d]	** strace
+[d]	** libnl
+
+[d]	* iftop
+[d]	** libpcap-1.9.0
+
+
 ```
 ---------------------------------------------------------
 #### python:
