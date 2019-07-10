@@ -139,6 +139,7 @@ colors {
 #> generic
 bindsym	$mod+p				exec scrot -e 'mv $f ~/screenshots/'
 bindsym $mod+Shift+p			exec maim -s -u | xclip -selection clipboard -t image/png
+bindsym $mod+o				exec /home/mss/.config/scripts/maimcrop
 bindsym	$mod+d				exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d			exec /home/mss/.config/i3/dmenu/menuboi 
 bindsym	$mod+x				exec urxvt -e vifm 
@@ -147,7 +148,7 @@ bindsym	XF86Sleep			exec xtrlock
 bindsym	XF86AudioMedia			exec urxvt -e ncmpcpp
 bindsym XF86HomePage			exec mightyluna
 bindsym XF86Calculator			exec feh --randomize --bg-fill /home/mss/cust/chan/*
-bindsym $mod+XF86Calculator		exec feh --bg-fill /home/mss/cust/chan/1548604875423-2.jpg
+bindsym $mod+XF86Calculator		exec feh --bg-fill /home/mss/cust/chan/1546293474750.jpg
 bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill /home/mss/cust/other/black.png
 
 # alsa controls
@@ -168,5 +169,5 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 ### autostart ###
 exec					compton --vsync opengl
 exec_always				xrandr --output VGA-1 --primary
-exec --no-startup-id			feh --bg-fill /home/mss/cust/chan/old/1548604875423-2.jpg
-exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
+exec --no-startup-id			feh --bg-fill /home/mss/cust/chan/1546293474750.jpg
+exec_always --no-startup-id		setxkbmap us -option 'grp:alt_shift_toggle'

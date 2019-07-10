@@ -1,0 +1,48 @@
+#!/bin/env bash
+# print mpd status
+plpa=$(mpc status | tail -2 | head -1 | awk '{print $1}' | xargs -0 echo)
+artist=$(mpc current | cut -f1 -d"-" | awk -v len=20 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+art=$(mpc current | sed 's/^.*- //' | awk -v len=25 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+song=$(echo $artist - $art)
+
+# duration
+main=$(mpc status | head -2 | tail -1 | awk '{print $3}' | sed 's/\// /g;s/:/ /g')
+
+curr_mins=$(echo $main | awk '{print $1}')
+curr_secs=$(echo $main | awk '{print $2}')
+curr=$(echo "$curr_secs + ($curr_mins * 60)" | bc -l)
+
+total_mins=$(echo $main | awk '{print $3}')
+total_secs=$(echo $main | awk '{print $4}')
+total=$(echo "$total_secs + ($total_mins * 60)" | bc -l)
+
+dur_pre=$(echo "$total - $curr" | bc -l)
+
+# check if longer than 3599 secs
+if [ "$dur_pre" -gt "3599" ]
+ then dur=$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))
+ else dur=$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))
+fi
+
+# play/pause
+if [ "$plpa" = "[paused]" ]
+ then state_pre="► ${song}"
+ else state_pre="${song} • ${dur}"
+fi
+
+# check if idle
+if [[ $plpa =~ "volume:" ]]
+ then state=$(echo "mpd is idle")
+ else state=${state_pre}
+fi
+
+echo $state
+
+# i3blocks interaction
+case $BLOCK_BUTTON in
+ 1) mpc next		;;
+ 2) mpc toggle		;;
+ 3) mpc prev		;;
+ 4) mpc volume +10	;;
+ 5) mpc volume -10	;;
+esac

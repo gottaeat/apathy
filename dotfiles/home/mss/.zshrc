@@ -59,6 +59,9 @@ alias mount="mount -v"
 alias nc="ncmpcpp"
 alias w="pwd"
 alias fb="fbterm-bg"
+alias l="ls -Askh --color=tty"
+alias ll="ls -Askhw1 --color=tty"
+alias lll="ls -la"
 ##b tmux
 alias td="tmux detach"
 alias ta="tmux attach"
@@ -76,4 +79,6 @@ alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
 
 
 ### fbterm tmux autostart
-[ "$yes_fbterm" = "1" ] && [ -z "$TMUX" ] && exec tmux -2
+if [ "$yes_fbterm" = "1" ]; then
+ [ -z "$(pidof tmux)" ] && exec tmux -2
+fi

@@ -1,7 +1,0 @@
-#!/bin/env bash
-yes_mpc=$(mpc status | count 3 && echo 1)
-
-if [ "$yes_mpc" = "1" ];
- then perl /home/mss/.config/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
- else echo "mpd is idle."
-fi

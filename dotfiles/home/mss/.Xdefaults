@@ -47,5 +47,5 @@ URxvt.letterSpace:	0
 *antialias:		true
 *autohint:		true
 URxvt.perl-ext-common:	default,matcher
-URxvt.url-launcher:	palemoon
+URxvt.url-launcher:	mightyluna
 URxvt.matcher.button:	1

@@ -1,26 +1,4 @@
-#!/usr/bin/perl
-use strict;
-use warnings;
-use utf8;
-use Getopt::Long;
+#!/bin/env bash
+usage=$(echo "100 - $(mpstat 1 1 | tail -1 | awk '{print $12}')" | bc -l)
 
-# default values
-my $cpu_usage = -1;
-my $decimals = $ENV{DECIMALS} // 2;
-my $label = $ENV{LABEL} // "";
-
-# pull cpu usage from mpstat
-$ENV{LC_ALL}="en_US"; # if mpstat is not run under en_US locale, things may break, so make sure it is
-open (MPSTAT, 'mpstat 1 1 |') or die;
-while (<MPSTAT>) {
-    if (/^.*\s+(\d+\.\d+)[\s\x00]?$/) {
-        $cpu_usage = 100 - $1; # 100% - %idle
-        last;
-    }
-}
-close(MPSTAT);
-
-$cpu_usage eq -1 and die 'Can\'t find CPU information';
-
-print "${label}";
-printf "%.${decimals}f%%\n", $cpu_usage;
+echo "${usage}%"

@@ -34,20 +34,21 @@ color=#e3e3e3
 separator=false
 
 [memory]
-command=~/.config/scripts/memory
+command=~/.config/scripts/mem
 interval=1
 color=#e3e3e3
 
 [mediaplayer]
-command=~/.config/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+command=~/.config/scripts/mpdstat
+color=#ababab
 interval=1
 signal=1
 
 [time]
-command=date '+%a %I:%M:%S%P %d/%m/%Y'
+command=date '+%a %d %I:%M:%S%P'
 interval=1
 color=#e3e3e3
-min_width=xxxxxxxxxxxxxxxxxxxxxxxx
+min_width=
 separator_block_width=3
 separator=false
 
