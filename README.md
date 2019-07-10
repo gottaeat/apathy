@@ -1,22 +1,28 @@
 ### msslinux-pure64 build details and maintenance guide
-mssLinux is a hobby project based on lfs+blfs 8.4 books, it's the product of my negative feelings, schizoid level loneliness and lack of interest in absolutely everything but terminals.
+mssLinux is a hobby project based on lfs+blfs 8.4 books, it's\
+the product of my negative feelings, schizoid level loneliness\
+and lack of interest in absolutely nothing but terminals.
 
-in its current state, it's fully 64bit. i at some point tried a multilib build as well but it got out of control very fast. i don't play games therefore i don't need steam or wine so i don't really need the 32 bit garbage those two need.
+in its current state, it's fully 64bit. i at some point tried a\
+multilib build as well but it got out of control very fast.\
+i don't play games therefore i don't need steam or wine so i\
+don't really need the 32 bit garbage those two need.
 
-this is the 3rd fully fledged linux from scratch based build i've built in the last 45 days.
+this is the 3rd fully fledged linux from scratch based build\
+i've built in the last 45 days.
 
 yes.
 
 ![yes](assets/yes.jpg)
 
-## stuff that requires me to run periodically:
+#### stuff that requires me to run periodically:
 uwu i'll set a cronjob once i'm done, don't yell at me.
 * `/usr/sbin/make-ca -g` --> required for the certificate stuff.
 * `/usr/sbin/update-pciids` --> required for the pciutils.
 * `/usr/sbin/ntpd -q -g` --> sets the clock.
 * `/usr/bin/wget http://www.linux-usb.org/usb.ids -o /usr/share/hwdata/usb.ids` --> usbutils thingy.
 
-## msslinux-pure64 package+dep list
+### package+dep list
 #### security
 ```
 [d]	* make-ca
