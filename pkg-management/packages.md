@@ -305,7 +305,7 @@
 [d]	* alsa-utils-1.1.8
 [d]	** fftw-3.3.8
 
-[d]	* alsa-tools-1.1.7
+[r]	* alsa-tools-1.1.7	--> removed
 
 [d]	* audiofile-0.3.6 
 [d]	** flac-1.3.2
