@@ -426,7 +426,7 @@
 [d]	** libassuan-2.5.3
 [d]	** libksba-1.3.5
 [d]	** npth-1.6
-[d]	** pinentry-1.1.0 
+[d]	** pinentry-1.1.0	--> rebuilt:disabled gtk2/3, tty/curses only. 
 
 [d]	* qemu-4.0.0
 
