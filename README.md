@@ -5,12 +5,16 @@ in its current state, it's fully 64bit. i at some point tried a multilib build a
 
 this is the 3rd fully fledged linux from scratch based build i've built in the last 45 days.
 
-**current package count**: 385
-
 ![yes](assets/fetch.png)
 
+#### current package count:
+```
+[8:30] mss mssLinux [master]: wc -l build-config/raw-packages.txt
+385 build-config/raw-packages.txt
+```
+---------------------------------------------------------
 #### stuff that requires me to run periodically:
-uwu i'll set a cronjob once i'm done, don't yell at me.
+
 * `/usr/sbin/make-ca -g` ---> required for the certificate stuff.
 * `/usr/sbin/update-pciids` ---> required for the pciutils.
 * `/usr/sbin/ntpd -q -g` ---> sets the clock.
