@@ -1,122 +1,44 @@
 #!/bin/env bash
-C1='\033[1;32m'
-C2='\033[0;36m'
-NC='\033[0m'
-
 while test $# -gt 0; do
-	case "$1" in
-	-h|--help)
-		echo "chroot and run programs while allowing x access." && echo
-		echo "specify program by	-p or --program."
-		echo "specify chroot dir by	-d or --dir."
-		echo "specify user by		-u or --user."
-		exit 0
-		;;
-
-	-p|--program)
-		shift
-		if test $# -gt 0; then
-			export PROG=$1
-		else
-			echo " ${C1}[!]${NC} no program specified."
-			exit 1
-		fi
-		shift
-		;;
-
-	-d|--dir)
-		shift
-		if test $# -gt 0; then
-			export PART=$1
-		else
-			echo " ${C1}[!]${NC} no dir specified."
-			exit 1
-		fi
-		shift
-		;;
-	-u|--user)
-		shift
-		if test $# -gt 0; then
-			export USERX=$1
-		else
-			echo " ${C1}[!]${NC} no user specified."
-			exit 1
-		fi
-		shift
-		;;	
-	*)
-		break
-		;;
-	esac
+ case "$1" in
+  -h|--help)
+   echo "chroot and run programs while allowing x access." && echo
+   echo "specify executable by	-e or --exec."
+   echo "specify chroot dir by	-p or --part."
+   echo "specify user by		-u or --user."
+   exit 0
+   ;;
+  -e|--exec)	shift; export chprog=$1;		shift;;
+  -p|--part)     shift; export chpart=$1;  		shift;;
+  -u|--user)    shift; export chuser=$1;		shift;;
+  *)		echo "$1 is not a recognized flag!";    break;;
+ esac
 done
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo -e " ${C1}[!]${NC} this script must be run by root." >&2
-	exit 1
-elif [[ -z "$PROG" ]]; then
-	echo -e " ${C1}[!]${NC} no program selected." 1>&2
-	exit 1
-elif [[ -z "$PART" ]]; then
-	echo -e " ${C1}[!]${NC} no partition selected." 1>&2
-	exit 1
-elif [[ -z "$USERX" ]]; then
-	echo -e " ${C1}[!]${NC} no user selected." 1>&2
-	exit 1
+
+if [ "$(id -u)" -ne 0 ]
+ then echo -e " ! this script must be run by root.";	exit 1
+elif [ -z "$chprog" ]
+ then echo -e " ! no program specified.";		exit 1
+elif [ -z "$chpart" ]
+ then echo -e " ! no partition specified.";		exit 1
+elif [ -z "$chuser" ]
+ then echo -e " ! no user specified.";			exit 1
 fi
 
-echo -e  " ${C1}[*]${NC} chroot partition: $PART"
-echo -e  " ${C1}[*]${NC} chroot program  : $PROG"
-echo -e  " ${C1}[*]${NC} chroot user     : $USERX"
-echo
+echo -e "\n * executing \"$chprog\" in \"$chpart\" as \"$chuser\"\n"
 
-echo -e  " ${C1}[*]${NC} allowing x access from all hosts."
-xhost + > /dev/null 2>&1
+echo " * allowing all connections to X." && xhost + > /dev/null 2>&1 &&
+echo " * mounting." &&
+ mount --bind $chpart $chpart &&
+ mount -t proc /proc $chpart/proc &&
+ mount --make-rslave --rbind /sys $chpart/sys &&
+ mount --make-rslave --rbind /dev $chpart/dev &&
+ mount --make-rslave --rbind /run $chpart/run &&
+echo " * mounted, chrooting." && chroot "${chpart}" su -c "${chprog}" "${chuser}" > /dev/null 2>&1
 
-echo -e  " ${C1}[*]${NC} shall i mount the good stuff?"
-echo -en " ${C1}[*]${NC} yes/no/abort: "
-
-read REPLY
-
-if [ "$REPLY" = "yes" ]; then
-	echo -e " ${C1}[*]${NC} mounting the good stuff."
-	mount -t proc /proc	"${PART}/proc"			&&
-	mount -R /sys		"${PART}/sys"			&&
-	mount -R /dev		"${PART}/dev"			&&
-	mount -R /run		"${PART}/run"			&&
-	echo -e " ${C1}[*]${NC} mounted the good stuff."
-
-elif [ "$REPLY" = "no" ]; then
-	echo -e " ${C1}[!]${NC} not mounting the good stuff."
-
-elif [ "$REPLY" = "abort" ]; then
-	echo -e " ${C1}[!]${NC} aborted."
-	exit 1
-else
-	echo -e " ${C1}[!]${C2} say either yes or no. aborting.${NC}"
-	exit 0
-fi
-
-echo -e  " ${C1}[*]${NC} chrooting."
-chroot "${PART}" su -c "${PROG}" "${USERX}"
-
-echo -e  " ${C1}[*]${NC} shall i umount the good stuff?"
-echo -en " ${C1}[*]${NC} yes/no: "
-
-read REPLY
-
-if [ "$REPLY" = "yes" ]; then
-	echo -e " ${C1}[*]${NC} umounting the good stuff."
-	umount -l "${PART}/proc"		&&
-	umount -l "${PART}/sys"			&&
-	umount -l "${PART}/dev"			&&
-	umount -l "${PART}/run"			&&
-	echo -e " ${C1}[d]${NC} umounted the good stuff."
-
-elif [ "$REPLY" = "no" ]; then
-	echo -e " ${C1}[!]${NC} not mounting the good stuff."
-
-else
-	echo "" &&
-	echo -e " ${C1}[!]${C2} say either yes or no. aborting.${NC}"
-	exit 0
-fi
+echo " * exited chroot, umounting." &&
+ umount -l $chpart/{proc,sys,dev,run} &&
+ umount -l $chpart &&
+echo " * umounted successfully." &&
+echo " * reverting xhost perms." && xhost - > /dev/null 2>&1 && echo " * done."
