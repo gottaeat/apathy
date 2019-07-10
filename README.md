@@ -1,15 +1,9 @@
-### msslinux-pure64 build details and maintenance guide
-mssLinux is a hobby project based on lfs+blfs 8.4 books, it's\
-the product of my negative feelings, schizoid level loneliness\
-and lack of interest in absolutely nothing but terminals.
+### msslinux-pure64 build details
+mssLinux is a hobby project based on lfs+blfs 8.4 books, it's the product of my negative feelings, schizoid level loneliness and lack of interest in absolutely nothing but terminals.
 
-in its current state, it's fully 64bit. i at some point tried a\
-multilib build as well but it got out of control very fast.\
-i don't play games therefore i don't need steam or wine so i\
-don't really need the 32 bit garbage those two need.
+in its current state, it's fully 64bit. i at some point tried a multilib build as well but it got out of control very fast. i don't play games therefore i don't need steam or wine so i don't really need the 32 bit garbage those two need.
 
-this is the 3rd fully fledged linux from scratch based build\
-i've built in the last 45 days.
+this is the 3rd fully fledged linux from scratch based build i've built in the last 45 days.
 
 yes.
 
@@ -78,11 +72,11 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** net-ssleay-1.86_06
 [d]	*** uri-1.76
 
-[d]	* git-2.20.1 -> --enable-jit
+[d]	* git-2.20.1				-> --enable-jit
 [d]	** curl-7.64.0
 [d]		*** c-ares-1.15.0
 [d]		*** libssh2-1.8.0
-[d]			**** openssh-7.9p1 --> installed it, no config or init script.
+[d]			**** openssh-7.9p1	-> installed it, no config or init script.
 [d]		*** nghttp2-1.36.0
 [d]			**** boost-1.69.0
 [d]			***** icu-63.1
@@ -114,12 +108,12 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*****r shared-mime-info-1.10
 [d]	*****r desktop-file-utils-0.23
 
- !!	1. install freetype without harfbuzz ---> done
- !!	2. instal harfbuzz without cairo ---> done
- !!	3. install cairo ---> done
- !!	4. install harfbuzz with cairo ---> done
- !!	5. install freetype ---> done
- !!	6. install fontconfig ---> done
+ !!	1. install freetype without harfbuzz	-> done
+ !!	2. instal harfbuzz without cairo	-> done
+ !!	3. install cairo			-> done
+ !!	4. install harfbuzz with cairo		-> done
+ !!	5. install freetype			-> done
+ !!	6. install fontconfig			-> done
 
 [d]	* xorg-libs
 [d]	* xcb-util-0.4.0
@@ -144,7 +138,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** libunwind-1.3.1
 [d]	** libepoxy-1.5.3
 
-	* xorg-drivers --> will use modesetting for intel
+	* xorg-drivers			-> will use modesetting for intel
 [d]	** libevdev 
 [d]	** xf86-input-evdev-2.10.6
 [d]	*** mtdev-1.1.5
@@ -184,7 +178,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** dbus-1.12.12
 
 [d]	* at-spi2-atk-2.30.0
-[d]	* cairomm-1.12.2 --> reinstalled cairo
+[d]	* cairomm-1.12.2	-> reinstalled cairo
 
 [d]	* freeglut-3.0.0 
 [d]	** glu-9.0.0
@@ -199,9 +193,9 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** vala-0.42.5
 [d]	** libtiff-4.0.10
 
- !!	1. gdk-pixbuf without librsvg --> done
- !!	2. librsvg --> done
- !!	3. gdk-pixbuf --> done
+ !!	1. gdk-pixbuf without librsvg	-> done
+ !!	2. librsvg			-> done
+ !!	3. gdk-pixbuf			-> done
 
 [d]	* gtk+-2.24.32
 
@@ -235,14 +229,14 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* firefox-60.5.2	--> esr
+[d]	* ~~firefox-60.5.2~~	-> using binary build, built one segfaults.
 [d]	** autoconf-2.13
 [d]	** cbindgen-0.8.0
 [d]	** nodejs-10.15.1
 [d]	** libwebp-1.0.2
 [d]	** libproxy
 [d]	** yasm
-[d]	** ffmpeg-4.1.1 --> runtime
+[d]	** ffmpeg-4.1.1		-> runtime
 ```
 
 ---------------------------------------------------------
@@ -254,7 +248,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	* alsa-utils-1.1.8
 [d]	** fftw-3.3.8
 
-[d]	* alsa-tools-1.1.7.tar.bz2
+[d]	* alsa-tools-1.1.7
 
 [d]	* audiofile-0.3.6 
 [d]	** flac-1.3.2
@@ -269,7 +263,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** aalib-1.4rc5
 [d]		**** slang 2.3.2
 [d]	*** libcaca 0.99.beta19
-[d]	*** directfb-1.7.7 --> recompile after sdl and v4l
+[d]	*** directfb-1.7.7 	-> recompiled after sdl and v4l
 
 [d]	* libvpx-1.8.0 
 [d]	* opus-1.3
@@ -283,8 +277,8 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 #### random garbage i forgot to install
 ```
 [d]	* tree-1.8.0
-[d]	* vim-8.1 --> xorg support
-[d]	* rsync-3.1.3 --> no init or config done
+[d]	* vim-8.1		-> xorg support
+[d]	* rsync-3.1.3		-> no init or config done
 [d]	** popt-1.16
 
 [d]	* tmux
