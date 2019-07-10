@@ -318,6 +318,7 @@ libassuan-2.5.3
 libksba-1.3.5
 npth-1.6
 pinentry-1.1.0
+qemu-4.0.0
 pypresence
 mssrpc
 man-pages-4.16
