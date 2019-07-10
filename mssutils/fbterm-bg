@@ -1,0 +1,12 @@
+#!/bin/env bash
+echo -ne "\e[?25l"
+
+fbv -ciuker "$1" << EOF
+q
+EOF
+
+shift
+
+export FBTERM_BACKGROUND_IMAGE=1
+export yes_fbterm=1
+exec fbterm "$@"

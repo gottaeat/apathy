@@ -22,4 +22,4 @@ upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minute
 tot=$(free -h | sed -n '2p' | awk '{print $2}' | sed 's/Gi//g')
 use=$(free -h | sed -n '2p' | awk '{print $3}' | sed 's/Gi//g')
 
-echo -e " * dist: ${dist}\n * host: ${host}\n * kern: ${kern}\n * sh  : $SHELL\n * upt : ${upt}\n * cpu : ${cpu} @ ${freq}GHz\n * mem : ${use}/${tot}G\n"
+echo -e " * host: ${host}\n * dist: ${dist}\n * kern: ${kern}\n * sh  : $SHELL\n * upt : ${upt}\n * cpu : ${cpu} @ ${freq}GHz\n * mem : ${use}/${tot}G\n"

@@ -1,0 +1,65 @@
+#!/bin/env bash
+
+### twitch ###
+lchan(){
+ livechan=$(curl \
+	 -sH 'Accept: application/vnd.twitchtv.v5+json'			\
+	 -H 'Client-ID: $CLIENT_TOKEN'					\
+	 -H 'Authorization: OAuth $ACCOUNT_OAUTH2'			\
+	 -X GET 'https://api.twitch.tv/kraken/streams/followed'		\
+	 | jq '.streams | .[] | .channel | "",.url,.status,.game'	\
+	 | sed 's/"//g')
+}
+
+lchan_full(){ lchan && echo "${livechan}" ;}
+
+lchan_list(){
+ stream=$(lchan && echo "${livechan}" | sed -n '/^https/p' | dmenu -l 15 -p "select stream:") &&
+ echo " * selected stream: ${stream}" &&
+
+ tw_quality=$(youtube-dl --list-format $stream | sed -n '/mp4/p' | awk '{print $1}' | dmenu -p "select quality:") &&
+ echo " * selected quality: ${tw_quality}" &&
+
+ mpv "${stream}" --ytdl-format=${tw_quality}
+}
+### twitch end ###
+
+
+### youtube ###
+yt_prompt(){
+ yt_url=$(dmenu -p "$1" <&- && echo) &&
+ echo " * selected url: ${yt_url}" &&
+
+ yt_quality=$(youtube-dl --list-format ${yt_url} | dmenu -l 20 | awk '{print $1}') &&
+ echo " * selected quality: ${yt_quality}" &&
+
+ mpv "${yt_url}" --ytdl-format=${yt_quality}
+}
+### youtube end ###
+
+
+### dmenu ###
+pl_dmenu(){
+play=$(echo -e "youtube\ntwitch" | dmenu) &&
+
+if [ $play = "youtube" ]
+ then yt_prompt
+ else lchan_list
+fi
+}
+
+if [ -z "$1" ]; then pl_dmenu;fi
+### dmenu end ###
+
+
+### flags ###
+while getopts "lfyh" OPTION
+do
+ case $OPTION in
+  f) lchan_full; exit ;;
+  l) lchan_list; exit ;;
+  y) yt_prompt; exit ;;
+  h) echo "fuck off."; exit;;
+ esac
+done
+### flags end ###
