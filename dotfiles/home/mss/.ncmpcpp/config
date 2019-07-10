@@ -37,7 +37,7 @@ playlist_display_mode = columns
 browser_display_mode = columns
 
 header_visibility = no
-song_columns_list_format = (20)[white]{a:artist} (50)[white]{t|f:title} (20)[cyan]{b:album} (7f)[magenta]{l:length}
+song_columns_list_format = (20)[magenta]{a:artist} (50)[magenta]{t|f:title} (20)[magenta]{b:album} (7f)[magenta]{l:length}
 progressbar_look = -»-
 tags_separator = " | "
 empty_tag_marker = <none>
@@ -56,22 +56,22 @@ visualizer_output_name = visualizer thingy
 visualizer_in_stereo = yes
 visualizer_sync_interval = 30
 visualizer_type = spectrum
-visualizer_look = +l
-visualizer_color = magenta
+visualizer_look = **
+visualizer_color = magenta 
 
 # alternative mode header lines
 #alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b
 #alternative_header_second_line_format = {{$4$b%a$/b$9}{ - $7%b$9}{ ($4%y$9)}}|{%D}
 
 ## colors ##
-current_item_prefix = $(white)$r
+current_item_prefix = $(magenta)$r
 current_item_suffix = $/r$(end)
 
 current_item_inactive_column_prefix = $(white)$r
 current_item_inactive_column_suffix = $/r$(end)
 
-now_playing_prefix = $(blue)$b
-now_playing_suffix = $(blue)$/b
+now_playing_prefix = $(magenta)$b
+now_playing_suffix = $(magenta)$/b
 #browser_playlist_prefix = "$2playlist$9 "
 
 selected_item_prefix = $2

@@ -1,5 +1,7 @@
 ### env variables
 export ZSH="/home/mss/.oh-my-zsh"
+export GNT="/mnt/dev/gentoo"
+export TERM=rxvt-unicode-256color
 
 # path and lang
 export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
@@ -37,18 +39,22 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd.mm.yyyy"
 
-# plugins
-plugins=(
-  git
-)
+## plugins
+plugins=(git vi-mode)
 source $ZSH/oh-my-zsh.sh
 
 
 ### aliases
 # program related
 alias tmux="tmux -2"
-alias mc="mc -b"
 alias feh="feh --scale-down --auto-zoom"
+
+# make verbose
+alias ln="ln -v"
+alias cp="cp -v"
+alias mv="mv -v"
+alias mkdir="mkdir -pv"
+alias mount="mount -v"
 
 # shortcuts
 alias nc="ncmpcpp"
@@ -56,6 +62,5 @@ alias w="pwd"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
-alias chxg="sudo /usr/local/bin/chx -p /usr/bin/gimp -d /mnt/dev/gentoo -u mss"
-alias chxs="sudo /usr/local/bin/chx -p /usr/bin/steam -d /mnt/dev/gentoo -u mss"
-alias chxz="sudo /usr/local/bin/chx -p "/bin/zsh" -d /mnt/dev/gentoo -u mss"
+alias chxg="sudo /usr/local/bin/chx -p /usr/bin/gimp -d $GNT -u mss"
+alias chxs="sudo /usr/local/bin/chx -p /usr/bin/steam -d $GNT -u mss"
