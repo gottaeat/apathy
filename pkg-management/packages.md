@@ -423,7 +423,7 @@
 [d]	* irssi
 [d]	* vifm
 
-[d]	* GnuPG-2.2.15		--> 2 release above, for gcc9.1 support. 
+[d]	* GnuPG-2.2.15		--> updated to 2.2.17
 [d]	** libassuan-2.5.3
 [d]	** libksba-1.3.5
 [d]	** npth-1.6
