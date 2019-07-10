@@ -17,7 +17,3 @@ sysfs		/sys		sysfs		nosuid,noexec,nodev			0	0
 devpts		/dev/pts	devpts		gid=5,mode=620				0	0
 tmpfs		/run		tmpfs		defaults				0	0
 devtmpfs	/dev		devtmpfs	mode=0755,nosuid			0	0
-
-## devices
-#[sdd][vfat][bberry storage]
-UUID=0162-9A3F /mnt/dev/bberry vfat noauto,dmask=000,fmask=0111,user 0 0
