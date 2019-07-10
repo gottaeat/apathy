@@ -1,21 +1,20 @@
 #!/bin/env bash
-if [ "$(id -u)" -ne 0 ]; then
- echo -e " ! this script must be run by root."
-exit 1
+if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1
+elif [ -z "$1" ]; then echo " ! no mount point selected." ;exit 1
 fi
 
 mntp="/mnt/mss/stuff/chr"
 
 echo " * allowing all connections to X." && xhost + &&
 echo " * mounting." &&
- mount --bind $mntp $mntp &&
- mount -t proc /proc $mntp/proc &&
- mount --make-rslave --rbind /sys $mntp/sys &&
- mount --make-rslave --rbind /dev $mntp/dev &&
- mount --make-rslave --rbind /run $mntp/run &&
-echo " * mounted, chrooting." && chroot $mntp /bin/bash
+ mount --bind "$1" "$1" &&
+ mount -t proc /proc "$1"/proc &&
+ mount --make-rslave --rbind /sys "$1"/sys &&
+ mount --make-rslave --rbind /dev "$1"/dev &&
+ mount --make-rslave --rbind /run "$1"/run &&
+echo " * mounted, chrooting." && chroot "$1" /bin/bash
 echo " * exited chroot, umounting." &&
- umount -l $mntp/{proc,sys,dev,run} &&
- umount -l $mntp &&
+ umount -l "$1"/{proc,sys,dev,run} &&
+ umount -l "$1" &&
 echo " * umounted successfully." &&
 echo " * reverting xhost perms." && xhost - && echo " * done."

@@ -1,4 +1,6 @@
 #!/bin/env bash
+if [ -z $1 ]; then echo " ! no bg image selected."; exit 1; fi 
+
 echo -ne "\e[?25l"
 
 fbv -ciuker "$1" << EOF

@@ -1,11 +1,13 @@
 #!/bin/env bash
 count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
+tsize=$(df | grep root | awk '{print $3/1024"m"}')
 repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
 gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
 gitstat_pre=$(cd $repo && git status -s)
 
 if [ -z "$gitdf_pre" ]
- then gitdf="there's no difference."
+ then gitdf="no difference."
  else gitdf=$(echo -e "\n\n$gitdf_pre")
 fi
 
@@ -14,4 +16,4 @@ if [ -z "$gitstat_pre" ]
  else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
 fi
 
-echo -e "\n * local package count\t: $count\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"
+echo -e "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"

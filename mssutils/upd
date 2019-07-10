@@ -1,9 +1,5 @@
 #!/bin/env bash
-# check_root
-if [ "$(id -u)" -ne 0 ]; then
- echo -e " ! this script must be run by root."
-exit 1
-fi
+if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1; fi
 
 echo " * running /usr/sbin/make-ca -g." &&
 make-ca -g > /dev/null 2>&1 &&
@@ -13,4 +9,4 @@ echo " * running /usr/sbin/ntpd -q -g." &&
 ntpd -q -g > /dev/null 2>&1 &&
 echo " * running the usbutils thingy" &&
 wget http://www.linux-usb.org/usb.ids -O /usr/share/hwdata/usb.ids > /dev/null 2>&1 &&
-echo " *** system is up to date."
+echo " ! updated succesfully."

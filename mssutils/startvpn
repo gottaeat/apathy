@@ -1,4 +1,6 @@
 #!/bin/env bash
+if [ -z "$1" ]; then echo " ! no ovpn config selected."; exit 1; fi
+
 echo " * getting pass." &&
 passboi=$(curl -s https://freevpn.me/accounts | grep -o 'Password.*' | cut -c-26 | awk '{print $2}')
 
@@ -9,4 +11,4 @@ echo " * pass set, auth.txt:" &&
 cat /mnt/mss/stuff/techy-bits/openvpn/auth.txt
 
 echo " * connecting to $1"
-sudo openvpn --config $1
+doas -- openvpn --config $1
