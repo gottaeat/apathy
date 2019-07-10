@@ -13,7 +13,6 @@ export LANG="en_US.utf8"
 export GCC_SPECS=""
 export LESS="-R -M --shift 5"
 export OPENGL_PROFILE="xorg-x11"
-export LESSOPEN="lesspipe %s"
 export GSETTINGS_BACKEND="dconf"
 
 # compile bits
