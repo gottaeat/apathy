@@ -72,7 +72,7 @@
 [d]			**** libev-4.25-1
 [d]			**** cython
 
-[d]	* sudo-1.8.27
+[r]	* ~~ sudo-1.8.27 ~~	--> removed, replaced with doas
 ```
 ---------------------------------------------------------
 ### xorg stuff:
@@ -231,11 +231,11 @@
 [d]	** glibmm-2.58.0
 [d]	*** libsigc++-2.10.1
 
-[d]	* ~~ at-spi2-core-2.30.0 ~~	--> removed, bloat
-[d]	** ~~ dbus-1.12.12 ~~		--> removed, bloat
+[r]	* ~~ at-spi2-core-2.30.0 ~~	--> removed, bloat
+[r]	** ~~ dbus-1.12.12 ~~		--> removed, bloat
 
-[d]	* ~~ at-spi2-atk-2.30.0 ~~ 	--> removed, bloat
-[d]	* ~~ cairomm-1.12.2 ~~	--> reinstalled cairo --> removed, bloat
+[r]	* ~~ at-spi2-atk-2.30.0 ~~ 	--> removed, bloat
+[r]	* ~~ cairomm-1.12.2 ~~	--> reinstalled cairo --> removed, bloat
 
 [d]	* freeglut-3.0.0 
 [d]	** glu-9.0.0
@@ -256,21 +256,21 @@
 
 [d]	* gtk+-2.24.32
 
-[d]	* gtk+-3.24.5			--> rebuilt without at-spi2
-[d]	** adwaita-icon-theme-3.30.1
-[d]	** iso codes-4.1
+[r]	* ~~ gtk+-3.24.5 ~~			--> removed, not needed
+[r]	** ~~ adwaita-icon-theme-3.30.1 ~~	--> removed, not needed
+[r]	** ~~ iso codes-4.1 ~~			--> removed, not needed
 [d]	** libxkbcommon-0.8.3
 
-[d]	* ~~ gtksourceview ~~		--> removed, bloat
+[r]	* ~~ gtksourceview ~~		--> removed, bloat
 
 [d]	* imlib2-1.5.1 
 [d]	** giflib-5.1.6
 [d]		*** xmlto-0.0.28 
 [d]	** libid3tag
 
-[d]	* libnotify-0.7.7		--> removed, unneeded
-[d]	** notification-daemon-3.20.0	--> removed, unneeded
-[d]	*** libcanberra-0.30		--> removed, unneeded
+[r]	* libnotify-0.7.7		--> removed, unneeded
+[r]	** notification-daemon-3.20.0	--> removed, unneeded
+[r]	*** libcanberra-0.30		--> removed, unneeded
 [d]		**** alsa-lib-1.1.8
 [d]		**** libvorbis-1.3.6
 [d]		***** libogg-1.3.3
@@ -278,20 +278,20 @@
 [d]	* rxvt-unicode-9.22
 [d]	* transmission-2.94
 
-[d]	* ~~ lxappearance-0.6.3 ~~	--> removed, bloat
-[d]	** ~~ dbus-glib-0.110 ~~	--> removed, bloat
+[r]	* ~~ lxappearance-0.6.3 ~~	--> removed, bloat
+[r]	** ~~ dbus-glib-0.110 ~~	--> removed, bloat
 
-[d]	* w3m-git
-[d]	** gc-8.0.2
-[d]	*** libatomic_ops-7.6.8
+[r]	* w3m-git			--> removed
+[r]	** gc-8.0.2			--> removed
+[r]	*** libatomic_ops-7.6.8		--> removed
 [d]	** gpm-1.20.7
 
-[d]	* firefox-68.0b6	--> replaced with palemoon
+[r]	* firefox-68.0b6	--> replaced with palemoon
 [d]	** autoconf-2.13
-[d]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7	--> removed, unneeded
+[r]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7	--> removed, unneeded
 [d]	** nodejs-10.15.1
 [d]	** libwebp-1.0.2
-[d]	** libproxy
+[r]	** libproxy		--> removed
 [d]	** yasm
 [d]	** ffmpeg-4.1.1		--> runtime
 ```
@@ -339,7 +339,7 @@
 
 [d]	* tmux
 
-[d]	* ~~ i3 ~~		--> replaced with i3-memegaps.
+[r]	* ~~ i3 ~~		--> replaced with i3-memegaps.
 [d]	** yajl
 [d]	** xcb-util-xrm
 [d]	** startup-notification	--> forgot to add this ages ago
@@ -347,9 +347,9 @@
 [d]	* i3blocks
 [d]	* dmenu
 
-[d]	* ~~ nitrogen ~~		--> removed, bloat
-[d]	** ~~ gtkmm-2.24.5 ~~		--> removed, bloat
-[d]	*** ~~ pangomm-2.42.0 ~~	--> removed, bloat
+[r]	* ~~ nitrogen ~~		--> removed, bloat
+[r]	** ~~ gtkmm-2.24.5 ~~		--> removed, bloat
+[r]	*** ~~ pangomm-2.42.0 ~~	--> removed, bloat
 
 [d]	* scrot
 [d]	** giblib
@@ -357,21 +357,21 @@
 [d]	* xtrlock
 
 [d]	* apulse
-[d]	* ~~discord~~		--> replaced with 6cord
-[d]	* ~~discord-rpc~~	--> uninstalled
+[r]	* ~~discord~~		--> replaced with 6cord
+[r]	* ~~discord-rpc~~	--> uninstalled
 [d]	* youtube-dl
 
 [d]	* compton
 [d]	** libconfig
 [d]	** asciidoc2
 
-[d]	* ~~mc-4.8.22~~		--> removed mc, replaced with vifm
+[r]	* ~~mc-4.8.22~~		--> removed mc, replaced with vifm
 
 [d]	* ffmpeg-4.1.1
 [d]	** lame-3.100
 [d]	** OpenJPEG-2.3.0
 
-[d]	* ~~ neofetch ~~	--> removed, mss-fetch ftw.
+[r]	* ~~ neofetch ~~	--> removed, mss-fetch ftw.
 [d]	* numlockx
 
 [d]	* mpv
@@ -404,9 +404,9 @@
 [d]	* expect-5.45.4 
 [d]	* lz4
 
-[d]	* libnetfilter_queue	--> deleted
-[d]	** libmnl		--> deleted
-[d]	** libnfnetlink		--> deleted
+[r]	* libnetfilter_queue	--> deleted
+[r]	** libmnl		--> deleted
+[r]	** libnfnetlink		--> deleted
 
 [d]	* feh
 
@@ -429,7 +429,7 @@
 [d]	** npth-1.6
 [d]	** pinentry-1.1.0	--> rebuilt:disabled gtk2/3, tty/curses only. 
 
-[d]	* qemu-4.0.0
+[d]	* qemu-3.1.0		--> rebuilt:disablet gtk2/3.
 
 [d]	* openvpn
 [d]	** pkcs11-helper
@@ -455,14 +455,15 @@
 
 [d]	* dnscrypt-proxy-2.0.25	--> binary from dev
 [d]	* start-stop-daemon	--> from (https://github.com/daleobrien/start-stop-daemon)
-[d]	* ~~ranger~~		--> binary from dev --> removed, replaced with fbv
+[r]	* ~~ranger~~		--> binary from dev --> removed, replaced with fbv
 [d]	* fbv
+[d]	* opendoas
 ```
 ---------------------------------------------------------
 #### python:
 ```
-[d]	* ~~pypresence~~	--> uninstalled
-[d]	* ~~mssrpc~~		--> uninstalled
+[r]	* ~~pypresence~~	--> uninstalled
+[r]	* ~~mssrpc~~		--> uninstalled
 ```
 ---------------------------------------------------------
 #### lfs-8.4 base

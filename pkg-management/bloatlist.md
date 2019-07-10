@@ -1,5 +1,19 @@
 #### bloatlist
 ```
+[r] > gtk+-3.24.5
+[r] >> adwaita-icon-theme-3.30.1
+[r] >> iso codes-4.1
+
+[r] > w3m-git
+[r] >> gc-8.0.2
+[r] >>> libatomic_ops-7.6.8
+
+[r] > libproxy
+
+[r] > sudo
+```
+---------------------------------------------------------
+```
 [r] > lxappearance-0.6.3
 [r] >> dbus-glib-0.110
 
