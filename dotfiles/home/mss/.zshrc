@@ -60,3 +60,6 @@ alias w="pwd"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
+
+# misc
+alias weather="bash /home/mss/.config/i3/scripts/weather-local"
