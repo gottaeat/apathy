@@ -11,5 +11,8 @@ xset s off
 xset -dpms
 xset s noblank
 
+#dbus
+dbus-launch --sh-syntax --exit-with-session
+
 #wm
 exec i3

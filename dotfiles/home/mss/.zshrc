@@ -1,7 +1,6 @@
 ### env variables
 export ZSH="/home/mss/.oh-my-zsh"
 export GNT="/mnt/dev/gentoo"
-export TERM=rxvt-unicode-256color
 
 # path and lang
 export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
