@@ -352,6 +352,13 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** libnfnetlink
 
 [d]	* feh
+
+[d]	* maim
+[d]	** slop
+[d]	*** glm 	
+[d]	*** glew
+
+[d]	* xclip
 ```
 ---------------------------------------------------------
 #### python:
