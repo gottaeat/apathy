@@ -13,8 +13,12 @@ complete list of software installed can be found in `raw-packages.txt` or `packa
 
 ![indeed](assets/tism.png)
 
-#### current package count:
+#### current package count and total system size:
 ```
 mss mssLinux [master]: wc -l pkg-management/raw-packages.txt 
-386 pkg-management/raw-packages.txt
+387 pkg-management/raw-packages.txt
+
+mss mssLinux [master]: df -h /
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        30G  4.8G   23G  18% /
 ```
