@@ -370,7 +370,7 @@
 [d]	** lame-3.100
 [d]	** OpenJPEG-2.3.0
 
-[d]	* neofetch
+[d]	* ~~ neofetch ~~	--> removed, mss-fetch ftw.
 [d]	* numlockx
 
 [d]	* mpv

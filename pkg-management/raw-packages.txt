@@ -275,7 +275,6 @@ asciidoc2
 ffmpeg-4.1.1
 lame-3.100
 OpenJPEG-2.3.0
-neofetch
 numlockx
 mpv
 mpd
