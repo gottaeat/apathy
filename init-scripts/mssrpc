@@ -1,0 +1,46 @@
+#!/bin/sh
+# default-start: 3 4 5
+# default-stop:	 0 1 2 6	
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+	log_info_msg "starting mssrpc"
+	bash /opt/mssrpc/rc.sh > /dev/null 2>&1 &
+	;;
+
+ stop)
+	log_info_msg "stopping msrpc"
+	 if ps ax | egrep "thing.py" | sed '/grep/d'
+		then ps ax | egrep "thing.py" | sed '/grep/d' | awk '{print $1}' | xargs kill
+	 fi
+	
+	 if ps ax | egrep "rc.sh" | sed '/grep/d'
+		then ps ax | egrep "rc.sh" | sed '/grep/d' | sed '/openrc-run/d' | awk '{print $1}' | xargs kill
+	 fi
+	;;
+
+ status)
+	 echo "rc.sh processes:"
+	 ps ax | egrep "rc.sh" | sed '/grep/d'
+
+	 echo ""
+
+	 echo "thing.py processes:"
+	 ps ax | egrep "thing.py" | sed '/grep/d'
+	 ;;
+
+ restart)
+	${0} stop
+	sleep 1
+	${0} start
+	;;
+
+ *)
+	echo "Usage: ${0} {start|stop|status|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
