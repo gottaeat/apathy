@@ -312,6 +312,7 @@ glew
 xclip
 imagemagick-7.0.8-27
 little-cms-2.9
+irssi
 pypresence
 mssrpc
 man-pages-4.16
