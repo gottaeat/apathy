@@ -1,0 +1,63 @@
+From 1ba129b4d057182b8e157df56914094774751806 Mon Sep 17 00:00:00 2001
+From: mssx86 <mssftw@protonmail.com>
+Date: Wed, 10 Jul 2019 03:17:38 +0300
+Subject: base config for dvtm.
+
+---
+ config.def.h | 12 ++++++------
+ config.mk    |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/config.def.h b/config.def.h
+index 513c734..09f6c65 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -42,7 +42,7 @@ static Color colors[] = {
+ /* number of clients in master area */
+ #define NMASTER 1
+ /* scroll back buffer size in lines */
+-#define SCROLL_HISTORY 500
++#define SCROLL_HISTORY 20000
+ /* printf format string for the tag in the status bar */
+ #define TAG_SYMBOL   "[%s]"
+ /* curses attributes for the currently selected tags */
+@@ -63,13 +63,13 @@ const char tags[][8] = { "1", "2", "3", "4", "5" };
+ 
+ /* by default the first layout entry is used */
+ static Layout layouts[] = {
+-	{ "[]=", tile },
+-	{ "+++", grid },
+-	{ "TTT", bstack },
+-	{ "[ ]", fullscreen },
++	{ "T=", tile },
++	{ "G", grid },
++	{ "B", bstack },
++	{ "F", fullscreen },
+ };
+ 
+-#define MOD  CTRL('g')
++#define MOD  CTRL('a')
+ #define TAGKEYS(KEY,TAG) \
+ 	{ { MOD, 'v', KEY,     }, { view,           { tags[TAG] }               } }, \
+ 	{ { MOD, 't', KEY,     }, { tag,            { tags[TAG] }               } }, \
+diff --git a/config.mk b/config.mk
+index db25e8a..6b2d4c8 100644
+--- a/config.mk
++++ b/config.mk
+@@ -1,6 +1,6 @@
+ # Customize below to fit your system
+ 
+-PREFIX ?= /usr/local
++PREFIX ?= /usr
+ MANPREFIX = ${PREFIX}/share/man
+ # specify your systems terminfo directory
+ # leave empty to install into your home folder
+@@ -11,4 +11,4 @@ LIBS = -lc -lutil -lncursesw
+ CPPFLAGS = -D_POSIX_C_SOURCE=200809L -D_XOPEN_SOURCE=700 -D_XOPEN_SOURCE_EXTENDED
+ CFLAGS += -std=c99 ${INCS} -DNDEBUG ${CPPFLAGS}
+ 
+-CC ?= cc
++CC = clang
+-- 
+2.20.1
+
