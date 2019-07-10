@@ -1,0 +1,2 @@
+#!/bin/env bash
+LD_PRELOAD=/opt/discord/libcups.so.2 apulse /opt/discord/Discord --disable-smooth-scrolling
