@@ -8,12 +8,12 @@ command=xtitle -t 30 -s
 interval=persist
 
 [bw]
-command=~/.config/i3/scripts/bw
+command=~/.config/scripts/bw
 interval=1
 color=#ababab
 
 [cpu]
-command=~/.config/i3/scripts/cpu
+command=~/.config/scripts/cpu
 interval=1
 color=#e3e3e3
 separator=false
@@ -21,25 +21,25 @@ separator_block_width=5
 min_width=xxxxxx
 
 [package_temp]
-command=~/.config/i3/scripts/ptemp
+command=~/.config/scripts/ptemp
 interval=1
 color=#e3e3e3
 separator=false
 separator_block_width=8
 
 [fan]
-command=~/.config/i3/scripts/fan
+command=~/.config/scripts/fan
 interval=1
 color=#e3e3e3
 separator=false
 
 [memory]
-command=~/.config/i3/scripts/memory
+command=~/.config/scripts/memory
 interval=1
 color=#e3e3e3
 
 [mediaplayer]
-command=~/.config/i3/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
+command=~/.config/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
 interval=1
 signal=1
 
@@ -52,18 +52,18 @@ separator_block_width=3
 separator=false
 
 [weather-local]
-command=~/.config/i3/scripts/weather-local
+command=~/.config/scripts/weather-local
 interval=300
 color=#747474
 
 [master-alsa]
-command=~/.config/i3/scripts/master-alsa
+command=~/.config/scripts/master-alsa
 interval=1
 signal=1
 separator=false
 
 [capture-alsa]
-command=~/.config/i3/scripts/capture-alsa
+command=~/.config/scripts/capture-alsa
 interval=1
 signal=1
 
@@ -87,6 +87,6 @@ interval=once
 color=#525252
 
 [uptime]
-command=~/.config/i3/scripts/uptime
+command=~/.config/scripts/uptime
 interval=60
 color=#ababab

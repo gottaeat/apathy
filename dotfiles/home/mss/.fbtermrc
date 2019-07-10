@@ -4,7 +4,7 @@ font-size=7
 
 # base 16 color replacement
 color-foreground=5
-color-background=0
+color-background=1
 color-0=000000
 color-1=252525
 color-2=464646

@@ -43,24 +43,37 @@ source $ZSH/oh-my-zsh.sh
 
 
 ### aliases
-# program related
+## program related
 alias tmux="tmux -2"
 alias feh="feh --scale-down --auto-zoom"
 
-# make verbose
+## make verbose
 alias ln="ln -v"
 alias cp="cp -v"
 alias mv="mv -v"
 alias mkdir="mkdir -pv"
 alias mount="mount -v"
 
-# shortcuts
+## shortcuts
+##a literal shortcuts
 alias nc="ncmpcpp"
 alias w="pwd"
 alias fb="fbterm-bg"
+##b tmux
+alias td="tmux detach"
+alias ta="tmux attach"
+alias tk="tmux kill-session"
+##c sound
+alias atog="amixer set Master toggle"
+alias mtog="mpc toggle"
+##d transmission
+alias trs="transmission-remote -n mss:mss -l"
+alias tra="transmission-remote -n mss:mss -a"
+##e dirs
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
 
-# misc
-alias weather="bash /home/mss/.config/i3/scripts/weather-local"
+
+### fbterm tmux autostart
+[ "$yes_fbterm" = "1" ] && [ -z "$TMUX" ] && exec tmux -2

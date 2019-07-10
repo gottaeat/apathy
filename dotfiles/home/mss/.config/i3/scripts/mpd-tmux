@@ -1,2 +1,0 @@
-#!/bin/sh
-perl /home/mss/.config/i3/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }'
