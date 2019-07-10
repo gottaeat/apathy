@@ -1,0 +1,9 @@
+[r] /usr/include/gtksourceview-3.0/
+[r] /usr/lib/girepository-1.0/GtkSource-3.0.typelib
+[r] /usr/lib/pkgconfig/gtksourceview-3.0.pc
+[r] /usr/lib/{libgtksourceview-3.0.la,libgtksourceview-3.0.so,libgtksourceview-3.0.so.1,libgtksourceview-3.0.so.1.8.0}
+[r] /usr/share/gir-1.0/GtkSource-3.0.gir
+[r] /usr/share/gtk-doc/html/gtksourceview-3.0/
+[r] /usr/share/gtksourceview-3.0/
+[r] /usr/share/locale/*/LC_MESSAGES/gtksourceview-3.0.mo
+[r] /usr/share/vala/vapi/{gtksourceview-3.0.deps,gtksourceview-3.0.vapi}

@@ -235,7 +235,7 @@
 [d]	** dbus-1.12.12
 
 [d]	* at-spi2-atk-2.30.0
-[d]	* cairomm-1.12.2	--> reinstalled cairo
+[d]	* ~~ cairomm-1.12.2 ~~	--> reinstalled cairo --> removed, bloat
 
 [d]	* freeglut-3.0.0 
 [d]	** glu-9.0.0
@@ -261,7 +261,7 @@
 [d]	** iso codes-4.1
 [d]	** libxkbcommon-0.8.3
 
-[d]	* gtksourceview
+[d]	* ~~ gtksourceview ~~		--> removed, bloat
 
 [d]	* imlib2-1.5.1 
 [d]	** giflib-5.1.6
@@ -278,8 +278,8 @@
 [d]	* rxvt-unicode-9.22
 [d]	* transmission-2.94
 
-[d]	* lxappearance-0.6.3
-[d]	** dbus-glib-0.110
+[d]	* ~~ lxappearance-0.6.3 ~~	--> removed, bloat
+[d]	** ~~dbus-glib-0.110 ~~		--> removed, bloat
 
 [d]	* w3m-git
 [d]	** gc-8.0.2
@@ -346,9 +346,9 @@
 [d]	* i3blocks
 [d]	* dmenu
 
-[d]	* nitrogen
-[d]	** gtkmm-2.24.5
-[d]	*** pangomm-2.42.0
+[d]	* ~~ nitrogen ~~		--> removed, bloat
+[d]	** ~~ gtkmm-2.24.5 ~~		--> removed, bloat
+[d]	*** ~~ pangomm-2.42.0 ~~	--> removed, bloat
 
 [d]	* scrot
 [d]	** giblib

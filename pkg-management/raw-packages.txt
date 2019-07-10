@@ -182,7 +182,6 @@ libsigc++-2.10.1
 at-spi2-core-2.30.0
 dbus-1.12.12
 at-spi2-atk-2.30.0
-cairomm-1.12.2
 freeglut-3.0.0
 glu-9.0.0
 gdk-pixbuf-2.38.0
@@ -199,7 +198,6 @@ gtk+-3.24.5
 adwaita-icon-theme-3.30.1
 isocodes-4.1
 libxkbcommon-0.8.3
-gtksourceview
 imlib2-1.5.1
 giflib-5.1.6
 xmlto-0.0.28
@@ -212,8 +210,6 @@ libvorbis-1.3.6
 libogg-1.3.3
 rxvt-unicode-9.22
 transmission-2.94
-lxappearance-0.6.3
-dbus-glib-0.110
 w3m-git
 gc-8.0.2
 libatomic_ops-7.6.8
@@ -260,9 +256,6 @@ yajl
 xcb-util-xrm
 i3blocks
 dmenu
-nitrogen
-gtkmm-2.24.5
-pangomm-2.42.0
 scrot
 giblib
 xtrlock
