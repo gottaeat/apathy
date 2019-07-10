@@ -20,7 +20,7 @@ case "$1" in
   evaluate_retval
   ;;
  stop)
-  log_info_msg "mssLinux - starting $NAME."
+  log_info_msg "mssLinux - stopping $NAME."
   start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
   evaluate_retval
   ;;
