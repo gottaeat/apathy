@@ -7,3 +7,4 @@ fi
 cp -iv arch/x86/boot/bzImage	/boot/vmlinuz		&&
 cp -iv System.map		/boot/System.map	&&
 cp -iv .config			/boot/config		&&
+echo " * done."

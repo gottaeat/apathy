@@ -1,0 +1,13 @@
+#!/bin/env bash
+dat=$(date "+%d-%m-%Y__%I_%M_%S_%P")
+loc="/home/mss/screenshots/tty/tty-$dat.png"
+
+grab_tty(){ fbcat > /tmp/tty.ppm ;}
+
+if [ -z "$1" ]
+ then grab_tty && convert /tmp/tty.ppm $loc && export savloc="$loc"
+ else grab_tty && convert /tmp/tty.ppm $1 && export savloc="$1"
+fi &&
+
+echo " * tty grabbed to: ${savloc}." &&
+rm -rf /tmp/tty.ppm && echo " * removed the ppm."
