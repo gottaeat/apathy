@@ -1,30 +1,38 @@
 #!/bin/sh
-# default-start: 3 4 5
-# default-stop:	 0 1 2 6	
+
+# description	: starts mpd.
+# author	: mssx86 - mssftw@protonmail.com
+# version	: mssLinux 1.2
+# default-start	: 3 4 5
+# default-stop	: 0 1 2 6
 
 . /lib/lsb/init-functions
 
 case "${1}" in
-   start)
-      log_info_msg "starting mpd"
-      start_daemon /usr/bin/mpd /etc/mpd.conf
-      ;;
+ start)
+  log_info_msg "mssLinux - starting mpd."
+  start_daemon /usr/bin/mpd /etc/mpd.conf
+  evaluate_retval
+  ;;
 
-   stop)
-      log_info_msg "stopping mpd"
-      killproc /usr/bin/mpd
-      ;;
+ stop)
+  log_info_msg "mssLinux - stopping mpd."
+  killproc /usr/bin/mpd 
+  evaluate_retval
+  ;;
 
-   restart)
-      ${0} stop
-      sleep 1
-      ${0} start
-      ;;
+ restart)
+  ${0} stop
+  sleep 1
+  ${0} start
+  ;;
 
-   *)
-      echo "Usage: ${0} {start|stop|restart}"
-      exit 1
-      ;;
+ status)
+  statusproc /usr/bin/mpd 
+  ;;
+ *)
+  echo "Usage: ${0} {start|stop|restart|status}"
+  exit 1
+  ;;
 esac
-
 exit 0
