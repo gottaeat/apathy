@@ -25,3 +25,6 @@ shm		/dev/shm	tmpfs		defaults,size=10G			0	0
 ## devices
 #[sdd][vfat][bberry storage]
 UUID=0162-9A3F /mnt/dev/bberry vfat noauto,dmask=000,fmask=0111,user 0 0
+
+## chroot garbage
+/dev/sda4	/mnt/dev/gentoo/mnt/mss/stuff	ext4	rw,relatime,data=ordered	0	0

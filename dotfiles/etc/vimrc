@@ -1,17 +1,17 @@
-" Begin /etc/vimrc
-
 " Ensure defaults are set before customizing settings, not after
 source $VIMRUNTIME/defaults.vim
 let skip_defaults_vim=1 
 
+set backupdir=~/.config/vim/backups
+set directory=~/.config/vim/swaps
+
 set ruler
+set number
+
 set nocompatible
 set backspace=2
 set mouse=
-syntax on
-colorscheme delek
-if (&term == "xterm") || (&term == "putty")
-  set background=dark
-endif
 
-" End /etc/vimrc
+syntax on
+
+colorscheme elflord
