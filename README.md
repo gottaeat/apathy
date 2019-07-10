@@ -6,6 +6,8 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 * `/usr/sbin/ntpd -q -g` --> sets the clock.
 * `/usr/bin/wget http://www.linux-usb.org/usb.ids -o /usr/share/hwdata/usb.ids` --> usbutils thingy.
 
+![yes](assets/yes.jpg)
+
 ## msslinux-pure64 package+dep list
 #### security
 ```
@@ -76,8 +78,6 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]			**** cython
 
 [d]	* sudo-1.8.27
-
-[!!]	mc after xorg fuckery
 ```
 ---------------------------------------------------------
 ### xorg stuff:
@@ -139,7 +139,6 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** xf86-video-fbdev-0.5.0
 [d]	** libva-2.4.0 
 [d]	** intel-vaapi-driver-2.3.0
-[!!]	** libvdpau-va-gl-0.4.0 --> after ffmpeg
 
 [d]	* xinit-1.4.0
 ```
@@ -171,7 +170,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** dbus-1.12.12
 
 [d]	* at-spi2-atk-2.30.0
-[d]	* cairomm-1.12.2		--> reinstalled cairo
+[d]	* cairomm-1.12.2 --> reinstalled cairo
 
 [d]	* freeglut-3.0.0 
 [d]	** glu-9.0.0
@@ -229,7 +228,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** libwebp-1.0.2
 [d]	** libproxy
 [d]	** yasm
-[!!]	** ffmpeg-4.1.1 --> runtime
+[d]	** ffmpeg-4.1.1 --> runtime
 ```
 
 ---------------------------------------------------------
