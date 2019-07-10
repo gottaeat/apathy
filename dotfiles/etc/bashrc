@@ -1,9 +1,5 @@
 # /etc/bashrc
 # aliases go here
-
-# disable mc colors
-alias mc="mc -b"
-
 # shorten the fucking name of this thing
 alias nc="ncmpcpp"
 
