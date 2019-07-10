@@ -9,7 +9,7 @@
 ```
 [d]	* make-ca
 [d]	** p11-kit-0.23.15
-[d]	*** nss-3.42.1
+[d]	*** nss-3.42.1		--> updated to 3.44
 [d]	**** nspr-4.20
 [d]	*** libtasn1-4.13
 [d]	*** libxslt-1.1.33
@@ -286,7 +286,7 @@
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* firefox-68.0b6	--> /opt install
+[d]	* firefox-68.0b6	--> replaced with palemoon
 [d]	** autoconf-2.13
 [d]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7
 [d]	** nodejs-10.15.1
@@ -356,7 +356,7 @@
 [d]	* xtrlock
 
 [d]	* apulse
-[d]	* discord
+[d]	* discord		--> replaced with 6cord
 [d]	* discord-rpc
 [d]	* youtube-dl
 
@@ -429,6 +429,9 @@
 [d]	** pinentry-1.1.0 
 
 [d]	* qemu-4.0.0
+
+[d]	* openvpn
+[d]	** pkcs11-helper
 ```
 ---------------------------------------------------------
 #### python:

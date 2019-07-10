@@ -1,6 +1,6 @@
 make-ca
 p11-kit-0.23.15
-nss-3.42.1
+nss-3.42.1		--> updated to 3.44
 nspr-4.20
 libtasn1-4.13
 libxslt-1.1.33
@@ -218,7 +218,7 @@ w3m-git
 gc-8.0.2
 libatomic_ops-7.6.8
 gpm-1.20.7
-firefox-68.0b6
+palemoon-28.5.1			--> replaced firefox-68.0b6
 autoconf-2.13
 cbindgen-0.8.0			--> updated to 0.8.7
 nodejs-10.15.1
@@ -267,7 +267,7 @@ scrot
 giblib
 xtrlock
 apulse
-discord
+6cord		--> replaced discord
 discord-rpc
 youtube-dl
 compton
@@ -319,6 +319,8 @@ libksba-1.3.5
 npth-1.6
 pinentry-1.1.0
 qemu-4.0.0
+openvpn
+pkcs11-helper
 pypresence
 mssrpc
 man-pages-4.16
