@@ -211,7 +211,7 @@
 ---------------------------------------------------------
 ### compilers and languages:
 ```
-[d]	* llvm-7.0.1 + clang + compiler-rt --> updated to 8.0.0
+[d]	* llvm-7.0.1 + clang + compiler-rt --> recompiled for ld.gold 
 [d]	** cmake-3.13.4
 [d]	*** libuv-1.26.0
 [d]	*** libarchive-3.3.3

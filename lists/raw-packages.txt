@@ -165,7 +165,7 @@ xf86-video-fbdev-0.5.0
 libva-2.4.0
 intel-vaapi-driver-2.3.0
 xinit-1.4.0
-llvm-7.0.1+clang+compiler-rt	--> updated to 8.0.0
+llvm-7.0.1+clang+compiler-rt	--> recompiled for ld.gold 
 cmake-3.13.4
 libuv-1.26.0
 libarchive-3.3.3
