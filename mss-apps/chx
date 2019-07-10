@@ -1,0 +1,56 @@
+#!/bin/env bash
+C1='\033[1;32m'
+C2='\033[0;36m'
+NC='\033[0m'
+
+PART=/mnt/dev/gentoo
+echo -e  " ${C1}[*]${NC} chroot partition: $PART"
+
+echo -e  " ${C1}[*]${NC} allowing x access from all hosts."
+xhost +  > /dev/null 2>&1
+
+echo -e  " ${C1}[*]${NC} shall i mount the good stuff?"
+echo -en " ${C1}[*]${NC} yes/no: "
+
+read REPLY
+
+if [ "$REPLY" = "yes" ]; then
+	echo -e " ${C1}[*]${NC} mounting the good stuff."
+	echo ""
+	mount -v -t proc /proc	"${PART}/proc"
+	mount -vR /sys		"${PART}/sys"
+	mount -vR /dev		"${PART}/dev"
+	mount -vR /run		"${PART}/run"
+
+elif [ "$REPLY" = "no" ]; then
+	echo -e " ${C1}[!]${NC} not mounting the good stuff."
+
+else
+	echo "" &&
+	echo -e " ${C1}[!]${C2} say either yes or no. aborting.${NC}"
+	exit 0
+fi
+
+echo -e  " ${C1}[*]${NC} chrooting."
+chroot "${PART}" su -c "${PROG}" mss
+
+echo -e  " ${C1}[*]${NC} shall i umount the good stuff?"
+echo -en " ${C1}[*]${NC} yes/no: "
+
+read REPLY
+
+if [ "$REPLY" = "yes" ]; then
+	echo -e " ${C1}[*]${NC} umounting the good stuff."
+	echo ""
+	umount -vl "${PART}/proc"
+	umount -vl "${PART}/sys"
+	umount -vl "${PART}/dev"
+	umount -vl "${PART}/run"
+elif [ "$REPLY" = "no" ]; then
+	echo -e " ${C1}[!]${NC} not mounting the good stuff."
+
+else
+	echo "" &&
+	echo -e " ${C1}[!]${C2} say either yes or no. aborting.${NC}"
+	exit 0
+fi
