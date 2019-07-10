@@ -231,10 +231,10 @@
 [d]	** glibmm-2.58.0
 [d]	*** libsigc++-2.10.1
 
-[d]	* at-spi2-core-2.30.0 
-[d]	** dbus-1.12.12
+[d]	* ~~ at-spi2-core-2.30.0 ~~	--> removed, bloat
+[d]	** ~~ dbus-1.12.12 ~~		--> removed, bloat
 
-[d]	* at-spi2-atk-2.30.0
+[d]	* ~~ at-spi2-atk-2.30.0 ~~ 	--> removed, bloat
 [d]	* ~~ cairomm-1.12.2 ~~	--> reinstalled cairo --> removed, bloat
 
 [d]	* freeglut-3.0.0 
@@ -256,7 +256,7 @@
 
 [d]	* gtk+-2.24.32
 
-[d]	* gtk+-3.24.5
+[d]	* gtk+-3.24.5			--> rebuilt without at-spi2
 [d]	** adwaita-icon-theme-3.30.1
 [d]	** iso codes-4.1
 [d]	** libxkbcommon-0.8.3
@@ -279,7 +279,7 @@
 [d]	* transmission-2.94
 
 [d]	* ~~ lxappearance-0.6.3 ~~	--> removed, bloat
-[d]	** ~~dbus-glib-0.110 ~~		--> removed, bloat
+[d]	** ~~ dbus-glib-0.110 ~~	--> removed, bloat
 
 [d]	* w3m-git
 [d]	** gc-8.0.2

@@ -5,9 +5,9 @@
 
 [r] > gtksourceview
 
-> at-spi2-atk-2.30.0
->> at-spi2-core-2.30.0
->>> dbus-1.12.12
+[r] > at-spi2-atk-2.30.0
+[r] >> at-spi2-core-2.30.0
+[r] >>> dbus-1.12.12
 
 [r] > nitrogen
 [r] >> gtkmm-2.24.5

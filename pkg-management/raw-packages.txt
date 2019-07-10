@@ -179,9 +179,6 @@ atk-2.30.0
 atkmm-2.28.0
 glibmm-2.58.0
 libsigc++-2.10.1
-at-spi2-core-2.30.0
-dbus-1.12.12
-at-spi2-atk-2.30.0
 freeglut-3.0.0
 glu-9.0.0
 gdk-pixbuf-2.38.0
