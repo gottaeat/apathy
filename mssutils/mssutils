@@ -1,18 +1,24 @@
 #!/bin/env bash
 ## functions ###
-# update
-update (){
+# check_root
+check_root (){
  if [ "$(id -u)" -ne 0 ]; then
-  echo ' ! this script must be run by root.'
+  echo -e "\n ! this script must be run by root.\n"
  exit 1
  fi
-  echo " * running /usr/sbin/make-ca -g." &&
-   /usr/sbin/make-ca -g > /dev/null 2>&1 && echo " ** done" &&
-  echo " * running /usr/sbin/update-pciids." &&
-   /usr/sbin/update-pciids > /dev/null 2>&1 && echo " ** done" &&
-  echo " * running /usr/sbin/ntpd -q -g." &&
-   /usr/sbin/ntpd -q -g > /dev/null 2>&1 && echo " ** done" &&
-  echo " * running the usbutils thingy" &&
+}
+
+# update
+update (){
+  check_root
+
+  echo " * running /usr/sbin/make-ca -g."	&&
+   /usr/sbin/make-ca -g > /dev/null 2>&1	&& echo " ** done" &&
+  echo " * running /usr/sbin/update-pciids."	&&
+   /usr/sbin/update-pciids > /dev/null 2>&1	&& echo " ** done" &&
+  echo " * running /usr/sbin/ntpd -q -g."	&&
+   /usr/sbin/ntpd -q -g > /dev/null 2>&1	&& echo " ** done" &&
+  echo " * running the usbutils thingy"		&&
    /usr/bin/wget http://www.linux-usb.org/usb.ids -O /usr/share/hwdata/usb.ids \
    > /dev/null 2>&1 && echo " * done"
   echo " ** system is up to date."
@@ -48,11 +54,8 @@ fetch (){
 
 # ch
 ch (){
- if [ "$(id -u)" -ne 0 ]; then
-  echo ' ! this script must be run by root.'
- exit 1
- fi
- 
+ check_root
+
  export GNT="/mnt/dev/gentoo"
  echo " * mounting and chrooting to: $GNT"
  mount -R	/dev	$GNT/dev	&&
@@ -60,16 +63,13 @@ ch (){
  mount -R	/sys	$GNT/sys	&&
  mount -R	/run	$GNT/run	&&
  chroot		$GNT	/bin/zsh	&&
- umount -lv	$GNT/{dev,proc,sys,run}
+ umount -l	$GNT/{dev,proc,sys,run} &&
  echo " * exited from chroot and umounted dirs."
 }
 
 # kerninst
 kerninst (){
- if [ "$(id -u)" -ne 0 ]; then
-  echo ' ! this script must be run by root.'
- exit 1
- fi
+ check_root
 
  cp -iv arch/x86/boot/bzImage    /boot/vmlinuz
  cp -iv System.map               /boot/System.map
@@ -97,7 +97,7 @@ pkgcount (){
    gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
  fi
 
- echo -e " * local package count: $count\n * local and git diff : $gitdf\n * git repo status    : $gitstat"
+ echo -e "\n * local package count: $count\n * local and git diff : $gitdf\n * git repo status    : $gitstat\n"
 }
 ### end functions ###
 
@@ -107,11 +107,12 @@ while test $# -gt 0; do
  case "$1" in
   -h|--help)
    shift
-   echo " -h or --help		print this dialogue."
-   echo " -f or fetch		run mssfetch."
-   echo " -u or update		run update. "
-   echo " -c or ch		mount and chroot to $GNT."
-   echo " -k or kerninst		install compiled kernel."
+   echo -e	"\n -h or --help		print this dialogue."
+   echo 	" -f or fetch		run mssfetch."
+   echo		" -u or update		run update. "
+   echo		" -c or ch		mount and chroot to: $GNT."
+   echo		" -k or kerninst		install compiled kernel."
+   echo -e	" -p or pkgcount		display repo and package status.\n"
    shift
    ;;
   -f|fetch)	shift; fetch;				shift;;
