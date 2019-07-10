@@ -24,4 +24,4 @@ shm		/dev/shm	tmpfs		defaults,size=10G			0	0
 
 ## devices
 #[sdd][vfat][bberry storage]
-UUID=0157-0B5D /mnt/dev/bberry vfat noauto,dmask=000,fmask=0111,user 0 0
+UUID=0162-9A3F /mnt/dev/bberry vfat noauto,dmask=000,fmask=0111,user 0 0
