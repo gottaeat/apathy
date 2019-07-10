@@ -60,7 +60,7 @@ set $ws9	9:IX
 set $ws10	10:X
 
 # assign windows to specific workspaces
-assign [class="Nightly"]		$ws2
+assign [class="Pale moon"]		$ws2
 assign [class="Steam"]			$ws3
 assign [class="discord"]		$ws4
 assign [class="Transmission-gtk"]	$ws5
