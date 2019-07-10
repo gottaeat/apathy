@@ -1,0 +1,52 @@
+#!/bin/sh
+ # module loading
+ modprobe nf_conntrack
+ 
+ # from linux 2.4 packet filtering howto
+ echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts	# e: broadcast echo protection
+ echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route	# d: source routed packets
+ echo 0 > /proc/sys/net/ipv4/conf/default/accept_source_route	# ^^^^^^^^^^^^^^^^^^^^^^^^
+ echo 1 > /proc/sys/net/ipv4/tcp_syncookies			# e: tcp syn cookie protection
+ echo 0 > /proc/sys/net/ipv4/conf/default/accept_redirects	# d: icmp redirect acceptance
+ echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects		# don't send redirect messages
+ echo 0 > /proc/sys/net/ipv4/conf/default/send_redirects	# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter			# drop spoofed packages
+ echo 1 > /proc/sys/net/ipv4/conf/default/rp_filter		# ^^^^^^^^^^^^^^^^^^^^^
+ echo 1 > /proc/sys/net/ipv4/conf/all/log_martians		# log packets with impossible addresses
+ echo 1 > /proc/sys/net/ipv4/conf/default/log_martians		# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ echo 2 > /proc/sys/net/ipv4/ip_dynaddr				# be verbose on dynamic ip's
+ echo 0 > /proc/sys/net/ipv4/tcp_ecn				# d: explicit congestion notification
+
+ # set a known state
+ iptables -P INPUT   DROP
+ iptables -P FORWARD DROP
+ iptables -P OUTPUT  DROP
+ 
+ # remove all existing user defined rules before implementing new ones
+ iptables -F
+ iptables -X
+ iptables -Z
+ iptables -t nat -F
+ 
+ # permit answers on already established connections and permit new connections related to established ones
+ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+ iptables -A INPUT -i lo -j ACCEPT					# allow all loopback traffic
+ iptables -A INPUT ! -i lo -d 127.0.0.0/8 -j REJECT			# block all 127/8 that doesn't use lo0
+ 
+ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT	# allow all established inbound connections
+ iptables -A OUTPUT -j ACCEPT						# allow all outbound traffic
+ 
+ # allowed protocol/ports
+ iptables -A INPUT -p tcp --dport 80 -j ACCEPT				# http
+ iptables -A INPUT -p tcp --dport 443 -j ACCEPT				# https
+ iptables -A INPUT -p tcp --dport 8000 -j ACCEPT			# httpd port for mpd
+#iptables -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT	# ssh
+ iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT		# ping
+ 
+ # print log to dmesg
+ iptables -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
+ 
+ # deny unless explicitly allowed
+ iptables -A INPUT -j REJECT
+ iptables -A FORWARD -j REJECT
