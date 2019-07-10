@@ -1,0 +1,10 @@
+all midnight commander related files and dirs:
+
+[d] /etc/mc
+[d] /usr/bin/{mc,mcdiff,mcedit,mcview}
+[d] /usr/lib/mc/
+[d] /usr/share/locale/
+[d] /usr/share/man/
+[d] /usr/share/mc/
+[d] /usr/libexec/mc
+all deleted.

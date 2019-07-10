@@ -273,7 +273,6 @@ youtube-dl
 compton
 libconfig
 asciidoc2
-mc-4.8.22
 ffmpeg-4.1.1
 lame-3.100
 OpenJPEG-2.3.0
@@ -313,6 +312,7 @@ xclip
 imagemagick-7.0.8-27
 little-cms-2.9
 irssi
+vifm
 pypresence
 mssrpc
 man-pages-4.16
