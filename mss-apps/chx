@@ -83,7 +83,6 @@ if [ "$REPLY" = "yes" ]; then
 	mount -R /sys		"${PART}/sys"			&&
 	mount -R /dev		"${PART}/dev"			&&
 	mount -R /run		"${PART}/run"			&&
-	mount	 /dev/sda4	"${PART}/mnt/mss/stuff"		&&
 	echo -e " ${C1}[*]${NC} mounted the good stuff."
 
 elif [ "$REPLY" = "no" ]; then
@@ -111,7 +110,6 @@ if [ "$REPLY" = "yes" ]; then
 	umount -l "${PART}/sys"			&&
 	umount -l "${PART}/dev"			&&
 	umount -l "${PART}/run"			&&
-	umount -l "${PART}/mnt/mss/stuff}"	&&
 	echo -e " ${C1}[d]${NC} umounted the good stuff."
 
 elif [ "$REPLY" = "no" ]; then
