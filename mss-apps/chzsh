@@ -1,0 +1,10 @@
+#!/bin/env bash
+export GNT="/mnt/dev/gentoo"
+
+mount -Rv	/dev	$GNT/dev
+mount -Rv	/proc	$GNT/proc
+mount -Rv	/sys	$GNT/sys
+chroot		$GNT	/bin/zsh
+umount -lv 	$GNT/{dev,proc,sys}
+unset GNT
+echo DONE
