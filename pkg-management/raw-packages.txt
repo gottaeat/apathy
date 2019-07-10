@@ -218,7 +218,7 @@ w3m-git
 gc-8.0.2
 libatomic_ops-7.6.8
 gpm-1.20.7
-firefox-66.0.5
+firefox-68.0b6
 autoconf-2.13
 cbindgen-0.8.0			--> updated to 0.8.7
 nodejs-10.15.1

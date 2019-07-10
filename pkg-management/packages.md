@@ -286,7 +286,7 @@
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* firefox-66.0.5	--> /opt install
+[d]	* firefox-68.0b6	--> /opt install
 [d]	** autoconf-2.13
 [d]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7
 [d]	** nodejs-10.15.1
