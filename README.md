@@ -1,5 +1,4 @@
 ## msslinux pure64 1.2 "escapism"
-**_since all life is futility, then the decision to exist must be the most irrational of all._** - emil cioran
 
 mssLinux is a pure 64bit linux distribution built by following the  *linux from scratch 8.4* and *beyond linux from scratch 8.4* books. besides the official books, i've used `PKGBUILD`'s from arch official repositories and aur to get build instructions and fine-tune them to my liking. there also have been times where i've read gentoo `ebuild`'s for checking dependencies regarding the components i want in software. 
 
@@ -16,7 +15,7 @@ complete list of software installed can be found in `raw-packages.txt` or `packa
 #### current package count and total system size:
 ```
 [15:31] mss mssLinux [master]: pkg
- * total partition size	: 3073.62m
- * local package count	: 380
- * removed packages	: 34
+ * total partition size	: 3058.51m
+ * local package count	: 378
+ * removed packages	: 36
 ```

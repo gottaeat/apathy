@@ -356,7 +356,7 @@
 
 [d]	* xtrlock
 
-[d]	* apulse
+[r]	* ~~apulse~~		--> removed
 [r]	* ~~discord~~		--> replaced with 6cord
 [r]	* ~~discord-rpc~~	--> uninstalled
 [d]	* youtube-dl
