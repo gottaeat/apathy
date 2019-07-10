@@ -1,0 +1,4 @@
+#!/bin/env bash
+cp -iv arch/x86/boot/bzImage /boot/vmlinuz-$KERN
+cp -iv System.map /boot/System.map-$KERN
+cp -iv .config /boot/config-$KERN
