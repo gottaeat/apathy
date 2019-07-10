@@ -41,7 +41,7 @@ URxvt*scrollBar:	false
 URxvt*scrollBar_right:	false
 URxvt*transparent:	false
 URxvt*depth:		32
-URxvt.background:	[90]#000000
+URxvt.background:	[75]#101010
 URxvt.font:		xft:vanilla:pixelsize=7
 URxvt.letterSpace:	0
 *antialias:		true

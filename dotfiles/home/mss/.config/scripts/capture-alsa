@@ -1,27 +1,14 @@
 #!/usr/bin/env bash
-if [[ -z "$STEP" ]] ; then
-    STEP="${1:-3dB}"
+capstat=$(amixer -D default get Capture | tail -1 | sed 's/\[//g;s/\]//g')
+cmchk=$(echo $capstat | awk '{print $7}')
+
+if [ "$cmchk" = "off" ]
+ then echo muted
+ else echo $capstat | awk '{print $6}'
 fi
 
-volume() {
-  amixer -D default get Capture
-}
-
-format() {
-  
-  perl_filter='if (/.*\[(\d+%)\] (\[(-?\d+.\d+dB)\] )?\[(on|off)\]/)'
-  perl_filter+='{CORE::say $4 eq "off" ? "m" : "'
-  # If dB was selected, print that instead
-  perl_filter+=$([[ $STEP = *dB ]] && echo '$3' || echo '$1')
-  perl_filter+='"; exit}'
-  output=$(perl -ne "$perl_filter")
-  echo "$LABEL$output"
-}
-
 case $BLOCK_BUTTON in
-  3) amixer -q -D default set Capture toggle ;;
-  4) amixer -q -D default set Capture ${STEP}+ unmute ;;
-  5) amixer -q -D default set Capture ${STEP}- unmute ;;
+ 3) amixer -q -D default set Capture toggle && pkill -RTMIN+1 i3blocks;;
+ 4) amixer -q -D default set Capture 3dB+ unmute && pkill -RTMIN+1 i3blocks;;
+ 5) amixer -q -D default set Capture 3dB- unmute && pkill -RTMIN+1 i3blocks;;
 esac
-
-volume | format

@@ -45,7 +45,7 @@ source $ZSH/oh-my-zsh.sh
 ### aliases
 ## program related
 alias tmux="tmux -2"
-alias feh="feh --scale-down --auto-zoom"
+alias feh="feh -d --scale-down --auto-zoom"
 
 ## make verbose
 alias ln="ln -v"

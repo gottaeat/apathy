@@ -1,6 +1,6 @@
 #!/bin/env bash
 export SUDO_ASKPASS=/home/mss/.config/i3/dmenu/dsudo
-sel=$(echo -e "mightyluna\npl\ntransmission\nkill-i3\n" | dmenu -p "meh:")
+sel=$(echo -e "mightyluna\npl\ntransmission\nkill-i3\n" | dmenu -b -p "meh:")
 
 case "$sel" in
  kill-i3)	i3-msg exit & ;;
