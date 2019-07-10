@@ -217,7 +217,7 @@
 [d]	*** libarchive-3.3.3
 [d]	**** lzo-2.10
 
-[d]	* ~~rustc-1.32.0~~	--> updated to 1.34.2 --> 1.35.0
+[r]	* ~~ rustc-1.32.0 ~~	--> updated to 1.34.2 --> 1.35.0
 [d]	* lua-5.3.5
 [d]	* luajit 2.0.5-2
 	

@@ -15,10 +15,8 @@ complete list of software installed can be found in `raw-packages.txt` or `packa
 
 #### current package count and total system size:
 ```
-mss mssLinux [master]: wc -l pkg-management/raw-packages.txt 
-380 pkg-management/raw-packages.txt
-
-mss mssLinux [master]: df -h /
-Filesystem      Size  Used Avail Use% Mounted on
-/dev/root        30G  4.1G   23G  18% /
+[15:31] mss mssLinux [master]: pkg
+ * total partition size	: 3073.62m
+ * local package count	: 380
+ * removed packages	: 34
 ```
