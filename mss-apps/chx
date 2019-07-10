@@ -3,36 +3,106 @@ C1='\033[1;32m'
 C2='\033[0;36m'
 NC='\033[0m'
 
-PART=/mnt/dev/gentoo
+while test $# -gt 0; do
+	case "$1" in
+	-h|--help)
+		echo "chroot and run programs while allowing x access." && echo
+		echo "specify program by -p or --program."
+		echo "specify chroot dir by -d or --dir."
+		exit 0
+		;;
+
+	-p|--program)
+		shift
+		if test $# -gt 0; then
+			export PROG=$1
+		else
+			echo " ${C1}[!]${NC} no program specified."
+			exit 1
+		fi
+		shift
+		;;
+
+	-d|--dir)
+		shift
+		if test $# -gt 0; then
+			export PART=$1
+		else
+			echo " ${C1}[!]${NC} no dir specified."
+			exit 1
+		fi
+		shift
+		;;
+	-u|--user)
+		shift
+		if test $# -gt 0; then
+			export USERX=$1
+		else
+			echo " ${C1}[!]${NC} no user specified."
+			exit 1
+		fi
+		shift
+		;;	
+	*)
+		break
+		;;
+	esac
+done
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo -e " ${C1}[!]${NC} this script must be run by root." >&2
+	exit 1
+fi
+
+if [[ -z "$PROG" ]]; then
+	echo -e " ${C1}[!]${NC} no program selected." 1>&2
+	exit 1
+fi
+
+if [[ -z "$PART" ]]; then
+	echo -e " ${C1}[!]${NC} no partition selected." 1>&2
+	exit 1
+fi
+
+if [[ -z "$USERX" ]]; then
+	echo -e " ${C1}[!]${NC} no user selected." 1>&2
+	exit 1
+fi
+
 echo -e  " ${C1}[*]${NC} chroot partition: $PART"
+echo -e  " ${C1}[*]${NC} chroot program  : $PROG"
+echo -e  " ${C1}[*]${NC} chroot user     : $USERX"
+echo
 
 echo -e  " ${C1}[*]${NC} allowing x access from all hosts."
-xhost +  > /dev/null 2>&1
+xhost + > /dev/null 2>&1
 
 echo -e  " ${C1}[*]${NC} shall i mount the good stuff?"
-echo -en " ${C1}[*]${NC} yes/no: "
+echo -en " ${C1}[*]${NC} yes/no/abort: "
 
 read REPLY
 
 if [ "$REPLY" = "yes" ]; then
 	echo -e " ${C1}[*]${NC} mounting the good stuff."
-	echo ""
-	mount -v -t proc /proc	"${PART}/proc"
-	mount -vR /sys		"${PART}/sys"
-	mount -vR /dev		"${PART}/dev"
-	mount -vR /run		"${PART}/run"
+	mount -v -t proc /proc	"${PART}/proc" > /dev/null 2>&1 &&
+	mount -vR /sys		"${PART}/sys" > /dev/null 2>&1 &&
+	mount -vR /dev		"${PART}/dev" > /dev/null 2>&1 &&
+	mount -vR /run		"${PART}/run" > /dev/null 2>&1 &&
+	echo -e " ${C1}[*]${NC} mounted the good stuff."
 
 elif [ "$REPLY" = "no" ]; then
 	echo -e " ${C1}[!]${NC} not mounting the good stuff."
 
+elif [ "$REPLY" = "abort" ]; then
+	echo -e " ${C1}[!]${NC} aborted."
+	exit 1
 else
-	echo "" &&
 	echo -e " ${C1}[!]${C2} say either yes or no. aborting.${NC}"
 	exit 0
 fi
 
 echo -e  " ${C1}[*]${NC} chrooting."
-chroot "${PART}" su -c "${PROG}" mss
+chroot "${PART}" su -c "${PROG}" "${USERX}"
 
 echo -e  " ${C1}[*]${NC} shall i umount the good stuff?"
 echo -en " ${C1}[*]${NC} yes/no: "
@@ -41,11 +111,12 @@ read REPLY
 
 if [ "$REPLY" = "yes" ]; then
 	echo -e " ${C1}[*]${NC} umounting the good stuff."
-	echo ""
-	umount -vl "${PART}/proc"
-	umount -vl "${PART}/sys"
-	umount -vl "${PART}/dev"
-	umount -vl "${PART}/run"
+	umount -vl "${PART}/proc" > /dev/null 2>&1 &&
+	umount -vl "${PART}/sys" > /dev/null 2>&1 &&
+	umount -vl "${PART}/dev" > /dev/null 2>&1 &&
+	umount -vl "${PART}/run" > /dev/null 2>&1 &&
+	echo -e " ${C1}[d]${NC} umounted the good stuff."
+
 elif [ "$REPLY" = "no" ]; then
 	echo -e " ${C1}[!]${NC} not mounting the good stuff."
 
