@@ -356,7 +356,7 @@
 [d]	* xtrlock
 
 [d]	* apulse
-[d]	* discord		--> replaced with 6cord
+[d]	* ~~discord~~		--> replaced with 6cord
 [d]	* discord-rpc
 [d]	* youtube-dl
 
@@ -394,7 +394,7 @@
 
 [d]	* xdg-utils-1.1.3 
 
-[d]	* elinks	--> binary from arch
+[d]	* ~~elinks~~	--> rebuilt
 [d]	** tre
 [d]	** liblua5.1.5	--> binary from arch
 [d]	** libidn-1.35
@@ -403,9 +403,9 @@
 [d]	* expect-5.45.4 
 [d]	* lz4
 
-[d]	* libnetfilter_queue
-[d]	** libmnl
-[d]	** libnfnetlink
+[d]	* libnetfilter_queue	--> deleted
+[d]	** libmnl		--> deleted
+[d]	** libnfnetlink		--> deleted
 
 [d]	* feh
 
@@ -434,6 +434,9 @@
 [d]	** pkcs11-helper
 
 [d]	* palemoon-28.5.1	--> updated to 28.5.2
+
+[d]	* elinks-git		--> rebuilt for js and gopher support
+[d]	** js185
 ```
 ---------------------------------------------------------
 #### python:
