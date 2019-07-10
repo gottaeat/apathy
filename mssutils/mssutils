@@ -66,7 +66,7 @@ kerninst (){
 pkgcount (){
  count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
  repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
- gitdf_pre=$(diff /mss/raw-packages.txt $repo/lists/raw-packages.txt)
+ gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
  gitstat_pre=$(cd $repo && git status -s)
 
  if [ -z "$gitdf_pre" ]
