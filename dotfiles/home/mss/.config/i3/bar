@@ -48,11 +48,12 @@ command=date '+%a %I:%M:%S%P %d/%m/%Y'
 interval=1
 color=#e3e3e3
 min_width=xxxxxxxxxxxxxxxxxxxxxxxx
-separator_block_width=1
+separator_block_width=3
+separator=false
 
-[weather]
-command=~/.config/i3/scripts/weather
-interval=1800
+[weather-local]
+command=~/.config/i3/scripts/weather-local
+interval=300
 color=#747474
 
 [master-alsa]

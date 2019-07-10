@@ -33,16 +33,19 @@
 ! urxvt garbage
 URxvt*termName:		rxvt-unicode-256color
 URxvt*internalBorder:	7
+URxvt.saveLines:	20000
+URxvt*scrollTtyOutput:	false
+URxvt*scrollWithBuffer:	true
+URxvt*scrollTtyKeypress:true
 URxvt*scrollBar:	false
 URxvt*scrollBar_right:	false
 URxvt*transparent:	false
 URxvt*depth:		32
 URxvt.background:	[90]#000000
-URxvt.font:		xft:euphon:pixelsize=9
+URxvt.font:		xft:vanilla:pixelsize=7
 URxvt.letterSpace:	0
 *antialias:		true
 *autohint:		true
 URxvt.perl-ext-common:	default,matcher
-URxvt.url-launcher:	firefox
+URxvt.url-launcher:	palemoon
 URxvt.matcher.button:	1
-

@@ -17,6 +17,7 @@ export MAKEFLAGS="-j 3"
 # default programs
 export EDITOR="/usr/bin/vim"
 export PAGER="/usr/bin/less"
+export GPG_TTY=$(tty)
 
 # xdg stuff
 export XDG_DATA_DIRS="/usr/local/share:/usr/share"

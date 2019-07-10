@@ -90,7 +90,8 @@ bindsym $mod+Shift+0	move container to workspace $ws10
 
 ### window style ###
 # font
-font pango:euphon 9
+#font pango:euphon 9
+font pango:vanilla 7
 
 # window color scheme
 client.focused		#525252	#000000	#000000	#000000

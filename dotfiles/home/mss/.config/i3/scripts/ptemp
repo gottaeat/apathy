@@ -1,4 +1,10 @@
 #!/bin/env bash
-ptemp=$(sensors | grep 'Package id 0:' | sed 's/Package id 0:  +//g;s/°C  (high = +80.0°C, crit = +100.0°C)//g')
+
+getkern=$(uname -r | cut -c-3)
+
+if [ "$getkern" = "4.4" ]
+ then ptemp=$(sensors | grep 'Physical id 0:' | sed 's/Physical id 0:  +//g;s/°C  (high = +80.0°C, crit = +100.0°C)//g')
+ else ptemp=$(sensors | grep 'Package id 0:' | sed 's/Package id 0:  +//g;s/°C  (high = +80.0°C, crit = +100.0°C)//g')
+fi
 
 echo ${ptemp}c
