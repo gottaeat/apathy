@@ -268,7 +268,6 @@ giblib
 xtrlock
 apulse
 6cord		--> replaced discord
-discord-rpc
 youtube-dl
 compton
 libconfig
@@ -319,8 +318,7 @@ pinentry-1.1.0
 qemu-4.0.0
 openvpn
 pkcs11-helper
-pypresence
-mssrpc
+jq-1.6			--> binary from dev site
 man-pages-4.16
 glibc-2.29
 zlib-1.2.11

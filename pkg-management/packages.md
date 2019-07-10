@@ -357,7 +357,7 @@
 
 [d]	* apulse
 [d]	* ~~discord~~		--> replaced with 6cord
-[d]	* discord-rpc
+[d]	* ~~discord-rpc~~	--> uninstalled
 [d]	* youtube-dl
 
 [d]	* compton
@@ -437,12 +437,14 @@
 
 [d]	* elinks-git		--> rebuilt for js and gopher support
 [d]	** js185
+
+[d]	* jq-1.6		--> binary from the dev site
 ```
 ---------------------------------------------------------
 #### python:
 ```
-[d]	* pypresence
-[d]	* mssrpc
+[d]	* ~~pypresence~~	--> uninstalled
+[d]	* ~~mssrpc~~		--> uninstalled
 ```
 ---------------------------------------------------------
 #### lfs-8.4 base
