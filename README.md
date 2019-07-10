@@ -16,5 +16,5 @@ complete list of software installed can be found in `raw-packages.txt` or `packa
 #### current package count:
 ```
 mss mssLinux [master]: wc -l pkg-management/raw-packages.txt 
-389 pkg-management/raw-packages.txt
+391 pkg-management/raw-packages.txt
 ```

@@ -440,6 +440,9 @@
 
 [d]	* jq-1.6		--> binary from the dev site
 [d]	* mkvtoolnux
+
+[d]	* mupdf
+[d]	** jbig2dec
 ```
 ---------------------------------------------------------
 #### python:
