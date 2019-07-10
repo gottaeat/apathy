@@ -458,6 +458,7 @@
 [r]	* ~~ranger~~		--> binary from dev --> removed, replaced with fbv
 [d]	* fbv
 [d]	* opendoas
+[d]	* dvtm-git
 ```
 ---------------------------------------------------------
 #### python:

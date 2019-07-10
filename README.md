@@ -17,5 +17,5 @@ complete list of software installed can be found in `raw-packages.txt` or `packa
 [15:31] mss mssLinux [master]: pkg
  * total partition size	: 3058.51m
  * local package count	: 378
- * removed packages	: 36
+ * removed packages	: 37
 ```
