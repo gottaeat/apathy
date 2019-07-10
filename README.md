@@ -383,7 +383,7 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 [d]	** libconfig
 [d]	** asciidoc2
 
-[d]	* mc-4.8.22
+[d]	* ~~mc-4.8.22~~		--> removed mc, replaced with vifm
 
 [d]	* ffmpeg-4.1.1
 [d]	** lame-3.100
@@ -439,6 +439,7 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 [d]	** little-cms-2.9
 
 [d]	* irssi
+[d]	* vifm
 ```
 ---------------------------------------------------------
 #### python:
