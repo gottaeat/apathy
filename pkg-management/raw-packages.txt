@@ -201,7 +201,7 @@ libogg-1.3.3
 rxvt-unicode-9.22
 transmission-2.94
 gpm-1.20.7
-palemoon-28.5.2			--> replaced firefox-68.0b6
+palemoon-28.6.0.1			--> replaced firefox-68.0b6
 autoconf-2.13
 nodejs-10.15.1
 libwebp-1.0.2
