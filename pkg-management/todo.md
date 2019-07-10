@@ -1,5 +1,5 @@
 ### planned to be built
-* rss reader
+* rss reader	--> built newsboat
 * url launcher
 
 ### dbus removal garbage
