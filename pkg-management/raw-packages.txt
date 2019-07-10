@@ -213,7 +213,6 @@ libatomic_ops-7.6.8
 gpm-1.20.7
 palemoon-28.5.2			--> replaced firefox-68.0b6
 autoconf-2.13
-cbindgen-0.8.0			--> updated to 0.8.7
 nodejs-10.15.1
 libwebp-1.0.2
 libproxy
