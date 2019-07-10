@@ -1,0 +1,51 @@
+#!/bin/env bash
+#grab interface
+if [[ -z $INTERFACE ]] && [[ -n $BLOCK_INSTANCE ]]; then
+  INTERFACE=$BLOCK_INSTANCE
+elif [[ -z $INTERFACE ]]; then
+  INTERFACE=$(ip route | awk '/^default/ { print $5 ; exit }')
+fi
+
+#path for storing old data
+path="/dev/shm/$(basename $0)-${INTERFACE}"
+
+#grabbing rx/tx data for interface and get time
+read rx < "/sys/class/net/${INTERFACE}/statistics/rx_bytes"
+read tx < "/sys/class/net/${INTERFACE}/statistics/tx_bytes"
+time=$(date +%s)
+
+#write current data if file does not exist
+if ! [[ -f "${path}" ]]; then
+  echo "${time} ${rx} ${tx}" > "${path}"
+  chmod 0666 "${path}"
+fi
+
+#read previous state and update data storage
+read old < "${path}"
+echo "${time} ${rx} ${tx}" > "${path}"
+
+#parse old data and calculate the time passed
+old=(${old//;/ })
+time_diff=$(( $time - ${old[0]} ))
+
+# sanity check: has a positive amount of time passed
+[[ "${time_diff}" -gt 0 ]] || exit
+
+# calc bytes transferred, and their rate in byte/s
+rx_diff=$(( $rx - ${old[1]} ))
+tx_diff=$(( $tx - ${old[2]} ))
+rx_rate=$(( $rx_diff / $time_diff ))
+tx_rate=$(( $tx_diff / $time_diff ))
+
+#additional variables for total bandwidth usage for the session
+total_rx=$(echo "$(($rx / 1048576))")
+total_tx=$(echo "$(($tx / 1048576))")
+
+#this portion modified to get rid of the kbps to mbps transition
+rx_kib=$(echo "$(($rx_rate / 1024))")
+echo -n "${rx_kib}(${total_rx})rx"
+
+echo -n " "
+
+tx_kib=$(echo "$(($tx_rate / 1024))")
+echo -n "${tx_kib}(${total_tx})tx"

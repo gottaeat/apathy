@@ -57,6 +57,7 @@ alias mount="mount -v"
 # shortcuts
 alias nc="ncmpcpp"
 alias w="pwd"
+alias fb="fbterm-bg"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"

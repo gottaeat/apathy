@@ -1,18 +1,14 @@
-#!/bin/sh
-
-#fonts
+#!/bin/env bash
+# fonts
 xset fp+ /usr/share/fonts/
 
-#turn numlock on
+# turn numlock on
 numlockx on
 
-#power management
+# power management
 xset s off
 xset -dpms
 xset s noblank
 
-#dbus
-#dbus-launch --sh-syntax --exit-with-session
-
-#wm
+# wm
 exec i3

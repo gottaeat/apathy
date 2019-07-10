@@ -1,12 +1,10 @@
 #!/bin/env bash
-
 export SUDO_ASKPASS=/home/mss/.config/i3/dmenu/dsudo
-
-dboi='dmenu'
-sel=$(echo -e "kill-i3" | $dboi)
+sel=$(echo -e "mightyluna\npl\ntransmission\nkill-i3\n" | dmenu -p "meh:")
 
 case "$sel" in
-	kill-i3)
-	i3-msg exit					&
-	;;
+ kill-i3)	i3-msg exit & ;;
+ mightyluna)	mightyluna ;;
+ transmission)	transmission-gtk ;;
+ pl)	pl;;
 esac
