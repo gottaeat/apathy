@@ -342,6 +342,8 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** tre
 [d]	** liblua5.1.5	-> binary from arch
 [d]	** libidn-1.35
+
+[d]	* zsh-5.7.1
 ```
 ---------------------------------------------------------
 #### python:
