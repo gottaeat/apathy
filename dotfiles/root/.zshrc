@@ -11,7 +11,6 @@ export LANG="en_US.utf8"
 export GCC_SPECS=""
 export LESS="-R -M --shift 5"
 export OPENGL_PROFILE="xorg-x11"
-export LESSOPEN="lesspipe %s"
 export GSETTINGS_BACKEND="dconf"
 
 # compile bits
@@ -70,5 +69,3 @@ alias w="pwd"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
-alias chxg="sudo /usr/local/bin/chx -p /usr/bin/gimp -d /mnt/dev/gentoo -u mss"
-alias chxs="sudo /usr/local/bin/chx -p /usr/bin/steam -d /mnt/dev/gentoo -u mss"
