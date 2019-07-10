@@ -83,7 +83,7 @@ interval=60
 color=#ababab
 
 [flameshot]
-command=~/.config/i3/scripts/flameshot
+command=~/.config/i3/scripts/chx-flame
 interval=once
 color=#ababab
 separator=true

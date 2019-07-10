@@ -54,7 +54,6 @@ set $ws9	9:IX
 set $ws10	10:X
 
 #move certain programs to specified workspaces
-#assign [class="mpv"]			$ws1
 assign [class="Nightly"]		$ws2
 assign [class="Firefox"]		$ws2
 assign [class="Steam"]			$ws3
@@ -88,6 +87,10 @@ client.focused		#525252	#525252	#000000	#525252
 client.unfocused	#525252	#000000	#525252	#525252
 client.focused_inactive	#525252	#000000	#525252	#525252
 client.urgent		#525252	#525252	#000000	#525252
+
+# meme gaps
+gaps inner 10
+gaps outer 0
 
 #remove window titles
 for_window [class="^.*"] border pixel 1
@@ -127,18 +130,19 @@ colors
 
 ### binds ###
 #general binds
-bindsym	$mod+p	exec scrot -e 'mv $f ~/screenshots/'
-bindsym	$mod+d	exec --no-startup-id dmenu_run
-bindsym	$mod+l	exec lock
-bindsym	$mod+k	exec xtrlock
-bindsym	$mod+x	exec urxvt -e mc
-bindsym	$mod+c	exec urxvt -e ncmpcpp
+bindsym	$mod+p		exec scrot -e 'mv $f ~/screenshots/'
+bindsym	$mod+d		exec --no-startup-id dmenu_run
+bindsym $mod+Shift+d	exec /home/mss/.config/i3/dmenu/menuboi 
+bindsym	$mod+l		exec lock
+bindsym	$mod+k		exec xtrlock
+bindsym	$mod+x		exec urxvt -e mc
+bindsym	$mod+c		exec urxvt -e ncmpcpp
 
 #alsa controls
-bindsym XF86AudioRaiseVolume	exec amixer set Master 5+ && pkill -RTMIN+1 i3blocks 
-bindsym XF86AudioLowerVolume	exec amixer set Master 5- && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioMute		exec amixer set Master toggle && pkill -RTMIN+1 i3blocks
-bindsym $mod+z			exec amixer set Capture toggle && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume	exec amixer set Master	5+	&& pkill -RTMIN+1 i3blocks 
+bindsym XF86AudioLowerVolume	exec amixer set Master	5-	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute		exec amixer set Master	toggle	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+z			exec amixer set Capture	toggle	&& pkill -RTMIN+1 i3blocks
 
 #mpd controls
 bindsym XF86AudioPlay			exec mpc toggle

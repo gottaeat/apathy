@@ -229,7 +229,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* ~~firefox-60.5.2~~	-> using binary build, built one segfaults.
+[d]	* firefox-66.4
 [d]	** autoconf-2.13
 [d]	** cbindgen-0.8.0
 [d]	** nodejs-10.15.1
@@ -283,7 +283,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 
 [d]	* tmux
 
-[d]	* i3
+[d]	* ~~ i3 ~~		-> replaced with i3-memegaps.
 [d]	** yajl
 [d]	** xcb-util-xrm
 
