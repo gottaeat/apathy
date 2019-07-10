@@ -3,7 +3,7 @@ export ZSH="/home/mss/.oh-my-zsh"
 export ZSH_DISABLE_COMPFIX="true"
 
 # path and lang
-export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
+export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin:/mss/bin"
 export ROOTPATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
 export LANG="en_US.utf8"
 
