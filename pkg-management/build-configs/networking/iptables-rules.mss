@@ -41,11 +41,12 @@
  iptables -A INPUT -p tcp --dport 80 -j ACCEPT				# http
  iptables -A INPUT -p tcp --dport 443 -j ACCEPT				# https
  iptables -A INPUT -p tcp --dport 8000 -j ACCEPT			# httpd port for mpd
+ iptables -A INPUT -p tcp --dport 3131 -j ACCEPT			# allow transmission
 #iptables -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT	# ssh
  iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT		# ping
  
  # print log to dmesg
- iptables -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
+#iptables -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 4
  
  # deny unless explicitly allowed
  iptables -A INPUT -j REJECT
