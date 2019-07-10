@@ -31,6 +31,7 @@
 *.color15:		#5e5e5e
 
 ! urxvt garbage
+URxvt*termName:		rxvt-unicode-256color
 URxvt*scrollBar:	false
 URxvt*scrollBar_right:	false
 URxvt*transparent:	false

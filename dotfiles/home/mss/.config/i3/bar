@@ -37,15 +37,17 @@ command=~/.config/i3/scripts/mediaplayer | awk -v len=50 '{ if (length($0) > len
 interval=1
 signal=1
 
-[weather]
-command=~/.config/i3/scripts/weather
-interval=1800
-color=#747474
-
 [time]
 command=date '+%a %I:%M:%S%P %d/%m/%Y'
 interval=1
 color=#e3e3e3
+min_width=xxxxxxxxxxxxxxxxxxxxxxxx
+separator_block_width=1
+
+[weather]
+command=~/.config/i3/scripts/weather
+interval=1800
+color=#747474
 
 [master-alsa]
 command=~/.config/i3/scripts/master-alsa
