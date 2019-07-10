@@ -1,0 +1,27 @@
+#!/bin/env bash
+if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1; fi
+
+echo "this script will strip bins and libs which could be harmful. are you sure you want to procceed? (y/n):"
+
+read answer
+
+if [ "$answer" != "${answer#[Yy]}" ]
+then 
+ printf "\nstripping:\n* /usr/lib\nwith: --strip-debug\n" &&
+ find /usr/lib -type f -name \*.a -exec strip --strip-debug {} ';' 2> /dev/null &&
+ export stripped_1=yes && printf "done!\n"
+
+ printf "\nstripping:\n* /lib\n* /usr/lib\nwith: --strip-unneeded\n" &&
+ find /lib /usr/lib -type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' 2> /dev/null &&
+ export stripped_2=yes && printf "done!\n"
+
+ printf "\nstripping:\n* /bin\n* /sbin\n* /usr/bin\n* /usr/sbin\n* /usr/libexec\nwith: --strip-all\n" &&
+ find /{bin,sbin} /usr/{bin,sbin,libexec} -type f -exec strip --strip-all {} ';' 2> /dev/null &&
+ export stripped_3=yes && printf "done!\n"
+
+ printf "\nstats:\n* stage 1 success: ${stripped_1}\n* stage 2 success: ${stripped_2}\n* stage 3 success: ${stripped_3}\n" &&
+ unset stripped_1 stripped_2 stripped_3 && exit 0
+
+elif [ "$answer" != "${answer#[Nn]}" ];then exit 1
+else echo " ! input y or n. "; exit 1
+fi
