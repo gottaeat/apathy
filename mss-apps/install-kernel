@@ -1,4 +1,0 @@
-#!/bin/env bash
-cp -iv arch/x86/boot/bzImage	/boot/vmlinuz
-cp -iv System.map		/boot/System.map-$(date +F)
-cp -iv .config			/boot/config-$(date +F)
