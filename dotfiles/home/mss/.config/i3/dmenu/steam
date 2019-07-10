@@ -1,5 +1,8 @@
 #!/bin/env bash
 
+# xhost thingy
+xhost +
+
 # mount garbage
 mount	--rbind		/dev	/mnt/dev/gentoo/dev             &&
 mount	--rbind		/sys	/mnt/dev/gentoo/sys             &&

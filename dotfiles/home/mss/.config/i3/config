@@ -26,7 +26,6 @@ bindsym $mod+Shift+space	floating toggle
 bindsym $mod+space		focus mode_toggle
 
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'do you want to kill i3?' -b 'yup' 'i3-msg exit'"
 
 mode "resize" 
 {
