@@ -452,6 +452,9 @@
 
 [d]	* fbterm
 [d]	** libx86
+
+[d]	* dnscrypt-proxy-2.0.25	--> binary from dev
+[d]	* start-stop-daemon	--> from (https://github.com/daleobrien/start-stop-daemon)
 ```
 ---------------------------------------------------------
 #### python:
