@@ -228,13 +228,13 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 ---------------------------------------------------------
 ### compilers and languages:
 ```
-[d]	* llvm-7.0.1 + clang + compiler-rt
+[d]	* llvm-7.0.1 + clang + compiler-rt --> rebuilt for ld.gold
 [d]	** cmake-3.13.4
 [d]	*** libuv-1.26.0
 [d]	*** libarchive-3.3.3
 [d]	**** lzo-2.10
 
-[d]	* rustc-1.32.0
+[d]	* ~~rustc-1.32.0~~	--> updated to 1.34.2
 [d]	* lua-5.3.5
 [d]	* luajit 2.0.5-2
 	
@@ -304,9 +304,9 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 [d]	*** libatomic_ops-7.6.8
 [d]	** gpm-1.20.7
 
-[d]	* firefox-66.5		--> /opt install
+[d]	* firefox-66.0.5	--> /opt install
 [d]	** autoconf-2.13
-[d]	** cbindgen-0.8.0
+[d]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7
 [d]	** nodejs-10.15.1
 [d]	** libwebp-1.0.2
 [d]	** libproxy
@@ -462,7 +462,7 @@ this is the 3rd fully fledged linux from scratch based build i've built in the l
 [d] mpfr-4.0.2
 [d] mpc-1.1.0
 [d] shadow-4.6
-[d] gcc-8.2.0
+[d] ~~gcc-8.2.0~~	--> replaced with gcc-9.1.0
 [d] bzip2-1.0.6
 [d] pkg-config-0.29.2
 [d] ncurses-6.1
