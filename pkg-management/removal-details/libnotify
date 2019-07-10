@@ -1,0 +1,7 @@
+[r] /usr/bin/notify-send
+[r] /usr/include/libnotify/{notification.h,notify-enum-types.h,notify-features.h,notify.h}
+[r] /usr/lib/girepository-1.0/Notify-0.7.typelib
+[r] /usr/lib/pkgconfig/libnotify.pc
+[r] /usr/lib/{libnotify.la,libnotify.so,libnotify.so.4,libnotify.so.4.0.0}
+[r] /usr/share/gir-1.0/gir-1.0
+[r] /usr/share/gtk-doc/html/libnotify

@@ -13,4 +13,8 @@
 [r] >> gtkmm-2.24.5
 [r] >>> pangomm-2.42.0
 [r] >>>> cairomm-1.12.2
+
+[r] > libnotify-0.7.7
+[r] >> notification-daemon-3.20.
+[r] >>> libcanberra-0.30
 ```

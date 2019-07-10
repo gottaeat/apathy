@@ -268,9 +268,9 @@
 [d]		*** xmlto-0.0.28 
 [d]	** libid3tag
 
-[d]	* libnotify-0.7.7
-[d]	** notification-daemon-3.20.0
-[d]	*** libcanberra-0.30
+[d]	* libnotify-0.7.7		--> removed, unneeded
+[d]	** notification-daemon-3.20.0	--> removed, unneeded
+[d]	*** libcanberra-0.30		--> removed, unneeded
 [d]		**** alsa-lib-1.1.8
 [d]		**** libvorbis-1.3.6
 [d]		***** libogg-1.3.3
@@ -342,6 +342,7 @@
 [d]	* ~~ i3 ~~		--> replaced with i3-memegaps.
 [d]	** yajl
 [d]	** xcb-util-xrm
+[d]	** startup-notification	--> forgot to add this ages ago
 
 [d]	* i3blocks
 [d]	* dmenu

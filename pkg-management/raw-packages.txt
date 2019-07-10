@@ -199,9 +199,6 @@ imlib2-1.5.1
 giflib-5.1.6
 xmlto-0.0.28
 libid3tag
-libnotify-0.7.7
-notification-daemon-3.20.0
-libcanberra-0.30
 alsa-lib-1.1.8
 libvorbis-1.3.6
 libogg-1.3.3
@@ -250,6 +247,7 @@ tmux
 i3-memegaps
 yajl
 xcb-util-xrm
+startup-notification
 i3blocks
 dmenu
 scrot
