@@ -61,6 +61,7 @@ color=#747474
 command=~/.config/scripts/master-alsa
 interval=1
 signal=1
+separator_block_width=5
 separator=false
 
 [capture-alsa]

@@ -21,7 +21,7 @@
  
  	/* calculate menu geometry */
 -	bh = drw->fonts->h + 2;
-+	bh = drw->fonts->h + 7;
++	bh = drw->fonts->h + 5;
  	lines = MAX(lines, 0);
  	mh = (lines + 1) * bh;
  #ifdef XINERAMA

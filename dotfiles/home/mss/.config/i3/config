@@ -121,7 +121,7 @@ bar {
   separator_symbol "|"
 
 colors {
-  background	#000000
+  background	#101010
   statusline	#ffffff
   separator	#464646
 
@@ -145,17 +145,18 @@ bindsym $mod+Shift+d			exec /home/mss/.config/i3/dmenu/menuboi
 bindsym	$mod+x				exec urxvt -e vifm 
 #> kb specific
 bindsym	XF86Sleep			exec xtrlock
-bindsym	XF86AudioMedia			exec urxvt -e ncmpcpp
 bindsym XF86HomePage			exec mightyluna
-bindsym XF86Calculator			exec feh --randomize --bg-fill /home/mss/cust/chan/*
-bindsym $mod+XF86Calculator		exec feh --bg-fill /home/mss/cust/chan/1546293474750.jpg
-bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill /home/mss/cust/other/black.png
+bindsym XF86Calculator			exec feh --randomize --bg-fill	/home/mss/cust/chan/*
+bindsym $mod+XF86Calculator		exec feh --bg-fill		/home/mss/cust/chan/1546293474750.jpg
+bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill		/home/mss/cust/other/black.png
 
 # alsa controls
-bindsym XF86AudioRaiseVolume		exec amixer set Master	5+	&& pkill -RTMIN+1 i3blocks 
-bindsym XF86AudioLowerVolume		exec amixer set Master	5-	&& pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume		exec amixer set Master	3dB+	&& pkill -RTMIN+1 i3blocks 
+bindsym XF86AudioLowerVolume		exec amixer set Master	3dB-	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+XF86AudioRaiseVolume	exec amixer set Capture 3dB+	&& pkill -RTMIN+1 i3blocks
+bindsym $mod+Shift+XF86AudioLowerVolume	exec amixer set Capture 3dB-	&& pkill -RTMIN+1 i3blocks
 bindsym XF86AudioMute			exec amixer set Master	toggle	&& pkill -RTMIN+1 i3blocks
-bindsym $mod+z				exec amixer set Capture	toggle	&& pkill -RTMIN+1 i3blocks
+bindsym	XF86AudioMedia			exec amixer set Capture	toggle	&& pkill -RTMIN+1 i3blocks
 
 # mpd controls
 bindsym XF86AudioPlay			exec mpc toggle
@@ -170,4 +171,4 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 exec					compton --vsync opengl
 exec_always				xrandr --output VGA-1 --primary
 exec --no-startup-id			feh --bg-fill /home/mss/cust/chan/1546293474750.jpg
-exec_always --no-startup-id		setxkbmap us -option 'grp:alt_shift_toggle'
+exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
