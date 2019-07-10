@@ -421,6 +421,12 @@
 
 [d]	* irssi
 [d]	* vifm
+
+[d]	* GnuPG-2.2.15		--> 2 release above, for gcc9.1 support. 
+[d]	** libassuan-2.5.3
+[d]	** libksba-1.3.5
+[d]	** npth-1.6
+[d]	** pinentry-1.1.0 
 ```
 ---------------------------------------------------------
 #### python:
