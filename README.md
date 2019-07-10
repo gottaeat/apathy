@@ -138,7 +138,7 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	** libunwind-1.3.1
 [d]	** libepoxy-1.5.3
 
-	* xorg-drivers			-> will use modesetting for intel
+[d]	* xorg-drivers			-> will use modesetting for intel
 [d]	** libevdev 
 [d]	** xf86-input-evdev-2.10.6
 [d]	*** mtdev-1.1.5
@@ -346,6 +346,12 @@ uwu i'll set a cronjob once i'm done, don't yell at me.
 [d]	* zsh-5.7.1
 [d]	* expect-5.45.4 
 [d]	* lz4
+
+[d]	* libnetfilter_queue
+[d]	** libmnl
+[d]	** libnfnetlink
+
+[d]	* feh
 ```
 ---------------------------------------------------------
 #### python:
