@@ -1,0 +1,58 @@
+--- dmenu.c	2019-05-30 02:25:27.652779940 +0300
++++ dmenu.c	2019-05-30 02:27:37.672777980 +0300
+@@ -553,9 +553,14 @@
+ 	XEvent ev;
+ 
+ 	while (!XNextEvent(dpy, &ev)) {
+-		if (XFilterEvent(&ev, None))
++		if (XFilterEvent(&ev, win))
+ 			continue;
+ 		switch(ev.type) {
++		case DestroyNotify:
++			if (ev.xdestroywindow.window != win)
++				break;
++			cleanup();
++			exit(1);
+ 		case Expose:
+ 			if (ev.xexpose.count == 0)
+ 				drw_map(drw, win, 0, 0, mw, mh);
+@@ -603,7 +608,7 @@
+ 	utf8 = XInternAtom(dpy, "UTF8_STRING", False);
+ 
+ 	/* calculate menu geometry */
+-	bh = drw->fonts->h + 2;
++	bh = drw->fonts->h + 7;
+ 	lines = MAX(lines, 0);
+ 	mh = (lines + 1) * bh;
+ #ifdef XINERAMA
+@@ -659,15 +664,17 @@
+ 	                    CWOverrideRedirect | CWBackPixel | CWEventMask, &swa);
+ 	XSetClassHint(dpy, win, &ch);
+ 
+-	/* open input methods */
+-	xim = XOpenIM(dpy, NULL, NULL, NULL);
++
++	/* input methods */
++	if ((xim = XOpenIM(dpy, NULL, NULL, NULL)) == NULL)
++		die("XOpenIM failed: could not open input device");
++
+ 	xic = XCreateIC(xim, XNInputStyle, XIMPreeditNothing | XIMStatusNothing,
+ 	                XNClientWindow, win, XNFocusWindow, win, NULL);
+ 
+ 	XMapRaised(dpy, win);
+-	XSetInputFocus(dpy, win, RevertToParent, CurrentTime);
+ 	if (embed) {
+-		XSelectInput(dpy, parentwin, FocusChangeMask);
++		XSelectInput(dpy, parentwin, FocusChangeMask | SubstructureNotifyMask);
+ 		if (XQueryTree(dpy, parentwin, &dw, &w, &dws, &du) && dws) {
+ 			for (i = 0; i < du && dws[i] != win; ++i)
+ 				XSelectInput(dpy, dws[i], FocusChangeMask);
+@@ -731,8 +738,6 @@
+ 
+ 	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
+ 		fputs("warning: no locale support\n", stderr);
+-	if (!XSetLocaleModifiers(""))
+-		fputs("warning: no locale modifiers support\n", stderr);
+ 	if (!(dpy = XOpenDisplay(NULL)))
+ 		die("cannot open display");
+ 	screen = DefaultScreen(dpy);
