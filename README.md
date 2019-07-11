@@ -10,12 +10,23 @@ instead of having a multilib toolchain and 32bit libraries, i install a binary d
 
 complete list of software installed can be found in `raw-packages.txt` or `packages.md`, under the `pkg-management` directory. the configuration files used to set up or compile software is under the `pkg-management/build-configs` directory.
 
+#### about proprietary software under mssLinux
+mssLinux in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
+```
+[semifree] sdl		: contains a source file that doesn't mention modification.
+[semifree] unzip	: contains a source file that doesn't mention modification.
+[nonfree ] faac		: is a gpl'ed package, but has non free code that can't be distributed under the gpl.
+[nonfree ] intel-ucode	: no modification, use restrictions.
+[nonfree ] unrar	: (possible replacement) gna-unrar.
+```
+
 ![indeed](assets/tism.png)
 
 #### current package count and total system size:
 ```
-[15:31] mss mssLinux [master]: pkg
- * total partition size	: 3058.51m
- * local package count	: 378
- * removed packages	: 37
+> [master][mssLinux]: pkg
+
+* total partition size	: 3058.51m
+* local package count	: 378
+* removed packages	: 37
 ```
