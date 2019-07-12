@@ -308,6 +308,7 @@ start-stop-daemon
 fbv
 opendoas
 dvtm-git
+firejail
 man-pages-4.16
 glibc-2.29
 zlib-1.2.11
