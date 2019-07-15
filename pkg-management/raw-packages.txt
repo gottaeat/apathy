@@ -164,7 +164,6 @@ xf86-video-fbdev-0.5.0
 libva-2.4.0
 intel-vaapi-driver-2.3.0
 xinit-1.4.0
-llvm-7.0.1+clang+compiler-rt	--> updated to 8.0.0
 cmake-3.13.4
 libuv-1.26.0
 libarchive-3.3.3
@@ -308,7 +307,6 @@ start-stop-daemon
 fbv
 opendoas
 dvtm-git
-firejail
 xwinwrap
 man-pages-4.16
 glibc-2.29

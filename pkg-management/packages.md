@@ -211,7 +211,7 @@
 ---------------------------------------------------------
 ### compilers and languages:
 ```
-[d]	* llvm-7.0.1 + clang + compiler-rt --> updated to 8.0.0 
+[r]	* llvm-7.0.1 + clang + compiler-rt --> updated to 8.0.0 
 [d]	** cmake-3.13.4
 [d]	*** libuv-1.26.0
 [d]	*** libarchive-3.3.3
@@ -459,7 +459,7 @@
 [d]	* fbv
 [d]	* opendoas
 [d]	* dvtm-git
-[d]	* firejail
+[r]	* firejail
 [d]	* xwinwrap
 ```
 ---------------------------------------------------------
