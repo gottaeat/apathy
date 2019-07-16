@@ -300,13 +300,9 @@ newsboat
 json-c
 stfl
 swig
-fbterm
-libx86
 dnscrypt-proxy-2.0.25
 start-stop-daemon
-fbv
 opendoas
-dvtm-git
 xwinwrap
 man-pages-4.16
 glibc-2.29

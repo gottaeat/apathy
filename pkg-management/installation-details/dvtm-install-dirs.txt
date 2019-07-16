@@ -1,6 +1,0 @@
-installing /usr/bin/dvtm
-installing /usr/bin/dvtm-status
-installing /usr/bin/dvtm-editor
-installing /usr/bin/dvtm-pager
-installing manual page to /usr/share/man/man1
-installing terminfo description

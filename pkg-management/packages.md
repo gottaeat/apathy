@@ -450,15 +450,15 @@
 [d]	** stfl
 [d]	** swig
 
-[d]	* fbterm
-[d]	** libx86
+[r]	* fbterm
+[r]	** libx86
 
 [d]	* dnscrypt-proxy-2.0.25	--> binary from dev
 [d]	* start-stop-daemon	--> from (https://github.com/daleobrien/start-stop-daemon)
 [r]	* ~~ranger~~		--> binary from dev --> removed, replaced with fbv
-[d]	* fbv
+[r]	* ~~fbv~~		--> removed, replaced with fim
 [d]	* opendoas
-[d]	* dvtm-git
+[r]	* ~~dvtm-git~~		--> useless when tmux exists
 [r]	* firejail
 [d]	* xwinwrap
 ```
