@@ -15,7 +15,6 @@ mssLinux in its current state is all free software including the kernel and the 
 ```
 [semifree] sdl		: contains a source file that doesn't mention modification.
 [semifree] unzip	: contains a source file that doesn't mention modification.
-[nonfree ] faac		: is a gpl'ed package, but has non free code that can't be distributed under the gpl.
 [nonfree ] intel-ucode	: no modification, use restrictions.
 [nonfree ] unrar	: (possible replacement) gna-unrar.
 ```
@@ -27,7 +26,7 @@ mssLinux in its current state is all free software including the kernel and the 
 $ [master][mssLinux]: pkg
 
  * total partition size	: 2594.39m
- * local package count	: 374
- * removed packages	: 43
+ * local package count	: 375
+ * removed packages	: 44
 
 ```
