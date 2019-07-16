@@ -1,19 +1,34 @@
 #!/bin/env bash
-count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+
 rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
-tsize=$(df | grep root | awk '{print $3/1024"m"}')
-repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
-gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
-gitstat_pre=$(cd $repo && git status -s)
+count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
 
-if [ -z "$gitdf_pre" ]
- then gitdf="no difference."
- else gitdf=$(echo -e "\n\n$gitdf_pre")
-fi
+case $1 in
+ *rmv*|*removed*)
+  rlist=$(grep "\[r\]" /mss/packages.md | sed 's/~//g' | awk '{print "\t"$3}' | sort -s)
+  echo -e "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n" | less
+ ;;
 
-if [ -z "$gitstat_pre" ]
- then gitstat="clean."
- else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
-fi
+ *inst*|*installed*)
+  ilist=$(cat /mss/raw-packages.txt | awk '{print "\t"$1}' | sort -s)
+  echo -e "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n" | less
+ ;;
+ *)
+  tsize=$(df | grep root | awk '{print $3/1024"mib"}')
+  repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
+  gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
+  gitstat_pre=$(cd $repo && git status -s)
 
-echo -e "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"
+  if [ -z "$gitdf_pre" ]
+   then gitdf="no difference."
+   else gitdf=$(echo -e "\n\n$gitdf_pre")
+  fi
+
+  if [ -z "$gitstat_pre" ]
+   then gitstat="clean."
+   else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+  fi
+
+  echo -e "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"
+  ;;
+esac
