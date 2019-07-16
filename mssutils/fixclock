@@ -1,0 +1,23 @@
+#!/mss/bin/dash
+if [ "$(id -u)" -ne 0 ]; then echo " ! this script must be run by root."; exit 1; fi
+
+currdns=$(cat /etc/resolv.conf | tail -1)
+case $currdns in
+ *edns0*)
+  echo "using dnscrypt."				&&
+  /etc/init.d/dnscrypt-proxy stop			&&
+  cp -v /etc/resolv.conf /etc/resolv.conf.dnscrypt	&&
+  cp -v /etc/resolv.conf.flare /etc/resolv.conf		&&
+  ntpd -q -g > /dev/null				&&
+  cp -v /etc/resolv.conf.dnscrypt /etc/resolv.conf	&&
+  /etc/init.d/dnscrypt-proxy start			&&
+  echo "done."
+  ;;
+ *)
+  echo "not using dnscrypt"				&&
+  ntpd -q -g > /dev/null				&&
+  echo "done."
+  ;;
+esac
+
+exit 0
