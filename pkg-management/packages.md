@@ -461,7 +461,8 @@
 [r]	* ~~dvtm-git~~		--> useless when tmux exists
 [r]	* firejail
 [d]	* xwinwrap
-[r]	* fim
+[d]	* fim
+[d]	* gpgme-1.13.1
 ```
 ---------------------------------------------------------
 #### python:
