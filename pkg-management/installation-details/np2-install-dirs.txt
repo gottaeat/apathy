@@ -1,0 +1,4 @@
+/usr/share/xnp2
+/usr/share/man/man1/xnp2.1j
+/usr/share/man/man1/xnp2.1
+/usr/bin/xnp2
