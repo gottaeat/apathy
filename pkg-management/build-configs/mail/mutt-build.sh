@@ -1,0 +1,14 @@
+./configure \
+	--prefix=/usr					\
+	--sysconfdir=/etc				\
+	--with-docdir=/usr/share/doc/mutt-1.12.1	\
+	--enable-external-dotlock			\
+	--enable-gpgme					\
+	--enable-pop					\
+	--enable-imap					\
+	--enable-smtp					\
+	--enable-hcache					\
+	--enable-sidebar				\
+	--with-curses					\
+	--with-ssl=/usr					\
+	--with-idn2
