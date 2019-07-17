@@ -1,14 +1,11 @@
 ## msslinux pure64 1.2 "escapism"
-
-mssLinux is a pure 64bit linux distribution built by following the  *linux from scratch 8.4* and *beyond linux from scratch 8.4* books. besides the official books, i've used `PKGBUILD`'s from arch official repositories and aur to get build instructions and fine-tune them to my liking. there also have been times where i've read gentoo `ebuild`'s for checking dependencies regarding the components i want in software. 
+mssLinux is a pure 64 bit gnu+linux distribution aiming to be minimalistic while not crippling the user's ability to smoothly do their computing. it is built from scratch by following the *linux from scratch 8.4* book as its base.
 
 ![yes](assets/fetch.png)
 
-this is the third *release* of mssLinux, 1.0 being my first experience with lfs. my first attempt was really bloated as i didn't fine tune dependencies so i wanted to give it another go but also with 32bit libraries, that got out of hand real quick so i gave up on the idea of a multilib system. 
+this is the third *release* of mssLinux, 1.0 being my first attempt to build an lfs system. it was fairly *bloated* as i didn't fine tune dependencies so i wanted to give it a second try, which gave birth to 1.1. 1.1 was supposed to be tidier, more minimalistic and also have multilib support for `steam` and `wine` but it got out of hand fairly quick due to me not being experienced enough with a multilib toolchain so that idea got scrapped, resulting in 1.2.
 
-instead of having a multilib toolchain and 32bit libraries, i install a binary distribution inside of a `chroot` jail and strip it down from most of its components. i use that chroot when i need software that requires 32bit libraries, such as `steam` and `wine`. this approach doesn't pollute the host system and the distribution inside the jail can be easily replaced.
-
-complete list of software installed can be found in `raw-packages.txt` or `packages.md`, under the `pkg-management` directory. the configuration files used to set up or compile software is under the `pkg-management/build-configs` directory.
+because it is intended to be the way i document my progress and keep everything in one place, this repository does not include a build script or an installer but if desired, following the lfs 8.4 book and then building the software listed under `pkg-management/packages.md` in the same order using the configs and patches under `pkg-management/build-configs` would result in an exact copy of this system.
 
 #### about proprietary software under mssLinux
 mssLinux in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
