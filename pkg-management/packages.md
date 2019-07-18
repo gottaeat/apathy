@@ -465,7 +465,8 @@
 [d]	* gpgme-1.13.1
 [d]	* mutt-1.12.1
 [d]	* xnp2			--> https://github.com/nmlgc/np2debug
-[r]	* windowmanager
+[r]	* windowmaker
+[d]	* openbox
 ```
 ---------------------------------------------------------
 #### python:
