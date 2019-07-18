@@ -1,0 +1,3 @@
+xrandr --output VGA-1 --primary
+compton --vsync opengl -b
+cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
