@@ -1,0 +1,13 @@
+/usr/bin/cputnik
+/usr/bin/wmclockmon
+/usr/bin/wmclockmon-cal
+/usr/bin/wmclockmon-config
+/usr/bin/wmix
+/usr/bin/WMmp
+
+/usr/share/man/man1/wmclockmon.1
+/usr/share/man/man1/wmclockmon-cal.1
+/usr/share/man/man1/wmclockmon-config.1
+/usr/share/man/man1/wmix.1x
+
+/usr/share/wmclockmon

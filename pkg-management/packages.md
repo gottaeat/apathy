@@ -466,7 +466,7 @@
 [d]	* mutt-1.12.1
 [d]	* xnp2			--> https://github.com/nmlgc/np2debug
 [r]	* windowmaker
-[d]	* openbox
+[r]	* openbox
 ```
 ---------------------------------------------------------
 #### python:
