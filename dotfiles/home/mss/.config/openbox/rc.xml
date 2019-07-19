@@ -33,7 +33,7 @@
 
 <!-- theme -->
 <theme>
- <name>Orang</name>
+ <name>Artwiz-boxed</name>
  <titleLayout>DLMC</titleLayout>
  <keepBorder>yes</keepBorder>
  <animateIconify>yes</animateIconify>
@@ -125,7 +125,7 @@
 
 <!-- dock (not used) -->
 <dock>
- <position>TopLeft</position>
+ <position>BottomRight</position>
  <floatingX>0</floatingX>
  <floatingY>0</floatingY>
  <noStrut>no</noStrut>
@@ -232,7 +232,7 @@
   </action></keybind>
  
   <keybind key="W-S-p"><action name="Execute">
-  <command>maim -s -u | xclip -selection clipboard -t image/png</command>
+  <command>/home/mss/.config/scripts/maimcrop</command>
   </action></keybind>
  
   <keybind key="W-o"><action name="Execute">
@@ -277,7 +277,7 @@
   <command>amixer set Capture 3dB+</command>
   </action></keybind>
 
-  <keybind key="W-S-$mod+Shift+XF86AudioLowerVolume"><action name="Execute">
+  <keybind key="W-S-Shift+XF86AudioLowerVolume"><action name="Execute">
   <command>amixer set Capture 3dB-</command>
   </action></keybind>
 
@@ -286,7 +286,7 @@
   </action></keybind>
 
   <keybind key="XF86AudioMedia"><action name="Execute">
-  <command>amixer set Master toggle</command>
+  <command>amixer set Capture toggle</command>
   </action></keybind>
 
   <!-- mpd controls -->

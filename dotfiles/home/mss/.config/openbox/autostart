@@ -1,3 +1,10 @@
+# autostart from i3config
 xrandr --output VGA-1 --primary
 compton --vsync opengl -b
 cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
+
+# dockapps
+/usr/bin/cputnik &
+/usr/bin/wmclockmon &
+/usr/bin/wmix &
+/usr/bin/WMmp &

@@ -116,7 +116,11 @@
   <command>urxvt</command>
   </action>
  </item>
-
+ <item label="ncmpcpp">
+  <action name="Execute">
+  <command>urxvt -e ncmpcpp</command>
+  </action>
+ </item>
  <item label="xtrlock">
   <action name="Execute">
   <command>xtrlock</command>
@@ -130,12 +134,6 @@
  <menu id="feh background"/>
 
 <separator label="openbox" />
- <item label="run obconf">
-  <action name="Execute">
-  <command>obconf</command>
-  </action>
- </item>
-
  <item label="reconfigure">
   <action name="Reconfigure" />
  </item>
