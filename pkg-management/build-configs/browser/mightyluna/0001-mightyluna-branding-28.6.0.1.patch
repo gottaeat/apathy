@@ -24,8 +24,8 @@ index 92d237144..1bc0ecc4e 100644
  # Do NOT localize or otherwise change these values
 -browser.startup.homepage=http://start.palemoon.org/
 -browser.startup.homepage_reset=http://start.palemoon.org/
-+browser.startup.homepage=https://mssx86.github.io/startpage/
-+browser.startup.homepage_reset=https://mssx86.github.io/startpage/
++browser.startup.homepage=https://mss.neocities.org/startpage/
++browser.startup.homepage_reset=https://mss.neocities.org/startpage/
 diff --git a/application/palemoon/branding/shared/pref/preferences.inc b/application/palemoon/branding/shared/pref/preferences.inc
 index 12803f285..213c9f490 100644
 --- a/application/palemoon/branding/shared/pref/preferences.inc
@@ -33,8 +33,8 @@ index 12803f285..213c9f490 100644
 @@ -1,93 +1,34 @@
 -// ===| General |==============================================================
 +// mightyluna
-+pref("startup.homepage_welcome_url","https://mssx86.github.io/startpage/");
-+pref("app.vendorURL", "https://github.com/mssx86/mssLinux/");
++pref("startup.homepage_welcome_url","https://mss.neocities.org/startpage/");
++pref("app.vendorURL", "https://repo.or.cz/mssLinux.git");
  
 -pref("startup.homepage_welcome_url","http://www.palemoon.org/firstrun.shtml");
 -
@@ -250,10 +250,10 @@ index 62ed242a2..7a57c094e 100644
 -!define URLSystemRequirements "http://www.palemoon.org/download.shtml"
 +!define BrandFullNameInternal "mightyluna"
 +!define CompanyName           "mssx86 - mssLinux"
-+!define URLInfoAbout          "https://github.com/mssx86/mssLinux/"
-+!define URLUpdateInfo         "https://github.com/mssx86/mssLinux/"
-+!define HelpLink              "https://github.com/mssx86/mssLinux/"
-+!define URLSystemRequirements "https://github.com/mssx86/mssLinux/"
++!define URLInfoAbout          "https://repo.or.cz/mssLinux.git"
++!define URLUpdateInfo         "https://repo.or.cz/mssLinux.git"
++!define HelpLink              "https://repo.or.cz/mssLinux.git"
++!define URLSystemRequirements "https://repo.or.cz/mssLinux.git"
 diff --git a/application/palemoon/branding/unofficial/configure.sh b/application/palemoon/branding/unofficial/configure.sh
 index 05a1e1b87..c1594eaa4 100644
 --- a/application/palemoon/branding/unofficial/configure.sh
@@ -305,8 +305,8 @@ index bf46b747a..eea2428ef 100644
  
 -pref("startup.homepage_override_url","http://www.palemoon.org/unofficial.shtml");
 -pref("app.releaseNotesURL", "http://www.palemoon.org/releasenotes.shtml");
-+pref("startup.homepage_override_url","https://mssx86.github.io/startpage/");
-+pref("app.releaseNotesURL", "https://github.com/mssx86/mssLinux/");
++pref("startup.homepage_override_url","https://mss.neocities.org/startpage/");
++pref("app.releaseNotesURL", "https://repo.or.cz/mssLinux.git");
  
  // Updates disabled
  pref("app.update.enabled", false);
