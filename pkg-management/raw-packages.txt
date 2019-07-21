@@ -309,6 +309,7 @@ gpgme-1.13.1
 mutt-1.12.1
 xnp2
 openbox
+lemonbar
 man-pages-4.16
 glibc-2.29
 zlib-1.2.11

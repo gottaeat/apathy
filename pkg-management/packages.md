@@ -467,6 +467,7 @@
 [d]	* xnp2			--> https://github.com/nmlgc/np2debug
 [r]	* windowmaker
 [d]	* openbox
+[d]	* lemonbar		--> https://github.com/krypt-n/bar
 ```
 ---------------------------------------------------------
 #### python:
