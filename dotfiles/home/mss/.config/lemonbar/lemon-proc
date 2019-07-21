@@ -1,0 +1,11 @@
+#!/bin/env bash
+while true
+do
+ cpu=$(/home/mss/.config/scripts/cpu)
+ ptemp=$(/home/mss/.config/scripts/ptemp)
+ mem=$(/home/mss/.config/scripts/mem)
+
+echo "${cpu} ${ptemp} ${mem}" > "/tmp/lemon-proc.tmp"
+
+sleep 1
+done
