@@ -7,8 +7,8 @@ if [ "$mmchk" = "off" ]
  else echo $masstat | awk '{print $4}'
 fi
 
-case $BLOCK_BUTTON in
- 3) amixer -q -D default sset Master toggle && pkill -RTMIN+1 i3blocks ;;
- 4) amixer -q -D default sset Master 3dB+ unmute && pkill -RTMIN+1 i3blocks;;
- 5) amixer -q -D default sset Master 3dB- unmute && pkill -RTMIN+1 i3blocks;;
-esac
+#case $BLOCK_BUTTON in
+# 3) amixer -q -D default sset Master toggle && pkill -RTMIN+1 i3blocks ;;
+# 4) amixer -q -D default sset Master 3dB+ unmute && pkill -RTMIN+1 i3blocks;;
+# 5) amixer -q -D default sset Master 3dB- unmute && pkill -RTMIN+1 i3blocks;;
+#esac

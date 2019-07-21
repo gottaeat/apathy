@@ -1,4 +1,4 @@
-#!/mss/bin/dash
+#!/bin/env bash
 # check if mpd is running
 if [ $(pidof mpd) ]
  then mpd_running=1
@@ -60,25 +60,24 @@ if [ "${mpd_running}" = "1" ]
     plpa="$(echo "${mpc_status}" | tail -2 | head -1 | awk '{print $1}')"
   
     if [ "${plpa}" = "[paused]" ]
-     then state="► ${song}"
-     else state="${song} • ${dur}"
+     then state="[paused] ${song}"
+     else state="${song} ${dur}"
     fi
   
    else
-    state="! mpd is idle"
+    state="mpd is idle"
   fi
  
  else
-  state="! mpd is not running"
+  state="mpd is not running"
 fi
 echo "${state}"
 
 # i3blocks interaction
-case $BLOCK_BUTTON in
- 1) mpc next		;;
- 2) mpc toggle		;;
- 3) mpc prev		;;
- 4) mpc volume +10	;;
- 5) mpc volume -10	;;
-esac
-
+#case $BLOCK_BUTTON in
+# 1) mpc next		;;
+# 2) mpc toggle		;;
+# 3) mpc prev		;;
+# 4) mpc volume +10	;;
+# 5) mpc volume -10	;;
+#esac

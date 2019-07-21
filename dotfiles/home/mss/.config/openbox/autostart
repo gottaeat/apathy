@@ -3,8 +3,8 @@ xrandr --output VGA-1 --primary
 compton --vsync opengl -b
 cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
 
-# dockapps
-/usr/bin/cputnik &
-/usr/bin/wmclockmon &
-/usr/bin/wmix &
-/usr/bin/WMmp &
+# lemonbar
+/home/mss/.config/lemonbar/lemon-netwerk &
+/home/mss/.config/lemonbar/lemon-proc &
+/home/mss/.config/lemonbar/lemon-weather &
+/home/mss/.config/lemonbar/launch
