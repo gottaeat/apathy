@@ -340,11 +340,11 @@
 [d]	* tmux
 
 [r]	* ~~ i3 ~~		--> replaced with i3-memegaps.
-[d]	** yajl
-[d]	** xcb-util-xrm
-[d]	** startup-notification	--> forgot to add this ages ago
+[r]	** yajl
+[r]	** xcb-util-xrm
+[r]	** startup-notification	--> forgot to add this ages ago
 
-[d]	* i3blocks
+[r]	* i3blocks
 [d]	* dmenu
 
 [r]	* ~~ nitrogen ~~		--> removed, bloat
