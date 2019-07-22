@@ -1,2 +1,2 @@
 #!/bin/env bash
-/home/mss/.config/lemonbar/config | lemonbar -B "#000000" -p -g 1366x16+0+0 -f "euphon:pixelsize=9" -f "Kochi Mincho:style=Regular:pixelsize=9" -a 12 | sh
+/home/mss/.config/lemonbar/config | lemonbar -B "#000000" -p -g 1366x16+0+0 -f "euphon:pixelsize=9" -f "Kochi Mincho:style=Regular:pixelsize=9" -a 12 -b | sh

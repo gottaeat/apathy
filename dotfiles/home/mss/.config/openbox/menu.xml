@@ -2,147 +2,50 @@
 <openbox_menu xmlns="http://openbox.org/3.4/menu">
 
 <!-- sub menus begin-->
-<!-- screenshot -->
 <menu id="screenshot" label="screenshot">
- <item label="maim xclip">
-  <action name="Execute">
-  <command>maim -s -u | xclip -selection clipboard -t image/png</command>
-  </action>
- </item>
- <item label="maim grab">
-  <action name="Execute">
-  <command>/home/mss/.config/scripts/maimcrop</command>
-  </action>
- </item>
- <item label="scrot">
-  <action name="Execute">
-  <command>scrot -e 'mv $f ~/screenshots/'</command>
-  </action>
- </item>
+ <item label="maim xclip"><action name="Execute"><command>maim -s -u | xclip -selection clipboard -t image/png</command></action></item>
+ <item label="maim grab"><action name="Execute"><command>/home/mss/.config/scripts/maimcrop</command></action></item>
+ <item label="scrot"><action name="Execute"><command>scrot -e 'mv $f ~/screenshots/'</command></action></item>
 </menu>
 
-<!-- feh bg-->
 <menu id="feh background" label="feh background">
- <item label="feh revert">
-  <action name="Execute">
-  <command>/home/mss/.fehb.def</command>
-  </action>
- </item>
- <item label="feg random">
-  <action name="Execute">
-  <command>feh --bg-fill --randomize "/home/mss/cust/chan"</command>
-  </action>
- </item>
+ <item label="feh revert"><action name="Execute"><command>/home/mss/.fehb.def</command></action></item>
+ <item label="feg random"><action name="Execute"><command>feh --bg-fill --randomize "/home/mss/cust/chan"</command></action></item>
 </menu>
 
-<!-- alsa controls -->
 <menu id="alsa controls" label="alsa controls">
- <!-- master -->	
- <item label="+ master">
-  <action name="Execute">
-  <command>amixer set Master 3dB+</command>
-  </action>
- </item>
- <item label="- master">
-  <action name="Execute">
-  <command>amixer set Master 3dB-</command>
-  </action>
- </item>
- <item label="m master">
-  <action name="Execute">
-  <command>amixer set Master toggle</command>
-  </action>
- </item>
- <!-- capture -->
- <item label="+ capture">
-  <action name="Execute">
-  <command>amixer set Capture 3dB+</command>
-  </action>
- </item>
- <item label="- capture">
-  <action name="Execute">
-  <command>amixer set Capture 3dB-</command>
-  </action>
- </item>
- <item label="m capture">
-  <action name="Execute">
-  <command>amixer set Capture toggle</command>
-  </action>
- </item>
+ <item label="+ master"><action name="Execute"><command>amixer set Master 3dB+</command></action></item>
+ <item label="- master"><action name="Execute"><command>amixer set Master 3dB-</command></action></item>
+ <item label="m master"><action name="Execute"><command>amixer set Master toggle</command></action></item>
+ <item label="+ capture"><action name="Execute"><command>amixer set Capture 3dB+</command></action></item>
+ <item label="- capture"><action name="Execute"><command>amixer set Capture 3dB-</command></action></item>
+ <item label="m capture"><action name="Execute"><command>amixer set Capture toggle</command></action></item>
 </menu>
 
 <!-- mpd controls -->
 <menu id="mpd controls" label="mpd controls">
- <item label="toggle">
-  <action name="Execute">
-  <command>mpc toggle</command>
-  </action>
- </item>
- <item label="stop">
-  <action name="Execute">
-  <command>mpc stop</command>
-  </action>
- </item>
- <item label="next">
-  <action name="Execute">
-  <command>mpc next</command>
-  </action>
- </item>
- <item label="prev">
-  <action name="Execute">
-  <command>mpc prev</command>
-  </action>
- </item>
- <item label="+5 vol">
-  <action name="Execute">
-  <command>mpc volume +5</command>
-  </action>
- </item>
- <item label="-5 vol">
-  <action name="Execute">
-  <command>mpc volume -5</command>
-  </action>
- </item>
+ <item label="toggle"><action name="Execute"><command>mpc toggle</command></action></item>
+ <item label="stop"><action name="Execute"><command>mpc stop</command></action></item>
+ <item label="next"><action name="Execute"><command>mpc next</command></action></item>
+ <item label="prev"><action name="Execute"><command>mpc prev</command></action></item>
+ <item label="+5 vol"><action name="Execute"><command>mpc volume +5</command></action></item>
+ <item label="-5 vol"><action name="Execute"><command>mpc volume -5</command></action></item>
 </menu>
-<!-- sub menus end -->
-
 
 <!-- root menu begin -->
 <menu id="root-menu" label="Openbox 3">
 <separator label="mssLinux" />
-
- <item label="urxvt">
-  <action name="Execute">
-  <command>urxvt</command>
-  </action>
- </item>
- <item label="ncmpcpp">
-  <action name="Execute">
-  <command>urxvt -e ncmpcpp</command>
-  </action>
- </item>
- <item label="xtrlock">
-  <action name="Execute">
-  <command>xtrlock</command>
-  </action>
- </item>
-
- <separator />
+ <item label="term"><action name="Execute"><command>urxvt</command></action></item>
+ <item label="browser"><action name="Execute"><command>mightyluna</command></action></item>
+ <item label="ncmpcpp"><action name="Execute"><command>urxvt -e ncmpcpp</command></action></item>
+ <item label="xtrlock"><action name="Execute"><command>xtrlock</command></action></item>
+<separator />
  <menu id="alsa controls"/>
  <menu id="mpd controls"/>
  <menu id="screenshot"/>
  <menu id="feh background"/>
-
 <separator label="openbox" />
- <item label="reconfigure">
-  <action name="Reconfigure" />
- </item>
-
- <item label="exit openbox">
-  <action name="Exit">
-  <prompt>yes</prompt>
-  </action>
- </item>
+ <item label="reconfigure"><action name="Reconfigure" /></item>
+ <item label="exit openbox"><action name="Exit"><prompt>yes</prompt></action></item>
 </menu>
-<!-- root menu end -->
 </openbox_menu>
