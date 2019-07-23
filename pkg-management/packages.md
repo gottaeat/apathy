@@ -339,12 +339,12 @@
 
 [d]	* tmux
 
-[r]	* ~~ i3 ~~		--> replaced with i3-memegaps.
-[r]	** yajl
-[r]	** xcb-util-xrm
-[r]	** startup-notification	--> forgot to add this ages ago
+[d]	* ~~ i3 ~~		--> replaced with i3-memegaps.
+[d]	** yajl
+[d]	** xcb-util-xrm
+[d]	** startup-notification	--> forgot to add this ages ago
 
-[r]	* i3blocks
+[d]	* i3blocks
 [d]	* dmenu
 
 [r]	* ~~ nitrogen ~~		--> removed, bloat
@@ -466,8 +466,8 @@
 [d]	* mutt-1.12.1
 [d]	* xnp2			--> https://github.com/nmlgc/np2debug
 [r]	* windowmaker
-[d]	* openbox
-[d]	* lemonbar		--> https://github.com/krypt-n/bar
+[r]	* openbox
+[r]	* lemonbar		--> https://github.com/krypt-n/bar
 ```
 ---------------------------------------------------------
 #### python:
