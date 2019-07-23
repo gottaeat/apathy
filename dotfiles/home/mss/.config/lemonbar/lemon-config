@@ -56,7 +56,7 @@ $(/home/mss/.config/scripts/capture-alsa)\
 %{A}%{A}%{A}"
 
 ### bar
-echo "%{l} ${s1}${c1}${wspace}${clr}${s3}\
+echo "%{l} ${s1}workspace: ${c1}${wspace}${clr}${s3}\
 %{r}${c1}${bw}${clr}${s2}\
 ${c2}${proc}${clr}${s2}\
 ${c1}${mpdstat}${clr}${s2}\

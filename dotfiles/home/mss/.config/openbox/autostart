@@ -7,4 +7,4 @@ cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
 /home/mss/.config/lemonbar/lemon-netwerk &
 /home/mss/.config/lemonbar/lemon-proc &
 /home/mss/.config/lemonbar/lemon-weather &
-/home/mss/.config/lemonbar/launch
+/home/mss/.config/lemonbar/lemon-launch
