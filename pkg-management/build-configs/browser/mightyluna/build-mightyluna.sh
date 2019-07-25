@@ -14,7 +14,7 @@ mv -v "${arname}" "/mss/work/UXP"					&&
 cd "${srcdir}"								&&
 
 printf "\n * applying mightyluna branding patch.\n"			&&
-patch -p1 < "${repodir}"/0001-mightyluna-branding.patch			&&
+patch -p1 < "${repodir}"/0001-mightyluna-branding-28.6.1.patch		&&
 
 printf "\n * applying gcc9.1 patch.\n"					&&
 patch -p1 < "${repodir}"/0002-palemoon-gcc9.1.patch			&&
@@ -24,7 +24,7 @@ cp -v "${repodir}"/mightyluna-mozconfig-syslibs.config \
  "${srcdir}"/mozconfig							&&
 
 export pkgname=palemoon							&&
-export pkgver=28.5.2							&&
+export pkgver=28.6.1							&&
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"				&&
 export MOZCONFIG="$srcdir/mozconfig"					&&
 export CPPFLAGS="$CPPFLAGS -O2"						&&
