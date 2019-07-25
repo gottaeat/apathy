@@ -434,7 +434,7 @@
 [d]	* openvpn
 [d]	** pkcs11-helper
 
-[d]	* palemoon-28.5.1	--> updated to 28.5.2 --> 28.6.0.1
+[d]	* palemoon-28.5.1	--> updated to 28.5.2 --> 28.6.0.1 --> 28.6.1
 
 [d]	* elinks-git		--> rebuilt for js and gopher support
 [d]	** js185
