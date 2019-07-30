@@ -85,9 +85,9 @@ fi &&
 
 ###f> run menuconfig if wanted
 printf " * run menuconfig for manual config? (y/n): " &&
-read answer
+read answermenuconf
 
-if [ "$answer" != "${answer#[Yy]}" ]
+if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
 then
  printf " * running menuconfig.\n"		&&
  if [ "${memepiler}" = "clang" ]
@@ -103,12 +103,16 @@ fi &&
 printf " * run make automatically? (y/n): "	&&
 read answermake
 
-if [ "$answermake" != "${answer#[Yy]}" ]
+if [ "$answermake" != "${answermake#[Yy]}" ]
 then
  printf " * running make.\n"			&&
  if [ "${memepiler}" = "clang" ]
-  then make CC=clang HOSTCC=clang -j$(($(nproc)+1))
-  else make -j$(($(nproc)+1))
+  then
+   make CC=clang HOSTCC=clang -j$(($(nproc)+1)) &&
+   doas -- make CC=clang HOSTCC=clang modules_install
+  else
+   make -j$(($(nproc)+1))
+   doas -- make modules_install
  fi
 fi &&
 
@@ -116,7 +120,7 @@ fi &&
 printf " * all is well and done.\n * run kinst to install the kernel? (y/n): "
 read answerkinst
 
-if [ "$answerkinst" != "${answer#[Yy]}" ]
- then /mss/bin/kinst
+if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
+ then doas -- /mss/bin/kinst
  else printf " * not installing the built kernel."
 fi
