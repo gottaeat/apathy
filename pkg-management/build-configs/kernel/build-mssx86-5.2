@@ -17,10 +17,17 @@ deblob="${3}"
 ckset="${4}"
 
 # c >> functions
+
+patch_faildie(){
+printf "\n ! patching failed, exiting with 1.\n\n"			&&
+exit 1
+}
+
 apply_clang(){
  printf " * building with clang\n * applying clang patches."		&&
   if [ -f "${patchdir}/clang-linux-x86.patch" ]
-   then patch -p1 < "${patchdir}"/clang-linux-x86.patch 2>&1 > /dev/null
+   then patch -p1 < "${patchdir}"/clang-linux-x86.patch \
+    &>> /tmp/kernel-build.log || patch_faildie
    else "\n ! clang patch not found in patchdir, exiting.\n"; exit 1
   fi									&&
  printf "\t\t --> done.\n"
@@ -29,7 +36,8 @@ apply_clang(){
 apply_deblob(){
  printf " * applying gnu deblob patches."				&&
   if [ -f "${patchdir}/5.2-deblob-gnu.patch" ]
-   then patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch 2>&1 > /dev/null
+   then patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch \
+    &>> /tmp/kernel-build.log || patch_faildie
    else "\n ! gnu deblob not found in patchdir, exiting.\n"; exit 1
   fi									&&
  printf "\t\t --> done.\n"						&&
@@ -50,7 +58,8 @@ apply_deblob(){
 apply_ck(){
  printf " * applying ck patchset."					&&
   if [ -f "${patchdir}/ck-patches-5.2.patch" ]
-   then patch -p1 < "${patchdir}"/ck-patches-5.2.patch 2>&1 > /dev/null
+   then patch -p1 < "${patchdir}"/ck-patches-5.2.patch \
+    &>> /tmp/kernel-build.log || patch_faildie
    else "\n ! ck patchset not found in patchdir, exiting.\n"; exit 1
   fi									&&
  printf "\t\t --> done.\n"						&&
@@ -61,6 +70,11 @@ apply_ck(){
 }
 
 # d >> action
+# d0 >> clear old log
+printf " * cleaning old log."		&&
+echo > "/tmp/kernel-build.log"		&&
+printf "\t\t\t --> done.\n"		&&
+
 # d1 >> unpack kernel.
 printf " * unpacking kernel source."	&&
  tar xf "${ker_tarball}"		&&
