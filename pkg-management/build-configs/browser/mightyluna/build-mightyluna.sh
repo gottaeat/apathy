@@ -69,8 +69,7 @@ read answerbuild
    vi mozconfig								&&
    printf " * running mach.\n"						&&
    printf " * tail -f /tmp/mightyluna-build.log to view progress.\n"	&&
-   python2.7 mach build &>> /tmp/mightyluna-build.log \
-   || printf " * build failed. check logs.\n"; rm -rfv ${srcdir}; exit 1
+   python2.7 mach build &>> /tmp/mightyluna-build.log
   else
    printf " * not running mach.\n"		&&
    exit 0
@@ -81,10 +80,11 @@ printf "\n * build complete, shall we run the installer? (y/n): "	&&
 read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
   then
-   printf " * installing.\n"			&&
-   su -c "python2.7 mach install"		&&
+   printf " * installing.\n"						&&
+   printf " * tail -f /tmp/mightyluna-build.log to view progress.\n"	&&
+   su -c "python2.7 mach install &>> /tmp/mightyluna-build.log"		&&
    printf "\n * installation complete.\n"
   else
-   printf "\n * not installing.\n"		&&
+   printf "\n * not installing.\n"					&&
    exit 0
  fi
