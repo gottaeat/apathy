@@ -1,126 +1,137 @@
 #!/bin/env bash
-### make-mssx86.sh ###
-### help dialog func
+# a >> check if variables are set
+if	[ -z $1 ]; then printf "\n ! no kernel source tarball selected, exiting.\n\n";		exit 1
+elif	[ -z $2 ]; then printf "\n ! (gcc/clang) no compiler selected, exiting.\n\n";		exit 1
+elif	[ -z $3 ]; then printf "\n ! (yes/no) deblobbing option not specified, exiting.\n\n";	exit 1
+elif	[ -z $4 ]; then printf "\n ! (yes/no) ck patchset option not specified, exiting.\n\n";	exit 1
+elif	[ ! -f "${PWD}/${1}" ]; then printf "\n ! tarball doesn't exist, exiting.\n\n";		exit 1  
+fi &&
 
-msshelp(){
- printf "\nusage:\t ./make-mssx86 (kernel tarball) (compiler) (gnu deblob) (ck patchset)\n\n"
- printf "kernel tarball\t: location of kernel source tarball.\n"
- printf "compiler\t: gcc or clang.\n"
- printf "gnu deblob\t: yes or no.\n"
- printf "ck patchset\t: yes or no.\n\n"
-}
-
-case $1 in
- -h|--help) msshelp; exit 0;;
-esac
-
-### check if variables are set
-if	[ -z $1 ]; then printf "\n ! no kernel source tarball selected, exiting.\n";		msshelp; exit 1
-elif	[ -z $2 ]; then printf "\n ! (gcc/clang) no compiler selected, exiting.\n";		msshelp; exit 1
-elif	[ -z $3 ]; then printf "\n ! (yes/no) deblobbing option not specified, exiting.\n";	msshelp; exit 1
-elif	[ -z $4 ]; then printf "\n ! (yes/no) ck patchset option not specified, exiting.\n";	msshelp; exit 1
-fi
-
-### define kernel and patch directories
-kerdir="$PWD/"$(echo $1 | sed 's/\.tar\.xz//;s/\.tar\.bz2//;s/\.tgz//')""
+# b >> script variables
+kerdir="/mss/work/"$(echo $1 | sed 's/\.tar\.xz//')""
 patchdir="/mss/repo/pkg-management/build-configs/kernel/patches"
 
-###a> unpack kernel and cd to source
-printf " * unpacking kernel source.\n"
-tar xf $1 &&
-printf " + done.\n\n"
-cd "${kerdir}"	&&
+ker_tarball="${1}"
+ccomp="${2}"
+deblob="${3}"
+ckset="${4}"
 
-###b> copy config from /boot/config
-printf " * copying kernel config.\n"	&&
-cp /boot/config "${kerdir}"/.config	&&
-printf " + done.\n\n"			&&
+# c >> functions
+apply_clang(){
+ printf " * building with clang\n * applying clang patches."		&&
+  if [ -f "${patchdir}/clang-linux-x86.patch" ]
+   then patch -p1 < "${patchdir}"/clang-linux-x86.patch 2>&1 > /dev/null
+   else "\n ! clang patch not found in patchdir, exiting.\n"; exit 1
+  fi									&&
+ printf "\t\t --> done.\n"
+}
 
-###c> set the compiler
-case $2 in
- clang)
-  clang --version 2> /dev/null || printf " ! clang not found, exiting.\n" && exit 1
-  memepiler="clang"							&&
-  printf " * building with clang\n\n * applying clang patches.\n"	&&
-  patch -p1 < "${patchdir}"/clang-linux-x86.patch 2>&1 > /dev/null	&&
-  printf " + done.\n\n"
- ;;
- gcc)
-  memepiler="gcc"
-  printf " * building with gcc.\n\n"
- ;;
- *)
-  printf " ! compiler option not recognized, exiting.\n"; exit 1
- ;;
-esac &&
+apply_deblob(){
+ printf " * applying gnu deblob patches."				&&
+  if [ -f "${patchdir}/5.2-deblob-gnu.patch" ]
+   then patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch 2>&1 > /dev/null
+   else "\n ! gnu deblob not found in patchdir, exiting.\n"; exit 1
+  fi									&&
+ printf "\t\t --> done.\n"						&&
 
-###d> apply gnu deblob if needed
-if [ "${3}" = "yes" ]
- then 
-  printf " * applying gnu deblob patches.\n"				&&
-  patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch 2>&1 > /dev/null	&&
-  printf " + done.\n\n"							&&
-  printf " * removing gnu extraversion entry.\n"			&&
+ printf " * removing gnu extraversion entry."				&&
   sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile		&&
-  printf " + done.\n\n"							&&
-  printf " * applying freedo logo.\n"					&&
-  install -m644 -t "${kerdir}"/drivers/video/logo \
-  "${patchdir}"/freedo-logo/logo_linux_{clut224.ppm,vga16.ppm,mono.pbm} &&
-  printf " + done.\n\n"
- else
-  printf " * not applying gnu deblob patch.\n\n"
-fi &&
+ printf "\t --> done.\n"						&&
 
-###e> apply ck patchset if needed
-if [ "${4}" = "yes" ]
- then
-  printf " * applying ck patchset.\n"					&&
-  patch -p1 < "${patchdir}"/ck-patches-5.2.patch 2>&1 > /dev/null	&&
-  printf " * removing ck extraversion entry.\n"				&&
+ printf " * applying freedo logo."					&&
+  if [ -d "${patchdir}/freedo-logo" ]
+   then install -m644 -t "${kerdir}"/drivers/video/logo \
+    "${patchdir}"/freedo-logo/logo_linux_{clut224.ppm,vga16.ppm,mono.pbm}
+   else "\n ! freedo logo not found in patchdir, exiting.\n"; exit 1
+  fi									&&
+ printf "\t\t --> done.\n"
+}
+
+apply_ck(){
+ printf " * applying ck patchset."					&&
+  if [ -f "${patchdir}/ck-patches-5.2.patch" ]
+   then patch -p1 < "${patchdir}"/ck-patches-5.2.patch 2>&1 > /dev/null
+   else "\n ! ck patchset not found in patchdir, exiting.\n"; exit 1
+  fi									&&
+ printf "\t\t --> done.\n"						&&
+
+ printf " * removing ck extraversion entry."				&&
   sed 's/CKVERSION = -ck1/CKVERSION =/' -i Makefile			&&
-  printf " + done.\n\n"
+ printf "\t --> done.\n"
+}
+
+# d >> action
+# d1 >> unpack kernel.
+printf " * unpacking kernel source."	&&
+ tar xf "${ker_tarball}"		&&
+printf "\t\t --> done.\n"		&&
+ cd "${kerdir}"				&&
+
+# d2 >> cp kernel config.
+printf " * copying kernel config."	&&
+ cp /boot/config "${kerdir}"/.config	&&
+printf "\t\t --> done.\n"		&&
+
+# d3 >> set compiler
+if [ "${ccomp}" = "clang" ]
+ then
+  clang --version 2> /dev/null || printf " ! clang not found, exiting.\n" && exit 1
+  apply_clang
  else
-  printf " * not applying the ck patchset patch.\n\n"
+  printf " * building with gcc.\n"
 fi &&
 
-###f> run menuconfig if wanted
-printf " * run menuconfig for manual config? (y/n): " &&
+# d4 >> apply deblob
+if [ "${deblob}" = "yes" ]
+ then apply_deblob
+ else printf " * not applying gnu deblob patch.\n"
+fi &&
+
+# d5 >> apply ck patchset
+if [ "${ckset}" = "yes" ]
+ then apply_ck
+ else printf " * not applying the ck patchset.\n"
+fi &&
+
+# d6 >> run menuconfig
+printf "\n * run menuconfig for manual config? (y/n): "	&&
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
 then
- printf " * running menuconfig.\n"		&&
- if [ "${memepiler}" = "clang" ]
-  then make CC=clang HOSTCC=clang menuconfig
-  else make menuconfig
- fi						&&
- printf " + done.\n"
+ printf " * running menuconfig."			&&
+  if [ "${ccomp}" = "clang" ]
+   then make CC=clang HOSTCC=clang menuconfig
+   else make menuconfig
+  fi							&&
+ printf "\t\t --> done.\n"
 else
- printf " * not running menuconfig.\n"
-fi &&
+ printf " * not running menuconfig.\n\n"
+fi							&&
 
-###g> run make if wanted
-printf " * run make automatically? (y/n): "	&&
-read answermake
-
-if [ "$answermake" != "${answermake#[Yy]}" ]
-then
- printf " * running make.\n"			&&
- if [ "${memepiler}" = "clang" ]
+# d7 >> run make
+printf " * running make.\n"				&&
+printf " * do tail -f /tmp/kernel-build.log to view."	&&
+ if [ "${ccomp}" = "clang" ]
   then
-   make CC=clang HOSTCC=clang -j$(($(nproc)+1)) &&
+   make CC=clang HOSTCC=clang -j$(($(nproc)+1)) \
+	   &> /tmp/kernel-build.log			&&
    doas -- make CC=clang HOSTCC=clang modules_install
   else
-   make -j$(($(nproc)+1))
+   make -j$(($(nproc)+1)) \
+	   &> /tmp/kernel-build.log			&&
    doas -- make modules_install
- fi
-fi &&
+ fi 							&&
+printf "\t\t --> done.\n"				&&
 
-###h> run kinst from mssutils if wanted
-printf " * all is well and done.\n * run kinst to install the kernel? (y/n): "
+# d8 >> run kinst
+printf " * run kinst to install the kernel? (y/n): "	&&
 read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  then doas -- /mss/bin/kinst
  else printf " * not installing the built kernel."
-fi
+fi							&&
+
+printf "\n + kernel build is complete.\n"		&&
+exit 0
