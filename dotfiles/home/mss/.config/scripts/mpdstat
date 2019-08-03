@@ -74,10 +74,10 @@ fi
 echo "${state}"
 
 # i3blocks interaction
-#case $BLOCK_BUTTON in
-# 1) mpc next		;;
-# 2) mpc toggle		;;
-# 3) mpc prev		;;
-# 4) mpc volume +10	;;
-# 5) mpc volume -10	;;
-#esac
+case $BLOCK_BUTTON in
+ 1) mpc next		;;
+ 2) mpc toggle		;;
+ 3) mpc prev		;;
+ 4) mpc volume +10	;;
+ 5) mpc volume -10	;;
+esac

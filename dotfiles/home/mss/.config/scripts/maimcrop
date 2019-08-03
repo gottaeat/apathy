@@ -1,10 +1,14 @@
 #!/bin/env bash
-dat=$(date "+%d-%m-%Y__%I_%M_%S_%P")
-loc="/home/mss/screenshots/grabs/grab-$dat.png"
+dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimcrop")
+loc="/home/mss/screenshots/grabs/$dat.png"
 
 if [ -z "$1" ]
- then maim -s -u > $loc	&& export savloc="$loc"
- else maim -s -u > $1	&& export savloc="$1"
+ then
+  export savloc="$loc"
+  maim -s -u > $loc || rm -rfv $savloc && exit 1
+ else
+  export savloc="$1"
+  maim -s -u > $1 || rm -rfv $savloc && exit 1
 fi &&
 
-echo " * screen grabbed to: ${savloc}."
+printf " * screen grabbed to: ${savloc}.\n"
