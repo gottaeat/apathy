@@ -127,7 +127,7 @@ colors {
 ### personal binds ###
 ##general binds
 #> generic
-bindsym	$mod+p				exec scrot -e 'mv $f ~/screenshots/'
+bindsym	$mod+p				exec /home/mss/.config/scripts/maimscrot
 bindsym $mod+Shift+p			exec /home/mss/.config/scripts/maimclip
 bindsym $mod+o				exec /home/mss/.config/scripts/maimcrop
 bindsym	$mod+d				exec --no-startup-id dmenu_run -b
