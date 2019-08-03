@@ -12,7 +12,7 @@ export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"
 
 # compile bits
-export MAKEFLAGS="-j 3"
+export MAKEFLAGS="V=0 -j 3"
 
 # default programs
 export EDITOR="/usr/bin/vim"
@@ -21,6 +21,7 @@ export GPG_TTY=$(tty)
 
 # xdg stuff
 export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
 # from blfs book
@@ -38,7 +39,7 @@ COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="dd.mm.yyyy"
 
 ## plugins
-plugins=(git vi-mode)
+plugins=(vi-mode)
 source $ZSH/oh-my-zsh.sh
 
 
@@ -58,7 +59,8 @@ alias mount="mount -v"
 ##a literal shortcuts
 alias nc="ncmpcpp"
 alias w="pwd"
-alias fb="fbterm-bg"
+alias s="startx --"
+alias da="doas --"
 alias l="ls -Askh --color=tty"
 alias ll="ls -Askhw1 --color=tty"
 alias lll="ls -la"
@@ -66,19 +68,21 @@ alias lll="ls -la"
 alias td="tmux detach"
 alias ta="tmux attach"
 alias tk="tmux kill-session"
-##c sound
+##c git
+alias gs="git status -s"
+alias gpo="git push origin master"
+alias grs="git reset HEAD~1 --soft"
+##d sound
 alias atog="amixer set Master toggle"
 alias mtog="mpc toggle"
-##d transmission
+##e transmission
 alias trs="transmission-remote -n mss:mss -l"
 alias tra="transmission-remote -n mss:mss -a"
-##e dirs
+##f dirs
+alias cdw="cd /mss/work"
+alias cdr="cd /mss/repo"
+alias cds="cd /mnt/mss/stuff"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
-
-
-### fbterm tmux autostart
-if [ "$yes_fbterm" = "1" ]; then
- [ -z "$(pidof tmux)" ] && exec tmux -2
-fi
+alias 6c="TERM=screen-256color 6cord -c /opt/6cord/6cord.toml"

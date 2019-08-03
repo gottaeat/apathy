@@ -1,6 +1,6 @@
 #!/bin/env bash
 # read xresources
-xrdb .Xresources
+#xrdb .Xresources
 
 # fonts
 xset fp+ /usr/share/fonts/

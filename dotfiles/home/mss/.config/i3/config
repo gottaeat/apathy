@@ -11,15 +11,10 @@ bindsym $mod+Left		focus left
 bindsym $mod+Down		focus down
 bindsym $mod+Up			focus up
 bindsym $mod+Right		focus right
-bindsym $mod+h			focus left
-bindsym $mod+j			focus down
-bindsym $mod+k			focus up
-bindsym $mod+l			focus right
 bindsym $mod+Shift+Left		move left
 bindsym $mod+Shift+Down		move down
 bindsym $mod+Shift+Up		move up
 bindsym $mod+Shift+Right	move right
-bindsym $mod+Shift+h		split h
 bindsym $mod+v			split v
 bindsym $mod+f			fullscreen toggle
 bindsym $mod+s			layout stacking
@@ -35,10 +30,6 @@ bindsym Left	resize shrink width	1 px or 1 ppt
 bindsym Down	resize grow height	1 px or 1 ppt
 bindsym Up	resize shrink height	1 px or 1 ppt
 bindsym Right	resize grow width	1 px or 1 ppt
-bindsym h	resize shrink width	1 px or 1 ppt
-bindsym j	resize grow height	1 px or 1 ppt
-bindsym k	resize shrink height	1 px or 1 ppt
-bindsym l	resize grow width	1 px or 1 ppt
 bindsym Return				mode "default"
 bindsym Escape				mode "default"
 bindsym $mod+r				mode "default"
@@ -48,16 +39,16 @@ bindsym $mod+r mode "resize"
 
 ### workspace settings ###
 # workspace names
-set $ws1	1:I
-set $ws2	2:II
-set $ws3	3:III
-set $ws4	4:IV
-set $ws5	5:V
-set $ws6	6:VI
-set $ws7	7:VII
-set $ws8	8:VIII
-set $ws9	9:IX
-set $ws10	10:X
+set $ws1	1:a
+set $ws2	2:b
+set $ws3	3:c
+set $ws4	4:d
+set $ws5	5:e
+set $ws6	6:f
+set $ws7	7:g
+set $ws8	8:h
+set $ws9	9:j
+set $ws10	10:k
 
 # assign windows to specific workspaces
 assign [class="Pale moon"]		$ws2
@@ -90,17 +81,16 @@ bindsym $mod+Shift+0	move container to workspace $ws10
 
 ### window style ###
 # font
-#font pango:euphon 9
 font pango:vanilla 7
 
 # window color scheme
 client.focused		#000000	#000000	#000000	#000000
 client.unfocused	#000000	#000000	#000000	#000000
-client.focused_inactive	#000000	#464646	#000000	#000000
+client.focused_inactive	#000000	#000000	#000000	#000000
 client.urgent		#000000	#000000	#000000	#000000
 
 # meme gaps
-gaps inner 10
+gaps inner 0
 gaps outer 0
 
 # remove window titles
@@ -121,9 +111,9 @@ bar {
   separator_symbol "|"
 
 colors {
-  background	#101010
-  statusline	#ffffff
-  separator	#464646
+  background		#000000
+  statusline		#ffffff
+  separator		#6d7373
 
   focused_workspace	#464646	#000000	#fefefe
   active_workspace	#fefefe	#000000	#fefefe
@@ -138,15 +128,14 @@ colors {
 ##general binds
 #> generic
 bindsym	$mod+p				exec scrot -e 'mv $f ~/screenshots/'
-bindsym $mod+Shift+p			exec maim -s -u | xclip -selection clipboard -t image/png
+bindsym $mod+Shift+p			exec /home/mss/.config/scripts/maimclip
 bindsym $mod+o				exec /home/mss/.config/scripts/maimcrop
 bindsym	$mod+d				exec --no-startup-id dmenu_run -b
 bindsym $mod+Shift+d			exec /home/mss/.config/i3/dmenu/menuboi 
 bindsym	$mod+x				exec urxvt -e vifm 
 #> kb specific
-bindsym	XF86Sleep			exec xtrlock
-bindsym XF86HomePage			exec mightyluna
-bindsym	XF86Calculator			exec feh --bg-fill --randomize		/home/mss/cust/chan/*
+bindsym	Pause				exec xtrlock
+bindsym	XF86Calculator			exec feh --bg-fill --randomize		/home/mss/cust/chan/new2
 bindsym	$mod+XF86Calculator		exec /home/mss/.fehb.def
 bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill			/home/mss/cust/other/black.png
 
@@ -171,3 +160,4 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 exec					compton --vsync opengl
 exec_always				xrandr --output VGA-1 --primary
 exec --no-startup-id			cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
+exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'

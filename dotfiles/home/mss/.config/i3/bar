@@ -3,9 +3,10 @@ command=/usr/libexec/i3blocks/$BLOCK_NAME
 separator_block_width=10
 markup=none
 
-[focused window]
-command=xtitle -t 30 -s
-interval=persist
+[disk]
+command=~/.config/scripts/disk
+interval=1
+color=#e3e3e3
 
 [bw]
 command=~/.config/scripts/bw
@@ -26,12 +27,6 @@ interval=1
 color=#e3e3e3
 separator=false
 separator_block_width=8
-
-[fan]
-command=~/.config/scripts/fan
-interval=1
-color=#e3e3e3
-separator=false
 
 [memory]
 command=~/.config/scripts/mem
@@ -73,22 +68,10 @@ signal=1
 command=cat /etc/hostname
 interval=once
 color=#ababab
-separator_block_width=2
+separator_block_width=4
 separator=false
-
-[on]
-command=printf 'on'
-interval=once
-color=#ffffff
-separator_block_width=2
-separator=false
-
-[kernel]
-command=uname -r
-interval=once
-color=#525252
 
 [uptime]
 command=~/.config/scripts/uptime
 interval=60
-color=#ababab
+color=#747474
