@@ -468,6 +468,7 @@
 [r]	* windowmaker
 [r]	* openbox
 [r]	* lemonbar		--> https://github.com/krypt-n/bar
+[d]	* dash
 ```
 ---------------------------------------------------------
 #### python:

@@ -23,7 +23,7 @@ mssLinux in its current state is all free software including the kernel and the 
 $ [master][mssLinux]: pkg
 
  * total partition size	: 2500.27mib
- * local package count	: 376
+ * local package count	: 377
  * removed packages	: 47
 
 ```
