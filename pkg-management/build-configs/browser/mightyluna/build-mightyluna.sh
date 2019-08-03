@@ -19,6 +19,12 @@ repodir="/mss/repo/pkg-management/build-configs/browser/mightyluna"	&&
 srcdir=/mss/work/UXP							&&
 
 # d >> action
+# d0 >> die if patch fails
+patch_faildie(){
+printf "\n ! patching failed, exiting with 1.\n\n"			&&
+exit 1
+}
+
 # d1 >> extract tarball
 printf " * extracting ${1}."						&&
 tar xf $1								&&
@@ -33,12 +39,12 @@ cd "${srcdir}"								&&
 # d3 >> apply mightyluna branding
 printf " * applying mightyluna branding patch."				&&
 patch -p1 < "${repodir}"/0001-mightyluna-branding-28.6.1.patch \
-  &> /tmp/mightyluna-build.log						&&
+ &>> /tmp/mightyluna-build.log || patch_faildie				&&
 printf "\t--> done.\n"							&&
 
 # d4 >> copy mozconfig
 printf " * copying mozconfig."						&&
-cp "${repodir}"/mightyluna-mozconfig-syslibs.config \
+cp "${repodir}"/mightyluna-mozconfig.config \
  "${srcdir}"/mozconfig							&&
 printf "\t\t\t--> done.\n"						&&
 
