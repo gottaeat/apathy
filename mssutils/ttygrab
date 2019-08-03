@@ -1,6 +1,6 @@
 #!/bin/env bash
-dat=$(date "+%d-%m-%Y__%I_%M_%S_%P")
-loc="/home/mss/screenshots/tty/tty-$dat.png"
+dat=$(date "+%Y-%m-%d_%I-%M-%S%P_ttygrab"))
+loc="/home/mss/screenshots/tty/$dat.png"
 
 grab_tty(){ fbcat > /tmp/tty.ppm ;}
 

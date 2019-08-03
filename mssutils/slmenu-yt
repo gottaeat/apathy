@@ -1,0 +1,16 @@
+#!/bin/env bash
+if	[ -z $1 ]; then printf " ! no youtube url given.\n";		exit 1
+elif	[ -z $2 ]; then printf " ! no video output selected.\n";	exit 1
+fi
+
+youtube-dl --list-format ${1} | grep "^[0-9]" > /tmp/ytquality.tmp
+
+qlines=$(wc -l /tmp/ytquality.tmp)
+quality=$(cat /tmp/ytquality.tmp | slmenu -b -l ${qlines} -p " * select stream quality:" | awk '{print $1}')
+
+case $2 in
+ tty)	mpv_vo=drm;;
+ xorg)	mpv_vo=gpu;;
+esac
+
+mpv "${1}" --ytdl-format=${quality} --vo=${mpv_vo}

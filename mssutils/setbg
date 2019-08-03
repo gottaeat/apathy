@@ -1,0 +1,2 @@
+#!/bin/env bash
+xwinwrap -g 1366x768 -ni -s -b -ov -- mpv --no-audio --loop -wid WID $1

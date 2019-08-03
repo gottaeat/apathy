@@ -1,0 +1,17 @@
+#!/bin/env bash
+rm -rfv  /var/log/Xorg*			&&
+
+echo > /var/log/auth.log		&&
+echo > /var/log/boot.log		&&
+echo > /var/log/daemon.log		&&
+echo > /var/log/iptables.log		&&
+echo > /var/log/kern.log		&&
+echo > /var/log/lastlog			&&
+echo > /var/log/mail.log		&&
+echo > /var/log/sys.log			&&
+echo > /var/log/user.log		&&
+
+rm -rfv /var/run/doas/*			&&
+echo > /var/run/bootlog			&&
+
+printf " * done.\n"
