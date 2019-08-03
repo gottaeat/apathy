@@ -3,8 +3,8 @@
 # system wide aliases and functions should go in /etc/bashrc.
 
 # path
-export PATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
-export ROOTPATH="/opt/rustc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
+export ROOTPATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin"
 
 # l18n stuff
 export LANG="en_US.utf8"
