@@ -1,2 +1,2 @@
-#!/bin/env bash
+#!/bin/dash
 uptime -p | sed 's/up//g;s/ //g;s/,//g;s/years/y /;s/year/y /;s/days/d /;s/day/d /;s/hours/h /;s/hour/h /;s/minutes/m /;s/minute/m /'

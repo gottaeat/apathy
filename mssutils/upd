@@ -1,12 +1,27 @@
-#!/bin/env bash
-if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1; fi
+#!/bin/dash
+if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
 
-echo " * running /usr/sbin/make-ca -g." &&
-make-ca -g > /dev/null 2>&1 &&
-echo " * running /usr/sbin/update-pciids." &&
-update-pciids > /dev/null 2>&1 &&
-echo " * running /usr/sbin/ntpd -q -g." &&
-ntpd -q -g > /dev/null 2>&1 &&
-echo " * running the usbutils thingy" &&
-wget http://www.linux-usb.org/usb.ids -O /usr/share/hwdata/usb.ids > /dev/null 2>&1 &&
-echo " ! updated succesfully."
+dieupd() {
+ printf "\t--> failed\n\n ! update failed, exiting.\n"
+ exit 1
+}
+
+printf "\n * running /usr/sbin/make-ca -g."	&&
+make-ca -g >/dev/null 2>&1 || dieupd		&&
+printf "\t--> done\n"				&&
+
+printf " * running /usr/sbin/update-pciids."	&&
+update-pciids > /dev/null 2>&1	|| dieupd	&&
+printf "\t--> done\n"
+
+printf " * running /usr/sbin/ntpd -q -g."	&&
+ntpd -q -g > /dev/null 2>&1 || dieupd		&&
+printf "\t--> done\n"
+
+printf " * running the usbutils thingy."	&&
+wget http://www.linux-usb.org/usb.ids -O \
+/usr/share/hwdata/usb.ids > /dev/null 2>&1 \
+|| dieupd 					&&
+printf "\t\t\--> done\n\n"			&&
+
+printf " + updated succesfully.\n\n"

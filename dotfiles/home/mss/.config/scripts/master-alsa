@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/dash
 masstat=$(amixer -D default get Master | tail -1 | sed 's/\[//g;s/\]//g')
 mmchk=$(echo $masstat | awk '{print $6}')
 

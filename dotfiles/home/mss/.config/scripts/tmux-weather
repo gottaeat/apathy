@@ -1,2 +1,2 @@
-#!/bin/env bash
+#!/bin/dash
 while true; do echo $(/home/mss/.config/scripts/weather-local); sleep 300; done

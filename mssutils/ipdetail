@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/dash
 if [ -z "$1" ]
  then stats=$(curl -s "https://tools.keycdn.com/geo.json" | jq '.data | .geo | .[]' | sed 's/\"//g')
  else stats=$(curl -s "https://tools.keycdn.com/geo.json?host=$1" | jq '.data | .geo | .[]' | sed 's/\"//g')
@@ -18,4 +18,4 @@ mpost=$(pstat | awk 'NR==11')
 mdate=$(pstat | awk 'NR==18')
 mcode=$(pstat | awk 'NR==7')
 
-echo -e  " * ip   \t: $mipad\n * host \t: $mhost\n * rdns \t: $mrdns\n * isp  \t: $mispa\n * country \t: $mcoun ($mcode) ($mcont)\n * city \t: $mcity ($mpost)\n * timezone\t: $mtime ($mdate)"
+printf "\n * ip   \t: $mipad\n * host \t: $mhost\n * rdns \t: $mrdns\n * isp  \t: $mispa\n * country \t: $mcoun ($mcode) ($mcont)\n * city \t: $mcity ($mpost)\n * timezone\t: $mtime ($mdate)\n\n"

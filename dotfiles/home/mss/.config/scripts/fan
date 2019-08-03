@@ -1,4 +1,3 @@
-#!/bin/env bash
+#!/bin/dash
 sofast=$(sensors | grep fan2 | sed 's/fan2:                  //g;s/ RPM  (min =    0 RPM)//g')
-
 echo ${sofast}rpm

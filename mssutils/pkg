@@ -1,17 +1,16 @@
-#!/bin/env bash
-
+#!/bin/dash
 rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
 count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
 
 case $1 in
  *rmv*|*removed*)
   rlist=$(grep "\[r\]" /mss/packages.md | sed 's/~//g' | awk '{print "\t"$3}' | sort -s)
-  echo -e "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n" | less
+  printf "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n\n" | less
  ;;
 
  *inst*|*installed*)
   ilist=$(cat /mss/raw-packages.txt | awk '{print "\t"$1}' | sort -s)
-  echo -e "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n" | less
+  printf "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n\n" | less
  ;;
  *)
   tsize=$(df | grep root | awk '{print $3/1024"mib"}')
@@ -21,7 +20,7 @@ case $1 in
 
   if [ -z "$gitdf_pre" ]
    then gitdf="no difference."
-   else gitdf=$(echo -e "\n\n$gitdf_pre")
+   else gitdf=$(printf "\n\n$gitdf_pre\n")
   fi
 
   if [ -z "$gitstat_pre" ]
@@ -29,6 +28,6 @@ case $1 in
    else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
   fi
 
-  echo -e "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n"
+  printf "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n\n"
   ;;
 esac

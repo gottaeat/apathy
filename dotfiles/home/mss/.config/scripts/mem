@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/dash
 freemem=$(echo "$(free  | awk '{print $7}' | head -2 | tail -1) / 1024" | bc -l | cut -c-4)
 
 echo "${freemem}m"

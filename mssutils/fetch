@@ -1,5 +1,5 @@
-#!/bin/env bash
-echo -e "  _______ _______ _______
+#!/bin/dash
+printf "  _______ _______ _______
  |   |   |     __|     __|
  |       |__     |__     |
  |__|_|__|_______|_______|\n"
@@ -8,10 +8,9 @@ dist=$(grep "ID" "/etc/lsb-release" | sed 's/DISTRIB_ID\=//g;s/\"//g')
 host=$(cat /etc/hostname)
 cpu=$(lscpu | grep "Model name" | sed -r 's/Model name://g;s/^ *//g;s/CPU //g;s/\s+\S+$//;s/\s+\S+$//' | cut -d' ' -f2-)
 freq_old=$(lscpu | grep "CPU MHz:" | sed 's/CPU MHz://g;s/[.].*$//;s/[[:blank:]]//g')
-freq=$(echo ${freq_old} / 1000 | bc -l | cut -c-5)
+freq=$(printf "${freq_old} / 1000\n" | bc -l | cut -c-5)
 kern=$(uname -r)
 upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minutes\?/m/')
-tot=$(free -h | sed -n '2p' | awk '{print $2}' | sed 's/Gi//g')
-use=$(free -h | sed -n '2p' | awk '{print $3}' | sed 's/Gi//g')
+mem=$(free -h | sed -n '2p' | awk '{print $3"/"$2}')
 
-echo -e " * host: ${host}\n * dist: ${dist}\n * kern: ${kern}\n * sh  : $SHELL\n * upt : ${upt}\n * cpu : ${cpu} @ ${freq}GHz\n * mem : ${use}/${tot}G\n"
+printf "\n * host\t: ${host}\n * dist\t: ${dist}\n * kern\t: ${kern}\n * sh\t: $SHELL\n * upt\t: ${upt}\n * cpu\t: ${cpu} @ ${freq}GHz\n * mem\t: ${mem}\n\n"

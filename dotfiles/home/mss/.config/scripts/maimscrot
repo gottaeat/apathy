@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/dash
 dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
 loc="/home/mss/screenshots/entire/$dat.png"
 

@@ -1,20 +1,17 @@
-#!/bin/env bash
-if [ -z "$1" ]
- then echo " ! no ovpn config selected."
- exit 1;
-fi
+#!/bin/dash
+if [ -z "$1" ]; then printf "\n ! no ovpn config selected, exiting.\n\n"; exit 1; fi
 
-echo " * getting pass."						&&
+printf " * getting pass."						&&
 passboi=$(curl -s https://freevpn.me/accounts	\
  | grep -o 'Password.*'				\
- | awk -v FS="(Password:</b> |</li>)" '{print $2}')		&&
+ | awk -v FS="(Password:</b> |</li>)" '{print $2}')			&&
 
-echo " * setting pass."						&&
-echo "freevpn.me" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
-echo "${passboi}" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
+printf " * setting pass.\n"						&&
+printf "freevpn.me\n" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
+printf "${passboi}\n" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
 
-echo " * pass set, auth.txt:"					&&
-cat /mnt/mss/stuff/techy-bits/openvpn/auth.txt			&&
+printf " * pass set, auth.txt:\n"					&&
+cat /mnt/mss/stuff/techy-bits/openvpn/auth.txt				&&
 
-echo " * connecting to $1"					&&
+printf " * connecting to $1\n"						&&
 doas -- openvpn --config $1

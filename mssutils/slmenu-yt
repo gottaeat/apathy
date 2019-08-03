@@ -1,6 +1,6 @@
-#!/bin/env bash
-if	[ -z $1 ]; then printf " ! no youtube url given.\n";		exit 1
-elif	[ -z $2 ]; then printf " ! no video output selected.\n";	exit 1
+#!/bin/dash
+if	[ -z $1 ]; then printf "\n ! no youtube url given, exiting.\n\n";	exit 1
+elif	[ -z $2 ]; then printf "\n ! no video output selected, exiting.\n\n";	exit 1
 fi
 
 youtube-dl --list-format ${1} | grep "^[0-9]" > /tmp/ytquality.tmp

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/dash
 capstat=$(amixer -D default get Capture | tail -1 | sed 's/\[//g;s/\]//g')
 cmchk=$(echo $capstat | awk '{print $7}')
 

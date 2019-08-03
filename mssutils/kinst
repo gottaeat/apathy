@@ -1,11 +1,11 @@
-#!/bin/env bash
-if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1
-elif [ ! -e $PWD/arch/x86/boot/bzImage ]; then echo " ! bzImage doesn't exist."; exit 1
-elif [ ! -e $PWD/System.map ]; then echo " ! System.map doesn't exist."; exit 1
-elif [ ! -e $PWD/.config ]; then echo " ! kernel .config doesn't exist."; exit 1
+#!/bin/dash
+if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1
+elif [ ! -e $PWD/arch/x86/boot/bzImage ]; then printf "\n ! bzImage doesn't exist, exiting.\n\n"; exit 1
+elif [ ! -e $PWD/System.map ]; then printf "\n ! System.map doesn't exist, exiting.\n\n"; exit 1
+elif [ ! -e $PWD/.config ]; then printf "\n ! kernel .config doesn't exist, exiting.\n\n"; exit 1
 fi
 
 cp -iv arch/x86/boot/bzImage	/boot/vmlinuz		&&
 cp -iv System.map		/boot/System.map	&&
 cp -iv .config			/boot/config		&&
-echo " * done."
+printf " * done.\n"

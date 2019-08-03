@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/dash
 # check if mpd is running
 if [ $(pidof mpd) ]
  then mpd_running=1

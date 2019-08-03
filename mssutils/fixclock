@@ -1,22 +1,22 @@
-#!/mss/bin/dash
-if [ "$(id -u)" -ne 0 ]; then echo " ! this script must be run by root."; exit 1; fi
+#!/bin/dash
+if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
 
 currdns=$(cat /etc/resolv.conf | tail -1)
 case $currdns in
  *edns0*)
-  echo "using dnscrypt."				&&
+  printf "using dnscrypt.\n"				&&
   /etc/init.d/dnscrypt-proxy stop			&&
   cp -v /etc/resolv.conf /etc/resolv.conf.dnscrypt	&&
   cp -v /etc/resolv.conf.flare /etc/resolv.conf		&&
-  ntpd -q -g > /dev/null				&&
+  ntpd -q -g > /dev/null 2>&1				&&
   cp -v /etc/resolv.conf.dnscrypt /etc/resolv.conf	&&
   /etc/init.d/dnscrypt-proxy start			&&
-  echo "done."
+  printf "done.\n"
   ;;
  *)
-  echo "not using dnscrypt"				&&
-  ntpd -q -g > /dev/null				&&
-  echo "done."
+  printf "not using dnscrypt.\n"			&&
+  ntpd -q -g > /dev/null 2>&1				&&
+  printf "done.\n"
   ;;
 esac
 
