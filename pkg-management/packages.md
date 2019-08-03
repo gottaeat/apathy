@@ -351,8 +351,8 @@
 [r]	** ~~ gtkmm-2.24.5 ~~		--> removed, bloat
 [r]	*** ~~ pangomm-2.42.0 ~~	--> removed, bloat
 
-[d]	* scrot
-[d]	** giblib
+[r]	* scrot
+[r]	** giblib
 
 [d]	* xtrlock
 

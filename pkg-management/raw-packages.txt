@@ -239,8 +239,6 @@ xcb-util-xrm
 startup-notification
 i3blocks
 dmenu
-scrot
-giblib
 xtrlock
 6cord			--> replaced discord
 youtube-dl
