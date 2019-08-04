@@ -19,12 +19,12 @@ ruby-2.6.1
 yaml-0.2.1
 berkeleydb-5.3.28
 tcl-8.6.9
-wget-1.20.1
+wget-1.20.3
 pcre-8.42
 libpsl-0.20.2
 libidn2-2.1.1
 libunistring-0.9.10
-gnutls-3.6.6
+gnutls-3.6.9
 nettle-3.4.1
 iptables-1.8.2
 dosfstools-4.1
@@ -41,9 +41,9 @@ io-socket-ssl-2.062
 net-ssleay-1.86_06
 uri-1.76
 git-2.20.1
-curl-7.64.0
+curl-7.65.3
 c-ares-1.15.0
-libssh2-1.8.0
+libssh2-1.9.0
 openssh-7.9p1
 nghttp2-1.36.0
 boost-1.69.0

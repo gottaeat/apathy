@@ -30,12 +30,12 @@
 [d]			******* tcl-8.6.9
 ```
 ```
-[d]	* wget-1.20.1
+[d]	* wget-1.20.3
 [d]	** pcre-8.42
 [d]	** libpsl-0.20.2
 [d]	*** libidn2-2.1.1
 [d]		**** libunistring-0.9.10
-[d]	** gnutls-3.6.6
+[d]	** gnutls-3.6.9		--> updated from 3.6.6
 [d]	*** nettle-3.4.1
 
 [d]	* iptables-1.8.2	--> configured with a proper basic-ish ruleset
@@ -60,9 +60,9 @@
 [d]	*** uri-1.76
 
 [d]	* git-2.20.1				--> --enable-jit
-[d]	** curl-7.64.0
+[d]	** curl-7.65.3				--> updated from 7.64
 [d]		*** c-ares-1.15.0
-[d]		*** libssh2-1.8.0
+[d]		*** libssh2-1.9.0		--> updated from 1.8.0
 [d]			**** openssh-7.9p1	--> installed it, no config or init script.
 [d]		*** nghttp2-1.36.0
 [d]			**** boost-1.69.0
