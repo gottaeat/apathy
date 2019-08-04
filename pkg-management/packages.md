@@ -54,7 +54,7 @@
 
 [d]	* pciutils-3.6.2
 
-[d]	* ntp-4.2.8p12
+[d]	* ntp-4.2.8p12				--> updated to 4.2.8p13
 [d]	** io-socket-ssl-2.062
 [d]	*** net-ssleay-1.86_06
 [d]	*** uri-1.76
@@ -86,7 +86,7 @@
 
 [d]	* fontconfig
 [d]	** freetype
-[d]	*** libpng
+[d]	*** libpng-1.6.37	--> updated from 1.6.36
 [d]	*** harfbuzz
 [d]		**** cairo-1.16.0
 [d]			***** pixman-0.38.0
@@ -369,7 +369,7 @@
 
 [d]	* ffmpeg-4.1.1
 [d]	** lame-3.100
-[d]	** OpenJPEG-2.3.0
+[d]	** openjpeg-2.3.1	--> updated from 2.3.0
 
 [r]	* ~~ neofetch ~~	--> removed, mss-fetch ftw.
 [d]	* numlockx
@@ -420,7 +420,7 @@
 [d]	* imagemagick-7.0.8-27
 [d]	** little-cms-2.9
 
-[d]	* irssi
+[d]	* irssi-1.2.1		--> updated from 1.2.0
 [d]	* vifm
 
 [d]	* GnuPG-2.2.15		--> updated to 2.2.17
@@ -491,8 +491,8 @@
 [d] mpfr-4.0.2
 [d] mpc-1.1.0
 [d] shadow-4.6
-[d] ~~gcc-8.2.0~~	--> replaced with gcc-9.1.0
-[d] bzip2-1.0.6
+[d] gcc-9.1.0		--> updated from 8.2.0
+[d] bzip2-1.0.8		--> updated from 1.0.6
 [d] pkg-config-0.29.2
 [d] ncurses-6.1
 [d] attr-2.4.48

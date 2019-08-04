@@ -36,7 +36,7 @@ which-2.21
 unrar-5.7.2
 sysstat-12.1.2
 pciutils-3.6.2
-ntp-4.2.8p12
+ntp-4.2.8p13
 io-socket-ssl-2.062
 net-ssleay-1.86_06
 uri-1.76
@@ -60,7 +60,7 @@ xcb-proto-1.13
 libxcb
 fontconfig
 freetype
-libpng
+libpng-1.6.37
 harfbuzz
 cairo-1.16.0
 pixman-0.38.0
@@ -247,7 +247,7 @@ libconfig
 asciidoc2
 ffmpeg-4.1.1
 lame-3.100
-OpenJPEG-2.3.0
+OpenJPEG-2.3.1
 numlockx
 mpv
 mpd			--> rebuilt without dbus
@@ -280,7 +280,7 @@ glew
 xclip
 imagemagick-7.0.8-27
 little-cms-2.9
-irssi
+irssi-1.2.1
 vifm
 GnuPG-2.2.17
 libassuan-2.5.3
@@ -319,8 +319,8 @@ gmp-6.1.2
 mpfr-4.0.2
 mpc-1.1.0
 shadow-4.6
-gcc-8.2.0		--> updated to 9.1.0
-bzip2-1.0.6
+gcc-9.1.0		--> updated from 8.2.0
+bzip2-1.0.8		--> updated from 1.0.6
 pkg-config-0.29.2
 ncurses-6.1
 attr-2.4.48
