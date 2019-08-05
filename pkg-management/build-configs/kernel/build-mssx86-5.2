@@ -1,5 +1,5 @@
 #!/bin/env bash
-# a >> check if variables are set
+# a1 >> check if variables are set
 if	[ -z $1 ]; then printf "\n ! no kernel source tarball selected, exiting.\n\n";		exit 1
 elif	[ -z $2 ]; then printf "\n ! (gcc/clang) no compiler selected, exiting.\n\n";		exit 1
 elif	[ -z $3 ]; then printf "\n ! (yes/no) deblobbing option not specified, exiting.\n\n";	exit 1
@@ -7,9 +7,19 @@ elif	[ -z $4 ]; then printf "\n ! (yes/no) ck patchset option not specified, exi
 elif	[ ! -f "${PWD}/${1}" ]; then printf "\n ! tarball doesn't exist, exiting.\n\n";		exit 1  
 fi &&
 
+# a2 >> check if $1 is a linux tarball
+case $1 in
+ *linux*)
+  printf " * archive is a linux source tarball.\n\n" ;;
+ *)
+  printf " ! ${1} is not a linux source tarball, exiting.\n\n"
+  exit 1 ;;
+esac
+
 # b >> script variables
 kerdir="/mss/work/"$(echo $1 | sed 's/\.tar\.xz//')""
 patchdir="/mss/repo/pkg-management/build-configs/kernel/patches"
+confdir="/mss/repo/pkg-management/build-configs/kernel/configs"
 
 ker_tarball="${1}"
 ccomp="${2}"
@@ -17,7 +27,6 @@ deblob="${3}"
 ckset="${4}"
 
 # c >> functions
-
 patch_faildie(){
 printf "\n ! patching failed, exiting with 1.\n\n"			&&
 exit 1
@@ -81,49 +90,59 @@ printf " * unpacking kernel source."	&&
 printf "\t\t --> done.\n"		&&
  cd "${kerdir}"				&&
 
-# d2 >> cp kernel config.
-printf " * copying kernel config."	&&
- cp /boot/config "${kerdir}"/.config	&&
-printf "\t\t --> done.\n"		&&
-
-# d3 >> set compiler
+# d2 >> set compiler
 if [ "${ccomp}" = "clang" ]
  then
-  clang --version 2> /dev/null || printf " ! clang not found, exiting.\n" && exit 1
-  apply_clang
+  clangver=$(clang --version | head -1 | awk '{print substr($3, 1, 1)}')
+  if [ "$clangver" = "9" ]
+   then
+    printf "\n * building with clang ${clangver}.\n * no need for patches.\n\n"	&&
+    printf " * copying kernel config."							&&
+     cp "${confdir}/5.2-msslinux-ck1-clang9-libre.config" "${kerdir}"/.config		&&
+    printf "\t\t --> done.\n"
+   else
+    printf "\n * building with clang ${clangver}.\n\n"				&&
+    printf " * copying kernel config."							&&
+     cp "${confdir}/5.2-msslinux-ck1-gcc-libre.config" "${kerdir}"/.config		&&
+    printf "\t\t --> done.\n"
+    apply_clang
+  fi
  else
-  printf " * building with gcc.\n"
+  printf "\n * building with gcc.\n\n"						&&
+  printf " * copying kernel config."							&&
+   cp "${confdir}/5.2-msslinux-ck1-gcc-libre.config" "${kerdir}"/.config		&&
+  printf "\t\t --> done.\n"
 fi &&
 
-# d4 >> apply deblob
+# d3 >> apply deblob
 if [ "${deblob}" = "yes" ]
  then apply_deblob
  else printf " * not applying gnu deblob patch.\n"
 fi &&
 
-# d5 >> apply ck patchset
+# d4 >> apply ck patchset
 if [ "${ckset}" = "yes" ]
  then apply_ck
  else printf " * not applying the ck patchset.\n"
 fi &&
 
-# d6 >> run menuconfig
+# d5 >> run menuconfig
 printf "\n * run menuconfig for manual config? (y/n): "	&&
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
 then
- printf " * running menuconfig."			&&
+ printf " * running menuconfig.\n"			&&
   if [ "${ccomp}" = "clang" ]
    then make CC=clang HOSTCC=clang menuconfig
    else make menuconfig
   fi							&&
- printf "\t\t --> done.\n"
+ printf "\n * done.\n\n"
 else
  printf " * not running menuconfig.\n\n"
 fi							&&
 
-# d7 >> run make
+# d6 >> run make
 printf " * running make.\n"				&&
 printf " * do tail -f /tmp/kernel-build.log to view."	&&
  if [ "${ccomp}" = "clang" ]
@@ -138,7 +157,7 @@ printf " * do tail -f /tmp/kernel-build.log to view."	&&
  fi 							&&
 printf "\t\t --> done.\n"				&&
 
-# d8 >> run kinst
+# d7 >> run kinst
 printf " * run kinst to install the kernel? (y/n): "	&&
 read answerkinst
 
@@ -147,5 +166,5 @@ if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  else printf " * not installing the built kernel."
 fi							&&
 
-printf "\n + kernel build is complete.\n"		&&
+printf "\n :) kernel build is complete.\n"		&&
 exit 0
