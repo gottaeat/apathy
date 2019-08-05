@@ -1,0 +1,15 @@
+CC=gcc CXX=g++ \
+cmake -DCMAKE_INSTALL_PREFIX=/usr		\
+      -DCMAKE_BUILD_TYPE=Release		\
+      -DLLVM_BUILD_LLVM_DYLIB=ON		\
+      -DLLVM_LINK_LLVM_DYLIB=ON			\
+      -DLLVM_ENABLE_FFI=ON			\
+      -DLLVM_ENABLE_RTTI=ON			\
+      -DLLVM_TARGETS_TO_BUILD="host;BPF"	\
+      -DLLVM_BINUTILS_INCDIR=/usr/include	\
+      -DLLVM_BUILD_TESTS=OFF			\
+      -DLLVM_BUILD_DOCS=OFF			\
+      -DLLVM_ENABLE_SPHINX=OFF			\
+      -DSPHINX_WARNINGS_AS_ERRORS=OFF		\
+      -DLLVM_ENABLE_DOXYGEN=OFF			\
+      -Wno-dev -G Ninja ..
