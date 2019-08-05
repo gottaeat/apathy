@@ -211,7 +211,7 @@
 ---------------------------------------------------------
 ### compilers and languages:
 ```
-[d]	* llvm-9.0.0-rc1-05.08.2019 (clang, compiler-rt) 
+[r]	* llvm-9.0.0-rc1-05.08.2019 (clang, compiler-rt) 
 [d]	** cmake-3.13.4
 [d]	*** libuv-1.26.0
 [d]	*** libarchive-3.3.3
