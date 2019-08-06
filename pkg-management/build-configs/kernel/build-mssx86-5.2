@@ -90,6 +90,11 @@ printf " * unpacking kernel source."	&&
 printf "\t\t --> done.\n"		&&
  cd "${kerdir}"				&&
 
+# d1.1 >> run mrproper
+printf " * running mrproper."		&&
+make mrproper &>> /tmp/kernel-build.log	&&
+printf "\t\t --> done.\n"               &&
+
 # d2 >> set compiler
 if [ "${ccomp}" = "clang" ]
  then
@@ -103,14 +108,14 @@ if [ "${ccomp}" = "clang" ]
    else
     printf "\n * building with clang ${clangver}.\n\n"				&&
     printf " * copying kernel config."							&&
-     cp "${confdir}/5.2-msslinux-ck1-gcc-libre.config" "${kerdir}"/.config		&&
+     cp "${confdir}/5.2-msslinux-ck1-gcc-libre-v2.config" "${kerdir}"/.config		&&
     printf "\t\t --> done.\n"
     apply_clang
   fi
  else
   printf "\n * building with gcc.\n\n"						&&
   printf " * copying kernel config."							&&
-   cp "${confdir}/5.2-msslinux-ck1-gcc-libre.config" "${kerdir}"/.config		&&
+   cp "${confdir}/5.2-msslinux-ck1-gcc-libre-v2.config" "${kerdir}"/.config		&&
   printf "\t\t --> done.\n"
 fi &&
 
