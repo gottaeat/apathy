@@ -93,7 +93,7 @@ printf "\t\t --> done.\n"		&&
 # d1.1 >> run mrproper
 printf " * running mrproper."		&&
 make mrproper &>> /tmp/kernel-build.log	&&
-printf "\t\t --> done.\n"               &&
+printf "\t\t\t --> done.\n"		&&
 
 # d2 >> set compiler
 if [ "${ccomp}" = "clang" ]
@@ -131,20 +131,20 @@ if [ "${ckset}" = "yes" ]
  else printf " * not applying the ck patchset.\n"
 fi &&
 
-# d5 >> run menuconfig
-printf "\n * run menuconfig for manual config? (y/n): "	&&
+# d5 >> run nconfig
+printf "\n * run nconfig for manual config? (y/n): "	&&
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
 then
- printf " * running menuconfig.\n"			&&
+ printf " * running nconfig.\n"			&&
   if [ "${ccomp}" = "clang" ]
-   then make CC=clang HOSTCC=clang menuconfig
-   else make menuconfig
+   then make CC=clang HOSTCC=clang nconfig
+   else make nconfig
   fi							&&
  printf "\n * done.\n\n"
 else
- printf " * not running menuconfig.\n\n"
+ printf " * not running nconfig.\n\n"
 fi							&&
 
 # d6 >> run make
