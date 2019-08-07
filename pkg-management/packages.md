@@ -539,7 +539,7 @@
 [d] patch-2.7.6
 [d] man-db-2.8.5
 [d] tar-1.31
-[d] texinfo-6.5
+[r] texinfo-6.5
 [d] vim-8.1
 [d] procps-ng-3.3.15
 [d] util-linux-2.33.1
