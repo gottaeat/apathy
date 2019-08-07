@@ -102,20 +102,20 @@ if [ "${ccomp}" = "clang" ]
   if [ "$clangver" = "9" ]
    then
     printf "\n * building with clang ${clangver}.\n * no need for patches.\n\n"	&&
-    printf " * copying kernel config."							&&
-     cp "${confdir}/5.2-msslinux-ck1-clang9-libre.config" "${kerdir}"/.config		&&
+    printf " * copying kernel config."						&&
+     cp "${confdir}/bloated-5.2-ck1-libre-clang9.config" "${kerdir}"/.config		&&
     printf "\t\t --> done.\n"
    else
     printf "\n * building with clang ${clangver}.\n\n"				&&
-    printf " * copying kernel config."							&&
-     cp "${confdir}/5.2-msslinux-ck1-gcc-libre-v2.config" "${kerdir}"/.config		&&
+    printf " * copying kernel config."						&&
+     cp "${confdir}/5.2-ck1-libre-clang8.config" "${kerdir}"/.config		&&
     printf "\t\t --> done.\n"
     apply_clang
   fi
  else
   printf "\n * building with gcc.\n\n"						&&
-  printf " * copying kernel config."							&&
-   cp "${confdir}/5.2-msslinux-ck1-gcc-libre-v2.config" "${kerdir}"/.config		&&
+  printf " * copying kernel config."						&&
+   cp "${confdir}/5.2-ck1-libre-gcc.config" "${kerdir}"/.config			&&
   printf "\t\t --> done.\n"
 fi &&
 
