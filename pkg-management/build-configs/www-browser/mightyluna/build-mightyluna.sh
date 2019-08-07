@@ -15,7 +15,7 @@ esac
 
 # c >> set build vars
 arname=$(echo UXP-$(echo $1 | sed 's/.tar.gz//'))			&&
-repodir="/mss/repo/pkg-management/build-configs/browser/mightyluna"	&&
+repodir="/mss/repo/pkg-management/build-configs/www-browser/mightyluna"	&&
 srcdir=/mss/work/UXP							&&
 
 # d >> action
