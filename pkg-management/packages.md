@@ -367,7 +367,7 @@
 
 [r]	* ~~mc-4.8.22~~		--> removed mc, replaced with vifm
 
-[d]	* ffmpeg-4.1.1
+[d]	* ffmpeg-4.2		--> updated from 4.1.1
 [d]	** lame-3.100
 [d]	** openjpeg-2.3.1	--> updated from 2.3.0
 

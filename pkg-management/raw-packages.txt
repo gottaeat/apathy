@@ -204,7 +204,7 @@ autoconf-2.13
 nodejs-10.15.1
 libwebp-1.0.2
 yasm
-ffmpeg-4.1.1
+ffmpeg-4.2
 alsa-plugins-1.1.8
 libsamplerate-0.1.9
 alsa-utils-1.1.8
