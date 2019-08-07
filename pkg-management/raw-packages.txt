@@ -249,7 +249,7 @@ ffmpeg-4.1.1
 lame-3.100
 OpenJPEG-2.3.1
 numlockx
-mpv
+mpv-0.29.1-8
 mpd			--> rebuilt without dbus
 libcue
 mpg123

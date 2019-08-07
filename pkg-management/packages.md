@@ -374,7 +374,7 @@
 [r]	* ~~ neofetch ~~	--> removed, mss-fetch ftw.
 [d]	* numlockx
 
-[d]	* mpv
+[d]	* mpv-0.29.1-8		--> updated from 0.29.1-6
 
 [d]	* mpd			--> rebuilt without dbus support
 [d]	** libcue
