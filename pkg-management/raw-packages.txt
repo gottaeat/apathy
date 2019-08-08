@@ -1,6 +1,6 @@
 make-ca
 p11-kit-0.23.15
-nss-3.42.1		--> updated to 3.44
+nss-3.44
 nspr-4.20
 libtasn1-4.13
 libxslt-1.1.33
@@ -106,7 +106,7 @@ xcb-util-keysyms-0.4.0
 xcb-util-renderutil-0.3.9
 xcb-util-wm-0.4.1
 xcb-util-cursor-0.1.3
-mesa-18.3.6		--> updated to 19.0.4
+mesa-19.0.4
 libdrm-2.4.97
 libvdpau-1.1.1
 mako-1.0.7
@@ -240,9 +240,9 @@ startup-notification
 i3blocks
 dmenu
 xtrlock
-6cord			--> replaced discord
+6cord
 youtube-dl
-compton			--> rebuilt without dbus
+compton
 libconfig
 asciidoc2
 ffmpeg-4.1.1
@@ -250,7 +250,7 @@ lame-3.100
 OpenJPEG-2.3.1
 numlockx
 mpv-0.29.1-8
-mpd			--> rebuilt without dbus
+mpd
 libcue
 mpg123
 libmpdclient
@@ -261,8 +261,8 @@ ncmpcpp
 htop
 strace
 libnl
-iftop			--> rebuilt without dbus
-libpcap-1.9.0		--> rebuilt without dbus
+iftop
+libpcap-1.9.0
 xdg-utils-1.1.3
 elinks-git
 js185
@@ -286,11 +286,11 @@ GnuPG-2.2.17
 libassuan-2.5.3
 libksba-1.3.5
 npth-1.6
-pinentry-1.1.0		--> rebuilt:disabled gtk2/3, tty/curses only.
+pinentry-1.1.0
 qemu-3.1.0
 openvpn
 pkcs11-helper
-jq-1.6			--> binary from dev site
+jq-1.6
 mkvtoolnix
 mupdf
 jbig2dec
@@ -319,8 +319,8 @@ gmp-6.1.2
 mpfr-4.0.2
 mpc-1.1.0
 shadow-4.6
-gcc-9.1.0		--> updated from 8.2.0
-bzip2-1.0.8		--> updated from 1.0.6
+gcc-9.1.0
+bzip2-1.0.8
 pkg-config-0.29.2
 ncurses-6.1
 attr-2.4.48
@@ -346,7 +346,7 @@ automake-1.16.1
 xz-5.2.4
 kmod-26
 gettext-0.19.8.1
-libelf (from elfutils-0.176)
+libelf-0.176
 libffi-3.2.1
 openssl-1.1.1a
 python-3.7.2
