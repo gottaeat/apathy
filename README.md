@@ -7,6 +7,14 @@ this is the third *release* of mssLinux, 1.0 being my first attempt to build an 
 
 because it is intended to be the way i document my progress and keep everything in one place, this repository does not include a build script or an installer but if desired, following the lfs 8.4 book and then building the software listed under `pkg-management/packages.md` in the same order using the configs and patches under `pkg-management/build-configs` would result in an exact copy of this system.
 
+#### patches used in the mss1 kernel:
+ * `5.2-deblob-gnu` *(fsf-la)*
+ * `5.2-cc_optimize_harder` *(zen-kernel)*
+ * `4.13-graysky2-gcc-9.1-cpu-opt` *(graysky2)*
+ * `5.2-post-factum-fixes` *(pf-kernel)*
+ * `5.2-zen-muqss` *(con kolivas)*
+ * `5.2-zen-tune` *(zen-kernel)*
+
 #### about proprietary software under mssLinux
 mssLinux in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
 ```
