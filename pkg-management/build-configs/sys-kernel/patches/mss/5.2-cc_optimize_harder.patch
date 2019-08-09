@@ -1,0 +1,33 @@
+diff -uarN a/init/Kconfig b/init/Kconfig
+--- a/init/Kconfig	2019-08-09 18:51:49.000000000 +0300
++++ b/init/Kconfig	2019-08-09 23:27:43.090105573 +0300
+@@ -1137,6 +1137,13 @@
+ 	  with the "-O2" compiler flag for best performance and most
+ 	  helpful compile-time warnings.
+ 
++config CC_OPTIMIZE_HARDER
++	bool "Optimize harder"
++	help
++	  This option will pass "-O3" to your compiler resulting in a
++	  larger and faster kernel. The more complex optimizations also
++	  increase compilation time and may affect stability.
++
+ config CC_OPTIMIZE_FOR_SIZE
+ 	bool "Optimize for size"
+ 	imply CC_DISABLE_WARN_MAYBE_UNINITIALIZED  # avoid false positives
+diff -uarN a/Makefile b/Makefile
+--- a/Makefile	2019-08-09 18:51:49.000000000 +0300
++++ b/Makefile	2019-08-09 23:27:38.960105533 +0300
+@@ -699,8 +699,12 @@
+ ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+ KBUILD_CFLAGS	+= -Os
+ else
++ifdef CONFIG_CC_OPTIMIZE_HARDER
++KBUILD_CFLAGS	+= -O3
++else
+ KBUILD_CFLAGS   += -O2
+ endif
++endif
+ 
+ ifdef CONFIG_CC_DISABLE_WARN_MAYBE_UNINITIALIZED
+ KBUILD_CFLAGS   += -Wno-maybe-uninitialized
