@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/dash
 # a >> check if a tarball is selected
 if	[ -z $1 ];		then printf "\n ! no archive selected, exiting.\n\n";	exit 1
 elif	[ ! -f "${PWD}/${1}" ];	then printf "\n ! tarball doesn't exist, exiting.\n\n";	exit 1
@@ -39,7 +39,7 @@ cd "${srcdir}"								&&
 # d3 >> apply mightyluna branding
 printf " * applying mightyluna branding patch."				&&
 patch -p1 < "${repodir}"/0001-mightyluna-branding-28.6.1.patch \
- &>> /tmp/mightyluna-build.log || patch_faildie				&&
+ >> /tmp/mightyluna-build.log 2>&1 || patch_faildie			&&
 printf "\t--> done.\n"							&&
 
 # d4 >> copy mozconfig
@@ -75,7 +75,7 @@ read answerbuild
    vi mozconfig								&&
    printf " * running mach.\n"						&&
    printf " * tail -f /tmp/mightyluna-build.log to view progress.\n"	&&
-   python2.7 mach build &>> /tmp/mightyluna-build.log
+   python2.7 mach build >> /tmp/mightyluna-build.log 2>&1
   else
    printf " * not running mach.\n"		&&
    exit 0
