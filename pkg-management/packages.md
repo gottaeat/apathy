@@ -468,7 +468,7 @@
 [r]	* windowmaker
 [r]	* openbox
 [r]	* lemonbar		--> https://github.com/krypt-n/bar
-[d]	* dash
+[r]	* dash
 [d]	* yash-2.48
 ```
 ---------------------------------------------------------
