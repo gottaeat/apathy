@@ -14,6 +14,7 @@ because it is intended to be the way i document my progress and keep everything 
  * `5.2-post-factum-fixes` *(pf-kernel)*
  * `5.2-zen-muqss` *(con kolivas)*
  * `5.2-zen-tune` *(zen-kernel)*
+ * `5.2-aldgodev-bfq-mq` *(algodev bfq-mq)*
 
 #### about proprietary software under mssLinux
 mssLinux in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
@@ -30,8 +31,8 @@ mssLinux in its current state is all free software including the kernel and the 
 ```
 $ [master][mssLinux]: pkg
 
- * total partition size	: 2455.21mib
- * local package count	: 376
+ * total partition size	: 2447.41mib
+ * local package count	: 377
  * removed packages	: 48
 
 ```

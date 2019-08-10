@@ -469,6 +469,7 @@
 [r]	* openbox
 [r]	* lemonbar		--> https://github.com/krypt-n/bar
 [d]	* dash
+[d]	* yash-2.48
 ```
 ---------------------------------------------------------
 #### python:

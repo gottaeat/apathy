@@ -307,6 +307,7 @@ gpgme-1.13.1
 mutt-1.12.1
 xnp2
 dash
+yash-2.48
 man-pages-4.16
 glibc-2.29
 zlib-1.2.11
