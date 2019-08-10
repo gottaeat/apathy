@@ -67,6 +67,11 @@ apply_mss(){
   patch -p1 < "${patchdir}"/mss/5.2-zen-tune.patch \
   &>> /tmp/kernel-build.log || patch_die					&&
  printf "\t\t\t\t\t --> done.\n"
+
+ printf " * applying: algodev bfq-mq patches."
+  patch -p1 < "${patchdir}"/mss/5.2-aldgodev-bfq-mq.patch \
+  &>> /tmp/kernel-build.log || patch_die					&&
+ printf "\t\t\t\t --> done.\n"
 }
 
 # d >> action
