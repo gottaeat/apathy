@@ -1,0 +1,90 @@
+diff -uarN a/deblob-5.2 b/deblob-5.2
+--- a/deblob-5.2	2019-08-12 00:56:33.361042697 +0300
++++ b/deblob-5.2	2019-08-12 00:41:31.581033946 +0300
+@@ -48,7 +48,7 @@
+ 
+ # For each kver release, start extra with an empty string, then count
+ # from 1 if changes are needed that require rebuilding the tarball.
+-kver=5.2 extra=
++kver=5.3 extra=
+ 
+ case $1 in
+ --force)
+@@ -633,18 +633,11 @@
+ announce IXP4XX_NPE - "IXP4xx Network Processor Engine support"
+ reject_firmware drivers/soc/ixp4xx/ixp4xx-npe.c
+ clean_blob drivers/soc/ixp4xx/ixp4xx-npe.c
+-clean_blob Documentation/arm/IXP4xx
+ clean_kconfig drivers/soc/ixp4xx/Kconfig IXP4XX_NPE
+ clean_mk CONFIG_IXP4XX_NPE drivers/soc/ixp4xx/Makefile
+ 
+ announce ARCH_NETX - "Hilscher NetX based"
+-clean_sed '
+-s,\([" ]\)request_firmware(,\1reject_firmware(,
+-' arch/arm/mach-netx/xc.c 'disabled non-Free firmware-loading machinery'
+-clean_blob arch/arm/mach-netx/xc.c
+ clean_blob drivers/net/ethernet/netx-eth.c
+-clean_kconfig arch/arm/Kconfig ARCH_NETX
+-clean_mk CONFIG_ARCH_NETX arch/arm/Makefile
+ 
+ announce MACH_SUN8I - "Allwinner sun8i Family SoCs support"
+ clean_blob arch/arm/boot/dts/sun8i-a23-gt90h-v4.dts
+@@ -821,7 +814,7 @@
+ announce DRM_I915 - "Intel 8xx/9xx/G3x/G4x/HD Graphics"
+ reject_firmware drivers/gpu/drm/i915/intel_csr.c
+ clean_blob drivers/gpu/drm/i915/intel_csr.c
+-reject_firmware drivers/gpu/drm/i915/intel_opregion.c
++reject_firmware drivers/gpu/drm/i915/display/intel_opregion.c
+ reject_firmware drivers/gpu/drm/i915/intel_uc_fw.c
+ clean_blob drivers/gpu/drm/i915/intel_uc_fw.h
+ clean_blob drivers/gpu/drm/i915/intel_guc_fw.c
+@@ -1702,8 +1695,8 @@
+ clean_mk CONFIG_QLCNIC drivers/net/ethernet/qlogic/qlcnic/Makefile
+ 
+ announce R8169 - "Realtek 8169 gigabit ethernet support"
+-reject_firmware drivers/net/ethernet/realtek/r8169.c
+-clean_blob drivers/net/ethernet/realtek/r8169.c
++reject_firmware drivers/net/ethernet/realtek/r8169_firmware.c
++clean_blob drivers/net/ethernet/realtek/r8169_firmware.c
+ clean_kconfig drivers/net/ethernet/realtek/Kconfig R8169
+ clean_mk CONFIG_R8169 drivers/net/ethernet/realtek/Makefile
+ 
+@@ -1899,22 +1892,18 @@
+ fi
+ clean_blob drivers/net/wireless/broadcom/brcm80211/brcmfmac/feature.c
+ clean_blob drivers/net/wireless/broadcom/brcm80211/brcmfmac/firmware.h
+-clean_kconfig drivers/net/wireless/broadcom/brcm80211/Kconfig BRCMFMAC
+ clean_mk CONFIG_BRCMFMAC drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+ 
+ announce BRCMFMAC_SDIO - "Broadcom IEEE802.11n SDIO FullMAC WLAN driver"
+ clean_blob drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+-clean_kconfig drivers/net/wireless/broadcom/brcm80211/Kconfig BRCMFMAC_SDIO
+ clean_mk CONFIG_BRCMFMAC_SDIO drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+ 
+ announce BRCMFMAC_USB - "Broadcom IEEE802.11n USB FullMAC WLAN driver"
+ clean_blob drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+-clean_kconfig drivers/net/wireless/broadcom/brcm80211/Kconfig BRCMFMAC_USB
+ clean_mk CONFIG_BRCMFMAC_USB drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+ 
+ announce BRCMFMAC_PCIE - "Broadcom IEEE802.11n PCIE FullMAC WLAN driver"
+ clean_blob drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+-clean_kconfig drivers/net/wireless/broadcom/brcm80211/Kconfig BRCMFMAC_PCIE
+ clean_mk CONFIG_BRCMFMAC_PCIE drivers/net/wireless/broadcom/brcm80211/brcmfmac/Makefile
+ 
+ announce HERMES - "Hermes chipset 802.11b support (Orinoco/Prism2/Symbol)"
+@@ -2533,7 +2522,6 @@
+ announce BT_MRVL_SDIO - "Marvell BT-over-SDIO driver"
+ reject_firmware drivers/bluetooth/btmrvl_sdio.c
+ clean_blob drivers/bluetooth/btmrvl_sdio.c
+-clean_blob Documentation/btmrvl.txt
+ clean_kconfig drivers/bluetooth/Kconfig BT_MRVL_SDIO
+ clean_mk CONFIG_BT_MRVL_SDIO drivers/bluetooth/Makefile
+ 
+@@ -3503,7 +3491,6 @@
+ announce KEYSTONE_NAVIGATOR_QMSS - "Keystone Queue Manager Sub System"
+ reject_firmware drivers/soc/ti/knav_qmss_queue.c
+ clean_blob drivers/soc/ti/knav_qmss_queue.c
+-clean_blob Documentation/arm/keystone/knav-qmss.txt
+ clean_kconfig drivers/soc/ti/Kconfig KEYSTONE_NAVIGATOR_QMSS
+ clean_mk CONFIG_KEYSTONE_NAVIGATOR_QMSS drivers/soc/ti/Makefile
+ 
