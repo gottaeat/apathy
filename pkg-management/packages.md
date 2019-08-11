@@ -1,13 +1,6 @@
-#### stuff that requires me to run periodically:
-
-* `/usr/sbin/make-ca -g` ---> required for the certificate stuff.
-* `/usr/sbin/update-pciids` ---> required for the pciutils.
-* `/usr/sbin/ntpd -q -g` ---> sets the clock.
-* `/usr/bin/wget http://www.linux-usb.org/usb.ids -o /usr/share/hwdata/usb.ids` ---> usbutils thingy.
-
 ### package+dep list
 ```
-[d]	* make-ca
+[d]	* make-ca-1.2		--> updated from 1.2
 [d]	** p11-kit-0.23.15
 [d]	*** nss-3.42.1		--> updated to 3.44
 [d]	**** nspr-4.20

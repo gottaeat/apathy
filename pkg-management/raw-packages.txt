@@ -1,4 +1,4 @@
-make-ca
+make-ca-1.4
 p11-kit-0.23.15
 nss-3.44
 nspr-4.20
