@@ -1,19 +1,18 @@
 ## system
 #[sda1][vfat][efi partition]
-/dev/sda1	/boot/efi	vfat		auto,noatime				0	0
+/dev/sda1	/boot/efi	vfat		auto,noatime					0	0
 
 #[sda2][ext4][stuff storage]
-/dev/sda2	/mnt/mss/stuff	ext4		rw,relatime,data=ordered		0	2
+/dev/sda2	/mnt/mss/stuff	ext4		rw,relatime,data=ordered			0	2
 
 #[sda3][ext4][msslinux install]
-/dev/sda3	/		ext4		defaults				1	1
+/dev/sda3	/		ext4		defaults					1	1
 
 #[sda4][swap][msslinux swap]
-/dev/sda4	swap		swap		pri=100					0	0
+/dev/sda4	swap		swap		pri=100						0	0
 
 ## lfs specific defaults
-proc		/proc		proc		nosuid,noexec,nodev			0	0
-sysfs		/sys		sysfs		nosuid,noexec,nodev			0	0
-devpts		/dev/pts	devpts		gid=5,mode=620				0	0
-tmpfs		/run		tmpfs		defaults				0	0
-devtmpfs	/dev		devtmpfs	mode=0755,nosuid			0	0
+proc		/proc		proc		nosuid,noexec,nodev				0	0
+sysfs		/sys		sysfs		nosuid,noexec,nodev				0	0
+devpts		/dev/pts	devpts		gid=5,mode=620					0	0
+tmpfs		/mnt/mss/ram	tmpfs		nodev,nosuid,size=5120M				0	0
