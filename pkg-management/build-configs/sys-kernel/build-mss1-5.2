@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 # a1 >> check if variables are set
 if	[ -z $1 ]; then printf "\n ! no kernel source tarball selected, exiting.\n\n";		exit 1
 elif	[ ! -f "${PWD}/${1}" ]; then printf "\n ! tarball doesn't exist, exiting.\n\n";		exit 1  
@@ -14,7 +14,8 @@ case $1 in
 esac
 
 # b >> script variables
-kerdir="/mss/work/"$(echo $1 | sed 's/\.tar\.xz//')""
+saucedir="/mnt/mss/ram/work"
+workdir="/mnt/mss/ram/work/"$(echo $1 | sed 's/\.tar\.xz//')""
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
 
@@ -37,11 +38,11 @@ apply_deblob(){
 
 apply_freedo(){
  printf " * applying: freedo logo."
-  install -m644 -t "${kerdir}"/drivers/video/logo \
+  install -m644 -t "${workdir}"/drivers/video/logo \
   "${patchdir}"/freedo-logo/logo_linux_clut224.ppm				&&
-  install -m644 -t "${kerdir}"/drivers/video/logo \
+  install -m644 -t "${workdir}"/drivers/video/logo \
   "${patchdir}"/freedo-logo/logo_linux_vga16.ppm				&&
-  install -m644 -t "${kerdir}"/drivers/video/logo \
+  install -m644 -t "${workdir}"/drivers/video/logo \
   "${patchdir}"/freedo-logo/logo_linux_mono.pbm					&&
   printf "\t\t\t\t\t --> done.\n"
 }
@@ -85,10 +86,20 @@ echo > "/tmp/kernel-build.log"				&&
 printf "\t\t\t --> done.\n"
 
 # d1 >> unpack kernel.
+if [ ! -d "${saucedir}" ]
+ then
+  printf " * saucedir does not exist, creating."
+  mkdir "${saucedir}"					&&
+  printf "\t --> done.\n"
+ else
+  printf "\n * saucedir: ${saucedir}\n"
+  printf " * workdir : ${workdir}\n\n"
+fi
+
 printf " * unpacking kernel source."
- tar xf "${1}"						&&
+ tar xf "${1}" --directory="${saucedir}"		&&
 printf "\t\t --> done.\n"
- cd "${kerdir}"						&&
+ cd "${workdir}"					&&
 
 # d1.1 >> run mrproper
 printf " * running mrproper."
@@ -99,7 +110,7 @@ printf "\t\t\t --> done.\n"
 printf "\n * building with gcc.\n"
 printf " * copying kernel config."
  cp "${confdir}/5.2-mss1-libre-gcc.config" \
- "${kerdir}"/.config					&&
+ "${workdir}"/.config					&&
 printf "\t\t --> done.\n\n"				&&
 
 # d3 >> apply patches
@@ -122,10 +133,10 @@ fi							&&
 
 # d6 >> run make
 printf " * running make.\n"
-printf " * do tail -f /tmp/kernel-build.log to view."
+printf " * do tail -f /tmp/kernel-build.log to view.\n"
  make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1	&&
  doas -- make modules_install				&&
-printf "\t\t --> done.\n"
+printf " * installing the built kernel.\n"
 
 # d7 >> run kinst
 printf " * run kinst to install the kernel? (y/n): "	&&
