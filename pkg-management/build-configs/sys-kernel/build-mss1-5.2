@@ -148,4 +148,18 @@ if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
 fi							&&
 
 printf "\n :) kernel build is complete.\n"		&&
+
+# d8 >> clean up ram.
+printf " * run kinst to install the kernel? (y/n): "	&&
+read answerclean
+
+if [ "$answerclean" != "${answerclean#[Yy]}" ]
+ then
+  printf " * cleaning up the workdir."
+   rm -rf ${workdir}					&&
+  printf "\t\t --> done.\n\n"
+ else
+  printf " * not cleaning up the workdir.\n\n"
+fi							&&
+
 exit 0
