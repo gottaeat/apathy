@@ -47,34 +47,34 @@ apply_freedo(){
   printf "\t\t\t\t\t --> done.\n"
 }
 
-apply_mss(){
+apply_apathy(){
  printf " * applying: graysky2 cpu family specific optimiziation patch."
-  patch -p1 < "${patchdir}"/mss/5.2-graysky2-gcc-9.1-cpu-opt.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t --> done.\n"
 
  printf " * applying: zen -03 optimize harder patch."
-  patch -p1 < "${patchdir}"/mss/5.2-cc_optimize_harder.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t --> done.\n"
 
  printf " * applying: post-factum fixes patch."
-  patch -p1 < "${patchdir}"/mss/5.2-post-factum-fixes.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-post-factum-fixes.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t --> done.\n"
 
  printf " * applying: zen-muqss patches."
-  patch -p1 < "${patchdir}"/mss/5.2-zen-muqss.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t\t --> done.\n"
 
  printf " * applying: zen-tune patches."
-  patch -p1 < "${patchdir}"/mss/5.2-zen-tune.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t\t --> done.\n"
 
  printf " * applying: algodev bfq-mq patches."
-  patch -p1 < "${patchdir}"/mss/5.2-aldgodev-bfq-mq.patch \
+  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t --> done.\n"
 }
@@ -109,14 +109,14 @@ printf "\t\t\t --> done.\n"
 # d2 >> copy config
 printf "\n * building with gcc.\n"
 printf " * copying kernel config."
- cp "${confdir}/5.2-mss1-libre-gcc.config" \
+ cp "${confdir}/5.2-apathy-libre-gcc.config" \
  "${workdir}"/.config					&&
 printf "\t\t --> done.\n\n"				&&
 
 # d3 >> apply patches
 apply_deblob						&&
 apply_freedo						&&
-apply_mss						&&
+apply_apathy						&&
 
 # d5 >> run nconfig
 printf "\n * run nconfig for manual config? (y/n): "

@@ -1,4 +1,4 @@
-DISTRIB_ID="mssLinux"
-DISTRIB_RELEASE="pure64 1.2"
+DISTRIB_ID="apathy gnu/linux"
+DISTRIB_RELEASE="1.2 pure64"
 DISTRIB_CODENAME="escapism"
-DISTRIB_DESCRIPTION="mssLinux pure64 1.2"
+DISTRIB_DESCRIPTION="apathy gnu/linux"

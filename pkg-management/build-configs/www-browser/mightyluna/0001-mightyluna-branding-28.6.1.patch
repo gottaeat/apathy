@@ -34,7 +34,7 @@ index 12803f285..603e7000f 100644
 -// ===| General |==============================================================
 +// mightyluna
 +pref("startup.homepage_welcome_url","https://mss.neocities.org/startpage/");
-+pref("app.vendorURL", "https://repo.or.cz/mssLinux.git");
++pref("app.vendorURL", "https://repo.or.cz/apathy.git");
  
 -pref("startup.homepage_welcome_url","http://www.palemoon.org/firstrun.shtml");
 -
@@ -255,11 +255,11 @@ index 62ed242a2..559e91782 100644
 -!define HelpLink              "http://www.palemoon.org"
 -!define URLSystemRequirements "http://www.palemoon.org/download.shtml"
 +!define BrandFullNameInternal "mightyluna"
-+!define CompanyName           "mssx86 - mssLinux"
-+!define URLInfoAbout          "https://repo.or.cz/mssLinux.git"
-+!define URLUpdateInfo         "https://repo.or.cz/mssLinux.git"
-+!define HelpLink              "https://repo.or.cz/mssLinux.git"
-+!define URLSystemRequirements "https://repo.or.cz/mssLinux.git"
++!define CompanyName           "mssx86 - apathy gnu/linux"
++!define URLInfoAbout          "https://repo.or.cz/apathy.git"
++!define URLUpdateInfo         "https://repo.or.cz/apathy.git"
++!define HelpLink              "https://repo.or.cz/apathy.git"
++!define URLSystemRequirements "https://repo.or.cz/apathy.git"
 diff --git a/application/palemoon/branding/unofficial/configure.sh b/application/palemoon/branding/unofficial/configure.sh
 index 05a1e1b87..c1594eaa4 100644
 --- a/application/palemoon/branding/unofficial/configure.sh
@@ -312,7 +312,7 @@ index bf46b747a..4afb4a393 100644
 -pref("startup.homepage_override_url","http://www.palemoon.org/unofficial.shtml");
 -pref("app.releaseNotesURL", "http://www.palemoon.org/releasenotes.shtml");
 +pref("startup.homepage_override_url","https://mss.neocities.org/startpage/");
-+pref("app.releaseNotesURL", "https://repo.or.cz/mssLinux.git");
++pref("app.releaseNotesURL", "https://repo.or.cz/apathy.git");
  
  // Updates disabled
  pref("app.update.enabled", false);

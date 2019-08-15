@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
 count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
 
@@ -14,7 +14,7 @@ case $1 in
  ;;
  *)
   tsize=$(df | grep root | awk '{print $3/1024"mib"}')
-  repo="/mnt/mss/stuff/techy-bits/git-repositories/mssLinux"
+  repo="/mnt/mss/stuff/techy-bits/git-repositories/apathy"
   gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
   gitstat_pre=$(cd $repo && git status -s)
 

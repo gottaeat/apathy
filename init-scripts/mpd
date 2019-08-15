@@ -1,6 +1,6 @@
 #!/bin/sh
 # mpd init script for sysvinit + start-stop-daemon
-# mssLinux 1.2 - mssx86 (mssftw@protonmail.com)
+# apathy 1.2 - mssx86 (mssftw@protonmail.com)
 
 set -e
 . /lib/lsb/init-functions
@@ -15,12 +15,12 @@ export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
  start)
-  log_info_msg "mssLinux - starting $NAME."
+  log_info_msg "apathy - starting $NAME."
   start-stop-daemon --start --quiet -b --chuid $USER --exec $DAEMON $DAEMON_OPTS
   evaluate_retval
   ;;
  stop)
-  log_info_msg "mssLinux - stopping $NAME."
+  log_info_msg "apathy - stopping $NAME."
   start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" 
   evaluate_retval
   ;;
