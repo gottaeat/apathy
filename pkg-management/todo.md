@@ -1,3 +1,13 @@
+### updates:
+* util-linux (2.33.1 --> 2.34)  
+http://linuxfromscratch.org/lfs/view/development/chapter06/util-linux.html
+* coreutils (8.30 --> 8.31)  
+http://linuxfromscratch.org/lfs/view/development/chapter06/coreutils.html
+* sysvinit (2.93 --> 2.95)  
+http://linuxfromscratch.org/lfs/view/development/chapter06/sysvinit.html
+* eudev (3.2.7 --> 3.2.8)  
+http://linuxfromscratch.org/lfs/view/development/chapter06/eudev.html
+
 ### security
 #### software listed below must be updated:
 * [done] ntp >> 4.2.8p12 --> 4.2.8p13  
