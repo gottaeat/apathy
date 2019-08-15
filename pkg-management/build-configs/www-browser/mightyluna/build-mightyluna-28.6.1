@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 # a >> check if a tarball is selected
 if	[ -z $1 ];		then printf "\n ! no archive selected, exiting.\n\n";	exit 1
 elif	[ ! -f "${PWD}/${1}" ];	then printf "\n ! tarball doesn't exist, exiting.\n\n";	exit 1
