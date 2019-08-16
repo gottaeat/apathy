@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 for file in *.mkv
 do
  meme=$(printf "$file\n" | sed 's/.mkv//g')

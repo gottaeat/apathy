@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ -z $1 ]; then printf "\n ! no video selected, exiting.\n\n"; exit 1; fi
 
 xwinwrap -g 1366x768 -ni -s -b -ov -- mpv --no-audio --loop -wid WID $1

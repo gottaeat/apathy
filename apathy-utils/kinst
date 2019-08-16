@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1
 elif [ ! -e $PWD/arch/x86/boot/bzImage ]; then printf "\n ! bzImage doesn't exist, exiting.\n\n"; exit 1
 elif [ ! -e $PWD/System.map ]; then printf "\n ! System.map doesn't exist, exiting.\n\n"; exit 1

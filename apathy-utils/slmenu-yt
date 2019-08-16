@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if	[ -z $1 ]; then printf "\n ! no youtube url given, exiting.\n\n";	exit 1
 elif	[ -z $2 ]; then printf "\n ! no video output selected, exiting.\n\n";	exit 1
 fi

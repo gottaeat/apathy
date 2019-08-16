@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 # check if mpd is running
 if [ $(pidof mpd) ]
  then mpd_running=1

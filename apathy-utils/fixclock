@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
 
 currdns=$(cat /etc/resolv.conf | tail -1)

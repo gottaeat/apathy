@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
 
 rm -rfv  /var/log/Xorg*
@@ -13,6 +13,5 @@ printf '' > /var/log/mail.log
 printf '' > /var/log/sys.log
 printf '' > /var/log/user.log
 
-rm -rfv /var/run/doas/.*
 printf '' > /var/run/bootlog
 printf " * done.\n"

@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ -z "$1" ]
  then stats=$(curl -s "https://tools.keycdn.com/geo.json" | jq '.data | .geo | .[]' | sed 's/\"//g')
  else stats=$(curl -s "https://tools.keycdn.com/geo.json?host=$1" | jq '.data | .geo | .[]' | sed 's/\"//g')

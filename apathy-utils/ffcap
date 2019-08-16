@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ -z $1 ]
  then printf "\n ! no output dir selected, exiting.\n\n"; exit 1
  else ffmpeg -f x11grab -r 25 -s 1366x768 -i :0.0 -f alsa -ac 2 -i hw:0 $1.mkv
