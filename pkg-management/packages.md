@@ -17,7 +17,7 @@
 [d]			***** unzip-6.0-libre
 [d]		**** docbook-xsl-1.79.2
 [d]			***** zip-3.0 
-[d]			***** ruby-2.6.1
+[d]			***** ruby-2.6.3p62-libre	--> updated from 2.6.1p33-nonfree
 [d]			****** yaml-0.2.1
 [d]			****** berkeley db-5.3.28
 [d]			******* tcl-8.6.9

@@ -1,7 +1,7 @@
 ### libre rebuilds
 * [done] unzip  
 https://git.parabola.nu/abslibre.git/tree/libre/unzip
-* ruby  
+* [done] ruby  
 https://git.parabola.nu/abslibre.git/tree/libre/ruby
 * sdl  
 https://git.parabola.nu/abslibre.git/tree/libre/sdl

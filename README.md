@@ -21,7 +21,7 @@ core userland:
 
 languages:
  * python 2.7.15/3.7.2
- * ruby 2.6.1p33
+ * ruby 2.6.3p62-libre
  * lua 5.3.5, luajit 2.0.5
  * perl-5.28.1
  * nodejs-10.15.1
