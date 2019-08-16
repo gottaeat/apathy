@@ -16,7 +16,7 @@ toolchain:
 
 core userland:
  * util-linux-2.33.1, coreutils 8.30
- * sysklogd 1.5.1, sysvinit 2.93
+ * sysklogd 1.5.1, sysvinit 2.95
  * eudev 3.2.7
 
 languages:
@@ -54,7 +54,7 @@ apathy in its current state is all free software including the kernel and the fi
 ```
 $ [master][apathy]: pkg
 
- * total partition size	: 2301.11mib
+ * total partition size	: 2237.98mib
  * local package count	: 376
  * removed packages	: 49
 
