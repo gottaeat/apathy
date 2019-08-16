@@ -1,3 +1,11 @@
+### libre rebuilds
+* unzip  
+https://git.parabola.nu/abslibre.git/tree/libre/unzip
+* ruby  
+https://git.parabola.nu/abslibre.git/tree/libre/ruby
+* sdl  
+https://git.parabola.nu/abslibre.git/tree/libre/sdl
+
 ### updates:
 * util-linux (2.33.1 --> 2.34)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/util-linux.html
