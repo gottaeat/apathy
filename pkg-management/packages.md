@@ -539,6 +539,6 @@
 [d] util-linux-2.33.1
 [d] e2fsprogs-1.44.5
 [d] sysklogd-1.5.1
-[d] sysvinit-2.93
+[d] sysvinit-2.95	--> updated from 2.93
 [d] eudev-3.2.7
 ```

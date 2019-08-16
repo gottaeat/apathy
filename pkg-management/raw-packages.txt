@@ -372,5 +372,5 @@ procps-ng-3.3.15
 util-linux-2.33.1
 e2fsprogs-1.44.5
 sysklogd-1.5.1
-sysvinit-2.93
+sysvinit-2.95
 eudev-3.2.7

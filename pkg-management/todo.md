@@ -3,7 +3,7 @@
 https://git.parabola.nu/abslibre.git/tree/libre/unzip
 * [done] ruby  
 https://git.parabola.nu/abslibre.git/tree/libre/ruby
-* sdl  
+* [done] sdl  
 https://git.parabola.nu/abslibre.git/tree/libre/sdl
 
 ### updates:
@@ -11,7 +11,7 @@ https://git.parabola.nu/abslibre.git/tree/libre/sdl
 http://linuxfromscratch.org/lfs/view/development/chapter06/util-linux.html
 * coreutils (8.30 --> 8.31)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/coreutils.html
-* sysvinit (2.93 --> 2.95)  
+* [done] sysvinit (2.93 --> 2.95)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/sysvinit.html
 * eudev (3.2.7 --> 3.2.8)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/eudev.html
