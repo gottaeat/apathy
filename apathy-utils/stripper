@@ -1,26 +1,47 @@
 #!/bin/env bash
-if [ "$(id -u)" -ne 0 ]; then echo -e " ! this script must be run by root."; exit 1; fi
+if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run as root, exiting.\n\n"; exit 1; fi
 
-echo "this script will strip bins and libs which could be harmful. are you sure you want to procceed? (y/n):"
+printf "\n ! this script will strip bins and libs which could be harmful.\n   are you sure you want to procceed? (y/n): "
 
 read answer
 
 if [ "$answer" != "${answer#[Yy]}" ]
 then 
- printf "\nstripping:\n* /usr/lib\nwith: --strip-debug\n" &&
- find /usr/lib -type f -name \*.a -exec strip --strip-debug {} ';' 2> /dev/null &&
- export stripped_1=yes && printf "done!\n"
+ printf "\n * stripping:\n"
 
- printf "\nstripping:\n* /lib\n* /usr/lib\nwith: --strip-unneeded\n" &&
- find /lib /usr/lib -type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' 2> /dev/null &&
- export stripped_2=yes && printf "done!\n"
+ printf "  > /usr/lib\t\t(--strip-debug)"
+ find /usr/lib		-type f -name \*.a -exec strip --strip-debug {} ';' > /dev/null 2>&1 &&
+ printf "\t\t --> done.\n"
 
- printf "\nstripping:\n* /bin\n* /sbin\n* /usr/bin\n* /usr/sbin\n* /usr/libexec\nwith: --strip-all\n" &&
- find /{bin,sbin} /usr/{bin,sbin,libexec} -type f -exec strip --strip-all {} ';' 2> /dev/null &&
- export stripped_3=yes && printf "done!\n"
+ printf "  > /lib\t\t(--strip-unneeded)"
+ find /lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1 &&
+ printf "\t --> done.\n"
 
- printf "\nstats:\n* stage 1 success: ${stripped_1}\n* stage 2 success: ${stripped_2}\n* stage 3 success: ${stripped_3}\n" &&
- unset stripped_1 stripped_2 stripped_3 && exit 0
+ printf "  > /usr/lib\t\t(--strip-unneeded)"
+ find /usr/lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1 &&
+ printf "\t --> done.\n"
+
+ printf "  > /bin\t\t(--strip-all)"
+ find /bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
+ printf "\t\t --> done.\n"
+
+ printf "  > /sbin\t\t(--strip-all)"
+ find /sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
+ printf "\t\t --> done.\n"
+
+ printf "  > /usr/bin\t\t(--strip-all)"
+ find /usr/bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
+ printf "\t\t --> done.\n"
+
+ printf "  > /usr/sbin\t\t(--strip-all)"
+ find /usr/sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
+ printf "\t\t --> done.\n"
+
+ printf "  > /usr/libexec\t(--strip-all)"
+ find /usr/libexec	-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
+ printf "\t\t --> done.\n"
+
+ printf "\n * stripping complete.\n\n"
 
 elif [ "$answer" != "${answer#[Nn]}" ];then exit 1
 else echo " ! input y or n. "; exit 1

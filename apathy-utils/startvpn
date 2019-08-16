@@ -1,17 +1,21 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ -z "$1" ]; then printf "\n ! no ovpn config selected, exiting.\n\n"; exit 1; fi
 
-printf " * getting pass."						&&
+ovpn_name=$(printf "${1}\n" | sed 's:.*/::')
+
+printf "\n * getting pass."
 passboi=$(curl -s https://freevpn.me/accounts	\
  | grep -o 'Password.*'				\
  | awk -v FS="(Password:</b> |</li>)" '{print $2}')			&&
+printf "\t --> done.\n"
 
-printf " * setting pass.\n"						&&
+printf " * pass:\t\t --> ${passboi}\n"
+
+printf " * setting pass."
 printf "freevpn.me\n" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
 printf "${passboi}\n" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
+printf "\t --> done.\n"
 
-printf " * pass set, auth.txt:\n"					&&
-cat /mnt/mss/stuff/techy-bits/openvpn/auth.txt				&&
-
-printf " * connecting to $1\n"						&&
-doas -- openvpn --config $1
+printf "\n * connecting to\t --> ${ovpn_name}\n\n"
+doas -- openvpn --config $1 > /tmp/vpn.log 2>&1 || \
+ printf "\n ! failed, check /tmp/vpn.log\n"

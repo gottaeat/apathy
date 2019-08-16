@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/mss/bin/sh
 if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
 
 dieupd() {
@@ -22,6 +22,6 @@ printf " * running the usbutils thingy."	&&
 wget http://www.linux-usb.org/usb.ids -O \
 /usr/share/hwdata/usb.ids > /dev/null 2>&1 \
 || dieupd 					&&
-printf "\t\t\--> done\n\n"			&&
+printf "\t\t--> done\n\n"			&&
 
 printf " + updated succesfully.\n\n"
