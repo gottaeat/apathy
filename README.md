@@ -39,7 +39,6 @@ shells:
  * 5.2-deblob-gnu			(fsf-la)
  * 5.2-cc_optimize_harder		(zen-kernel)
  * 4.13-graysky2-gcc-9.1-cpu-opt	(graysky2)
- * 5.2-post-factum-fixes		(pf-kernel)
  * 5.2-zen-muqss			(con kolivas)
  * 5.2-zen-tune				(zen-kernel)
  * 5.2-aldgodev-bfq-mq			(algodev)

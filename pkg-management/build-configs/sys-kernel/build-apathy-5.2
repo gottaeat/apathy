@@ -58,11 +58,6 @@ apply_apathy(){
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t --> done.\n"
 
- printf " * applying: post-factum fixes patch."
-  patch -p1 < "${patchdir}"/apathy/5.2-post-factum-fixes.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t --> done.\n"
-
  printf " * applying: zen-muqss patches."
   patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
