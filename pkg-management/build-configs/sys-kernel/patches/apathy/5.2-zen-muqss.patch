@@ -2393,10 +2393,10 @@ index 21fb5a5662b51..a04ffebc6b7a8 100644
  obj-$(CONFIG_MEMBARRIER) += membarrier.o
 diff --git a/kernel/sched/MuQSS.c b/kernel/sched/MuQSS.c
 new file mode 100644
-index 0000000000000..822be3de611f2
+index 0000000000000..e97e1670e4e6a
 --- /dev/null
 +++ b/kernel/sched/MuQSS.c
-@@ -0,0 +1,7453 @@
+@@ -0,0 +1,7451 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + *  kernel/sched/MuQSS.c, was kernel/sched.c
@@ -5244,9 +5244,7 @@ index 0000000000000..822be3de611f2
 + */
 +bool single_task_running(void)
 +{
-+	struct rq *rq = cpu_rq(smp_processor_id());
-+
-+	if (rq_load(rq) == 1)
++	if (rq_load(raw_rq()) == 1)
 +		return true;
 +	else
 +		return false;
