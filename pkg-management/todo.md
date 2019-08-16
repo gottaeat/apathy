@@ -13,7 +13,7 @@ http://linuxfromscratch.org/lfs/view/development/chapter06/util-linux.html
 http://linuxfromscratch.org/lfs/view/development/chapter06/coreutils.html
 * [done] sysvinit (2.93 --> 2.95)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/sysvinit.html
-* eudev (3.2.7 --> 3.2.8)  
+* [done] eudev (3.2.7 --> 3.2.8)  
 http://linuxfromscratch.org/lfs/view/development/chapter06/eudev.html
 
 ### security
