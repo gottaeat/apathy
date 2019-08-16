@@ -422,7 +422,7 @@
 [d]	** npth-1.6
 [d]	** pinentry-1.1.0	--> rebuilt:disabled gtk2/3, tty/curses only. 
 
-[d]	* qemu-3.1.0		--> rebuilt:disablet gtk2/3.
+[r]	* qemu-4.1.0		--> updated from 4.0.0
 
 [d]	* openvpn
 [d]	** pkcs11-helper
