@@ -216,7 +216,7 @@ id3lib-3.8.3
 libass-0.14.0
 libmad-0.15.1b
 libmpeg2-0.5.1
-sdl-1.2.15
+sdl-1.2.15-libre
 aalib-1.4rc5
 slang2.3.2
 libcaca0.99.beta19

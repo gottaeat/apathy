@@ -47,9 +47,6 @@ shells:
 #### about proprietary software under apathy
 apathy in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
 ```
-[semifree] sdl		: contains a source file that doesn't mention modification.
-[semifree] unzip	: contains a source file that doesn't mention modification.
-[nonfree ] intel-ucode	: no modification, use restrictions.	--> removed.
 [nonfree ] unrar	: (possible replacement) gna-unrar.
 ```
 

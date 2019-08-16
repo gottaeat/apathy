@@ -309,7 +309,7 @@
 [d]	* libmad-0.15.1b 
 
 [d]	* libmpeg2-0.5.1
-[d]	** sdl-1.2.15
+[d]	** sdl-1.2.15-libre
 [d]	*** aalib-1.4rc5
 [d]		**** slang 2.3.2
 [d]	*** libcaca 0.99.beta19
