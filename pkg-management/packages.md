@@ -14,7 +14,7 @@
 [d]			****** sqlite-3.27.1
 [d]		**** docbook-xml-4.5
 [d]			***** sgml-common-0.6.3
-[d]			***** unzip-6.0 
+[d]			***** unzip-6.0-libre
 [d]		**** docbook-xsl-1.79.2
 [d]			***** zip-3.0 
 [d]			***** ruby-2.6.1

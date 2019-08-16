@@ -12,7 +12,7 @@ python-2.7.15
 sqlite-3.27.1
 docbook-xml-4.5
 sgml-common-0.6.3
-unzip-6.0
+unzip-6.0-libre
 docbook-xsl-1.79.2
 zip-3.0
 ruby-2.6.1
