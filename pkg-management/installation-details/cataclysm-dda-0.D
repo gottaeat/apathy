@@ -1,0 +1,3 @@
+/usr/bin/cataclysm
+:usr/share/cataclysm-dda
+/usr/share/locale
