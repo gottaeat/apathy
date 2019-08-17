@@ -54,7 +54,7 @@ apathy in its current state is all free software including the kernel and the fi
 $ [master][apathy]: pkg
 
  * total partition size	: 2150.62mib
- * local package count	: 374
+ * local package count	: 375
  * removed packages	: 51
 
 ```

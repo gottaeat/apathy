@@ -463,6 +463,7 @@
 [r]	* lemonbar		--> https://github.com/krypt-n/bar
 [r]	* dash
 [d]	* yash-2.48
+[d]	* lzip-1.21
 ```
 ---------------------------------------------------------
 #### python:
