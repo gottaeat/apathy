@@ -201,7 +201,6 @@ transmission-2.94
 gpm-1.20.7
 palemoon-28.6.1
 autoconf-2.13
-nodejs-10.15.1
 libwebp-1.0.2
 yasm
 ffmpeg-4.2

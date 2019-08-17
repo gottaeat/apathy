@@ -24,7 +24,6 @@ languages:
  * ruby 2.6.3p62-libre
  * lua 5.3.5, luajit 2.0.5
  * perl-5.28.1
- * nodejs-10.15.1
 
 video/audio:
  * xorg (x11r7), mesa 19.0.4
@@ -54,8 +53,8 @@ apathy in its current state is all free software including the kernel and the fi
 ```
 $ [master][apathy]: pkg
 
- * total partition size	: 2185.63mib
- * local package count	: 375
- * removed packages	: 50
+ * total partition size	: 2150.62mib
+ * local package count	: 374
+ * removed packages	: 51
 
 ```

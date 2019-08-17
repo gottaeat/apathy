@@ -282,7 +282,7 @@
 [r]	* firefox-68.0b6	--> replaced with palemoon
 [d]	** autoconf-2.13
 [r]	** ~~cbindgen-0.8.0~~	--> updated to 0.8.7	--> removed, unneeded
-[d]	** nodejs-10.15.1
+[r]	** nodejs-10.15.1
 [d]	** libwebp-1.0.2
 [r]	** libproxy		--> removed
 [d]	** yasm
