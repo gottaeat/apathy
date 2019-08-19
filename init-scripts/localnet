@@ -1,0 +1,52 @@
+#!/bin/sh
+# localnet init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# default-stop ---> 0 6
+# description ----> sets the hostname and starts the loopback interface.
+
+. /lib/lsb/init-functions
+
+# source if /etc/sysconfig/network exists
+[ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
+
+# set hostname form /etc/hostname
+[ -f /etc/hostname ] && HOSTNAME=`cat /etc/hostname`
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - bringing up the loopback interface."
+  ip addr add 127.0.0.1/8 label lo dev lo
+  ip link set lo up
+  evaluate_retval
+
+  log_info_msg "apathy - setting the hostname to ${HOSTNAME}."
+  hostname ${HOSTNAME}
+  evaluate_retval
+ ;;
+
+ stop)
+  log_info_msg "apathy - bringing down the loopback interface."
+  ip link set lo down
+  evaluate_retval
+ ;;
+
+ restart)
+  ${0} stop
+   sleep 1
+  ${0} start
+ ;;
+
+ status)
+  log_info_msg "apathy - hostname is set to: $(hostname).\n"
+  ip link show lo
+ ;;
+
+ *)
+  printf "usage: ${0} {start|stop|restart|status}.\n"
+  exit 1
+ ;;
+esac
+
+exit 0

@@ -1,0 +1,34 @@
+#!/bin/sh
+# random init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 2 3 4 5
+# default-stop ---> 0 1 6
+# description ----> initalises /dev/urandom
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - initalizing kernel random number generator."
+
+  if [ -f /var/tmp/random-seed ]
+   then /bin/cat /var/tmp/random-seed > /dev/urandom
+  fi
+
+  /bin/dd if=/dev/urandom of=/var/tmp/random-seed count=1 > /dev/null 2>&1
+  evaluate_retval
+ ;;
+
+ stop)
+  log_info_msg "apathy - saving random seed to /var/tmp."
+
+  /bin/dd if=/dev/urandom of=/var/tmp/random-seed count=1 > /dev/null 2>&1
+  evaluate_retval
+ ;;
+ 
+ *)
+  printf "usage: ${0} {start|stop}.\n"
+  exit 1
+ ;;
+esac

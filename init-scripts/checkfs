@@ -1,0 +1,77 @@
+#!/bin/sh
+# checkfs init scripts for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# required before --> udev, swap, $time
+# default-start ----> S
+# description ------> check local fs before mounting
+
+# fsck error codes:
+# 0 ----> no errors
+# 1 ----> fs errors corrected
+# 2 ----> system should be rebooted
+# 4 ----> fs errors left uncorrected
+# 8 ----> operational error
+# 16 ---> usage or syntax error
+# 32 ---> fsck cancelled by user request
+# 127 --> shared library error
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg " apathy - mounting root file system in read-only mode. "
+  mount -n -o remount,ro / > /dev/null
+  
+  if [ ! ${?} = 0 ]
+  then
+   log_failure_msg2
+   log_failure_msg "\n\ncannot check rootfs because it can't be mounted in ro, press enter to power off.\n\n"
+   log_info_msg "press enter to procceed."
+   wait_for_user
+   /etc/rc.d/init.d/halt stop
+  else
+   log_success_msg2
+  fi
+
+  log_info_msg "Checking file systems..."
+  fsck ${options} -a -A -C -T > /dev/null
+
+  errval=${?}
+
+  if [ "${errval}" = 0 ]
+   then log_success_msg2
+  fi
+
+  if [ "${errval}" = 1 ]
+  then
+   log_warning_msg "\nwarning:\nfs errors were found and have been corrected."
+  fi
+
+  if [ "${errval}" -ge 2 ] && [ "${errval}" -le 3 ]; then
+   log_failure_msg "\nwarning:\nfs errors have been found and corrected but this fstype needs a reboot."
+   log_info_msg "press enter to procceed."
+   wait_for_user
+   reboot -f
+  fi
+
+  if [ "${errval}" -gt 3 ] && [ "${errval}" -lt 16 ]; then
+   log_failure_msg "\nfailure:\n unfixable fs errors found, system will halt."
+   log_info_msg "press enter to procceed."
+   wait_for_user
+   /etc/rc.d/init.d/halt stop
+  fi
+
+  if [ "${errval}" -ge 16 ]; then
+   log_info_msg "\nfailure:\n unexpected error code:  ${errval}."
+   exit ${errval}
+  fi
+  
+  exit 0
+ ;;
+ 
+ *)
+  printf "usage: ${0} {start}.\n"
+  exit 1
+ ;;
+esac

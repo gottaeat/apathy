@@ -1,0 +1,64 @@
+#!/bin/sh
+# console init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> set up fonts and lang settings from /etc/sysconfig/console
+
+. /lib/lsb/init-functions
+
+[ -f /etc/sysconfig/console ] && . /etc/sysconfig/console
+
+case "${1}" in
+ start)
+  
+  # a >> check if the script needs to anything first
+  if [ -z "${KEYMAP}" ]			&&
+     [ -z "${KEYMAP_CORRECTIONS}" ]	&&
+     [ -z "${FONT}" ]			&&
+     [ -z "${LEGACY_CHARSET}" ]		&&
+     [ ! "${UNICODE}" = "1" ]
+  then
+   exit 1
+  fi
+
+  log_info_msg " apathy - setting up linux console."
+  
+  # b >> check if fb console is used
+  [ -d /sys/class/graphics/fb0 ] && use_fb=1 || use_fb=0
+
+  # c >> figure out the command to set the console into the desired mode
+  if [ "${UNICODE}" = "1" ]
+   then
+    MODE_COMMAND="printf '\033%G' && kbd_mode -u"		||
+    MODE_COMMAND="printf '\033%@\033(K' && kbd_mode -a"
+  fi
+
+  # d >> set font for each vt
+  [ ! "${use_fb}" = "1" ] || [ -z "${FONT}" ] || MODE_COMMAND="${MODE_COMMAND} && setfont ${FONT}"
+
+  # e >> apply the mode setting command to all terms in inittab
+  for TTY in $(grep '^[^#].*respawn:/sbin/agetty' /etc/inittab | grep -o '\btty[[:digit:]]*\b')
+  do
+   openvt -f -w -c ${TTY#tty} -- /bin/sh -c "${MODE_COMMAND}" || failed=1
+  done
+
+  # f >> set font and keymap if not set above
+  [ "${use_fb}" = "1" ] || [ -z "${FONT}" ] || setfont $FONT || failed=1
+  [ -z "${KEYMAP}" ] || loadkeys ${KEYMAP} >/dev/null 2>&1 || failed=1
+  [ -z "${KEYMAP_CORRECTIONS}" ] || loadkeys ${KEYMAP_CORRECTIONS} >/dev/null 2>&1 || failed=1
+
+  # g >> convert $LEGACY_CHARSET to utf-8
+  [ -z "$LEGACY_CHARSET" ] || dumpkeys -c "$LEGACY_CHARSET" | loadkeys -u >/dev/null 2>&1 || failed=1
+
+  # h >> if anything failed, exit with it
+  (exit $failed)
+  evaluate_retval
+
+  exit $failed
+ ;;
+ *)
+  printf "usage: ${0} {start}.\n"
+  exit 1
+ ;;
+esac
