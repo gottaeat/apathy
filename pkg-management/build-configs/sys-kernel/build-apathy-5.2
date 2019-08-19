@@ -15,7 +15,8 @@ esac
 
 # b >> script variables
 saucedir="/mnt/mss/ram/work"
-workdir="/mnt/mss/ram/work/"$(echo $1 | sed 's/\.tar\.xz//')""
+kerver=$(printf "${1}\n" | sed 's/linux-//;s/.tar.xz//g')
+workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
 
@@ -23,6 +24,27 @@ confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
 patch_die(){
  printf "\n\n ! patching failed, exiting with 1.\n\n"
  exit 1
+}
+
+pkgup_kernel(){
+ localver=$(grep 'CONFIG_LOCALVERSION=' ${workdir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
+ pkgupname="${kerver}${localver}"
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+
+ mkdir -p "${saucedir}/pkgup/boot"							&&
+ mkdir -p "${saucedir}/pkgup/lib/modules"						&&
+
+ cp -r /lib/modules/"${pkgupname}"		"${saucedir}/pkgup/lib/modules}"	&&
+
+ cp -i ${workdir}/arch/x86/boot/bzImage		"${saucedir}/pkgup/boot/vmlinuz"	&&
+ cp -i ${workdir}/System.map			"${saucedir}/pkgup/boot/System.map"	&&
+ cp -i ${workdir}/.config			"${saucedir}/pkgup/boot/config"		&&
+
+ cd "${saucedir}"									&&
+ 
+ /mss/bin/pkgup "${saucedir}/pkgup" "${storepkg}"/"${pkgupname}" > /dev/null 2>&1	&&
+
+ rm -rf "${saucedir}/pkgup"
 }
 
 apply_deblob(){
@@ -72,6 +94,11 @@ apply_apathy(){
   patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t --> done.\n"
+
+ printf " * applying: enable link security restrictions by default."
+  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch \
+  >>/tmp/kernel-build.log 2>&1 || patch_die
+ printf "\t --> done.\n"
 }
 
 # d >> action
@@ -106,7 +133,7 @@ printf "\n * building with gcc.\n"
 printf " * copying kernel config."
  cp "${confdir}/5.2-apathy-libre-gcc-no-ucode.config" \
  "${workdir}"/.config					&&
-printf "\t\t --> done.\n\n"				&&
+printf "\t\t --> done.\n\n"
 
 # d3 >> apply patches
 apply_deblob						&&
@@ -131,21 +158,35 @@ printf " * running make.\n"
 printf " * do tail -f /tmp/kernel-build.log to view.\n"
  make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1	&&
  doas -- make modules_install				&&
-printf " * installing the built kernel.\n"
+
+printf "\n :) kernel build is complete.\n\n"		&&
 
 # d7 >> run kinst
 printf " * run kinst to install the kernel? (y/n): "	&&
 read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
- then doas -- /mss/bin/kinst
- else printf " * not installing the built kernel."
+ then
+  printf " * installing the built kernel.\n"
+  doas -- /mss/bin/kinst
+ else
+  printf " * not installing the built kernel.\n"
 fi							&&
 
-printf "\n :) kernel build is complete.\n"		&&
+# d8 >> package up the built kernel.
+printf "\n * package up the built kernel? (y/n): "
+read answerpkgup
 
-# d8 >> clean up ram.
-printf " * run kinst to install the kernel? (y/n): "	&&
+if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
+ then
+  printf " * packaging up the built kernel."
+   pkgup_kernel
+  printf "\t --> done.\n"
+ else printf " * not running pkgup.\n"
+fi
+
+# d9 >> clean up ram.
+printf " * clean up the workdir in ram? (y/n): "	&&
 read answerclean
 
 if [ "$answerclean" != "${answerclean#[Yy]}" ]
