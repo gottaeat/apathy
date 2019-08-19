@@ -12,7 +12,7 @@
 [ -f /etc/sysconfig/network ] && . /etc/sysconfig/network
 
 # set hostname form /etc/hostname
-[ -f /etc/hostname ] && HOSTNAME=`cat /etc/hostname`
+[ -f /etc/hostname ] && hname=$(cat /etc/hostname)
 
 case "${1}" in
  start)
@@ -21,8 +21,8 @@ case "${1}" in
   ip link set lo up
   evaluate_retval
 
-  log_info_msg "apathy - setting the hostname to ${HOSTNAME}."
-  hostname ${HOSTNAME}
+  log_info_msg "apathy - setting the hostname to ${hname}."
+  hostname ${hname}
   evaluate_retval
  ;;
 

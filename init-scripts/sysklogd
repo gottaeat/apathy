@@ -1,0 +1,48 @@
+#!/bin/sh
+# sysklogd init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 3 4 5
+# default-stop ---> 0 1 2 6
+# description ----> starts kernel and system log daemons.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - starting system log daemon."
+   parms=${SYSKLOGD_PARMS-'-m 0'}
+   start_daemon /sbin/syslogd $parms
+  evaluate_retval
+
+  log_info_msg "apathy - starting kernel log daemon."
+   start_daemon /sbin/klogd
+  evaluate_retval
+ ;;
+
+ stop)
+  log_info_msg "apathy - stopping kernel log daemon."
+   killproc /sbin/klogd
+  evaluate_retval
+
+  log_info_msg "apathy - stopping system log daemon."
+   killproc /sbin/syslogd
+  evaluate_retval
+ ;;
+
+ restart)
+  ${0} stop
+   sleep 1
+  ${0} start
+ ;;
+
+ status)
+  statusproc /sbin/syslogd
+  statusproc klogd
+ ;;
+
+ *)
+  printf "Usage: ${0} {start|stop|restart|status}.\n"
+  exit 1
+ ;;
+esac

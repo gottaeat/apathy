@@ -1,0 +1,45 @@
+#!/bin/sh
+# udev init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> populates /dev with device nodes,
+#                   mounts a tempfs on /dev and starts the udevd daemon.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - populating /dev with device nodes."
+   # sanity check for sysfs
+   cksysfs=$(grep sysfs /proc/mounts)
+    if [ -z "${cksysfs}" ]
+    then
+     log_failure_msg2
+     log_info_msg "\nfailure:\nunable to create devices without a sysfs."
+     log_info_msg "press enter to halt."
+     wait_for_user
+     /etc/rc.d/init.d/halt stop
+   fi
+
+   # start udev in daemon mode to constanlty look for devices
+   /sbin/udevd --daemon
+
+   # coldplug the devices which have already been discovered
+   /sbin/udevadm trigger --action=add    --type=subsystems
+   /sbin/udevadm trigger --action=add    --type=devices
+   /sbin/udevadm trigger --action=change --type=devices
+
+   # wait for udevd to settle with the uevents that got triggered
+   if [ -z "$OMIT_UDEV_SETTLE" ]; then /sbin/udevadm settle; fi
+
+  log_success_msg2
+ ;;
+
+ *)
+  printf "usage: ${0} {start}.\n"
+  exit 1
+ ;;
+esac
+
+exit 0

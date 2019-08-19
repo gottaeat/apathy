@@ -1,0 +1,40 @@
+#!/bin/sh
+# sendsignals init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-stop ---> 0 6
+# description ----> attempts to kill remaining processes.
+
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ stop)
+  log_info_msg "apathy - sending TERM to all processes."
+  killall5 -15
+  errval=${?}
+
+  sleep 3
+
+  if [ "${errval}" = 0 ] || [ "${errval}" = 2 ]
+   then	log_success_msg
+   else	log_failure_msg
+  fi
+
+  log_info_msg "apathy - sending KILL To all processes."
+  killall5 -9
+  errval=${?}
+
+  sleep 3
+
+  if [ "${errval}" = 0 ] || [ "${errval}" = 2 ]
+   then	log_success_msg
+   else	log_failure_msg
+  fi
+ ;;
+
+ *)
+  printf "usage: ${0} {stop}.\n"
+  exit 1
+ ;;
+esac
