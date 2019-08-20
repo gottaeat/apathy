@@ -30,7 +30,7 @@ video/audio:
  * alsa 1.1.8
 
 shells:
- * bash 5.0, zsh 5.7.1, yash 2.48
+ * bash 5.0, yash 2.48
 ```
 
 #### patches used in the apathy kernel:
@@ -53,8 +53,8 @@ apathy in its current state is all free software including the kernel and the fi
 ```
 $ [master][apathy]: pkg
 
- * total partition size	: 2205.23mib
- * local package count	: 376
+ * total partition size	: 2214.69mib
+ * local package count	: 375
  * removed packages	: 51
 
 ```

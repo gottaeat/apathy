@@ -393,7 +393,7 @@
 [d]	** liblua5.1.5	--> binary from arch
 [d]	** libidn-1.35
 
-[d]	* zsh-5.7.1
+[r]	* zsh-5.7.1
 [d]	* expect-5.45.4 
 [d]	* lz4
 

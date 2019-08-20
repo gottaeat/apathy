@@ -268,7 +268,6 @@ js185
 tre
 liblua5.1.5
 libidn-1.35
-zsh-5.7.1
 expect-5.45.4
 lz4
 feh

@@ -1,0 +1,98 @@
+##### ~/.yashrc
+### functions
+# cd automatically when dirs are executed
+_autocd()
+if [ -d "$1" ]; then HANDLED=true; cd -- "$@"; break -i; fi
+COMMAND_NOT_FOUND_HANDLER=('_autocd "$@"')
+
+# git repo stat
+gitmeme(){
+ if [ -d $PWD/.git ]
+  then
+   gitstat=$(git status | awk 'NR==2 {print $1}')
+
+   case "${gitstat}" in
+    *Untracked*) export stat="!" ;;
+    *Changes*)	 export stat="!" ;;
+    *nothing*)   export stat="c" ;;
+   esac
+
+   gbranch=$(git branch | awk '{print $2}')
+   printf "${stat} ${gbranch}"
+ fi
+}
+
+### yash settings
+FCEDIT="/usr/bin/vim"
+HISTFILE="~/.yash_history" HISTSIZE=5000
+HISTRMDUP="2"
+
+# propmpts
+YASH_PS1='\fy$(gitmeme)\fD ${${${PWD:/~/\~}##*/}:-$PWD}\fc > \fD'
+YASH_PS1R=''
+YASH_PS1S=''
+YASH_PS2="\fc > \fD"
+YASH_PS2R="\fc < \fD"
+YASH_PS2S=''
+
+# enable vi mode line editing
+set --vi
+# enable bash-like extended expansion
+set --brace-expand
+# enable recursive pathname expansion
+set --extended-glob
+# do not equal to empty if variable is not set
+set --no-unset
+# print job status
+set --notify-le
+# set C-l to clear screen like zsh/bash
+bindkey -av '\^L' clear-and-redraw-all
+
+
+### aliases
+## program related
+alias tmux="tmux -2"
+alias feh="feh -d --scale-down --auto-zoom"
+
+## make verbose
+alias ln="ln -v"
+alias cp="cp -v"
+alias mv="mv -v"
+alias mkdir="mkdir -pv"
+alias mount="mount -v"
+
+## shortcuts
+##a literal shortcuts
+alias nc="ncmpcpp"
+alias w="pwd"
+alias s="startx --"
+alias da="doas --"
+alias l="ls -Askh --color=tty"
+alias ll="ls -Askhw1 --color=tty"
+alias lll="ls -la"
+alias grep="grep --color=auto"
+alias poz="yash --posix"
+##b tmux
+alias td="tmux detach"
+alias ta="tmux attach"
+alias tk="tmux kill-session"
+##c git
+alias gs="git status -s"
+alias gpo="git push origin master"
+alias grs="git reset HEAD~1 --soft"
+##d sound
+alias atog="amixer set Master toggle"
+alias mtog="mpc toggle"
+##e transmission
+alias trs="transmission-remote -n mss:mss -l"
+alias tra="transmission-remote -n mss:mss -a"
+##f dirs
+alias cdw="cd /mss/work"
+alias cdr="cd /mss/repo"
+alias cds="cd /mnt/mss/stuff"
+alias cda="cd /mnt/mss/stuff/media/anime"
+alias cdm="cd /mnt/mss/stuff/media/music"
+alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
+alias 6c="TERM=screen-256color 6cord -c /opt/6cord/6cord.toml"
+##g yes
+alias ding="printf 'dong\n'"
