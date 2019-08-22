@@ -1,0 +1,28 @@
+#!/bin/sh
+# alsa init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# default-stop ---> 0 1 6
+# description ----> (re)stores alsamixer settings from/to /var/lib/alsa/asound.state.
+
+. /lib/lsb/init-functions
+
+case "$1" in
+ start)
+  log_info_msg "apathy - alsa, restoring volumes."
+  /usr/sbin/alsactl restore
+  evaluate_retval
+ ;;
+
+ stop)
+  log_info_msg "apathy - alsa, saving volumes."
+  /usr/sbin/alsactl store
+  evaluate_retval
+ ;;
+
+ *)
+  printf "usage: $0 {start|stop}.\n"
+  exit 1
+ ;;
+esac

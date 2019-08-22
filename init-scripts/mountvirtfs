@@ -1,0 +1,49 @@
+#!/bin/sh
+# gpm init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 3 4 5
+# default-stop ---> 0 1 2 6
+# description ----> mounts /sys, /proc, /run and /dev.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  # sanity check for /run's existence before logging messages
+  if ! mountpoint /run >/dev/null; then
+     mount /run || failed=1
+  fi
+
+  mkdir -p /run/lock /run/shm
+  chmod 1777 /run/shm /run/lock
+
+  log_info_msg "apathy - mounting virtfs: ${INFO}/run" 
+
+  if ! mountpoint /proc >/dev/null; then
+   log_info_msg2 " ${INFO}/proc"
+   mount -o nosuid,noexec,nodev /proc || failed=1
+  fi
+
+  if ! mountpoint /sys >/dev/null; then
+   log_info_msg2 " ${INFO}/sys" 
+   mount -o nosuid,noexec,nodev /sys || failed=1
+  fi
+
+  if ! mountpoint /dev >/dev/null; then
+   log_info_msg2 " ${INFO}/dev" 
+   mount -o mode=0755,nosuid /dev  || failed=1
+  fi
+
+  ln -sfn /run/shm /dev/shm
+  
+  (exit ${failed})
+  evaluate_retval
+  exit $failed
+ ;;
+
+ *)
+  printf "usage: ${0} {start}.\n"
+  exit 1
+ ;;
+esac

@@ -1,0 +1,34 @@
+#!/bin/sh
+# setclock init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> saves and restores the hwclock.
+
+. /lib/lsb/init-functions
+
+[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
+
+case "${UTC}" in
+ yes|true|1) CLOCKPARAMS="${CLOCKPARAMS} --utc"		;;
+ no|false|0) CLOCKPARAMS="${CLOCKPARAMS} --localtime"	;;
+esac
+
+case ${1} in
+ start)
+  hwclock --hctosys ${CLOCKPARAMS} >/dev/null
+ ;;
+
+ stop)
+  log_info_msg "apathy - setting the hardware clock."
+  hwclock --systohc ${CLOCKPARAMS} >/dev/null
+  evaluate_retval
+ ;;
+
+ *)
+  printf "usage: ${0} {start|stop}.\n"
+  exit 1
+ ;;
+esac
+
+exit 0

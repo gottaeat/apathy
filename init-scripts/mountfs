@@ -1,0 +1,47 @@
+#!/bin/sh
+# mountfs init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S 
+# default-stop ---> 0 6
+# description ----> mounts entries defined at /etc/fstab,
+#                   remounts the rootfs as rw at startup;
+#                   umounts the entries and remounts the
+#                   rootfs as ro at stop.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - remounting the rootfs in rw mode."
+  mount --options remount,rw / > /dev/null 2>&1
+  evaluate_retval
+
+  # make sure /dev/pts exists
+  mkdir -p /dev/pts
+
+  log_info_msg "apathy - mounting entries in fstab."
+  mount --all --test-opts no_netdev > /dev/null 2>&1
+  evaluate_retval
+  exit ${failed}
+  ;;
+
+ stop)
+  # do not umount virtfs
+  log_info_msg "apathy - unmounting all mounted devices."
+
+  # ensure the removal of loop devices
+  losetup -D
+  umount --all --detach-loop --read-only \
+   --types notmpfs,nosysfs,nodevtmpfs,noproc,nodevpts > /dev/null 2>&1
+  evaluate_retval
+
+  # make sure / is mounted in ro mode
+  mount --options remount,ro / > /dev/null 2>&1
+ ;;
+
+ *)
+  printf "usage: ${0} {start|stop}.\n"
+  exit 1
+ ;;
+esac

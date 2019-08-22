@@ -1,0 +1,41 @@
+#!/bin/sh
+# swap init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# default-stop ---> 0 6
+# description ----> mounts/umounts swap partitions defined in fstab.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - activating all swap."
+  swapon -a > /dev/null 2>&1
+  evaluate_retval
+ ;;
+
+ stop)
+  log_info_msg "apathy - deactivating all swap."
+  swapoff -a > /dev/null 2>&1
+  evaluate_retval
+ ;;
+
+ restart)
+  ${0} stop
+   sleep 1
+  ${0} start
+ ;;
+
+ status)
+  log_success_msg "apathy - retrieving swap status."
+  swapon -s
+ ;;
+
+ *)
+  printf "usage: ${0} {start|stop|restart|status}.\n"
+  exit 1
+ ;;
+esac
+
+exit 0

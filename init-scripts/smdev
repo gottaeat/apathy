@@ -1,0 +1,39 @@
+#!/bin/sh
+# smdev init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> mounts a tmpfs to /dev and starts udevd.
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  log_info_msg "apathy - populating /dev with device nodes."
+  if ! grep -q '[[:space:]]sysfs' /proc/mounts; then
+   log_failure_msg2
+   log_info_msg "\nfailure:\nunable to create devices without a sysfs."
+   log_info_msg "press enter to procceed."
+   wait_for_user
+   /etc/rc.d/init.d/halt stop
+  fi
+
+  mount -t proc proc /proc
+  mount -t sysfs sysfs /sys
+  echo /sbin/smdev > /proc/sys/kernel/hotplug
+  smdev -s
+
+  mount -t tmpfs -o size=64k,mode=0755 tmpfs /dev
+  mkdir /dev/pts
+  mount -t devpts devpts /dev/pts
+
+  log_success_msg2
+  ;;
+
+ *)
+  printf "usage ${0} {start}.\n"
+  exit 1
+ ;;
+esac
+
+exit 0

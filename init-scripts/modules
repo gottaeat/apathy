@@ -1,0 +1,52 @@
+#!/bin/sh
+# modules init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> loads modules listed in /etc/ssconfig/modules
+
+# Assure that the kernel has module support.
+[ -e /proc/modules ] || exit 0
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ start)
+  # exit if there are no valid entries
+  [ -r /etc/sysconfig/modules ]             || exit 0
+  egrep -qv '^($|#)' /etc/sysconfig/modules || exit 0
+
+  log_info_msg "apathy - loading modules."
+
+  # only load modules if user told to do so
+  while read module args
+   do
+    # ignore comments and blank lines
+    case "$module" in ""|"#"*) continue;; esac
+
+    # load the module with arguments
+    modprobe ${module} ${args} >/dev/null
+
+    # print if the load is successfull, if not save the name.
+    if [ "${?}" -eq 0 ]
+     then log_info_msg2 " ${module}"
+     else failedmod="${failedmod} ${module}"
+    fi
+  done < /etc/sysconfig/modules
+
+  # print a message if loading was successfull
+  log_success_msg2
+
+  # print a message for modules failed to load
+  if [ -n "${failedmod}" ];then
+   log_failure_msg "\nfailure:\n could not load modules:${failedmod}."
+   exit 1
+  fi
+ ;;
+ 
+ *)
+  printf "usage: ${0} {start}.\n"
+  exit 1
+ ;;
+esac
+exit 0

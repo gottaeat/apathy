@@ -21,7 +21,7 @@
 case "${1}" in
  start)
   log_info_msg " apathy - mounting root file system in read-only mode. "
-  mount -n -o remount,ro / > /dev/null
+  mount -n -o remount,ro / > /dev/null 2>&1
   
   if [ ! ${?} = 0 ]
   then
@@ -34,8 +34,8 @@ case "${1}" in
    log_success_msg2
   fi
 
-  log_info_msg "Checking file systems..."
-  fsck ${options} -a -A -C -T > /dev/null
+  log_info_msg "apathy - checking file systems."
+  fsck ${options} -a -A -C -T > /dev/null 2>&1
 
   errval=${?}
 
@@ -72,6 +72,6 @@ case "${1}" in
  
  *)
   printf "usage: ${0} {start}.\n"
-  exit 1
+  exit 1`
  ;;
 esac

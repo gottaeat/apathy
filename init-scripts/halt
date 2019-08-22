@@ -1,0 +1,11 @@
+#!/bin/sh
+# halt init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 0
+# description ----> halts the system.
+
+case "${1}" in
+ stop)	halt -d -f -i -p			;;
+ *)	printf "usage: {stop}.\n"; exit 1	;;
+esac

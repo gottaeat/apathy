@@ -1,0 +1,20 @@
+#!/bin/sh
+# reboot init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 6
+# description ----> reboots the system, wow, really?
+
+. /lib/lsb/init-functions
+
+case "${1}" in
+ stop)
+  log_info_msg "apathy - restarting the system."
+  reboot -d -f -i
+ ;;
+
+ *)
+  printf "usage: ${0} {stop}.\n"
+  exit 1
+ ;;
+esac
