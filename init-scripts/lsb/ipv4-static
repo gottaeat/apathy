@@ -1,0 +1,63 @@
+#!/bin/sh
+# ipv4 static boot script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+. /lib/lsb/init-functions
+. ${IFCONFIG}
+
+if [ -z "${IP}" ]; then
+ log_failure_msg "\nfailure:\nIP variable missing from ${IFCONFIG}, cannot continue."
+ exit 1
+fi
+
+if [ -z "${PREFIX}" ] && [ -z "${PEER}" ]; then
+ log_warning_msg "apathy - PREFIX variable missing from ${IFCONFIG}, assuming 24."
+ PREFIX=24
+ args="${args} ${IP}/${PREFIX}"
+
+elif [ -n "${PREFIX}" ] && [ -n "${PEER}" ]; then
+ log_failure_msg "\nfailure:\nPREFIX and PEER both specified in ${IFCONFIG}, cannot continue."
+ exit 1
+
+elif [ -n "${PREFIX}" ];	then args="${args} ${IP}/${PREFIX}"
+elif [ -n "${PEER}" ];		then args="${args} ${IP} peer ${PEER}"
+fi
+
+if [ -n "${LABEL}" ];		then args="${args} label ${LABEL}"; fi
+if [ -n "${BROADCAST}" ];	then args="${args} broadcast ${BROADCAST}"; fi
+
+case "${2}" in
+ up)
+  if [ "$(ip addr show ${1} 2>/dev/null | grep ${IP}/)" = "" ]; then
+   if ! $(echo ${SERVICE} | grep -q " "); then log_info_msg2 "\n"; fi
+
+   log_info_msg "apathy - adding ipv4 address ${IP} to the ${1} interface."
+   ip addr add ${args} dev ${1} > /dev/null 2>&1
+   evaluate_retval
+  else
+   log_warning_msg "apathy - cannot add ipv4 address ${IP} to ${1}, already present."
+  fi
+ ;;
+
+ down)
+  if [ "$(ip addr show ${1} 2>/dev/null | grep ${IP}/)" != "" ]; then
+   log_info_msg "apathy - removing ipv4 address ${IP} from the ${1} interface."
+   ip addr del ${args} dev ${1} > /dev/null 2>&1
+   evaluate_retval
+  fi
+
+  if [ -n "${GATEWAY}" ]; then
+   # only remove the gateway if there are no remaining ipv4 addresses
+   if [ "$(ip addr show ${1} 2>/dev/null | grep 'inet ')" != "" ]; then
+    log_info_msg "apathy - removing default gateway."
+    ip route del default > /dev/null 2>&1
+    evaluate_retval
+   fi
+  fi
+ ;;
+
+ *)
+  printf "usage: ${0} [interface] {up|down}.\n"
+  exit 1
+ ;;
+esac

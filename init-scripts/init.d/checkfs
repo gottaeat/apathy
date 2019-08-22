@@ -22,7 +22,7 @@ case "${1}" in
  start)
   log_info_msg " apathy - mounting root file system in read-only mode. "
   mount -n -o remount,ro / > /dev/null 2>&1
-  
+
   if [ ! ${?} = 0 ]
   then
    log_failure_msg2
@@ -66,12 +66,12 @@ case "${1}" in
    log_info_msg "\nfailure:\n unexpected error code:  ${errval}."
    exit ${errval}
   fi
-  
+
   exit 0
  ;;
- 
+
  *)
   printf "usage: ${0} {start}.\n"
-  exit 1`
+  exit 1
  ;;
 esac
