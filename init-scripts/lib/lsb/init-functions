@@ -6,7 +6,7 @@
 umask 022
 export PATH="/bin:/usr/bin:/sbin:/usr/sbin"
 
-## Set color commands, used via echo
+## set color commands, used via printf
 NORMAL="\\033[0;39m"	# standart	grey
 SUCCESS="\\033[1;32m"	# success	green
 WARNING="\\033[1;33m"	# warning	yellow
@@ -14,16 +14,16 @@ FAILURE="\\033[1;31m"	# failure	red
 INFO="\\033[1;36m"	# info		light cyan
 BRACKET="\\033[1;34m"	# brackets	blue
 
-# Use a colored prefix
+# set colors
 BMPREFIX="     "
 SUCCESS_PREFIX="${SUCCESS}  *  ${NORMAL}"
 FAILURE_PREFIX="${FAILURE}*****${NORMAL}"
 WARNING_PREFIX="${WARNING} *** ${NORMAL}"
 SKIP_PREFIX="${INFO}  S  ${NORMAL}"
 
-SUCCESS_SUFFIX="${BRACKET}[${SUCCESS}  OK  ${BRACKET}]${NORMAL}"
-FAILURE_SUFFIX="${BRACKET}[${FAILURE} FAIL ${BRACKET}]${NORMAL}"
-WARNING_SUFFIX="${BRACKET}[${WARNING} WARN ${BRACKET}]${NORMAL}"
+SUCCESS_SUFFIX="${BRACKET}[${SUCCESS} AIGHT ${BRACKET}]${NORMAL}"
+FAILURE_SUFFIX="${BRACKET}[${FAILURE} FUCK  ${BRACKET}]${NORMAL}"
+WARNING_SUFFIX="${BRACKET}[${WARNING} SHIT  ${BRACKET}]${NORMAL}"
 SKIP_SUFFIX="${BRACKET}[${INFO} SKIP ${BRACKET}]${NORMAL}"
 
 BOOTLOG=/run/bootlog
@@ -38,9 +38,7 @@ SCRIPT_STAT="0"
 if [ -z "${COLUMNS}" ]; then COLUMNS=$(stty size); COLUMNS=${COLUMNS##* }; fi
 
 # if using the serial port, set columns to 80
-if [ "${COLUMNS}" = "0" ]; then
-   COLUMNS=80
-fi
+if [ "${COLUMNS}" = "0" ]; then COLUMNS=80; fi
 
 ## measurements for positioning result messages
 COL=$((${COLUMNS} - 8))
@@ -68,7 +66,6 @@ start_daemon() {
  local pidlist=""
  local retval=""
 
- # process arguments
  while true
   do
    case "${1}" in
@@ -80,10 +77,8 @@ start_daemon() {
    esac
  done
 
- # sanity check for program validity
  if [ ! -e "${program}" ]; then return 5; fi
 
- # execute
  if [ -z "${force}" ]
   then
    if [ -z "${pidfile}" ]
@@ -91,7 +86,6 @@ start_daemon() {
     else pidlist=$(pidofproc -p "${pidfile}" "${1}"); retval="${?}"
    fi
 
-   # return a value only, logging is init's function. 
    case "${retval}" in
     0) return 0 ;;
     1) rm -f "${pidfile}" ;;
@@ -100,7 +94,6 @@ start_daemon() {
    esac
  fi
 
- # do the start
  nice -n "${nice}" "${@}"
 }
 
@@ -113,7 +106,6 @@ start_daemon() {
 # 2 --> invalid or excessive argument(s)
 # 5 --> program is not installed
 # 7 --> program is not running and a signal was supplied
-
 killproc(){
  local pidfile
  local program
@@ -129,7 +121,6 @@ killproc(){
  local piddead
  local dtime
 
- # process arguments
  while true
  do
   case "${1}" in
@@ -145,7 +136,6 @@ killproc(){
      else nosig=1
     fi
     
-    # error on additional arguments
     if [ -n "${3}" ]
      then return 2
      else break
@@ -154,10 +144,8 @@ killproc(){
   esac
  done
 
- # sanity check for a valid program
  if [ ! -e "${program}" ]; then return 5; fi
 
- # sanity check for a valid signal
  check_signal "${signal}"
  if [ "${?}" -ne "0" ]; then return 2; fi
 
@@ -188,7 +176,6 @@ killproc(){
   *) return 1 ;;
  esac
 
- # perform different actions for exit signals and control signals
  check_sig_type "${signal}"
 
  if [ "${?}" -eq "0" ]
@@ -306,7 +293,7 @@ pidofproc(){
  fi
 }
 
-## >> pidofproc
+## >> statusproc
 # this function prints the status of a particular daemon to stdout
 # usage: statusproc [-p pidfile] pathname
 # return values:
@@ -379,9 +366,7 @@ timespec(){
 log_success_msg(){
  printf "${BMPREFIX}${@}"
  printf "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}\n"
-
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
-
  timespec
  printf "${STAMP} ${logmessage} OK\n" >> ${BOOTLOG}
 
@@ -392,6 +377,7 @@ log_success_msg2(){
  printf "${BMPREFIX}${@}"
  printf "${CURS_ZERO}${SUCCESS_PREFIX}${SET_COL}${SUCCESS_SUFFIX}\n"
  printf " OK\n" >> ${BOOTLOG}
+
  return 0
 }
 
@@ -401,9 +387,7 @@ log_success_msg2(){
 log_failure_msg(){
  printf "${BMPREFIX}${@}"
  printf "${CURS_ZERO}${FAILURE_PREFIX}${SET_COL}${FAILURE_SUFFIX}\n"
-
  timespec
- 
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
  printf "${STAMP} ${logmessage} FAIL\n" >> ${BOOTLOG}
 
@@ -417,21 +401,13 @@ log_failure_msg2(){
  return 0
 }
 
-################################################################################
-# log_warning_msg()                                                            #
-# Usage: log_warning_msg ["message"]                                           #
-#                                                                              #
-# Purpose: Print a warning status message to the screen and                    #
-#          a boot log file.                                                    #
-#                                                                              #
-# Return values: Not used                                                      #
-################################################################################
+## >> log_warning_msg
+# print a warning status message to the screen and a boot log file.
+# usage: log_warning_msg ["message"]
 log_warning_msg(){
  printf "${BMPREFIX}${@}"
  printf "${CURS_ZERO}${WARNING_PREFIX}${SET_COL}${WARNING_SUFFIX}\n"
-
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
- 
  timespec
  printf "${STAMP} ${logmessage} WARN\n" >> ${BOOTLOG}
 
@@ -441,27 +417,18 @@ log_warning_msg(){
 log_skip_msg(){
  printf "${BMPREFIX}${@}"
  printf "${CURS_ZERO}${SKIP_PREFIX}${SET_COL}${SKIP_SUFFIX}\n"
-
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
  printf "SKIP\n" >> ${BOOTLOG}
 
  return 0
 }
 
-################################################################################
-# log_info_msg()                                                               #
-# Usage: log_info_msg message                                                  #
-#                                                                              #
-# Purpose: Print an information message to the screen and                      #
-#          a boot log file.  Does not print a trailing newline character.      #
-#                                                                              #
-# Return values: Not used                                                      #
-################################################################################
+## >> log_info_msg
+# print an information message to the screen and a boot log file.
+# usage: log_info_msg ["message"]
 log_info_msg(){
  printf "${BMPREFIX}${@}"
-
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
- 
  timespec
  printf "${STAMP} ${logmessage}" >> ${BOOTLOG}
 
@@ -470,22 +437,14 @@ log_info_msg(){
 
 log_info_msg2(){
  printf "${@}"
-
- # Strip non-printable characters from log file
  logmessage=$(echo "${@}" | sed 's/\\\033[^a-zA-Z]*.//g')
  printf "${logmessage}" >> ${BOOTLOG}
 
  return 0
 }
 
-################################################################################
-# evaluate_retval()                                                            #
-# Usage: Evaluate a return value and print success or failyure as appropriate  #
-#                                                                              #
-# Purpose: Convenience function to terminate an info message                   #
-#                                                                              #
-# Return values: Not used                                                      #
-################################################################################
+## >> evaluate_retval
+# evaluate a return value and print success or failure as appropriate
 evaluate_retval(){
  local error_value="${?}"
 
@@ -495,31 +454,22 @@ evaluate_retval(){
  fi
 }
 
-################################################################################
-# check_signal()                                                               #
-# Usage: check_signal [ -{signal} | {signal} ]                                 #
-#                                                                              #
-# Purpose: Check for a valid signal.  This is not defined by any LSB draft,    #
-#          however, it is required to check the signals to determine if the    #
-#          signals chosen are invalid arguments to the other functions.        #
-#                                                                              #
-# Inputs: Accepts a single string value in the form or -{signal} or {signal}   #
-#                                                                              #
-# Return values:                                                               #
-#       0 - Success (signal is valid                                           #
-#       1 - Signal is not valid                                                #
-################################################################################
+## >> check_signal
+# check for a valid signal.
+# usage: check_signal [ -{signal} | {signal} ]
+# return values:
+# 0 --> success
+# 1 --> signal is not valid
 check_signal(){
  local valsig
 
- # Add error handling for invalid signals
  valsig="-ALRM -HUP -INT -KILL -PIPE -POLL -PROF -TERM -USR1 -USR2"
  valsig="${valsig} -VTALRM -STKFLT -PWR -WINCH -CHLD -URG -TSTP -TTIN"
  valsig="${valsig} -TTOU -STOP -CONT -ABRT -FPE -ILL -QUIT -SEGV -TRAP"
  valsig="${valsig} -SYS -EMT -BUS -XCPU -XFSZ -0 -1 -2 -3 -4 -5 -6 -8 -9"
  valsig="${valsig} -11 -13 -14 -15"
 
- printf "${valsig}\n" | grep -- " ${1} " > /dev/null
+ printf "\b${valsig}\n" | grep -- " ${1} " > /dev/null
 
  if [ "${?}" -eq "0" ]
   then return 0
@@ -527,28 +477,19 @@ check_signal(){
  fi
 }
 
-################################################################################
-# check_sig_type()                                                             #
-# Usage: check_signal [ -{signal} | {signal} ]                                 #
-#                                                                              #
-# Purpose: Check if signal is a program termination signal or a control signal #
-#          This is not defined by any LSB draft, however, it is required to    #
-#          check the signals to determine if they are intended to end a        #
-#          program or simply to control it.                                    #
-#                                                                              #
-# Inputs: Accepts a single string value in the form or -{signal} or {signal}   #
-#                                                                              #
-# Return values:                                                               #
-#       0 - Signal is used for program termination                             #
-#       1 - Signal is used for program control                                 #
-################################################################################
+## >> check_sig_type
+# check if signal is a program termination signal or a control signal
+# usage: check_signal [ -{signal} | {signal} ]
+# return values:
+# 0 - signal is used for program termination
+# 1 - signal is used for program control
 check_sig_type(){
  local valsig
 
  # The list of termination signals (limited to generally used items)
  valsig="-ALRM -INT -KILL -TERM -PWR -STOP -ABRT -QUIT -2 -3 -6 -9 -14 -15"
 
- printf "${valsig}\n" | grep -- " ${1} " > /dev/null
+ printf "\b${valsig}\n" | grep -- " ${1} " > /dev/null
 
  if [ "${?}" -eq "0" ]
   then return 0
@@ -556,23 +497,15 @@ check_sig_type(){
  fi
 }
 
-################################################################################
-# wait_for_user()                                                              #
-#                                                                              #
-# Purpose: Wait for the user to respond if not a headless system               #
-#                                                                              #
-################################################################################
+## >> wait_for_user
+# wait for the user to respond if not a headless system
 wait_for_user(){
  [ "${HEADLESS=0}" = "0" ] && read ENTER
  return 0
 }
 
-################################################################################
-# is_true()                                                                    #
-#                                                                              #
-# Purpose: Utility to test if a variable is true | yes | 1                     #
-#                                                                              #
-################################################################################
+# is_true
+# utility to test if a variable is true, yes, y, t or 1
 is_true(){
  [ "$1" = "1" ] || [ "$1" = "yes" ] || [ "$1" = "true" ] ||  [ "$1" = "y" ] ||
  [ "$1" = "t" ]
