@@ -1,0 +1,56 @@
+#!/bin/sh
+# /sbin/ifup script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+file=/etc/sysconfig/ifconfig.${1}
+
+# skip backup files
+[ "${file}" = "${file%""~""}" ] || exit 0
+
+. /lib/lsb/init-functions
+
+if [ ! -r "${file}" ]
+ then
+  log_failure_msg2 "\nfailure:\n${file} is missing or cannot be accessed."
+  exit 1
+fi
+
+. ${file}
+
+if [ "$IFACE" = "" ]
+ then
+  log_failure_msg2 "\nfailure:\n${file} does not define an interface [IFACE]."
+  exit 1
+fi
+
+# we only need to first service to bring down the interface
+S=$(echo ${SERVICE} | cut -f1 -d" ")
+
+if ip link show ${IFACE} > /dev/null 2>&1
+ then
+  if [ -n "${S}" ] && [ -x "/lib/services/${S}" ]
+   then
+    IFCONFIG=${file} /lib/services/${S} ${IFACE} down
+   else
+    log_failure_msg "\nfailure:\nunable to process ${file}, either SERVICE is not set or file cannot be executed."
+    exit 1
+  fi
+ else
+  log_warning_msg "\nwarning:\nnterface ${1} doesn't exist."
+fi
+
+# leave the interface up if there are additional interfaces in the device
+link_status=$(ip link show ${IFACE} > /dev/null 2>&1)
+
+if [ -n "${link_status}" ]
+ then
+  if [ ! "$(echo "${link_status}" | grep UP)" = "" ]
+   then
+    if [ "$(ip addr show ${IFACE} | grep 'inet ')" = ""  ]
+     then
+      log_info_msg "apathy - bringing down the ${IFACE} interface."
+      ip link set ${IFACE} down
+      evaluate_retval
+    fi
+  fi
+fi
