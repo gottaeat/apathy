@@ -22,7 +22,7 @@ case "${1}" in
    exit 1
   fi
 
-  log_info_msg " apathy - setting up linux console."
+  log_info_msg "apathy - setting up linux console."
   
   # b >> check if fb console is used
   [ -d /sys/class/graphics/fb0 ] && use_fb=1 || use_fb=0

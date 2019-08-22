@@ -20,7 +20,7 @@
 
 case "${1}" in
  start)
-  log_info_msg " apathy - mounting root file system in read-only mode. "
+  log_info_msg "apathy - mounting root file system in read-only mode. "
   mount -n -o remount,ro / > /dev/null 2>&1
 
   if [ ! ${?} = 0 ]
