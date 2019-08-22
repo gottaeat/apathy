@@ -38,6 +38,9 @@ run(){
 # read any local settings, override if exists
 [ -r /etc/sysconfig/rc.site ] && . /etc/sysconfig/rc.site
 
+# shut dmesg off for the love of god
+dmesg --console-off
+
 DISTRO="apathy gnu/linux 1.2"
 DISTRO_CONTACT="twitter.com/mssx86 - mss@waifu.club"
 DISTRO_MINI="apathy 1.2"
@@ -61,9 +64,8 @@ if [ "$runlevel" = "6" ] || [ "$runlevel" = "0" ]; then IPROMPT="no"; fi
 
 if [ "$runlevel" = "S" ]
  then
-  [ -r /etc/sysconfig/console ] &&
-  source /etc/sysconfig/console
-  dmesg -n "${LOGLEVEL:-7}"
+  [ -r /etc/sysconfig/console ] && . /etc/sysconfig/console
+  #dmesg -n "${LOGLEVEL:-7}"
 fi
 
 # attempt to stop all services started by the previous runlevel, and killed in this runlevel
