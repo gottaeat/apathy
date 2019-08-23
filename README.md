@@ -5,6 +5,10 @@ apathy *(formerly known as mssLinux)* is a pure 64 bit gnu+linux distribution ai
 
 this is the third *release* of apathy, 1.0 being my first attempt to build an lfs system. it was fairly *bloated* as i didn't fine tune dependencies so i wanted to give it a second try, which gave birth to 1.1. 1.1 was supposed to be tidier, more minimalistic and also have multilib support for `steam` and `wine` but it got out of hand fairly quick due to me not being experienced enough with a multilib toolchain so that idea got scrapped, resulting in 1.2.
 
+next to writing init scripts using `start-stop-daemon` from debian, i also rewrote the init scripts provided by the lfs/blfs books. made some functional changes, changes in style and removed bashisms so apathy's init system is not bound to bash in order to work.
+
+![yes](assets/init.png)
+
 because it is intended to be the way i document my progress and keep everything in one place, this repository does not include a build script or an installer but if desired, following the lfs 8.4 book and then building the software listed under `pkg-management/packages.md` in the same order using the configs and patches under `pkg-management/build-configs` would result in an exact copy of this system.
 
 #### overview
