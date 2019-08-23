@@ -21,7 +21,7 @@ case "${1}" in
    else	log_failure_msg
   fi
 
-  log_info_msg "apathy - sending KILL To all processes."
+  log_info_msg "apathy - sending KILL to all processes."
   killall5 -9
   errval=${?}
 
