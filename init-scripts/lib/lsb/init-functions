@@ -16,15 +16,15 @@ BRACKET="\\033[1;34m"	# brackets	blue
 
 # set colors
 BMPREFIX="     "
-SUCCESS_PREFIX="${SUCCESS}  *  ${NORMAL}"
-FAILURE_PREFIX="${FAILURE}*****${NORMAL}"
-WARNING_PREFIX="${WARNING} *** ${NORMAL}"
+SUCCESS_PREFIX="${SUCCESS}  >  ${NORMAL}"
+FAILURE_PREFIX="${FAILURE}  !  ${NORMAL}"
+WARNING_PREFIX="${WARNING}  W  ${NORMAL}"
 SKIP_PREFIX="${INFO}  S  ${NORMAL}"
 
-SUCCESS_SUFFIX="${BRACKET}[${SUCCESS} AIGHT ${BRACKET}]${NORMAL}"
-FAILURE_SUFFIX="${BRACKET}[${FAILURE} FUCK  ${BRACKET}]${NORMAL}"
-WARNING_SUFFIX="${BRACKET}[${WARNING} SHIT  ${BRACKET}]${NORMAL}"
-SKIP_SUFFIX="${BRACKET}[${INFO} SKIP ${BRACKET}]${NORMAL}"
+SUCCESS_SUFFIX="${BRACKET}>>${SUCCESS} done.${NORMAL}"
+FAILURE_SUFFIX="${BRACKET}>>${FAILURE} failed.${NORMAL}"
+WARNING_SUFFIX="${BRACKET}>>${WARNING} warning.${NORMAL}"
+SKIP_SUFFIX="${BRACKET}>>${INFO} skipped.${NORMAL}"
 
 BOOTLOG=/run/bootlog
 KILLDELAY=3
@@ -35,10 +35,12 @@ SCRIPT_STAT="0"
 
 ## screen dimensions
 # find current screen size
-if [ -z "${COLUMNS}" ]; then COLUMNS=$(stty size); COLUMNS=${COLUMNS##* }; fi
+#if [ -z "${COLUMNS}" ]; then COLUMNS=$(stty size); COLUMNS=${COLUMNS##* }; fi
 
 # if using the serial port, set columns to 80
-if [ "${COLUMNS}" = "0" ]; then COLUMNS=80; fi
+#if [ "${COLUMNS}" = "0" ]; then COLUMNS=80; fi
+
+COLUMNS=80
 
 ## measurements for positioning result messages
 COL=$((${COLUMNS} - 8))
