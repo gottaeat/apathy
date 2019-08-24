@@ -351,6 +351,7 @@
 
 [r]	* ~~apulse~~		--> removed
 [r]	* ~~discord~~		--> replaced with 6cord
+[r]	* 6cord
 [r]	* ~~discord-rpc~~	--> uninstalled
 [d]	* youtube-dl
 
@@ -465,6 +466,7 @@
 [d]	* yash-2.48
 [d]	* lzip-1.21
 [r]	* cataclysm-dda-0.D
+[d]	* sfeed
 ```
 ---------------------------------------------------------
 #### python:
