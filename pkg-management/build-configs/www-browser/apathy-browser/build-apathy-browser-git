@@ -1,0 +1,81 @@
+#!/mss/bin/sh
+# a >> set build vars
+repo="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
+workdir=/mss/work
+srcdir=/mss/work/UXP							
+
+# b >> action
+# b0 >> die if patch fails
+patch_faildie(){
+printf "\n ! patching failed, exiting with 1.\n\n"
+exit 1
+}
+
+# b1 >> clone the branch
+cd 
+printf " * cloning the branch."
+cd "${workdir}"
+git clone --depth=1 -b "Pale_Moon-release" \
+ https://github.com/MoonchildProductions/UXP.git \
+ >> /tmp/apathy-browser-build.log 2>&1					&&
+printf "\t\t\t\t--> done.\n"
+cd "${srcdir}"								&&
+
+# b2 >> apply apathy branding
+printf " * applying apathy-browser branding patch."
+patch -p1 < "${repo}"/0001-apathy-browser-branding-git.patch \
+ > /tmp/apathy-browser-build.log 2>&1 || patch_faildie			&&
+printf "\t--> done.\n"
+
+# b3 >> copy mozconfig
+printf " * copying mozconfig."
+cp "${repo}"/apathy-browser-git-mozconfig.config \
+ "${srcdir}"/mozconfig							&&
+printf "\t\t\t\t--> done.\n"
+
+# b4 >> run sed from arch
+printf " * running sed."
+sed -i 's#xlocale#locale#' \
+ "${srcdir}"/intl/icu/source/i18n/digitlst.cpp				&&
+printf "\t\t\t\t\t--> done.\n"
+
+# b5 >> set mach vars
+export pkgname="apathy-browser (palemoon)"				&&
+export pkgver="git-$(date "+%Y-%m-%d")"					&&
+export MOZBUILD_STATE_PATH="$srcdir/mozbuild"				&&
+export MOZCONFIG="$srcdir/mozconfig"					&&
+export CPPFLAGS="$CPPFLAGS -pipe -O2 -Wno-format-overflow"		&&	
+
+# b5.1 >> print mach vars
+printf "\n + pkgname\t: ${pkgname}\n + pkgver\t: ${pkgver}\n"
+printf " + srcdir\t: $srcdir\n + mozbuild\t: ${MOZBUILD_STATE_PATH}\n"
+printf " + mozconfig\t: ${MOZCONFIG}\n + cppflags\t: ${CPPFLAGS}\n"
+
+# b6 >> check everything and ask to run mach
+printf "\n * ready to run mach, shall we continue? (y/n): "
+read answerbuild
+ if [ "$answerbuild" != "${answerbuild#[Yy]}" ]
+  then
+   cd "${srcdir}"							&&
+   vi mozconfig								&&
+   printf " * running mach.\n"
+   printf " * tail -f /tmp/apathy-browser-build.log to view progress.\n"
+   python2.7 mach build >> /tmp/apathy-browser-build.log 2>&1
+  else
+   printf " * not running mach.\n"
+   exit 0
+ fi
+
+# b7 >> ask to install build
+printf "\n * build complete, shall we run the installer? (y/n): "
+read answerinst
+ if [ "$answerinst" != "${answerinst#[Yy]}" ]
+  then
+   printf " * installing.\n"
+   printf " * tail -f /tmp/apathy-browser-build.log to view progress.\n"
+   su -c "python2.7 mach install >> /tmp/apathy-browser-build.log"	&&
+   printf "\n * installation complete.\n"
+  else
+   printf "\n * not installing.\n"
+   exit 0
+ fi
