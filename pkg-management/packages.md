@@ -52,7 +52,7 @@
 [d]	*** net-ssleay-1.86_06
 [d]	*** uri-1.76
 
-[d]	* git-2.20.1				--> --enable-jit
+[d]	* git-2.23.0				--> updated from 2.20.1
 [d]	** curl-7.65.3				--> updated from 7.64
 [d]		*** c-ares-1.15.0
 [d]		*** libssh2-1.9.0		--> updated from 1.8.0

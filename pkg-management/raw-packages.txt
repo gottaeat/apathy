@@ -40,7 +40,7 @@ ntp-4.2.8p13
 io-socket-ssl-2.062
 net-ssleay-1.86_06
 uri-1.76
-git-2.20.1
+git-2.23.1
 curl-7.65.3
 c-ares-1.15.0
 libssh2-1.9.0
