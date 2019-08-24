@@ -31,7 +31,7 @@
 [d]	** gnutls-3.6.9		--> updated from 3.6.6
 [d]	*** nettle-3.4.1
 
-[d]	* iptables-1.8.2	--> configured with a proper basic-ish ruleset
+[d]	* iptables-1.8.3	--> updated from 1.8.2
 [d]	* dosfstools-4.1 
 
 [d]	* lsof-4.91
