@@ -438,10 +438,10 @@
 [d]	* mupdf
 [d]	** jbig2dec
 
-[d]	* newsboat
-[d]	** json-c
-[d]	** stfl
-[d]	** swig
+[r]	* newsboat
+[r]	** json-c
+[r]	** stfl
+[r]	** swig
 
 [r]	* fbterm
 [r]	** libx86
@@ -457,7 +457,7 @@
 [d]	* fim
 [d]	* gpgme-1.13.1
 [d]	* mutt-1.12.1
-[d]	* xnp2			--> https://github.com/nmlgc/np2debug
+[r]	* xnp2			--> https://github.com/nmlgc/np2debug
 [r]	* windowmaker
 [r]	* openbox
 [r]	* lemonbar		--> https://github.com/krypt-n/bar

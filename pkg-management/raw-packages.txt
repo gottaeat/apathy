@@ -291,10 +291,6 @@ jq-1.6
 mkvtoolnix
 mupdf
 jbig2dec
-newsboat
-json-c
-stfl
-swig
 dnscrypt-proxy-2.0.25
 start-stop-daemon
 opendoas
@@ -302,7 +298,6 @@ xwinwrap
 fim
 gpgme-1.13.1
 mutt-1.12.1
-xnp2
 yash-2.48
 lzip-1.21
 man-pages-4.16
