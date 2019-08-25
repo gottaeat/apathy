@@ -43,8 +43,10 @@ shells:
  * 5.2-cc_optimize_harder		(zen-kernel)
  * 4.13-graysky2-gcc-9.1-cpu-opt	(graysky2)
  * 5.2-zen-muqss			(con kolivas)
+ * 5.2-zen-futex			(zen-kernel)
  * 5.2-zen-tune				(zen-kernel)
- * 5.2-aldgodev-bfq-mq			(algodev)
+ * 5.2-aldgodev-bfq-mq			(algodev + pf-kernel)
+ * 5.2-enable-link-security-by-default	(gentoo-sources)
 ```
 
 #### about proprietary software under apathy

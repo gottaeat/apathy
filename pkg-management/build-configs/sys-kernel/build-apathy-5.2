@@ -85,6 +85,11 @@ apply_apathy(){
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
  printf "\t\t\t\t\t --> done.\n"
 
+ printf " * applying: zen-futex patches."
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-futex.patch \
+  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
+ printf "\t\t\t\t\t --> done.\n"
+
  printf " * applying: zen-tune patches."
   patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch \
   >>/tmp/kernel-build.log 2>&1 || patch_die					&&
@@ -156,7 +161,8 @@ fi							&&
 # d6 >> run make
 printf " * running make.\n"
 printf " * do tail -f /tmp/kernel-build.log to view.\n"
- make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1	&&
+ make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1 \
+  || printf " ! make failed, check logs.\n"; exit 1	&&
  doas -- make modules_install				&&
 
 printf "\n :) kernel build is complete.\n\n"		&&
