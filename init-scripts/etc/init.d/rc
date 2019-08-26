@@ -58,8 +58,17 @@ fi
 if [ "$runlevel" = "S" ]
  then
   [ -r /etc/sysconfig/console ] && . /etc/sysconfig/console
-  printf "\n${BMPREFIX}welcome to ${BRACKET}apathy gnu/linux ${SUCCESS}1.2${NORMAL}.\n\n"
-  #dmesg -n "${LOGLEVEL:-7}"
+  /usr/bin/clear
+  printf "\n${BMPREFIX}${BRACKET}  __,  ,_   __,  -/- /_\n"
+  printf "${BMPREFIX} (_/(__/_)_(_/(__/__/ (__(_/_\n"
+  printf "${BMPREFIX}      /                  _/_\n"
+  printf "${BMPREFIX}     /                  (/${NORMAL}\n"
+  printf "\n${BMPREFIX}welcome to ${BRACKET}apathy gnu/linux ${SUCCESS}1.2${NORMAL}.\n"
+  printf "${BMPREFIX}running on kernel ${SUCCESS}$(/bin/uname -r)${NORMAL}.\n\n"
+
+
+  printf "\n${BMPREFIX}${SUCCESS}$(date '+%a %d %I:%M:%S%P')${NORMAL} - ${SUCCESS}$(/sbin/init --version)${NORMAL}"
+  printf "${CURS_ZERO}${SET_COL}\n"
 fi
 
 # attempt to stop all services started by the previous runlevel, and killed in this runlevel
