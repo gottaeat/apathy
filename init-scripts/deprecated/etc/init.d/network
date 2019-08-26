@@ -1,0 +1,50 @@
+#!/bin/sh
+# network init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 3 4 5
+# default-stop ---> 0 1 2 6
+# description ----> starts and configures the network adapters.
+
+case "${1}" in
+ start)
+  # Start all network interfaces
+  for file in /etc/sysconfig/ifconfig.*
+   do
+    interface=${file##*/ifconfig.}
+    if [ "${interface}" = "*" ]; then continue; fi
+
+    /sbin/ifup ${interface} > /dev/null 2>&1
+   done
+ ;;
+
+ stop)
+  # unmount any networkfs
+  umount --all --force --types nfs,cifs,nfs4 > /dev/null 2>&1
+
+  # reverse list
+  net_files=""
+  for file in /etc/sysconfig/ifconfig.*; do net_files="${file} ${net_files}"; done
+
+  # Stop all network interfaces
+  for file in ${net_files}
+   do
+    interface=${file##*/ifconfig.}
+     if [ "${interface}" = "*" ]; then continue; fi
+
+     /sbin/ifdown ${interface} > /dev/null 2>&1
+   done
+ ;;
+
+ restart)
+  ${0} stop
+   sleep 1
+  ${0} start
+ ;;
+
+ *)
+  printf "usage: ${0} {start|stop|restart}.\n"
+  exit 1
+ ;;
+esac
+exit 0
