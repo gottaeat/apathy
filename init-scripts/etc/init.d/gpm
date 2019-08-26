@@ -10,18 +10,14 @@
 
 pidfile="/run/gpm.pid"
 
-# if exists, source /etc/sysconfig/mouse
-[ -f /etc/sysconfig/mouse ] && . /etc/sysconfig/mouse
+# set mouse variables
+MDEVICE="/dev/input/mice"
+PROTOCOL="imps2"
+GPMOPTS=""
 
 case "${1}" in
  start)
-  log_info_msg "apathy - starting gpm."
-  if [ -z "${MDEVICE}" ] && [ -z "${PROTOCOL}" ]; then
-   log_info_msg2 "invalid gpm configuration."
-   log_failure_msg
-   exit 2
-  fi
- 
+  log_info_msg "apathy - starting gpm."  
   start_daemon /usr/sbin/gpm -m "${MDEVICE}" -t "${PROTOCOL}" ${GPMOPTS}
   evaluate_retval
  ;;

@@ -7,21 +7,14 @@
 
 . /lib/lsb/init-functions
 
-[ -r /etc/sysconfig/clock ] && . /etc/sysconfig/clock
-
-case "${UTC}" in
- yes|true|1) CLOCKPARAMS="${CLOCKPARAMS} --utc"		;;
- no|false|0) CLOCKPARAMS="${CLOCKPARAMS} --localtime"	;;
-esac
-
 case ${1} in
  start)
-  hwclock --hctosys ${CLOCKPARAMS} >/dev/null
+  hwclock --hctosys --utc > /dev/null
  ;;
 
  stop)
   log_info_msg "apathy - setting the hardware clock."
-  hwclock --systohc ${CLOCKPARAMS} >/dev/null
+  hwclock --systohc > /dev/null
   evaluate_retval
  ;;
 

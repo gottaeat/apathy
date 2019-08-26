@@ -7,7 +7,10 @@
 
 . /lib/lsb/init-functions
 
-[ -f /etc/sysconfig/console ] && . /etc/sysconfig/console
+# set console variables
+UNICODE="1"
+KEYMAP="us"
+FONT="ter-v12n -m 8859-1"
 
 case "${1}" in
  start)
