@@ -17,15 +17,15 @@ GPMOPTS=""
 
 case "${1}" in
  start)
-  log_info_msg "apathy - starting gpm."  
+  log_info_msg "apathy - starting ${c_lcyan}gpm${c_reset}."  
   start_daemon /usr/sbin/gpm -m "${MDEVICE}" -t "${PROTOCOL}" ${GPMOPTS}
-  evaluate_retval
+  evalret
  ;;
  
  stop)
-  log_info_msg "apathy - stopping gpm."
+  log_info_msg "apathy - stopping ${c_lcyan}gpm${c_reset}."
   killproc /usr/sbin/gpm
-  evaluate_retval
+  evalret
  ;;
 
  restart)

@@ -16,12 +16,12 @@ case "$1" in
  start)
   log_info_msg "apathy - starting $NAME."
   start-stop-daemon --start --quiet  --chuid $USER --exec $DAEMON -- $DAEMON_OPTS
-  evaluate_retval
+  evalret
   ;;
  stop)
   log_info_msg "apathy - stopping $NAME."
   kill $(pidof transmission-daemon)
-  evaluate_retval
+  evalret
   ;;
  restart)
   ${0} stop

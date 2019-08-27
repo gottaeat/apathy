@@ -11,9 +11,9 @@
 case "$1" in
  start)
   if [ -x /etc/rc.d/rc.iptables ]; then
-   log_info_msg "apathy - starting iptables."
+   log_info_msg "apathy - starting ${c_lcyan}iptables${c_reset}."
    /etc/rc.d/rc.iptables
-   evaluate_retval
+   evalret
   fi
  ;;
 
@@ -28,7 +28,7 @@ case "$1" in
   /sbin/iptables	-t mangle --delete-chain
   /sbin/iptables	-A INPUT  -i lo -j ACCEPT
   /sbin/iptables	-A OUTPUT -o lo -j ACCEPT
-  evaluate_retval
+  evalret
  ;;
 
  clear)
@@ -40,7 +40,7 @@ case "$1" in
   /sbin/iptables	-t mangle --flush
   /sbin/iptables	--delete-chain
   /sbin/iptables	-t mangle --delete-chain
-  evaluate_retval
+  evalret
  ;;
 
  status)

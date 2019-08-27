@@ -15,7 +15,7 @@ case ${1} in
  stop)
   log_info_msg "apathy - setting the hardware clock."
   hwclock --systohc > /dev/null
-  evaluate_retval
+  evalret
  ;;
 
  *)

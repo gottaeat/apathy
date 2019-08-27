@@ -19,17 +19,17 @@ case "${1}" in
   log_info_msg "apathy - bringing up the loopback interface."
   ip addr add 127.0.0.1/8 label lo dev lo
   ip link set lo up
-  evaluate_retval
+  evalret
 
-  log_info_msg "apathy - setting the hostname to ${hname}."
+  log_info_msg "apathy - setting the hostname to ${c_lcyan}${hname}${c_reset}."
   hostname ${hname}
-  evaluate_retval
+  evalret
  ;;
 
  stop)
   log_info_msg "apathy - bringing down the loopback interface."
   ip link set lo down
-  evaluate_retval
+  evalret
  ;;
 
  restart)
@@ -39,7 +39,7 @@ case "${1}" in
  ;;
 
  status)
-  log_info_msg "apathy - hostname is set to: $(hostname).\n"
+  log_info_msg "apathy - hostname is set to: ${c_lcyan}$(hostname)${c_reset}.\n"
   ip link show lo
  ;;
 

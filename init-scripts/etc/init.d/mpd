@@ -15,14 +15,14 @@ export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
  start)
-  log_info_msg "apathy - starting $NAME."
+  log_info_msg "apathy - starting ${c_lcyan}$NAME${c_reset}."
   start-stop-daemon --start --quiet -b --chuid $USER --exec $DAEMON $DAEMON_OPTS
-  evaluate_retval
+  evalret
   ;;
  stop)
-  log_info_msg "apathy - stopping $NAME."
+  log_info_msg "apathy - stopping ${c_lcyan}$NAME${c_reset}."
   start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" 
-  evaluate_retval
+  evalret
   ;;
  restart)
   ${0} stop

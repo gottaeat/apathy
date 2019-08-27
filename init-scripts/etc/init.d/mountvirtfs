@@ -18,27 +18,27 @@ case "${1}" in
   mkdir -p /run/lock /run/shm
   chmod 1777 /run/shm /run/lock
 
-  log_info_msg "apathy - mounting virtfs: ${INFO}/run" 
+  log_info_msg "apathy - mounting virtfs: ${c_lcyan}/run" 
 
   if ! mountpoint /proc >/dev/null; then
-   log_info_msg2 " ${INFO}/proc"
+   log_info_msg2 " ${c_lcyan}/proc"
    mount -o nosuid,noexec,nodev /proc || failed=1
   fi
 
   if ! mountpoint /sys >/dev/null; then
-   log_info_msg2 " ${INFO}/sys" 
+   log_info_msg2 " ${c_lcyan}/sys" 
    mount -o nosuid,noexec,nodev /sys || failed=1
   fi
 
   if ! mountpoint /dev >/dev/null; then
-   log_info_msg2 " ${INFO}/dev" 
+   log_info_msg2 " ${c_lcyan}/dev" 
    mount -o mode=0755,nosuid /dev  || failed=1
   fi
 
   ln -sfn /run/shm /dev/shm
   
   (exit ${failed})
-  evaluate_retval
+  evalret
   exit $failed
  ;;
 

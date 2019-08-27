@@ -13,8 +13,8 @@ print_error_msg(){
 
 check_script_status(){
  # $i is set when called
- if [ ! -f ${i} ]; then log_warning_msg "${i} is not a valid symlink.";		SCRIPT_STAT="1"; fi
- if [ ! -x ${i} ]; then log_warning_msg "${i} is not executable, skipping.";	SCRIPT_STAT="1"; fi
+ if [ ! -f ${i} ]; then log_warning_msg "${i} is not a valid symlink.";		script_stat="1"; fi
+ if [ ! -x ${i} ]; then log_warning_msg "${i} is not executable, skipping.";	script_stat="1"; fi
 }
 
 run(){
@@ -59,16 +59,16 @@ if [ "$runlevel" = "S" ]
  then
   [ -r /etc/sysconfig/console ] && . /etc/sysconfig/console
   /usr/bin/clear
-  printf "\n${BMPREFIX}${BRACKET}  __,  ,_   __,  -/- /_\n"
-  printf "${BMPREFIX} (_/(__/_)_(_/(__/__/ (__(_/_\n"
-  printf "${BMPREFIX}      /                  _/_\n"
-  printf "${BMPREFIX}     /                  (/${NORMAL}\n"
-  printf "\n${BMPREFIX}welcome to ${BRACKET}apathy gnu/linux ${SUCCESS}1.2${NORMAL}.\n"
-  printf "${BMPREFIX}running on kernel ${SUCCESS}$(/bin/uname -r)${NORMAL}.\n\n"
+  printf "\n${sbefore}${c_blue}  __,  ,_   __,  -/- /_\n"
+  printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"
+  printf "${sbefore}      /                  _/_\n"
+  printf "${sbefore}     /                  (/${c_reset}\n"
+  printf "\n${sbefore}welcome to ${c_blue}apathy gnu/linux ${c_green}1.2${c_reset}.\n"
+  printf "${sbefore}running on kernel ${c_green}$(/bin/uname -r)${c_reset}.\n\n"
 
 
-  printf "\n${BMPREFIX}${SUCCESS}$(date '+%a %d %I:%M:%S%P')${NORMAL} - ${SUCCESS}$(/sbin/init --version)${NORMAL}"
-  printf "${CURS_ZERO}${SET_COL}\n"
+  printf "\n${sbefore}${c_green}$(date '+%a %d %I:%M:%S%P')${c_reset} - ${c_green}$(/sbin/init --version)${c_reset}"
+  printf "${cur_zero}${col}\n"
 fi
 
 # attempt to stop all services started by the previous runlevel, and killed in this runlevel
@@ -77,7 +77,7 @@ if [ "${previous}" != "N" ]
   for i in $(ls -v /etc/rc.d/rc${runlevel}.d/K* 2> /dev/null)
    do
     check_script_status
-    if [ "${SCRIPT_STAT}" = "1" ]; then SCRIPT_STAT="0"; continue; fi
+    if [ "${script_stat}" = "1" ]; then script_stat="0"; continue; fi
 
     suffix=${i#/etc/rc.d/rc$runlevel.d/K[0-9][0-9]}
     prev_start=/etc/rc.d/rc$previous.d/S[0-9][0-9]$suffix
@@ -117,7 +117,7 @@ for i in $( ls -v /etc/rc.d/rc${runlevel}.d/S* 2> /dev/null)
 
    check_script_status
 
-   if [ "${SCRIPT_STAT}" = "1" ]; then SCRIPT_STAT="0"; continue; fi
+   if [ "${script_stat}" = "1" ]; then script_stat="0"; continue; fi
 
    case ${runlevel} in
     0|6) run ${i} stop	;;
@@ -132,11 +132,11 @@ for i in $( ls -v /etc/rc.d/rc${runlevel}.d/S* 2> /dev/null)
 # copy the boot log on initial boot only
 if [ "${previous}" = "N" ] && [ ! "${runlevel}" = "S" ]
  then
-  cat $BOOTLOG >> /var/log/boot.log
+  cat $bootlogdir >> /var/log/boot.log
   
   # mark the end of boot
   printf ".--------.\n" >> /var/log/boot.log
 
   # remove the temporary file
-  rm -f $BOOTLOG 2> /dev/null
+  rm -f $bootlogdir 2> /dev/null
 fi

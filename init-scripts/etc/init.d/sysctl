@@ -12,7 +12,7 @@ case "${1}" in
   if [ -f "/etc/sysctl.conf" ]; then
    log_info_msg "apathy - setting kernel runtime parameters."
    sysctl -q -p
-   evaluate_retval
+   evalret
   fi
  ;;
 

@@ -10,24 +10,24 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - starting system log daemon."
+  log_info_msg "apathy - starting the ${c_lcyan}system log${c_reset} daemon."
    parms=${SYSKLOGD_PARMS-'-m 0'}
    start_daemon /sbin/syslogd $parms
-  evaluate_retval
+  evalret
 
-  log_info_msg "apathy - starting kernel log daemon."
+  log_info_msg "apathy - starting the ${c_lcyan}kernel log${c_reset} daemon."
    start_daemon /sbin/klogd
-  evaluate_retval
+  evalret
  ;;
 
  stop)
-  log_info_msg "apathy - stopping kernel log daemon."
+  log_info_msg "apathy - stopping the ${c_lcyan}kernel log${c_reset} daemon."
    killproc /sbin/klogd
-  evaluate_retval
+  evalret
 
-  log_info_msg "apathy - stopping system log daemon."
+  log_info_msg "apathy - stopping the ${c_lcyan}system log${c_reset} daemon."
    killproc /sbin/syslogd
-  evaluate_retval
+  evalret
  ;;
 
  restart)

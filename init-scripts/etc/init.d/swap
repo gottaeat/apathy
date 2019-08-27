@@ -12,13 +12,13 @@ case "${1}" in
  start)
   log_info_msg "apathy - activating all swap."
   swapon -a > /dev/null 2>&1
-  evaluate_retval
+  evalret
  ;;
 
  stop)
   log_info_msg "apathy - deactivating all swap."
   swapoff -a > /dev/null 2>&1
-  evaluate_retval
+  evalret
  ;;
 
  restart)

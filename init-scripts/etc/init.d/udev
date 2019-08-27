@@ -10,7 +10,7 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - populating /dev with device nodes."
+  log_info_msg "apathy - populating ${c_lcyan}/dev${c_reset} via ${c_lcyan}udev${c_reset}."
    # sanity check for sysfs
    cksysfs=$(grep sysfs /proc/mounts)
     if [ -z "${cksysfs}" ]

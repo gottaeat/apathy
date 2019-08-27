@@ -52,7 +52,7 @@ case "${1}" in
   log_info_msg "apathy - cleaning file systems: "
 
   if [ "${SKIPTMPCLEAN}" = "" ]; then
-   log_info_msg2 "${INFO}/tmp"
+   log_info_msg2 "${c_lcyan}/tmp"
    cd /tmp &&
    find . -xdev -mindepth 1 ! -name lost+found -delete || failed=1
   fi
@@ -65,12 +65,12 @@ case "${1}" in
   fi
 
   (exit ${failed})
-  evaluate_retval
+  evalret
 
   if egrep -qv '^(#|$)' /etc/sysconfig/createfiles 2>/dev/null; then
    log_info_msg "apathy - creating files and directories. "
    create_files      # always returns 0
-   evaluate_retval
+   evalret
   fi
 
   exit $failed
