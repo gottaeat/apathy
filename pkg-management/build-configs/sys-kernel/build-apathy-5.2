@@ -1,30 +1,28 @@
 #!/mss/bin/sh
+. /mss/work/apathy-funcs
+
 # a1 >> check if variables are set
-if	[ -z $1 ]; then printf "\n ! no kernel source tarball selected, exiting.\n\n";		exit 1
-elif	[ ! -f "${PWD}/${1}" ]; then printf "\n ! tarball doesn't exist, exiting.\n\n";		exit 1  
+if	[ -z $1 ]; then aprint_fail "no kernel source tarball selected, exiting.";	exit 1
+elif	[ ! -f "${PWD}/${1}" ]; then aprint_fail "tarball doesn't exist, exiting.";	exit 1  
 fi &&
 
 # a2 >> check if $1 is a linux tarball
 case $1 in
  *linux*)
-  printf " * archive is a linux source tarball.\n\n" ;;
+  aprint_nc; aprint "archive is a linux source tarball."; aprint_nc;;
  *)
-  printf " ! ${1} is not a linux source tarball, exiting.\n\n"
+  aprint_fail "${1} is not a linux source tarball, exiting."
   exit 1 ;;
 esac
 
 # b >> script variables
 saucedir="/mnt/mss/ram/work"
-kerver=$(printf "${1}\n" | sed 's/linux-//;s/.tar.xz//g')
+kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//g')
 workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
 
 # c >> functions
-patch_die(){
- printf "\n\n ! patching failed, exiting with 1.\n\n"
- exit 1
-}
 
 pkgup_kernel(){
  localver=$(grep 'CONFIG_LOCALVERSION=' ${workdir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
@@ -48,160 +46,147 @@ pkgup_kernel(){
 }
 
 apply_deblob(){
- printf " * applying: gnu deblob patches."
-  patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} gnu deblob patches${c_reset}."
+  patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * removing: gnu extraversion entry."
-  sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile			&&
- printf "\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}removing:${c_lcyan} gnu extraversion entry${c_reset}."
+  sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile
+ evalretkill
 }
 
 apply_freedo(){
- printf " * applying: freedo logo."
-  install -m644 -t "${workdir}"/drivers/video/logo \
-  "${patchdir}"/freedo-logo/logo_linux_clut224.ppm				&&
-  install -m644 -t "${workdir}"/drivers/video/logo \
-  "${patchdir}"/freedo-logo/logo_linux_vga16.ppm				&&
-  install -m644 -t "${workdir}"/drivers/video/logo \
-  "${patchdir}"/freedo-logo/logo_linux_mono.pbm					&&
-  printf "\t\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} freedo logo."
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_clut224.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_vga16.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_mono.pbm	
+ evalretkill
 }
 
 apply_apathy(){
- printf " * applying: graysky2 cpu family specific optimiziation patch."
-  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: zen -03 optimize harder patch."
-  patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} zen -03 optimize harder patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: zen-muqss patches."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} zen-muqss patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: zen-futex patches."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-futex.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} zen-futex patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-futex.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: zen-tune patches."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} zen-tune patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: algodev bfq-mq patches."
-  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die					&&
- printf "\t\t\t\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} algodev bfq-mq patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
- printf " * applying: enable link security restrictions by default."
-  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch \
-  >>/tmp/kernel-build.log 2>&1 || patch_die
- printf "\t --> done.\n"
+ aprint_ret "${c_blue}applying:${c_lcyan} enable link security restrictions by default${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 }
 
 # d >> action
 # d0 >> clear old log
-printf " * cleaning old log."
-echo > "/tmp/kernel-build.log"				&&
-printf "\t\t\t --> done.\n"
+aprint_ret "cleaning old log."
+ echo > "/tmp/kernel-build.log"
+evalret
 
 # d1 >> unpack kernel.
 if [ ! -d "${saucedir}" ]
  then
-  printf " * saucedir does not exist, creating."
-  mkdir "${saucedir}"					&&
-  printf "\t --> done.\n"
- else
-  printf "\n * saucedir: ${saucedir}\n"
-  printf " * workdir : ${workdir}\n\n"
+  aprint_ret "saucedir does not exist, creating."
+   mkdir "${saucedir}"
+  evalretkill
 fi
 
-printf " * unpacking kernel source."
- tar xf "${1}" --directory="${saucedir}"		&&
-printf "\t\t --> done.\n"
- cd "${workdir}"					&&
+aprint_ret "unpacking kernel source."
+ tar xf "${1}" --directory="${saucedir}"
+evalretkill
+ cd "${workdir}"
 
 # d1.1 >> run mrproper
-printf " * running mrproper."
- make mrproper >>/tmp/kernel-build.log 2>&1		&&
-printf "\t\t\t --> done.\n"
+aprint_ret "running mrproper."
+ make mrproper >>/tmp/kernel-build.log 2>&1
+evalretkill
 
 # d2 >> copy config
-printf "\n * building with gcc.\n"
-printf " * copying kernel config."
- cp "${confdir}/5.2-apathy-libre-gcc-no-efi.config" \
- "${workdir}"/.config					&&
-printf "\t\t --> done.\n\n"
+aprint_ret "copying kernel config."
+ cp "${confdir}/5.2-apathy-libre-gcc-no-efi.config" "${workdir}"/.config
+evalretkill
 
 # d3 >> apply patches
-apply_deblob						&&
-apply_freedo						&&
-apply_apathy						&&
+aprint_nc
+apply_deblob
+apply_freedo
+apply_apathy
 
 # d5 >> run nconfig
-printf "\n * run nconfig for manual config? (y/n): "
+aprint_nc
+aprint_xn "run nconfig for manual config? (y/n): "
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
 then
- printf " * running nconfig.\n"
-  make nconfig						&&
- printf "\n * done.\n\n"
+ aprint "running nconfig."
+  make nconfig
 else
- printf " * not running nconfig.\n\n"
-fi							&&
+ aprint "not running nconfig."
+fi
 
 # d6 >> run make
-printf " * running make.\n"
-printf " * do tail -f /tmp/kernel-build.log to view.\n"
- make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1 \
-  || printf " ! make failed, check logs.\n"; exit 1	&&
- doas -- make modules_install				&&
-
-printf "\n :) kernel build is complete.\n\n"		&&
+aprint_nc
+aprint_ret "running make, tail -f /tmp/kernel-build.log to view."
+ make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
+evalretkill
+ doas -- make modules_install >>/tmp/kernel-build.log 2>&1
 
 # d7 >> run kinst
-printf " * run kinst to install the kernel? (y/n): "	&&
+aprint_nc
+aprint_xn "install the built kernel? (y/n): "
 read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  then
-  printf " * installing the built kernel.\n"
-  doas -- /mss/bin/kinst
+  aprint_ret "installing the built kernel."
+   doas cp arch/x86/boot/bzImage	/boot/vmlinuz		&&
+   doas cp System.map			/boot/System.map	&&
+   doas cp .config			/boot/config
+   evalret
  else
-  printf " * not installing the built kernel.\n"
-fi							&&
+  aprint "not installing the built kernel."
+fi
 
 # d8 >> package up the built kernel.
-printf "\n * package up the built kernel? (y/n): "
+aprint_nc
+aprint_xn "package up the built kernel? (y/n): "
 read answerpkgup
 
 if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
  then
-  printf " * packaging up the built kernel."
+  aprint_ret "packaging up the built kernel."
    pkgup_kernel
-  printf "\t --> done.\n"
- else printf " * not running pkgup.\n"
+  evalret
+ else aprint "not running pkgup."
 fi
 
 # d9 >> clean up ram.
-printf " * clean up the workdir in ram? (y/n): "	&&
+aprint_nc
+aprint_xn "clean up the workdir in ram? (y/n): "
 read answerclean
 
 if [ "$answerclean" != "${answerclean#[Yy]}" ]
  then
-  printf " * cleaning up the workdir."
-   rm -rf ${workdir}					&&
-  printf "\t\t --> done.\n\n"
+  aprint_ret "cleaning up the workdir."
+   rm -rf ${workdir}
+  evalret
  else
-  printf " * not cleaning up the workdir.\n\n"
-fi							&&
-
-exit 0
+  aprint "not cleaning up the workdir."
+fi

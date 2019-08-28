@@ -1,0 +1,39 @@
+#!/bin/sh
+
+c_reset="\\033[0;39m"    # grey
+c_green="\\033[1;32m"   # green
+c_red="\\033[1;31m"   # red
+c_lcyan="\\033[1;36m"      # light cyan
+c_blue="\\033[1;34m"   # blue
+
+## set cursor position commands
+col="\\033[72G"
+wcol="\\033[70G"
+cur_up="\\033[1A\\033[0G"
+cur_zero="\\033[0G"
+
+# set colors
+sbefore="   "
+succ="${c_green} * ${c_reset}"
+fail="${c_red} ! ${c_reset}"
+
+succ_end="${c_green} done${c_reset}"
+fail_end="${c_red} failed${c_reset}"
+
+# printing
+aprint_succ(){ printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
+aprint_fail(){ printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
+aprint_ret(){ printf "${sbefore}${@}"; return 0; }
+aprint(){ printf "${sbefore}${@}\n"; return 0; }
+aprint_xn(){ printf "${sbefore}${@}"; return 0; }
+aprint_nc(){ printf "\n"; }
+
+evalret(){
+ local error_value="${?}"
+ if [ ${error_value} = 0 ]; then aprint_succ; else aprint_fail; fi
+}
+
+evalretkill(){
+ local error_value="${?}"
+  if [ ${error_value} = 0 ]; then aprint_succ; else aprint_fail; exit 1; fi
+}
