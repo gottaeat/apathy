@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/sh
 if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run as root, exiting.\n\n"; exit 1; fi
 
 printf "\n ! this script will strip bins and libs which could be harmful.\n   are you sure you want to procceed? (y/n): "
