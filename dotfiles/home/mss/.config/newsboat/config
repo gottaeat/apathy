@@ -1,9 +1,0 @@
-auto-reload yes
-browser "elinks"
-
-color listnormal cyan default
-color listfocus black yellow standout bold 
-color listnormal_unread blue default
-color listfocus_unread yellow default bold
-color info red black bold
-color article cyan default

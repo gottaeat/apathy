@@ -1,0 +1,51 @@
+# /etc/profile
+# security stuff
+umask 022
+unset ROOTPATH
+
+# path and lang
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
+export LANG="en_US.utf8"
+
+# stuff taken from gentoo
+export GCC_SPECS=""
+export LESS="-R -M --shift 5"
+export OPENGL_PROFILE="xorg-x11"
+export GSETTINGS_BACKEND="dconf"
+
+# compile bits
+export MAKEFLAGS="-j 3"
+#CFLAGS="${CFLAGS} -march=native -O3 -pipe -fstack-protector-strong"
+#CXXFLAGS="${CXXFLAGS} ${CFLAGS}"
+#CPPFLAGS="${CPPFLAGS} ${CFLAGS}"
+
+# default programs
+export EDITOR="/usr/bin/vim"
+export PAGER="/usr/bin/less"
+export GPG_TTY=$(tty)
+
+# xdg stuff
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DIRS="/etc/xdg"
+
+# from blfs book
+export INFOPATH="/usr/info"
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig"
+export MANPATH="/usr/share/man"
+export INFOPATH="/usr/share/info"
+export INPUTRC="/etc/inputrc"
+
+# ps1
+export PS1="\[\e[34m\][\[\e[m\]\A\[\e[34m\]]\[\e[m\] \[\e[34m\]\u\[\e[m\] \[\e[36m\]\w\[\e[m\]: "
+
+# history
+export HISTSIZE=1000
+export HISTIGNORE="&:[bf]g:exit"
+
+# execute the *.sh in /etc/profile.d
+for sh in /etc/profile.d/*.sh
+ do [ -r "$sh" ] && . "$sh"
+done
+
+unset sh

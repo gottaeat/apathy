@@ -1,0 +1,134 @@
+##### ~/.yashrc
+### variables
+# path and lang
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
+export LANG="en_US.utf8"
+
+# stuff taken from gentoo
+export GCC_SPECS=""
+export LESS="-R -M --shift 5"
+export OPENGL_PROFILE="xorg-x11"
+export GSETTINGS_BACKEND="dconf"
+
+# compile bits
+export MAKEFLAGS="-j 3"
+#CFLAGS="${CFLAGS} -march=native -O3 -pipe -fstack-protector-strong"
+#CXXFLAGS="${CXXFLAGS} ${CFLAGS}"
+#CPPFLAGS="${CPPFLAGS} ${CFLAGS}"
+
+# default programs
+export EDITOR="/usr/bin/vim"
+export PAGER="/usr/bin/less"
+export GPG_TTY=$(tty)
+
+# xdg stuff
+export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CONFIG_DIRS="/etc/xdg"
+
+# from blfs book
+export INFOPATH="/usr/info"
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig"
+export MANPATH="/usr/share/man"
+export INFOPATH="/usr/share/info"
+export INPUTRC="/etc/inputrc"
+
+
+### yash settings
+FCEDIT="/usr/bin/vim"
+HISTFILE=~/.yash_history HISTSIZE=5000
+
+#prompts
+if [ "$(id -u)" -ne 0 ];
+ then YASH_PS1=' ${${${PWD:/~/\~}##*/}:-$PWD}\fc > \fD'
+ else YASH_PS1='\fr[root]\fD ${${${PWD:/~/\~}##*/}:-$PWD}\fc > \fD'
+fi
+YASH_PS1R=''
+YASH_PS1S=''
+YASH_PS2="\fc > \fD"
+YASH_PS2R="\fc < \fD"
+YASH_PS2S=''
+
+# ensure job control works
+case $- in (*m*) trap - TSTP TTIN TTOU; esac
+# colored ls without alias
+ls() { command ls --color=tty "$@"; }
+# initialize event handlers
+COMMAND_NOT_FOUND_HANDLER=()
+PROMPT_COMMAND=() 
+YASH_AFTER_CD=()
+
+# enable features
+set --vi
+set --brace-expand
+set --extended-glob
+set --no-unset
+set --notify-le
+set --hist-space
+
+# set C-l to clear screen like zsh/bash
+bindkey -av '\^L' clear-and-redraw-all
+
+
+### functions
+# cd automatically when dirs are executed
+_autocd()
+if [ -d "$1" ]; then HANDLED=true; cd -- "$@"; break -i; fi
+COMMAND_NOT_FOUND_HANDLER=('_autocd "$@"')
+
+# check if running
+cir(){
+stat=$(ps aux | egrep "${1}" | sed '/grep/d')
+
+case $2 in
+ s|-s)	printf "${stat}\n" ;;
+ k|-k)	printf "${stat}\n" | awk '{print $2}' | xargs kill -SIGKILL ;;
+ *)	printf "what in the everloving fuck is ${2}?\n" ;;
+esac
+}
+
+### aliases
+## program related
+alias tmux="tmux -2"
+alias feh="feh -d --scale-down --auto-zoom"
+alias fixfuckinggpg="gpg-connect-agent updatestartuptty /bye"
+alias ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
+## make verbose
+alias ln="ln -v"
+alias cp="cp -v"
+alias mv="mv -v"
+alias mkdir="mkdir -pv"
+alias mount="mount -v"
+
+## shortcuts
+##a literal shortcuts
+alias nc="ncmpcpp"
+alias w="pwd"
+alias s="startx --"
+alias da="doas --"
+alias l="ls -Askh --color=tty"
+alias ll="ls -Askhw1 --color=tty"
+alias lll="ls -la --color=tty"
+alias grep="grep --color=auto"
+alias poz="yash --posix"
+##b tmux
+alias td="tmux detach"
+alias ta="tmux attach"
+alias tk="tmux kill-session"
+##c git
+alias gs="git status -s"
+alias gpo="git push origin master"
+alias grs="git reset HEAD~1 --soft"
+##d sound
+alias atog="amixer set Master toggle"
+alias mtog="mpc toggle"
+##e transmission
+alias trs="transmission-remote -n mss:mss -l"
+alias tra="transmission-remote -n mss:mss -a"
+##f dirs
+alias cdw="cd /mss/work"
+alias cdr="cd /mss/repo"
+alias cds="cd /mnt/mss/stuff"
+alias cda="cd /mnt/mss/stuff/media/anime"
+alias cdm="cd /mnt/mss/stuff/media/music"
+alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"

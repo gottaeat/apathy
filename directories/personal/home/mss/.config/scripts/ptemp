@@ -1,0 +1,2 @@
+#!/mss/bin/sh
+sensors | awk '/Package id/ {gsub("+",""); gsub("°C","c"); print $4}'

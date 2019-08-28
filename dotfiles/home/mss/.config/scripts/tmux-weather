@@ -1,2 +1,0 @@
-#!/mss/bin/sh
-while true; do echo $(/home/mss/.config/scripts/weather); sleep 300; done
