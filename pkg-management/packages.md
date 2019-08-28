@@ -42,7 +42,7 @@
 [d]	* lm_sensors-3.4.0
 [d]	** which-2.21
 
-[d]	* unrar-5.7.2
+[r]	* unrar-5.7.2
 [d]	* sysstat-12.1.2
 
 [d]	* pciutils-3.6.2
@@ -468,6 +468,7 @@
 [r]	* cataclysm-dda-0.D
 [d]	* sfeed
 [d]	* grub-2.04
+[d]	* gna-unrar		--> https://github.com/Lesik/unrar-free
 ```
 ---------------------------------------------------------
 #### python:

@@ -50,10 +50,7 @@ shells:
 ```
 
 #### about proprietary software under apathy
-apathy in its current state is all free software including the kernel and the firmware, except the listed software below *(bear in mind that this is all i've filtered off of `parabola gnu/linux`'s blacklist so there might be more.)*:
-```
-[nonfree ] unrar	: (possible replacement) gna-unrar.
-```
+based on what i've filtered off of `parabola gnu/linu`'s `blacklist.txt` multiple times, apathy in its current state is all free software, including the kernel and the firmware. next to running only free software, it also has libreified versions of `unzip`, `ruby` and `sdl`.
 
 #### current package count and total system size:
 ```
@@ -61,6 +58,6 @@ apathy in its current state is all free software including the kernel and the fi
 
 * total partition size	: 2032.81mib
 * local package count	: 370
-* removed packages	: 59
+* removed packages	: 60
 
 ```

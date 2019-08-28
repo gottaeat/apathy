@@ -33,7 +33,6 @@ libtirpc-1.1.4
 cpio-2.12
 lm_sensors-3.4.0
 which-2.21
-unrar-5.7.2
 sysstat-12.1.2
 pciutils-3.6.2
 ntp-4.2.8p13
@@ -301,6 +300,7 @@ yash-2.48
 lzip-1.21
 sfeed
 grub-2.04
+gna-unrar
 man-pages-4.16
 glibc-2.29
 zlib-1.2.11
