@@ -11,17 +11,19 @@ apathy			lfs 9.0-rc1
 [d] libcap-2.26		libcap-2.27
 [d] bison-3.3.2		bison-3.4.1
 [d] expat-2.2.6		expat-2.2.7
-perl-5.28.1		perl-5.30.0
 [d] gettext-0.19.8.1	gettext-0.20.1
-python-3.7.2		python-3.7.4
 [d] meson-0.49.2	meson-0.51.1
 [d] gawk-4.2.1		gawk-5.0.1
 [d] less-530		less-551
 [d] iproute2-5.0.0	iproute2-5.2.0
 [d] kbd-2.0.4		kbd-2.2.0
-man-db-2.8.5		man-db-2.8.6.1
-tar-1.31		tar-1.32
-e2fsprogs-1.44.5	e2fsprogs-1.45.3
+[d] man-db-2.8.5	man-db-2.8.6.1
+[d] tar-1.31		tar-1.32
+[d] e2fsprogs-1.44.5	e2fsprogs-1.45.3
+
+# could be problematic
+perl-5.28.1		perl-5.30.0
+python-3.7.2		python-3.7.4
 
 # scary stuff
 glibc-2.29		glibc-2.30

@@ -537,13 +537,13 @@
 [d] libpipeline-1.5.1
 [d] make-4.2.1
 [d] patch-2.7.6
-[d] man-db-2.8.5
-[d] tar-1.31
+[d] man-db-2.8.6.1	--> updated from 2.8.5
+[d] tar-1.32		--> updated from 1.31
 [r] texinfo-6.5
 [d] vim-8.1
 [d] procps-ng-3.3.15
 [d] util-linux-2.33.1
-[d] e2fsprogs-1.44.5
+[d] e2fsprogs-1.45.3	--> updated from 1.44.5
 [d] sysklogd-1.5.1
 [d] sysvinit-2.95	--> updated from 2.93
 [d] eudev-3.2.7

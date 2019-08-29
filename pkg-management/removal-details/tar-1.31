@@ -1,0 +1,9 @@
+/bin/tar
+
+/usr/libexec/rmt
+
+/usr/share/info
+/usr/share/locale
+
+/usr/share/man/man1/tar.1
+/usr/share/man/man8/rmt.8
