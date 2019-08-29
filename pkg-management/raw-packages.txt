@@ -301,7 +301,6 @@ lzip-1.21
 sfeed
 grub-2.04
 gna-unrar
-man-pages-4.16
 glibc-2.29
 zlib-1.2.11
 file-5.36
@@ -312,7 +311,7 @@ binutils-2.32
 gmp-6.1.2
 mpfr-4.0.2
 mpc-1.1.0
-shadow-4.6
+shadow-4.7
 gcc-9.2.0
 bzip2-1.0.8
 pkg-config-0.29.2

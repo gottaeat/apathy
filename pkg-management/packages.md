@@ -479,18 +479,18 @@
 ---------------------------------------------------------
 #### lfs-8.4 base
 ```
-[d] man-pages-4.16
+[r] man-pages-4.16
 [d] glibc-2.29
 [d] zlib-1.2.11
-[d] file-5.36
+[d] file-5.37		--> updated from 5.36
 [d] readline-8.0
 [d] m4-1.4.18
-[d] bc-1.07.1
+[r] bc-2.1.3		--> updated from 1.07.1
 [d] binutils-2.32
 [d] gmp-6.1.2
 [d] mpfr-4.0.2
 [d] mpc-1.1.0
-[d] shadow-4.6
+[d] shadow-4.7		--> updated from 4.6
 [d] gcc-9.2.0		--> updated from 8.2.0 --> 9.1.0
 [d] bzip2-1.0.8		--> updated from 1.0.6
 [d] pkg-config-0.29.2

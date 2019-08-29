@@ -4,10 +4,10 @@
 apathy			lfs 9.0-rc1
 --------------		--------------
 # normal
-man-pages-4.16		man-pages-5.02
-file-5.36		file-5.37
-bc-1.07.1		bc-2.1.3
-shadow-4.6		shadow-4.7
+[r] man-pages-4.16	man-pages-5.02
+[d] file-5.36		file-5.37
+[d] bc-1.07.1		bc-2.1.3
+[d] shadow-4.6		shadow-4.7
 libcap-2.26		libcap-2.27
 bison-3.3.2		bison-3.4.1
 expat-2.2.6		expat-2.2.7
