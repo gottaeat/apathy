@@ -497,18 +497,18 @@
 [d] ncurses-6.1
 [d] attr-2.4.48
 [d] acl-2.2.53
-[d] libcap-2.26
+[d] libcap-2.27		--> updated from 2.26
 [d] sed-4.7
 [d] psmisc-23.2
 [d] iana-etc-2.30
-[d] bison-3.3.2
+[d] bison-3.4.1		--> updated from 3.3.2
 [d] flex-2.6.4
 [d] grep-3.3
 [d] bash-5.0
 [d] libtool-2.4.6
 [d] gdbm-1.18.1
 [d] gperf-3.1
-[d] expat-2.2.6
+[d] expat-2.2.7		--> updated from 2.2.7
 [d] inetutils-1.9.4
 [d] perl-5.28.1
 [d] xml::parser-2.44
