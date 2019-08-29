@@ -1,5 +1,7 @@
-#!/mss/bin/sh
-. /mss/work/apathy-funcs
+#!/bin/sh
+
+# include the functions for printing, coloring and retval actions.
+. /mss/bin/apathy-funcs
 
 # a1 >> check if variables are set
 if	[ -z $1 ]; then aprint_fail "no kernel source tarball selected, exiting.";	exit 1
@@ -20,31 +22,13 @@ saucedir="/mnt/mss/ram/work"
 kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//g')
 workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
+
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
+confname="5.2-apathy-libre-gcc-no-modules.config"
+useconf="${confdir}/${confname}"
+pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
 # c >> functions
-
-pkgup_kernel(){
- localver=$(grep 'CONFIG_LOCALVERSION=' ${workdir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
- pkgupname="${kerver}${localver}"
- storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
-
- mkdir -p "${saucedir}/pkgup/boot"							&&
- mkdir -p "${saucedir}/pkgup/lib/modules"						&&
-
- cp -r /lib/modules/"${pkgupname}"		"${saucedir}/pkgup/lib/modules}"	&&
-
- cp -i ${workdir}/arch/x86/boot/bzImage		"${saucedir}/pkgup/boot/vmlinuz"	&&
- cp -i ${workdir}/System.map			"${saucedir}/pkgup/boot/System.map"	&&
- cp -i ${workdir}/.config			"${saucedir}/pkgup/boot/config"		&&
-
- cd "${saucedir}"									&&
- 
- /mss/bin/pkgup "${saucedir}/pkgup" "${storepkg}"/"${pkgupname}" > /dev/null 2>&1	&&
-
- rm -rf "${saucedir}/pkgup"
-}
-
 apply_deblob(){
  aprint_ret "${c_blue}applying:${c_lcyan} gnu deblob patches${c_reset}."
   patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
@@ -118,19 +102,23 @@ aprint_ret "running mrproper."
 evalretkill
 
 # d2 >> copy config
+aprint_nc
 aprint_ret "copying kernel config."
- cp "${confdir}/5.2-apathy-libre-gcc-no-efi.config" "${workdir}"/.config
+ cp "${useconf}" "${workdir}"/.config
 evalretkill
+aprint "config\t: ${c_lcyan}${confname}${c_reset}."
+aprint "localver\t: ${c_lcyan}${pre_localver}${c_reset}"
 
 # d3 >> apply patches
 aprint_nc
+aprint "applying the apathy patchset."
 apply_deblob
 apply_freedo
 apply_apathy
 
 # d5 >> run nconfig
 aprint_nc
-aprint_xn "run nconfig for manual config? (y/n): "
+aprint_ask "run nconfig for manual config? (y/n): "
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
@@ -143,43 +131,87 @@ fi
 
 # d6 >> run make
 aprint_nc
-aprint_ret "running make, tail -f /tmp/kernel-build.log to view."
- make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
-evalretkill
- doas -- make modules_install >>/tmp/kernel-build.log 2>&1
+aprint_ask "run make? (y/n): "
+read answerbuildkern
+
+if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
+then
+ aprint_ret "running make, tail -f /tmp/kernel-build.log to view."
+  make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
+ evalretkill
+else
+ aprint "not running make."
+ aprint_nc
+ exit 0
+fi
+
+# d6.1
+if [ -z $(grep "=m" .config) ]
+then
+ aprint_nc
+ aprint "no modules found in config to install, skipping."
+ modules=no
+else
+ aprint_nc
+ aprint "found modules, installing them."
+  doas -- make modules_install >>/tmp/kernel-build.log
+ evalretkill
+ modules=yes
+fi
 
 # d7 >> run kinst
 aprint_nc
-aprint_xn "install the built kernel? (y/n): "
+aprint_ask "install the built kernel? (y/n): "
 read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  then
-  aprint_ret "installing the built kernel."
+  aprint "installing the built kernel."
    doas cp arch/x86/boot/bzImage	/boot/vmlinuz		&&
    doas cp System.map			/boot/System.map	&&
    doas cp .config			/boot/config
-   evalret
  else
   aprint "not installing the built kernel."
 fi
 
 # d8 >> package up the built kernel.
 aprint_nc
-aprint_xn "package up the built kernel? (y/n): "
+aprint_ask "package up the built kernel? (y/n): "
 read answerpkgup
 
 if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
  then
   aprint_ret "packaging up the built kernel."
-   pkgup_kernel
+
+  localver=$(grep 'CONFIG_LOCALVERSION=' ${workdir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
+  pkgupname="${kerver}${localver}"
+  archivename="${pkgupname}-$(date +%s)"
+  storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+
+  mkdir -p "${saucedir}/pkgup/boot"							&&
+
+  cp -i ${workdir}/arch/x86/boot/bzImage	"${saucedir}/pkgup/boot/vmlinuz"	&&
+  cp -i ${workdir}/System.map			"${saucedir}/pkgup/boot/System.map"	&&
+  cp -i ${workdir}/.config			"${saucedir}/pkgup/boot/config"		&&
+
+  if [ "${modules}" = "yes" ]
+   then
+    mkdir -p "${saucedir}/pkgup/lib/modules"						&&
+    cp -r /lib/modules/"${pkgupname}"		"${saucedir}/pkgup/lib/modules}"
+  fi
+
+  cd "${saucedir}"									&&
+  
+  /mss/bin/pkgup "${saucedir}/pkgup" "${storepkg}"/"${archivename}" > /dev/null 2>&1	&&
+  rm -rf "${saucedir}/pkgup"
+   
   evalret
  else aprint "not running pkgup."
 fi
 
 # d9 >> clean up ram.
 aprint_nc
-aprint_xn "clean up the workdir in ram? (y/n): "
+aprint_ask "clean up the workdir in ram? (y/n): "
 read answerclean
 
 if [ "$answerclean" != "${answerclean#[Yy]}" ]
