@@ -517,17 +517,17 @@
 [d] automake-1.16.1
 [d] xz-5.2.4
 [d] kmod-26
-[d] gettext-0.19.8.1
+[d] gettext-0.20.1	--> updated from 0.19.8.1
 [d] libelf from elfutils-0.176
 [d] libffi-3.2.1
 [d] openssl-1.1.1a
 [d] python-3.7.2
 [d] ninja-1.9.0
-[d] meson-0.49.2
+[d] meson-0.51.1	--> 0.49.2
 [d] coreutils-8.30
 [d] check-0.12.0
 [d] diffutils-3.7
-[d] gawk-4.2.1
+[d] gawk-5.0.1		--> 4.2.1
 [d] findutils-4.6.0
 [d] groff-1.22.4
 [d] less-530

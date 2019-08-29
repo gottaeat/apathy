@@ -10,12 +10,12 @@ apathy			lfs 9.0-rc1
 [d] shadow-4.6		shadow-4.7
 [d] libcap-2.26		libcap-2.27
 [d] bison-3.3.2		bison-3.4.1
-[d]expat-2.2.6		expat-2.2.7
+[d] expat-2.2.6		expat-2.2.7
 perl-5.28.1		perl-5.30.0
-gettext-0.19.8.1	gettext-0.20.1
+[d] gettext-0.19.8.1	gettext-0.20.1
 python-3.7.2		python-3.7.4
-meson-0.49.2		meson-0.51.1
-gawk-4.2.1		gawk-5.0.1
+[d] meson-0.49.2	meson-0.51.1
+[d] gawk-4.2.1		gawk-5.0.1
 less-530		less-551
 iproute2-5.0.0		iproute2-5.2.0
 kbd-2.0.4		kbd-2.2.0
