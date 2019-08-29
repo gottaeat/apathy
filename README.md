@@ -30,7 +30,7 @@ languages:
  * perl-5.28.1
 
 video/audio:
- * xorg (x11r7), mesa 19.0.4
+ * xorg (x11r7), mesa 19.2.0-rc1
  * alsa 1.1.8
 
 shells:
@@ -56,8 +56,8 @@ based on what i've filtered off of `parabola gnu/linu`'s `blacklist.txt` multipl
 ```
 ~ > pkg
 
-* total partition size	: 2032.81mib
-* local package count	: 370
-* removed packages	: 60
+ * total partition size	: 2017.94mib
+ * local package count	: 369
+ * removed packages	: 61
 
 ```

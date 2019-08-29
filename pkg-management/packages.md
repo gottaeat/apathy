@@ -485,7 +485,7 @@
 [d] file-5.37		--> updated from 5.36
 [d] readline-8.0
 [d] m4-1.4.18
-[r] bc-2.1.3		--> updated from 1.07.1
+[d] bc-2.1.3		--> updated from 1.07.1
 [d] binutils-2.32
 [d] gmp-6.1.2
 [d] mpfr-4.0.2
