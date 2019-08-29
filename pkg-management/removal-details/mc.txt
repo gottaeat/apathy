@@ -1,0 +1,7 @@
+/etc/mc
+/usr/bin/{mc,mcdiff,mcedit,mcview}
+/usr/lib/mc/
+/usr/share/locale/
+/usr/share/man/
+/usr/share/mc/
+/usr/libexec/mc

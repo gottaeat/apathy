@@ -1,0 +1,12 @@
+/usr/bin/{canberra-boot,canberra-gtk-play}
+/usr/include/{canberra-gtk.h,canberra.h}
+/usr/lib/gnome-settings-daemon-3.0/gtk-modules/canberra-gtk-module.desktop
+/usr/lib/gtk-2.0/modules/{libcanberra-gtk-module.la,libcanberra-gtk-module.so}
+/usr/lib/gtk-3.0/modukes/{libcanberra-gtk-module.so,libcanberra-gtk3-module.la,libcanberra-gtk3-module.so}
+/usr/lib/libcanberra-0.30/
+/usr/lib/pkgconfig/{libcanberra-gtk.pc,libcanberra-gtk3.pc,libcanberra.pc}
+/usr/lib/{libcanberra-gtk.la,libcanberra-gtk.so,libcanberra-gtk.so.0,libcanberra-gtk.so.0.1.9,libcanberra-gtk3.la,libcanberra-gtk3.so,libcanberra-gtk3.so.0,libcanberra-gtk3.so.0.1.9,libcanberra.la,libcanberra.so,libcanberra.so.0,libcanberra.so.0.2.5}
+/usr/share/doc/libcanberra/
+/usr/share/gdm/
+/usr/share/gnome/
+/usr/share/vala/vapi/{libcanberra-gtk.vapi,libcanberra.vapi}

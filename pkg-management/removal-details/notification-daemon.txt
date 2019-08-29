@@ -1,0 +1,3 @@
+/usr/libexec/notification-daemon
+/usr/share/applications/notification-daemon.desktop
+/usr/share/locale/*/LC_MESSAGES/notification-daemon.mo

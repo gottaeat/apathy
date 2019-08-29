@@ -1,0 +1,4 @@
+/usr/bin/dvtm
+/mss/bin/dvtm-status
+/usr/bin/dvtm-editor
+/usr/bin/dvtm-pager

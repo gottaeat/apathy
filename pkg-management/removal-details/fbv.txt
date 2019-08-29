@@ -1,0 +1,2 @@
+/usr/share/man/man1/fbv.1.gz
+/usr/bin/fbv

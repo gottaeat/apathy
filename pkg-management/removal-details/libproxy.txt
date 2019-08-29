@@ -1,0 +1,12 @@
+/usr/bin/proxy
+/usr/include/proxy.h
+/usr/lib/libproxy.so
+/usr/lib/libproxy.so.1
+/usr/lib/libproxy.so.1.0.0
+/usr/lib/libproxy/
+/usr/lib/libproxy/pxgsettings
+/usr/lib/perl5/5.30/vendor_perl/Net/Libproxy.pm
+/usr/lib/perl5/5.30/vendor_perl/auto/Net/Libproxy/
+/usr/lib/pkgconfig/libproxy-1.0.pc
+/usr/lib/python2.7/site-packages/libproxy.py
+/usr/share/cmake/Modules/Findlibproxy.cmake

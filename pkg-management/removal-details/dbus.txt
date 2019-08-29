@@ -1,0 +1,11 @@
+/etc/dbus-1
+/usr/bin/{dbus-cleanup-sockets,dbus-daemon,dbus-launch,dbus-monitor,dbus-run-session,dbus-send,dbus-test-tool,dbus-update-activation-environment,dbus-uuidgen}
+/usr/include/dbus-1.0/
+/usr/lib/cmake/DBus1/
+/usr/lib/dbus-1.0/
+/usr/lib/pkgconfig/dbus-1.pc
+/usr/lib/{libdbus-1.la,libdbus-1.so,libdbus-1.so.3,libdbus-1.so.3.19.9}
+/usr/libexec/dbus-daemon-launch-helper
+/usr/share/dbus-1
+/usr/share/doc/dbus-1.12.12/
+/usr/share/xml/dbus-1/

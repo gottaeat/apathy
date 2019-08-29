@@ -1,0 +1,8 @@
+/etc/bash_completion.d/dbus-bash-completion.sh
+/usr/bin/dbus-binding-tool
+/usr/include/dbus-1.0/dbus/{dbus-glib-bindings.h,dbus-glib-lowlevel.h,dbus-glib.h,dbus-gtype-specialized.h,dbus-gvalue-parse-variant.h}
+/usr/lib/pkgconfig/dbus-glib-1.pc
+/usr/lib/{libdbus-glib-1.la,libdbus-glib-1.so,libdbus-glib-1.so.2,libdbus-glib-1.so.2.3.4}
+/usr/libexec/dbus-bash-completion-helper
+/usr/share/gtk-doc/html/dbus-glib
+/usr/share/man/man1/dbus-binding-tool.1

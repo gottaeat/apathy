@@ -1,0 +1,6 @@
+/usr/include/pangomm-1.4/
+/usr/lib/pangomm-1.4/
+/usr/lib/pkgconfig/pangomm-1.4.pc
+/usr/lib/{libpangomm-1.4.la,libpangomm-1.4.so,libpangomm-1.4.so.1,libpangomm-1.4.so.1.0.30}
+/usr/share/devhelp/books/pangomm-1.4/
+/usr/share/doc/pangomm-2.42.0/

@@ -1,0 +1,8 @@
+/usr/include/gdkmm-2.4/
+/usr/include/gtkmm-2.4/
+/usr/lib/gdkmm-2.4/
+/usr/lib/gtkmm-2.4/
+/usr/lib/pkgconfig/{gdkmm-2.4.pc,gtkmm-2.4.pc}
+/usr/lib/{libgdkmm-2.4.la,libgdkmm-2.4.so,libgdkmm-2.4.so.1,libgdkmm-2.4.so.1.1.0,libgtkmm-2.4.la,libgtkmm-2.4.so,libgtkmm-2.4.so.1,libgtkmm-2.4.so.1.1.0}
+/usr/share/devhelp/books/gtkmm-2.4/
+/usr/share/doc/gtkmm-2.24.5/

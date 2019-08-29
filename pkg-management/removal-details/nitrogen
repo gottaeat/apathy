@@ -1,9 +1,0 @@
-[r] /usr/bin/nitrogen
-[r] /usr/share/appdata/nitrogen.appdata.xml
-[r] /usr/share/applications/nitrogen.desktop
-[r] /usr/share/icons/hicolor/*/*/nitrogen.png
-[r] /usr/share/icons/hicolor/16x16/actions/{wallpaper-centered.png,wallpaper-scaled.png,wallpaper-tiled.png,wallpaper-zoomed.png}
-[r] /usr/share/icons/hicolor/16x16/devices/video-display.png
-[r] /usr/share/icons/hicolor/16x16/mimetypes/image-x-generic.png
-[r] /usr/share/locale/*/LC_MESSAGES/nitrogen.mo
-[r] /usr/share/man/man1/nitrogen.1
