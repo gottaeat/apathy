@@ -523,17 +523,17 @@
 [d] openssl-1.1.1a
 [d] python-3.7.2
 [d] ninja-1.9.0
-[d] meson-0.51.1	--> 0.49.2
+[d] meson-0.51.1	--> updated from 0.49.2
 [d] coreutils-8.30
 [d] check-0.12.0
 [d] diffutils-3.7
-[d] gawk-5.0.1		--> 4.2.1
+[d] gawk-5.0.1		--> updated from 4.2.1
 [d] findutils-4.6.0
 [d] groff-1.22.4
-[d] less-530
+[d] less-551		--> updated from 530
 [d] gzip-1.10
-[d] iproute2-5.0.0
-[d] kbd-2.0.4
+[d] iproute2-5.2.0	--> updated from 5.0.0
+[d] kbd-2.2.0		--> updated from 2.0.4
 [d] libpipeline-1.5.1
 [d] make-4.2.1
 [d] patch-2.7.6
