@@ -68,9 +68,9 @@ apply_apathy(){
   patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying:${c_lcyan} algodev bfq-mq patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
+# aprint_ret "${c_blue}applying:${c_lcyan} algodev bfq-mq patches${c_reset}."
+#  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch >>/tmp/kernel-build.log 2>&1
+# evalretkill
 
  aprint_ret "${c_blue}applying:${c_lcyan} enable link security restrictions by default${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
