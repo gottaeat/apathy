@@ -366,4 +366,4 @@ util-linux-2.34
 e2fsprogs-1.45.3
 sysklogd-1.5.1
 sysvinit-2.95
-eudev-3.2.7
+eudev-3.2.8

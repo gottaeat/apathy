@@ -21,7 +21,7 @@ toolchain:
 core userland:
  * util-linux-2.34, coreutils 8.31
  * sysklogd 1.5.1, sysvinit 2.95
- * eudev 3.2.7
+ * eudev 3.2.8
 
 languages:
  * python 2.7.15/3.7.2

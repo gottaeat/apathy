@@ -546,5 +546,5 @@
 [d] e2fsprogs-1.45.3	--> updated from 1.44.5
 [d] sysklogd-1.5.1
 [d] sysvinit-2.95	--> updated from 2.93
-[d] eudev-3.2.7
+[d] eudev-3.2.8		--> updated from 3.2.7
 ```
