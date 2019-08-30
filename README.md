@@ -19,7 +19,7 @@ toolchain:
  * linux 5.0 headers (deblobbed)
 
 core userland:
- * util-linux-2.33.1, coreutils 8.30
+ * util-linux-2.34, coreutils 8.31
  * sysklogd 1.5.1, sysvinit 2.95
  * eudev 3.2.7
 

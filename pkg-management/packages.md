@@ -518,13 +518,13 @@
 [d] xz-5.2.4
 [d] kmod-26
 [d] gettext-0.20.1	--> updated from 0.19.8.1
-[d] libelf from elfutils-0.176
+[d] libelf-0.177	--> updated from 0.176
 [d] libffi-3.2.1
 [d] openssl-1.1.1a
 [d] python-3.7.2
 [d] ninja-1.9.0
 [d] meson-0.51.1	--> updated from 0.49.2
-[d] coreutils-8.30
+[d] coreutils-8.31	--> updated from 8.30
 [d] check-0.12.0
 [d] diffutils-3.7
 [d] gawk-5.0.1		--> updated from 4.2.1
@@ -542,7 +542,7 @@
 [r] texinfo-6.5
 [d] vim-8.1
 [d] procps-ng-3.3.15
-[d] util-linux-2.33.1
+[d] util-linux-2.34	--> updated from 2.33.1
 [d] e2fsprogs-1.45.3	--> updated from 1.44.5
 [d] sysklogd-1.5.1
 [d] sysvinit-2.95	--> updated from 2.93

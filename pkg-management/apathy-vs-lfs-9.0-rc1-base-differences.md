@@ -27,9 +27,9 @@ python-3.7.2		python-3.7.4
 
 # scary stuff
 glibc-2.29		glibc-2.30
-elfutils-0.176		elfutils-0.177
+[d] elfutils-0.176	elfutils-0.177
 openssl-1.1.1a		openssl-1.1.1c
-coreutils-8.30		coreutils-8.31
-util-linux-2.33.1	util-linux-2.34
+[d] coreutils-8.30	coreutils-8.31
+[d] util-linux-2.33.1	util-linux-2.34
 eudev-3.2.7		eudev-3.2.8
 ```

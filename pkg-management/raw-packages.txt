@@ -339,13 +339,13 @@ automake-1.16.1
 xz-5.2.4
 kmod-26
 gettext-0.20.1
-libelf-0.176
+libelf-0.177
 libffi-3.2.1
 openssl-1.1.1a
 python-3.7.2
 ninja-1.9.0
 meson-0.51.1
-coreutils-8.30
+coreutils-8.31
 check-0.12.0
 diffutils-3.7
 gawk-5.0.1
@@ -362,7 +362,7 @@ man-db-2.8.6.1
 tar-1.32
 vim-8.1
 procps-ng-3.3.15
-util-linux-2.33.1
+util-linux-2.34
 e2fsprogs-1.45.3
 sysklogd-1.5.1
 sysvinit-2.95
