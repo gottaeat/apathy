@@ -247,7 +247,7 @@ lame-3.100
 OpenJPEG-2.3.1
 numlockx
 mpv-0.29.1-8
-mpd
+mpd-0.21.14
 libcue
 mpg123
 libmpdclient
