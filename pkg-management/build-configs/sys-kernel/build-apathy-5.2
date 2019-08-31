@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# include the functions for printing, coloring and retval actions.
 . /mss/bin/apathy-funcs
 
 # a1 >> check if variables are set
@@ -24,23 +23,23 @@ workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
-confname="5.2-apathy-libre-gcc-no-modules.config"
+confname="5.2-apathy-libre-gcc-31-aug-2019.config"
 useconf="${confdir}/${confname}"
 pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
 # c >> functions
 apply_deblob(){
- aprint_ret "${c_blue}applying:${c_lcyan} gnu deblob patches${c_reset}."
+ aprint_ret "${c_blue}applying\t:${c_lcyan} gnu deblob patches${c_reset}."
   patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}removing:${c_lcyan} gnu extraversion entry${c_reset}."
+ aprint_ret "${c_blue}removing\t:${c_lcyan} gnu extraversion entry${c_reset}."
   sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile
  evalretkill
 }
 
 apply_freedo(){
- aprint_ret "${c_blue}applying:${c_lcyan} freedo logo."
+ aprint_ret "${c_blue}applying\t:${c_lcyan} freedo logo."
   install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_clut224.ppm
   install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_vga16.ppm
   install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_mono.pbm	
@@ -48,32 +47,35 @@ apply_freedo(){
 }
 
 apply_apathy(){
- aprint_ret "${c_blue}applying:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying:${c_lcyan} zen -03 optimize harder patch${c_reset}."
+ aprint_ret "${c_blue}applying\t:${c_lcyan} zen -03 optimize harder patch${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying:${c_lcyan} zen-muqss patches${c_reset}."
+ aprint_ret "${c_blue}applying\t:${c_lcyan} enable link security restrictions by default${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}fixing\t:${c_lcyan} bfq/bfq-dev patch conflict.${c_reset}."
+ evalret
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan+paula bfq-dev patches${c_reset}."
+  patch -Np1 < "${patchdir}"/apathy/5.2-lucjan+paula-bfq-dev-patches.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan-zen-futex patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-lucjan-futex-zen.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} zen-muqss patches${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying:${c_lcyan} zen-futex patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-futex.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying:${c_lcyan} zen-tune patches${c_reset}."
+ aprint_ret "${c_blue}applying\t:${c_lcyan} zen-tune patches${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
-# aprint_ret "${c_blue}applying:${c_lcyan} algodev bfq-mq patches${c_reset}."
-#  patch -p1 < "${patchdir}"/apathy/5.2-aldgodev-bfq-mq.patch >>/tmp/kernel-build.log 2>&1
-# evalretkill
-
- aprint_ret "${c_blue}applying:${c_lcyan} enable link security restrictions by default${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
