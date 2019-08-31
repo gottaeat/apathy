@@ -59,7 +59,7 @@ apply_apathy(){
   patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}fixing\t:${c_lcyan} bfq/bfq-dev patch conflict.${c_reset}."
+ aprint_ret "${c_blue}fixing\t:${c_lcyan} bfq/bfq-dev patch conflict${c_reset}."
  evalret
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan+paula bfq-dev patches${c_reset}."

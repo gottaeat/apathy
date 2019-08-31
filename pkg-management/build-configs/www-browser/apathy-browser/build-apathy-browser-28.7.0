@@ -87,7 +87,7 @@ read answerbuild
 
 # d8 >> ask to install build
 aprint_nc
-aprint_nx "build complete, shall we run the installer? (y/n): "
+aprint_xn "build complete, shall we run the installer? (y/n): "
 
 read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
