@@ -15,7 +15,7 @@ sgml-common-0.6.3
 unzip-6.0-libre
 docbook-xsl-1.79.2
 zip-3.0
-ruby-2.6.3p62-libre
+ruby-2.6.4p104-libre
 yaml-0.2.1
 berkeleydb-5.3.28
 tcl-8.6.9
