@@ -354,7 +354,7 @@
 
 [d]	> mpv-0.29.1-8					--> updated from 0.29.1-6
 
-[d]	> mpd-0.21.15					--> updated from 0.21.6
+[d]	> mpd-0.21.10
 [d]	>> libcue
 [d]	>> mpg123
 [d]	>> libmpdclient
