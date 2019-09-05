@@ -1,0 +1,577 @@
+diff -uraN a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+--- a/arch/x86/include/asm/processor.h	2019-08-29 09:30:28.000000000 +0300
++++ b/arch/x86/include/asm/processor.h	2019-09-05 21:10:25.374421469 +0300
+@@ -644,7 +644,7 @@
+ /* REP NOP (PAUSE) is a good thing to insert into busy-wait loops. */
+ static __always_inline void rep_nop(void)
+ {
+-	asm volatile("rep; nop" ::: "memory");
++	asm volatile("lfence" ::: "memory");
+ }
+ 
+ static __always_inline void cpu_relax(void)
+diff -uraN a/arch/x86/kernel/itmt.c b/arch/x86/kernel/itmt.c
+--- a/arch/x86/kernel/itmt.c	2019-08-29 09:30:28.000000000 +0300
++++ b/arch/x86/kernel/itmt.c	2019-09-05 21:10:25.385421469 +0300
+@@ -175,6 +175,11 @@
+ 	return per_cpu(sched_core_priority, cpu);
+ }
+ 
++extern int best_core;
++extern int second_best_core;
++static int best_core_score;
++static int second_best_core_score;
++
+ /**
+  * sched_set_itmt_core_prio() - Set CPU priority based on ITMT
+  * @prio:	Priority of cpu core
+@@ -204,5 +209,14 @@
+ 		smt_prio = prio * smp_num_siblings / i;
+ 		per_cpu(sched_core_priority, cpu) = smt_prio;
+ 		i++;
++
++		if (smt_prio > best_core_score) {
++			best_core = cpu;
++			best_core_score = smt_prio;
++		} else
++		if (smt_prio > second_best_core_score) {
++			second_best_core = cpu;
++			second_best_core_score = smt_prio;
++		}
+ 	}
+ }
+diff -uraN a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+--- a/arch/x86/kernel/tsc.c	2019-08-29 09:30:28.000000000 +0300
++++ b/arch/x86/kernel/tsc.c	2019-09-05 21:10:25.386421469 +0300
+@@ -1508,6 +1508,9 @@
+ 	if (!constant_tsc || !mask)
+ 		return 0;
+ 
++	if (cpu != 0)
++		return cpu_data(0).loops_per_jiffy;
++
+ 	sibling = cpumask_any_but(mask, cpu);
+ 	if (sibling < nr_cpu_ids)
+ 		return cpu_data(sibling).loops_per_jiffy;
+diff -uraN a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+--- a/arch/x86/mm/fault.c	2019-08-29 09:30:28.000000000 +0300
++++ b/arch/x86/mm/fault.c	2019-09-05 21:10:25.386421469 +0300
+@@ -856,9 +856,9 @@
+ 	if (!printk_ratelimit())
+ 		return;
+ 
+-	printk("%s%s[%d]: segfault at %lx ip %px sp %px error %lx",
++	printk("%s%s[%d]: segfault at %lx ip %px sp %px error %lx cpu %i",
+ 		loglvl, tsk->comm, task_pid_nr(tsk), address,
+-		(void *)regs->ip, (void *)regs->sp, error_code);
++		(void *)regs->ip, (void *)regs->sp, error_code, raw_smp_processor_id());
+ 
+ 	print_vma_addr(KERN_CONT " in ", regs->ip);
+ 
+diff -uraN a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+--- a/drivers/ata/libahci.c	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/ata/libahci.c	2019-09-05 21:10:25.387421469 +0300
+@@ -33,14 +33,14 @@
+ #include "libata.h"
+ 
+ static int ahci_skip_host_reset;
+-int ahci_ignore_sss;
++int ahci_ignore_sss=1;
+ EXPORT_SYMBOL_GPL(ahci_ignore_sss);
+ 
+ module_param_named(skip_host_reset, ahci_skip_host_reset, int, 0444);
+ MODULE_PARM_DESC(skip_host_reset, "skip global host reset (0=don't skip, 1=skip)");
+ 
+ module_param_named(ignore_sss, ahci_ignore_sss, int, 0444);
+-MODULE_PARM_DESC(ignore_sss, "Ignore staggered spinup flag (0=don't ignore, 1=ignore)");
++MODULE_PARM_DESC(ignore_sss, "Ignore staggered spinup flag (0=don't ignore, 1=ignore [default])");
+ 
+ static int ahci_set_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+ 			unsigned hints);
+diff -uraN a/drivers/char/random.c b/drivers/char/random.c
+--- a/drivers/char/random.c	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/char/random.c	2019-09-05 21:10:25.388421469 +0300
+@@ -1877,6 +1877,8 @@
+ 		if (!arch_get_random_seed_long(&rv) &&
+ 		    !arch_get_random_long(&rv))
+ 			rv = random_get_entropy();
++		else
++			credit_entropy_bits(r, 1);
+ 		mix_pool_bytes(r, &rv, sizeof(rv));
+ 	}
+ 	mix_pool_bytes(r, utsname(), sizeof(*(utsname())));
+diff -uraN a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
+--- a/drivers/idle/intel_idle.c	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/idle/intel_idle.c	2019-09-05 21:10:25.388421469 +0300
+@@ -454,7 +454,7 @@
+ 		.desc = "MWAIT 0x01",
+ 		.flags = MWAIT2flg(0x01),
+ 		.exit_latency = 10,
+-		.target_residency = 20,
++		.target_residency = 120,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -462,7 +462,7 @@
+ 		.desc = "MWAIT 0x10",
+ 		.flags = MWAIT2flg(0x10) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 33,
+-		.target_residency = 100,
++		.target_residency = 900,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -470,7 +470,7 @@
+ 		.desc = "MWAIT 0x20",
+ 		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 133,
+-		.target_residency = 400,
++		.target_residency = 1000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -478,7 +478,7 @@
+ 		.desc = "MWAIT 0x32",
+ 		.flags = MWAIT2flg(0x32) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 166,
+-		.target_residency = 500,
++		.target_residency = 1500,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -486,7 +486,7 @@
+ 		.desc = "MWAIT 0x40",
+ 		.flags = MWAIT2flg(0x40) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 300,
+-		.target_residency = 900,
++		.target_residency = 2000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -494,7 +494,7 @@
+ 		.desc = "MWAIT 0x50",
+ 		.flags = MWAIT2flg(0x50) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 600,
+-		.target_residency = 1800,
++		.target_residency = 5000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -502,7 +502,7 @@
+ 		.desc = "MWAIT 0x60",
+ 		.flags = MWAIT2flg(0x60) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 2600,
+-		.target_residency = 7700,
++		.target_residency = 9000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -522,7 +522,7 @@
+ 		.desc = "MWAIT 0x01",
+ 		.flags = MWAIT2flg(0x01),
+ 		.exit_latency = 10,
+-		.target_residency = 20,
++		.target_residency = 120,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -530,7 +530,7 @@
+ 		.desc = "MWAIT 0x10",
+ 		.flags = MWAIT2flg(0x10) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 40,
+-		.target_residency = 100,
++		.target_residency = 1000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -538,7 +538,7 @@
+ 		.desc = "MWAIT 0x20",
+ 		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 133,
+-		.target_residency = 400,
++		.target_residency = 1000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -546,7 +546,7 @@
+ 		.desc = "MWAIT 0x32",
+ 		.flags = MWAIT2flg(0x32) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 166,
+-		.target_residency = 500,
++		.target_residency = 2000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -554,7 +554,7 @@
+ 		.desc = "MWAIT 0x40",
+ 		.flags = MWAIT2flg(0x40) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 300,
+-		.target_residency = 900,
++		.target_residency = 4000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -562,7 +562,7 @@
+ 		.desc = "MWAIT 0x50",
+ 		.flags = MWAIT2flg(0x50) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 600,
+-		.target_residency = 1800,
++		.target_residency = 7000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -570,7 +570,7 @@
+ 		.desc = "MWAIT 0x60",
+ 		.flags = MWAIT2flg(0x60) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 2600,
+-		.target_residency = 7700,
++		.target_residency = 9000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -591,7 +591,7 @@
+ 		.desc = "MWAIT 0x01",
+ 		.flags = MWAIT2flg(0x01),
+ 		.exit_latency = 10,
+-		.target_residency = 20,
++		.target_residency = 120,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -599,7 +599,7 @@
+ 		.desc = "MWAIT 0x10",
+ 		.flags = MWAIT2flg(0x10) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 70,
+-		.target_residency = 100,
++		.target_residency = 1000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -607,7 +607,7 @@
+ 		.desc = "MWAIT 0x20",
+ 		.flags = MWAIT2flg(0x20) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 85,
+-		.target_residency = 200,
++		.target_residency = 600,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -615,7 +615,7 @@
+ 		.desc = "MWAIT 0x33",
+ 		.flags = MWAIT2flg(0x33) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 124,
+-		.target_residency = 800,
++		.target_residency = 3000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -623,7 +623,7 @@
+ 		.desc = "MWAIT 0x40",
+ 		.flags = MWAIT2flg(0x40) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 200,
+-		.target_residency = 800,
++		.target_residency = 3200,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -631,7 +631,7 @@
+ 		.desc = "MWAIT 0x50",
+ 		.flags = MWAIT2flg(0x50) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 480,
+-		.target_residency = 5000,
++		.target_residency = 9000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -639,7 +639,7 @@
+ 		.desc = "MWAIT 0x60",
+ 		.flags = MWAIT2flg(0x60) | CPUIDLE_FLAG_TLB_FLUSHED,
+ 		.exit_latency = 890,
+-		.target_residency = 5000,
++		.target_residency = 9000,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+@@ -660,7 +660,7 @@
+ 		.desc = "MWAIT 0x01",
+ 		.flags = MWAIT2flg(0x01),
+ 		.exit_latency = 10,
+-		.target_residency = 20,
++		.target_residency = 300,
+ 		.enter = &intel_idle,
+ 		.enter_s2idle = intel_idle_s2idle, },
+ 	{
+diff -uraN a/drivers/Makefile b/drivers/Makefile
+--- a/drivers/Makefile	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/Makefile	2019-09-05 21:10:25.389421469 +0300
+@@ -58,15 +58,8 @@
+ # iommu/ comes before gpu as gpu are using iommu controllers
+ obj-y				+= iommu/
+ 
+-# gpu/ comes after char for AGP vs DRM startup and after iommu
+-obj-y				+= gpu/
+-
+ obj-$(CONFIG_CONNECTOR)		+= connector/
+ 
+-# i810fb and intelfb depend on char/agp/
+-obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
+-obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
+-
+ obj-$(CONFIG_PARPORT)		+= parport/
+ obj-$(CONFIG_NVM)		+= lightnvm/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+@@ -79,6 +72,14 @@
+ obj-y				+= scsi/
+ obj-y				+= nvme/
+ obj-$(CONFIG_ATA)		+= ata/
++
++# gpu/ comes after char for AGP vs DRM startup and after iommu
++obj-y				+= gpu/
++
++# i810fb and intelfb depend on char/agp/
++obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
++obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
++
+ obj-$(CONFIG_TARGET_CORE)	+= target/
+ obj-$(CONFIG_MTD)		+= mtd/
+ obj-$(CONFIG_SPI)		+= spi/
+diff -uraN a/drivers/pci/pci.c b/drivers/pci/pci.c
+--- a/drivers/pci/pci.c	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/pci/pci.c	2019-09-05 21:10:25.390421469 +0300
+@@ -61,7 +61,7 @@
+ 	struct pci_dev *dev;
+ };
+ 
+-#define PME_TIMEOUT 1000 /* How long between PME checks */
++#define PME_TIMEOUT 4000 /* How long between PME checks */
+ 
+ static void pci_dev_d3_sleep(struct pci_dev *dev)
+ {
+diff -uraN a/drivers/powercap/intel_rapl.c b/drivers/powercap/intel_rapl.c
+--- a/drivers/powercap/intel_rapl.c	2019-08-29 09:30:28.000000000 +0300
++++ b/drivers/powercap/intel_rapl.c	2019-09-05 21:10:25.391421469 +0300
+@@ -1612,7 +1612,7 @@
+ 
+ 	id = x86_match_cpu(rapl_ids);
+ 	if (!id) {
+-		pr_err("driver does not support CPU family %d model %d\n",
++		pr_info("driver does not support CPU family %d model %d\n",
+ 			boot_cpu_data.x86, boot_cpu_data.x86_model);
+ 
+ 		return -ENODEV;
+diff -uraN a/include/linux/jbd2.h b/include/linux/jbd2.h
+--- a/include/linux/jbd2.h	2019-08-29 09:30:28.000000000 +0300
++++ b/include/linux/jbd2.h	2019-09-05 21:10:25.391421469 +0300
+@@ -44,7 +44,7 @@
+ /*
+  * The default maximum commit age, in seconds.
+  */
+-#define JBD2_DEFAULT_MAX_COMMIT_AGE 5
++#define JBD2_DEFAULT_MAX_COMMIT_AGE 30
+ 
+ #ifdef CONFIG_JBD2_DEBUG
+ /*
+diff -uraN a/include/linux/wait.h b/include/linux/wait.h
+--- a/include/linux/wait.h	2019-08-29 09:30:28.000000000 +0300
++++ b/include/linux/wait.h	2019-09-05 21:10:25.392421469 +0300
+@@ -149,6 +149,7 @@
+ 
+ extern void add_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry);
+ extern void add_wait_queue_exclusive(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry);
++extern void add_wait_queue_exclusive_lifo(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry);
+ extern void remove_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry);
+ 
+ static inline void __add_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)
+@@ -1109,6 +1110,7 @@
+  */
+ void prepare_to_wait(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry, int state);
+ void prepare_to_wait_exclusive(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry, int state);
++void prepare_to_wait_exclusive_lifo(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry, int state);
+ long prepare_to_wait_event(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry, int state);
+ void finish_wait(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry);
+ long wait_woken(struct wait_queue_entry *wq_entry, unsigned mode, long timeout);
+diff -uraN a/kernel/locking/rwsem-xadd.c b/kernel/locking/rwsem-xadd.c
+--- a/kernel/locking/rwsem-xadd.c	2019-08-29 09:30:28.000000000 +0300
++++ b/kernel/locking/rwsem-xadd.c	2019-09-05 21:10:25.392421469 +0300
+@@ -325,6 +325,7 @@
+ static noinline bool rwsem_spin_on_owner(struct rw_semaphore *sem)
+ {
+ 	struct task_struct *owner = READ_ONCE(sem->owner);
++	int i = 0;
+ 
+ 	if (!is_rwsem_owner_spinnable(owner))
+ 		return false;
+@@ -347,8 +348,8 @@
+ 			rcu_read_unlock();
+ 			return false;
+ 		}
+-
+-		cpu_relax();
++		if (i++ > 1000)
++			cpu_relax();
+ 	}
+ 	rcu_read_unlock();
+ 
+diff -uraN a/kernel/sched/fair.c b/kernel/sched/fair.c
+--- a/kernel/sched/fair.c	2019-08-29 09:30:28.000000000 +0300
++++ b/kernel/sched/fair.c	2019-09-05 21:10:25.393421469 +0300
+@@ -6723,6 +6723,10 @@
+  *
+  * preempt must be disabled.
+  */
++
++int best_core = -1;
++int second_best_core = -1;
++
+ static int
+ select_task_rq_fair(struct task_struct *p, int prev_cpu, int sd_flag, int wake_flags)
+ {
+@@ -6746,6 +6750,21 @@
+ 			      cpumask_test_cpu(cpu, &p->cpus_allowed);
+ 	}
+ 
++	if (prev_cpu != best_core && prev_cpu != second_best_core &&
++		       cpu_rq(prev_cpu)->nr_running != 0) {
++		if (second_best_core != -1 && cpu_rq(second_best_core)->nr_running == 0 &&
++			       nr_iowait_cpu(second_best_core) < 2 && cpu_to_node(prev_cpu) == cpu_to_node(second_best_core))
++			prev_cpu = second_best_core;
++		if (best_core != -1 && cpu_rq(best_core)->nr_running == 0 &&
++			       nr_iowait_cpu(best_core) < 2  && cpu_to_node(prev_cpu) == cpu_to_node(best_core))
++			prev_cpu = best_core;
++	}
++/*
++	if (prev_cpu > 0 && cpu_rq(prev_cpu)->nr_running != 0 && cpu_rq(prev_cpu - 1)->nr_running == 0)
++		prev_cpu = prev_cpu - 1;
++*/
++
++
+ 	rcu_read_lock();
+ 	for_each_domain(cpu, tmp) {
+ 		if (!(tmp->flags & SD_LOAD_BALANCE))
+diff -uraN a/kernel/sched/wait.c b/kernel/sched/wait.c
+--- a/kernel/sched/wait.c	2019-08-29 09:30:28.000000000 +0300
++++ b/kernel/sched/wait.c	2019-09-05 21:10:25.395421469 +0300
+@@ -37,6 +37,17 @@
+ }
+ EXPORT_SYMBOL(add_wait_queue_exclusive);
+ 
++void add_wait_queue_exclusive_lifo(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)
++{
++	unsigned long flags;
++
++	wq_entry->flags |= WQ_FLAG_EXCLUSIVE;
++	spin_lock_irqsave(&wq_head->lock, flags);
++	__add_wait_queue(wq_head, wq_entry);
++	spin_unlock_irqrestore(&wq_head->lock, flags);
++}
++EXPORT_SYMBOL(add_wait_queue_exclusive_lifo);
++
+ void remove_wait_queue(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry)
+ {
+ 	unsigned long flags;
+@@ -250,6 +261,19 @@
+ }
+ EXPORT_SYMBOL(prepare_to_wait_exclusive);
+ 
++void prepare_to_wait_exclusive_lifo(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry, int state)
++{
++	unsigned long flags;
++
++	wq_entry->flags |= WQ_FLAG_EXCLUSIVE;
++	spin_lock_irqsave(&wq_head->lock, flags);
++	if (list_empty(&wq_entry->entry))
++		__add_wait_queue(wq_head, wq_entry);
++	set_current_state(state);
++	spin_unlock_irqrestore(&wq_head->lock, flags);
++}
++EXPORT_SYMBOL(prepare_to_wait_exclusive_lifo);
++
+ void init_wait_entry(struct wait_queue_entry *wq_entry, int flags)
+ {
+ 	wq_entry->flags = flags;
+diff -uraN a/kernel/time/ntp.c b/kernel/time/ntp.c
+--- a/kernel/time/ntp.c	2019-08-29 09:30:28.000000000 +0300
++++ b/kernel/time/ntp.c	2019-09-05 21:10:25.396421469 +0300
+@@ -513,7 +513,7 @@
+ 		 * the algorithm is very likely to require a short-sleep retry
+ 		 * after the above long sleep to synchronize ts_nsec.
+ 		 */
+-		next.tv_sec = 0;
++		next.tv_sec = 10;
+ 	}
+ 
+ 	/* Compute the needed delay that will get to tv_nsec == target_nsec */
+diff -uraN a/kernel/watchdog.c b/kernel/watchdog.c
+--- a/kernel/watchdog.c	2019-08-29 09:30:28.000000000 +0300
++++ b/kernel/watchdog.c	2019-09-05 21:10:25.396421469 +0300
+@@ -41,7 +41,7 @@
+ int __read_mostly watchdog_user_enabled = 1;
+ int __read_mostly nmi_watchdog_user_enabled = NMI_WATCHDOG_DEFAULT;
+ int __read_mostly soft_watchdog_user_enabled = 1;
+-int __read_mostly watchdog_thresh = 10;
++int __read_mostly watchdog_thresh = 40;
+ static int __read_mostly nmi_watchdog_available;
+ 
+ static struct cpumask watchdog_allowed_mask __read_mostly;
+diff -uraN a/mm/ksm.c b/mm/ksm.c
+--- a/mm/ksm.c	2019-08-29 09:30:28.000000000 +0300
++++ b/mm/ksm.c	2019-09-05 21:10:25.397421469 +0300
+@@ -2432,9 +2432,14 @@
+ 
+ 		if (ksmd_should_run()) {
+ 			sleep_ms = READ_ONCE(ksm_thread_sleep_millisecs);
+-			wait_event_interruptible_timeout(ksm_iter_wait,
+-				sleep_ms != READ_ONCE(ksm_thread_sleep_millisecs),
+-				msecs_to_jiffies(sleep_ms));
++			if (sleep_ms >= 1000)
++				wait_event_interruptible_timeout(ksm_iter_wait,
++					sleep_ms != READ_ONCE(ksm_thread_sleep_millisecs),
++					msecs_to_jiffies(round_jiffies_relative(sleep_ms)));
++			else
++				wait_event_interruptible_timeout(ksm_iter_wait,
++					sleep_ms != READ_ONCE(ksm_thread_sleep_millisecs),
++					msecs_to_jiffies(sleep_ms));
+ 		} else {
+ 			wait_event_freezable(ksm_thread_wait,
+ 				ksmd_should_run() || kthread_should_stop());
+diff -uraN a/mm/mempolicy.c b/mm/mempolicy.c
+--- a/mm/mempolicy.c	2019-08-29 09:30:28.000000000 +0300
++++ b/mm/mempolicy.c	2019-09-05 21:10:25.398421469 +0300
+@@ -2131,8 +2131,9 @@
+ 		nmask = policy_nodemask(gfp, pol);
+ 		if (!nmask || node_isset(hpage_node, *nmask)) {
+ 			mpol_cond_put(pol);
+-			page = __alloc_pages_node(hpage_node,
+-						gfp | __GFP_THISNODE, order);
++			if (!(gfp & __GFP_DIRECT_RECLAIM))
++				gfp |= __GFP_THISNODE;
++			page = __alloc_pages_node(hpage_node, gfp, order);
+ 			goto out;
+ 		}
+ 	}
+diff -uraN a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+--- a/net/ipv4/inet_connection_sock.c	2019-08-29 09:30:28.000000000 +0300
++++ b/net/ipv4/inet_connection_sock.c	2019-09-05 21:10:25.399421469 +0300
+@@ -407,7 +407,7 @@
+ 	 * having to remove and re-insert us on the wait queue.
+ 	 */
+ 	for (;;) {
+-		prepare_to_wait_exclusive(sk_sleep(sk), &wait,
++		prepare_to_wait_exclusive_lifo(sk_sleep(sk), &wait,
+ 					  TASK_INTERRUPTIBLE);
+ 		release_sock(sk);
+ 		if (reqsk_queue_empty(&icsk->icsk_accept_queue))
+diff -uraN a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+--- a/net/ipv4/tcp.c	2019-08-29 09:30:28.000000000 +0300
++++ b/net/ipv4/tcp.c	2019-09-05 21:10:25.400421469 +0300
+@@ -3938,8 +3938,8 @@
+ 	tcp_init_mem();
+ 	/* Set per-socket limits to no more than 1/128 the pressure threshold */
+ 	limit = nr_free_buffer_pages() << (PAGE_SHIFT - 7);
+-	max_wshare = min(4UL*1024*1024, limit);
+-	max_rshare = min(6UL*1024*1024, limit);
++	max_wshare = min(16UL*1024*1024, limit);
++	max_rshare = min(16UL*1024*1024, limit);
+ 
+ 	init_net.ipv4.sysctl_tcp_wmem[0] = SK_MEM_QUANTUM;
+ 	init_net.ipv4.sysctl_tcp_wmem[1] = 16*1024;
