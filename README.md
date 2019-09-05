@@ -47,6 +47,8 @@ shells:
  * 5.2-lucjan+paula-bfq-dev-patches	(paula + lucjan)
  * 5.2-zen-muqss			(con kolivas + zen)
  * 5.2-zen-tune				(zen-kernel)
+ * 5.2-clearlinux-cve-patches		(intel)
+ * 5.2-clearlinux-optimizations		(intel)
 ```
 
 #### about proprietary software under apathy
@@ -56,7 +58,7 @@ based on what i've filtered off of `parabola gnu/linux`' `blacklist.txt` multipl
 ```
 ~ > pkg
 
- * total partition size	: 1936.89mib
+ * total partition size	: 1959.89mib
  * local package count	: 367
  * removed packages	: 61
 
