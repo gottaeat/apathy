@@ -23,7 +23,7 @@ workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
-confname="5.2-apathy-libre-gcc-31-aug-2019.config"
+confname="5.2-apathy-libre-gcc-5-sep-2019.config"
 useconf="${confdir}/${confname}"
 pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
@@ -79,6 +79,16 @@ apply_apathy(){
  evalretkill
 }
 
+apply_clearlinux(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} clearlinux cve patches${c_reset}."
+  patch -p1 < "${patchdir}"/5.2-clearlinux-cve-patches.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+ 
+ aprint_ret "${c_blue}applying\t:${c_lcyan} clearlinux optimization patches${c_reset}."
+  patch -Np1 < "${patchdir}"/5.2-clearlinux-optimizations.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+}
+
 # d >> action
 # d0 >> clear old log
 aprint_ret "cleaning old log."
@@ -113,10 +123,19 @@ aprint "localver\t: ${c_lcyan}${pre_localver}${c_reset}"
 
 # d3 >> apply patches
 aprint_nc
-aprint "applying the apathy patchset."
+
+aprint "deblobbing the kernel."
 apply_deblob
 apply_freedo
+
+aprint "applying the apathy patchset."
 apply_apathy
+
+aprint "applying the clearlinux patches."
+aprint_ret "${c_blue}clearing\t: ${c_lcyan}.orig files${c_reset}."
+ find "${workdir}" | grep '\.orig$' | xargs rm -rf
+evalretkill
+apply_clearlinux
 
 # d5 >> run nconfig
 aprint_nc
