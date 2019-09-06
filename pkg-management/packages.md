@@ -132,7 +132,7 @@
 [d]	> xcb-util-wm-0.4.1 
 [d]	> xcb-util-cursor-0.1.3
 
-[d]	> mesa-19.2.0-rc1				--> updated from 18.3.6 >> 19.0.4
+[d]	> mesa-19.2.0-rc2				--> updated from 18.3.6 >> 19.0.4 >> 19.2.0-rc1
 [d]	>> libdrm-2.4.97 
 [d]	>> libvdpau-1.1.1 
 [d]	>> mako-1.0.7
@@ -506,7 +506,7 @@
 [d] openssl-1.1.1a
 [d] python-3.7.2
 [d] ninja-1.9.0
-[d] meson-0.51.1					--> updated from 0.49.2
+[d] meson-0.51.2					--> updated from 0.49.2 >> meson-0.51.1
 [d] coreutils-8.31					--> updated from 8.30
 [d] check-0.12.0
 [d] diffutils-3.7
