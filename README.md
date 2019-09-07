@@ -14,7 +14,7 @@ because it is intended to be the way i document my progress and keep everything 
 #### overview
 ```
 toolchain:
- * gcc 10.0.0-20190901 (c,c++,objc,obj-c++)
+ * gcc 8.3.0 (c,c++,objc,obj-c++)
  * binutils-2.32, glibc-2.29
  * linux 5.0 headers (deblobbed)
 
@@ -30,7 +30,7 @@ languages:
  * perl-5.28.1
 
 video/audio:
- * xorg (x11r7), mesa 19.2.0-rc1
+ * xorg (x11r7), mesa 19.2.0-rc2
  * alsa 1.1.8
 
 shells:
@@ -58,7 +58,7 @@ based on what i've filtered off of `parabola gnu/linux`' `blacklist.txt` multipl
 ```
 ~ > pkg
 
- * total partition size	: 2009.83mib
+ * total partition size	: 1939.82mib
  * local package count	: 367
  * removed packages	: 61
 

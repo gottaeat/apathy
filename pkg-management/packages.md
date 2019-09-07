@@ -474,7 +474,7 @@
 [d] mpfr-4.0.2
 [d] mpc-1.1.0
 [d] shadow-4.7						--> updated from 4.6
-[d] gcc-10.0.0-20190901					--> updated from 8.2.0 >> 9.1.0 >> 9.2.0
+[d] gcc-8.3.0						--> updated from 8.2.0 >> 9.1.0 >> 9.2.0 >> 10.0.0-20190901
 [d] bzip2-1.0.8						--> updated from 1.0.6
 [d] pkg-config-0.29.2
 [d] ncurses-6.1
