@@ -14,7 +14,7 @@ because it is intended to be the way i document my progress and keep everything 
 #### overview
 ```
 toolchain:
- * gcc 8.3.0 (c,c++,objc,obj-c++)
+ * gcc 9.2.0 (c,c++,objc,obj-c++)
  * binutils-2.32, glibc-2.29
  * linux 5.0 headers (deblobbed)
 
@@ -25,7 +25,7 @@ core userland:
 
 languages:
  * python 2.7.15/3.7.2
- * ruby-2.6.4p104-libre
+ * ruby 2.6.4p104-libre
  * lua 5.3.5, luajit 2.0.5
  * perl-5.28.1
 
@@ -58,7 +58,7 @@ based on what i've filtered off of `parabola gnu/linux`' `blacklist.txt` multipl
 ```
 ~ > pkg
 
- * total partition size	: 1939.82mib
+ * total partition size	: 1934.88mib
  * local package count	: 367
  * removed packages	: 61
 
