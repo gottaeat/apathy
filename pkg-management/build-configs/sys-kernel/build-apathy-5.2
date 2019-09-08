@@ -47,6 +47,10 @@ apply_freedo(){
 }
 
 apply_apathy(){
+ aprint_ret "${c_blue}replacing\t:${c_lcyan} kernel panic message with something spicier${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.2-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen -03 optimize harder patch${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
