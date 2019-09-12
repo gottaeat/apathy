@@ -19,14 +19,16 @@ fail="${c_red} ! ${c_reset}"
 
 succ_end="${c_green} done${c_reset}"
 fail_end="${c_red} failed${c_reset}"
-
+memearrow="${c_lcyan} > ${c_reset}"
+askq="${c_blue} ? ${c_reset}"
 # printing
-aprint_succ(){ printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
-aprint_fail(){ printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
-aprint_ret(){ printf "${sbefore}${@}"; return 0; }
-aprint(){ printf "${sbefore}${@}\n"; return 0; }
+aprint(){ printf "${memearrow}${@}\n"; return 0; }
 aprint_xn(){ printf "${sbefore}${@}"; return 0; }
 aprint_nc(){ printf "\n"; }
+aprint_ret(){ printf "${sbefore}${@}"; return 0; }
+aprint_succ(){ printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
+aprint_fail(){ printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
+aprint_ask(){ printf "${askq}${@}"; return 0; }
 
 evalret(){
  local error_value="${?}"

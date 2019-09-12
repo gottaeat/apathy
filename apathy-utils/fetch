@@ -1,8 +1,8 @@
 #!/mss/bin/sh
-printf "\n  __,  ,_   __,  -/- /_
+printf "\n\\033[1;34m  __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
-     /                  (/\n"
+     /                  (/\\033[0;39m\n"
 
 dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
 cpu=$(awk '/model name/ {print $5,$7}' /proc/cpuinfo | tail -1)

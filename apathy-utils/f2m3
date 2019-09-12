@@ -1,0 +1,14 @@
+#!/bin/sh
+. /mss/bin/apathy-funcs
+for thing in *.flac
+ do
+  meme=$(echo ${thing} | sed 's/\.flac//g')
+  aprint_ret "${c_blue}cnv: ${c_lcyan}${meme}${c_reset}."
+  ffmpeg -i "${meme}".flac -threads 8 -ab 320k -map_metadata 0 -id3v2_version 3 "${meme}".mp3 > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_blue}rmv: ${c_lcyan}flac files${c_reset}."
+  rm -rf "${meme}.flac"
+  evalret
+  aprint_nc
+ done
