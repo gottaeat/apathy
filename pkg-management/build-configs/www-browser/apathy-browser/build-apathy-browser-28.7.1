@@ -38,7 +38,7 @@ evalretkill
 
 # d3 >> apply apathy branding
 aprint_ret "applying apathy-browser branding patch."
-patch -p1 < "${repo}"/0001-apathy-browser-branding-27.0.0.patch > /tmp/apathy-browser-build.log 2>&1
+patch -p1 < "${repo}"/0001-apathy-browser-branding-28.7.1.patch > /tmp/apathy-browser-build.log 2>&1
 evalretkill
 
 # d4 >> copy mozconfig
@@ -54,10 +54,10 @@ evalretkill
 # d6 >> set mach vars
 aprint_ret "setting variables for mach."
 export pkgname="apathy-browser (palemoon)"				&&
-export pkgver=28.7.0							&&
+export pkgver=28.7.1							&&
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"				&&
 export MOZCONFIG="$srcdir/mozconfig"					&&
-export CPPFLAGS="$CPPFLAGS -O2 -Wno-format-overflow"
+export CPPFLAGS="-pipe -O2 -Wno-format-overflow"
 evalretkill
 
 # d6.1 >> print mach vars
