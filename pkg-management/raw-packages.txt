@@ -298,6 +298,7 @@ lzip-1.21
 sfeed
 grub-2.04
 gna-unrar
+shntool-3.0.10
 glibc-2.29
 zlib-1.2.11
 file-5.36

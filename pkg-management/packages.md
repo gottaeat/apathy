@@ -451,6 +451,7 @@
 [d]	> sfeed
 [d]	> grub-2.04
 [d]	> gna-unrar					--> https://github.com/Lesik/unrar-free
+[d]	> shntool-3.0.10
 ```
 ---------------------------------------------------------
 #### additional python fuckery
