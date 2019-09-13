@@ -102,7 +102,7 @@ bar {
   id bar-1
   status_command i3blocks -c /home/mss/.config/i3/bar
   strip_workspace_numbers yes
-  position top
+  position bottom
   separator_symbol "|"
 
 colors {

@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/sh
 sel=$(echo -e "apathy-browser\nkill-i3\n" | dmenu -b -p "meh:")
 
 case "$sel" in
