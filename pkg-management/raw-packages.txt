@@ -303,6 +303,7 @@ cataclysm-dda-0.d
 sdl2_image-2.0.5
 sdl2_mixer-2.0.4
 sdl2_ttf-2.0.15
+np2kai-git
 glibc-2.29
 zlib-1.2.11
 file-5.36

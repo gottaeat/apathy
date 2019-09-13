@@ -456,6 +456,8 @@
 [d]	>> sdl2_image-2.0.5
 [d]	>> sdl2_mixer-2.0.4
 [d]	>> sdl2_ttf-2.0.15
+
+[d]	> np2kai-git					--> https://github.com/AZO234/NP2kai
 ```
 ---------------------------------------------------------
 #### additional python fuckery
