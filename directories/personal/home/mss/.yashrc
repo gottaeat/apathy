@@ -40,8 +40,8 @@ HISTFILE=~/.yash_history HISTSIZE=5000
 
 #prompts
 if [ "$(id -u)" -ne 0 ];
- then YASH_PS1=' ${${${PWD:/~/\~}##*/}:-$PWD}\fc > \fD'
- else YASH_PS1='\fr[root]\fD ${${${PWD:/~/\~}##*/}:-$PWD}\fc > \fD'
+ then YASH_PS1=' ${${PWD:/~/\~}##*/}\fc % \fD'
+ else YASH_PS1=' ${${PWD:/~/\~}##*/}\fr # \fD'
 fi
 YASH_PS1R=''
 YASH_PS1S=''
@@ -128,7 +128,12 @@ alias tra="transmission-remote -n mss:mss -a"
 ##f dirs
 alias cdw="cd /mss/work"
 alias cdr="cd /mss/repo"
+alias cdt="cd /mss/tools"
 alias cds="cd /mnt/mss/stuff"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
+##g vim like exit
+alias :q!="exit"
+alias :wq="exit"
+alias :wq!="exit"
