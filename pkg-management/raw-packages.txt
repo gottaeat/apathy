@@ -299,6 +299,10 @@ sfeed
 grub-2.04
 gna-unrar
 shntool-3.0.10
+cataclysm-dda-0.d
+sdl2_image-2.0.5
+sdl2_mixer-2.0.4
+sdl2_ttf-2.0.15
 glibc-2.29
 zlib-1.2.11
 file-5.36

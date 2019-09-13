@@ -447,11 +447,15 @@
 [r]	> dash
 [d]	> yash-2.48
 [d]	> lzip-1.21
-[r]	> cataclysm-dda-0.D
 [d]	> sfeed
 [d]	> grub-2.04
 [d]	> gna-unrar					--> https://github.com/Lesik/unrar-free
 [d]	> shntool-3.0.10
+
+[d]	> cataclysm-dda-0.d
+[d]	>> sdl2_image-2.0.5
+[d]	>> sdl2_mixer-2.0.4
+[d]	>> sdl2_ttf-2.0.15
 ```
 ---------------------------------------------------------
 #### additional python fuckery
