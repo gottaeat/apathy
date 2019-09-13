@@ -413,7 +413,7 @@
 [d]	> openvpn
 [d]	>> pkcs11-helper
 
-[d]	> palemoon-28.7.0				--> 28.5.1 >> 28.5.2 >> 28.6.0.1 >> 28.6.1 >> git-2019-08-25
+[d]	> palemoon-28.7.1				--> 28.5.1 >> 28.5.2 >> 28.6.0.1 >> 28.6.1 >> git-2019-08-25
 
 [d]	> jq-1.6					--> binary from dev
 [d]	> mkvtoolnux
