@@ -15,24 +15,24 @@ c_lcyan="\\033[1;36m"	# light cyan
 c_blue="\\033[1;34m"	# blue
 
 ### set colors and retval variables
-sbefore="   "
-succ_r="${c_green} * ${c_reset}"
-fail_r="${c_red} ! ${c_reset}"
-warn_r="${c_yellow} w ${c_reset}"
-skip_r="${c_lcyan} s ${c_reset}"
+sbefore="    "
+succ_l="${c_blue}| ${c_green}done ${c_blue}|${c_reset} "
+fail_l="${c_blue}| ${c_red}fail ${c_blue}|${c_reset} "
+warn_l="${c_blue}| ${c_yellow}warn ${c_blue}|${c_reset} "
+skip_l="${c_blue}| ${c_lcyan}skip ${c_blue}|${c_reset} "
 
-succ_l="${c_blue}-->${c_green} done${c_reset}"
-fail_l="${c_blue}-->${c_red} failed${c_reset}"
-warn_l="${c_blue}-->${c_yellow} warning${c_reset}"
-skip_l="${c_blue}-->${c_lcyan} skipped.${c_reset}"
+succ_r="  ${c_green}>${c_reset} "
+fail_r="  ${c_red}>${c_reset} "
+warn_r="  ${c_yellow}>${c_reset} "
+skip_r="  ${c_lcyan}>${c_reset} "
 
 bootlogdir=/run/bootlog
 killdelay=3
 script_stat="0"
 
 ## set cursor position commands
-col="\\033[72G"		# at the $COL char
-wcol="\\033[70G"	# at the $WCOL char
+col="\\033[72G"			# at the $COL char
+wcol="\\033[70G"		# at the $WCOL char
 cur_up="\\033[1A\\033[0G"	# up one line, at the 0th char
 cur_zero="\\033[0G"
 
