@@ -5,8 +5,7 @@
 . /lib/lsb/init-functions
 
 print_error_msg(){
- log_failure_msg
- log_failure_msg "\nfailure:\n you're seeing this because ${i} exited with ${error_value}."
+ log_failure_msg "${c_red}${i}${c_reset} exited with ${error_value}."
  log_info_msg "press enter to procceed."
  wait_for_user
 }
@@ -22,7 +21,7 @@ run(){
 
  while true
   do
-   printf "apathy - run ${1} ${2} (yY/nN/cC)?: "
+   printf "run ${1} ${2} (yY/nN/cC)?: "
    read runit
 
    case ${runit} in
@@ -51,23 +50,32 @@ previous=${PREVLEVEL}
 [ "${previous}" = "" ] && previous=N
 
 if [ ! -d /etc/rc.d/rc${runlevel}.d ]; then
- log_info_msg "apathy - /etc/rc.d/rc${runlevel}.d does not exist.\n"
+ log_info_msg "/etc/rc.d/rc${runlevel}.d does not exist.\n"
  exit 1
 fi
 
 if [ "$runlevel" = "S" ]
  then
-  [ -r /etc/sysconfig/console ] && . /etc/sysconfig/console
-  /usr/bin/clear
+  clear
   printf "\n${sbefore}${c_blue}  __,  ,_   __,  -/- /_\n"
   printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"
   printf "${sbefore}      /                  _/_\n"
   printf "${sbefore}     /                  (/${c_reset}\n"
-  printf "\n${sbefore}welcome to ${c_blue}apathy gnu/linux ${c_green}1.2${c_reset}.\n"
+  printf "\n${sbefore}welcome to ${c_blue}apathy gnu/linux ${c_green}1.3${c_reset}.\n"
   printf "${sbefore}running on kernel ${c_green}$(/bin/uname -r)${c_reset}.\n\n"
 
-
   printf "\n${sbefore}${c_green}$(date '+%a %d %I:%M:%S%P')${c_reset} - ${c_green}$(/sbin/init --version)${c_reset}"
+  printf "${cur_zero}${col}\n"
+fi
+
+if [ "$runlevel" = "6" ] || [ "$runlevel" = 0 ]
+ then
+  clear
+  printf "\n${sbefore}${c_blue}  __,  ,_   __,  -/- /_\n"
+  printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"
+  printf "${sbefore}      /                  _/_\n"
+  printf "${sbefore}     /                  (/${c_reset}\n"
+  printf "\n${sbefore}shutting ${c_blue}apathy gnu/linux ${c_green}1.3${c_reset} down.\n"
   printf "${cur_zero}${col}\n"
 fi
 
@@ -87,7 +95,7 @@ if [ "${previous}" != "N" ]
        then
         if [ ! -f ${prev_start} -a  ! -f ${sysinit_start} ]
 	 then
-          MSG="\nwarning:\n${i} can't be executed because it was not "
+          MSG="${i} can't be executed because it was not "
           MSG="${MSG}not started in the previous runlevel (${previous})."
           log_warning_msg "$MSG"
           continue
