@@ -10,7 +10,7 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - initalizing the ${c_lcyan}kernel random number generator${c_reset}."
+  log_info_msg "initalizing the ${c_lcyan}kernel random number generator${c_reset}."
 
   if [ -f /var/tmp/random-seed ]
    then /bin/cat /var/tmp/random-seed > /dev/urandom
@@ -21,7 +21,7 @@ case "${1}" in
  ;;
 
  stop)
-  log_info_msg "apathy - saving ${c_lcyan}random seed${c_reset} to ${c_lcyan}/var/tmp${c_reset}."
+  log_info_msg "saving ${c_lcyan}random seed${c_reset} to ${c_lcyan}/var/tmp${c_reset}."
 
   /bin/dd if=/dev/urandom of=/var/tmp/random-seed count=1 > /dev/null 2>&1
   evalret

@@ -13,14 +13,14 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - remounting the ${c_lcyan}rootfs${c_reset} in ${c_lcyan}ro${c_reset} mode."
+  log_info_msg "remounting the ${c_lcyan}rootfs${c_reset} in ${c_lcyan}ro${c_reset} mode."
   mount --options remount,rw / > /dev/null 2>&1
   evalret
 
   # make sure /dev/pts exists
   mkdir -p /dev/pts
 
-  log_info_msg "apathy - mounting entries in ${c_lcyan}fstab${c_reset}."
+  log_info_msg "mounting entries in ${c_lcyan}fstab${c_reset}."
   mount --all --test-opts no_netdev > /dev/null 2>&1
   evalret
   exit ${failed}
@@ -28,7 +28,7 @@ case "${1}" in
 
  stop)
   # do not umount virtfs
-  log_info_msg "apathy - unmounting all mounted devices."
+  log_info_msg "unmounting all mounted devices."
 
   # ensure the removal of loop devices
   losetup -D

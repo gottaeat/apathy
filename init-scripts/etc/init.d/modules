@@ -16,7 +16,7 @@ case "${1}" in
   [ -r /etc/sysconfig/modules ]             || exit 0
   egrep -qv '^($|#)' /etc/sysconfig/modules || exit 0
 
-  log_info_msg "apathy - loading modules."
+  log_info_msg "loading modules."
 
   # only load modules if user told to do so
   while read module args
@@ -39,7 +39,7 @@ case "${1}" in
 
   # print a message for modules failed to load
   if [ -n "${failedmod}" ];then
-   log_failure_msg "\nfailure:\n could not load modules:${failedmod}."
+   log_failure_msg "could not load modules:${failedmod}."
    exit 1
   fi
  ;;

@@ -14,12 +14,12 @@ export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
  start)
-  log_info_msg "apathy - starting $NAME."
+  log_info_msg "starting $NAME."
   start-stop-daemon --start --quiet  --chuid $USER --exec $DAEMON -- $DAEMON_OPTS
   evalret
   ;;
  stop)
-  log_info_msg "apathy - stopping $NAME."
+  log_info_msg "stopping $NAME."
   kill $(pidof transmission-daemon)
   evalret
   ;;

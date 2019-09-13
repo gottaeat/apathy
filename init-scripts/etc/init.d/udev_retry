@@ -9,7 +9,7 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - retrying failed ${c_lcyan}uevents${c_reset} if there are any."
+  log_info_msg "retrying failed ${c_lcyan}uevents${c_reset} if there are any."
   rundir=/run/udev
   
   #copy the rules generated before / was mounted read-write:

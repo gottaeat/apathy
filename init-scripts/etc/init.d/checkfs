@@ -20,21 +20,21 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - mounting ${c_lcyan}rootfs${c_reset} in ${c_lcyan}rw${c_reset} mode."
+  log_info_msg "mounting ${c_lcyan}rootfs${c_reset} in ${c_lcyan}rw${c_reset} mode."
   mount -n -o remount,ro / > /dev/null 2>&1
 
   if [ ! ${?} = 0 ]
   then
    log_failure_msg2
-   log_failure_msg "\n\ncannot check rootfs because it can't be mounted in ro, press enter to power off.\n\n"
-   log_info_msg "press enter to procceed."
+   log_failure_msg "cannot check rootfs because it can't be mounted in ro."
+   log_info_msg "press enter to power off."
    wait_for_user
    /etc/rc.d/init.d/halt stop
   else
    log_success_msg2
   fi
 
-  log_info_msg "apathy - checking file systems."
+  log_info_msg "checking file systems."
   fsck ${options} -a -A -C -T > /dev/null 2>&1
 
   errval=${?}
@@ -45,25 +45,25 @@ case "${1}" in
 
   if [ "${errval}" = 1 ]
   then
-   log_warning_msg "\nwarning:\nfs errors were found and have been corrected."
+   log_warning_msg "fs errors were found and have been corrected."
   fi
 
   if [ "${errval}" -ge 2 ] && [ "${errval}" -le 3 ]; then
-   log_failure_msg "\nwarning:\nfs errors have been found and corrected but this fstype needs a reboot."
+   log_failure_msg "fs errors have been found and corrected but this fstype needs a reboot."
    log_info_msg "press enter to procceed."
    wait_for_user
    reboot -f
   fi
 
   if [ "${errval}" -gt 3 ] && [ "${errval}" -lt 16 ]; then
-   log_failure_msg "\nfailure:\n unfixable fs errors found, system will halt."
+   log_failure_msg "unfixable fs errors found, system will halt."
    log_info_msg "press enter to procceed."
    wait_for_user
    /etc/rc.d/init.d/halt stop
   fi
 
   if [ "${errval}" -ge 16 ]; then
-   log_info_msg "\nfailure:\n unexpected error code:  ${errval}."
+   log_info_msg "unexpected error code: ${errval}."
    exit ${errval}
   fi
 

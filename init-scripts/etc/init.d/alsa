@@ -10,13 +10,13 @@
 
 case "$1" in
  start)
-  log_info_msg "apathy - restoring ${c_lcyan}alsa${c_reset} volumes."
+  log_info_msg "restoring ${c_lcyan}alsa${c_reset} volumes."
   /usr/sbin/alsactl restore
   evalret
  ;;
 
  stop)
-  log_info_msg "apathy - saving ${c_lcyan}alsa${c_reset} volumes."
+  log_info_msg "saving ${c_lcyan}alsa${c_reset} volumes."
   /usr/sbin/alsactl store
   evalret
  ;;

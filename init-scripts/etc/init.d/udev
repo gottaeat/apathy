@@ -10,13 +10,13 @@
 
 case "${1}" in
  start)
-  log_info_msg "apathy - populating ${c_lcyan}/dev${c_reset} via ${c_lcyan}udev${c_reset}."
+  log_info_msg "populating ${c_lcyan}/dev${c_reset} via ${c_lcyan}udev${c_reset}."
    # sanity check for sysfs
    cksysfs=$(grep sysfs /proc/mounts)
     if [ -z "${cksysfs}" ]
     then
      log_failure_msg2
-     log_info_msg "\nfailure:\nunable to create devices without a sysfs."
+     log_info_msg "unable to create devices without a sysfs."
      log_info_msg "press enter to halt."
      wait_for_user
      /etc/rc.d/init.d/halt stop

@@ -15,13 +15,13 @@ export PATH="${PATH:+$PATH:}/usr/sbin:/sbin"
 
 case "$1" in
  start)
-  log_info_msg "apathy - starting ${c_lcyan}$NAME${c_reset}."
+  log_info_msg "starting ${c_lcyan}$NAME${c_reset}."
   cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
   start-stop-daemon --start --quiet -b -m --pidfile $PIDFILE --chuid $USER --exec $DAEMON
   evalret
   ;;
  stop)
-  log_info_msg "apathy - stopping ${c_lcyan}$NAME${c_reset}."
+  log_info_msg "stopping ${c_lcyan}$NAME${c_reset}."
   cp /etc/resolv.conf.flare /etc/resolv.conf
   start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
   evalret

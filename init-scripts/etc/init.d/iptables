@@ -11,14 +11,14 @@
 case "$1" in
  start)
   if [ -x /etc/rc.d/rc.iptables ]; then
-   log_info_msg "apathy - starting ${c_lcyan}iptables${c_reset}."
+   log_info_msg "starting ${c_lcyan}iptables${c_reset}."
    /etc/rc.d/rc.iptables
    evalret
   fi
  ;;
 
  lock)
-  log_info_msg "apathy - locking system iptables firewall."
+  log_info_msg "locking system iptables firewall."
   /sbin/iptables	--policy INPUT		DROP
   /sbin/iptables	--policy OUTPUT		DROP
   /sbin/iptables	--policy FORWARD	DROP
@@ -32,7 +32,7 @@ case "$1" in
  ;;
 
  clear)
-  log_info_msg "apathy - clearing system iptables iptables."
+  log_info_msg "clearing system iptables iptables."
   /sbin/iptables	--policy INPUT		ACCEPT
   /sbin/iptables	--policy OUTPUT		ACCEPT
   /sbin/iptables	--policy FORWARD	ACCEPT
