@@ -65,7 +65,7 @@ interval=1
 signal=1
 
 [host]
-command=cat /etc/hostname
+command=~/.config/scripts/host-ip
 interval=once
 color=#ababab
 separator_block_width=4
