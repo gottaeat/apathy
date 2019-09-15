@@ -452,10 +452,10 @@
 [d]	> gna-unrar					--> https://github.com/Lesik/unrar-free
 [d]	> shntool-3.0.10
 
-[d]	> cataclysm-dda-0.d
-[d]	>> sdl2_image-2.0.5
-[d]	>> sdl2_mixer-2.0.4
-[d]	>> sdl2_ttf-2.0.15
+[r]	> cataclysm-dda-0.d
+[r]	>> sdl2_image-2.0.5
+[r]	>> sdl2_mixer-2.0.4
+[r]	>> sdl2_ttf-2.0.15
 
 [d]	> np2kai-git					--> https://github.com/AZO234/NP2kai
 ```
