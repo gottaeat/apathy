@@ -1,4 +1,6 @@
 #!/bin/sh
+# apathy 1.3 - mss@waifu.club
+# build script for 5.2.x kernels.
 
 . /mss/bin/apathy-funcs
 
@@ -30,7 +32,7 @@ pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSI
 # c >> functions
 apply_deblob(){
  aprint_ret "${c_blue}applying\t:${c_lcyan} gnu deblob patches${c_reset}."
-  patch -p1 < "${patchdir}"/5.2-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/deblob/5.2-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}removing\t:${c_lcyan} gnu extraversion entry${c_reset}."
@@ -40,56 +42,56 @@ apply_deblob(){
 
 apply_freedo(){
  aprint_ret "${c_blue}applying\t:${c_lcyan} freedo logo."
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_clut224.ppm
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_vga16.ppm
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/freedo-logo/logo_linux_mono.pbm	
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_clut224.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_vga16.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_mono.pbm	
  evalretkill
 }
 
 apply_apathy(){
  aprint_ret "${c_blue}replacing\t:${c_lcyan} kernel panic message with something spicier${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen -03 optimize harder patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} enable link security restrictions by default${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-enable-link-security-by-default.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}fixing\t:${c_lcyan} bfq/bfq-dev patch conflict${c_reset}."
  evalret
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan+paula bfq-dev patches${c_reset}."
-  patch -Np1 < "${patchdir}"/apathy/5.2-lucjan+paula-bfq-dev-patches.patch >>/tmp/kernel-build.log 2>&1
+  patch -Np1 < "${patchdir}"/apathy/5.2/5.2-lucjan+paula-bfq-dev-patches.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan-zen-futex patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-lucjan-futex-zen.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-lucjan-futex-zen.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen-muqss patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-muqss.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-zen-muqss.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen-tune patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.2-zen-tune.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-zen-tune.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
 apply_clearlinux(){
  aprint_ret "${c_blue}applying\t:${c_lcyan} clearlinux cve patches${c_reset}."
-  patch -p1 < "${patchdir}"/5.2-clearlinux-cve-patches.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.2/5.2-clearlinux-cve-patches.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
  
  aprint_ret "${c_blue}applying\t:${c_lcyan} clearlinux optimization patches${c_reset}."
-  patch -Np1 < "${patchdir}"/5.2-clearlinux-optimizations.patch >>/tmp/kernel-build.log 2>&1
+  patch -Np1 < "${patchdir}"/apathy/5.2/5.2-clearlinux-optimizations.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
