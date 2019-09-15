@@ -26,7 +26,7 @@ patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
 confname="5.2-apathy-libre-gcc-8-sep-2019.config"
-useconf="${confdir}/${confname}"
+useconf="${confdir}/5.2/${confname}"
 pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
 # c >> functions
