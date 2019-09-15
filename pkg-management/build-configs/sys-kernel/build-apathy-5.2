@@ -42,9 +42,9 @@ apply_deblob(){
 
 apply_freedo(){
  aprint_ret "${c_blue}applying\t:${c_lcyan} freedo logo."
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_clut224.ppm
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_vga16.ppm
-  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/deblob/freedo-logo/logo_linux_mono.pbm	
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_clut224.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_vga16.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_mono.pbm	
  evalretkill
 }
 
