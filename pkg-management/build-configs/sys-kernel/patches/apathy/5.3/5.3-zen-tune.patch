@@ -28,7 +28,7 @@ index 2f17d66d0e617..a3168cb0ea7d2 100644
  		goto out_unlock;
  
 diff --git a/drivers/block/zram/Kconfig b/drivers/block/zram/Kconfig
-index 1ffc647706431..57ef113add920 100644
+index fe7a4b7d30cfe..94436e11efaff 100644
 --- a/drivers/block/zram/Kconfig
 +++ b/drivers/block/zram/Kconfig
 @@ -2,7 +2,8 @@
@@ -57,24 +57,8 @@ index d58a359a66225..3393c4d6ec206 100644
  
  /* Module params (documentation at end) */
  static unsigned int num_devices = 1;
-diff --git a/drivers/cpufreq/cpufreq_ondemand.c b/drivers/cpufreq/cpufreq_ondemand.c
-index dced033875bf8..6215b7dec2e22 100644
---- a/drivers/cpufreq/cpufreq_ondemand.c
-+++ b/drivers/cpufreq/cpufreq_ondemand.c
-@@ -19,7 +19,11 @@
- 
- /* On-demand governor macros */
- #define DEF_FREQUENCY_UP_THRESHOLD		(80)
-+#ifdef CONFIG_ZEN_INTERACTIVE
-+#define DEF_SAMPLING_DOWN_FACTOR		(5)
-+#else
- #define DEF_SAMPLING_DOWN_FACTOR		(1)
-+#endif
- #define MAX_SAMPLING_DOWN_FACTOR		(100000)
- #define MICRO_FREQUENCY_UP_THRESHOLD		(95)
- #define MICRO_FREQUENCY_MIN_SAMPLE_RATE		(10000)
 diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 592669bcc5361..e8293ab282701 100644
+index 1ef375dafb1c1..683f509dc95c2 100644
 --- a/include/linux/blkdev.h
 +++ b/include/linux/blkdev.h
 @@ -45,7 +45,11 @@ struct blk_queue_stats;
@@ -90,10 +74,10 @@ index 592669bcc5361..e8293ab282701 100644
  /* Must be consistent with blk_mq_poll_stats_bkt() */
  #define BLK_MQ_POLL_STATS_BKTS 16
 diff --git a/init/Kconfig b/init/Kconfig
-index 0e2344389501e..42a7bd6d143e5 100644
+index bd7d650d4a996..d69c8160f91dc 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -65,6 +65,38 @@ config THREAD_INFO_IN_TASK
+@@ -68,6 +68,38 @@ config THREAD_INFO_IN_TASK
  
  menu "General setup"
  
@@ -133,7 +117,7 @@ index 0e2344389501e..42a7bd6d143e5 100644
  	bool
  
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index f35930f5e528a..f5ec3aed5db3c 100644
+index 500f5db0de0ba..90687b266eb41 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
 @@ -37,8 +37,13 @@
@@ -205,10 +189,10 @@ index f35930f5e528a..f5ec3aed5db3c 100644
  static inline void update_load_add(struct load_weight *lw, unsigned long inc)
  {
 diff --git a/mm/Kconfig b/mm/Kconfig
-index f0c76ba47695c..e028ed47861e5 100644
+index 56cec636a1fc3..c304a03ca94c3 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -529,8 +529,10 @@ config MEM_SOFT_DIRTY
+@@ -530,8 +530,10 @@ config MEM_SOFT_DIRTY
  config ZSWAP
  	bool "Compressed cache for swap pages (EXPERIMENTAL)"
  	depends on FRONTSWAP && CRYPTO=y
@@ -221,10 +205,10 @@ index f0c76ba47695c..e028ed47861e5 100644
  	  A lightweight compressed cache for swap pages.  It takes
  	  pages that are in the process of being swapped out and attempts to
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 885642c82aaa2..e93fbb66b4d5d 100644
+index de1f15969e278..e8692ba036abe 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -52,7 +52,11 @@ unsigned long transparent_hugepage_flags __read_mostly =
+@@ -53,7 +53,11 @@ unsigned long transparent_hugepage_flags __read_mostly =
  #ifdef CONFIG_TRANSPARENT_HUGEPAGE_MADVISE
  	(1<<TRANSPARENT_HUGEPAGE_REQ_MADV_FLAG)|
  #endif
@@ -237,7 +221,7 @@ index 885642c82aaa2..e93fbb66b4d5d 100644
  	(1<<TRANSPARENT_HUGEPAGE_USE_ZERO_PAGE_FLAG);
  
 diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index bdbe8b6b12252..a64eb88c0b838 100644
+index 1804f64ff43c1..f8df41b6d1567 100644
 --- a/mm/page-writeback.c
 +++ b/mm/page-writeback.c
 @@ -71,7 +71,11 @@ static long ratelimit_pages = 32;
@@ -265,7 +249,7 @@ index bdbe8b6b12252..a64eb88c0b838 100644
  /*
   * vm_dirty_bytes starts at 0 (disabled) so that it is a function of
 diff --git a/mm/zswap.c b/mm/zswap.c
-index 2412042f55503..ca9682f1a66aa 100644
+index 0e22744a76cb6..16c9736b820b2 100644
 --- a/mm/zswap.c
 +++ b/mm/zswap.c
 @@ -72,7 +72,11 @@ static u64 zswap_duplicate_entry;
