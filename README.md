@@ -39,16 +39,17 @@ shells:
 
 #### patches used in the apathy kernel:
 ```
- * 5.2-deblob-gnu			(fsf-la)
- * 5.2-cc_optimize_harder		(zen-kernel)
- * 5.2-enable-link-security-by-default	(gentoo-sources)
- * 5.2-graysky2-gcc-9.1-cpu-opt		(graysky2)
- * 5.2-lucjan-futex-zen			(zen + lucjan)
- * 5.2-lucjan+paula-bfq-dev-patches	(paula + lucjan)
- * 5.2-zen-muqss			(con kolivas + zen)
- * 5.2-zen-tune				(zen-kernel)
- * 5.2-clearlinux-cve-patches		(intel)
- * 5.2-clearlinux-optimizations		(intel)
+ * 5.3-deblob-gnu.patch				(fsf-la)
+ * 5.3-bmq-100.patch				(alfred chen)
+ * 5.3-cc_optimize_harder.patch			(zen-kernel)
+ * 5.3-enable-link-security-by-default.patch	(gentoo-sources)
+ * 5.3-fix-leaking-memory-tty.patch		(gen zhang)
+ * 5.3-graysky2-gcc-9.1-cpu-opt.patch		(graysky2)
+ * 5.3-ohgodohfuck-panic.patch			(mssx86)
+ * 5.3-paolo-lucjan-bfq.patch			(paolo + lucjan)
+ * 5.3-zen-futex-packports.patch		(zen-kernel)
+ * 5.3-zen-tune.patch				(zen-kernel)
+ * various clearlinux opt. patches		(intel)
 ```
 
 #### about proprietary software under apathy
