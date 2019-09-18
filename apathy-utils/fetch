@@ -1,4 +1,4 @@
-#!/mss/bin/sh
+#!/bin/sh
 printf "\n\\033[1;34m  __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
@@ -12,4 +12,15 @@ _sh="$(basename $SHELL) $($SHELL --version | awk 'NR==1 {print $5}')"
 upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minutes\?/m/')
 mem=$(free | awk 'NR==2 {print int($3/1014)"/"int($2/1024)"mib"}')
 
-printf "\n * dist\t: ${dist}\n * kern\t: ${kern}\n * sh\t: $_sh\n * upt\t: ${upt}\n * cpu\t: ${cpu} @ ${freq}\n * mem\t: ${mem}\n\n"
+case $(gcc -dumpmachine) in
+ *gnu*)
+  _vlibc=$(ldd --version | awk 'NR==1 {print $4}')
+  _libc="glibc ${_vlibc} ($(uname -m))"
+ ;;
+ *musl*)
+  _vlibc=$(ldd --version 2>&1 | awk 'NR==2 {print $2}')
+  _libc="musl ${_vlibc} ($(uname -m))"
+ ;;
+esac
+
+printf "\n * dist\t: ${dist}\n * libc\t: ${_libc}\n * kern\t: ${kern}\n * sh\t: $_sh\n * upt\t: ${upt}\n * cpu\t: ${cpu} @ ${freq}\n * mem\t: ${mem}\n\n"
