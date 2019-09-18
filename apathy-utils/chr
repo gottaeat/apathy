@@ -1,6 +1,7 @@
 #!/mss/bin/sh
 if	[ "$(id -u)" -ne 0 ];	then printf "\n ! this script must be run by root, exiting.\n\n";	exit 1
 elif	[ -z "$1" ];		then printf "\n ! no mount point selected, exiting.\n\n";		exit 1
+elif	[ -z "$2" ];		then printf "\n ! no shell selected, exiting.\n\n";			exit 1
 fi
 
 printf " * allowing all connections to X.\n" && xhost + &&
@@ -10,9 +11,12 @@ printf " * mounting.\n" &&
  mount --make-rslave --rbind /sys "$1"/sys &&
  mount --make-rslave --rbind /dev "$1"/dev &&
  mount --make-rslave --rbind /run "$1"/run &&
-printf " * mounted, chrooting.\n" && chroot "$1" /bin/bash
+printf " * mounted, chrooting.\n" && chroot "$1" "$2"
 printf " * exited chroot, umounting.\n" &&
- umount -l "$1"/{proc,sys,dev,run} &&
+ umount -l "$1"/proc &&
+ umount -l "$1"/sys &&
+ umount -l "$1"/dev &&
+ umount -l "$1"/run &&
  umount -l "$1" &&
 printf " * umounted successfully.\n" &&
 printf " * reverting xhost perms.\n" && xhost - && printf " * done.\n"
