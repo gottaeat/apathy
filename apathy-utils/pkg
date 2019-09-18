@@ -1,33 +1,67 @@
-#!/mss/bin/sh
-rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
-count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+#!/bin/sh
+
+if [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ]
+ then tsize_chr="(chroot)"
+fi
+
+tsize="$(df / | awk 'NR==2 {print $3/1024"mib"}') ${tsize_chr}"
 
 case $1 in
  *rmv*|*removed*)
-  rlist=$(grep "\[r\]" /mss/packages.md | sed 's/~//g' | awk '{print "\t"$3}' | sort -s)
-  printf "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n\n" | less
+  if [ ! -f "/mss/packages.md" ]
+   then
+    printf "\n ! can't display removed packages, packages.md not found.\n\n"
+    exit 1
+   else
+    rlist=$(grep "\[r\]" /mss/packages.md | sed 's/~//g' | awk '{print "\t"$3}' | sort -s)
+    printf "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n\n" | less
+  fi
  ;;
-
  *inst*|*installed*)
-  ilist=$(cat /mss/raw-packages.txt | awk '{print "\t"$1}' | sort -s)
-  printf "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n\n" | less
+  if [ ! -f "/mss/raw-packages.txt" ]
+   then
+    printf "\n ! can't display installed packages, raw-packages.txt not found.\n\n"
+    exit 1
+   else 
+    ilist=$(cat /mss/raw-packages.txt | awk '{print "\t"$1}' | sort -s)
+    printf "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n\n" | less
+  fi
  ;;
  *)
-  tsize=$(df | grep root | awk '{print $3/1024"mib"}')
-  repo="/mnt/mss/stuff/techy-bits/git-repositories/apathy"
-  gitdf_pre=$(diff /mss/raw-packages.txt $repo/pkg-management/raw-packages.txt)
-  gitstat_pre=$(cd $repo && git status -s)
-
-  if [ -z "$gitdf_pre" ]
-   then gitdf="no difference."
-   else gitdf=$(printf "\n\n$gitdf_pre\n")
+  if [ ! -f "/mss/packages.md" ]
+   then rcount="packages.md is missing."
+   else rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
   fi
-
-  if [ -z "$gitstat_pre" ]
-   then gitstat="clean."
-   else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+  
+  if [ ! -f "/mss/raw-packages.txt" ]
+   then count="raw-packages.txt is missing."
+   else count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+  fi
+  
+  if [ ! -d "/mss/repo" ]
+   then
+    gitstat="local repo dir is missing."
+   else
+    gitstat_pre=$(cd /mss/repo && git status -s)
+  
+    if [ -z "$gitstat_pre" ]
+     then gitstat="clean."
+     else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+    fi
+  fi
+  
+  if [ ! -f "/mss/raw-packages.txt" ] || [ ! -f "/mss/repo/pkg-management/raw-packages.txt" ]
+   then
+    gitdf="raw-packages.txt is missing."
+   else
+    gitdf_pre=$(diff /mss/raw-packages.txt /mss/repo/pkg-management/raw-packages.txt)
+    
+    if [ -z "$gitdf_pre" ]
+     then gitdf="no difference."
+     else gitdf=$(printf "\n\n$gitdf_pre\n")
+    fi
   fi
 
   printf "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n\n"
-  ;;
+ ;;
 esac
