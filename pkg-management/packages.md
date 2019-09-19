@@ -132,7 +132,7 @@
 [d]	> xcb-util-wm-0.4.1 
 [d]	> xcb-util-cursor-0.1.3
 
-[d]	> mesa-19.2.0-rc2				--> updated from 18.3.6 >> 19.0.4 >> 19.2.0-rc1
+[d]	> mesa-19.2.0-rc4				--> updated from 18.3.6 >> 19.0.4 >> 19.2.0-rc1 >> 19.2.0-rc2
 [d]	>> libdrm-2.4.97 
 [d]	>> libvdpau-1.1.1 
 [d]	>> mako-1.0.7

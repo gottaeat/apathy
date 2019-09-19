@@ -30,7 +30,7 @@ languages:
  * perl-5.28.1
 
 video/audio:
- * xorg (x11r7), mesa 19.2.0-rc2
+ * xorg (x11r7), mesa 19.2.0-rc4
  * alsa 1.1.8
 
 shells:
