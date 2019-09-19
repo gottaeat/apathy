@@ -357,7 +357,6 @@ kbd-2.2.0
 libpipeline-1.5.1
 make-4.2.1
 patch-2.7.6
-man-db-2.8.6.1
 tar-1.32
 vim-8.1
 procps-ng-3.3.15

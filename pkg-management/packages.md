@@ -527,7 +527,7 @@
 [d] libpipeline-1.5.1
 [d] make-4.2.1
 [d] patch-2.7.6
-[d] man-db-2.8.6.1					--> updated from 2.8.5
+[r] man-db-2.8.6.1					--> updated from 2.8.5
 [d] tar-1.32						--> updated from 1.31
 [r] texinfo-6.5
 [d] vim-8.1
