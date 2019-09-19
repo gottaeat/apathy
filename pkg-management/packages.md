@@ -316,7 +316,7 @@
 
 [d]	> tmux
 
-[d]	> i3-gaps
+[d]	> i3-gaps-4.17.1				--> updated from 4.16.1
 [d]	>> yajl
 [d]	>> xcb-util-xrm
 [d]	>> startup-notification
