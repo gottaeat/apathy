@@ -324,7 +324,6 @@ iana-etc-2.30
 bison-3.4.1
 flex-2.6.4
 grep-3.3
-bash-5.0
 libtool-2.4.6
 gdbm-1.18.1
 gperf-3.1

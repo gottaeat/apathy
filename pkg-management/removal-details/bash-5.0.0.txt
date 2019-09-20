@@ -1,0 +1,14 @@
+/bin/bash
+/usr/bin/bashbug
+
+/usr/include/bash
+/usr/include/bash/include
+
+/usr/lib/bash
+
+/usr/lib/pkgconfig/bash.pc
+
+/usr/share/doc
+/usr/share/info
+/usr/share/locale
+/usr/share/man

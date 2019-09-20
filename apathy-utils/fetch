@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 printf "\n\\033[1;34m  __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
@@ -8,9 +8,10 @@ dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
 cpu=$(awk '/model name/ {print $5,$7}' /proc/cpuinfo | tail -1)
 freq=$(awk '/MHz/ {print int($4)"mhz"}' /proc/cpuinfo | tail -1)
 kern=$(uname -r)
-_sh="$(basename $SHELL) $($SHELL --version | awk 'NR==1 {print $5}')"
+_binsh="$(file /bin/sh | awk '{gsub(" symbolic link to",""); sub(/\/bin\//, "", $2) }1')"
+_sh="$(basename $SHELL) $($SHELL --version | awk 'NR==1 {print $5}') (${_binsh})"
 upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minutes\?/m/')
-mem=$(free | awk 'NR==2 {print int($3/1014)"/"int($2/1024)"mib"}')
+mem=$(free --mebi | awk 'NR==2 {print $3"/"$2"mib"}')
 
 case $(gcc -dumpmachine) in
  *gnu*)
@@ -18,7 +19,7 @@ case $(gcc -dumpmachine) in
   _libc="glibc ${_vlibc} ($(uname -m))"
  ;;
  *musl*)
-  _vlibc=$(ldd --version 2>&1 | awk 'NR==2 {print $2}')
+  _vlibc=$(ldd 2>&1 | awk 'NR==2 {print $2}')
   _libc="musl ${_vlibc} ($(uname -m))"
  ;;
 esac

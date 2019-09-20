@@ -34,7 +34,7 @@ video/audio:
  * alsa 1.1.8
 
 shells:
- * bash 5.0, yash 2.48
+ * yash 2.48, ash (busybox 1.31.0)
 ```
 
 #### patches used in the apathy kernel:
@@ -59,8 +59,8 @@ based on what i've filtered off of `parabola gnu/linux`' `blacklist.txt` multipl
 ```
 ~ > pkg
 
- * total partition size	: 1933.53mib
- * local package count	: 367
- * removed packages	: 66
+ * total partition size	: 1931.59mib
+ * local package count	: 366
+ * removed packages	: 67
 
 ```

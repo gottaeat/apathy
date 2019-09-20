@@ -494,7 +494,7 @@
 [d] bison-3.4.1						--> updated from 3.3.2
 [d] flex-2.6.4
 [d] grep-3.3
-[d] bash-5.0
+[r] bash-5.0
 [d] libtool-2.4.6
 [d] gdbm-1.18.1
 [d] gperf-3.1
