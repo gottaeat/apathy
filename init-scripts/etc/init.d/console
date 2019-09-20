@@ -18,7 +18,7 @@ case "${1}" in
   log_info_msg "setting up the ${c_lcyan}linux console${c_reset}."
   
   # a >> if fb console is used, set font in utf8 for every console
-  if [ -d /sys/class/graphics/fb0 ]; then MODE_COMMAND="${MODE_COMMAND} && setfont ${FONT}"; fi
+  if [ -d /sys/class/graphics/fb0 ]; then setfont ${FONT}; fi
 
   # b >> figure out the command to set the console into the desired mode
   MODE_COMMAND="printf '\033%G' && kbd_mode -u" \
@@ -28,11 +28,11 @@ case "${1}" in
   # c >> apply the mode setting command to all terms in inittab
   for TTY in $(grep 'respawn' /etc/inittab | awk '{gsub("--noclear",""); gsub("tty",""); print $2}')
    do
-    openvt -f -w -c ${TTY} -- /bin/sh -c "${MODE_COMMAND}" || failed=1
+    openvt -f -w -c ${TTY} -- /bin/sh -c '${MODE_COMMAND}' || failed=1
    done
 
   # d >> set keymap
-  loadkeys ${KEYMAP} >/dev/null 2>&1 || failed=1; fi
+  loadkeys ${KEYMAP} >/dev/null 2>&1 || failed=1
 
   # e >> if anything failed, exit with it
   (exit $failed); evalret; exit $failed
