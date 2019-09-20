@@ -399,7 +399,7 @@
 [d]	> imagemagick-7.0.8-27
 [d]	>> little-cms-2.9
 
-[d]	> irssi-1.2.1					--> updated from 1.2.0
+[r]	> irssi-1.2.1					--> updated from 1.2.0
 [d]	> vifm
 
 [d]	> GnuPG-2.2.17					--> updated from 2.2.15
@@ -458,6 +458,7 @@
 [r]	>> sdl2_ttf-2.0.15
 
 [d]	> np2kai-git					--> https://github.com/AZO234/NP2kai
+[d]	> weechat-2.6
 ```
 ---------------------------------------------------------
 #### additional python fuckery

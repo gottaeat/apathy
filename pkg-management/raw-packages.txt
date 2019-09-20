@@ -272,7 +272,6 @@ glew
 xclip
 imagemagick-7.0.8-27
 little-cms-2.9
-irssi-1.2.1
 vifm
 GnuPG-2.2.17
 libassuan-2.5.3
@@ -299,6 +298,7 @@ grub-2.04
 gna-unrar
 shntool-3.0.10
 np2kai-git
+weechat-2.6
 glibc-2.29
 zlib-1.2.11
 file-5.36
