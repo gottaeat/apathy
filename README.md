@@ -59,7 +59,7 @@ based on what i've filtered off of `parabola gnu/linux`' `blacklist.txt` multipl
 ```
 ~ > pkg
 
- * total partition size	: 1945.78mib
+ * total partition size	: 1933.53mib
  * local package count	: 367
  * removed packages	: 66
 
