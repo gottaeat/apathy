@@ -27,7 +27,6 @@ libunistring-0.9.10
 gnutls-3.6.9
 nettle-3.4.1
 iptables-1.8.3
-dosfstools-4.1
 lsof-4.91
 libtirpc-1.1.4
 cpio-2.12

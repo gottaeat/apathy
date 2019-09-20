@@ -32,7 +32,7 @@
 [d]	>>> nettle-3.4.1
 
 [d]	> iptables-1.8.3				--> updated from 1.8.2
-[d]	> dosfstools-4.1 
+[r]	> dosfstools-4.1 
 
 [d]	> lsof-4.91
 [d]	>> libtirpc-1.1.4
