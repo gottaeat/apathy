@@ -34,7 +34,7 @@ video/audio:
  * alsa 1.1.8
 
 shells:
- * yash 2.48, ash (busybox 1.31.0)
+ * yash 2.49, ash (busybox 1.31.0)
 ```
 
 #### patches used in the apathy kernel:

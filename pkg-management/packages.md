@@ -445,7 +445,7 @@
 [r]	> openbox
 [r]	> lemonbar					--> https://github.com/krypt-n/bar
 [r]	> dash
-[d]	> yash-2.48
+[d]	> yash-2.49
 [d]	> lzip-1.21
 [d]	> sfeed
 [d]	> grub-2.04

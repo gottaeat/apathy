@@ -291,7 +291,7 @@ xwinwrap
 fim
 gpgme-1.13.1
 mutt-1.12.1
-yash-2.48
+yash-2.49
 lzip-1.21
 sfeed
 grub-2.04
