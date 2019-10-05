@@ -1,0 +1,66 @@
+diff --git a/src/openvpn/ssl.c b/src/openvpn/ssl.c
+index c1355904..c090ea75 100644
+--- a/src/openvpn/ssl.c
++++ b/src/openvpn/ssl.c
+@@ -636,7 +636,9 @@ init_ssl(const struct options *options, struct tls_root_ctx *new_ctx)
+     /* Since @SECLEVEL also influences loading of certificates, set the
+      * cipher restrictions before loading certificates */
+     tls_ctx_restrict_ciphers(new_ctx, options->cipher_list);
++#if defined(TLS1_3_VERSION)
+     tls_ctx_restrict_ciphers_tls13(new_ctx, options->cipher_list_tls13);
++#endif
+
+     if (!tls_ctx_set_options(new_ctx, options->ssl_flags))
+     {
+diff --git a/src/openvpn/ssl_backend.h b/src/openvpn/ssl_backend.h
+index c614efa6..c83bdb1c 100644
+--- a/src/openvpn/ssl_backend.h
++++ b/src/openvpn/ssl_backend.h
+@@ -188,7 +188,9 @@ void tls_ctx_restrict_ciphers(struct tls_root_ctx *ctx, const char *ciphers);
+  * @param ciphers       String containing : delimited cipher names, or NULL to use
+  *                                      sane defaults.
+  */
++#if defined(TLS1_3_VERSION)
+ void tls_ctx_restrict_ciphers_tls13(struct tls_root_ctx *ctx, const char *ciphers);
++#endif
+
+ /**
+  * Set the TLS certificate profile.  The profile defines which crypto
+diff --git a/src/openvpn/ssl_openssl.c b/src/openvpn/ssl_openssl.c
+index db5da65f..d846a9dc 100644
+--- a/src/openvpn/ssl_openssl.c
++++ b/src/openvpn/ssl_openssl.c
+@@ -423,6 +423,7 @@ tls_ctx_restrict_ciphers(struct tls_root_ctx *ctx, const char *ciphers)
+     }
+ }
+
++#if defined(TLS1_3_VERSION)
+ void
+ convert_tls13_list_to_openssl(char *openssl_ciphers, size_t len,
+                               const char *ciphers)
+@@ -478,6 +479,7 @@ tls_ctx_restrict_ciphers_tls13(struct tls_root_ctx *ctx, const char *ciphers)
+     }
+ #endif
+ }
++#endif
+
+ void
+ tls_ctx_set_cert_profile(struct tls_root_ctx *ctx, const char *profile)
+@@ -1847,7 +1849,7 @@ show_available_tls_ciphers_list(const char *cipher_list,
+         crypto_msg(M_FATAL, "Cannot create SSL_CTX object");
+     }
+
+-#if (OPENSSL_VERSION_NUMBER >= 0x1010100fL)
++#if defined(TLS1_3_VERSION)
+     if (tls13)
+     {
+         SSL_CTX_set_min_proto_version(tls_ctx.ctx, TLS1_3_VERSION);
+@@ -1868,7 +1870,7 @@ show_available_tls_ciphers_list(const char *cipher_list,
+         crypto_msg(M_FATAL, "Cannot create SSL object");
+     }
+
+-#if (OPENSSL_VERSION_NUMBER < 0x1010000fL)
++#if OPENSSL_VERSION_NUMBER < 0x1010000fL || defined(LIBRESSL_VERSION_NUMBER)
+     STACK_OF(SSL_CIPHER) *sk = SSL_get_ciphers(ssl);
+ #else
+     STACK_OF(SSL_CIPHER) *sk = SSL_get1_supported_ciphers(ssl);
