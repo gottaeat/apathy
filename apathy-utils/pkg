@@ -1,10 +1,12 @@
-#!/bin/sh
+#!/mss/bin/sh
+
+. /mss/bin/apathy-funcs
 
 if [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ]
  then tsize_chr="(chroot)"
 fi
 
-tsize="$(df / | awk 'NR==2 {print $3/1024"mib"}') ${tsize_chr}"
+tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}') ${tsize_chr}"
 
 case $1 in
  *rmv*|*removed*)
@@ -62,6 +64,12 @@ case $1 in
     fi
   fi
 
-  printf "\n * total partition size\t: $tsize\n * local package count\t: $count\n * removed packages\t: $rcount\n * local and git diff\t: $gitdf\n * git repo status\t: $gitstat\n\n"
+ aprint_nc
+ aprint "${c_green}total partition size\t${c_blue}:${c_reset} ${tsize}"
+ aprint "${c_green}local package count\t${c_blue}:${c_reset} ${count}"
+ aprint "${c_green}removed packages\t${c_blue}:${c_reset} ${rcount}"
+ aprint "${c_green}local and git diff\t${c_blue}:${c_reset} ${gitdf}"
+ aprint "${c_green}git repo status\t${c_blue}:${c_reset} ${gitstat}"
+ aprint_nc
  ;;
 esac

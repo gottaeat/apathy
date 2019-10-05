@@ -1,8 +1,17 @@
 #!/mss/bin/sh
-printf "\n\\033[1;34m  __,  ,_   __,  -/- /_
+. /mss/bin/apathy-funcs
+
+#printf "\n${c_green}  __,  ,_   __,  -/- /_
+# (_/(__/_)_(_/(__/__/ (__(_/_
+#      /                  _/_
+#     /                  (/${c_reset}\n"
+
+aprint_ret "${c_red}
+  __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
-     /                  (/\\033[0;39m\n"
+     /                  (/${c_reset}\n"
+aprint_nc
 
 dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
 cpu=$(awk '/model name/ {print $5,$7}' /proc/cpuinfo | tail -1)
@@ -24,4 +33,10 @@ case $(gcc -dumpmachine) in
  ;;
 esac
 
-printf "\n * dist\t: ${dist}\n * libc\t: ${_libc}\n * kern\t: ${kern}\n * sh\t: $_sh\n * upt\t: ${upt}\n * cpu\t: ${cpu} @ ${freq}\n * mem\t: ${mem}\n\n"
+aprint "${c_green}dist\t${c_blue}:${c_reset} ${dist}"
+aprint "${c_green}libc\t${c_blue}:${c_reset} ${_libc}"
+aprint "${c_green}kern\t${c_blue}:${c_reset} ${kern}"
+aprint "${c_green}sh\t${c_blue}:${c_reset} ${_sh}"
+aprint "${c_green}upt\t${c_blue}:${c_reset} ${cpu} @ ${freq}"
+aprint "${c_green}mem\t${c_blue}:${c_reset} ${mem}"
+aprint_nc
