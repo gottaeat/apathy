@@ -1,9 +1,0 @@
-/usr/bin/giblib-config
-/usr/doc/giblib
-/usr/include/giblib
-/usr/lib/libgiblib.a
-/usr/lib/libgiblib.la
-/usr/lib/libgiblib.so
-/usr/lib/libgiblib.so.1
-/usr/lib/libgiblib.so.1.0.6
-/usr/lib/pkgconfig/giblib.pc

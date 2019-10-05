@@ -1,6 +1,0 @@
-/usr/share/man/man1/fimgs.1
-/usr/share/man/man1/fim.1
-/usr/share/man/man5/fimrc.5
-/usr/share/doc/fim
-/usr/bin/fim
-/usr/bin/fimgs

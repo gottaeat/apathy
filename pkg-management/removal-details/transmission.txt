@@ -1,7 +1,0 @@
-/usr/bin/transmission-*
-/usr/share/applications/transmission-gtk.desktop
-/usr/share/icons/hicolor/*/apps/transmission.png
-/usr/share/locale/*/LC_MESSAGES/transmission-gtk.mo
-/usr/share/man/man1/transmission-*
-/usr/share/pixmaps/transmission.png
-/usr/share/transmission

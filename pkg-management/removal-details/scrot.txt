@@ -1,2 +1,0 @@
-/usr/bin/scrot
-/usr/share/man/man1/scrot.1

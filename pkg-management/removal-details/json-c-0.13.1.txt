@@ -1,8 +1,0 @@
-/usr/include/json-c
-
-/usr/lib/libjson-c.la
-/usr/lib/libjson-c.so
-/usr/lib/libjson-c.so.4
-/usr/lib/libjson-c.so.4.0.0
-
-/usr/lib/pkgconfig/json-c.pc

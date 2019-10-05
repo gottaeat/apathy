@@ -1,9 +1,0 @@
-/usr/bin/apulse
-/usr/lib/apulse/libpulse-simple.so.0
-/usr/lib/apulse/libpulse-simple.so
-/usr/lib/apulse/libpulse.so.0
-/usr/lib/apulse/libpulse.so
-/usr/lib/apulse/libpulse-mainloop-glib.so.0
-/usr/lib/apulse/libpulse-mainloop-glib.so
-/usr/share/man/man1/apulse.1
-

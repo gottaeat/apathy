@@ -1,8 +1,0 @@
-/usr/include/SDL2/SDL_image.h
-
-/usr/lib/libSDL2_image-2.0.so.0
-/usr/lib/libSDL2_image-2.0.so.0.2.3
-/usr/lib/libSDL2_image.la
-/usr/lib/libSDL2_image.so
-
-/usr/lib/pkgconfig/SDL2_image.pc

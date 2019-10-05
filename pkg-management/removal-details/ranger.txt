@@ -1,3 +1,0 @@
-/usr/bin/{ranger,rifle}
-/usr/lib/python3.7/site-packages/ranger
-/usr/lib/python3.7/site-packages/ranger_fm-1.9.2-py3.7.egg-info

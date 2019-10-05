@@ -1,5 +1,0 @@
-/etc/wgetrc
-/usr/bin/wget
-/usr/share/info
-/usr/share/locale
-/usr/share/man/man1/wget.1

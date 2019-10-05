@@ -1,7 +1,0 @@
-/usr/bin/lxappearance
-/usr/include/lxappearance
-/usr/lib/pkgconfig/lxappearance.pc
-/usr/share/applications/lxappearance.desktop
-/usr/share/locale/*/LC_MESSAGES/lxappearance.mo
-/usr/share/lxappearance
-/usr/share/man/man1/lxappearance.1

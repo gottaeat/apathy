@@ -1,0 +1,9 @@
+/usr/include/basedir.h
+/usr/include/basedir_fs.h
+
+/usr/lib/libxdg-basedir.la
+/usr/lib/libxdg-basedir.so
+/usr/lib/libxdg-basedir.so.1
+/usr/lib/libxdg-basedir.so.1.2.0
+
+/usr/lib/pkgconfig/libxdg-basedir.pc

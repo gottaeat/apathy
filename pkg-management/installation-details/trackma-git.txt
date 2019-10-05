@@ -1,0 +1,5 @@
+/usr/bin/trackma
+/usr/bin/trackma-curses
+
+/usr/lib/python3.7/site-packages/Trackma-0.8.2-py3.7.egg-info
+/usr/lib/python3.7/site-packages/trackma

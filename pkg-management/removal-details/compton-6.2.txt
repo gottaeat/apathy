@@ -1,0 +1,8 @@
+/usr/bin/compton
+/usr/bin/compton-convgen.py
+/usr/bin/compton-trans
+
+/usr/share/applications/compton.desktop
+
+/usr/share/icons/hicolor/48x48/apps/compton.png
+/usr/share/icons/hicolor/scalable/apps/compton.svg

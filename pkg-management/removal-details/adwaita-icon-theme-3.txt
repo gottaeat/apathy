@@ -1,2 +1,0 @@
-/usr/share/icons/Adwaita
-/usr/share/pkgconfig/adwaita-icon-theme.pc
