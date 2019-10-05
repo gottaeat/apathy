@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 # alsa init script for sysvinit
 # apathy 1.2 - mssx86 (mss@waifu.club)
 
@@ -61,7 +61,7 @@ if [ "$runlevel" = "S" ]
   printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"
   printf "${sbefore}      /                  _/_\n"
   printf "${sbefore}     /                  (/${c_reset}\n"
-  printf "\n${sbefore}welcome to ${c_blue}apathy gnu/linux ${c_green}1.3${c_reset}.\n"
+  printf "\n${sbefore}welcome to ${c_blue}apathy ${c_red}musl ${c_green}1.1${c_reset}.\n"
   printf "${sbefore}running on kernel ${c_green}$(/bin/uname -r)${c_reset}.\n\n"
 
   printf "\n${sbefore}${c_green}$(date '+%a %d %I:%M:%S%P')${c_reset} - ${c_green}$(/sbin/init --version)${c_reset}"
@@ -75,7 +75,7 @@ if [ "$runlevel" = "6" ] || [ "$runlevel" = 0 ]
   printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"
   printf "${sbefore}      /                  _/_\n"
   printf "${sbefore}     /                  (/${c_reset}\n"
-  printf "\n${sbefore}shutting ${c_blue}apathy gnu/linux ${c_green}1.3${c_reset} down.\n"
+  printf "\n${sbefore}shutting ${c_blue}apathy ${c_red}musl ${c_green}1.1${c_reset} down.\n"
   printf "${cur_zero}${col}\n"
 fi
 
@@ -136,6 +136,8 @@ for i in $( ls -v /etc/rc.d/rc${runlevel}.d/S* 2> /dev/null)
 
    if [ ! "${error_value}" = "0" ]; then print_error_msg; fi
  done
+
+echo "musl" > /mss/machtype.txt
 
 # copy the boot log on initial boot only
 if [ "${previous}" = "N" ] && [ ! "${runlevel}" = "S" ]

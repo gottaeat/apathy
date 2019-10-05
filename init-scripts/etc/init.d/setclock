@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 # setclock init script for sysvinit
 # apathy 1.2 - mssx86 (mss@waifu.club)
 

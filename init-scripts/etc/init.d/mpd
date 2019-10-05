@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 # mpd init script for sysvinit + start-stop-daemon
 # apathy 1.2 - mssx86 (mssftw@protonmail.com)
 
