@@ -1,0 +1,24 @@
+./configure \
+ --prefix=/usr \
+ --build=$CHOST \
+ --host=$CBUILD \
+ --disable-imlib2 \
+ --disable-jasper \
+ --disable-matrices-rendering \
+ --disable-xcftopnm \
+ --enable-fimrc \
+ --enable-history \
+ --enable-loader-string-specification \
+ --enable-mark-and-dump \
+ --enable-output-console \
+ --enable-raw-bits-rendering \
+ --enable-resize-optimizations \
+ --enable-scan-consolefonts \
+ --enable-screen \
+ --enable-scripting \
+ --enable-seek-magic \
+ --enable-stdin-image-reading \
+ --enable-unicode \
+ --enable-warnings \
+ --enable-windows \
+ --disable-exif

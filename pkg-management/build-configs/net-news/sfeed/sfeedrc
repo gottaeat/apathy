@@ -1,0 +1,7 @@
+#sfeedpath="$HOME/.sfeed/feeds"
+feeds(){
+ feed "lwn.net"		"https://lwn.net/headlines/rss"
+ feed "kernel.org"	"https://www.kernel.org/feeds/kdist.xml"
+ feed "phoronix"	"https://www.phoronix.com/rss.php"
+ feed "palemoon"	"https://forum.palemoon.org/app.php/feed/forum/1"
+}
