@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 
 c_reset="\\033[0;39m"    # grey
 c_green="\\033[1;32m"   # green

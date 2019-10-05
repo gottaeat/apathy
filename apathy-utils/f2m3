@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 . /mss/bin/apathy-funcs
 for thing in *.flac
  do
