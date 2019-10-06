@@ -3,11 +3,11 @@
 
 ![yes](assets/fetch.png)
 
-extensively detailed documentatiton about building the base system can be found at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) repo. once you're finished with the installation of the base system, the rest of the system can be built with the help of `void` and `alpine`/`adelie` repositories. also, there are toolchain tarballs if one wants to jump straight into building the base without going through the building steps of cross-toolchain and the toolchain.
-
 this is the second release of apathy-musl. 1.0 being built by following documentation written by *dslm4515* which had old packages, sloppy/prone to fail writing and differences in choice of software. after writing my own build guide with [apathy-mlfs](https://github.com/mssx86/apathy-mlfs), i have continued building the system, resulting in this repo.
 
 ![yes](assets/init.png)
+
+extensively detailed documentatiton about building the base system can be found at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) repo. once you're finished with the installation of the base system, the rest of the system can be built with the help of `void` and `alpine`/`adelie` repositories. also, there are toolchain tarballs if one wants to jump straight into building the base without going through the building steps of cross-toolchain and the toolchain.
 
 #### overview
 ```
@@ -43,7 +43,7 @@ apathy-musl in its current state is completely free software, including the kern
 ```
  ~ % pkg
 
- > total partition size	: 1657.14mib
- > local package count	: 345
+ > total partition size	: 1657.48mib
+ > local package count	: 346
  > removed packages	: 4
 ```

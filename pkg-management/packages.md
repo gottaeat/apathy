@@ -384,4 +384,5 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> grub-2.04
 [d]	> fim-0.5-rc3
 [d]	> trackma-git			--> 5 oct 2019 snapshot
+[d]	> slmenu-0.1
 ```
