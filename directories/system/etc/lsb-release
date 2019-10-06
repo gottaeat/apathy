@@ -1,4 +1,4 @@
-DISTRIB_ID="apathy 1.3"
-DISTRIB_RELEASE="1.3 pure64"
-DISTRIB_CODENAME="solitude"
-DISTRIB_DESCRIPTION="apathy gnu/linux"
+DISTRIB_ID="apathy mlfs 1.1"
+DISTRIB_RELEASE="1.1"
+DISTRIB_CODENAME="autumn"
+DISTRIB_DESCRIPTION="apathy musl linux from scratch"

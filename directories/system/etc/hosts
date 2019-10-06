@@ -1,5 +1,4 @@
-127.0.0.1	localhost
-127.0.1.1	apathy		apathy
+127.0.0.1 localhost
+127.0.1.1 apathy-mlfs apathy-mlfs
 
-# mpd host
-127.0.0.1	mpdboi
+127.0.0.1 mpdboi
