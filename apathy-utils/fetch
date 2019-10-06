@@ -37,6 +37,7 @@ aprint "${c_green}dist\t${c_blue}:${c_reset} ${dist}"
 aprint "${c_green}libc\t${c_blue}:${c_reset} ${_libc}"
 aprint "${c_green}kern\t${c_blue}:${c_reset} ${kern}"
 aprint "${c_green}sh\t${c_blue}:${c_reset} ${_sh}"
-aprint "${c_green}upt\t${c_blue}:${c_reset} ${cpu} @ ${freq}"
+aprint "${c_green}upt\t${c_blue}:${c_reset} ${upt}"
+aprint "${c_green}cpu\t${c_blue}:${c_reset} ${cpu} @ ${freq}"
 aprint "${c_green}mem\t${c_blue}:${c_reset} ${mem}"
 aprint_nc
