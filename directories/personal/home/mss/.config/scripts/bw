@@ -7,10 +7,7 @@ fi
 
 # set interface and old data path
 bwadapter=$(ip route | awk '/^default/ {print $5}')
-if [ -n "${TMUX}"
- then bwpath="/tmp/bw-tmux.tmp"
- else bwpath="/tmp/bw.tmp"
-fi
+bwpath="/tmp/$(basename $0).tmp"
 
 # read rx-tx rates, save current time
 read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
