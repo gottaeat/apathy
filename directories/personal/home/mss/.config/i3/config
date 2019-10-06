@@ -102,19 +102,19 @@ bar {
   id bar-1
   status_command i3blocks -c /home/mss/.config/i3/bar
   strip_workspace_numbers yes
-  position bottom
+  position top
   separator_symbol "|"
 
 colors {
   background		#000000
-  statusline		#ffffff
+  statusline		#000000
   separator		#464646
 
-  focused_workspace	#464646	#000000	#fefefe
-  active_workspace	#fefefe	#000000	#fefefe
-  inactive_workspace	#000000	#000000	#b9b9b9
-  urgent_workspace	#000000	#000000	#fefefe
-  binding_mode		#000000	#464646	#b9b9b9
+  focused_workspace	#464646	#000000	#ffffff
+  active_workspace	#ffffff	#000000	#464646
+  inactive_workspace	#000000	#000000	#525252
+  urgent_workspace	#000000	#000000	#ffffff
+  binding_mode		#464646	#000000	#ffffff
  }
 }	
 
@@ -130,7 +130,7 @@ bindsym $mod+Shift+d			exec /home/mss/.config/i3/dmenu/menuboi
 bindsym	$mod+x				exec urxvt -e vifm 
 #> kb specific
 bindsym	Pause				exec xtrlock
-bindsym	XF86Calculator			exec feh --bg-fill --randomize		/home/mss/cust/chan/hmm
+bindsym	XF86Calculator			exec feh --bg-fill --randomize		/home/mss/cust/chan
 bindsym	$mod+XF86Calculator		exec /home/mss/.fehb.def
 bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill			/home/mss/cust/other/black.png
 
@@ -152,7 +152,7 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 
 
 ### autostart ###
-exec					compton --vsync opengl
+exec					compton --vsync drm
 exec_always				xrandr --output VGA-1 --primary
 exec --no-startup-id			cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
 exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'

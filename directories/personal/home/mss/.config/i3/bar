@@ -55,6 +55,7 @@ color=#747474
 [master-alsa]
 command=~/.config/scripts/master-alsa
 interval=1
+color=#f7f7f7
 signal=1
 separator_block_width=5
 separator=false
@@ -62,6 +63,7 @@ separator=false
 [capture-alsa]
 command=~/.config/scripts/capture-alsa
 interval=1
+color=#f7f7f7
 signal=1
 
 [host]
