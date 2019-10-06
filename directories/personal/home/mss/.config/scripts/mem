@@ -1,4 +1,2 @@
 #!/mss/bin/sh
-freemem=$(echo "$(free  | awk 'NR==2 {print $7/1024}')" | cut -c-4)
-
-printf "${freemem}m\n"
+free --mebi | awk 'NR==2 {print $7"mib"}'
