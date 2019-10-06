@@ -4,45 +4,60 @@
 export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
 export LANG="en_US.utf8"
 
+# export if under musl
+read dingdong < /mss/machtype.txt
+
 # stuff taken from gentoo
 export GCC_SPECS=""
 export LESS="-R -M --shift 5"
 export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"
 
-# compile bits
+### compile bits
 export MAKEFLAGS="-j 3"
-#CFLAGS="${CFLAGS} -march=native -O3 -pipe -fstack-protector-strong"
-#CXXFLAGS="${CXXFLAGS} ${CFLAGS}"
-#CPPFLAGS="${CPPFLAGS} ${CFLAGS}"
 
+if [ "${dingdong}" = "musl" ]
+then
+ export CHOST="x86_64-linux-musl"
+ export CBUILD="${CHOST}"
+ export ARCH="x86_64"
+ export BUILDTRUPLE="--build=${CBUILD} --host=${CHOST}"
+ export XORG_PREFIX=/usr
+ export XORG_CONFIG="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var --disable-static --build=$CBUILD --host=$CHOST"
+fi
+ 
 # default programs
 export EDITOR="/usr/bin/vim"
 export PAGER="/usr/bin/less"
 export GPG_TTY=$(tty)
 
 # xdg stuff
-export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
 # from blfs book
 export INFOPATH="/usr/info"
-export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
 export MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
 export INPUTRC="/etc/inputrc"
 
 
 ### yash settings
-FCEDIT="/usr/bin/vim"
 HISTFILE=~/.yash_history HISTSIZE=5000
+FCEDIT="/usr/bin/vim"
 
 #prompts
-if [ "$(id -u)" -ne 0 ];
+if [ "$(id -u)" -ne 0 ]
  then YASH_PS1=' ${${PWD:/~/\~}##*/}\fc % \fD'
  else YASH_PS1=' ${${PWD:/~/\~}##*/}\fr # \fD'
 fi
+
+if [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ]
+ then YASH_PS1="[chroot]${YASH_PS1}"
+fi
+
 YASH_PS1R=''
 YASH_PS1S=''
 YASH_PS2="\fc > \fD"
