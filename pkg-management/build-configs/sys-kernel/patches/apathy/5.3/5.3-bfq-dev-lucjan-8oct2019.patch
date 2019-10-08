@@ -4163,15 +4163,39 @@ index 55a7dc227dfb..540f5914d11d 100644
  
  static int blkcg_print_stat(struct seq_file *sf, void *v)
  {
+diff --git a/block/elevator.c b/block/elevator.c
+index 2f17d66d0e61..3709471121fc 100644
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -595,8 +595,8 @@ int elevator_switch_mq(struct request_queue *q,
+ }
+ 
+ /*
+- * For blk-mq devices, we default to using mq-deadline, if available, for single
+- * queue devices.  If deadline isn't available OR we have multiple queues,
++ * For blk-mq devices, we default to using bfq, if available, for single
++ * queue devices.  If bfq isn't available OR we have multiple queues,
+  * default to "none".
+  */
+ int elevator_init_mq(struct request_queue *q)
+@@ -615,7 +615,7 @@ int elevator_init_mq(struct request_queue *q)
+ 	if (unlikely(q->elevator))
+ 		goto out_unlock;
+ 
+-	e = elevator_get(q, "mq-deadline", false);
++	e = elevator_get(q, "bfq", false);
+ 	if (!e)
+ 		goto out_unlock;
+ 
 diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 1ef375dafb1c..bc17d1e26d7b 100644
+index 1ef375dafb1c..8c34a0fb51ba 100644
 --- a/include/linux/blkdev.h
 +++ b/include/linux/blkdev.h
 @@ -109,6 +109,10 @@ typedef __u32 __bitwise req_flags_t;
  #define RQF_MQ_POLL_SLEPT	((__force req_flags_t)(1 << 20))
  /* ->timeout has been called, don't expire again */
  #define RQF_TIMED_OUT		((__force req_flags_t)(1 << 21))
-+/* DEBUG: rq in bfq-mq dispatch list */
++/* DEBUG: rq in bfq-dev dispatch list */
 +#define RQF_DISP_LIST   ((__force req_flags_t)(1 << 22))
 +/* DEBUG: rq had get_rq_private executed on it */
 +#define RQF_GOT ((__force req_flags_t)(1 << 23))
