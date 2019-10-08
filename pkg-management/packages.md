@@ -386,3 +386,81 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> trackma-git			--> 5 oct 2019 snapshot
 [d]	> slmenu-0.1
 ```
+```
+### base mlfs packages
+[d]	 argp-standalone-1.3
+[d]	 attr-2.4.48
+[d]	 autoconf-2.69
+[d]	 automake-1.16.1
+[d]	 bc-1.07.1
+[d]	 binutils-2.32
+[d]	 bison-3.4.2
+[d]	 busybox-1.31.0
+[d]	 bzip2-1.0.8
+[d]	 check-0.12.0
+[d]	 coreutils-8.31
+[d]	 cpio-2.12
+[d]	 diffutils-3.7
+[d]	 e2fsprogs-1.45.3
+[d]	 elfutils-0.176
+[d]	 eudev-3.2.8
+[d]	 expat-2.2.8
+[d]	 file-5.37
+[d]	 findutils-4.6.0
+[d]	 flex-2.6.4
+[d]	 gawk-5.0.1
+[d]	 gcc-9.2.1-20191005
+[d]	 gdbm-1.18.1
+[d]	 gettext-0.20.1
+[d]	 gmp-6.1.2
+[d]	 gperf-3.1
+[d]	 grep-3.3
+[d]	 groff-1.22.4
+[d]	 gzip-1.10
+[d]	 iana-etc-2.30
+[d]	 inetutils-1.9.4
+[d]	 intltool-0.51.0
+[d]	 iproute2-5.3.0
+[d]	 isl-0.19
+[d]	 kbd-2.2.0
+[d]	 kmod-26
+[d]	 less-551
+[d]	 libcap-2.27
+[d]	 libffi-3.2.1
+[d]	 libpipeline-1.5.1
+[d]	 libressl-3.0.1
+[d]	 libtool-2.4.6
+[d]	 linux-5.2.17
+[d]	 lzip-1.21
+[d]	 m4-1.4.18
+[d]	 make-4.2.1
+[d]	 meson-0.51.2
+[d]	 mpc-1.1.0
+[d]	 mpfr-4.0.2
+[d]	 musl-1.1.23
+[d]	 musl-fts-1.2.7
+[d]	 musl-obstack-1.1
+[d]	 ncurses-6.1
+[d]	 ninja-1.9.0
+[d]	 patch-2.7.6
+[d]	 perl-5.30.0
+[d]	 pkg-config-0.29.2
+[d]	 procps-ng-3.3.15
+[d]	 psmisc-23.2
+[d]	 python-3.7.4
+[d]	 readline-8.0
+[d]	 sed-4.7
+[d]	 shadow-4.7
+[d]	 sysklogd-1.5.1
+[d]	 sysvinit-2.96
+[d]	 tar-1.32
+[d]	 texinfo-6.6
+[d]	 tzdb-2019c.tar.lz
+[d]	 util-linux-2.34
+[d]	 vim-8.1.2079
+[d]	 xml-parser-2.44
+[d]	 xz-5.2.4
+[d]	 yash-2.49
+[d]	 zlib-1.2.11
+### base mlfs packages end
+```
