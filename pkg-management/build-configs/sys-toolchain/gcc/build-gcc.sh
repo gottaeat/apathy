@@ -1,0 +1,26 @@
+SED=sed \
+libat_cv_have_ifunc=no \
+../configure \
+ --prefix=/usr \
+ --build="x86_64-linux-musl" \
+ --with-system-zlib \
+ --with-isl \
+ --with-linker-hash-style=gnu \
+ --enable-languages=c,c++ \
+ --enable-threads=posix \
+ --enable-clocale=generic \
+ --enable-tls \
+ --enable-libstdcxx-time \
+ --enable-fully-dynamic-string \
+ --enable-default-pie \
+ --enable-default-ssp \
+ --enable-vtable-verify \
+ --enable-linker-build-id \
+ --enable-fast-character \
+ --disable-libstdcxx-pch \
+ --disable-nls \
+ --disable-multilib \
+ --disable-symvers \
+ --disable-libsanitizer \
+ --disable-target-libiberty \
+ --disable-libunwind-exceptions
