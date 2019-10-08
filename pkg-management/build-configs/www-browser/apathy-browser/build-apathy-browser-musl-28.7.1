@@ -66,9 +66,9 @@ sed -i 's#xlocale#locale#' "${srcdir}"/intl/icu/source/i18n/digitlst.cpp
 evalretkill
 
 # d8 >> keep gcc9 from creating false positives
-aprint_ret "running sed to keep gcc9 from creating false positives."
-grep -rl -- '-Werror=format' | xargs sed -i 's/error=format/no-&/'
-evalretkill
+#aprint_ret "running sed to keep gcc9 from creating false positives."
+#grep -rl -- '-Werror=format' | xargs sed -i 's/error=format/no-&/'
+#evalretkill
 
 # d9 >> print mach vars
 aprint_nc
