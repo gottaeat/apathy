@@ -310,7 +310,7 @@ less-551
 libcap-2.27
 libffi-3.2.1
 libpipeline-1.5.1
-libressl-2.9.2
+libressl-3.0.1
 libtool-2.4.6
 linux-5.2.17
 lzip-1.21
