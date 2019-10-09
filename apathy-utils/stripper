@@ -1,48 +1,55 @@
 #!/mss/bin/sh
-if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run as root, exiting.\n\n"; exit 1; fi
+. /mss/bin/apathy-funcs
 
-printf "\n ! this script will strip bins and libs which could be harmful.\n   are you sure you want to procceed? (y/n): "
+rootcheck
+
+aprint_ask "this script will strip bins and libs which could be harmful."
+aprint_nc
+aprint_ask "are you sure you want to procceed? (y/n): "
 
 read answer
 
+
 if [ "$answer" != "${answer#[Yy]}" ]
-then 
- printf "\n * stripping:\n"
+ then
+  aprint_nc
 
- printf "  > /usr/lib\t\t(--strip-debug)"
- find /usr/lib		-type f -name \*.a -exec strip --strip-debug {} ';' > /dev/null 2>&1 &&
- printf "\t\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.a \t${c_green}/usr/lib\t\t${c_lcyan}(--strip-debug)"${c_reset}
+  find /usr/lib		-type f -name \*.a -exec strip --strip-debug {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /lib\t\t(--strip-unneeded)"
- find /lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1 &&
- printf "\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.so \t${c_green}/lib\t\t\t${c_lcyan}(--strip-unneeded)${c_reset}"
+  find /lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /usr/lib\t\t(--strip-unneeded)"
- find /usr/lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1 &&
- printf "\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.so \t${c_green}/usr/lib\t\t${c_lcyan}(--strip-unneeded)${c_reset}"
+  find /usr/lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /bin\t\t(--strip-all)"
- find /bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
- printf "\t\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/bin\t\t\t${c_lcyan}(--strip-all)${c_reset}"
+  find /bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
+  evalretkill
+  
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/sbin\t\t\t${c_lcyan}(--strip-all)${c_reset}"
+  find /sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /sbin\t\t(--strip-all)"
- find /sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
- printf "\t\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/bin\t\t${c_lcyan}(--strip-all)${c_reset}"
+  find /usr/bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /usr/bin\t\t(--strip-all)"
- find /usr/bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
- printf "\t\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/sbin\t\t${c_lcyan}(--strip-all)${c_reset}"
+  find /usr/sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /usr/sbin\t\t(--strip-all)"
- find /usr/sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
- printf "\t\t --> done.\n"
+  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/libexec\t\t${c_lcyan}(--strip-all)${c_reset}"
+  find /usr/libexec	-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
+  evalretkill
 
- printf "  > /usr/libexec\t(--strip-all)"
- find /usr/libexec	-type f -exec strip --strip-all {} ';' > /dev/null 2>&1	&&
- printf "\t\t --> done.\n"
-
- printf "\n * stripping complete.\n\n"
-
-elif [ "$answer" != "${answer#[Nn]}" ];then exit 1
-else echo " ! input y or n. "; exit 1
+  aprint_nc
+  aprint "stripping is complete."
+  aprint_nc
+  exit 0
+ elif [ "$answer" != "${answer#[Nn]}" ];	then	exit 1
+ else aprint_fail "input Yy or Nn, exiting.";		exit 1
 fi
