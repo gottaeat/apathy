@@ -39,3 +39,14 @@ evalretkill(){
  local error_value="${?}"
   if [ ${error_value} = 0 ]; then aprint_succ; else aprint_fail; exit 1; fi
 }
+
+# checks
+rootcheck(){
+ if [ "$(id -u)" -ne 0 ]
+  then
+   aprint_nc
+   aprint_fail "this script must be run as uid 0, exiting."
+   aprint_nc
+   exit 1
+ fi
+}
