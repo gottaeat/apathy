@@ -1,7 +1,8 @@
 #!/mss/bin/sh
-if	[ "$(id -u)" -ne 0 ];	then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1
-elif	[ -z $1 ];		then printf "\n ! no option selected, exiting.\n\n"; exit 1
-fi
+. /mss/bin/apathy-funcs
+rootcheck
+
+if [ -z $1 ]; then printf "\n ! no option selected, exiting.\n\n"; exit 1; fi
 
 case $1 in
  dnscrypt|-d)

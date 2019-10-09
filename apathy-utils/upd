@@ -1,5 +1,6 @@
 #!/mss/bin/sh
-if [ "$(id -u)" -ne 0 ]; then printf "\n ! this script must be run by root, exiting.\n\n"; exit 1; fi
+. /mss/bin/apathy-funcs
+rootcheck
 
 dieupd() {
  printf "\t--> failed\n\n ! update failed, exiting.\n"

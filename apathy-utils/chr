@@ -1,6 +1,8 @@
 #!/mss/bin/sh
-if	[ "$(id -u)" -ne 0 ];	then printf "\n ! this script must be run by root, exiting.\n\n";	exit 1
-elif	[ -z "$1" ];		then printf "\n ! no mount point selected, exiting.\n\n";		exit 1
+. /mss/bin/apathy-funcs
+rootcheck
+
+if	[ -z "$1" ];		then printf "\n ! no mount point selected, exiting.\n\n";		exit 1
 elif	[ -z "$2" ];		then printf "\n ! no shell selected, exiting.\n\n";			exit 1
 fi
 
