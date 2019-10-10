@@ -303,7 +303,7 @@ iana-etc-2.30
 inetutils-1.9.4
 intltool-0.51.0
 iproute2-5.3.0
-isl-0.19
+isl-0.21
 kbd-2.2.0
 kmod-26
 less-551

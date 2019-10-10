@@ -421,7 +421,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 inetutils-1.9.4
 [d]	 intltool-0.51.0
 [d]	 iproute2-5.3.0
-[d]	 isl-0.19
+[d]	 isl-0.21
 [d]	 kbd-2.2.0
 [d]	 kmod-26
 [d]	 less-551

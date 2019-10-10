@@ -12,7 +12,7 @@ extensively detailed documentatiton about building the base system can be found 
 #### overview
 ```
 toolchain:
- * gcc 9.2.1-20191005 (c,c++) + isl-0.19 + argp-standalone-1.3
+ * gcc 9.2.1-20191005 (c,c++) + isl-0.21 + argp-standalone-1.3
  * binutils 2.32, linux 5.2 headers
  * musl libc 1.1.23, musl-fts-1.2.7, musl-obstack-1.1
  * gcompat-0.4.0 + libucontext-0.1.3 + adelie shimmy
@@ -42,8 +42,7 @@ apathy-musl in its current state is completely free software, including the kern
 #### current package count and total system size
 ```
  ~ % pkg
-
- > total partition size	: 1641.51mib
+ > total partition size	: 1596.13mib
  > local package count	: 346
  > removed packages	: 4
 ```
