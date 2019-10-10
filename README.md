@@ -1,32 +1,35 @@
 ### apathy-musl 1.1
-*apathy musl* is a pure 64 bit linux distribution built from scratch, using the `musl libc` instead of the traditional `glibc`.
+*apathy musl* is a pure 64 bit linux distribution built from scratch, utilizing musl libc, aiming to be clutter free without crippling the user.
 
 ![yes](assets/fetch.png)
 
-this is the second release of apathy-musl. 1.0 being built by following documentation written by *dslm4515* which had old packages, sloppy/prone to fail writing and differences in choice of software. after writing my own build guide with [apathy-mlfs](https://github.com/mssx86/apathy-mlfs), i have continued building the system, resulting in this repo.
+this is the second release of apathy-musl, `1.0` being built by following the documentation written by [dslm4515](https://github.com/dslm4515). after contributing to their project, i forked their work and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system and with a set of different choices in software, resulting in `1.1`.
+
+if one wants to build the base that `apathy-musl` uses, documentation is readily available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) repository. it includes an already working toolchain for people that wants to pass the building of the toolchain and the cross-toolchain steps and jump straight into building their system.
+
+once the base is done, you can read `APKBUILDS` from alpine linux repositories for instructions and use this repository or void linux' package search function to find patches required for building software using `musl`. gentoo is fairly handy when it comes to finding `libressl` patches as well.
 
 ![yes](assets/init.png)
-
-extensively detailed documentatiton about building the base system can be found at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) repo. once you're finished with the installation of the base system, the rest of the system can be built with the help of `void` and `alpine`/`adelie` repositories. also, there are toolchain tarballs if one wants to jump straight into building the base without going through the building steps of cross-toolchain and the toolchain.
 
 #### overview
 ```
 toolchain:
- * gcc 9.2.1-20191005 (c,c++) + isl-0.21 + argp-standalone-1.3
+ * gcc 9.2.1-20191005 (c,c++) + isl 0.21 + argp-standalone 1.3
+ * mpfr 4.0.2, gmp 6.1.2, mpc 1.1.0
  * binutils 2.32, linux 5.2 headers
- * musl libc 1.1.23, musl-fts-1.2.7, musl-obstack-1.1
- * gcompat-0.4.0 + libucontext-0.1.3 + adelie shimmy
+ * musl libc 1.1.23, musl-fts 1.2.7, musl-obstack 1.1
+ * gcompat 0.4.0 + libucontext 0.1.3 + adelie shimmy
 
 core userland:
- * util-linux-2.34, coreutils 8.31
- * busybox-1.31.0, defconfig (static)
+ * util linux-2.34, coreutils 8.31
+ * busybox 1.31.0 (statically linked, defconfig)
  * sysklogd 1.5.1, sysvinit 2.96
  * eudev 3.2.8, openbsd doas
 
 languages:
  * python 2.7.16, 3.7.4
  * lua 5.3.5, 5.1.5
- * perl-5.30
+ * perl5.30
 
 video/audio:
  * xorg (x11r7), mesa 19.1.7
