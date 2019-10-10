@@ -1,7 +1,7 @@
 ### apathy-musl 1.1
 *apathy musl* is a pure 64 bit linux distribution built from scratch, utilizing musl libc, aiming to be clutter free without crippling the user.
 
-![yes](assets/fetch.png)
+<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/fetch.png"></p>
 
 this is the second release of apathy-musl, `1.0` being built by following the documentation written by [dslm4515](https://github.com/dslm4515). after contributing to their project, i forked their work and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system and with a set of different choices in software, resulting in `1.1`.
 
@@ -9,7 +9,7 @@ if one wants to build the base that `apathy-musl` uses, documentation is readily
 
 once the base is done, you can read `APKBUILDS` from alpine linux repositories for instructions and use this repository or void linux' package search function to find patches required for building software using `musl`. gentoo is fairly handy when it comes to finding `libressl` patches as well.
 
-![yes](assets/init.png)
+<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/init.png"></p>
 
 #### overview
 ```
