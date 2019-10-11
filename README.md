@@ -9,6 +9,8 @@ if one wants to build the base that `apathy-musl` uses, documentation is readily
 
 once the base is done, you can read `APKBUILDS` from alpine linux repositories for instructions and use this repository or void linux' package search function to find patches required for building software using `musl`. gentoo is fairly handy when it comes to finding `libressl` patches as well.
 
+an existing irc channel on freenode can be found at `#apathy-linux` if one wants to interact with the maintainer/only user of the project.
+
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/init.png"></p>
 
 #### overview
