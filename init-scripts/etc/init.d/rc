@@ -132,7 +132,20 @@ for i in $( ls -v /etc/rc.d/rc${runlevel}.d/S* 2> /dev/null)
       *) run ${i} start	;;
    esac
 
-   error_value=${?}
+   case ${i} in
+    *mountfs*)
+     if [ "${?}" = "32" ]
+      then
+       _msg="mountfs exited with code 32."
+       _msg="${_msg} user probably ran stripper."
+       log_warning_msg "${_msg}"
+       error_value=0
+     fi
+    ;;
+    *)
+     error_value=${?}
+    ;;
+   esac
 
    if [ ! "${error_value}" = "0" ]; then print_error_msg; fi
  done
