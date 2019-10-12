@@ -1,0 +1,4 @@
+/usr/bin/compton
+/usr/bin/compton-trans
+/usr/share/applications
+/usr/share/man

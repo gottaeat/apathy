@@ -330,8 +330,8 @@ nope	> sdl2-2.0.10
 
 [d]	> youtube-dl-2019.09.28
 
-[d]	> compton-0.1_beta2
-[d]	>> libconfig-1.7.2
+[r]	> compton-0.1_beta2
+[r]	>> libconfig-1.7.2
 [r]	>> libxdg-basedir-1.2.0
 
 [d]	> ffmpeg-4.2.1
