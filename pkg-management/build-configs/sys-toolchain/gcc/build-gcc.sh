@@ -2,7 +2,7 @@ SED=sed \
 libat_cv_have_ifunc=no \
 ../configure \
  --prefix=/usr \
- --build="x86_64-linux-musl" \
+ $BUILDTRUPLE \
  --with-system-zlib \
  --with-isl \
  --with-linker-hash-style=gnu \
@@ -23,4 +23,5 @@ libat_cv_have_ifunc=no \
  --disable-symvers \
  --disable-libsanitizer \
  --disable-target-libiberty \
- --disable-libunwind-exceptions
+ --disable-libunwind-exceptions \
+ --enable-checking=release
