@@ -437,7 +437,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 meson-0.51.2
 [d]	 mpc-1.1.0
 [d]	 mpfr-4.0.2
-[d]	 musl-1.1.23
+[d]	 musl-1.1.24
 [d]	 musl-fts-1.2.7
 [d]	 musl-obstack-1.1
 [d]	 ncurses-6.1
