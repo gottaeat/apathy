@@ -393,7 +393,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 autoconf-2.69
 [d]	 automake-1.16.1
 [d]	 bc-1.07.1
-[d]	 binutils-2.32
+[d]	 binutils-2.33.1
 [d]	 bison-3.4.2
 [d]	 busybox-1.31.0
 [d]	 bzip2-1.0.8
