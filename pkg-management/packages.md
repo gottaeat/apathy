@@ -409,7 +409,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 findutils-4.6.0
 [d]	 flex-2.6.4
 [d]	 gawk-5.0.1
-[d]	 gcc-9.2.1-20191005
+[d]	 gcc-9.2.1-20191012
 [d]	 gdbm-1.18.1
 [d]	 gettext-0.20.1
 [d]	 gmp-6.1.2
