@@ -1,7 +1,7 @@
 ! layers
 *.foreground:		#ffffff
 *.background:		#000000
-*.cursorColor:		#b9b9b9
+*.cursorColor:		#464646
 
 *color0:	#101010
 *color1:	#252525
@@ -31,7 +31,7 @@ URxvt*scrollBar:	false
 URxvt*scrollBar_right:	false
 URxvt*transparent:	false
 URxvt*depth:		32
-URxvt.background:	[96]#000000
+!URxvt.background:	[90]#000000
 URxvt.font:		xft:vanilla:pixelsize=7
 URxvt.boldFont:		
 URxvt.letterSpace:	0

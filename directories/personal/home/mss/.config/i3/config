@@ -91,7 +91,7 @@ client.focused_inactive	#000000	#464646	#000000	#464646
 client.urgent		#000000	#464646	#000000	#000000
 
 # meme gaps
-gaps inner 5
+gaps inner 0
 gaps outer 0
 
 # remove window titles
@@ -152,7 +152,6 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 
 
 ### autostart ###
-exec					compton --vsync drm
 exec_always				xrandr --output VGA-1 --primary
 exec --no-startup-id			cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
 exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
