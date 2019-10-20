@@ -1,32 +1,15 @@
-#global properties (gets applied to every block)
-command=/usr/libexec/i3blocks/$BLOCK_NAME
-separator_block_width=10
-markup=none
-
-[disk]
-command=~/.config/scripts/disk
-interval=1
-color=#e3e3e3
-
 [bw]
 command=~/.config/scripts/bw
 interval=1
 color=#ababab
 
-[cpu]
-command=~/.config/scripts/cpu
+[cpustat]
+command=~/.config/scripts/c2.sh
 interval=1
 color=#e3e3e3
 separator=false
 separator_block_width=5
 min_width=xxxxxx
-
-[package_temp]
-command=~/.config/scripts/ptemp
-interval=1
-color=#e3e3e3
-separator=false
-separator_block_width=8
 
 [memory]
 command=~/.config/scripts/mem
