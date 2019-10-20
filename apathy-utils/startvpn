@@ -1,21 +1,40 @@
 #!/mss/bin/sh
-if [ -z "$1" ]; then printf "\n ! no ovpn config selected, exiting.\n\n"; exit 1; fi
+. /mss/bin/apathy-funcs
+rootcheck
+
+if [ -z "$1" ]
+then
+ aprint_nc; aprint_fail "no ovpn config selected, exiting."
+ aprint_nc; exit 1
+fi
 
 ovpn_name=$(printf "${1}\n" | sed 's:.*/::')
 
-printf "\n * getting pass."
-passboi=$(curl -s https://freevpn.me/accounts	\
- | grep -o 'Password.*'				\
- | awk -v FS="(Password:</b> |</li>)" '{print $2}')			&&
-printf "\t --> done.\n"
+case "${ovpn_name}" in
+ *FreeVPN.be*) _domain=be ;;
+ *FreeVPN.co*) _domain=co ;;
+ *FreeVPN.eu*) _domain=eu ;;
+ *FreeVPN.im*) _domain=im ;;
+ *FreeVPN.it*) _domain=it ;;
+ *FreeVPN.me*) _domain=me ;;
+ *FreeVPN.se*) _domain=se ;;
+esac
 
-printf " * pass:\t\t --> ${passboi}\n"
+aprint_nc
+aprint_ret "getting auth details for ovpn from freevpn.${_domain}."
+passboi=$(curl -s https://freevpn.${_domain}/accounts	\
+ | grep -o 'Password.*'					\
+ | awk -v FS="(Password:</b> |</li>)" '{print $2}')
+evalretkill
 
-printf " * setting pass."
-printf "freevpn.me\n" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
-printf "${passboi}\n" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt	&&
-printf "\t --> done.\n"
+aprint "pass\t\t\t: ${passboi}"
+aprint_nc
 
-printf "\n * connecting to\t --> ${ovpn_name}\n\n"
-doas -- openvpn --config $1 > /tmp/vpn.log 2>&1 || \
- printf "\n ! failed, check /tmp/vpn.log\n"
+aprint_ret "setting pass in auth.txt."
+printf "freevpn.${_domain}\n" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt &&
+printf "${passboi}\n" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt
+evalretkill
+
+aprint "connecting to\t: ${ovpn_name}"
+openvpn --config $1 > /tmp/vpn.log 2>&1 || \
+ aprint_fail "failed, check /tmp/vpn.log."
