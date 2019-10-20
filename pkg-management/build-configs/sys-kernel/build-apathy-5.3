@@ -35,9 +35,9 @@ apply_deblob(){
   patch -p1 < "${patchdir}"/deblob/5.3-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}removing\t:${c_lcyan} gnu extraversion entry${c_reset}."
-  sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile
- evalretkill
+# aprint_ret "${c_blue}removing\t:${c_lcyan} gnu extraversion entry${c_reset}."
+#  sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile
+# evalretkill
 }
 
 apply_freedo(){
