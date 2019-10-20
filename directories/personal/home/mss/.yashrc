@@ -8,7 +8,6 @@ export LANG="en_US.utf8"
 read dingdong < /mss/machtype.txt
 
 # stuff taken from gentoo
-export GCC_SPECS=""
 export LESS="-R -M --shift 5"
 export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"
@@ -45,24 +44,38 @@ export INPUTRC="/etc/inputrc"
 
 
 ### yash settings
-HISTFILE=~/.yash_history HISTSIZE=5000
+HISTFILE=~/.yash_history HISTSIZE=30000
 FCEDIT="/usr/bin/vim"
 
-#prompts
-if [ "$(id -u)" -ne 0 ]
- then YASH_PS1=' ${${PWD:/~/\~}##*/}\fc % \fD'
- else YASH_PS1=' ${${PWD:/~/\~}##*/}\fr # \fD'
-fi
+# prompts
+[ $(id -u) -eq 0 ] && rewt=1 || rewt=0
 
-if [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ]
- then YASH_PS1="[chroot]${YASH_PS1}"
-fi
+case $TERM in
+ *rxvt*)
+  [ "${rewt}" -eq 1 ] \
+   && YASH_PS1='\fwG # \fMr ${${PWD:/~/\~}##*/}:\fD ' \
+   || YASH_PS1='\fwG $ \fMr ${${PWD:/~/\~}##*/}:\fD '
+ ;;
+ linux|tmux|screen)
+  [ "${rewt}" -eq 1 ] \
+   && YASH_PS1='\fkC # \fkW ${${PWD:/~/\~}##*/}:\fD ' \
+   || YASH_PS1='\fkC $ \fkW ${${PWD:/~/\~}##*/}:\fD '
+ ;;
+ *)
+  [ "${rewt}" -eq 1 ] \
+   && YASH_PS1=' # [${${PWD:/~/\~}##*/}]: ' \
+   || YASH_PS1=' $ [${${PWD:/~/\~}##*/}]: '
+ ;;
+esac
 
-YASH_PS1R=''
-YASH_PS1S=''
+[ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ] \
+ && YASH_PS1='[chroot]${YASH_PS1}'
+
+YASH_PS1R=
+YASH_PS1S=
 YASH_PS2="\fc > \fD"
 YASH_PS2R="\fc < \fD"
-YASH_PS2S=''
+YASH_PS2S=
 
 # ensure job control works
 case $- in (*m*) trap - TSTP TTIN TTOU; esac
@@ -126,6 +139,7 @@ alias ll="ls -Askhw1 --color=tty"
 alias lll="ls -la --color=tty"
 alias grep="grep --color=auto"
 alias poz="yash --posix"
+alias mpv="mpv --vo=gpu,drm"
 ##b tmux
 alias td="tmux detach"
 alias ta="tmux attach"
