@@ -49,32 +49,25 @@ apply_freedo(){
 }
 
 apply_apathy(){
-  aprint_ret "${c_blue}applying\t:${c_lcyan} muqss-0.195 (zen)${c_reset}."
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} muqss-0.195 (zen)${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-muqss-0.195.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} zen -O3 optimize harder patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
- 
- aprint_ret "${c_blue}applying\t:${c_lcyan} tty memory leak bug fix patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-fix-leaking-memory-tty.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}replacing\t:${c_lcyan} kernel panic message with something spicier${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} bfq reverts to fix bfq/bfq-dev collisions${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.3/5.3-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev (lucjan) patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bfq-dev-lucjan.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patches${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bfq-dev.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} memory management proactive compaction patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-mm-proactive-compaction.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}raising\t:${c_lcyan} hugepage compaction effort to 60${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-mm-raise-hugepage-compaction-effort-to-60.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen-futex patches${c_reset}."
@@ -83,6 +76,22 @@ apply_apathy(){
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen-tune patches${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-tune.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} tty memory leak bug fix patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-fix-leaking-memory-tty.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} zen -O3 optimize harder patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}replacing\t:${c_lcyan} kernel panic message with something spicier${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
