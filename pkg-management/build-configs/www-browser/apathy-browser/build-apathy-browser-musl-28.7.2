@@ -20,11 +20,11 @@ export repo="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"	
 export srcdir=/mss/work/UXP							&&
 export _instdir="${srcdir}/KEK"							&&
 export pkgname="apathy-browser musl (palemoon)"					&&
-export pkgver=28.7.1								&&
+export pkgver=28.7.2								&&
 export _pmappdir=/usr/lib/apathy-browser-${pkgver}				&&
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"					&&
 export MOZCONFIG="$srcdir/mozconfig"						&&
-export CPPFLAGS=" -pipe -O2 -Wno-format-overflow"				&&
+export CPPFLAGS=" -pipe -O2"							&&
 export CFLAGS="${CPPFLAGS}"							&&
 export CXXFLAGS="${CPPFLAGS}"							&&
 export LDFLAGS=" -Wl,-rpath,${_pmappdir}"
@@ -52,7 +52,7 @@ evalretkill
 
 # d5 >> apply apathy branding
 aprint_ret "applying apathy-browser branding patch."
-patch -p1 < "${repo}"/0001-apathy-browser-branding-28.7.1.patch > /tmp/apathy-browser-build.log 2>&1
+patch -p1 < "${repo}"/0001-apathy-browser-branding-28.7.2.patch > /tmp/apathy-browser-build.log 2>&1
 evalretkill
 
 # d6 >> apply patch from bmlfs
@@ -65,12 +65,7 @@ aprint_ret "running sed for locale fix."
 sed -i 's#xlocale#locale#' "${srcdir}"/intl/icu/source/i18n/digitlst.cpp
 evalretkill
 
-# d8 >> keep gcc9 from creating false positives
-#aprint_ret "running sed to keep gcc9 from creating false positives."
-#grep -rl -- '-Werror=format' | xargs sed -i 's/error=format/no-&/'
-#evalretkill
-
-# d9 >> print mach vars
+# d8 >> print mach vars
 aprint_nc
 aprint "srcdir\t\t: ${c_lcyan}${srcdir}${c_reset}"
 aprint "pkgname\t\t: ${c_lcyan}${pkgname}${c_reset}"
@@ -84,7 +79,7 @@ aprint "cflags\t\t: ${c_lcyan}${CFLAGS}${c_reset}"
 aprint "ldflags\t\t: ${c_lcyan}${LDFLAGS}${c_reset}"
 aprint_nc
 
-# d10 >> check everything and ask to run mach
+# d9 >> check everything and ask to run mach
 aprint_ask "ready to run mach, shall we continue? (y/n): "
 
 read answerbuild
@@ -99,7 +94,7 @@ read answerbuild
    exit 0
  fi
 
-# d8 >> ask to install build
+# d10 >> ask to install build
 aprint_nc
 aprint_xn "build complete, shall we run the installer? (y/n): "
 
