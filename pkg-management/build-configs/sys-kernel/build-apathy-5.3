@@ -49,14 +49,8 @@ apply_freedo(){
 }
 
 apply_apathy(){
- aprint_ret "${c_blue}applying\t:${c_lcyan} bmq 1.00 sched patchset${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bmq-100.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
- 
- aprint_ret "${c_blue}applying\t:${c_lcyan} bmq-v5.3.1 fixes${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bmq-rework-sched_rq_watermark.patch >>/tmp/kernel-build.log 2>&1
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bmq-fix-task_sched_prio.patch >>/tmp/kernel-build.log 2>&1
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-tag-bmq-v5.3.1.patch >>/tmp/kernel-build.log 2>&1
+  aprint_ret "${c_blue}applying\t:${c_lcyan} muqss-0.195 (zen)${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-muqss-0.195.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} zen -O3 optimize harder patch${c_reset}."
