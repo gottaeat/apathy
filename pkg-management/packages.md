@@ -82,7 +82,7 @@
 [d]	>> lzo-2.10
 
 [d]	> jq-1.6			--> binary from dev.
-[d]	> dnscrypt-proxy-2.0.25		--> binary from dev.
+[d]	> dnscrypt-proxy-2.0.31		--> binary from dev.
 
 [d]	> start-stop-daemon		--> github.com/daleobrien/start-stop-daemon
 ```
