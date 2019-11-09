@@ -25,7 +25,7 @@ workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
-confname="5.3-apathy-libre-gcc-8-oct-2019.config"
+confname="5.3-apathy-libre-gcc-9-nov-2019.config"
 useconf="${confdir}/5.3/${confname}"
 pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
