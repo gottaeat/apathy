@@ -50,14 +50,19 @@ aprint_ret "copying mozconfig."
 cp "${repo}"/apathy-musl-mozconfig.config "${srcdir}"/mozconfig
 evalretkill
 
-# d5 >> apply apathy branding
+# d5.1 >> apply apathy branding
 aprint_ret "applying apathy-browser branding patch."
 patch -p1 < "${repo}"/0001-apathy-browser-branding-28.7.2.patch > /tmp/apathy-browser-build.log 2>&1
 evalretkill
 
+# d5.2 >> change about-background.png
+aprint_ret "changing about-background.png"
+cp "${repo}"/files/about-background.png "${srcdir}"/application/palemoon/branding/unofficial/content
+evalretkill
+
 # d6 >> apply patch from bmlfs
 aprint_ret "applying font rendering fix on x86 machines."
-patch -Np0 -i "${repo}"/0002-i686-fix.patch >> /tmp/apathy-browser-build.log 2>&1
+patch -Np0 < "${repo}"/0002-i686-fix.patch >> /tmp/apathy-browser-build.log 2>&1
 evalretkill
 
 # d7 >> run sed from arch

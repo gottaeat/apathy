@@ -1,19 +1,20 @@
-From bdc665fb840ac63bfe45891946399d813ed56311 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@waifu.club>
-Date: Sun, 25 Aug 2019 01:25:18 +0300
-Subject: [PATCH] add: apathy branding for the git version.
-
----
- .../shared/locales/browserconfig.properties   |  4 +-
- .../branding/shared/pref/preferences.inc      | 79 +++------------
- .../branding/shared/pref/uaoverrides.inc      | 99 +++----------------
- .../palemoon/branding/unofficial/branding.nsi | 12 +--
- .../palemoon/branding/unofficial/configure.sh |  2 +-
- .../unofficial/locales/en-US/brand.dtd        |  6 +-
- .../unofficial/locales/en-US/brand.properties |  6 +-
- .../unofficial/pref/palemoon-branding.js      |  4 +-
- 8 files changed, 44 insertions(+), 168 deletions(-)
-
+diff --git a/application/palemoon/base/content/aboutDialog.xul b/application/palemoon/base/content/aboutDialog.xul
+index 6edfc2155..0592c8ce5 100644
+--- a/application/palemoon/base/content/aboutDialog.xul
++++ b/application/palemoon/base/content/aboutDialog.xul
+@@ -63,10 +63,8 @@
+           or getting involved in our development by tackling some of the issues found in our GitHub issue tracker.
+ #endif
+ #else
+-          &brandFullName; is released by &vendorShortName;.
+-        </description>
+-        <description class="text-credits">
+-          This is an unofficial build of Pale Moon. For official builds, please go to <label class="text-link" href="http://www.palemoon.org/">the Pale Moon website</label>.
++        &brandFullName; is a  <label class="text-link" href="https://www.palemoon.org/">pale moon</label> fork released by &vendorShortName;.</description>
++        <description class="text-credits text-center">details can be found at <label class="text-link" href="https://github.org/mssx86/apathy/">apathy gnu/linux repo</label>.
+ #endif
+         </description>    
+     </vbox>
 diff --git a/application/palemoon/branding/shared/locales/browserconfig.properties b/application/palemoon/branding/shared/locales/browserconfig.properties
 index 92d237144..b5e4d464b 100644
 --- a/application/palemoon/branding/shared/locales/browserconfig.properties
@@ -313,6 +314,3 @@ index bf46b747a..a5d379a0e 100644
  
  // Updates disabled
  pref("app.update.enabled", false);
--- 
-2.23.0
-
