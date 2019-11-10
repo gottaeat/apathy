@@ -2,7 +2,8 @@ SED=sed \
 libat_cv_have_ifunc=no \
 ../configure \
  --prefix=/usr \
- $BUILDTRUPLE \
+ --build=x86_64-linux-musl \
+ --host=x86_64-linux-musl \
  --with-system-zlib \
  --with-isl \
  --with-linker-hash-style=gnu \
