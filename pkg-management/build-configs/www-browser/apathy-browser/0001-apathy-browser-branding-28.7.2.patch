@@ -11,7 +11,7 @@ index 6edfc2155..0592c8ce5 100644
 -        <description class="text-credits">
 -          This is an unofficial build of Pale Moon. For official builds, please go to <label class="text-link" href="http://www.palemoon.org/">the Pale Moon website</label>.
 +        &brandFullName; is a  <label class="text-link" href="https://www.palemoon.org/">pale moon</label> fork released by &vendorShortName;.</description>
-+        <description class="text-credits text-center">details can be found at <label class="text-link" href="https://github.org/mssx86/apathy/">apathy gnu/linux repo</label>.
++        <description class="text-credits text-center">details can be found at <label class="text-link" href="https://github.com/mssx86/apathy/">apathy gnu/linux repo</label>.
  #endif
          </description>    
      </vbox>
