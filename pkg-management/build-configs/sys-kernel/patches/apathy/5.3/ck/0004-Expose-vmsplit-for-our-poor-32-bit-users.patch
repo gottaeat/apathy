@@ -1,0 +1,48 @@
+From 9e16369c404533d66e190a70b40dd9fdcd872a83 Mon Sep 17 00:00:00 2001
+From: Con Kolivas <kernel@kolivas.org>
+Date: Fri, 12 May 2017 13:07:37 +1000
+Subject: [PATCH 04/17] Expose vmsplit for our poor 32 bit users.
+
+---
+ arch/x86/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 9d382fa9951c..742151933725 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1442,7 +1442,7 @@ config HIGHMEM64G
+ endchoice
+ 
+ choice
+-	prompt "Memory split" if EXPERT
++	prompt "Memory split"
+ 	default VMSPLIT_3G
+ 	depends on X86_32
+ 	---help---
+@@ -1462,17 +1462,17 @@ choice
+ 	  option alone!
+ 
+ 	config VMSPLIT_3G
+-		bool "3G/1G user/kernel split"
++		bool "Default 896MB lowmem (3G/1G user/kernel split)"
+ 	config VMSPLIT_3G_OPT
+ 		depends on !X86_PAE
+-		bool "3G/1G user/kernel split (for full 1G low memory)"
++		bool "1GB lowmem (3G/1G user/kernel split)"
+ 	config VMSPLIT_2G
+-		bool "2G/2G user/kernel split"
++		bool "2GB lowmem (2G/2G user/kernel split)"
+ 	config VMSPLIT_2G_OPT
+ 		depends on !X86_PAE
+-		bool "2G/2G user/kernel split (for full 2G low memory)"
++		bool "2GB lowmem (2G/2G user/kernel split)"
+ 	config VMSPLIT_1G
+-		bool "1G/3G user/kernel split"
++		bool "3GB lowmem (1G/3G user/kernel split)"
+ endchoice
+ 
+ config PAGE_OFFSET
+-- 
+2.20.1
+

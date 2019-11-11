@@ -1,0 +1,67 @@
+From c0d161729cfc413f286f1f6e84fecef1b7a64c43 Mon Sep 17 00:00:00 2001
+From: Con Kolivas <kernel@kolivas.org>
+Date: Wed, 7 Dec 2016 21:13:16 +1100
+Subject: [PATCH 13/17] Make threaded IRQs optionally the default which can be
+ disabled.
+
+---
+ kernel/irq/Kconfig  | 17 +++++++++++++++++
+ kernel/irq/manage.c | 11 +++++++++++
+ 2 files changed, 28 insertions(+)
+
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index f92d9a687372..d17db0ff775f 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -111,6 +111,23 @@ config GENERIC_IRQ_RESERVATION_MODE
+ config IRQ_FORCED_THREADING
+        bool
+ 
++config FORCE_IRQ_THREADING
++	bool "Make IRQ threading compulsory"
++	depends on IRQ_FORCED_THREADING
++	default n
++	---help---
++
++	  Make IRQ threading mandatory for any IRQ handlers that support it
++	  instead of being optional and requiring the threadirqs kernel
++	  parameter. Instead they can be optionally disabled with the
++	  nothreadirqs kernel parameter.
++
++	  Enabling this may make some architectures not boot with runqueue
++	  sharing and MuQSS.
++
++	  Enable if you are building for a desktop or low latency system,
++	  otherwise say N.
++
+ config SPARSE_IRQ
+ 	bool "Support sparse irq numbering" if MAY_HAVE_SPARSE_IRQ
+ 	---help---
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index e8f7f179bf77..38fd356f1e20 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -24,9 +24,20 @@
+ #include "internals.h"
+ 
+ #ifdef CONFIG_IRQ_FORCED_THREADING
++#ifdef CONFIG_FORCE_IRQ_THREADING
++__read_mostly bool force_irqthreads = true;
++#else
+ __read_mostly bool force_irqthreads;
++#endif
+ EXPORT_SYMBOL_GPL(force_irqthreads);
+ 
++static int __init setup_noforced_irqthreads(char *arg)
++{
++	force_irqthreads = false;
++	return 0;
++}
++early_param("nothreadirqs", setup_noforced_irqthreads);
++
+ static int __init setup_forced_irqthreads(char *arg)
+ {
+ 	force_irqthreads = true;
+-- 
+2.20.1
+

@@ -25,7 +25,7 @@ workdir="/mnt/mss/ram/work/linux-${kerver}"
 patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
 
 confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
-confname="5.3-apathy-libre-gcc-10-nov-2019.config"
+confname="5.3-apathy-libre-gcc-bmq-8-oct-2019.config"
 useconf="${confdir}/5.3/${confname}"
 pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
 
@@ -49,54 +49,43 @@ apply_freedo(){
 }
 
 apply_apathy(){
- aprint_ret "${c_blue}applying\t:${c_lcyan} muqss-0.195 (zen)${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-muqss-0.195.patch >>/tmp/kernel-build.log 2>&1
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} bfq reverts to fix collisions${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0002-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying\t:${c_lcyan} bfq reverts to fix bfq/bfq-dev collisions${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patch from lucjan (8 oct 2019)${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0003-bfq-dev-lucjan-8oct2019.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-bfq-dev.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}applying\t:${c_lcyan} cpu family specific gcc9.x optimizations patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0004-gcc9x-cpu-family-optimizations.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying\t:${c_lcyan} memory management proactive compaction patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-mm-proactive-compaction.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}applying\t:${c_lcyan} optimize the kernel with -O3 patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0005-optimize-with-O3.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}raising\t:${c_lcyan} hugepage compaction effort to 60${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-mm-raise-hugepage-compaction-effort-to-60.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} zen-futex patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-futex-packports.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} zen-tune patches${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-zen-tune.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} tty memory leak bug fix patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-fix-leaking-memory-tty.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} zen -O3 optimize harder patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-cc_optimize_harder.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}applying\t:${c_lcyan} graysky2 cpu family specific optimiziation patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-graysky2-gcc-9.1-cpu-opt.patch >>/tmp/kernel-build.log 2>&1
- evalretkill
-
- aprint_ret "${c_blue}replacing\t:${c_lcyan} kernel panic message with something spicier${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/5.3-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}replacing\t:${c_lcyan} the kernel panic message with something spicier${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0006-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
 apply_clearlinux(){
  aprint_ret "${c_blue}applying\t:${c_lcyan} intel clearlinux optimizations${c_reset}."
  for i in "${patchdir}"/apathy/5.3/clearlinux/*.patch
+  do patch -p1 < "${i}" >>/tmp/kernel-build.log 2>&1
+ done
+ evalretkill
+}
+
+apply_conkolivas(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} muqss-0.195 scheduler patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0001-muqss-0.195.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+       
+ aprint_ret "${c_blue}applying\t:${c_lcyan} conkolivas (ck) patchset${c_reset}."
+ for i in "${patchdir}"/apathy/5.3/ck/*.patch
   do patch -p1 < "${i}" >>/tmp/kernel-build.log 2>&1
  done
  evalretkill
@@ -140,6 +129,9 @@ aprint_nc
 aprint "deblobbing the kernel."
 apply_deblob
 apply_freedo
+
+aprint "applying the conkolivas patchset."
+apply_conkolivas
 
 aprint "applying the apathy patchset."
 apply_apathy
