@@ -1,0 +1,7 @@
+/usr/bin/urxvt
+/usr/bin/urxvtc
+/usr/bin/urxvtd
+
+/usr/lib/urxvt
+
+/usr/share/man

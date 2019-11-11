@@ -197,7 +197,6 @@ libxkbcommon-0.8.4
 imlib2-1.5.1
 giflib-5.2.1
 libid3tag-0.15.1b
-rxvt-unicode-9.22
 transmission-2.94
 autoconf-2.13
 libwebp-1.0.3

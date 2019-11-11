@@ -277,7 +277,7 @@ nope	>> librsvg
 ### gui fuckery end
 ```
 ```
-[d]	> rxvt-unicode-9.22
+[r]	> rxvt-unicode-9.22
 [d]	> transmission-2.94
 [d]	> autoconf-2.13
 [d]	> libwebp-1.0.3
