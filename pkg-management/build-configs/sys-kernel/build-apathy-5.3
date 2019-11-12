@@ -53,24 +53,28 @@ apply_apathy(){
   patch -p1 < "${patchdir}"/apathy/5.3/0001-bmq-v5.3-r2.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
+ aprint_ret "${c_blue}applying\t:${c_lcyan} lucjan memory management patchset${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0002-mm-patches.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
  aprint_ret "${c_blue}applying\t:${c_lcyan} bfq reverts to fix collisions${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0002-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.3/0003-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patch from lucjan (8 oct 2019)${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0003-bfq-dev-lucjan-8oct2019.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.3/0004-bfq-dev-lucjan-8oct2019.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} cpu family specific gcc9.x optimizations patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0004-gcc9x-cpu-family-optimizations.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.3/0005-gcc9x-cpu-family-optimizations.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} optimize the kernel with -O3 patch${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0005-optimize-with-O3.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.3/0006-optimize-with-O3.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}replacing\t:${c_lcyan} the kernel panic message with something spicier${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0006-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
+  patch -p1 < "${patchdir}"/apathy/5.3/0007-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 }
 
