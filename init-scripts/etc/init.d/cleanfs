@@ -7,7 +7,7 @@
 # description ----> cleans /var/{run,lock} and /tmp, creates /var/run/utmp
 #                   and dirs defined in /etc/sysconfig/createfiles
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 create_files(){
  # input to file descriptor 9 and output to stdin (redirection)

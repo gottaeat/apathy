@@ -6,7 +6,7 @@
 # default-stop ---> 0 1 2 6
 # description ----> mounts /sys, /proc, /run and /dev.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

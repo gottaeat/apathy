@@ -5,7 +5,7 @@
 # default-start --> S
 # description ----> manipulates the procfs based on /etc/sysctl.conf
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

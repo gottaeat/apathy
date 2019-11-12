@@ -2,7 +2,7 @@
 # alsa init script for sysvinit
 # apathy 1.2 - mssx86 (mss@waifu.club)
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 print_error_msg(){
  log_failure_msg "${c_red}${i}${c_reset} exited with ${error_value}."

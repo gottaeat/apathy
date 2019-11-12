@@ -6,7 +6,7 @@
 # default-stop ---> 0 6
 # description ----> mounts/umounts swap partitions defined in fstab.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

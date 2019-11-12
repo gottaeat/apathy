@@ -6,7 +6,7 @@
 # default-stop ---> 0 1 6
 # description ----> (re)stores alsamixer settings from/to /var/lib/alsa/asound.state.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "$1" in
  start)

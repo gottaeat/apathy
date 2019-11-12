@@ -5,7 +5,7 @@
 # default-start --> S
 # description ----> saves and restores the hwclock.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case ${1} in
  start)

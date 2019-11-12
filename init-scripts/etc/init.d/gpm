@@ -6,7 +6,7 @@
 # default-stop ---> 0 1 2 6
 # description ----> starts and stops gpm.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 pidfile="/run/gpm.pid"
 

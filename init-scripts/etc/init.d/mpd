@@ -3,7 +3,7 @@
 # apathy 1.2 - mssx86 (mssftw@protonmail.com)
 
 set -e
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 NAME=mpd
 PIDFILE=/run/$NAME.pid

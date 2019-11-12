@@ -16,7 +16,7 @@
 # 32 ---> fsck cancelled by user request
 # 127 --> shared library error
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

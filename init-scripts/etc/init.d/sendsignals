@@ -5,7 +5,7 @@
 # default-stop ---> 0 6
 # description ----> attempts to kill remaining processes.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  stop)

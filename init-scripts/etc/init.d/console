@@ -5,12 +5,13 @@
 # default-start --> S
 # description ----> set up fonts and lang settings from /etc/sysconfig/console
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 # set console variables
 UNICODE="1"
 KEYMAP="us"
-FONT="ter-v12n -m 8859-1"
+#FONT="Tamzen6x12 -m 8859-1"
+FONT="vanilla -m 8859-1"
 
 case "${1}" in
  start)

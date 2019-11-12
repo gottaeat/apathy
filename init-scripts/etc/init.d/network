@@ -6,9 +6,9 @@
 # default-stop ---> 0 1 2 6
 # description ----> starts and configures the network adapters.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
-IFACE=enp2s0
+IFACE=eth0
 IP=192.168.1.32
 GATEWAY=192.168.1.1
 PREFIX=24

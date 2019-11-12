@@ -6,7 +6,7 @@
 # description ----> populates /dev with device nodes,
 #                   mounts a tempfs on /dev and starts the udevd daemon.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

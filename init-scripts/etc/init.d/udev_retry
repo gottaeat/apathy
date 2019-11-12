@@ -5,7 +5,7 @@
 # default-start --> S
 # description ----> retries failed uevents.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

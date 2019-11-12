@@ -6,7 +6,7 @@
 # default-stop ---> 0 6
 # description ----> sets the hostname and starts the loopback interface.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 # source if /etc/sysconfig/network exists
 [ -f /etc/sysconfig/network ] && . /etc/sysconfig/network

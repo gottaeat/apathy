@@ -8,7 +8,7 @@
 # Assure that the kernel has module support.
 [ -e /proc/modules ] || exit 0
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)

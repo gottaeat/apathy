@@ -9,7 +9,7 @@
 #                   umounts the entries and remounts the
 #                   rootfs as ro at stop.
 
-. /lib/lsb/init-functions
+. /mss/bin/apathy-funcs-init
 
 case "${1}" in
  start)
