@@ -49,6 +49,9 @@ apply_freedo(){
 }
 
 apply_apathy(){
+ aprint_ret "${c_blue}adding\t:${c_lcyan} bmq v5.3-r2 scheduler${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0001-bmq-v5.3-r2.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} bfq reverts to fix collisions${c_reset}."
   patch -p1 < "${patchdir}"/apathy/5.3/0002-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
