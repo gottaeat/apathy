@@ -61,8 +61,8 @@ apply_apathy(){
   patch -p1 < "${patchdir}"/apathy/5.3/0003-bfq-reverts.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
- aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patch from lucjan (8 oct 2019)${c_reset}."
-  patch -p1 < "${patchdir}"/apathy/5.3/0004-bfq-dev-lucjan-8oct2019.patch >>/tmp/kernel-build.log 2>&1
+ aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patch from lucjan (11 nov 2019)${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.3/0004-bfq-dev-lucjan-11nov2019.patch >>/tmp/kernel-build.log 2>&1
  evalretkill
 
  aprint_ret "${c_blue}applying\t:${c_lcyan} cpu family specific gcc9.x optimizations patch${c_reset}."
