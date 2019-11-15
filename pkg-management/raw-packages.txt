@@ -49,7 +49,7 @@ libassuan-2.5.3
 libgcrypt-1.8.5
 libksba-1.3.5
 pinentry-1.1.0
-gnutls-3.6.9
+gnutls-3.6.10
 libtasn1-4.14
 libunistring-0.9.10
 nettle-3.5.1

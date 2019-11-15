@@ -72,7 +72,7 @@
 [d]	>> libgcrypt-1.8.5
 [d]	>> libksba-1.3.5
 [d]	>> pinentry-1.1.0		--> depends on glib, wait for x.
-[d]	>> gnutls-3.6.9
+[d]	>> gnutls-3.6.10
 [d]	>>> libtasn1-4.14
 [d]	>>> libunistring-0.9.10
 [d]	>>> nettle-3.5.1
