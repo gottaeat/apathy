@@ -1,0 +1,227 @@
+#!/bin/sh
+# apathy musl 1.1 - mss@waifu.club
+# build script for 5.4.x kernels.
+
+. /mss/bin/apathy-funcs
+
+# a1 >> check if variables are set
+if	[ -z $1 ]; then aprint_fail "no kernel source tarball selected, exiting.";	exit 1
+elif	[ ! -f "${PWD}/${1}" ]; then aprint_fail "tarball doesn't exist, exiting.";	exit 1  
+fi &&
+
+# a2 >> check if $1 is a linux tarball
+case $1 in
+ *linux*)
+  aprint_nc; aprint "archive is a linux source tarball."; aprint_nc;;
+ *)
+  aprint_fail "${1} is not a linux source tarball, exiting."
+  exit 1 ;;
+esac
+
+# b >> script variables
+saucedir="/mnt/mss/ram/work"
+kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//;s/.tar.gz//')
+workdir="/mnt/mss/ram/work/linux-${kerver}"
+patchdir="/mss/repo/pkg-management/build-configs/sys-kernel/patches"
+
+confdir="/mss/repo/pkg-management/build-configs/sys-kernel/configs"
+confname="5.4-apathy-libre-gcc-first-18-nov-2019.config"
+useconf="${confdir}/5.4/${confname}"
+pre_localver=$(grep 'CONFIG_LOCALVERSION=' ${useconf} | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')
+
+# c >> functions
+apply_deblob(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} gnu deblob patches${c_reset}."
+  patch -p1 < "${patchdir}"/deblob/5.4-deblob-gnu.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+# aprint_ret "${c_blue}removing\t:${c_lcyan} gnu extraversion entry${c_reset}."
+#  sed 's/EXTRAVERSION = -gnu/EXTRAVERSION =/' -i Makefile
+# evalretkill
+}
+
+apply_freedo(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} freedo logo."
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_clut224.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_vga16.ppm
+  install -m644 -t "${workdir}"/drivers/video/logo "${patchdir}"/other/freedo-logo/logo_linux_mono.pbm	
+ evalretkill
+}
+
+apply_apathy(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} bfq-dev patches from paolo${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.4/0001-bfq-patches-paolo.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} cpu family specific gcc9.x optimizations patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.4/0002-gcc9x-cpu-family-optimizations.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}applying\t:${c_lcyan} optimize the kernel with -O3 patch${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.4/0003-mss-optimize-with-O3.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+
+ aprint_ret "${c_blue}replacing\t:${c_lcyan} the kernel panic message with something spicier${c_reset}."
+  patch -p1 < "${patchdir}"/apathy/5.4/0004-ohgodohfuck-panic.patch >>/tmp/kernel-build.log 2>&1
+ evalretkill
+}
+
+apply_clearlinux(){
+ aprint_ret "${c_blue}applying\t:${c_lcyan} intel clearlinux optimizations${c_reset}."
+ for i in "${patchdir}"/apathy/5.4/clearlinux/*.patch
+  do patch -p1 < "${i}" >>/tmp/kernel-build.log 2>&1
+ done
+ evalretkill
+}
+
+# d >> action
+# d0 >> clear old log
+aprint_ret "cleaning old log."
+ echo > "/tmp/kernel-build.log"
+evalret
+
+# d1 >> unpack kernel.
+if [ ! -d "${saucedir}" ]
+ then
+  aprint_ret "saucedir does not exist, creating."
+   mkdir "${saucedir}"
+  evalretkill
+fi
+
+aprint_ret "unpacking kernel source."
+ tar xf "${1}" --directory="${saucedir}"
+evalretkill
+ cd "${workdir}"
+
+# d1.1 >> run mrproper
+aprint_ret "running mrproper."
+ make mrproper >>/tmp/kernel-build.log 2>&1
+evalretkill
+
+# d2 >> copy config
+aprint_nc
+aprint_ret "copying kernel config."
+ cp "${useconf}" "${workdir}"/.config
+evalretkill
+aprint "config\t: ${c_lcyan}${confname}${c_reset}."
+aprint "localver\t: ${c_lcyan}${pre_localver}${c_reset}"
+
+# d3 >> apply patches
+aprint_nc
+
+aprint "deblobbing the kernel."
+apply_deblob
+apply_freedo
+
+aprint "applying the apathy patchset."
+apply_apathy
+
+aprint "applying the clearlinux patches."
+apply_clearlinux
+
+# d5 >> run menuconfig
+aprint_nc
+aprint_ask "run menuconfig for manual config? (y/n): "
+read answermenuconf
+
+if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
+then
+ aprint "running menuconfig."
+  make menuconfig
+else
+ aprint "not running menuconfig."
+fi
+
+# d6 >> run make
+aprint_nc
+aprint_ask "run make? (y/n): "
+read answerbuildkern
+
+if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
+then
+ aprint_ret "running make, tail -f /tmp/kernel-build.log to view."
+  make -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
+ evalretkill
+else
+ aprint "not running make."
+ aprint_nc
+ exit 0
+fi
+
+# d6.1
+if [ -z $(grep "=m" .config) ]
+then
+ aprint_nc
+ aprint "no modules found in config to install, skipping."
+ modules=no
+else
+ aprint_nc
+ aprint "found modules, installing them."
+  doas -- make modules_install >>/tmp/kernel-build.log
+ evalretkill
+ modules=yes
+fi
+
+# d7 >> run kinst
+aprint_nc
+aprint_ask "install the built kernel? (y/n): "
+read answerkinst
+
+if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
+ then
+  aprint "installing the built kernel."
+   doas cp arch/x86/boot/bzImage	/boot/vmlinuz		&&
+   doas cp System.map			/boot/System.map	&&
+   doas cp .config			/boot/config
+ else
+  aprint "not installing the built kernel."
+fi
+
+# d8 >> package up the built kernel.
+aprint_nc
+aprint_ask "package up the built kernel? (y/n): "
+read answerpkgup
+
+if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
+ then
+  aprint_ret "packaging up the built kernel."
+
+  localver=$(grep 'CONFIG_LOCALVERSION=' ${workdir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
+  pkgupname="${kerver}${localver}"
+  archivename="${pkgupname}-$(date +%s)"
+  storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+
+  mkdir -p "${saucedir}/pkgup/boot"							&&
+
+  cp -i ${workdir}/arch/x86/boot/bzImage	"${saucedir}/pkgup/boot/vmlinuz"	&&
+  cp -i ${workdir}/System.map			"${saucedir}/pkgup/boot/System.map"	&&
+  cp -i ${workdir}/.config			"${saucedir}/pkgup/boot/config"		&&
+
+  if [ "${modules}" = "yes" ]
+   then
+    mkdir -p "${saucedir}/pkgup/lib/modules"						&&
+    cp -r /lib/modules/"${pkgupname}"		"${saucedir}/pkgup/lib/modules}"
+  fi
+
+  cd "${saucedir}"									&&
+  
+  /mss/bin/pkgup "${saucedir}/pkgup" "${storepkg}"/"${archivename}" > /dev/null 2>&1	&&
+  rm -rf "${saucedir}/pkgup"
+   
+  evalret
+ else aprint "not running pkgup."
+fi
+
+# d9 >> clean up ram.
+aprint_nc
+aprint_ask "clean up the workdir in ram? (y/n): "
+read answerclean
+
+if [ "$answerclean" != "${answerclean#[Yy]}" ]
+ then
+  aprint_ret "cleaning up the workdir."
+   rm -rf ${workdir}
+  evalret
+ else
+  aprint "not cleaning up the workdir."
+fi
