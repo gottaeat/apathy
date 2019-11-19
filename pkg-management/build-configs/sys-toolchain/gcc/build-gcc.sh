@@ -38,14 +38,14 @@ apply_patches(){
 
  for pp in $_patches_Np0
   do
-   aprint_ret "${c_blue}applying\t:${c_lcyan} ${pp}${c_reset}."
+   aprint_ret "${c_blue}applying${c_reset}\t:${c_lcyan} ${pp}${c_reset}."
    patch -Np0 -i "${patchdir}"/9.2.1/"${pp}" >>/tmp/gcc-build.log 2>&1
    evalretkill
   done
 
  for pp in $_patches_Np1
   do
-   aprint_ret "${c_blue}applying\t:${c_lcyan} ${pp}${c_reset}."
+   aprint_ret "${c_blue}applying\t${c_reset}:${c_lcyan} ${pp}${c_reset}."
    patch -Np1 -i "${patchdir}"/9.2.1/"${pp}" >>/tmp/gcc-build.log 2>&1
    evalretkill
   done
@@ -87,8 +87,12 @@ libat_cv_have_ifunc=no \
 
 # c1 >> print versions
 aprint_nc
-aprint "${c_blue}gcc${c_reset}ver\t: ${c_lcyan}${_gccver}${c_reset}."
-aprint "${c_blue}isl${c_reset}ver\t: ${c_lcyan}${_islver}${c_reset}."
+aprint "${c_blue}gcc${c_reset}\t\t: ${c_lcyan}${_gccver}${c_reset}."
+aprint "${c_blue}isl${c_reset}\t\t: ${c_lcyan}${_islver}${c_reset}."
+aprint_nc
+aprint "${c_blue}host${c_reset}\t\t: ${c_lcyan}${_host}${c_reset}."
+aprint "${c_blue}build${c_reset}\t: ${c_lcyan}${_build}${c_reset}."
+aprint "${c_blue}target${c_reset}\t: ${c_lcyan}${_target}${c_reset}."
 aprint_nc
 
 # c2.1 >> extract gcc sauce
@@ -96,7 +100,7 @@ if [ ! -f "${saucedir}/${_gccver}.tar.xz" ]
  then
   aprint_fail "gcc tarball does not exist in saucedir, exiting."; exit 1
  else
- aprint_ret "${c_blue}extracting\t: the ${c_lcyan}gcc source${c_reset} to current directory."
+ aprint_ret "${c_blue}extracting${c_reset}\t: the ${c_lcyan}gcc source${c_reset} to current directory."
   tar xf "${saucedir}"/"${_gccver}".tar.xz >/tmp/gcc-build.log 2>&1
   evalretkill
   
@@ -108,7 +112,7 @@ if [ ! -f "${saucedir}/${_islver}.tar.xz" ]
  then
   aprint_fail "isl tarball does not exist in saucedir, exiting."; exit 1
  else
-  aprint_ret "${c_blue}extracting\t: the ${c_lcyan}isl source${c_reset} to current directory."
+  aprint_ret "${c_blue}extracting${c_reset}\t: the ${c_lcyan}isl source${c_reset} to current directory."
   tar xf "${saucedir}"/"${_islver}".tar.xz >>/tmp/gcc-build.log 2>&1
   evalretkill
 
@@ -154,6 +158,7 @@ if [ "$answerbuildgcc" != "${answerbuildgcc#[Yy]}" ]
   make -j$(($(nproc)+1)) >>/tmp/gcc-build.log 2>&1
   evalretkill
 
+  aprint_nc
   aprint "build complete."
  else
   aprint "not running make."
