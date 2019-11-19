@@ -53,6 +53,8 @@ apply_patches(){
 
 # b2.2 >> set the configuring func
 _configure(){
+CFLAGS=" -pipe" \
+CXXFLAGS=" -pipe" \
 SED=sed \
 libat_cv_have_ifunc=no \
 ../configure \
@@ -155,7 +157,9 @@ read answerbuildgcc
 if [ "$answerbuildgcc" != "${answerbuildgcc#[Yy]}" ]
  then
   aprint_ret "running make, tail -f /tmp/gcc-build.log to view."
-  make -j$(($(nproc)+1)) >>/tmp/gcc-build.log 2>&1
+
+  make -j$(($(nproc)+1)) \
+   CFLAGS=" -pipe" CXXFLAGS=" -pipe" >>/tmp/gcc-build.log 2>&1
   evalretkill
 
   aprint_nc
