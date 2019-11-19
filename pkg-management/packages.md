@@ -386,6 +386,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> trackma-git			--> 5 oct 2019 snapshot
 [d]	> slmenu-0.1
 [d]	> apathy-st-0.8.2
+[d]	> lz4-1.9.2
 ```
 ```
 ### base mlfs packages
