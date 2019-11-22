@@ -42,12 +42,15 @@ shells:
 ```
 
 #### about proprietary software under apathy-musl
-apathy-musl in its current state is completely free software, including the kernel and the firmware.
+~~apathy-musl in its current state is completely free software, including the kernel and the firmware.~~
+apathy-musl *was* and still mostly is *free software*, except for the firmware blobs in the kernel required by my thinkpad t420 to function properly.
 
 #### current package count and total system size
 ```
- ~ % pkg
- > total partition size : 1589.98mib
- > local package count  : 345
+ $  ~: pkg
+
+ > total partition size : 1599.2mib
+ > local package count  : 346
  > removed packages     : 7
+
 ```
