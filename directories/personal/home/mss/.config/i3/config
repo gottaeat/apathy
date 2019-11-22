@@ -4,7 +4,7 @@ set $mod Mod4
 floating_modifier $mod
 bindsym $mod+Shift+q		kill
 bindsym $mod+Shift+r		restart
-bindsym $mod+Return		exec urxvt 
+bindsym $mod+Return		exec st
 
 # movement
 bindsym $mod+Left		focus left
@@ -82,7 +82,8 @@ bindsym $mod+Shift+0	move container to workspace $ws10
 
 ### window style ###
 # font
-font pango:vanilla 7
+#font pango:euphon 9
+font pango:CtrlD 8
 
 # window color scheme
 client.focused		#000000	#464646	#000000	#464646
@@ -125,14 +126,13 @@ colors {
 bindsym	$mod+p				exec /home/mss/.config/scripts/maimscrot
 bindsym $mod+Shift+p			exec /home/mss/.config/scripts/maimclip
 bindsym $mod+o				exec /home/mss/.config/scripts/maimcrop
-bindsym	$mod+d				exec --no-startup-id dmenu_run -b
+bindsym	$mod+d				exec --no-startup-id dmenu_run
 bindsym $mod+Shift+d			exec /home/mss/.config/i3/dmenu/menuboi 
-bindsym	$mod+x				exec urxvt -e vifm 
 #> kb specific
 bindsym	Pause				exec xtrlock
-bindsym	XF86Calculator			exec feh --bg-fill --randomize		/home/mss/cust/chan
-bindsym	$mod+XF86Calculator		exec /home/mss/.fehb.def
-bindsym $mod+Shift+XF86Calculator	exec feh --bg-fill			/home/mss/cust/other/black.png
+bindsym	$mod+Delete			exec feh --bg-fill --randomize		/home/mss/cust/chan
+bindsym	$mod+Shift+Delete		exec /home/mss/.fehb.def
+bindsym $mod+Space+Delete		exec feh --bg-fill			/home/mss/cust/other/black.png
 
 # alsa controls
 bindsym XF86AudioRaiseVolume		exec amixer set Master	3dB+	&& pkill -RTMIN+1 i3blocks 
@@ -152,6 +152,6 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 
 
 ### autostart ###
-exec_always				xrandr --output VGA-1 --primary
+#exec_always				xrandr --output VGA-1 --primary
 exec --no-startup-id			cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
 exec_always --no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
