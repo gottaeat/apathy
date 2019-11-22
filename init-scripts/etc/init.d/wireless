@@ -8,6 +8,9 @@
 
 . /mss/bin/apathy-funcs-init
 
+# do `wpa_passphrase SSID PASSWORD > ${WPACONFIG}`
+# to generate the config to be used by wpa_supplicant
+
 IFACE=wlan0
 IP=192.168.1.32
 GATEWAY=192.168.1.1
