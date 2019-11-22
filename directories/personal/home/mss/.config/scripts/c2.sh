@@ -20,7 +20,10 @@ do
           | grep Core\ ${core} \
           | awk '{gsub("+",""); gsub("°C",""); print $3"c"}')
 
- echo "${perc}%(${temps}) " > /tmp/cpu${core}.tmp
+ if [ -z "${temps}" ]
+  then echo "${perc}%" > /tmp/cpu${core}.tmp
+  else echo "${perc}%(${temps}) " > /tmp/cpu${core}.tmp
+ fi
 done
 
 results=$(for file in /tmp/cpu[[:digit:]].tmp; do cat $file; done)
