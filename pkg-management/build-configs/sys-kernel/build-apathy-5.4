@@ -16,7 +16,7 @@ _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
 _confdir="${_repodir}/configs"
 
-confname="5.4-apathy-libre-gcc-lz4-19-nov-2019.config"
+confname="5.4-apathy-nonfree-t420-gcc-21-nov-2019.config"
 _useconf="${_confdir}/5.4/${confname}"
 localver="5.4-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -109,9 +109,9 @@ evalretkill
 
 # d5 >> apply patches
 aprint_nc
-aprint "deblobbing the kernel."
-apply_deblob
-apply_freedo
+#aprint "deblobbing the kernel."
+#apply_deblob
+#apply_freedo
 
 aprint "applying the apathy patchset."
 apply_apathy
