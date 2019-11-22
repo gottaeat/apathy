@@ -1,0 +1,75 @@
+#!/mss/bin/sh
+# wireless init script for sysvinit
+# apathy 1.2 - mssx86 (mss@waifu.club)
+
+# default-start --> 3 4 5
+# default-stop ---> 0 1 2 6
+# description ----> starts and configures the network adapters.
+
+. /mss/bin/apathy-funcs-init
+
+IFACE=wlan0
+IP=192.168.1.32
+GATEWAY=192.168.1.1
+PREFIX=24
+BROADCAST=192.168.1.99
+WPACONFIG=/etc/wpa_supplicant/mssNetwork.conf
+
+case "${1}" in
+ start)
+  ### connect via wpa_supplicant
+  log_info_msg "connecting to wlan via ${c_lcyan}wpa_supplicant${c_reset}."
+  wpa_supplicant -B -i "${IFACE}" -c "${WPACONFIG}" > /dev/null 2>&1
+  evalret
+
+  ### add ip to interface
+  if [ "$(ip addr show ${IFACE} 2>/dev/null | grep ${IP}/)" = "" ]
+   then
+    log_info_msg "adding ipv4 address ${c_lcyan}${IP}${c_reset} to ${c_lcyan}${IFACE}${c_reset}."
+    ip addr add "${IP}"/"${PREFIX}" broadcast "${BROADCAST}" dev "${IFACE}"
+    evalret
+   else
+    log_warning_msg "ipv4 address ${c_lcyan}${IP}${c_reset} already present at ${c_lcyan}${IFACE}${c_reset}."
+  fi
+  
+  ### bring up the interface
+  ip link set ${IFACE} up
+ 
+  ### set up the default gateway
+  if [ -z "$(ip route | grep -q default)" ]; then
+   log_info_msg "setting up default gateway."
+   ip route add default via ${GATEWAY} dev ${IFACE}
+   evalret
+  fi
+ ;;
+
+ stop)
+  ### remove ip from interface
+  if [ -n "$(ip addr show ${IFACE} 2>/dev/null | grep ${IP}/)" ]; then
+    log_info_msg "removing ipv4 address ${c_lcyan}${IP}${c_reset} from the ${c_lcyan}${IFACE}${c_reset}."
+    ip addr del  "${IP}"/"${PREFIX}" broadcast "${BROADCAST}" dev "${IFACE}"
+    evalret
+  fi
+
+  ### remove the gateway
+  if [ -n "$(ip addr show ${IFACE} 2>/dev/null | grep 'inet ')" ]; then
+    log_info_msg "removing default gateway."
+    ip route del default > /dev/null 2>&1
+    evalret
+  fi
+
+  ### bring down the interface
+  if [ -n "$(ip link show ${IFACE} | grep UP > /dev/null 2>&1)" ]; then
+    if [ -n "$(ip addr show ${IFACE} | grep 'inet ')" ]; then
+      log_info_msg "bringing down the ${c_lcyan}${IFACE}${c_reset} interface."
+      ip link set ${IFACE} down
+      evalret
+    fi
+  fi
+ ;;
+
+ restart)	${0} stop; sleep 1; ${0} start ;;
+ *)		printf "usage: ${0} {start|stop|restart}.\n"; exit 1 ;;
+esac
+
+exit 0
