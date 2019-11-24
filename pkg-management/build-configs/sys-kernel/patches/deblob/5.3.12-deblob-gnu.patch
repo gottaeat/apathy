@@ -700,18 +700,6 @@ diff -druN linux-5.3.12/Documentation/x86/microcode.rst linux-libre-5.3.12-gnu/D
  
  so that the build system can find those files and integrate them into
  the final kernel image. The early loader finds them and applies them.
-diff -druN linux-5.3.12/Makefile linux-libre-5.3.12-gnu/Makefile
---- linux-5.3.12/Makefile	2019-11-20 18:49:17.000000000 +0300
-+++ linux-libre-5.3.12-gnu/Makefile	2019-11-24 02:43:18.068207797 +0300
-@@ -2,7 +2,7 @@
- VERSION = 5
- PATCHLEVEL = 3
- SUBLEVEL = 12
--EXTRAVERSION =
-+EXTRAVERSION = -gnu
- NAME = Bobtail Squid
- 
- # *DOCUMENTATION*
 diff -druN linux-5.3.12/README linux-libre-5.3.12-gnu/README
 --- linux-5.3.12/README	2019-11-20 18:49:17.000000000 +0300
 +++ linux-libre-5.3.12-gnu/README	2019-11-24 02:43:18.076207797 +0300
