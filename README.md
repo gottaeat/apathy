@@ -16,7 +16,7 @@ an existing irc channel on freenode can be found at `#apathy-linux` if one wants
 #### overview
 ```
 toolchain:
- * gcc 9.2.1-20191116 (c,c++), isl 0.21, argp-standalone 1.3
+ * gcc 9.2.1-20191123 (c,c++), isl 0.21, argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.1.2, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
@@ -42,15 +42,13 @@ shells:
 ```
 
 #### about proprietary software under apathy-musl
-~~apathy-musl in its current state is completely free software, including the kernel and the firmware.~~
-apathy-musl *was* and still mostly is *free software*, except for the firmware blobs in the kernel required by my thinkpad t420 to function properly.
+apathy-musl in its current state is completely free software, including the kernel and the firmware.
 
 #### current package count and total system size
 ```
  $  ~: pkg
 
- > total partition size : 1599.2mib
- > local package count  : 346
+ > total partition size : 1584.12mib
+ > local package count  : 345
  > removed packages     : 7
-
 ```
