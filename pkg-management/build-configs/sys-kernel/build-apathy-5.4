@@ -16,7 +16,7 @@ _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
 _confdir="${_repodir}/configs"
 
-confname="5.4-apathy-nonfree-t420-gcc-21-nov-2019.config"
+confname="5.4-apathy-libre-gcc-bmq-27-oct-2019.config"
 _useconf="${_confdir}/5.4/${confname}"
 localver="5.4-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -37,15 +37,37 @@ apply_freedo(){
 
 apply_apathy(){
  _apatches="
-         0001-bfq-patches-paolo.patch
-         0002-gcc9x-cpu-family-optimizations.patch
-         0003-mss-optimize-with-O3.patch
-	 0004-ohgodohfuck-panic.patch"
+ 	 0001-Kconfig.iosched-set-default-value.patch
+	 0002-Make-bfq-disable-iocost-when-enabled.patch
+	 0003-bfq-Skip-tracing-hooks-if-possible.patch
+	 0004-present-a-double-cgroups-interface.patch
+	 0005-Fix-depends-for-BLK_DEV_ZONED.patch
+	 0006-set-rq_affinity-2.patch
+	 0007-cpu-family-specific-optimization.patch
+	 0008-make-O3-always-available.patch
+	 0009-Implement-mechanism-to-wait.patch
+	 0010-Split-key-setup-from-key-queue-locking.patch
+	 0011-kbuild-add-fcf-protection-none.patch
+	 0012-loop-Better-discard-for-block-devices.patch
+	 0013-allow-configure-cake-qdisc-as-default.patch
+	 0014-add-trace-events-for-open-exec-and-uselib.patch
+	 0015-ohgodohfuck-panic.patch"
 
  for pp in $_apatches
   do
    aprint_patch "applying" "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.4/${pp} >>/tmp/kernel-build.log 2>&1
+   evalretkill
+  done
+}
+
+apply_alfredchen(){
+ _alpatches="0001-bmq_v5.4-r0.patch"
+
+ for pp in $_alpatches
+  do
+   aprint_patch "applying" "${pp}"
+   patch -p1 < "${patchdir}"/apathy/5.4/alfredchen/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
 }
@@ -109,9 +131,12 @@ evalretkill
 
 # d5 >> apply patches
 aprint_nc
-#aprint "deblobbing the kernel."
-#apply_deblob
-#apply_freedo
+aprint "deblobbing the kernel."
+apply_deblob
+apply_freedo
+
+aprint "applying the alfredchen bmq patches."
+apply_alfredchen
 
 aprint "applying the apathy patchset."
 apply_apathy
@@ -137,7 +162,8 @@ read answerbuildkern
 if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
  then
   aprint_ret "running make, do tail -f /tmp/kernel-build.log to view."
-  CFLAGS="-pipe" make CC=x86_64-apathy-linux-musl-gcc V=1 \
+  make \
+   CC=x86_64-apathy-linux-musl-gcc \
    -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
   evalretkill
  else
