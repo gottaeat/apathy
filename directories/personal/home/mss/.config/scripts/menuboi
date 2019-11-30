@@ -1,0 +1,16 @@
+#!/mss/bin/sh
+sel=$(printf "apathy-browser\nkill-i3\nkill-jwm\n" | dmenu -b -p "meh:")
+
+case "$sel" in
+ kill-jwm)
+  kill -SIGKILL $(pidof apathy-browser)
+  jwm -exit
+ ;;
+ kill-i3)
+  kill -SIGKILL $(pidof apathy-browser)
+  i3-msg exit &
+ ;;
+ apathy-browser)
+  apathy-browser
+ ;;
+esac

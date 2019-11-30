@@ -43,6 +43,14 @@ signal=1
 separator_block_width=5
 separator=false
 
+[mpdvol]
+command=~/.config/scripts/mpdvol
+interval=1
+color=#999999
+signal=1
+separator_block_width=4
+separator=false
+
 [capture-alsa]
 command=~/.config/scripts/capture-alsa
 interval=1

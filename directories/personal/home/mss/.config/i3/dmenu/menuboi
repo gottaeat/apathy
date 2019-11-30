@@ -1,7 +1,0 @@
-#!/bin/sh
-sel=$(printf "apathy-browser\nkill-i3\n" | dmenu -b -p "meh:")
-
-case "$sel" in
- kill-i3)		i3-msg exit & ;;
- apathy-browser)	apathy-browser ;;
-esac
