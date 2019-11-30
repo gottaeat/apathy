@@ -3,7 +3,7 @@
 rootcheck
 
 if	[ -z "$1" ];		then printf "\n ! no mount point selected, exiting.\n\n";		exit 1
-elif	[ -z "$2" ];		then printf "\n ! no shell selected, exiting.\n\n";			exit 1
+elif	[ -z "$2" ];		then printf "\n ! no user selected, exiting.\n\n";			exit 1
 fi
 
 printf " * allowing all connections to X.\n" && xhost + &&
@@ -13,7 +13,17 @@ printf " * mounting.\n" &&
  mount --make-rslave --rbind /sys "$1"/sys &&
  mount --make-rslave --rbind /dev "$1"/dev &&
  mount --make-rslave --rbind /run "$1"/run &&
-printf " * mounted, chrooting.\n" && chroot "$1" "$2"
+printf " * mounted, chrooting.\n" &&
+
+chroot "$1" \
+ /bin/env -i \
+ HOME=/home/mss \
+ TERM="$TERM" \
+ PS1='[chroot] : ' \
+ PATH=/bin:/usr/bin:/sbin:/usr/sbin \
+ DISPLAY=:0 \
+ /bin/su - $2
+
 printf " * exited chroot, umounting.\n" &&
  umount -l "$1"/proc &&
  umount -l "$1"/sys &&
