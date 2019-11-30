@@ -2,17 +2,20 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-rm -rfv  /var/log/Xorg*
+cd /var/log
 
-printf '' > /var/log/auth.log
-printf '' > /var/log/boot.log
-printf '' > /var/log/daemon.log
-printf '' > /var/log/iptables.log
-printf '' > /var/log/kern.log
-printf '' > /var/log/lastlog
-printf '' > /var/log/mail.log
-printf '' > /var/log/sys.log
-printf '' > /var/log/user.log
+for log in *
+ do
+  if [ -f "${log}" ]
+   then
+    aprint_ret "cleaning ${c_lcyan}${log}${c_reset}." 
+    printf '' > "${log}"
+    evalret
+   else
+    aprint_fail "${c_lcyan}${log}${c_reset} is a directory."
+  fi
+ done
 
-printf '' > /var/run/bootlog
-printf " * done.\n"
+aprint_ret "cleaning ${c_lcyan}/var/lib/mpd/log${c_reset}."
+printf '' > /var/lib/mpd/log
+evalret
