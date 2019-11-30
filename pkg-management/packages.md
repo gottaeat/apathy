@@ -90,7 +90,7 @@
 ### xorg fuckery
 
 [d]	> util-macros-1.19.2
-[d]	> xorgproto-2019.1
+[d]	> xorgproto-2019.2
 [d]	> libxau-1.0.9 
 [d]	> libxdmcp-1.1.3
 [d]	> xcb-proto-1.13
