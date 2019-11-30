@@ -1,0 +1,10 @@
+#!/mss/bin/sh
+vol=$(mpc vol | sed 's/volume://;s/[[:space:]]//g;')
+
+[ "${vol}" = "0%" ] && echo "muted" || echo "${vol}"
+
+case $BLOCK_BUTTON in
+ 3) mpc toggle; pkill -RTMIN+1 i3blocks ;;
+ 4) mpc vol +5; pkill -RTMIN+1 i3blocks ;;
+ 5) mpc vol -5; pkill -RTMIN+1 i3blocks ;;
+esac
