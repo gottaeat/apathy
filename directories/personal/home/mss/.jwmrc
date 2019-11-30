@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<JWM>
+ <!-- rootmenus -->
+ <RootMenu onroot="3" height="5" labeled="true" label="apathy">
+  <Program label="st">st</Program>
+  <Program label="apathy-browser">apathy-browser</Program>
+  <Program label="mpc toggle">mpc toggle</Program>
+   <Separator/>
+  <SendTo label="send window to"/>
+   <Separator/>
+  <Restart label="restart"/>
+  <Exit label="exit" confirm="true"/>
+ </RootMenu>
+
+ <!-- tray -->
+ <Tray x="0" y="-1" height="15" valign="top" autohide="off" layer="above">
+  <Pager labeled="true"/>
+   <Spacer width="10"/>
+  <TaskList maxwidth="100"/>
+   <Spacer width="10"/>
+  <TrayButton label="toggle">exec:mpc toggle</TrayButton>
+  <TrayButton label="next">exec:mpc next</TrayButton>
+  <TrayButton label="prev">exec:mpc prev</TrayButton> 
+  <TrayButton label="+">exec:mpc vol +5</TrayButton> 
+  <TrayButton label="-">exec:mpc vol -5</TrayButton> 
+   <Spacer width="10"/>
+  <Dock/>
+   <Spacer width="10"/>
+  <Clock format="%a %d %I:%M"></Clock>
+ </Tray>
+
+ <!-- groups -->
+ <Group>
+  <Option>aerosnap</Option>
+ </Group>
+
+ <Group><Class>st-256color</Class>
+  <Option>centered</Option>
+ </Group>
+ <Group><Class>Pale moon</Class>
+  <Option>desktop:2</Option>
+  <Option>layer:below</Option>	 
+ </Group>
+ <Group><Class>discord</Class>
+  <Option>desktop:4</Option>
+  <Option>maximized</Option>
+ </Group>
+ 
+ <!-- fonts, colors, opacity -->
+ <WindowStyle>
+  <Font>euphon-9</Font>
+  <Width>2</Width>
+  <Height>12</Height>
+  <Corner>0</Corner>
+  <Foreground>#F7F7F7</Foreground>
+  <Background>#252525</Background>
+  <Outline>#101010</Outline>
+  <Opacity>1</Opacity>
+  <Active>
+   <Foreground>#FFFFFF</Foreground>
+   <Background>#464646</Background>
+   <Outline>#101010</Outline>
+   <Opacity>1</Opacity>
+  </Active>
+ </WindowStyle>
+
+ <TrayStyle group="true" list="all">
+  <Font>euphon-9</Font>
+  <Background>#101010</Background>
+  <Foreground>#FFFFFF</Foreground>
+  <Outline>#000000</Outline>
+  <Opacity>1</Opacity>
+ </TrayStyle>
+
+ <TaskListStyle>
+  <Font>euphon-9</Font>
+  <Foreground>#F7F7F7</Foreground>
+  <Background>#252525</Background>
+  <Active>
+   <Foreground>#FFFFFF</Foreground>
+   <Background>#464646</Background>
+  </Active>
+ </TaskListStyle>
+
+ <PagerStyle>
+  <Outline>#101010</Outline>
+  <Foreground>#E3E3E3</Foreground>
+  <Background>#252525</Background>
+  <Text>#FFFFFF</Text>
+  <Active>
+   <Foreground>#ABABAB</Foreground>
+   <Background>#464646</Background>
+  </Active>
+ </PagerStyle>
+
+ <MenuStyle>
+  <Font>euphon-9</Font>
+  <Foreground>#F7F7F7</Foreground>
+  <Background>252525</Background>
+  <Outline>#000000</Outline>
+   <Active>
+    <Foreground>#FFFFFF</Foreground>
+    <Background>#252525</Background>
+   </Active>
+  <Opacity>1</Opacity>
+ </MenuStyle>
+ 
+ <PopupStyle>
+  <Font>euphon-9</Font>
+  <Foreground>#FFFFFF</Foreground>
+  <Background>#252525</Background>
+ </PopupStyle>
+
+ <!-- path to search for icons -->	 
+ <IconPath>/usr/share/icons/wm-icons/32x32-aquafusion</IconPath>
+
+ <!-- workspaces -->
+ <Desktops width="4" height="1">
+  <Background type="command">/home/mss/.fehbg</Background>
+ </Desktops>
+
+ <!-- misc -->
+ <DoubleClickSpeed>400</DoubleClickSpeed>
+ <DoubleClickDelta>2</DoubleClickDelta>
+ <FocusModel>sloppy</FocusModel>
+ <SnapMode distance="10">border</SnapMode>
+ <MoveMode coordinates="window">opaque</MoveMode>
+ <ResizeMode coordinates="window">opaque</ResizeMode>
+
+ <!-- Key bindings -->
+  <!-- generic -->
+  <Key mask="4"   key="B">exec:/mss/bin/switchcompositor</Key>
+  <Key mask="4"   key="P">exec:/home/mss/.config/scripts/maimscrot</Key>
+  <Key mask="4:S" key="P">exec:/home/mss/.config/scripts/maimclip</Key>
+  <Key mask="4"   key="O">exec:/home/mss/.config/scripts/maimcrop</Key>
+  <Key mask="4:S" key="D">exec:/home/mss/.config/scripts/menuboi</Key>
+  <Key mask="4"   key="D">exec:dmenu_run -b</Key>
+
+  <!-- kb specific -->
+  <Key            key="XF86Calculator"> exec:feh --bg-fill --randomize /home/mss/cust/chan</Key>
+  <Key mask="4"   key="XF86Calculator"> exec:/home/mss/.fehb.def</Key>
+  <Key mask="4:S" key="XF86Calculator"> exec:exec feh --bg-fill /home/mss/cust/other/black.png</Key>
+  <Key            key="Pause">          exec:xtrlock</Key>
+ 
+  <!-- alsa controls -->
+  <Key            key="XF86AudioRaiseVolume"> exec:amixer set Master  3dB+</key>
+  <Key            key="XF86AudioLowerVolume"> exec:amixer set Master  3dB-</key>
+  <Key mask="4:S" key="XF86AudioRaiseVolume"> exec:amixer set Capture 3dB-</key>
+  <Key mask="4:S" key="XF86AudioLowerVolume"> exec:amixer set Capture 3dB-</key>
+  <Key            key="XF86AudioMute">        exec:amixer set Master  toggle</key>
+  <Key            key="XF86AudioMedia">       exec:amixer set Capture toggle</key>
+
+  <!-- mpd controls -->
+  <Key mask="4"   key="XF86AudioRaiseVolume"> exec:mpc volume +5</key>
+  <Key mask="4"   key="XF86AudioLowerVolume"> exec:mpc volume -5</key>
+  <Key            key="XF86AudioPlay">        exec:mpc toggle</key>
+  <Key            key="XF86AudioStop">        exec:mpc stop</key>
+  <Key            key="XF86AudioNext">        exec:mpc next</key>
+  <Key            key="XF86AudioPrev">        exec:mpc prev</key>
+
+  <!-- jwm -->
+  <Key mask="4"   key="Return">     exec:st</Key>
+  <Key mask="4"   key="#">          desktop#</Key>
+  <Key mask="4:S" key="R">          restart</Key>
+  <Key mask="4"   key="F">          maximize</Key>
+  <Key mask="4:S" key="Q">          close</Key>
+  <Key mask="A"   key="Tab">        nextstacked</Key>
+  <Key mask="A"   key="Right">      rdesktop</Key>
+  <Key mask="A"   key="Left">       ldesktop</Key>
+  <Key mask="4:S" key="Right">      sendr</Key>
+  <Key mask="4:S" key="Left">       sendl</Key>
+  <Key mask="4:S" key="E">          move</Key>
+  <Key mask="4"   key="R">          resize</Key>
+  <Key            key="Up">         up</Key>
+  <Key            key="Down">       down</Key>
+  <Key            key="Right">      right</Key>
+  <Key            key="Left">       left</Key>
+  <Key            key="Return">     select</Key>
+  <Key            key="Escape">     escape</Key>
+
+  <!-- start/shut commands -->
+  <StartupCommand>exec:/mss/bin/switchcompositor</StartupCommand>
+  <StartupCommand>xrandr --output VGA-1 --primary</StartupCommand>
+  <StartupCommand>cp /home/mss/.fehbg /home/mss/.fehb.def</StartupCommand>
+  <StartupCommand>setxkbmap us,tr -option 'grp:alt_shift_toggle'</StartupCommand>
+</JWM>

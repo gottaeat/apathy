@@ -14,4 +14,5 @@ xset -dpms
 xset s noblank
 
 # wm
-exec i3
+#exec i3
+exec jwm
