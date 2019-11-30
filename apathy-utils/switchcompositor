@@ -1,0 +1,7 @@
+#!/mss/bin/sh
+_pidboi=$(pidof xcompmgr) 
+
+if [ -z ${_pidboi}  ]
+ then xcompmgr &
+ else kill -9 ${_pidboi}
+fi
