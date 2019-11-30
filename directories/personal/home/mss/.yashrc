@@ -1,11 +1,8 @@
 ##### ~/.yashrc
 ### variables
 # path and lang
-export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
+export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin:/home/mss/execs"
 export LANG="en_US.utf8"
-
-# export if under musl
-read dingdong < /mss/machtype.txt
 
 # stuff taken from gentoo
 export LESS="-R -M --shift 5"
@@ -14,16 +11,10 @@ export GSETTINGS_BACKEND="dconf"
 
 ### compile bits
 export MAKEFLAGS="-j 3"
-
-if [ "${dingdong}" = "musl" ]
-then
- export CHOST="x86_64-linux-musl"
- export CBUILD="${CHOST}"
- export ARCH="x86_64"
- export BUILDTRUPLE="--build=${CBUILD} --host=${CHOST}"
- export XORG_PREFIX=/usr
- export XORG_CONFIG="--prefix=$XORG_PREFIX --sysconfdir=/etc --localstatedir=/var --disable-static --build=$CBUILD --host=$CHOST"
-fi
+export CHOST="x86_64-apathy-linux-musl"
+export CBUILD="${CHOST}"
+export ARCH="x86_64"
+export BUILDTRUPLE="--build=${CBUILD} --host=${CHOST}"
  
 # default programs
 export EDITOR="/usr/bin/vim"
@@ -51,7 +42,7 @@ FCEDIT="/usr/bin/vim"
 [ $(id -u) -eq 0 ] && rewt=1 || rewt=0
 
 case $TERM in
- *rxvt*)
+ *rxvt*|st-*)
   [ "${rewt}" -eq 1 ] \
    && YASH_PS1='\fwG # \fMr ${${PWD:/~/\~}##*/}:\fD ' \
    || YASH_PS1='\fwG $ \fMr ${${PWD:/~/\~}##*/}:\fD '
@@ -140,6 +131,7 @@ alias lll="ls -la --color=tty"
 alias grep="grep --color=auto"
 alias poz="yash --posix"
 alias mpv="mpv --vo=gpu,drm"
+alias fetchall="clear;fetch | tail -14;pver | tail -5;pkg | tail -6"
 ##b tmux
 alias td="tmux detach"
 alias ta="tmux attach"
