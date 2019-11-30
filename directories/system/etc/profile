@@ -8,7 +8,6 @@ export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
 export LANG="en_US.utf8"
 
 # stuff taken from gentoo
-export GCC_SPECS=""
 export LESS="-R -M --shift 5"
 export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"

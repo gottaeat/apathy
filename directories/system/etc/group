@@ -9,7 +9,7 @@ floppy:x:7:mss
 disk:x:8:mss
 lp:x:9:
 dialout:x:10:
-audio:x:11:mss,root,mpd
+audio:x:11:mss,mpd
 video:x:12:mss
 utmp:x:13:
 usb:x:14:mss
@@ -18,7 +18,7 @@ adm:x:16:
 messagebus:x:18:
 input:x:24:mss
 mail:x:34:mss
-kvm:x:61:mss,root
+kvm:x:61:
 wheel:x:97:mss
 nogroup:x:99:
 users:x:999:

@@ -1,17 +1,19 @@
-#[sda5][ext4][apathy-mlfs]
-/dev/sda5	/		ext4		defaults					1	1
-
-#[sda6][ext4][apathy-glibc]
-/dev/sda6	/mnt/mss/apathy	ext4		rw,relatime,data=ordered			0	3
+#[sda5][ext4][apathy-musl]
+/dev/sda1	/		ext4		defaults					0	1
 
 #[sda7][swap][apathy swap]
-/dev/sda7	swap		swap		pri=100						0	0
+/dev/sda2	swap		swap		pri=100						0	2
 
 #[sda2][ext4][stuff storage]
-/dev/sda2	/mnt/mss/stuff	ext4		rw,relatime,data=ordered			0	2
+/dev/sda3	/mnt/mss/stuff	ext4		rw,relatime,data=ordered			0	2
+
+#[sdb1][ext4][stuff animu]
+/dev/sdb2	/mnt/mss/animu	ext4		rw,relatime,data=ordered			0	2
 
 ## mount home
 /mnt/mss/stuff/techy-bits/local-backup /home/mss auto defaults,nofail,nobootwait,bind           0       2
+## mount animu
+/mnt/mss/animu/anime /mnt/mss/stuff/media/anime auto defaults,nofail,nobootwait,bind		0	2
 
 ## virtfs+tmpfs
 proc		/proc		proc		nosuid,noexec,nodev				0	0
@@ -19,4 +21,4 @@ sysfs		/sys		sysfs		nosuid,noexec,nodev				0	0
 devpts		/dev/pts	devpts		gid=5,mode=620					0	0
 tmpfs		/run		tmpfs		defaults					0	0
 devtmpfs	/dev		devtmpfs	mode=0755,nosuid				0	0
-tmpfs		/mnt/mss/ram	tmpfs		nodev,nosuid,size=5120M				0	0
+tmpfs		/mss/ram	tmpfs		nodev,nosuid,size=5120M				0	0
