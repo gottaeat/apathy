@@ -1,0 +1,24 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+
+triplet=$(cc -dumpmachine)
+ccver=$(cc --version | head -1)
+init=$(/sbin/init --version | awk 'NR==1 {print tolower($1)$2,$4}')
+
+case ${triplet} in
+ *gnu*)
+  _vlibc=$(ldd --version | awk 'NR==1 {print $4}')
+  _libc="glibc ${_vlibc} ($(uname -m))"
+ ;;
+ *musl*)
+  _vlibc=$(ldd 2>&1 | awk 'NR==2 {print $2}')
+  _libc="musl ${_vlibc} ($(uname -m))"
+ ;;
+esac
+
+aprint_nc
+lsdetail "init" "${init}"
+lsdetail "libc" "${_libc}"
+lsdetail "trpl" "${triplet}"
+lsdetail "cc"   "${ccver}"
+aprint_nc
