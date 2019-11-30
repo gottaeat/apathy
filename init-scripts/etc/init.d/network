@@ -17,17 +17,17 @@ ifacelist=$(cat /proc/net/dev   \
 
 case "${ifacelist}" in
  wlan0)
-  export IFACE=wlan0
+  export IFACE="wlan0"
  ;;
  *)
-  _iface=eth0
-  if [ -z $(grep "${_iface}" /proc/net/dev) ]
+  _iface="eth0"
+  if [ -z "$(grep "${_iface}" /proc/net/dev)" ]
    then
     log_failure_msg "${c_lcyan}wlan0${c_reset} or ${c_lcyan}${_iface}${c_reset} does not exist."
     log_failure_msg "not connecting to the internet."
     exit 1
    else
-    export IFACE=eth0
+    export IFACE="eth0"
   fi
  ;;
 esac
@@ -49,7 +49,7 @@ case "${1}" in
   fi
 
   ### add ip to interface
-  if [ "$(ip addr show ${IFACE} 2>/dev/null | grep ${IP}/)" = "" ]
+  if [ -z "$(ip addr show ${IFACE} 2>/dev/null | grep ${IP}/)" ]
    then
     log_info_msg "adding ipv4 address ${c_lcyan}${IP}${c_reset} to ${c_lcyan}${IFACE}${c_reset}."
     ip addr add "${IP}"/"${PREFIX}" broadcast "${BROADCAST}" dev "${IFACE}"
