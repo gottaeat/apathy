@@ -1,11 +1,6 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-#printf "\n${c_green}  __,  ,_   __,  -/- /_
-# (_/(__/_)_(_/(__/__/ (__(_/_
-#      /                  _/_
-#     /                  (/${c_reset}\n"
-
 aprint_ret "${c_red}
   __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
@@ -14,30 +9,22 @@ aprint_ret "${c_red}
 aprint_nc
 
 dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
+read model < /sys/devices/virtual/dmi/id/product_name
+read _host < /etc/hostname
 cpu=$(awk '/model name/ {print $5,$7}' /proc/cpuinfo | tail -1)
 freq=$(awk '/MHz/ {print int($4)"mhz"}' /proc/cpuinfo | tail -1)
-kern=$(uname -r)
+kern_pre=$(uname -r)
+kern="${kern_pre%%-*} (${kern_pre#*-})"
 _binsh="$(file /bin/sh | awk '{gsub(" symbolic link to",""); sub(/\/bin\//, "", $2) }1')"
 _sh="$(basename $SHELL) $($SHELL --version | awk 'NR==1 {print $5}') (${_binsh})"
 upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minutes\?/m/')
 mem=$(free --mebi | awk 'NR==2 {print $3"/"$2"mib"}')
 
-case $(gcc -dumpmachine) in
- *gnu*)
-  _vlibc=$(ldd --version | awk 'NR==1 {print $4}')
-  _libc="glibc ${_vlibc} ($(uname -m))"
- ;;
- *musl*)
-  _vlibc=$(ldd 2>&1 | awk 'NR==2 {print $2}')
-  _libc="musl ${_vlibc} ($(uname -m))"
- ;;
-esac
-
-aprint "${c_green}dist\t${c_blue}:${c_reset} ${dist}"
-aprint "${c_green}libc\t${c_blue}:${c_reset} ${_libc}"
-aprint "${c_green}kern\t${c_blue}:${c_reset} ${kern}"
-aprint "${c_green}sh\t${c_blue}:${c_reset} ${_sh}"
-aprint "${c_green}upt\t${c_blue}:${c_reset} ${upt}"
-aprint "${c_green}cpu\t${c_blue}:${c_reset} ${cpu} @ ${freq}"
-aprint "${c_green}mem\t${c_blue}:${c_reset} ${mem}"
+lsdetail "os"   "${dist}"
+lsdetail "kern" "${kern}"
+lsdetail "host" "${_host} (${model})"
+lsdetail "sh"   "${_sh}"
+lsdetail "cpu"  "${cpu} @ ${freq}"
+lsdetail "mem"  "${mem}"
+lsdetail "upt"  "${upt}"
 aprint_nc
