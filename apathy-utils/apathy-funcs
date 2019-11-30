@@ -21,15 +21,23 @@ succ_end="${c_green} done${c_reset}"
 fail_end="${c_red} failed${c_reset}"
 memearrow="${c_lcyan} > ${c_reset}"
 askq="${c_blue} ? ${c_reset}"
-# printing
-aprint(){ printf "${memearrow}${@}\n"; return 0; }
-aprint_xn(){ printf "${sbefore}${@}"; return 0; }
-aprint_nc(){ printf "\n"; }
-aprint_ret(){ printf "${sbefore}${@}"; return 0; }
-aprint_succ(){ printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
-aprint_fail(){ printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
-aprint_ask(){ printf "${askq}${@}"; return 0; }
 
+# printing
+aprint(){       printf "${memearrow}${@}\n"; return 0; }
+aprint_nm(){    printf "${sbefore}${@}\n";     return 0; }
+aprint_ret(){   printf "${sbefore}${@}";     return 0; }
+aprint_ask(){   printf "${askq}${@}";        return 0; }
+
+aprint_nc(){    printf "\n"; }
+aprint_succ(){  printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
+aprint_fail(){  printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
+
+aprint_patch(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}.";  return 0; }
+aprint_pvars(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}\n"; return 0; }
+
+lsdetail(){     aprint "${c_green}${1}\t${c_blue}:${c_reset} ${2}";}
+
+# evaluation
 evalret(){
  local error_value="${?}"
  if [ ${error_value} = 0 ]; then aprint_succ; else aprint_fail; fi
