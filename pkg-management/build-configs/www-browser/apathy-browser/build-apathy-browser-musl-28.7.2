@@ -24,10 +24,9 @@ export pkgver=28.7.2								&&
 export _pmappdir=/usr/lib/apathy-browser-${pkgver}				&&
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"					&&
 export MOZCONFIG="$srcdir/mozconfig"						&&
-export CPPFLAGS=" -pipe -O2"							&&
-export CFLAGS="${CPPFLAGS}"							&&
-export CXXFLAGS="${CPPFLAGS}"							&&
-export LDFLAGS=" -Wl,-rpath,${_pmappdir}"
+export CFLAGS="-march=native -O2 -pipe -fstack-protector-strong"		&&
+export CXXFLAGS="${CFLAGS}"							&&
+export LDFLAGS="-Wl,-rpath,${_pmappdir}"
 evalretkill
 
 # d1 >> extract tarball
@@ -72,16 +71,15 @@ evalretkill
 
 # d8 >> print mach vars
 aprint_nc
-aprint "srcdir\t\t: ${c_lcyan}${srcdir}${c_reset}"
-aprint "pkgname\t\t: ${c_lcyan}${pkgname}${c_reset}"
-aprint "pkgver\t\t: ${c_lcyan}${pkgver}${c_reset}"
-aprint "_pmappdir\t\t: ${c_lcyan}${_pmappdir}${c_reset}"
-aprint "mozbuild_state_path\t: ${c_lcyan}${MOZBUILD_STATE_PATH}${c_reset}"
-aprint "mozconfig\t\t: ${c_lcyan}${MOZCONFIG}${c_reset}"
-aprint "cppflags\t\t: ${c_lcyan}${CPPFLAGS}${c_reset}"
-aprint "cxxflags\t\t: ${c_lcyan}${CXXFLAGS}${c_reset}"
-aprint "cflags\t\t: ${c_lcyan}${CFLAGS}${c_reset}"
-aprint "ldflags\t\t: ${c_lcyan}${LDFLAGS}${c_reset}"
+aprint_pvars "srcdir\t"			"${srcdir}"
+aprint_pvars "pkgname\t"		"${pkgname}"
+aprint_pvars "pkgver\t"			"${pkgver}"
+aprint_pvars "_pmappdir\t"		"${_pmappdir}"
+aprint_pvars "mozbuild_state_path"	"${MOZBUILD_STATE_PATH}"
+aprint_pvars "mozconfig\t"		"${MOZCONFIG}"
+aprint_pvars "cflags\t"			"${CFLAGS}"
+aprint_pvars "cxxflags\t"		"${CXXFLAGS}"
+aprint_pvars "ldflags\t"		"${LDFLAGS}"
 aprint_nc
 
 # d9 >> check everything and ask to run mach
@@ -101,13 +99,13 @@ read answerbuild
 
 # d10 >> ask to install build
 aprint_nc
-aprint_xn "build complete, shall we run the installer? (y/n): "
+aprint_ask "build complete, shall we run the installer? (y/n): "
 
 read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
   then
    aprint "tail -f /tmp/apathy-browser-build.log to view progress."
-   aprint_ret "installing to destdir\t: ${_instdir}"
+   aprint_ret "installing to ${c_lcyan}${_instdir}${c_reset}."
    DESTDIR="${_instdir}" python2.7 mach install >> /tmp/apathy-browser-build.log
    evalret
 
@@ -118,5 +116,5 @@ read answerinst
    evalret
   else
    aprint "not installing."
-   exit 0
+   exit 0                            
  fi
