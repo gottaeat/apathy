@@ -16,7 +16,7 @@ an existing irc channel on freenode can be found at `#apathy-linux` if one wants
 #### overview
 ```
 toolchain:
- * gcc 9.2.1-20191123 (c,c++), isl 0.21, argp-standalone 1.3
+ * gcc 9.2.1-20191130 (c,c++), isl 0.21, argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.1.2, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
@@ -48,7 +48,7 @@ apathy-musl in its current state is completely free software, including the kern
 ```
  $  ~: pkg
 
- > total partition size : 1584.12mib
+ > total partition size : 1577.71mib
  > local package count  : 345
  > removed packages     : 7
 ```
