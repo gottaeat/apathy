@@ -60,9 +60,9 @@ cp "${repo}"/files/about-background.png "${srcdir}"/application/palemoon/brandin
 evalretkill
 
 # d6 >> apply patch from bmlfs
-aprint_ret "applying font rendering fix on x86 machines."
-patch -Np0 < "${repo}"/0002-i686-fix.patch >> /tmp/apathy-browser-build.log 2>&1
-evalretkill
+#aprint_ret "applying font rendering fix on x86 machines."
+#patch -Np0 < "${repo}"/0002-i686-fix.patch >> /tmp/apathy-browser-build.log 2>&1
+#evalretkill
 
 # d7 >> run sed from arch
 aprint_ret "running sed for locale fix."
