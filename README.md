@@ -16,7 +16,7 @@ an existing irc channel on freenode can be found at `#apathy-linux` if one wants
 #### overview
 ```
 toolchain:
- * gcc 9.2.1-20191130 (c,c++), isl 0.21, argp-standalone 1.3
+ * gcc 9.2.0 (c,c++), isl 0.21, argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.1.2, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
