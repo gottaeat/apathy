@@ -1,4 +1,4 @@
 #!/mss/bin/sh
-echo $$ > /tmp/lemonbar.pid
+ps -o pgid -p "$$" | tail -1 | sed 's/ //g' > /tmp/lemonbar.pid
 (/home/mss/.config/lemonbar/pipeme | lemonbar -p -b -d -a 15 -f "euphon:pixelsize=9" -B "#000000" -F "#f7f7f7" | sh) \
- || kill -9 -$(cat /tmp/lemonbar.pid)
+ || kill -KILL -$(cat /tmp/lemonbar.pid)
