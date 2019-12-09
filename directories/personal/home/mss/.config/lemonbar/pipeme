@@ -12,6 +12,7 @@ c4='%{F#f7f7f7}'
 c5='%{F#999999}'
 c6='%{F#e62063}'
 c7='%{F#464646}'
+c8='%{F#6d7373}'
 
 sep_color="${c7}"
 sep="${c7} | ${cr}"
@@ -20,10 +21,7 @@ sep="${c7} | ${cr}"
 if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
 
 . /home/mss/.config/lemonbar/blocklets
-#cpustat &
 _pid
-bw           &
-memory       &
 _uptime      &
 _weather     &
 mpdstat      &
@@ -31,14 +29,10 @@ mpdvol       &
 workspace    &
 capture_alsa &
 master_alsa  &
+_host="$(${scriptdir}/host-ip)"
 
 while true; do
- _host="$(${scriptdir}/host-ip)"
  time=$(date '+%a %d %I:%M:%S%P')
- read bw           < "${tmpdir}"/bw
-#read cpustat      < "${tmpdir}"/cpustat
- cpustat="n/a"
- read memory       < "${tmpdir}"/memory
  read uptime       < "${tmpdir}"/uptime
  read weather      < "${tmpdir}"/weather
  read master_alsa  < "${tmpdir}"/master-alsa
@@ -49,18 +43,15 @@ while true; do
  read wspace       < "${tmpdir}"/wspace
  read _pid         < "${tmpdir}"/pid
 
-echo "%{l} pid: ${c6}${_pid}${cr}${sep}workspace: ${c3}${wspace}${cr}\
-%{r}${c1}${bw}${cr}\
-${sep}\
-${c2}${cpustat} ${memory}${cr}\
-${sep}\
-${c1}${mpdstat}${cr}\
-${sep}\
-${c2}${time}${cr} ${c3}${weather}${cr}\
+echo "%{l} ${c8}${_uptime}${cr}${sep}\
+pgid: ${c6}${_pid}${cr}${sep}\
+workspace: ${c3}${wspace}${cr}\
+%{c}${c2}${time}${cr}\
+%{r}${c1}${mpdstat}${cr}${sep}${c3}${weather}${cr}\
 ${sep}\
 ${c4}${master_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${capture_alsa}${cr}\
 ${sep}\
-${c1}${_host}${cr} ${c6}${_uptime}${cr}"
+${c1}${_host}${cr} "
 
  sleep 0.2
 done
