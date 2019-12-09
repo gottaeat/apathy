@@ -1,2 +1,0 @@
-#!/bin/env bash
-while true; do echo $(/home/mss/.config/scripts/bw) > "/tmp/lemon-netwerk.tmp"; sleep 1; done

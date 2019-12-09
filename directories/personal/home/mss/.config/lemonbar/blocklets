@@ -1,0 +1,76 @@
+#!/mss/bin/sh
+# cpustat(){ while true; do; ${scriptdir}/c2.sh > "${tmpdir}"/cpustat; sleep 0.5; done;}
+bw(){       while true; do ${scriptdir}/bw      > "${tmpdir}"/bw;      sleep 1;   done;}
+memory(){   while true; do ${scriptdir}/mem     > "${tmpdir}"/memory;  sleep 1;   done;}
+_uptime(){  while true; do ${scriptdir}/upt     > "${tmpdir}"/uptime;  sleep 60;  done;}
+_weather(){ while true; do ${scriptdir}/weather > "${tmpdir}"/weather; sleep 300; done;}
+
+capture_alsa(){
+ while true; do
+  _capture="%{A3:amixer -q -D default sset Capture toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Capture 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Capture 3dB- unmute > /dev/null:}\
+$(${scriptdir}/capture-alsa 2>/dev/null)\
+%{A}%{A}%{A}"
+  echo "${_capture}" > "${tmpdir}"/capture-alsa
+  sleep 0.5
+ done
+}
+
+master_alsa(){
+ while true; do
+  _master="%{A3:amixer -q -D default sset Master toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Master 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Master 3dB- unmute > /dev/null:}\
+$(${scriptdir}/master-alsa 2>/dev/null)\
+%{A}%{A}%{A}"
+  echo "${_master}" > "${tmpdir}"/master-alsa
+  sleep 0.5
+ done
+}
+
+mpdstat(){
+ while true;do
+  mpdstat="%{A:mpc next:}\
+%{A2:mpc toggle > /dev/null:}\
+%{A3:mpc prev > /dev/null:}\
+%{A4:mpc volume +10 > /dev/null:}\
+%{A5:mpc volume -10 > /dev/null:}\
+$(${scriptdir}/mpdstat 2>/dev/null)\
+%{A}%{A}%{A}%{A}%{A}"
+  echo "${mpdstat}" > "${tmpdir}"/mpdstat
+  sleep 0.5
+ done
+}
+
+mpdvol(){
+ while true; do
+  mpdvol="%{A3:mpc toggle> /dev/null:}\
+%{A4:mpc vol +5 > /dev/null:}\
+%{A5:mpc vol -5 > /dev/null:}\
+$(${scriptdir}/mpdvol 2>/dev/null)\
+%{A}%{A}%{A}"
+  echo "${mpdvol}" > "${tmpdir}"/mpdvol
+  sleep 0.5
+ done
+}
+
+_pid(){
+ read pid_pre < /tmp/lemonbar.pid
+ pid="%{A:kill -9 -$(cat /tmp/lemonbar.pid):}${pid_pre}%{A}"
+ echo "${pid}" > "${tmpdir}"/pid
+}
+
+workspace(){
+ while true; do
+  curr_desk=$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')
+  case ${curr_desk} in
+   1) wspace="I"	;;
+   2) wspace="II"	;;
+   3) wspace="III"	;;
+   4) wpsace="IV"	;;
+  esac
+  echo "${wspace}" > "${tmpdir}"/wspace
+  sleep 0.2
+ done
+}

@@ -1,0 +1,66 @@
+#!/mss/bin/sh
+### cfg
+scriptdir="/home/mss/.config/scripts"
+blockdir="/home/mss/.config/lemonbar/blocklets"
+tmpdir="/tmp/lemonbar"
+
+cr='%{F-}'
+c1='%{F#ababab}'
+c2='%{F#e3e3e3}'
+c3='%{F#747474}'
+c4='%{F#f7f7f7}'
+c5='%{F#999999}'
+c6='%{F#e62063}'
+c7='%{F#464646}'
+
+sep_color="${c7}"
+sep="${c7} | ${cr}"
+
+### blocklets
+if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
+
+. /home/mss/.config/lemonbar/blocklets
+#cpustat &
+_pid
+bw           &
+memory       &
+_uptime      &
+_weather     &
+mpdstat      &
+mpdvol       &
+workspace    &
+capture_alsa &
+master_alsa  &
+
+while true; do
+ _host="$(${scriptdir}/host-ip)"
+ time=$(date '+%a %d %I:%M:%S%P')
+ read bw           < "${tmpdir}"/bw
+#read cpustat      < "${tmpdir}"/cpustat
+ cpustat="n/a"
+ read memory       < "${tmpdir}"/memory
+ read uptime       < "${tmpdir}"/uptime
+ read weather      < "${tmpdir}"/weather
+ read master_alsa  < "${tmpdir}"/master-alsa
+ read mpdstat      < "${tmpdir}"/mpdstat
+ read mpdvol       < "${tmpdir}"/mpdvol
+ read capture_alsa < "${tmpdir}"/capture-alsa
+ read _uptime      < "${tmpdir}"/uptime
+ read wspace       < "${tmpdir}"/wspace
+ read _pid         < "${tmpdir}"/pid
+
+echo "%{l} pid: ${c6}${_pid}${cr}${sep}workspace: ${c3}${wspace}${cr}\
+%{r}${c1}${bw}${cr}\
+${sep}\
+${c2}${cpustat} ${memory}${cr}\
+${sep}\
+${c1}${mpdstat}${cr}\
+${sep}\
+${c2}${time}${cr} ${c3}${weather}${cr}\
+${sep}\
+${c4}${master_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${capture_alsa}${cr}\
+${sep}\
+${c1}${_host}${cr} ${c6}${_uptime}${cr}"
+
+ sleep 0.2
+done
