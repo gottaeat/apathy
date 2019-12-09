@@ -3,7 +3,5 @@ if [ -z "$(pidof lemonbar)" ]
  then
   /home/mss/.config/lemonbar/main &
  else
-  kill -9 -$(pidof lemonbar)
-  kill -9 -$(cat /tmp/lemonbar.pid)
-  for pidboi in "$(pgrep pipeme)"; do kill -9 -${pidboi}; done
+  kill -KILL -$(cat /tmp/lemonbar.pid)
 fi
