@@ -1,0 +1,5 @@
+/usr/bin/bc
+/usr/bin/dc
+
+/usr/share/info
+/usr/share/man
