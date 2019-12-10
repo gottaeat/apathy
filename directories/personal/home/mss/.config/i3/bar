@@ -65,6 +65,6 @@ separator_block_width=4
 separator=false
 
 [uptime]
-command=~/.config/scripts/uptime
+command=~/.config/scripts/upt
 interval=60
-color=#747474
+color=#e62063

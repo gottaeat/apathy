@@ -56,6 +56,8 @@ assign [class="Pale moon"]		$ws2
 assign [class="Steam"]			$ws3
 assign [class="discord"]		$ws4
 
+for_window [class="Xmessage"] floating enable
+
 # binds
 bindsym $mod+1		workspace $ws1
 bindsym $mod+2		workspace $ws2
@@ -91,7 +93,7 @@ client.urgent		#000000	#464646	#000000	#000000
 
 # meme gaps
 gaps inner 3
-gaps outer 0
+#gaps outer 0
 
 # remove window titles
 for_window [class="^.*"] border pixel 1
@@ -101,7 +103,7 @@ bar {
   id bar-1
   status_command i3blocks -c /home/mss/.config/i3/bar
   strip_workspace_numbers yes
-  position top
+  position bottom
   separator_symbol "|"
 
 colors {
