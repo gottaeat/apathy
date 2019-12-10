@@ -11,10 +11,14 @@ export GSETTINGS_BACKEND="dconf"
 
 ### compile bits
 export MAKEFLAGS="-j 3"
+#export CFLAGS="-march=native -O2 -pipe -fstack-protector-strong"
+#export CXXFLAGS="${CFLAGS}"
 export CHOST="x86_64-apathy-linux-musl"
 export CBUILD="${CHOST}"
+export CC="${CHOST}-gcc"
+export CXX="${CHOST}-g++"
 export ARCH="x86_64"
-export BUILDTRUPLE="--build=${CBUILD} --host=${CHOST}"
+export buildforapaty="--prefix=/usr --disable-static --build=${CBUILD} --host=${CHOST}"
  
 # default programs
 export EDITOR="/usr/bin/vim"
@@ -109,7 +113,7 @@ esac
 ### aliases
 ## program related
 alias tmux="tmux -2"
-alias feh="feh -d --scale-down --auto-zoom"
+alias feh="feh -d --scale-down --auto-zoom -g 1366x768"
 alias fixfuckinggpg="gpg-connect-agent updatestartuptty /bye"
 alias ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
 ## make verbose
