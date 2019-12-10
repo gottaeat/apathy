@@ -1,4 +1,3 @@
-source $VIMRUNTIME/defaults.vim
 let skip_defaults_vim=1 
 
 set backupdir=~/.config/vim/backups
@@ -14,4 +13,4 @@ set mouse=
 syntax on
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
-colorscheme desert
+colorscheme elflord
