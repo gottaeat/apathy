@@ -6,7 +6,8 @@ if [ -z "$(pidof openvpn)" ]
 fi
 
 # set interface and old data path
-bwadapter=$(ip route | awk '/^default/ {print $5}')
+#bwadapter=$(ip route | awk '/^default/ {print $5}')
+bwadapter="eth0"
 bwpath="/tmp/$(basename $0).tmp"
 
 # read rx-tx rates, save current time
