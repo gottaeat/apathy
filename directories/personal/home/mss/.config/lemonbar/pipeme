@@ -29,7 +29,6 @@ mpdvol       &
 workspace    &
 capture_alsa &
 master_alsa  &
-_host="$(${scriptdir}/host-ip)"
 
 while true; do
  time=$(date '+%a %d %I:%M:%S%P')
@@ -45,13 +44,10 @@ while true; do
 
 echo "%{l} ${c8}${_uptime}${cr}${sep}\
 pgid: ${c6}${_pid}${cr}${sep}\
-workspace: ${c3}${wspace}${cr}\
-%{c}${c2}${time}${cr}\
-%{r}${c1}${mpdstat}${cr}${sep}${c3}${weather}${cr}\
-${sep}\
-${c4}${master_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${capture_alsa}${cr}\
-${sep}\
-${c1}${_host}${cr} "
+wspace: ${c3}${wspace}${cr}\
+%{c}${c2}${time}${cr} ${c3}${weather}${cr}\
+%{r}${c1}${mpdstat}${cr}${sep}\
+${c4}${master_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${capture_alsa}${cr} "
 
  sleep 0.2
 done
