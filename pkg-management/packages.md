@@ -318,13 +318,13 @@ nope	> sdl2-2.0.10
 [d]	> x265-3.1.2
 ```
 ```
-[d]	> i3-gaps-4.17.1
-[d]	>> libev-4.27
-[d]	>> yajl-2.1.0
-[d]	>> xcb-util-xrm-1.3
-[d]	>> startup-notification-0.12
+[r]	> i3-gaps-4.17.1
+[r]	>> libev-4.27
+[r]	>> yajl-2.1.0
+[r]	>> xcb-util-xrm-1.3
+[r]	>> startup-notification-0.12
 
-[d]	> i3blocks-1.4
+[r]	> i3blocks-1.4
 [d]	> dmenu-4.9
 [d]	> xtrlock-2.11
 

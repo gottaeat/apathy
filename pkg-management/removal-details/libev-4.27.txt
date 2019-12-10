@@ -1,0 +1,12 @@
+/usr/include/ev++.h
+/usr/include/ev.h
+
+/usr/lib/libev.a
+/usr/lib/libev.la
+/usr/lib/libev.so
+/usr/lib/libev.so.4
+/usr/lib/libev.so.4.0.0
+
+/usr/lib/pkgconfig/libev.pc
+
+/usr/share/man
