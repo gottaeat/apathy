@@ -117,7 +117,7 @@
 [d]	> fontconfig-2.13.1 
 [d]	>> freetype-2.10.1
 [d]	>>> libpng-1.6.37
-[d]	>>> harfbuzz-2.6.1
+[d]	>>> harfbuzz-2.6.4
 [d]		>>>> glib-2.62.0
 [d]			>>>>> pcre-8.43
 [d]		>>>> icu-64.2

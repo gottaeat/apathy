@@ -73,7 +73,7 @@ docbook-xsl-1.79.2
 fontconfig-2.13.1 
 freetype-2.10.1
 libpng-1.6.37
-harfbuzz-2.6.1
+harfbuzz-2.6.4
 glib-2.62.0
 pcre-8.43
 icu-64.2
