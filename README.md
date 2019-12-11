@@ -48,7 +48,7 @@ apathy-musl in its current state is completely free software, including the kern
 ```
  $  ~: pkg
 
- > total partition size : 1592.51mib
+ > total partition size : 1579.74mib
  > local package count  : 341
  > removed packages     : 13
 ```

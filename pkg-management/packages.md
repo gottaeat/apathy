@@ -374,7 +374,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> mutt-1.12.1
 [d]	> lzip-1.21
 
-[d]	> apathy-browser-28.7.2
+[d]	> apathy-browser-28.8.0
 
 [d]	> gcompat-0.4.0
 [d]	>> libucontext-0.1.3
