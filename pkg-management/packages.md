@@ -46,7 +46,7 @@
 [d]	>> popt-1.16
 
 [d]	> tmux-2.9a
-[d]	>> libevent-2.1.10
+[d]	>> libevent-2.1.11
 
 [d]	> htop-2.2.0
 [d]	> strace-5.0		--> 5.2 fails to build, screams about v4l.
