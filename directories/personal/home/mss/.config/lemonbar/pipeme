@@ -21,33 +21,42 @@ sep="${c7} | ${cr}"
 if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
 
 . /home/mss/.config/lemonbar/blocklets
-_pid
-_uptime      &
-_weather     &
-mpdstat      &
-mpdvol       &
-workspace    &
-capture_alsa &
-master_alsa  &
+
+_pgid          & #pgid
+_uptime        & #uptime
+bw             & #bw
+cap_alsa       & #cap_alsa
+cpustat        & #cpustat
+mas_alsa       & #mas_alsa
+mem            & #mem
+mpdstat        & #mpdstat
+mpdvol         & #mpdvol
+weat           & #weat
+wspace         & #wspace
 
 while true; do
  time=$(date '+%a %d %I:%M:%S%P')
- read uptime       < "${tmpdir}"/uptime
- read weather      < "${tmpdir}"/weather
- read master_alsa  < "${tmpdir}"/master-alsa
- read mpdstat      < "${tmpdir}"/mpdstat
- read mpdvol       < "${tmpdir}"/mpdvol
- read capture_alsa < "${tmpdir}"/capture-alsa
- read _uptime      < "${tmpdir}"/uptime
- read wspace       < "${tmpdir}"/wspace
- read _pid         < "${tmpdir}"/pid
+ read _pgid       < "${tmpdir}"/pgid
+ read _uptime     < "${tmpdir}"/uptime
+ read bw          < "${tmpdir}"/bw
+ read cap_alsa    < "${tmpdir}"/cap_alsa
+ read cpustat     < "${tmpdir}"/cpustat
+ read mas_alsa    < "${tmpdir}"/mas_alsa
+ read mem         < "${tmpdir}"/mem
+ read mpdstat     < "${tmpdir}"/mpdstat
+ read mpdvol      < "${tmpdir}"/mpdvol
+ read weat        < "${tmpdir}"/weat
+ read wspace      < "${tmpdir}"/wspace
 
-echo "%{l} ${c8}${_uptime}${cr}${sep}\
-pgid: ${c6}${_pid}${cr}${sep}\
-wspace: ${c3}${wspace}${cr}\
-%{c}${c2}${time}${cr} ${c3}${weather}${cr}\
+echo "%{l} \
+ws: ${c3}${wspace}${cr}${sep}\
+pgid: ${c6}${_pgid}${cr}${sep}\
+${c2}${cpustat}${cr} ${c2}${mem}${cr}${sep}\
+${c1}${bw}${cr}\
+%{c}${c2}${time}${cr} ${c3}${weat}${cr}\
 %{r}${c1}${mpdstat}${cr}${sep}\
-${c4}${master_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${capture_alsa}${cr} "
+${c4}${mas_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${cap_alsa}${cr}${sep}\
+${c8}${_uptime}${cr} "
 
- sleep 0.2
+ sleep 0.5
 done
