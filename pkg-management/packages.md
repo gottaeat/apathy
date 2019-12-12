@@ -124,7 +124,7 @@
 [d]		>>>> gobject-introspection-1.62.0
 [d]		>>>> shared-mime-info-1.12
 [d]		>>>> desktop-file-utils-0.24
-[d]		>>>> cairo-1.16
+[d]		>>>> cairo-1.17.2+f93fc72c03e
 [d]			>>>>> pixman-0.38.4
 # someone fucking shoot me end
 

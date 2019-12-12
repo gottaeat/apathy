@@ -4,7 +4,6 @@
 /usr/include/cairo/cairo-deprecated.h
 /usr/include/cairo/cairo-features.h
 /usr/include/cairo/cairo-ft.h
-/usr/include/cairo/cairo-gl.h
 /usr/include/cairo/cairo-gobject.h
 /usr/include/cairo/cairo-pdf.h
 /usr/include/cairo/cairo-ps.h
@@ -24,25 +23,21 @@
 /usr/lib/cairo/cairo-sphinx.so
 /usr/lib/cairo/libcairo-trace.la
 /usr/lib/cairo/libcairo-trace.so
-
 /usr/lib/libcairo-gobject.la
 /usr/lib/libcairo-gobject.so
 /usr/lib/libcairo-gobject.so.2
-/usr/lib/libcairo-gobject.so.2.11600.0
+/usr/lib/libcairo-gobject.so.2.11703.0
 /usr/lib/libcairo-script-interpreter.la
 /usr/lib/libcairo-script-interpreter.so
 /usr/lib/libcairo-script-interpreter.so.2
-/usr/lib/libcairo-script-interpreter.so.2.11600.0
+/usr/lib/libcairo-script-interpreter.so.2.11703.0
 /usr/lib/libcairo.la
 /usr/lib/libcairo.so
 /usr/lib/libcairo.so.2
-/usr/lib/libcairo.so.2.11600.0
+/usr/lib/libcairo.so.2.11703.0
 
-/usr/lib/pkgconfig/cairo-egl.pc
 /usr/lib/pkgconfig/cairo-fc.pc
 /usr/lib/pkgconfig/cairo-ft.pc
-/usr/lib/pkgconfig/cairo-gl.pc
-/usr/lib/pkgconfig/cairo-glx.pc
 /usr/lib/pkgconfig/cairo-gobject.pc
 /usr/lib/pkgconfig/cairo-pdf.pc
 /usr/lib/pkgconfig/cairo-png.pc
@@ -56,5 +51,3 @@
 /usr/lib/pkgconfig/cairo-xlib-xrender.pc
 /usr/lib/pkgconfig/cairo-xlib.pc
 /usr/lib/pkgconfig/cairo.pc
-
-/usr/share/gtk-doc

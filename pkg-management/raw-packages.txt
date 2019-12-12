@@ -80,7 +80,7 @@ icu-64.2
 gobject-introspection-1.62.0
 shared-mime-info-1.12
 desktop-file-utils-0.24
-cairo-1.16
+cairo-1.17.2+f93fc72c03e
 pixman-0.38.4
 xtrans-1.4.0
 libX11-1.6.8
