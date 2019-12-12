@@ -45,7 +45,7 @@
 [d]	> rsync-3.1.3
 [d]	>> popt-1.16
 
-[d]	> tmux-2.9a
+[d]	> tmux-3.0a
 [d]	>> libevent-2.1.11
 
 [d]	> htop-2.2.0
