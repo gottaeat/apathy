@@ -265,6 +265,7 @@ apathy-st-0.8.2
 lz4-1.9.2
 cwm
 lemonbar
+wmctrl-1.07
 argp-standalone-1.3
 attr-2.4.48
 autoconf-2.69
