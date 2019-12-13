@@ -48,8 +48,8 @@ while true; do
  read weat        < "${tmpdir}"/weat
  read wspace      < "${tmpdir}"/wspace
 
-echo "%{l} \
-ws: ${c3}${wspace}${cr}${sep}\
+echo "%{l}\
+${wspace}${sep}\
 pgid: ${c6}${_pgid}${cr}${sep}\
 ${c2}${cpustat}${cr} ${c2}${mem}${cr}${sep}\
 ${c1}${bw}${cr}\
@@ -58,5 +58,5 @@ ${c1}${bw}${cr}\
 ${c4}${mas_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${cap_alsa}${cr}${sep}\
 ${c8}${_uptime}${cr} "
 
- sleep 0.5
+ sleep 0.2
 done

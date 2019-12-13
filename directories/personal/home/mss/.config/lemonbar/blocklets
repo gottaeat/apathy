@@ -232,13 +232,33 @@ weat(){
 
 wspace(){
  while true; do
+  ws1="${c6} I${cr}\
+%{A:wmctrl -s 2:} II%{A}\
+%{A:wmctrl -s 3:} III%{A}\
+%{A:wmctrl -s 4:} IV%{A}"
+
+  ws2="%{A:wmctrl -s 1:} I %{A}\
+${c6}II${cr}\
+%{A:wmctrl -s 3:} III%{A}\
+%{A:wmctrl -s 4:} IV%{A}"
+
+  ws3="%{A:wmctrl -s 1:} I%{A}\
+%{A:wmctrl -s 2:} II %{A}\
+${c6}III${cr}\
+%{A:wmctrl -s 4:} IV%{A}"
+
+  ws4="%{A:wmctrl -s 1:} I%{A}\
+%{A:wmctrl -s 2:} II%{A}\
+%{A:wmctrl -s 3:} III %{A}\
+${c6}IV${cr}"
+
   case "$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')" in
-   1) wspace="I"        ;;
-   2) wspace="II"       ;;
-   3) wspace="III"      ;;
-   4) wpsace="IV"       ;;
+   1) wspace="${ws1}" ;;
+   2) wspace="${ws2}" ;;
+   3) wspace="${ws3}" ;;
+   4) wspace="${ws4}" ;;
   esac
   echo "${wspace}" > "${tmpdir}"/wspace
-  sleep 0.2
+  sleep 0.1
  done
 }
