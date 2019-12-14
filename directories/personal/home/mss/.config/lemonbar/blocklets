@@ -10,10 +10,10 @@ _uptime(){
  while true; do
   utime=$(cat /proc/uptime | awk '{print $1}')
 
-  printf "%dd %dh %dm \n"               \
-   "$(echo "${utime}/86400"     | bc)"  \
-   "$(echo "${utime}/3600"      | bc)"  \
-   "$(echo "(${utime}%3600)/60" | bc)" > "${tmpdir}"/uptime
+  printf "%dd %dh %dm \n"                  \
+   "$(echo "${utime}/86400"        | bc)"  \
+   "$(echo "(${utime}%86400)/3600" | bc)"  \
+   "$(echo "(${utime}%3600)/60"    | bc)" > "${tmpdir}"/uptime
   sleep 60
  done
 }
@@ -259,6 +259,6 @@ ${c6}IV${cr}"
    4) wspace="${ws4}" ;;
   esac
   echo "${wspace}" > "${tmpdir}"/wspace
-  sleep 0.1
+  sleep 0.2
  done
 }
