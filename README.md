@@ -1,19 +1,26 @@
-### apathy-musl 1.1
-*apathy musl* is a pure 64 bit linux distribution built from scratch, utilizing musl libc, aiming to be clutter free without crippling the user.
+# apathy
+apathy is a 64 bit libre linux distribution built from scratch for my own purposes using [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) for its base; utilizing `musl` libc, `libressl`, partially `busybox` and `sysvinit` with [a home-brewed init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) written in posix shell.
 
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/fetch.png"></p>
 
-this is the second release of apathy-musl, `1.0` being built by following the documentation written by [dslm4515](https://github.com/dslm4515). after contributing to their project, i forked their work and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system and with a set of different choices in software, resulting in `1.1`.
+## about
+apathy (which at one point was called *mssLinux*) initially used lfs-8.4/9.0-rc1 as its base and the rest was mostly built off of reading gentoo `ebuild`'s and arch/parabola `PKGBUILD`'s. i wrote most of the [apathy-utils](https://github.com/mssx86/apathy/tree/apathy-musl/apathy-utils) and [scripts](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss/.config/scripts) alongside the [init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) when i was using this version.
 
-if one wants to build the base that `apathy-musl` uses, documentation is readily available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) repository. it includes an already working toolchain for people that wants to pass the building of the toolchain and the cross-toolchain steps and jump straight into building their system.
+after wanting to have a `musl` based system of my own, i stumbled upon `mlfs`, written by [dslm4515](https://github.com/dslm4515). attempting to build a base using their work didn't work out so i contributed to their work to a degree where a functional base system could be built via doing testing/fixing/editorial work on their project. `apathy-musl 1.0` was what i called the system i built during this time, using `mlfs` as the base.
 
-once the base is done, you can read `APKBUILDS` from alpine linux repositories for instructions and use this repository or void linux' package search function to find patches required for building software using `musl`. gentoo is fairly handy when it comes to finding `libressl` patches as well.
+after getting used to living with `musl` and `libressl`, i forked `mlfs` and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system, different shells and more different choices in software, which i named [apathy-mlfs](https://github.com/mssx86/apathy-mlfs). my current system is built on top of this book.
 
-an existing irc channel on freenode can be found at `#apathy-linux` if one wants to interact with the maintainer/only user of the project.
+## building a similar system
+building the base that *apathy musl 1.2* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
+
+once the base is done, progressing further can be accomplished by reading package recipes and gathering patches for building software with `musl` from [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=&branch=edge&arch=x86_64) and [voidlinux.org/packages](https://voidlinux.org/packages/). patches for building via `libressl` can be obtained from [gentoo libressl testing overlay](https://github.com/gentoo/libressl). i serve patches that i used to build all the software listed at [packages.md](https://github.com/mssx86/apathy/blob/apathy-musl/pkg-management/packages.md) in [here](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management/patches).
 
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/init.png"></p>
 
-#### overview
+
+
+## overview
+#### major components:
 ```
 toolchain:
  * gcc 9.2.0 (c,c++), isl 0.21, argp-standalone 1.3
@@ -41,10 +48,7 @@ shells:
  * yash 2.49 (/bin/sh: busybox 1.31.0 ash)
 ```
 
-#### about proprietary software under apathy-musl
-apathy-musl in its current state is completely free software, including the kernel and the firmware.
-
-#### current package count and total system size
+#### current package count and partition size:
 ```
  $  ~: pkg
 
@@ -52,3 +56,8 @@ apathy-musl in its current state is completely free software, including the kern
  > local package count  : 342
  > removed packages     : 13
 ```
+
+## dotfiles
+alongside all of the [system related configurations](https://github.com/mssx86/apathy/tree/apathy-musl/directories/system/etc), the [init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) to the [package build scripts and configurations](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management), i also serve my personal configurations [here](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss).
+
+<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/rice.png"></p>
