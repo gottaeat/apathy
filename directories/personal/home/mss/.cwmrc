@@ -1,10 +1,10 @@
 ### visual garbage
 fontname			"euphon:pixelsize=9"
 borderwidth			1
-gap				5 19 5 5
+gap				3 17 3 3
 moveamount			5
 snapdist			5
-color		activeborder	"#464646"
+color		activeborder	"#101010"
 color		font		"#525252"
 color		selfont		"#f7f7f7"
 color		inactiveborder	"#252525"
@@ -28,6 +28,7 @@ unbind-mouse	all
 #>>cwm functions
 #>keyboard
 bind-key	4-Return	"st"
+bind-key	S4-Return	"st -e tmux"
 bind-key	4-d		"dmenu_run -b"
 bind-key	S4-d		"/home/mss/.config/scripts/menuboi"
 
@@ -67,9 +68,10 @@ bind-mouse	"2"		menu-window
 #>>my functions
 bind-key	4-b			"/mss/bin/switchcompositor"
 bind-key	4-x			"/home/mss/.config/lemonbar/togglebar"
-bind-key	4-p			"/home/mss/.config/scripts/maimscrot"
-bind-key 	S4-p			"/home/mss/.config/scripts/maimclip"
-bind-key	4-o			"/home/mss/.config/scripts/maimcrop"
+bind-key	4-c			"/home/mss/.config/scripts/chrootmenu"
+bind-key	4-p			"/mss/bin/maimscrot"
+bind-key 	S4-p			"/mss/bin/maimclip"
+bind-key	4-o			"/mss/bin/maimcrop"
 
 bind-key 	Pause			"xtrlock"
 
