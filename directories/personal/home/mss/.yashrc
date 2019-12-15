@@ -43,33 +43,16 @@ HISTFILE=~/.yash_history HISTSIZE=30000
 FCEDIT="/usr/bin/vim"
 
 # prompts
-[ $(id -u) -eq 0 ] && rewt=1 || rewt=0
-
-case $TERM in
- *rxvt*|st-*)
-  [ "${rewt}" -eq 1 ] \
-   && YASH_PS1='\fwG # \fMr ${${PWD:/~/\~}##*/}:\fD ' \
-   || YASH_PS1='\fwG $ \fMr ${${PWD:/~/\~}##*/}:\fD '
- ;;
- linux|tmux|screen)
-  [ "${rewt}" -eq 1 ] \
-   && YASH_PS1='\fkC # \fkW ${${PWD:/~/\~}##*/}:\fD ' \
-   || YASH_PS1='\fkC $ \fkW ${${PWD:/~/\~}##*/}:\fD '
- ;;
- *)
-  [ "${rewt}" -eq 1 ] \
-   && YASH_PS1=' # [${${PWD:/~/\~}##*/}]: ' \
-   || YASH_PS1=' $ [${${PWD:/~/\~}##*/}]: '
- ;;
-esac
+[ $(id -u) -eq 0 ] && _user="\fr #" || _user="\fw $"
+YASH_PS1='${_user} \fy[${${PWD:/~/\~}##*/}]\fD: '
 
 [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ] \
  && YASH_PS1='[chroot]${YASH_PS1}'
 
 YASH_PS1R=
 YASH_PS1S=
-YASH_PS2="\fc > \fD"
-YASH_PS2R="\fc < \fD"
+YASH_PS2="\fy -> \fD"
+YASH_PS2R="\fy <- \fD"
 YASH_PS2S=
 
 # ensure job control works
