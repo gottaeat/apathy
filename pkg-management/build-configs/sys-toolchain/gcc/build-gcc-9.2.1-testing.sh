@@ -62,8 +62,8 @@ libat_cv_have_ifunc=no \
  --build=${_build} \
  --host=${_host} \
  --target=${_target} \
- --with-pkgversion="apathy 9.2.1" \
- --with-bugurl="https://mss.neocities.org/apathy/" \
+ --with-pkgversion="apathy" \
+ --with-bugurl="https://github.com/mssx86/apathy" \
  --with-system-zlib \
  --with-isl \
  --with-linker-hash-style=gnu \
