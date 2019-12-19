@@ -335,7 +335,7 @@ tar-1.32
 texinfo-6.6
 tzdb-2019c.tar.lz
 util-linux-2.34
-vim-8.1.2079
+vim-8.2.23-git-2019-12-19
 XML-Parser-2.44
 xz-5.2.4
 yash-2.49

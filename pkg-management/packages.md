@@ -462,7 +462,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 texinfo-6.6
 [d]	 tzdb-2019c.tar.lz
 [d]	 util-linux-2.34
-[d]	 vim-8.1.2079
+[d]	 vim-8.2.23-git-2019-12-19
 [d]	 xml-parser-2.44
 [d]	 xz-5.2.4
 [d]	 yash-2.49
