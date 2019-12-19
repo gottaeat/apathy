@@ -56,6 +56,23 @@ fi
 
 if [ "$runlevel" = "S" ]
  then
+  /usr/bin/printf "\e]P0000000"
+  /usr/bin/printf "\e]P1252525"
+  /usr/bin/printf "\e]P2464646"
+  /usr/bin/printf "\e]P3525252"
+  /usr/bin/printf "\e]P4ABABAB"
+  /usr/bin/printf "\e]P5B9B9B9"
+  /usr/bin/printf "\e]P6E3E3E3"
+  /usr/bin/printf "\e]P7FFFFFF"
+  /usr/bin/printf "\e]P87C7C7C"
+  /usr/bin/printf "\e]P9999999"
+  /usr/bin/printf "\e]PAA0A0A0"
+  /usr/bin/printf "\e]PB8E8E8E"
+  /usr/bin/printf "\e]PC868686"
+  /usr/bin/printf "\e]PD686868"
+  /usr/bin/printf "\e]PE747474"
+  /usr/bin/printf "\e]PF5E5E5E"
+
   clear
   printf "\n${sbefore}${c_red}  __,  ,_   __,  -/- /_\n"
   printf "${sbefore} (_/(__/_)_(_/(__/__/ (__(_/_\n"

@@ -10,8 +10,7 @@
 # set console variables
 UNICODE="1"
 KEYMAP="us"
-#FONT="Tamzen6x12 -m 8859-1"
-FONT="vanilla -m 8859-1"
+FONT="ter12n -m 8859-1"
 
 case "${1}" in
  start)
