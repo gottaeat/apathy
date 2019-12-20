@@ -2,12 +2,33 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-if [ ! -e $PWD/arch/x86/boot/bzImage ]; then printf "\n ! bzImage doesn't exist, exiting.\n\n"; exit 1
-elif [ ! -e $PWD/System.map ]; then printf "\n ! System.map doesn't exist, exiting.\n\n"; exit 1
-elif [ ! -e $PWD/.config ]; then printf "\n ! kernel .config doesn't exist, exiting.\n\n"; exit 1
+if   [ ! -f $PWD/arch/x86/boot/bzImage ]; then aprint_fail "${c_lcyan}bzImage${c_reset} doesn't exist."; exit 1
+elif [ ! -f $PWD/System.map ];            then aprint_fail "${c_lcyan}System.map doesn't exist.";        exit 1
+elif [ ! -f $PWD/.config ];               then aprint_fail "kernel ${c_lcyan}.config doesn't exist.";    exit 1
 fi
 
-cp -iv arch/x86/boot/bzImage	/boot/vmlinuz		&&
-cp -iv System.map		/boot/System.map	&&
-cp -iv .config			/boot/config		&&
-printf " * done.\n"
+
+aprint_nc
+aprint     "this action will replace the existing kernel."
+aprint_ask "shall we proceed? (y/n): "
+
+read answer
+
+if [ "$answer" != "${answer#[Yy]}" ]
+ then
+  aprint_ret "copying ${c_lcyan}bzImage${c_reset} to ${c_lcyan}/boot/vmlinuz${c_reset}."
+  cp arch/x86/boot/bzImage /boot/vmlinuz
+  evalretkill
+
+  aprint_ret "copying ${c_lcyan}System.map${c_reset} to ${c_lcyan}/boot/System.map${c_reset}."
+  cp System.map /boot/System.map
+  evalretkill
+
+  aprint_ret "copying kernel ${c_lcyan}config${c_reset} to ${c_lcyan}/boot/config${c_reset}."
+  cp .config /boot/config
+  evalretkill
+  aprint_nc
+ else
+  aprint "aborting"
+  exit 1
+fi
