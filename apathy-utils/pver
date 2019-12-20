@@ -2,7 +2,7 @@
 . /mss/bin/apathy-funcs
 
 triplet=$(cc -dumpmachine)
-ccver=$(cc --version | head -1)
+ccver=$(gcc --version | head -1)
 init=$(/sbin/init --version | awk 'NR==1 {print tolower($1)$2,$4}')
 
 case ${triplet} in
