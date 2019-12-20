@@ -2,23 +2,37 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-currdns=$(cat /etc/resolv.conf | tail -1)
-case $currdns in
+curr_dns="$(cat /etc/resolv.conf | tail -1)"
+aprint_nc
+
+case "${curr_dns}" in
  *edns0*)
-  printf "using dnscrypt.\n"				&&
-  /etc/init.d/dnscrypt-proxy stop			&&
-  cp -v /etc/resolv.conf /etc/resolv.conf.dnscrypt	&&
-  cp -v /etc/resolv.conf.flare /etc/resolv.conf		&&
-  ntpd -q -g > /dev/null 2>&1				&&
-  cp -v /etc/resolv.conf.dnscrypt /etc/resolv.conf	&&
-  /etc/init.d/dnscrypt-proxy start			&&
-  printf "done.\n"
+  aprint "using dnscrypt."
+  aprint_ret "stopping dnscrypt."
+  /etc/init.d/dnscrypt-proxy stop > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "replacing ${c_lcyan}resolv.conf${c_reset}."
+  cp /etc/resolv.conf.quad /etc/resolv.conf
+  evalretkill
+  
+  aprint_ret "setting clock."
+  ntpd -q -g > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "placing the ${c_lcyan}dnscrypt resolv.conf${c_reset} back."
+  cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
+  evalretkill
+
+  aprint_ret "starting dnscrypt back."
+  /etc/init.d/dnscrypt-proxy start > /dev/null 2>&1
+  evalretkill
   ;;
  *)
-  printf "not using dnscrypt.\n"			&&
-  ntpd -q -g > /dev/null 2>&1				&&
-  printf "done.\n"
+  aprint "not using dnscrypt."
+  aprint_ret "setting clock."
+  ntpd -q -g > /dev/null 2>&1
+  evalretkill
   ;;
 esac
-
-exit 0
+aprint_nc

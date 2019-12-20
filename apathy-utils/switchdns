@@ -2,32 +2,47 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-if [ -z $1 ]; then printf "\n ! no option selected, exiting.\n\n"; exit 1; fi
+if [ -z $1 ]; then aprint_fail "no option specified in ${c_lcyan}\$1${c_reset}."; exit 1; fi
 
 case $1 in
  dnscrypt|-d)
-  cp -v /etc/resolv.conf.dnscrypt /etc/resolv.conf	&&
+  aprint_nc
+
+  aprint_ret "placing the dnscrypt resolv.conf."
+  cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
+  evalretkill
 
   if [ -z "$(pidof dnscrypt-proxy)" ]
    then
-    /etc/init.d/dnscrypt-proxy start > /dev/null 2>&1	&&
-    printf "\n * dnscrypt service started.\n"
+    aprint_ret "starting dnscrypt."
+    /etc/init.d/dnscrypt-proxy start > /dev/null 2>&1
+    evalretkill
    else
-    /etc/init.d/dnscrypt-proxy restart > /dev/null 2>&1	&&
-    printf "\n * dnscrypt service restarted.\n"
-  fi &&
-  printf " * dns set to dnscrypt.\n\n"
+    aprint_ret "restarting dnscrypt."
+    /etc/init.d/dnscrypt-proxy restart > /dev/null 2>&1
+    evalretkill
+  fi
+  aprint_nc
+  aprint "dns resolver set to dnscrypt."
+  aprint_nc
  ;;
- flare|-f)
-  cp -v /etc/resolv.conf.flare /etc/resolv.conf		&&
+ quad|-q)
+  aprint_nc
+
+  aprint_ret "placing the quad resolv.conf."
+  cp /etc/resolv.conf.quad /etc/resolv.conf
+  evalretkill
 
   if [ ! -z "$(pidof dnscrypt-proxy)" ]
-   then /etc/init.d/dnscrypt-proxy stop			&&
-   printf "\n * dnscrypt service stopped.\n"
+   then
+    aprint_ret "stopping dnscrypt."
+    /etc/init.d/dnscrypt-proxy stop > /dev/null 2>&1
+    evalretkill
   fi
-  printf " * dns set to cloudflare.\n\n"
+  aprint_nc
+  aprint "dns resolver set to quad."
+  aprint_nc
  ;;
  *)
-  printf "\n ! option not recognized. options are:\n"	&&
-  printf " * dnscrypt / -d\n * flare / -f\n\n"
+  aprint_fail "pick either: ${c_lcyan}quad|-q${c_reset} or ${c_lcyan}dnscrypt|-d${c_reset}"
 esac
