@@ -22,7 +22,11 @@ case "$1" in
   ;;
  stop)
   log_info_msg "stopping ${c_lcyan}$NAME${c_reset}."
-  cp /etc/resolv.conf.flare /etc/resolv.conf
+
+  curr_dns="$(cat /etc/resolv.conf | tail -1)"
+  case "${curr_dns}" in
+   *edns0*) cp /etc/resolv.conf.flare /etc/resolv.conf ;;
+  esac
   start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
   evalret
   ;;
