@@ -1,4 +1,6 @@
 #!/mss/bin/sh
+. /mss/bin/apathy-funcs
+
 if [ -z "$1" ]
  then stats=$(curl -s "https://tools.keycdn.com/geo.json" | jq '.data | .geo | .[]' | sed 's/\"//g')
  else stats=$(curl -s "https://tools.keycdn.com/geo.json?host=$1" | jq '.data | .geo | .[]' | sed 's/\"//g')
@@ -18,4 +20,12 @@ mpost=$(pstat | awk 'NR==11')
 mdate=$(pstat | awk 'NR==18')
 mcode=$(pstat | awk 'NR==7')
 
-printf "\n * ip   \t: $mipad\n * host \t: $mhost\n * rdns \t: $mrdns\n * isp  \t: $mispa\n * country \t: $mcoun ($mcode) ($mcont)\n * city \t: $mcity ($mpost)\n * timezone\t: $mtime ($mdate)\n\n"
+aprint_nc
+lsdetail "ip\t"     "$mipad"
+lsdetail "host\t"   "$mhost"
+lsdetail "rdns\t"   "$mrdns"
+lsdetail "isp\t"    "$mispa"
+lsdetail "country"  "$mcoun ($mcode) ($mcont)"
+lsdetail "city\t"   "$mcity ($mpost)"
+lsdetail "timezone" "$mtime ($mdate)"
+aprint_nc

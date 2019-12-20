@@ -1,11 +1,13 @@
 #!/mss/bin/sh
-if	[ -z $1 ]; then printf "\n ! no dir or file to pkgup selected in \$1, exiting.\n\n"; exit 1
-elif	[ -z $2 ]; then printf "\n ! no archive name in \$2 specified, exiting.\n\n"; exit 1
+. /mss/bin/apathy-funcs
+
+if	[ -z $1 ]; then aprint_fail "no dir or file to pkgup selected in \$1, exiting."; exit 1
+elif	[ -z $2 ]; then aprint_fail "no archive name in \$2 specified, exiting."; exit 1
 fi
 
-if	[ -d $1 ]; then printf " * pkgtype is dir."; pkgtype="dir"
-elif	[ -f $1 ]; then printf " * pkgtype is file."; pkgtype="file"
-else	printf "\n ! pkgtype not understood, exiting.\n\n"; exit 1
+if	[ -d $1 ]; then aprint "pkgtype is ${c_lcyan}dir${c_reset}."
+elif	[ -f $1 ]; then aprint "pkgtype is ${c_lcyan}file${c_reset}."
+else	aprint_fail "pkgtype not understood or does not exist, exiting."; exit 1
 fi
 
 tar -cf - ${1} | xz -9e --threads=2 --verbose -c - > ${2}.tar.xz
