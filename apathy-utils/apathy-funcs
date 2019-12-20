@@ -7,7 +7,7 @@ c_lcyan="\\033[1;36m"      # light cyan
 c_blue="\\033[1;34m"   # blue
 
 ## set cursor position commands
-col="\\033[72G"
+col="\\033[76G"
 wcol="\\033[70G"
 cur_up="\\033[1A\\033[0G"
 cur_zero="\\033[0G"
@@ -18,13 +18,13 @@ succ="${c_green} * ${c_reset}"
 fail="${c_red} ! ${c_reset}"
 
 succ_end="${c_green} done${c_reset}"
-fail_end="${c_red} failed${c_reset}"
+fail_end="${c_red} fail${c_reset}"
 memearrow="${c_lcyan} > ${c_reset}"
 askq="${c_blue} ? ${c_reset}"
 
 # printing
 aprint(){       printf "${memearrow}${@}\n"; return 0; }
-aprint_nm(){    printf "${sbefore}${@}\n";     return 0; }
+aprint_nm(){    printf "${sbefore}${@}\n";   return 0; }
 aprint_ret(){   printf "${sbefore}${@}";     return 0; }
 aprint_ask(){   printf "${askq}${@}";        return 0; }
 
@@ -34,6 +34,8 @@ aprint_fail(){  printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_
 
 aprint_patch(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}.";  return 0; }
 aprint_pvars(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}\n"; return 0; }
+
+aprint_usage(){ aprint "${c_green}usage${c_reset}: ${@}"; }
 
 lsdetail(){     aprint "${c_green}${1}\t${c_blue}:${c_reset} ${2}";}
 
