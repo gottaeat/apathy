@@ -1,4 +1,20 @@
 #!/mss/bin/sh
-ps -o pgid -p "$$" | tail -1 | sed 's/ //g' > /tmp/lemonbar.pid
-(/home/mss/.config/lemonbar/pipeme | lemonbar -p -b -d -a 20 -f "vanilla:pixelsize=5" -f "euphon:pixelsize=9" -B "#000000" -F "#f7f7f7" | sh) \
- || kill -KILL -$(cat /tmp/lemonbar.pid)
+
+case $1 in
+ full|-f)   kek=full   ;;
+ simple|-s) kek=simple ;;
+ *)         exit 1     ;;
+esac
+
+if [ -z "$(pidof lemonbar)" ]
+ then
+  ps -o pgid -p "$$" | tail -1 | sed 's/ //g' > /tmp/lemonbar.pid
+
+  /home/mss/.config/lemonbar/"${kek}"               \
+   | lemonbar -p -b -d -a 20                        \
+   -f "vanilla:pixelsize=5" -f "euphon:pixelsize=9" \
+   -B "#000000" -F "#f7f7f7"                        \
+   | sh
+ else
+  kill -KILL -$(cat /tmp/lemonbar.pid)
+fi
