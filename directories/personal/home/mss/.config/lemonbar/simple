@@ -1,0 +1,22 @@
+#!/mss/bin/sh
+cr='%{F-}'
+c1='%{F#00FF00}'
+c2='%{F#FFFFFF}'
+c3='%{F#FF0000}'
+
+while true; do
+ time="$(date '+%a %d %I:%M:%S%P')"
+ read load < /proc/loadavg  
+
+ curr_ws="$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')"
+ curr_before="$((${curr_ws} - 1))"
+ curr_after="$((${curr_ws} + 1))"
+ [ "${curr_before}" -eq 0 ] && curr_before="4"
+ [ "${curr_after}"  -eq 5 ] && curr_after="1"
+
+ echo "%{l}%{A5:wmctrl -s ${curr_before}:}%{A4:wmctrl -s ${curr_after}:}\
+ ${c3}workspace${cr}: ${c1}[${c2}${curr_ws}${c1}]${cr}%{A5}%{A4}\
+%{r}${c1}${load}${cr} ${c2}${time}${cr} "
+
+ sleep 0.5
+done
