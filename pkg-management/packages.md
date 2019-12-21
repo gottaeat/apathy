@@ -390,6 +390,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> cwm				--> from github.com/leahneukirchen/cwm
 [d]	> lemonbar			--> from github.com/krypt-n/bar
 [d]	> wmctrl-1.07
+[d]	> partclone-0.3.12
 ```
 ```
 ### base mlfs packages
