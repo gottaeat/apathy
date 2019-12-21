@@ -5,7 +5,6 @@ _pgid(){
  echo "${pid}" > "${tmpdir}"/pgid
 }
 
-
 _uptime(){
  while true; do
   utime=$(cat /proc/uptime | awk '{print $1}')
@@ -19,17 +18,19 @@ _uptime(){
 }
 
 bw(){
+ bwadapter="eth0"
+ bwpath="/tmp/bw.tmp"
+ read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
+ read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
+
+ if [ ! -f "${bwpath}" ]; then echo "${time} ${rx} ${tx}" > "${bwpath}"; chmod 0666 "${bwpath}"; fi
+ 
  while true; do
   if [ -z "$(pidof openvpn)" ]; then memepn=off; else memepn=on; fi
-
-  bwadapter="eth0"
-  bwpath="/tmp/bw.tmp"
 
   read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
   read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
   time=$(date +%s)
-
-  if [ ! -f "${bwpath}" ]; then echo "${time} ${rx} ${tx}" > "${bwpath}"; chmod 0666 "${bwpath}"; fi
 
   read old < "${bwpath}"
   echo "${time} ${rx} ${tx}" > "${bwpath}"
