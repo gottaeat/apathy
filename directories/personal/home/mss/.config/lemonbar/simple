@@ -1,12 +1,13 @@
 #!/mss/bin/sh
-cr='%{F-}'
-c1='%{F#00FF00}'
-c2='%{F#FFFFFF}'
-c3='%{F#FF0000}'
+fr='%{F-}' f1='%{F#000000}' f2='%{F#FFFFFF}' f3='%{F#ababab}' f4='%{F#7c7c7c}'
+br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' 
 
 while true; do
- time="$(date '+%a %d %I:%M:%S%P')"
  read load < /proc/loadavg  
+ time="$(date '+%a %d %I:%M:%S%P')"
+
+ mpd="$(mpc current | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')"
+ [ -z "${mpd}" ] && mpd="mpd is idle."
 
  curr_ws="$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')"
  curr_before="$((${curr_ws} - 1))"
@@ -14,9 +15,30 @@ while true; do
  [ "${curr_before}" -eq 0 ] && curr_before="4"
  [ "${curr_after}"  -eq 5 ] && curr_after="1"
 
- echo "%{l}%{A5:wmctrl -s ${curr_before}:}%{A4:wmctrl -s ${curr_after}:}\
- ${c3}workspace${cr}: ${c1}[${c2}${curr_ws}${c1}]${cr}%{A5}%{A4}\
-%{r}${c1}${load}${cr} ${c2}${time}${cr} "
+ echo "\
+%{l}\
+%{A5:wmctrl -s ${curr_before}:}\
+%{A4:wmctrl -s ${curr_after}:}\
+ ${f3}${b1} workspace${fr} ${f4}[${f2}${curr_ws}${f4}] ${fr}${br}\
+%{A5}%{A4}\
+%{r}\
+${f2}${b1} ${load} ${fr}${br} \
+%{A:mpc next:}\
+%{A2:mpc toggle:}\
+%{A3:mpc prev:}\
+%{A4:mpc volume +10:}\
+%{A5:mpc volume -10:}\
+${f3}${b1} ${mpd} ${fr}${br} \
+%{A5}%{A4}%{A3}%{A2}%{A}\
+%{A3:amixer -q -D default sset Master toggle     :}\
+%{A4:amixer -q -D default sset Master 3dB+ unmute:}\
+%{A5:amixer -q -D default sset Master 3dB- unmute:}\
+${f1}${b2} mas${fr}%{A}%{A}%{A}\
+%{A3:amixer -q -D default sset Capture toggle     :}\
+%{A4:amixer -q -D default sset Capture 3dB+ unmute:}\
+%{A5:amixer -q -D default sset Capture 3dB- unmute:}\
+${f1} cap ${fr}${br}%{A}%{A}%{A} \
+${f2}${b1} ${time} ${fr}${br} "
 
  sleep 0.5
 done
