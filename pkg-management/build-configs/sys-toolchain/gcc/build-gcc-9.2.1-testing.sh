@@ -28,6 +28,7 @@ libat_cv_have_ifunc=no                            \
  --with-isl                                       \
  --with-system-zlib                               \
  --disable-multilib                               \
+ --disable-nls                                    \
  --disable-symvers                                \
  --disable-libmpx                                 \
  --disable-libmudflap                             \
