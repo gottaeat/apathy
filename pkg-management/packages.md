@@ -133,7 +133,7 @@
 # alias fn='./configure --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static && make && doas -- make install && echo done && cd ..'
 
 [d]	> xtrans-1.4.0
-[d]	> libX11-1.6.8
+[d]	> libX11-1.6.9
 [d]	> libXext-1.3.4
 [d]	> libFS-1.0.8
 [d]	> libICE-1.0.10

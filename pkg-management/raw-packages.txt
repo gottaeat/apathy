@@ -83,7 +83,7 @@ desktop-file-utils-0.24
 cairo-1.17.2+f93fc72c03e
 pixman-0.38.4
 xtrans-1.4.0
-libX11-1.6.8
+libX11-1.6.9
 libXext-1.3.4
 libFS-1.0.8
 libICE-1.0.10
