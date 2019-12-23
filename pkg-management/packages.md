@@ -434,7 +434,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 libcap-2.27
 [d]	 libffi-3.2.1
 [d]	 libpipeline-1.5.1
-[d]	 libressl-3.0.1
+[d]	 libressl-3.0.2
 [d]	 libtool-2.4.6
 [d]	 linux-5.2.17
 [d]	 lzip-1.21

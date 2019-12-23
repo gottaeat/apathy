@@ -34,6 +34,7 @@ core userland:
  * busybox 1.31.0 (statically linked, defconfig)
  * sysklogd 1.5.1, sysvinit 2.96
  * eudev 3.2.8, doas from openbsd 6.5
+ * libressl-3.0.2
 
 languages:
  * python 2.7.16, 3.7.4
