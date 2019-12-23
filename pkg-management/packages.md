@@ -401,7 +401,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 bc-2.4.0			--> from github.com/gavinhoward/bc
 [d]	 binutils-2.33.1
 [d]	 bison-3.4.2
-[d]	 busybox-1.31.0
+[d]	 busybox-1.31.1
 [d]	 bzip2-1.0.8
 [d]	 check-0.12.0
 [d]	 coreutils-8.31

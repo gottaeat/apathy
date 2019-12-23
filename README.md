@@ -31,7 +31,7 @@ toolchain:
 
 core userland:
  * util-linux 2.34, coreutils 8.31
- * busybox 1.31.0 (statically linked, defconfig)
+ * busybox 1.31.1 (statically linked, defconfig)
  * sysklogd 1.5.1, sysvinit 2.96
  * eudev 3.2.8, doas from openbsd 6.5
  * libressl-3.0.2
@@ -46,7 +46,7 @@ video/audio:
  * alsa 1.1.9
 
 shells:
- * yash 2.49 (/bin/sh: busybox 1.31.0 ash)
+ * yash 2.49 (/bin/sh: busybox 1.31.1 ash)
 ```
 
 #### current package count and partition size:
