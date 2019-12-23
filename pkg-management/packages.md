@@ -173,7 +173,7 @@
 [d]	> xcb-util-wm-0.4.1
 [d]	> xcb-util-cursor-0.1.3
 
-[d]	> mesa-19.1.7
+[d]	> mesa-19.3.1
 [d]	>> libdrm-2.4.99
 [d]	>> libvdpau-1.2
 [d]	>> mako-1.0.14
