@@ -9,7 +9,7 @@
 ```
 [d]	> opendoas-git			--> 27-sep-2019 snapshot
 [d]	> ca-certificates-20190110
-[d]	> wget-1.20.3
+[r]	> wget-1.20.3
 [d]	> iptables-1.8.3
 [d]	> lsof-4.93.2
 
@@ -278,7 +278,7 @@ nope	>> librsvg
 ```
 ```
 [r]	> rxvt-unicode-9.22
-[d]	> transmission-2.94
+[r]	> transmission-2.94
 [d]	> autoconf-2.13
 [d]	> libwebp-1.0.3
 [d]	> yasm-1.3.0
