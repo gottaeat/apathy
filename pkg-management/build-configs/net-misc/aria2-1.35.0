@@ -1,0 +1,12 @@
+./configure                \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --sysconfdir=/etc         \
+ --mandir=/usr/share/man   \
+ --infodir=/usr/share/info \
+ --localstatedir=/var      \
+ --disable-nls             \
+ --without-gnutls          \
+ --with-openssl            \
+ --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt
