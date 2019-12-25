@@ -1,4 +1,4 @@
-#!/mss/bin/sh
+!/mss/bin/sh
 _pgid(){
  read pid_pre < /tmp/lemonbar.pid
  pid="%{A:kill -9 -$(cat /tmp/lemonbar.pid):}${pid_pre}%{A}"
@@ -91,7 +91,7 @@ cap_alsa(){
 ${cap_stat}%{A}%{A}%{A}"
 
   echo ${cap_print} > "${tmpdir}"/cap_alsa
-  sleep 0.5
+  sleep 1
  done
 }
 
@@ -111,7 +111,7 @@ mas_alsa(){
 ${mas_stat}%{A}%{A}%{A}"
 
   echo "${mas_print}" > "${tmpdir}"/mas_alsa
-  sleep 0.5
+  sleep 1
  done
 }
 
@@ -188,7 +188,7 @@ ${state}\
 
   echo "${mpd_print}" > "${tmpdir}"/mpdstat
 
-  sleep 0.5
+  sleep 1
  done
 }
 
@@ -204,7 +204,7 @@ ${mpdvol_state}\
 %{A}%{A}%{A}"
 
   echo "${mpdvol_print}" > "${tmpdir}"/mpdvol
-  sleep 0.5
+  sleep 1
  done
 }
 
@@ -269,5 +269,24 @@ ${c6}IV${cr}"
   wspace="%{A5:wmctrl -s ${curr_before}:}%{A4:wmctrl -s ${curr_after}:}${wspace_pre}%{A5}%{A4}"
   echo "${wspace}" > "${tmpdir}"/wspace
   sleep 0.2
+ done
+}
+
+wspace_simple(){
+ while true; do
+  curr_ws="$(xprop -root _NET_CURRENT_DESKTOP | awk '{print $3}')"
+  curr_before="$((${curr_ws} - 1))"
+  curr_after="$((${curr_ws} + 1))"
+  [ "${curr_before}" -eq 0 ] && curr_before="4"
+  [ "${curr_after}"  -eq 5 ] && curr_after="1"
+
+  sleep 0.1
+
+wspace="%{A5:wmctrl -s ${curr_before}:}\
+%{A4:wmctrl -s ${curr_after}:}\
+${curr_ws}${f4}${fr}${br}\
+%{A5}%{A4}"
+
+  echo "${wspace}" > "${tmpdir}"/wspace
  done
 }
