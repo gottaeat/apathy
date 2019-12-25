@@ -4,35 +4,29 @@ scriptdir="/home/mss/.config/scripts"
 blockdir="/home/mss/.config/lemonbar/blocklets"
 tmpdir="/tmp/lemonbar"
 
-cr='%{F-}'
-c1='%{F#ababab}'
-c2='%{F#e3e3e3}'
-c3='%{F#747474}'
-c4='%{F#f7f7f7}'
-c5='%{F#999999}'
-c6='%{F#e62063}'
-c7='%{F#464646}'
-c8='%{F#6d7373}'
-
-sep_color="${c7}"
-sep="${c7} | ${cr}"
-
 ### blocklets
 if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
 
 . /home/mss/.config/lemonbar/blocklets
 
-_pgid          & #pgid
-_uptime        & #uptime
-bw             & #bw
-cap_alsa       & #cap_alsa
-cpustat        & #cpustat
-mas_alsa       & #mas_alsa
-mem            & #mem
-mpdstat        & #mpdstat
-mpdvol         & #mpdvol
-weat           & #weat
-wspace         & #wspace
+  _pgid          & #pgid
+  _uptime        & #uptime
+  bw             & #bw
+  cap_alsa       & #cap_alsa
+  cpustat        & #cpustat
+  mas_alsa       & #mas_alsa
+  mem            & #mem
+  mpdstat        & #mpdstat
+  mpdvol         & #mpdvol
+  weat           & #weat
+# wspace         & #wspace
+  wspace_simple  & #wspace_simple
+
+### colors
+fr='%{F-}' f1='%{F#ababab}' f2='%{F#747474}' f3='%{F#e62063}' f4='%{F#464646}' f5='%{F#6d7373}'
+br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}' b4="%{B#}"
+
+sep=" ${b1} ${br} "
 
 while true; do
  time=$(date '+%a %d %I:%M:%S%P')
@@ -48,15 +42,17 @@ while true; do
  read weat        < "${tmpdir}"/weat
  read wspace      < "${tmpdir}"/wspace
 
-echo "%{l}\
-${wspace}${sep}\
-pgid: ${c6}${_pgid}${cr}${sep}\
-${c2}${cpustat}${cr} ${c2}${mem}${cr}${sep}\
-${c1}${bw}${cr}\
-%{c}${c2}${time}${cr} ${c3}${weat}${cr}\
-%{r}${c1}${mpdstat}${cr}${sep}\
-${c4}${mas_alsa}${cr} ${c5}${mpdvol}${cr} ${c4}${cap_alsa}${cr}${sep}\
-${c8}${_uptime}${cr} "
+echo "\
+%{l}\
+${f2} workspace ${f3}[${fr}${wspace}${f3}]${fr}${sep}\
+${f2}pgid ${f3}[${fr}${_pgid}${f3}]${fr}${sep}\
+${f1}${cpustat} ${f1}${mem}${fr}${sep}\
+${f2}${bw}${fr}\
+%{c}\
+${f1}${time}${fr} ${f2}${weat}${fr}\
+%{r}${f1}${mpdstat}${fr}${sep}\
+${f1}${mas_alsa}${fr} ${f2}${mpdvol}${fr} ${f1}${cap_alsa}${fr}${sep}\
+${f5}${_uptime}${fr} "
 
  sleep 0.2
 done
