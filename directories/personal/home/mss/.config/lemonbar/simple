@@ -1,10 +1,17 @@
 #!/mss/bin/sh
 fr='%{F-}' f1='%{F#000000}' f2='%{F#FFFFFF}' f3='%{F#ababab}' f4='%{F#7c7c7c}'
 br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' 
+ 
+read _pgid < /tmp/lemonbar.pid
 
 while true; do
  read load < /proc/loadavg  
+ read rx < "/sys/class/net/eth0/statistics/rx_bytes"
+ read tx < "/sys/class/net/eth0/statistics/tx_bytes"
  time="$(date '+%a %d %I:%M:%S%P')"
+
+ _rx="$(($rx / 1048576))"
+ _tx="$(($tx / 1048576))"
 
  mpd="$(mpc current | awk -v len=40 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')"
  [ -z "${mpd}" ] && mpd="mpd is idle."
@@ -21,6 +28,8 @@ while true; do
 %{A4:wmctrl -s ${curr_after}:}\
  ${f3}${b1} workspace${fr} ${f4}[${f2}${curr_ws}${f4}] ${fr}${br}\
 %{A5}%{A4}\
+ ${b2}${f3} pgid ${f1}${_pgid} ${fr}${br}\
+ ${b1}${f3} rx ${f2}${_rx} ${f3}tx ${f2}${_tx} ${fr}${br}\
 %{r}\
 ${f2}${b1} ${load} ${fr}${br} \
 %{A:mpc next:}\
@@ -40,5 +49,5 @@ ${f1}${b2} mas${fr}%{A}%{A}%{A}\
 ${f1} cap ${fr}${br}%{A}%{A}%{A} \
 ${f2}${b1} ${time} ${fr}${br} "
 
- sleep 0.5
+ sleep 0.2
 done
