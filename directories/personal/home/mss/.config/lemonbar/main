@@ -1,8 +1,8 @@
 #!/mss/bin/sh
 
 case $1 in
- full|-f)   kek="full"   c_bg="000000" c_fg="f7f7f7" ;;
- simple|-s) kek="simple" c_bg="000000" c_fg="f7f7f7" ;;
+ full|-f)   kek="full"   c_bg="000000" c_fg="ffffff" ;;
+ simple|-s) kek="simple" c_bg="000000" c_fg="ffffff" ;;
  *)         exit 1                                 ;;
 esac
 
