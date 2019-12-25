@@ -4,6 +4,11 @@ scriptdir="/home/mss/.config/scripts"
 blockdir="/home/mss/.config/lemonbar/blocklets"
 tmpdir="/tmp/lemonbar"
 
+fr='%{F-}' f1='%{F#ababab}' f2='%{F#747474}' f3='%{F#e62063}' f4='%{F#464646}' f5='%{F#6d7373}'
+br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}' b4="%{B#}"
+
+sep=" ${b1} ${br} "
+
 ### blocklets
 if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
 
@@ -22,12 +27,6 @@ if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
 # wspace         & #wspace
   wspace_simple  & #wspace_simple
 
-### colors
-fr='%{F-}' f1='%{F#ababab}' f2='%{F#747474}' f3='%{F#e62063}' f4='%{F#464646}' f5='%{F#6d7373}'
-br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}' b4="%{B#}"
-
-sep=" ${b1} ${br} "
-
 while true; do
  time=$(date '+%a %d %I:%M:%S%P')
  read _pgid       < "${tmpdir}"/pgid
@@ -44,7 +43,7 @@ while true; do
 
 echo "\
 %{l}\
-${f2} workspace ${f3}[${fr}${wspace}${f3}]${fr}${sep}\
+${wspace}${sep}\
 ${f2}pgid ${f3}[${fr}${_pgid}${f3}]${fr}${sep}\
 ${f1}${cpustat} ${f1}${mem}${fr}${sep}\
 ${f2}${bw}${fr}\
@@ -54,5 +53,5 @@ ${f1}${time}${fr} ${f2}${weat}${fr}\
 ${f1}${mas_alsa}${fr} ${f2}${mpdvol}${fr} ${f1}${cap_alsa}${fr}${sep}\
 ${f5}${_uptime}${fr} "
 
- sleep 0.2
+ sleep 0.3
 done
