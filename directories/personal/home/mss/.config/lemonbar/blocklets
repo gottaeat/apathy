@@ -284,7 +284,7 @@ wspace_simple(){
 
 wspace="%{A5:wmctrl -s ${curr_before}:}\
 %{A4:wmctrl -s ${curr_after}:}\
-${curr_ws}${f4}${fr}${br}\
+${f2} workspace ${f3}[${fr}${curr_ws}${f3}]\
 %{A5}%{A4}"
 
   echo "${wspace}" > "${tmpdir}"/wspace
