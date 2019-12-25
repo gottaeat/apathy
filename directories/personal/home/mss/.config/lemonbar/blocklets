@@ -1,4 +1,4 @@
-!/mss/bin/sh
+#!/mss/bin/sh
 _pgid(){
  read pid_pre < /tmp/lemonbar.pid
  pid="%{A:kill -9 -$(cat /tmp/lemonbar.pid):}${pid_pre}%{A}"
