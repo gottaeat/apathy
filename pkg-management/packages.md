@@ -410,7 +410,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 diffutils-3.7
 [d]	 e2fsprogs-1.45.3
 [d]	 elfutils-0.176
-[d]	 eudev-3.2.8
+[d]	 eudev-3.2.9
 [d]	 expat-2.2.8
 [d]	 file-5.37
 [d]	 findutils-4.6.0

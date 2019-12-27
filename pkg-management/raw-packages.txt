@@ -281,7 +281,7 @@ cpio-2.12
 diffutils-3.7
 e2fsprogs-1.45.3
 elfutils-0.176
-eudev-3.2.8
+eudev-3.2.9
 expat-2.2.8
 file-5.37
 findutils-4.6.0

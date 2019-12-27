@@ -33,7 +33,7 @@ core userland:
  * util-linux 2.34, coreutils 8.31
  * busybox 1.31.1 (statically linked, defconfig)
  * sysklogd 1.5.1, sysvinit 2.96
- * eudev 3.2.8, doas from openbsd 6.5
+ * eudev 3.2.9, doas from openbsd 6.5
  * libressl-3.0.2
 
 languages:
