@@ -4,10 +4,10 @@ scriptdir="/home/mss/.config/scripts"
 blockdir="/home/mss/.config/lemonbar/blocklets"
 tmpdir="/tmp/lemonbar"
 
-fr='%{F-}' f1='%{F#ababab}' f2='%{F#747474}' f3='%{F#e62063}' f4='%{F#464646}' f5='%{F#6d7373}'
+fr='%{F-}' f1='%{F#ababab}' f2='%{F#747474}' f3='%{F#e62063}' f4='%{F#464646}' f5='%{F#6d7373}' f6='%{F#101010}'
 br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}' b4="%{B#}"
 
-sep=" ${b1} ${br} "
+sep=" ${f6}|${fr} "
 
 ### blocklets
 if [ ! -d "/tmp/lemonbar" ]; then mkdir "/tmp/lemonbar"; fi
@@ -51,7 +51,7 @@ ${f2}${bw}${fr}\
 ${f1}${time}${fr} ${f2}${weat}${fr}\
 %{r}${f1}${mpdstat}${fr}${sep}\
 ${f1}${mas_alsa}${fr} ${f2}${mpdvol}${fr} ${f1}${cap_alsa}${fr}${sep}\
-${f5}${_uptime}${fr} "
+${f3}${_uptime}${fr} "
 
- sleep 0.3
+ sleep 0.1
 done
