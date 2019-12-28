@@ -14,7 +14,7 @@ if [ ! -z $(pidof mpd) ]
     song_pre=$(mpc --format "[%title%]" current)
     
     # b >> check if song is labeled or not
-    if [ -z ${artist_pre} ] || [ -z ${song_pre} ]
+    if [ -z "${artist_pre}" ] || [ -z "${song_pre}" ]
      then
       song=$(mpc --format "[%file%]" current | sed 's/unorganized\///;s/.mp3//;s/.flac//;s/.wav//' \
        | awk -v len=35 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
