@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-sel=$(printf "apathy-browser\nkill-i3\nkill-cwm\nreboot\npoweroff" | dmenu -b -p "meh:")
+sel=$(printf "apathy-browser\nkill-cwm\nreboot\npoweroff" | dmenu -b -p "meh:")
 
 case "$sel" in
  poweroff)
@@ -14,10 +14,6 @@ case "$sel" in
   kill -KILL $(pidof apathy-browser)
   kill -KILL -$(cat /tmp/lemonbar.pid)
   kill -TERM $(pidof cwm)
- ;;
- kill-i3)
-  kill -KILL $(pidof apathy-browser)
-  i3-msg exit &
  ;;
  apathy-browser)
   apathy-browser
