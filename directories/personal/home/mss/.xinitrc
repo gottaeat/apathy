@@ -11,7 +11,6 @@ numlockx on
 xrandr --output VGA-1 --primary &
 cp /home/mss/.fehbg /home/mss/.fehb.def &
 setxkbmap us,tr -option 'grp:alt_shift_toggle' &
-xcompmgr &
+#xcompmgr &
 /home/mss/.fehb.def &
-st &
-exec /mss/bin/cwm
+exec cwm
