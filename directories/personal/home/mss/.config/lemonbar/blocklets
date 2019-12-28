@@ -280,13 +280,12 @@ wspace_simple(){
   [ "${curr_before}" -eq 0 ] && curr_before="4"
   [ "${curr_after}"  -eq 5 ] && curr_after="1"
 
-  sleep 0.1
-
 wspace="%{A5:wmctrl -s ${curr_before}:}\
 %{A4:wmctrl -s ${curr_after}:}\
 ${f2} workspace ${f3}[${fr}${curr_ws}${f3}]\
 %{A5}%{A4}"
 
   echo "${wspace}" > "${tmpdir}"/wspace
+  sleep 0.1
  done
 }
