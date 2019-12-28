@@ -93,6 +93,7 @@ case $2 in
 esac
 }
 
+
 ### aliases
 ## program related
 alias tmux="tmux -2"
@@ -112,6 +113,8 @@ alias nc="ncmpcpp"
 alias w="pwd"
 alias s="startx --"
 alias da="doas --"
+alias a="aria2c --enable-dht6=false"
+alias arpc="aria2c --enable-dht6=false --enable-rpc --rpc-listen-all"
 alias l="ls -Askh --color=tty"
 alias ll="ls -Askhw1 --color=tty"
 alias lll="ls -la --color=tty"
@@ -122,7 +125,8 @@ alias fetchall="clear;fetch | tail -14;pver | tail -5;pkg | tail -6"
 ##b tmux
 alias td="tmux detach"
 alias ta="tmux attach"
-alias tk="tmux kill-session"
+alias tk="tmux kill-session -t"
+alias tl="tmux ls"
 ##c git
 alias gs="git status -s"
 alias gpo="git push origin master"
