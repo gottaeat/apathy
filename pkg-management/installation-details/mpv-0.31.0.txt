@@ -1,0 +1,13 @@
+/etc/mpv/encoding-profiles.conf
+
+/usr/bin/mpv
+
+/usr/share/applications
+/usr/share/doc
+/usr/share/zsh
+
+/usr/share/icons/hicolor/16x16/apps/mpv.png
+/usr/share/icons/hicolor/32x32/apps/mpv.png
+/usr/share/icons/hicolor/64x64/apps/mpv.png
+/usr/share/icons/hicolor/scalable/apps/mpv.svg
+/usr/share/icons/hicolor/symbolic/apps/mpv-symbolic.svg

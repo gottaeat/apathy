@@ -225,7 +225,7 @@ ffmpeg-4.2.1
 lame-3.100
 openjpeg-2.3.1
 numlockx-1.2
-mpv-0.29.1
+mpv-0.31.0
 mpd-0.21.10
 sqlite-3.29.0
 libcue-2.2.1

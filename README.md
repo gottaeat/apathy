@@ -53,7 +53,7 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1566.82mib
+ > total partition size : 1564.7mib
  > local package count  : 342
  > removed packages     : 15
 ```

@@ -339,7 +339,7 @@ nope	> sdl2-2.0.10
 [d]	>> openjpeg-2.3.1
 
 [d]	> numlockx-1.2
-[d]	> mpv-0.29.1
+[d]	> mpv-0.31.0
 
 [d]	> mpd-0.21.10
 [d]	>> sqlite-3.29.0
