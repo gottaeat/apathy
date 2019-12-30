@@ -1,10 +1,8 @@
 #!/mss/bin/sh
-
-case $1 in
- full|-f)   kek="full"   c_bg="000000" c_fg="ffffff" ;;
- simple|-s) kek="simple" c_bg="000000" c_fg="ffffff" ;;
- *)         exit 1                                   ;;
-esac
+kek="simple"
+geom="816x12+550+0"
+c_bg="000000"
+c_fg="ffffff"
 
 if [ -z "$(pidof lemonbar)" ]
  then
@@ -12,10 +10,10 @@ if [ -z "$(pidof lemonbar)" ]
 
   /home/mss/.config/lemonbar/"${kek}"              \
    | lemonbar -p -b -d -a 20                       \
-   -g "1366x12+0+0"                                \
+   -g "${geom}"                                    \
    -f "scientifica-7:antialias=true:autohint=true" \
    -f "euphon-10"                                  \
-   -B "#${c_bg}" -F "#${c_fg}" -U "#FF00FF"        \
+   -B "#${c_bg}" -F "#${c_fg}"                     \
    | sh
  else
   kill -KILL -$(cat /tmp/lemonbar.pid)

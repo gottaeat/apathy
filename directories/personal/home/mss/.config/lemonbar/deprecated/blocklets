@@ -69,7 +69,7 @@ cpustat(){
   perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
 
   temp=$(sensors coretemp-isa-0000 \
-       | awk '/Package/ {gsub("+",""); gsub("°C",""); print $4"c"}')
+       | awk '/Physical/ {gsub("+",""); gsub("°C",""); print $4"c"}')
 
   echo "${perc}%(${temp})" > "${tmpdir}"/cpustat
  done
