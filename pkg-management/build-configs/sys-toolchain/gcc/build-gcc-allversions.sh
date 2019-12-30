@@ -12,6 +12,8 @@ fi
 # b1 >> set script vars
 saucedir="/mss/work/sauces"
 patchdir="/mss/repo/pkg-management/build-configs/sys-toolchain/gcc/patches"
+export CFLAGS="${CFLAGS} -march=native -mtune=native"
+export CXXFLAGS="${CXXFLAGS} -march=native -mtune=native"
 
 _gccver="${1}"
 _islver="${2}"
@@ -19,34 +21,34 @@ _build="x86_64-apathy-linux-musl"
 
 # b2 >> set the configuring func
 _configure(){
-libat_cv_have_ifunc=no                            \
-../configure                                      \
- --prefix=/usr                                    \
- --build=${_build}                                \
- --with-bugurl="https://github.com/mssx86/apathy" \
- --with-pkgversion="apathy"                       \
- --with-isl                                       \
- --with-system-zlib                               \
- --disable-multilib                               \
- --disable-nls                                    \
- --disable-symvers                                \
- --disable-libmpx                                 \
- --disable-libmudflap                             \
- --disable-libsanitizer                           \
- --disable-werror                                 \
- --disable-fixed-point                            \
- --disable-libstdcxx-pch                          \
- --enable-linker-build-id                         \
- --enable-checking=release                        \
- --enable-languages=c,c++                         \
- --enable-__cxa_atexit                            \
- --enable-default-pie                             \
- --enable-default-ssp                             \
- --enable-shared                                  \
- --enable-threads                                 \
- --enable-tls                                     \
- --mandir=/usr/share/man                          \
- --infodir=/usr/share/info                        \
+libat_cv_have_ifunc=no                             \
+../configure                                       \
+ --prefix=/usr                                     \
+ --build=${_build}                                 \
+ --with-bugurl="https://github.com/mssx86/apathy"  \
+ --with-pkgversion="apathy"                        \
+ --with-isl                                        \
+ --with-system-zlib                                \
+ --disable-multilib                                \
+ --disable-nls                                     \
+ --disable-symvers                                 \
+ --disable-libmpx                                  \
+ --disable-libmudflap                              \
+ --disable-libsanitizer                            \
+ --disable-werror                                  \
+ --disable-fixed-point                             \
+ --disable-libstdcxx-pch                           \
+ --enable-linker-build-id                          \
+ --enable-checking=release                         \
+ --enable-languages=c,c++                          \
+ --enable-__cxa_atexit                             \
+ --enable-default-pie                              \
+ --enable-default-ssp                              \
+ --enable-shared                                   \
+ --enable-threads                                  \
+ --enable-tls                                      \
+ --mandir=/usr/share/man                           \
+ --infodir=/usr/share/info                         \
   >>/tmp/gcc-build.log 2>&1
 }
 
@@ -55,6 +57,9 @@ aprint_nc
 lsdetail "gcc version" "${_gccver}"
 lsdetail "isl version" "${_islver}"
 lsdetail "build"       "${_build}"
+aprint_nc
+lsdetail "cflags"      "${CFLAGS}"
+lsdetail "cxxflags"    "${CXXFLAGS}"
 aprint_nc
 
 # c2.1 >> extract gcc sauce
