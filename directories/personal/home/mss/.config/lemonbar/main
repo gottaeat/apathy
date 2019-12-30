@@ -8,6 +8,12 @@ if [ -z "$(pidof lemonbar)" ]
  then
   ps -o pgid -p "$$" | tail -1 | sed 's/ //g' > /tmp/lemonbar.pid
 
+  script -q -c "xprop -spy -root | awk '/CURRENT_DESKTOP\(/ {print \$3}'" \
+   | lemonbar -p -b -d  -g "6x12+0+0"              \
+   -f "scientifica-7:antialias=true:autohint=true" \
+   -f "euphon-10"                                  \
+   -B "#000000" &
+
   /home/mss/.config/lemonbar/"${kek}"              \
    | lemonbar -p -b -d -a 20                       \
    -g "${geom}"                                    \
