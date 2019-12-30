@@ -1,0 +1,45 @@
+--- a/deblob-main	2019-12-29 18:59:40.218817440 +0300
++++ b/deblob-main	2019-12-29 19:01:28.195819186 +0300
+@@ -265,42 +265,10 @@
+ echo Wiping out extracted trees
+ rm -rf linux-$kver orig-linux-$kver
+ 
+-echo Creating vcdiff between linux-$kver.tar and linux-libre-$kver-$gnu.tar
+-xdelta3 -e -9 -S djw -s linux-$kver.tar linux-libre-$kver-$gnu.tar linux-libre-$kver-$gnu.vcdiff || : # don't fail if xdelta3 is not present
+-
+-echo Creating xdelta between linux-$kver.tar and linux-libre-$kver-$gnu.tar
+-xdelta delta -0 linux-$kver.tar linux-libre-$kver-$gnu.tar linux-libre-$kver-$gnu.xdelta || : # xdelta returns nonzero on success
+-
+ cleanup="linux-libre-$kver-$gnu.tar linux-libre-$kver-$gnu.xdelta"
+ 
+ echo Compressing binary deltas and linux-libre-$kver-$gnu.tar
+ rm -f linux-$kver.tar
+-if test -f linux-libre-$kver-$gnu.xdelta; then
+-  bzip2 -k9 linux-libre-$kver-$gnu.xdelta
+-  xz -k9 linux-libre-$kver-$gnu.xdelta || :
+-  lzip -k9 linux-libre-$kver-$gnu.xdelta || :
+-fi
+-bzip2 -k9 linux-libre-$kver-$gnu.tar
+-xz -k9 linux-libre-$kver-$gnu.tar || :
+-lzip -k9 linux-libre-$kver-$gnu.tar || :
+-
+-echo Done except for signing, feel free to interrupt
+-for f in \
+-  linux-libre-$kver-$gnu.tar \
+-  linux-libre-$kver-$gnu.tar.bz2 \
+-  linux-libre-$kver-$gnu.tar.xz \
+-  linux-libre-$kver-$gnu.tar.lz \
+-  linux-libre-$kver-$gnu.vcdiff \
+-  linux-libre-$kver-$gnu.xdelta \
+-  linux-libre-$kver-$gnu.xdelta.bz2 \
+-  linux-libre-$kver-$gnu.xdelta.xz \
+-  linux-libre-$kver-$gnu.xdelta.lz \
+-; do
+-  if test -f $f; then
+-    gpg -a --detach-sign $f
+-    mv $f.asc $f.sign
+-  fi
+-done
+ 
+ rm -f $cleanup
+ cleanup=
