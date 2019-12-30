@@ -1,0 +1,18 @@
+#!/mss/bin/sh
+s1_data=$(grep cpu /proc/stat | head -1)
+s1_total=$(($(echo $s1_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
+s1_col4=$(echo $s1_data | awk '{print $5}')
+
+sleep 1
+
+s2_data=$(grep cpu /proc/stat | head -1)
+s2_total=$(($(echo $s2_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
+s2_col4=$(echo $s2_data | awk '{print $5}')
+
+used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
+perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
+
+temp=$(sensors coretemp-isa-0000 \
+      | awk '/Physical/ {gsub("+",""); gsub("°C",""); print $4"c"}')
+
+echo "${perc}%(${temp})"
