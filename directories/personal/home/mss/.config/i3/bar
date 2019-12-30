@@ -1,22 +1,22 @@
 [bw]
 command=~/.config/scripts/bw
 interval=1
-color=#ababab
+color=#747474
 
 [cpustat]
-command=~/.config/scripts/c2.sh
+command=~/.config/scripts/cpustat
 interval=1
-color=#e3e3e3
+color=#ababab
 separator=false
 separator_block_width=5
 min_width=xxxxxx
 
-[memory]
+[mem]
 command=~/.config/scripts/mem
 interval=1
-color=#e3e3e3
+color=#ababab
 
-[mediaplayer]
+[mpdstat]
 command=~/.config/scripts/mpdstat
 color=#ababab
 interval=1
@@ -25,7 +25,7 @@ signal=1
 [time]
 command=date '+%a %d %I:%M:%S%P'
 interval=1
-color=#e3e3e3
+color=#f7f7f7
 min_width=
 separator_block_width=3
 separator=false
@@ -35,8 +35,8 @@ command=~/.config/scripts/weather
 interval=300
 color=#747474
 
-[master-alsa]
-command=~/.config/scripts/master-alsa
+[alsa-master]
+command=~/.config/scripts/alsa-master
 interval=1
 color=#f7f7f7
 signal=1
@@ -51,18 +51,11 @@ signal=1
 separator_block_width=4
 separator=false
 
-[capture-alsa]
-command=~/.config/scripts/capture-alsa
+[alsa-capture]
+command=~/.config/scripts/alsa-capture
 interval=1
 color=#f7f7f7
 signal=1
-
-[host]
-command=~/.config/scripts/host-ip
-interval=once
-color=#ababab
-separator_block_width=4
-separator=false
 
 [uptime]
 command=~/.config/scripts/upt
