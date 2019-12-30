@@ -1,15 +1,7 @@
 #!/mss/bin/sh
-
-utime(){
 utime=$(cat /proc/uptime | awk '{print $1}')
 
-printf "%dd %dh %dm \n"               \
+printf "%dd %dh %dm\n"               \
  "$(echo "${utime}/86400"     | bc)"  \
  "$(echo "${utime}/3600"      | bc)"  \
  "$(echo "(${utime}%3600)/60" | bc)"
-}
-
-case $BLOCK_BUTTON in
- 2) uname -r ;;
- *) utime ;;
-esac
