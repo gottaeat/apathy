@@ -1,6 +1,0 @@
-#!/mss/bin/sh
-case $BLOCK_BUTTON in
- 2) echo $(curl -s ifconfig.co) ;;
- *) echo "$(cat /etc/hostname) - $(ifconfig -a | awk 'NR==1 {print $1}')";;
-esac
-
