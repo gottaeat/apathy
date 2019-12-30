@@ -1,11 +1,10 @@
 #!/mss/bin/sh
-capstat=$(amixer -D default get Capture | tail -1 | sed 's/\[//g;s/\]//g')
-cmchk=$(echo $capstat | awk '{print $7}')
+cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
+cmchk=$(echo $cap_data | awk '{print $7}')
 
-if [ "$cmchk" = "off" ]
- then echo muted
- else echo $capstat | awk '{print $6}'
-fi
+[ "$cmchk" = "off" ] \
+ && echo "muted"     \
+ || echo "$(echo ${cap_data} | awk '{print $6}')"
 
 case $BLOCK_BUTTON in
  3) amixer -q -D default set Capture toggle;      pkill -RTMIN+1 i3blocks;;
