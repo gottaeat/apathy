@@ -1,6 +1,10 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-if [ -z $1 ]; then aprint_fail "no url given, exiting."; exit 1; fi
+if [ -z "$1" ]; then aprint_fail "no url given, exiting."; exit 1; fi
+if [ "$2" = "novid" ]
+ then extraflags="--no-video"
+ else extraflags="vo=gpu,drm & disown"
+fi
 
 youtube-dl --list-format ${1} | grep "^[0-9]" > /tmp/ytquality.tmp
 
@@ -9,4 +13,5 @@ quality=$(cat /tmp/ytquality.tmp | slmenu -b -l ${qlines} -p " * select stream q
 
 clear
 aprint "playing ${c_lcyan}${1}${c_reset}."
-mpv "${1}" --ytdl-format=${quality} --vo=gpu,drm & disown
+
+mpv "${1}" --ytdl-format=${quality} "${extraflags}"
