@@ -1,6 +1,4 @@
 #!/mss/bin/sh
-kek="simple"
-geom="816x12+550+0"
 c_bg="000000"
 c_fg="ffffff"
 
@@ -8,15 +6,19 @@ if [ -z "$(pidof lemonbar)" ]
  then
   ps -o pgid -p "$$" | tail -1 | sed 's/ //g' > /tmp/lemonbar.pid
 
-  script -q -c "xprop -spy -root | awk '/CURRENT_DESKTOP\(/ {print \$3}'" \
-   | lemonbar -p -b -d  -g "6x12+0+0"              \
-   -f "scientifica-7:antialias=true:autohint=true" \
-   -f "euphon-10"                                  \
-   -B "#000000" &
+  xprop -spy -root _NET_CURRENT_DESKTOP | stdbuf -oL -eL awk '{print \
+   "%{A5:wmctrl -s \$(echo \$((\$(wmctrl -d | grep \\* -B 10 | wc -l) - 2)) | sed 's/0/9/'):} \
+%{A4:wmctrl -s \$(wmctrl -d | grep \\* -B 10 | wc -l | sed 's/10/1/'):}\
+%{F#747474}workspace:%{F-}",$3"%{A4}%{A5}"}'                \
+   | lemonbar -p -b -d -g "66x12+0+0"                       \
+   -f "scientifica-7:antialias=true:autohint=true"          \
+   -f "euphon-10"                                           \
+   -B "#${c_bg}" -F "#${c_fg}"                              \
+   | sh &
 
-  /home/mss/.config/lemonbar/"${kek}"              \
+  /home/mss/.config/lemonbar/simple                \
    | lemonbar -p -b -d -a 20                       \
-   -g "${geom}"                                    \
+   -g "1300x12+66+0"                               \
    -f "scientifica-7:antialias=true:autohint=true" \
    -f "euphon-10"                                  \
    -B "#${c_bg}" -F "#${c_fg}"                     \
