@@ -9,6 +9,28 @@ br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}'
 sep=" ${f1}|${fr} "
 
 ## b >> funcs
+alsa_capture(){
+ [ "$(echo $cap_data | awk '{print $7}')" = "off" ]        \
+  && alsa_capture="muted"                                  \
+  || alsa_capture="$(echo ${cap_data} | awk '{print $6}')"
+
+alsa_capture="%{A3:amixer -q -D default sset Capture toggle:}\
+%{A4:amixer -q -D default sset Capture 3dB+ unmute:}\
+%{A5:amixer -q -D default sset Capture 3dB- unmute:}\
+${alsa_capture}%{A}%{A}%{A}"
+}
+
+alsa_master(){
+ [ "$(echo $mas_data | awk '{print $6}')" = "off" ]        \
+  && alsa_master="muted"                                   \
+  || alsa_master="$(echo ${mas_data} | awk '{print $4}')"
+
+  alsa_master="%{A3:amixer -q -D default sset Master toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Master 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Master 3dB- unmute > /dev/null:}\
+${alsa_master}%{A}%{A}%{A}"
+}
+
 bw(){
   bwpath="/tmp/bw.tmp"
 
@@ -102,6 +124,13 @@ mpdstat(){
  mpd="%{A:mpc next:}%{A2:mpc toggle:}%{A3:mpc prev:}%{A4:mpc volume +10:}%{A5:mpc volume -10:}${state}%{A5}%{A4}%{A3}%{A2}%{A}"
 }
 
+mpdvol(){
+ vol="$(mpc vol | sed 's/volume://;s/[[:space:]]//g;')"
+ [ "${vol}" = "0%" ] && mpdvol_state="muted" || mpdvol_state="${vol}"
+ mpdvol="%{A3:mpc toggle:}%{A4:mpc vol +5:}%{A5:mpc vol -5:}${mpdvol_state}%{A5}%{A4}%{A3}"
+}
+
+
 upt(){
  utime_b=$(cat /proc/uptime | awk '{print $1}')
  utime=$(printf "%dd %dh %dm\n"                      \
@@ -146,10 +175,15 @@ done &
 while true; do
  time="$(date '+%a %d %I:%M:%S%P')"
  mem=$(free --mebi | awk 'NR==2 {print $3"mib"}')
+ cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
+ mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
 
  read weat < "${tmpdir}"/weat.tmp
  read upt  < "${tmpdir}"/upt.tmp
 
+ alsa_master
+ alsa_capture
+ mpdvol
  mpdstat
  cpustat
  bw
@@ -160,6 +194,9 @@ ${f3}${bw}${fr}${sep}\
 ${f2}${load}${fr} \
 ${f2}${mem}${sep}\
 ${f3}${mpd}${fr}${sep}\
+${f2}${alsa_master}${fr} \
+${f3}${mpdvol}${fr} \
+${f2}${alsa_capture}${fr}${sep}\
 ${f4}${time}${fr} \
 ${f2}${weat}${fr}${sep}\
 ${f5}${upt}${fr} "
