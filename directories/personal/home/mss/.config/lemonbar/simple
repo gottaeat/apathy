@@ -10,6 +10,7 @@ sep=" ${f1}|${fr} "
 
 ## b >> funcs
 alsa_capture(){
+ cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
  [ "$(echo $cap_data | awk '{print $7}')" = "off" ]        \
   && alsa_capture="muted"                                  \
   || alsa_capture="$(echo ${cap_data} | awk '{print $6}')"
@@ -21,6 +22,7 @@ ${alsa_capture}%{A}%{A}%{A}"
 }
 
 alsa_master(){
+ mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
  [ "$(echo $mas_data | awk '{print $6}')" = "off" ]        \
   && alsa_master="muted"                                   \
   || alsa_master="$(echo ${mas_data} | awk '{print $4}')"
@@ -58,27 +60,26 @@ bw(){
   tx_kib=$(echo "$(($tx_rate / 1024))")
 
   bw="${rx_kib}(${total_rx})rx ${tx_kib}(${total_tx})tx ${memepn}"
-  sleep 0.5
 }
 
-cpustat(){
+cpustat1(){
  s1_data=$(grep cpu /proc/stat | head -1)
  s1_total=$(($(echo $s1_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
  s1_col4=$(echo $s1_data | awk '{print $5}')
+}
 
- sleep 0.5
-
+cpustat2(){
  s2_data=$(grep cpu /proc/stat | head -1)
  s2_total=$(($(echo $s2_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
  s2_col4=$(echo $s2_data | awk '{print $5}')
 
+ thrd=$(awk '{print $4}' /proc/loadavg)
  used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
  perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
 
- temp=$(sensors coretemp-isa-0000 \
-      | awk '/Physical/ {gsub("+",""); gsub("°C",""); print $4"c"}')
+ temp=$(sensors coretemp-isa-0000 | awk '/Physical/ {gsub("+",""); gsub("°C",""); print $4"c"}')
 
- load="${perc}%(${temp})"
+ load="${perc}% ${thrd} (${temp})"
 }
 
 mpdstat(){
@@ -175,8 +176,6 @@ done &
 while true; do
  time="$(date '+%a %d %I:%M:%S%P')"
  mem=$(free --mebi | awk 'NR==2 {print $3"mib"}')
- cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
- mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
 
  read weat < "${tmpdir}"/weat.tmp
  read upt  < "${tmpdir}"/upt.tmp
@@ -185,8 +184,10 @@ while true; do
  alsa_capture
  mpdvol
  mpdstat
- cpustat
  bw
+ cpustat1
+ sleep 1
+ cpustat2
 
  echo "\
 %{r}\
@@ -194,11 +195,10 @@ ${f3}${bw}${fr}${sep}\
 ${f2}${load}${fr} \
 ${f2}${mem}${sep}\
 ${f3}${mpd}${fr}${sep}\
+${f4}${time}${fr} \
+${f2}${weat}${fr}${sep}\
 ${f2}${alsa_master}${fr} \
 ${f3}${mpdvol}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
-${f4}${time}${fr} \
-${f2}${weat}${fr}${sep}\
 ${f5}${upt}${fr} "
-
 done
