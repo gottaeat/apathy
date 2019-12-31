@@ -1,5 +1,5 @@
 #!/mss/bin/sh
 if [ -z "$1" ]
- then du . -a | awk '{print $2}' | sed 's/^.//g' | sort -s | less
- else du . -a | awk '{print $2}' | sed 's/^.//g' | sort -s > "${1}"
+ then find . | sed 's/^.//g' | sort -s | less
+ else find . | sed 's/^.//g' | sort -s > "${1}"
 fi
