@@ -34,10 +34,17 @@ alsa_master(){
 ${alsa_master}%{A}%{A}%{A}"
 }
 
+bw(){
+ read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
+ read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
+ rx=$(echo "$(($rx / 1048576))") tx=$(echo "$(($tx / 1048576))")
+ bw="${f3}${rx}${fr}rx ${f3}${tx}${fr}tx"
+}
+
 cpustat(){
  temp=$(sensors coretemp-isa-0000 | awk '/Physical/ {gsub("+",""); gsub("°C","c"); print $4}')
  load="$(awk '{print $1,$2,$4}' /proc/loadavg)"
- cpustat="$load $temp"
+ cpustat="${f3}$load${fr} ${f2}$temp${fr}"
 }
 
 mpdstat(){
@@ -121,6 +128,7 @@ while true; do
 
  alsa_master
  alsa_capture
+ bw
  cpustat
  mpdstat
 
@@ -128,7 +136,8 @@ while true; do
 %{l} \
 ${active_ws}\
 %{r}\
-${f2}${cpustat}${fr}${sep}\
+${bw}${sep}\
+${cpustat}${sep}\
 ${f3}${mpd}${fr}${sep}\
 ${f2}${alsa_master}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
