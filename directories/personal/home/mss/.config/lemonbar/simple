@@ -8,7 +8,8 @@ br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}'
 
 sep=" ${f1}|${fr} "
 
-## b >> funcs
+## b >> action
+# b1 >> funcs
 alsa_capture(){
  cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
  [ "$(echo $cap_data | awk '{print $7}')" = "off" ]        \
@@ -33,64 +34,21 @@ alsa_master(){
 ${alsa_master}%{A}%{A}%{A}"
 }
 
-bw(){
-  bwpath="/tmp/bw.tmp"
-
-  if [ -z "$(pidof openvpn)" ]; then memepn=off; else memepn=on; fi
-
-  read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
-  read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
-  bwtime=$(date +%s)
-
-  [ ! -f "${bwpath}" ] && echo "${bwtime} ${rx} ${tx}" > "${bwpath}"; chmod 0666 "${bwpath}"
-  read old < "${bwpath}"
-  echo "${bwtime} ${rx} ${tx}" > "${bwpath}"
-
-  bwtime_diff=$(( $bwtime - $(echo $old | awk '{print $1}') ))
-
-  rx_diff=$(( $rx - $(echo $old | awk '{print $2}') ))
-  tx_diff=$(( $tx - $(echo $old | awk '{print $3}') ))
-  rx_rate=$(( $rx_diff / $bwtime_diff ))
-  tx_rate=$(( $tx_diff / $bwtime_diff ))
-
-  total_rx=$(echo "$(($rx / 1048576))")
-  total_tx=$(echo "$(($tx / 1048576))")
-
-  rx_kib=$(echo "$(($rx_rate / 1024))")
-  tx_kib=$(echo "$(($tx_rate / 1024))")
-
-  bw="${rx_kib}(${total_rx})rx ${tx_kib}(${total_tx})tx ${memepn}"
-}
-
-cpustat1(){
- s1_data=$(grep cpu /proc/stat | head -1)
- s1_total=$(($(echo $s1_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
- s1_col4=$(echo $s1_data | awk '{print $5}')
-}
-
-cpustat2(){
- s2_data=$(grep cpu /proc/stat | head -1)
- s2_total=$(($(echo $s2_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
- s2_col4=$(echo $s2_data | awk '{print $5}')
-
- thrd=$(awk '{print $4}' /proc/loadavg)
- used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
- perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
-
- temp=$(sensors coretemp-isa-0000 | awk '/Physical/ {gsub("+",""); gsub("°C",""); print $4"c"}')
-
- load="${perc}% ${thrd} (${temp})"
+cpustat(){
+ temp=$(sensors coretemp-isa-0000 | awk '/Physical/ {gsub("+",""); gsub("°C","c"); print $4}')
+ load="$(awk '{print $1,$2,$4}' /proc/loadavg)"
+ cpustat="$load $temp"
 }
 
 mpdstat(){
  if [ ! -z $(pidof mpd) ]; then
    mpc_status="$(mpc status)"
- 
+
    case "$(echo "${mpc_status}" | head -1)" in
     *volume:*) state="mpd is idle" ;;
     *)
      artist_pre=$(mpc current -f "[%artist%]") song_pre=$(mpc current -f "[%title%]")
- 
+
      if [ -z "${artist_pre}" ] || [ -z "${song_pre}" ]
       then
        song=$(mpc --format "[%file%]" current | sed 's/unorganized\///;s/.mp3//;s/.flac//;s/.wav//' \
@@ -102,7 +60,7 @@ mpdstat(){
         | awk -v len=25 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
        song="${artist} - ${art}"
      fi
- 
+
      main="$(echo "${mpc_status}" | awk 'NR==2 {print $3}' | sed 's/\// /g;s/:/ /g')"
      curr_mins="$(echo "${main}" | awk '{print $1}')"
      curr_secs="$(echo "${main}" | awk '{print $2}')"
@@ -111,70 +69,51 @@ mpdstat(){
      total_secs="$(echo "${main}" | awk '{print $4}')"
      total=$(echo "$total_secs + ($total_mins * 60)" | bc -l)
      dur_pre="$(($total - $curr))"
- 
+
      [ "$dur_pre" -gt "3599" ] \
       && dur="$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))" \
       || dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
- 
-     [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] && state="[paused] ${song}" || state="${song} ${dur}"
+
+     [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] \
+      && state="[paused] ${song}" \
+      || state="${song} ${dur}"
     ;;
    esac
   else state="mpd is not running"
  fi
- 
- mpd="%{A:mpc next:}%{A2:mpc toggle:}%{A3:mpc prev:}%{A4:mpc volume +10:}%{A5:mpc volume -10:}${state}%{A5}%{A4}%{A3}%{A2}%{A}"
-}
 
-mpdvol(){
- vol="$(mpc vol | sed 's/volume://;s/[[:space:]]//g;')"
- [ "${vol}" = "0%" ] && mpdvol_state="muted" || mpdvol_state="${vol}"
- mpdvol="%{A3:mpc toggle:}%{A4:mpc vol +5:}%{A5:mpc vol -5:}${mpdvol_state}%{A5}%{A4}%{A3}"
+ mpd="%{A:mpc next:}%{A2:mpc toggle:}%{A3:mpc prev:}%{A4:mpc volume +10:}\
+%{A5:mpc volume -10:}${state}%{A5}%{A4}%{A3}%{A2}%{A}"
 }
-
 
 upt(){
  utime_b=$(cat /proc/uptime | awk '{print $1}')
- utime=$(printf "%dd %dh %dm\n"                      \
+ echo "$(printf "%dd %dh %dm\n"                      \
            "$(echo "${utime_b}/86400"        | bc)"  \
            "$(echo "(${utime_b}%86400)/3600" | bc)"  \
-           "$(echo "(${utime_b}%3600)/60"    | bc)")
- echo "${utime}"
+           "$(echo "(${utime_b}%3600)/60"    | bc)")"
 }
-
 
 weat(){
  stats_now=$(curl -s -H "Origin: https://mgm.gov.tr" --request GET \
   "https://servis.mgm.gov.tr/web/sondurumlar?merkezid=97101" | jq '.[] |
   .sicaklik, .nem, .ruzgarHiz, .yagis00Now, .hadiseKodu')
 
- if [ ! -z "${stats_now}" ]
-  then
-   weat_print=$(echo $stats_now | tr '[:upper:]' '[:lower:]' | \
-    awk '{gsub("\"",""); print $1"c",$2"%",substr($3, 1, 4)"km/h",$4"mm",$5}')
-  else
-   weat_print="no data"
- fi
-
- echo "${weat_print}"
+ [ -z "${stats_now}" ] \
+  && echo "no data"    \
+  || echo "$(echo $stats_now | tr '[:upper:]' '[:lower:]' \
+     | awk '{gsub("\"",""); print $1"c",$2"%",substr($3, 1, 4)"km/h",$4"mm",$5}')"
 }
 
-## c >> action
-# c1 >> start timers
-[ ! -d "${tmpdir}" ] && mkdir "${tmpdir}"
+# b2 >> start timers
+rm -rf "${tmpdir}"; mkdir "${tmpdir}"
+while true; do upt  > "${tmpdir}"/upt.tmp;  sleep 60;  done &
+while true; do weat > "${tmpdir}"/weat.tmp; sleep 300; done &
 
-while true; do
- upt > "${tmpdir}"/upt.tmp
- sleep 60
-done &
-
-while true; do
- weat > "${tmpdir}"/weat.tmp
- sleep 300
-done &
-
-# c2 >> finally, start and print everything
+# b3 >> finally, start and print everything
 while true; do
  time="$(date '+%a %d %I:%M:%S%P')"
+ active_ws="${f2}[${fr}$(echo $(wmctrl -l | awk '{print $2}' | sort -u))${f2}]${fr}"
  mem=$(free --mebi | awk 'NR==2 {print $3"mib"}')
 
  read weat < "${tmpdir}"/weat.tmp
@@ -182,23 +121,19 @@ while true; do
 
  alsa_master
  alsa_capture
- mpdvol
+ cpustat
  mpdstat
- bw
- cpustat1
- sleep 1
- cpustat2
 
  echo "\
+%{l} \
+${active_ws}\
 %{r}\
-${f3}${bw}${fr}${sep}\
-${f2}${load}${fr} \
-${f2}${mem}${sep}\
+${f2}${cpustat}${fr}${sep}\
 ${f3}${mpd}${fr}${sep}\
-${f4}${time}${fr} \
-${f2}${weat}${fr}${sep}\
 ${f2}${alsa_master}${fr} \
-${f3}${mpdvol}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
+${f2}${weat}${fr}${sep}\
+${f4}${time}${fr} \
 ${f5}${upt}${fr} "
+ sleep 1
 done
