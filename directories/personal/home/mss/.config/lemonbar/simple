@@ -38,7 +38,9 @@ bw(){
  read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
  read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
  rx=$(echo "$(($rx / 1048576))") tx=$(echo "$(($tx / 1048576))")
- bw="${f3}${rx}${fr}rx ${f3}${tx}${fr}tx"
+ [ -z "$(pidof openvpn)" ] && memepn=0 || memepn=1
+ bw="${rx}${f3}rx${fr} ${tx}${f3}tx${fr} ${memepn}${f3}v${fr}"
+
 }
 
 cpustat(){
@@ -82,8 +84,8 @@ mpdstat(){
       || dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
 
      [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] \
-      && state="[paused] ${song}" \
-      || state="${song} ${dur}"
+      && state="${f2}[paused]${fr} ${f3}${song}${fr}" \
+      || state="${f3}${song}${fr} ${f2}${dur}${fr}"
     ;;
    esac
   else state="mpd is not running"
@@ -138,11 +140,11 @@ ${active_ws}\
 %{r}\
 ${bw}${sep}\
 ${cpustat}${sep}\
-${f3}${mpd}${fr}${sep}\
+${mpd}${sep}\
 ${f2}${alsa_master}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
 ${f2}${weat}${fr}${sep}\
 ${f4}${time}${fr} \
-${f5}${upt}${fr} "
+${f5}${upt} ${fr}"
  sleep 1
 done
