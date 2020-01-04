@@ -16,7 +16,7 @@ _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
 _confdir="${_repodir}/configs"
 
-confname="5.4-apathy-libre-gcc-bmq-27-oct-2019.config"
+confname="5.4-apathy-libre-gcc-muqss-04-jan-2020.config"
 _useconf="${_confdir}/5.4/${confname}"
 localver="5.4-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -36,24 +36,12 @@ apply_freedo(){
 }
 
 apply_apathy(){
- _apatches="
-        0001-DEBUG-add-logs-and-BUG_ONs.patch
-        0002-do-not-idle-for-queues-with-no-proc-refs.patch
-        0003-DEBUG-check-proc-refs-in-case-of-requeue.patch
-        0004-Make-bfq-disable-iocost-when-enabled.patch
-        0005-present-a-double-cgroups-interface.patch
-        0006-set-default-scheduler-to-bfq-for-blk-mq.patch
-        0007-Fix-depends-for-BLK_DEV_ZONED.patch
-        0008-set-rq_affinity-2.patch
-        0009-cpu-family-specific-optimization.patch
-        0010-make-O3-always-available.patch
-        0011-Implement-mechanism-to-wait.patch
-        0012-Split-key-setup-from-key-queue-locking.patch
-        0013-kbuild-add-fcf-protection-none.patch
-        0014-loop-Better-discard-for-block-devices.patch
-        0015-allow-configure-cake-qdisc-as-default.patch
-        0016-add-trace-events-for-open-exec-and-uselib.patch
-        0017-ohgodohfuck-panic.patch"
+ _apatches="0001-bfq-dev-DEBUG-add-logs-and-BUG_ONs.patch
+            0002-bfq-dev-do-not-idle-for-queues-with-no-proc-refs.patch
+            0003-bfq-dev-DEBUG-check-proc-refs-in-case-of-requeue.patch
+            0004-graysky-cpu-family-specific-optimization.patch
+            0005-apathy-make-O3-always-available.patch
+            0006-apathy-ohgodohfuck-panic.patch"
 
  for pp in $_apatches
   do
@@ -63,34 +51,33 @@ apply_apathy(){
   done
 }
 
-apply_alfredchen(){
- _alpatches="0001-bmq_v5.4-r0.patch"
+apply_conkolivas(){
+ _ckpatches="0001-muqss-0.196.patch"
 
- for pp in $_alpatches
+ for pp in $_ckpatches
   do
    aprint_patch "applying" "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.4/alfredchen/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.4/conkolivas/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
 }
 
 apply_clearlinux(){
- _cpatches="
-         0001-Increase-the-ext4-default-commit-age.patch
-         0002-pci-pme-wakeups.patch
-         0003-ksm-wakeups.patch
-         0004-intel_idle-tweak-cpuidle-cstates.patch
-         0005-smpboot-reuse-timer-calibration.patch
-         0006-Initialize-ata-before-graphics.patch
-         0007-give-rdrand-some-credit.patch
-	 0008-ipv4-tcp-allow-the-memory-tuning-for-tcp.patch
-         0009-kernel-time-reduce-ntp-wakeups.patch
-         0010-use-lfence-instead-of-rep-and-nop.patch
-         0011-do-accept-in-LIFO-order-for-cache-efficiency.patch
-         0012-locking-rwsem-spin-faster.patch
-         0013-ata-libahci-ignore-staggered-spin-up.patch
-         0014-print-CPU-that-faults.patch
-         0015-CVE-2019-12379.patch"
+ _cpatches="0001-Increase-the-ext4-default-commit-age.patch
+            0002-pci-pme-wakeups.patch
+            0003-ksm-wakeups.patch
+            0004-intel_idle-tweak-cpuidle-cstates.patch
+            0005-smpboot-reuse-timer-calibration.patch
+            0006-Initialize-ata-before-graphics.patch
+            0007-give-rdrand-some-credit.patch
+	    0008-ipv4-tcp-allow-the-memory-tuning-for-tcp.patch
+            0009-kernel-time-reduce-ntp-wakeups.patch
+            0010-use-lfence-instead-of-rep-and-nop.patch
+            0011-do-accept-in-LIFO-order-for-cache-efficiency.patch
+            0012-locking-rwsem-spin-faster.patch
+            0013-ata-libahci-ignore-staggered-spin-up.patch
+            0014-print-CPU-that-faults.patch
+            0015-CVE-2019-12379.patch"
 
  for pp in $_cpatches
   do
@@ -137,8 +124,8 @@ aprint "deblobbing the kernel."
 apply_deblob
 apply_freedo
 
-aprint "applying the alfredchen bmq patches."
-apply_alfredchen
+aprint "applying the conkolivas patches."
+apply_conkolivas
 
 aprint "applying the apathy patchset."
 apply_apathy
