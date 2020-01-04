@@ -1,0 +1,24 @@
+#!/mss/bin/sh
+# setsched init script for sysvinit
+# apathy musl 1.1 - mssx86 (mss@waifu.club)
+
+# default-start --> S
+# description ----> sets bfq as the scheduler for block devices
+#                   under /sys/block/.
+
+. /mss/bin/apathy-funcs-init
+
+case "$1" in
+ start)
+  for blockdevice in /sys/block/sd*; do
+   echo bfq > ${blockdevice}/queue/scheduler
+   log_info_msg "setting ${c_lcyan}bfq${c_reset} as the scheduler for ${c_lcyan}${blockdevice}${c_reset}."
+   evalret
+ done
+ ;;
+
+ *)
+  printf "usage: $0 {start}.\n"
+  exit 1
+ ;;
+esac
