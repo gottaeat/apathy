@@ -4,7 +4,7 @@ diff -uraN a/Makefile b/Makefile
 @@ -1,7 +1,7 @@
  VERSION = 4
  PATCHLEVEL = 4
- SUBLEVEL = 207
+ SUBLEVEL = 208
 -EXTRAVERSION = -gnu
 +EXTRAVERSION =
  NAME = Blurry Fish Butt
