@@ -5,9 +5,7 @@
 . /mss/bin/apathy-funcs
 
 # a >> check if variables are set
-if	[ -z $1 ]; then aprint_fail "no gcc version specified, exiting."; exit 1;
-elif	[ -z $2 ]; then aprint_fail "no isl version specified, exiting."; exit 1;
-fi
+[ -z $1 ] && aprint_fail "no gcc version specified, exiting." && exit 1
 
 # b1 >> set script vars
 saucedir="/mss/work/sauces"
@@ -16,7 +14,6 @@ export CFLAGS="${CFLAGS} -march=native -mtune=native"
 export CXXFLAGS="${CXXFLAGS} -march=native -mtune=native"
 
 _gccver="${1}"
-_islver="${2}"
 _build="x86_64-apathy-linux-musl"
 
 # b2 >> set the configuring func
@@ -27,7 +24,6 @@ libat_cv_have_ifunc=no                             \
  --build=${_build}                                 \
  --with-bugurl="https://github.com/mssx86/apathy"  \
  --with-pkgversion="apathy"                        \
- --with-isl                                        \
  --with-system-zlib                                \
  --disable-multilib                                \
  --disable-nls                                     \
@@ -55,14 +51,13 @@ libat_cv_have_ifunc=no                             \
 # c1 >> print versions
 aprint_nc
 lsdetail "gcc version" "${_gccver}"
-lsdetail "isl version" "${_islver}"
 lsdetail "build"       "${_build}"
 aprint_nc
 lsdetail "cflags"      "${CFLAGS}"
 lsdetail "cxxflags"    "${CXXFLAGS}"
 aprint_nc
 
-# c2.1 >> extract gcc sauce
+# c2 >> extract gcc sauce
 if [ ! -f "${saucedir}/${_gccver}.tar.xz" ]
  then
   aprint_fail "gcc tarball does not exist in saucedir, exiting."; exit 1
@@ -73,18 +68,6 @@ if [ ! -f "${saucedir}/${_gccver}.tar.xz" ]
   
   cd ${_gccver}
 fi
-
-# c2.2 >> extract isl sauce
-if [ ! -f "${saucedir}/${_islver}.tar.xz" ]
- then
-  aprint_fail "isl tarball does not exist in saucedir, exiting."; exit 1
- else
-  aprint_ret "${c_blue}extracting${c_reset}\t: the ${c_lcyan}isl source${c_reset} to current directory."
-  tar xf "${saucedir}"/"${_islver}".tar.xz >>/tmp/gcc-build.log 2>&1
-  evalretkill
-
-  mv -v "${_islver}" "isl" >>/tmp/gcc-build.log 2>&1
-fi 
 
 # d1 >> change the default libdir to /lib from /lib64
 aprint_nc
@@ -118,7 +101,7 @@ read answerbuildgcc
 if [ "$answerbuildgcc" != "${answerbuildgcc#[Yy]}" ]
  then
   aprint_ret "running make, tail -f /tmp/gcc-build.log to view."
-   make -j$(($(nproc)+1)) >>/tmp/gcc-build.log 2>&1
+   /bin/busybox time make -j$(($(nproc)+1)) >>/tmp/gcc-build.log 2>&1
   evalretkill
 
   aprint_nc
