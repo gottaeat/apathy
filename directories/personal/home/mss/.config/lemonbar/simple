@@ -51,13 +51,30 @@ bw2(){
  total_rx=$(($rx2 / 1048576))
  total_tx=$(($tx2 / 1048576))
 
- bw="${f2}${rx_kib}${fr}(${total_rx})${f3}rx${fr} ${f2}${tx_kib}${fr}($total_tx)${f3}tx${fr} ${f3}${memepn}${fr}"
+ bw="${f2}${rx_kib}${f3}(${total_rx})${f2}rx ${f2}${tx_kib}${f3}($total_tx)${f2}tx ${f2}${memepn}${fr}"
 }
 
-cpustat(){
- temp=$(sensors coretemp-isa-0000 | awk '/Package/ {gsub("+",""); gsub("°C","c"); print $4}')
- load="$(awk '{print $1,$2,$4}' /proc/loadavg)"
- cpustat="${f3}$load${fr} ${f2}$temp${fr}"
+cpustat1(){
+ s1_data=$(grep cpu /proc/stat | head -1)
+ s1_total=$(($(echo $s1_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
+ s1_col4=$(echo $s1_data | awk '{print $5}')
+}
+
+cpustat2(){
+ s2_data=$(grep cpu /proc/stat | head -1)
+ s2_total=$(($(echo $s2_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
+ s2_col4=$(echo $s2_data | awk '{print $5}')
+
+ used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
+ load=$((100 * ${used} / (${s2_total} - ${s1_total})))
+ temp=$(sensors coretemp-isa-0000 | awk '/Package/ {gsub("+",""); gsub("°C",""); print $4}')
+
+ cpustat="${f2}$load${f3}% ${f2}$temp${fr}${f3}c${fr}"
+}
+
+mem(){
+ mem_p=$(free --mebi | awk 'NR==2 {print $3}')
+ mem="${f2}${mem_p}${f3}m${fr}"
 }
 
 mpdstat(){
@@ -142,15 +159,17 @@ while true; do
  alsa_master
  alsa_capture
  bw1
- cpustat
+ cpustat1
  mpdstat
+ mem
 
  echo "\
 %{l} \
 ${active_ws}\
 %{r}\
 ${bw}${sep}\
-${cpustat}${sep}\
+${cpustat} \
+${mem}${sep}\
 ${mpd}${sep}\
 ${f2}${alsa_master}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
@@ -159,4 +178,5 @@ ${f3}${time}${fr} \
 ${f5}${upt} ${fr}"
  sleep 1
  bw2
+ cpustat2
 done
