@@ -3,8 +3,8 @@
 tmpdir="/tmp/lemonbar"
 bwadapter="eth0"
 
-fr='%{F-}' f1='%{F#101010}' f2='%{F#747474}' f3='%{F#ababab}' f4='%{F#f7f7f7}' f5='%{F#e62063}'
-br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#e62063}'
+fr='%{F-}' f1='%{F#101010}' f2='%{F#747474}' f3='%{F#ababab}' f4='%{F#000000}' f5='%{F#e62063}'
+br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#252525}'
 
 sep=" ${f1}|${fr} "
 
@@ -34,17 +34,28 @@ alsa_master(){
 ${alsa_master}%{A}%{A}%{A}"
 }
 
-bw(){
- read rx < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
- read tx < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
- rx=$(echo "$(($rx / 1048576))") tx=$(echo "$(($tx / 1048576))")
- [ -z "$(pidof openvpn)" ] && memepn=0 || memepn=1
- bw="${rx}${f3}rx${fr} ${tx}${f3}tx${fr} ${memepn}${f3}v${fr}"
+bw1(){
+ [ -z "$(pidof openvpn)" ] && memepn=off || memepn=on
 
+ read rx1 < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
+ read tx1 < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
+}
+
+bw2(){
+ read rx2 < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
+ read tx2 < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
+
+ rx_kib=$((($rx2 - $rx1) / 1024))
+ tx_kib=$((($tx2 - $tx2) / 1024))
+
+ total_rx=$(($rx2 / 1048576))
+ total_tx=$(($tx2 / 1048576))
+
+ bw="${f2}${rx_kib}${fr}(${total_rx})${f3}rx${fr} ${f2}${tx_kib}${fr}($total_tx)${f3}tx${fr} ${f3}${memepn}${fr}"
 }
 
 cpustat(){
- temp=$(sensors coretemp-isa-0000 | awk '/Physical/ {gsub("+",""); gsub("°C","c"); print $4}')
+ temp=$(sensors coretemp-isa-0000 | awk '/Package/ {gsub("+",""); gsub("°C","c"); print $4}')
  load="$(awk '{print $1,$2,$4}' /proc/loadavg)"
  cpustat="${f3}$load${fr} ${f2}$temp${fr}"
 }
@@ -108,8 +119,8 @@ weat(){
   "https://servis.mgm.gov.tr/web/sondurumlar?merkezid=97101" | jq '.[] |
   .sicaklik, .nem, .ruzgarHiz, .yagis00Now, .hadiseKodu')
 
- [ -z "${stats_now}" ] \
-  && echo "no data"    \
+ [ -z "${stats_now}" ]                                    \
+  && echo "${f5}no data${fr}"                             \
   || echo "$(echo $stats_now | tr '[:upper:]' '[:lower:]' \
      | awk '{gsub("\"",""); print $1"c",$2"%",substr($3, 1, 4)"km/h",$4"mm",$5}')"
 }
@@ -130,7 +141,7 @@ while true; do
 
  alsa_master
  alsa_capture
- bw
+ bw1
  cpustat
  mpdstat
 
@@ -144,7 +155,8 @@ ${mpd}${sep}\
 ${f2}${alsa_master}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
 ${f2}${weat}${fr}${sep}\
-${f4}${time}${fr} \
+${f3}${time}${fr} \
 ${f5}${upt} ${fr}"
  sleep 1
+ bw2
 done
