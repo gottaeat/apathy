@@ -421,7 +421,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	 gettext-0.20.1
 [d]	 gmp-6.1.2
 [d]	 gperf-3.1
-[d]	 grep-3.3
+[d]	 grep-3.4
 [d]	 groff-1.22.4
 [d]	 gzip-1.10
 [d]	 iana-etc-2.30
