@@ -38,8 +38,8 @@ core userland:
 
 languages:
  * python 2.7.16, 3.7.4
- * lua 5.3.5, 5.1.5
- * perl5.30
+ * lua 5.3.5
+ * perl 5.30
 
 video/audio:
  * xorg (x11r7), mesa 19.1.7
@@ -53,9 +53,9 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1482.55mib
- > local package count  : 341
- > removed packages     : 16
+ > total partition size : 1465.25mib
+ > local package count  : 335
+ > removed packages     : 22
 ```
 
 ## dotfiles

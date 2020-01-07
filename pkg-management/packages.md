@@ -33,7 +33,7 @@
 [d]	>> libuv-1.32.0
 [d]	>> libarchive-3.4.0
 
-[d]	> unzip60-libre
+[r]	> unzip60-libre
 
 [d]	> usbutils-012
 [d]	>> libusb-1.0.23
@@ -55,15 +55,15 @@
 [d]	> iftop-0.17
 [d]	>> libpcap-1.9.0
 
-[d]	> links-0.13-20150624
-[d]	>> lua51-5.1.5
-[d]	>> tre-0.8.0
-[d]	>> libidn-1.35
-[d]	>> js185
-[d]	>>> zip30
-[d]	>>> nss-3.46
-[d]	>>>> nspr-4.22
-[d]	>>> python-2.7.16
+[r]	> elinks-0.13-20150624
+[r]	>> lua51-5.1.5
+[r]	>> tre-0.8.0
+[d]	>> libidn-1.35		--> mutt requires this
+[r]	>> js185
+[r]	>>> zip30
+[d]	>>> nss-3.46		--> firefox & forks dep
+[d]	>>>> nspr-4.22		--> ^^^^^^^^^^^^^^^^^^^
+[d]	>>> python-2.7.16	--> don't even try removing this boi, deprecated my ass.
 
 [d]	> gnupg-2.2.17
 [d]	>> npth-1.6

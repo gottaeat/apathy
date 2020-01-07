@@ -1,0 +1,10 @@
+/usr/bin/js
+/usr/bin/js-config
+
+/usr/include/js
+
+/usr/lib/libmozjs185.so
+/usr/lib/libmozjs185.so.1.0
+/usr/lib/libmozjs185.so.1.0.0
+
+/usr/lib/pkgconfig/mozjs185.pc

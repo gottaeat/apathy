@@ -17,7 +17,6 @@ libssh2-1.9.0
 cmake-3.15.3
 libuv-1.32.0
 libarchive-3.4.0
-unzip60-libre
 usbutils-012
 libusb-1.0.23
 lua-5.3.5
@@ -32,12 +31,7 @@ strace-5.0
 libnl-1.1.4
 iftop-0.17
 libpcap-1.9.0
-links-0.13-20150624
-lua51-5.1.5
-tre-0.8.0
 libidn-1.35
-js185
-zip30
 nss-3.46
 nspr-4.22
 python-2.7.16
