@@ -319,18 +319,18 @@ nope	> sdl2-2.0.10
 ```
 ```
 [r]	> i3-gaps-4.17.1
-[r]	>> libev-4.27
-[r]	>> yajl-2.1.0
-[r]	>> xcb-util-xrm-1.3
-[r]	>> startup-notification-0.12
-
-[r]	> i3blocks-1.4
-[d]	> dmenu-4.9
-[d]	> xtrlock-2.11
-
-[d]	> youtube-dl-2019.11.28
-
-[r]	> compton-0.1_beta2
+[d]	>> libev-4.31			this is actually--.
+[r]	>> yajl-2.1.0					  |
+[r]	>> xcb-util-xrm-1.3				  |
+[r]	>> startup-notification-0.12			  |
+							  |
+[r]	> i3blocks-1.4					  |
+[d]	> dmenu-4.9					  |
+[d]	> xtrlock-2.11					  |
+							  |
+[d]	> youtube-dl-2019.11.28				  |
+							  |
+[d]	> compton-5.1			<-----below this--"
 [r]	>> libconfig-1.7.2
 [r]	>> libxdg-basedir-1.2.0
 
