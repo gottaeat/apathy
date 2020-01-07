@@ -66,10 +66,11 @@ cpustat2(){
  s2_col4=$(echo $s2_data | awk '{print $5}')
 
  used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
+ thrd=$(awk '{print $4}' /proc/loadavg)
  load=$((100 * ${used} / (${s2_total} - ${s1_total})))
  temp=$(sensors coretemp-isa-0000 | awk '/Package/ {gsub("+",""); gsub("°C",""); print $4}')
 
- cpustat="${f2}$load${f3}% ${f2}$temp${fr}${f3}c${fr}"
+ cpustat="${f2}$load${f3}% ${f2}${thrd} ${f2}$temp${fr}${f3}c${fr}"
 }
 
 mem(){
