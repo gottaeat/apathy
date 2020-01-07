@@ -1,7 +1,25 @@
 #!/mss/bin/sh
-_pidboi=$(pidof xcompmgr) 
+cvsync(){
+ compton \
+ --backend glx --unredir-if-possible --glx-no-stencil \
+ --glx-no-rebind-pixmap --glx-swap-method buffer-age  \
+ --vsync opengl-swc
+}
 
-if [ -z ${_pidboi}  ]
- then xcompmgr &
- else kill -9 ${_pidboi}
+cnovsync(){
+ compton \
+ --backend glx --unredir-if-possible --glx-no-stencil \
+ --glx-no-rebind-pixmap --glx-swap-method buffer-age 
+}
+
+pidboi="$(pidof compton)"
+
+if [ ! -z "${pidboi}" ]
+ then 
+  kill -9 "${pidboi}"
+ else
+  case "$1" in
+   vsync|-v)  cvsync   ;;
+   novsync|*) cnovsync ;;
+  esac
 fi
