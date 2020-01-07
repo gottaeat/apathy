@@ -215,7 +215,7 @@ x265-3.1.2
 libev-4.31
 dmenu-4.9
 xtrlock-2.11
-youtube-dl-2019.11.28
+youtube-dl-2020.01.01
 compton-5.1
 ffmpeg-4.2.1
 lame-3.100

@@ -328,7 +328,7 @@ nope	> sdl2-2.0.10
 [d]	> dmenu-4.9					  |
 [d]	> xtrlock-2.11					  |
 							  |
-[d]	> youtube-dl-2019.11.28				  |
+[d]	> youtube-dl-2020.01.01				  |
 							  |
 [d]	> compton-5.1			<-----below this--"
 [r]	>> libconfig-1.7.2
