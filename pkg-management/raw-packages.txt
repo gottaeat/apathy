@@ -19,7 +19,7 @@ libuv-1.32.0
 libarchive-3.4.0
 usbutils-012
 libusb-1.0.23
-lua-5.3.5
+lua-5.2.4
 gpm-1.20.7
 tree-1.8.0
 rsync-3.1.3

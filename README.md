@@ -38,7 +38,7 @@ core userland:
 
 languages:
  * python 2.7.16, 3.7.4
- * lua 5.3.5
+ * lua 5.2.4
  * perl 5.30
 
 video/audio:

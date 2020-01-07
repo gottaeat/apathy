@@ -38,7 +38,7 @@
 [d]	> usbutils-012
 [d]	>> libusb-1.0.23
 
-[d]	> lua-5.3.5
+[d]	> lua-5.2.4
 [d]	> gpm-1.20.7
 [d]	> tree-1.8.0
 
