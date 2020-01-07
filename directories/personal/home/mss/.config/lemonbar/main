@@ -1,10 +1,10 @@
 #!/mss/bin/sh
 c_bg="000000"
 c_fg="ffffff"
-fon1="vanilla:pixelsize=5:antialias=true:autohint=true"
-fon2="euphon-9"
-#fon1="scientifica-7:antialias=true:autohint=true"
-#fon2="euphon-10"
+#fon1="vanilla:pixelsize=5:antialias=true:autohint=true"
+#fon2="euphon-9"
+fon1="scientifica-7:antialias=true:autohint=true"
+fon2="euphon-10"
 geo1="66x12+0+0"
 geo2="1300x12+66+0"
 
