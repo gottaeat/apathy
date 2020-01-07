@@ -4,6 +4,7 @@
 triplet=$(cc -dumpmachine)
 ccver=$(gcc --version | head -1)
 init=$(/sbin/init --version | awk 'NR==1 {print tolower($1)$2,$4}')
+tls=$(openssl version | awk 'NR==1 {print tolower($1),$2}')
 
 case ${triplet} in
  *gnu*)
@@ -18,6 +19,7 @@ esac
 
 aprint_nc
 lsdetail "init" "${init}"
+lsdetail "tls"  "${tls}"
 lsdetail "libc" "${_libc}"
 lsdetail "trpl" "${triplet}"
 lsdetail "cc"   "${ccver}"
