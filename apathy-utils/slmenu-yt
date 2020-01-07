@@ -3,7 +3,7 @@
 if [ -z "$1" ]; then aprint_fail "no url given, exiting."; exit 1; fi
 if [ "$2" = "novid" ]
  then extraflags="--no-video"
- else extraflags="vo=gpu,drm & disown"
+ else extraflags="--vo=gpu,drm"
 fi
 
 youtube-dl --list-format ${1} | grep "^[0-9]" > /tmp/ytquality.tmp
