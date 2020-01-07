@@ -11,8 +11,8 @@ export GSETTINGS_BACKEND="dconf"
 
 ### compile bits
 export MAKEFLAGS="-j 3"
-#export CFLAGS="-march=native -O2 -pipe -fstack-protector-strong"
-#export CXXFLAGS="${CFLAGS}"
+export CFLAGS="-march=native -mtune=native"
+export CXXFLAGS="${CFLAGS}"
 export CHOST="x86_64-apathy-linux-musl"
 export CBUILD="${CHOST}"
 export CC="${CHOST}-gcc"
@@ -113,8 +113,8 @@ alias nc="ncmpcpp"
 alias w="pwd"
 alias s="startx --"
 alias da="doas --"
-alias a="aria2c --enable-dht6=false"
-alias arpc="aria2c --enable-dht6=false --enable-rpc --rpc-listen-all"
+alias a2="/mss/bin/a2norpc"
+alias a2r="/mss/bin/a2rpc"
 alias l="ls -Askh --color=tty"
 alias ll="ls -Askhw1 --color=tty"
 alias lll="ls -la --color=tty"
@@ -134,10 +134,7 @@ alias grs="git reset HEAD~1 --soft"
 ##d sound
 alias atog="amixer set Master toggle"
 alias mtog="mpc toggle"
-##e transmission
-alias trs="transmission-remote -n mss:mss -l"
-alias tra="transmission-remote -n mss:mss -a"
-##f dirs
+##e dirs
 alias cdw="cd /mss/work"
 alias cdr="cd /mss/repo"
 alias cdt="cd /mss/tools"
@@ -145,7 +142,7 @@ alias cds="cd /mnt/mss/stuff"
 alias cda="cd /mnt/mss/stuff/media/anime"
 alias cdm="cd /mnt/mss/stuff/media/music"
 alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
-##g vim like exit
+##f vim like exit
 alias :q!="exit"
 alias :wq="exit"
 alias :wq!="exit"
