@@ -11,7 +11,7 @@ after wanting to have a `musl` based system of my own, i stumbled upon `mlfs`, w
 after getting used to living with `musl` and `libressl`, i forked `mlfs` and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system, different shells and more different choices in software, which i named [apathy-mlfs](https://github.com/mssx86/apathy-mlfs). my current system is built on top of this book.
 
 ## building a similar system
-building the base that *apathy musl 1.2* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
+building the base that *apathy musl 1.1* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
 
 once the base is done, progressing further can be accomplished by reading package recipes and gathering patches for building software with `musl` from [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=&branch=edge&arch=x86_64) and [voidlinux.org/packages](https://voidlinux.org/packages/). patches for building via `libressl` can be obtained from [gentoo libressl testing overlay](https://github.com/gentoo/libressl). i serve patches that i used to build all the software listed at [packages.md](https://github.com/mssx86/apathy/blob/apathy-musl/pkg-management/packages.md) in [here](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management/patches).
 
@@ -53,8 +53,8 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1465.25mib
- > local package count  : 335
+ > total partition size : 1467.4mib
+ > local package count  : 336
  > removed packages     : 22
 ```
 

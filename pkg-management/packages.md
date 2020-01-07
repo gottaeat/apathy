@@ -391,7 +391,8 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> lemonbar			--> from github.com/krypt-n/bar
 [d]	> wmctrl-1.07
 [d]	> partclone-0.3.12
-[d]	> aria-1.35.0
+[d]	> aria2-1.35.0
+[d]	> links-2.20.2
 ```
 ```
 ### base mlfs packages
