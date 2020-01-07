@@ -1,0 +1,12 @@
+#!/mss/bin/sh
+exec aria2c               \
+ --disable-ipv6=true      \
+ --console-log-level=warn \
+ --max-tries=3            \
+ --summary-interval=0     \
+ --continue=true          \
+ --always-resume=true     \
+ --file-allocation=none   \
+ --follow-torrent=false   \
+ --seed-ratio=0           \
+ "${@}"
