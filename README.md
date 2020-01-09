@@ -60,5 +60,3 @@ shells:
 
 ## dotfiles
 alongside all of the [system related configurations](https://github.com/mssx86/apathy/tree/apathy-musl/directories/system/etc), the [init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) to the [package build scripts and configurations](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management), i also serve my personal configurations [here](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss).
-
-<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/rice.png"></p>
