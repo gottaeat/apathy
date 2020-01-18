@@ -60,8 +60,8 @@
 [r]	>> tre-0.8.0
 [d]	>> libidn-1.35		--> mutt requires this
 [r]	>> js185
-[r]	>>> zip30
-[d]	>>> nss-3.46		--> firefox & forks dep
+[d]	>>> zip30		--> firefox & forks dep
+[d]	>>> nss-3.46		--> ^^^^^^^^^^^^^^^^^^^
 [d]	>>>> nspr-4.22		--> ^^^^^^^^^^^^^^^^^^^
 [d]	>>> python-2.7.16	--> don't even try removing this boi, deprecated my ass.
 
@@ -374,7 +374,7 @@ nope	> xdg-utils-1.1.3		--> xmlto is being racist against ash, remove both.
 [d]	> mutt-1.12.1
 [d]	> lzip-1.21
 
-[d]	> apathy-browser-28.8.0
+[d]	> apathy-browser-28.8.1
 
 [d]	> gcompat-0.4.0
 [d]	>> libucontext-0.1.3
