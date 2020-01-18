@@ -160,6 +160,7 @@
 [d] self	> libpciaccess-0.16
 [d] self	> libxkbfile-1.1.0
 [d] self	> libxshmfence-1.3
+[d] self	> libXScrnSaver-1.2.3
 # xorg libs end
 
 [d] self	> xcb-util-0.4.0
@@ -171,6 +172,7 @@
 
 [d] alp+self	> mesa-19.3.1
 [d] alp+bmlfs	>> libdrm-2.4.100		--> patch from alpine, rest is bmlfs
+[d] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.0.14
 [d] bmlfs	>>> markupsafe-1.1.1
 
