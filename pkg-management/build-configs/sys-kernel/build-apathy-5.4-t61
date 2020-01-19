@@ -48,6 +48,17 @@ apply_conkolivas(){
   done
 }
 
+apply_alfredchen(){
+ _alpatches="0001-bmq_v5.4-r2.patch"
+
+ for pp in $_alpatches
+  do
+   aprint_patch "applying" "${pp}"
+   patch -p1 < "${patchdir}"/apathy/5.4/alfredchen/${pp} >>/tmp/kernel-build.log 2>&1
+   evalretkill
+  done
+}
+
 apply_clearlinux(){
  _cpatches="0001-Increase-the-ext4-default-commit-age.patch
             0002-pci-pme-wakeups.patch
@@ -108,6 +119,9 @@ evalretkill
 aprint_nc
 #aprint "applying the conkolivas patches."
 #apply_conkolivas
+
+aprint "applying the alfredchen patches."
+apply_alfredchen
 
 aprint "applying the apathy patchset."
 apply_apathy
