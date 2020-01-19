@@ -10,7 +10,7 @@ if [ -z ${1} ]; then aprint_fail "no looncucks version specified, exiting."; exi
 # b1 >> set script vars
 saucedir="/mss/work/sauces"
 __kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//;s/.tar.gz//')
-_workdir="/mss/ram"
+_workdir="/mss/work/table"
 _makedir="${_workdir}/linux-${__kerver}"
 _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
