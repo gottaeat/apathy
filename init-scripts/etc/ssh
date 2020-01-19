@@ -1,0 +1,32 @@
+#!/mss/bin/sh
+# sshd init script for sysvinit
+# apathy musl 1.1 - mssx86 (mss@waifu.club)
+
+# default-start --> 3 4 5
+# default-stop ---> 0 1 2 6
+# description ----> starts and stops the ssh daemon.
+
+. /mss/bin/apathy-funcs-init
+
+case "$1" in
+ start)
+  log_info_msg "starting the ${c_lcyan}ssh${c_reset} daemon."
+   start_daemon -f /usr/sbin/sshd
+  evalret
+ ;;
+ 
+ stop)
+  log_info_msg "stopping the ${c_lcyan}ssh${c_reset} daemon."
+   read sshdpgid < /run/sshd.pid
+   kill -KILL ${sshdpgid}
+  evalret
+
+  log_info_msg "terminating the existing ${c_lcyan}ssh${c_reset} sessions."
+   for pid in $(pgrep sshd); do kill -TERM "$pid"; done
+  evalret
+ ;;
+
+ restart) $0 stop; sleep 1; $0 start ;;
+ status)  statusproc /usr/sbin/sshd  ;;
+ *)       printf "usage: $0 {start|stop|reload|restart|status}.\n"; exit 1 ;;
+esac
