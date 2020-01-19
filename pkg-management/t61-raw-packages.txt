@@ -172,7 +172,7 @@ gdk-pixbuf-2.40.0
 libjpeg-turbo-2.0.4
 nasm-2.14.02
 libcroco-0.6.13
-pango-1.44.7
+pango-1.42.4
 fribidi-1.0.8
 vala-0.46.5
 tiff-4.1.0

@@ -252,7 +252,7 @@
 [d] bmlfs	>>> nasm-2.14.02
 		>> ?
 [d] bmlfs	>>> libcroco-0.6.13
-[d] bmlfs	>>> pango-1.44.7
+[d] bmlfs	>>> pango-1.42.4
 [d] bmlfs	>>>> fribidi-1.0.8
 [d] bmlfs	>>> vala-0.46.5
 [d] bmlfs	>> tiff-4.1.0
