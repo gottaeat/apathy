@@ -25,7 +25,6 @@
 [d] alpine	>> pcre2-10.34
 [d] alpine	>>> libedit-20191231.3.1
 
-
 [d] alp+blfs	> openssh-8.1_p1		--> patches from alp, config is a mix
 [d] alpine	> libssh2-1.9.0
 
@@ -366,6 +365,9 @@
 [d] self	> wmctrl-1.07			--> inst from alp, patches from void
 [d] alpine	> aria2-1.35.0
 [d] self	> links-2.20.2
+
+[d] blfs	> wpa-supplicant-2.9		--> arch config w/o dbus w/ -I/usr/include/libnl3
+[d] alpine	>> libnl3-3.5.0
 ```
 ```
 ### base mlfs packages
