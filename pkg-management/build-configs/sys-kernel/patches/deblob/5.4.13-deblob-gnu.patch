@@ -708,18 +708,6 @@ diff -druN linux-5.4.13/Documentation/x86/microcode.rst linux-libre-5.4.13-gnu/D
  
  so that the build system can find those files and integrate them into
  the final kernel image. The early loader finds them and applies them.
-diff -druN linux-5.4.13/Makefile linux-libre-5.4.13-gnu/Makefile
---- linux-5.4.13/Makefile	2020-01-17 21:49:08.000000000 +0300
-+++ linux-libre-5.4.13-gnu/Makefile	2020-01-18 10:44:19.490996193 +0300
-@@ -2,7 +2,7 @@
- VERSION = 5
- PATCHLEVEL = 4
- SUBLEVEL = 13
--EXTRAVERSION =
-+EXTRAVERSION = -gnu
- NAME = Kleptomaniac Octopus
- 
- # *DOCUMENTATION*
 diff -druN linux-5.4.13/README linux-libre-5.4.13-gnu/README
 --- linux-5.4.13/README	2020-01-17 21:49:08.000000000 +0300
 +++ linux-libre-5.4.13-gnu/README	2020-01-18 10:44:19.492996193 +0300
