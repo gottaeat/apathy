@@ -13,38 +13,38 @@ export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"
 
 # compile bits
-export MAKEFLAGS="-j 3"
-#CFLAGS="${CFLAGS} -march=native -O3 -pipe -fstack-protector-strong"
-#CXXFLAGS="${CXXFLAGS} ${CFLAGS}"
-#CPPFLAGS="${CPPFLAGS} ${CFLAGS}"
+export MAKEFLAGS="-j 2"
+export CFLAGS="-march=native"
+export CXXFLAGS="${CFLAGS}"
+export CHOST="x86_64-apathy-linux-musl"
+export CBUILD="${CHOST}"
+export CC="${CHOST}-gcc"
+export CXX="${CHOST}-g++"
+export ARCH="x86_64"
+export buildforapathy="--prefix=/usr --disable-static --build=${CBUILD} --host=${CHOST}"
 
 # default programs
-export EDITOR="/usr/bin/vim"
+export EDITOR="/usr/bin/vi"
 export PAGER="/usr/bin/less"
 export GPG_TTY=$(tty)
 
 # xdg stuff
-export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+export XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
 # from blfs book
 export INFOPATH="/usr/info"
-export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/local/lib/pkgconfig"
+export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
 export MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
 export INPUTRC="/etc/inputrc"
 
-# ps1
-export PS1="\[\e[34m\][\[\e[m\]\A\[\e[34m\]]\[\e[m\] \[\e[34m\]\u\[\e[m\] \[\e[36m\]\w\[\e[m\]: "
+# prompts
+[ $(id -u) -eq 0 ] && _user="\[\e[34m\] \#\[\e[m\] " || _user="\[\e[37m\]$\[\e[m\] "
+export PS1="${_user}\[\e[34m\]\W\[\e[m\] "
+export PS2="\[\e[33m\] -> \[\e[m\] "
 
 # history
 export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
-
-# execute the *.sh in /etc/profile.d
-for sh in /etc/profile.d/*.sh
- do [ -r "$sh" ] && . "$sh"
-done
-
-unset sh
