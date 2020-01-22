@@ -1,7 +1,7 @@
 #!/mss/bin/sh
 ## a >> cfg
 tmpdir="/tmp/lemonbar"
-bwadapter="eth0"
+bwadapter="wlan0"
 
 fr='%{F-}' f1='%{F#101010}' f2='%{F#747474}' f3='%{F#ababab}' f4='%{F#000000}' f5='%{F#e62063}'
 br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#252525}'
@@ -68,9 +68,10 @@ cpustat2(){
  used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
  thrd=$(awk '{print $4}' /proc/loadavg)
  load=$((100 * ${used} / (${s2_total} - ${s1_total})))
- temp=$(sensors coretemp-isa-0000 | awk '/Package/ {gsub("+",""); gsub("°C",""); print $4}')
+ temp0=$(sensors coretemp-isa-0000 | awk '/Core 0/ {gsub("+",""); gsub("°C",""); print $3}')
+ temp1=$(sensors coretemp-isa-0000 | awk '/Core 1/ {gsub("+",""); gsub("°C",""); print $3}')
 
- cpustat="${f2}$load${f3}% ${f2}${thrd} ${f2}$temp${fr}${f3}c${fr}"
+ cpustat="${f2}$load${f3}% ${f2}${thrd} ${f2}$temp0${f3}/${f2}$temp1${f3}c${fr}"
 }
 
 mem(){

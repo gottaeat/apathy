@@ -13,6 +13,6 @@ used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
 perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
 
 temp=$(sensors coretemp-isa-0000 \
-      | awk '/Package/ {gsub("+",""); gsub("°C",""); print $4"c"}')
+      | awk '/Core 0/ {gsub("+",""); gsub("°C",""); print $3"c"}')
 
 echo "${perc}%(${temp})"

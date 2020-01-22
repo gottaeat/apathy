@@ -38,7 +38,8 @@ browser_display_mode = columns
 
 header_visibility = no
 song_columns_list_format = (20)[white]{a:artist} (50)[white]{t|f:title} (20)[white]{b:album} (7f)[white]{l:length}
-progressbar_look = -»-
+#progressbar_look = -»-
+progressbar_look = ━━─
 tags_separator = " | "
 empty_tag_marker = <none>
 

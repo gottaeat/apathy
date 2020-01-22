@@ -1,11 +1,11 @@
 ### visual garbage
 fontname			"scientifica-7"
-borderwidth			1
-gap				0 12 1 0
+borderwidth			0
+gap				15 2 2 2
 moveamount			20
 snapdist			5
-color		activeborder	"#101010"
-color		inactiveborder	"#0f0f0f"
+color		activeborder	"#464646"
+color		inactiveborder	"#101010"
 color		font		"#747474"
 color		selfont		"#000000"
 color		menubg		"#000000"
@@ -38,14 +38,14 @@ bind-key	S4-q		window-close
 bind-key	4-f		window-fullscreen
 bind-key	S4-space	window-maximize
 
-bind-key	4-Up		window-move-up
-bind-key	4-Down		window-move-down
-bind-key	4-Right		window-move-right
-bind-key	4-Left		window-move-left
-bind-key	S4-Up		window-resize-up
-bind-key	S4-Down		window-resize-down
-bind-key	S4-Right	window-resize-right
-bind-key	S4-Left		window-resize-left
+bind-key	4-k		window-move-up
+bind-key	4-j		window-move-down
+bind-key	4-l		window-move-right
+bind-key	4-h		window-move-left
+bind-key	S4-k		window-resize-up
+bind-key	S4-j		window-resize-down
+bind-key	S4-l		window-resize-right
+bind-key	S4-h		window-resize-left
 
 bind-key	4-1		group-only-1
 bind-key	4-2		group-only-2

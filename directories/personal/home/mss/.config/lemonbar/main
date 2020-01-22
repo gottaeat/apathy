@@ -5,8 +5,8 @@ c_fg="ffffff"
 #fon2="euphon-9"
 fon1="scientifica-7:antialias=true:autohint=true"
 fon2="euphon-10"
-geo1="66x12+0+0"
-geo2="1300x12+66+0"
+geo1="66x13+0+0"
+geo2="1214x13+66+0"
 
 if [ -z "$(pidof lemonbar)" ]
  then
@@ -16,12 +16,12 @@ if [ -z "$(pidof lemonbar)" ]
    "%{A5:wmctrl -s \$(echo \$((\$(wmctrl -d | grep \\* -B 10 | wc -l) - 2)) | sed 's/0/9/'):} \
 %{A4:wmctrl -s \$(wmctrl -d | grep \\* -B 10 | wc -l | sed 's/10/1/'):}\
 %{F#747474}workspace:%{F-}",$3"%{A4}%{A5}"}')        \
-   | lemonbar -p -b -d -g "$geo1"                    \
+   | lemonbar -p -d -g "$geo1"                       \
    -f "$fon1" -f "$fon2" -B "#${c_bg}" -F "#${c_fg}" \
    | sh &
 
   /home/mss/.config/lemonbar/simple                  \
-   | lemonbar -p -b -d -a 20 -g "$geo2"              \
+   | lemonbar -p -d -a 20 -g "$geo2"                 \
    -f "$fon1" -f "$fon2" -B "#${c_bg}" -F "#${c_fg}" \
    | sh
  else

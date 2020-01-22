@@ -10,15 +10,15 @@ export OPENGL_PROFILE="xorg-x11"
 export GSETTINGS_BACKEND="dconf"
 
 ### compile bits
-export MAKEFLAGS="-j 3"
-export CFLAGS="-march=native -mtune=native"
+export MAKEFLAGS="-j 2"
+export CFLAGS="-march=native"
 export CXXFLAGS="${CFLAGS}"
 export CHOST="x86_64-apathy-linux-musl"
 export CBUILD="${CHOST}"
 export CC="${CHOST}-gcc"
 export CXX="${CHOST}-g++"
 export ARCH="x86_64"
-export buildforapaty="--prefix=/usr --disable-static --build=${CBUILD} --host=${CHOST}"
+export buildforapathy="--prefix=/usr --disable-static --build=${CBUILD} --host=${CHOST}"
  
 # default programs
 export EDITOR="/usr/bin/vim"
@@ -43,12 +43,8 @@ HISTFILE=~/.yash_history HISTSIZE=30000
 FCEDIT="/usr/bin/vim"
 
 # prompts
-[ $(id -u) -eq 0 ] && _user="\fr #" || _user="\fw $"
-YASH_PS1='${_user} \fy[${${PWD:/~/\~}##*/}]\fD: '
-
-[ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ] \
- && YASH_PS1='[chroot]${YASH_PS1}'
-
+[ $(id -u) -eq 0 ] && _user="\fb #" || _user="\fw $"
+YASH_PS1='${_user} \fb[${${PWD:/~/\~}##*/}]\fD: '
 YASH_PS1R=
 YASH_PS1S=
 YASH_PS2="\fy -> \fD"
@@ -97,7 +93,7 @@ esac
 ### aliases
 ## program related
 alias tmux="tmux -2"
-alias feh="feh -d --scale-down --auto-zoom -g 1366x768"
+alias feh="feh -d --scale-down --auto-zoom -g 1280x720"
 alias fixfuckinggpg="gpg-connect-agent updatestartuptty /bye"
 alias ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
 ## make verbose
@@ -120,8 +116,9 @@ alias ll="ls -Askhw1 --color=tty"
 alias lll="ls -la --color=tty"
 alias grep="grep --color=auto"
 alias poz="yash --posix"
-alias mpv="mpv --vo=gpu,drm"
-alias fetchall="clear;fetch | tail -14;pver | tail -5;pkg | tail -6"
+alias mpvfb="mpv --profile=sw-fast --vo=drm --gpu-api=opengl"
+alias fetchall="clear;fetch | tail -14;pver | tail -6;pkg | tail -6"
+alias fetchall_nc="(clear;fetch nocolor | tail -14;pver nocolor | tail -6;pkg nocolor | tail -6) | sed 's/\x1B\[[0-9;]\+[A-Za-z]//g'"
 ##b tmux
 alias td="tmux detach"
 alias ta="tmux attach"
