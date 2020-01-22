@@ -8,22 +8,21 @@ apathy (which at one point was called *mssLinux*) initially used lfs-8.4/9.0-rc1
 
 after wanting to have a `musl` based system of my own, i stumbled upon `mlfs`, written by [dslm4515](https://github.com/dslm4515). attempting to build a base using their work didn't work out so i contributed to their work to a degree where a functional base system could be built via doing testing/fixing/editorial work on their project. `apathy-musl 1.0` was what i called the system i built during this time, using `mlfs` as the base.
 
-after getting used to living with `musl` and `libressl`, i forked `mlfs` and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system, different shells and more different choices in software, which i named [apathy-mlfs](https://github.com/mssx86/apathy-mlfs). my current system is built on top of this book.
+after getting used to living with `musl` and `libressl`, i forked `mlfs` and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system, different shells and more different choices in software, which i named [apathy-mlfs](https://github.com/mssx86/apathy-mlfs). my previous system utilizing my one and only g3258 and my current t61 is built on top of this book, though i've updated certain packages and patches when building for the t61 without updating the book.
 
 ## building a similar system
-building the base that *apathy musl 1.1* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
+building the base that *apathy musl 1.2* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
 
 once the base is done, progressing further can be accomplished by reading package recipes and gathering patches for building software with `musl` from [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=&branch=edge&arch=x86_64) and [voidlinux.org/packages](https://voidlinux.org/packages/). patches for building via `libressl` can be obtained from [gentoo libressl testing overlay](https://github.com/gentoo/libressl). i serve patches that i used to build all the software listed at [packages.md](https://github.com/mssx86/apathy/blob/apathy-musl/pkg-management/packages.md) in [here](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management/patches).
 
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/init.png"></p>
 
 
-
 ## overview
 #### major components:
 ```
 toolchain:
- * gcc 9.2.1 (20200119 snapshot) (c,c++), argp-standalone 1.3
+ * gcc 9.2.0 (c,c++), argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.1.2, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
@@ -37,13 +36,13 @@ core userland:
  * libressl-3.0.2
 
 languages:
- * python 2.7.16, 3.7.4
+ * python 2.7.17, 3.8.0
  * lua 5.2.4
- * perl 5.30
+ * perl 5.30.1
 
 video/audio:
- * xorg (x11r7), mesa 19.1.7
- * alsa 1.1.9
+ * xorg (x11r7), mesa 19.3.2
+ * alsa 1.2.1.2
 
 shells:
  * yash 2.49 (/bin/sh: busybox 1.31.1 ash)
@@ -53,9 +52,9 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1459.84mib
- > local package count  : 339
- > removed packages     : 19
+ > total partition size : 1522.44mib
+ > local package count  : 330
+ > removed packages     : 0
 ```
 
 ## dotfiles
