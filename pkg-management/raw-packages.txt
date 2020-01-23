@@ -299,7 +299,7 @@ libpipeline-1.5.1
 libressl-3.0.2
 libtool-2.4.6
 m4-1.4.18
-make-4.2.1
+make-4.3
 meson-0.51.2
 mpc-1.1.0
 mpfr-4.0.2
