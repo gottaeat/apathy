@@ -1,0 +1,4 @@
+/bin/sed
+/usr/share/info
+/usr/share/locale
+/usr/share/man

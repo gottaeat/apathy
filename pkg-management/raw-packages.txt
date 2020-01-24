@@ -315,7 +315,7 @@ procps-ng-3.3.15
 psmisc-23.2
 python-3.8.1
 readline-8.0
-sed-4.7
+sed-4.8
 shadow-4.7
 sysklogd-1.5.1
 sysvinit-2.96
