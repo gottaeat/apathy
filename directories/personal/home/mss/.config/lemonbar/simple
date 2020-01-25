@@ -3,17 +3,17 @@
 tmpdir="/tmp/lemonbar"
 bwadapter="wlan0"
 
-fr='%{F-}' f1='%{F#101010}' f2='%{F#747474}' f3='%{F#ababab}' f4='%{F#000000}' f5='%{F#e62063}'
+fr='%{F-}' f1='%{F#101010}' f2='%{F#747474}' f3='%{F#ababab}' f4='%{F#464646}' f5='%{F#e62063}'
 br='%{B-}' b1='%{B#101010}' b2='%{B#464646}' b3='%{B#252525}'
 
-sep=" ${f1}|${fr} "
+sep=" ${f4}|${fr} "
 
 ## b >> action
 # b1 >> funcs
 alsa_capture(){
  cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
  [ "$(echo $cap_data | awk '{print $7}')" = "off" ]        \
-  && alsa_capture="muted"                                  \
+  && alsa_capture="${f5}muted${fr}"                        \
   || alsa_capture="$(echo ${cap_data} | awk '{print $6}')"
 
 alsa_capture="%{A3:amixer -q -D default sset Capture toggle:}\
@@ -22,16 +22,40 @@ alsa_capture="%{A3:amixer -q -D default sset Capture toggle:}\
 ${alsa_capture}%{A}%{A}%{A}"
 }
 
-alsa_master(){
- mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
- [ "$(echo $mas_data | awk '{print $6}')" = "off" ]        \
-  && alsa_master="muted"                                   \
-  || alsa_master="$(echo ${mas_data} | awk '{print $4}')"
+#alsa_master(){
+# mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
+# [ "$(echo $mas_data | awk '{print $6}')" = "off" ]        \
+#  && alsa_master="muted"                                   \
+#  || alsa_master="$(echo ${mas_data} | awk '{print $4}')"
+#
+#  alsa_master="%{A3:amixer -q -D default sset Master toggle > /dev/null:}\
+#%{A4:amixer -q -D default sset Master 3dB+ unmute > /dev/null:}\
+#%{A5:amixer -q -D default sset Master 3dB- unmute > /dev/null:}\
+#${alsa_master}%{A}%{A}%{A}"
+#}
 
-  alsa_master="%{A3:amixer -q -D default sset Master toggle > /dev/null:}\
-%{A4:amixer -q -D default sset Master 3dB+ unmute > /dev/null:}\
-%{A5:amixer -q -D default sset Master 3dB- unmute > /dev/null:}\
-${alsa_master}%{A}%{A}%{A}"
+alsa_head(){
+ head_data=$(amixer -D default get Headphone | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
+ [ "$(echo $head_data | awk '{print $7}')" = "off" ]        \
+  && alsa_head="${f5}muted${fr}"                            \
+  || alsa_head="$(echo ${head_data} | awk '{print $5}')"
+
+  alsa_head="%{A3:amixer -q -D default sset Headphone toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Headphone 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Headphone 3dB- unmute > /dev/null:}\
+${alsa_head}%{A}%{A}%{A}"
+}
+
+alsa_speak(){
+ speak_data=$(amixer -D default get Speaker | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
+ [ "$(echo $speak_data | awk '{print $7}')" = "off" ]        \
+  && alsa_speak="${f5}muted${fr}"                                     \
+  || alsa_speak="$(echo ${speak_data} | awk '{print $5}')"
+
+  alsa_speak="%{A3:amixer -q -D default sset Speaker toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Speaker 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Speaker 3dB- unmute > /dev/null:}\
+${alsa_speak}%{A}%{A}%{A}"
 }
 
 bw1(){
@@ -51,7 +75,7 @@ bw2(){
  total_rx=$(($rx2 / 1048576))
  total_tx=$(($tx2 / 1048576))
 
- bw="${f2}${rx_kib}${f3}(${total_rx})${f2}rx ${f2}${tx_kib}${f3}($total_tx)${f2}tx ${f2}${memepn}${fr}"
+ bw="${f2}${rx_kib}${f3}(${total_rx})${f2}rx ${f2}${tx_kib}${f3}($total_tx)${f2}tx ${f5}${memepn}${fr}"
 }
 
 cpustat1(){
@@ -118,7 +142,7 @@ mpdstat(){
       || state="${f3}${song}${fr} ${f2}${dur}${fr}"
     ;;
    esac
-  else state="mpd is not running"
+  else state="${f5}mpd is not running${fr}"
  fi
 
  mpd="%{A:mpc next:}%{A2:mpc toggle:}%{A3:mpc prev:}%{A4:mpc volume +10:}\
@@ -144,6 +168,22 @@ weat(){
      | awk '{gsub("\"",""); print $1"c",$2"%",substr($3, 1, 4)"km/h",$4"mm",$5}')"
 }
 
+ifacestat(){
+ read eth0stat  < /sys/class/net/eth0/operstate
+ read wlan0stat < /sys/class/net/wlan0/operstate
+
+ [ "${wlan0stat}" = "up" ] \
+  && \
+   noise="$(awk '/wlan0/ {gsub("\\.",""); print $4}' /proc/net/wireless)" \
+   wlan0stat="${noise}${f2}dB" \
+  || \
+   wlan0stat="dn"
+
+ [ "${eth0stat}" = "down" ] && eth0stat="dn"
+
+ ifacestat="${f3}eth0${f2}:${f5}${eth0stat} ${f3}wlan0${f2}:${f5}${wlan0stat}${fr}"
+}
+
 # b2 >> start timers
 rm -rf "${tmpdir}"; mkdir "${tmpdir}"
 while true; do upt  > "${tmpdir}"/upt.tmp;  sleep 60;  done &
@@ -158,9 +198,12 @@ while true; do
  read weat < "${tmpdir}"/weat.tmp
  read upt  < "${tmpdir}"/upt.tmp
 
- alsa_master
+#alsa_master
  alsa_capture
+ alsa_head
+ alsa_speak
  bw1
+ ifacestat
  cpustat1
  mpdstat
  mem
@@ -173,9 +216,11 @@ ${bw}${sep}\
 ${cpustat} \
 ${mem}${sep}\
 ${mpd}${sep}\
-${f2}${alsa_master}${fr} \
+${f2}${alsa_head}${fr} \
+${f2}${alsa_speak}${fr} \
 ${f2}${alsa_capture}${fr}${sep}\
 ${f2}${weat}${fr}${sep}\
+${ifacestat}${sep}\
 ${f3}${time}${fr} \
 ${f5}${upt} ${fr}"
  sleep 1
