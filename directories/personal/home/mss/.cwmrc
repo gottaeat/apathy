@@ -1,11 +1,11 @@
 ### visual garbage
 fontname			"scientifica-7"
-borderwidth			0
+borderwidth			1
 gap				15 2 2 2
 moveamount			20
 snapdist			5
 color		activeborder	"#464646"
-color		inactiveborder	"#101010"
+color		inactiveborder	"#252525"
 color		font		"#747474"
 color		selfont		"#000000"
 color		menubg		"#000000"
@@ -27,12 +27,13 @@ unbind-mouse	all
 #>>cwm functions
 #>keyboard
 bind-key	S4-Return	"st -g 80x22"
-bind-key	4-Return	"st -g 150x40 -e tmux"
+bind-key	4-Return	"st -g 120x30 -e tmux"
 bind-key	4-d		"dmenu_run -b"
 bind-key	S4-d		"/home/mss/.config/scripts/menuboi"
 
 bind-key	S4-r		restart
 bind-key	M-Tab		window-cycle
+bind-key	M-v		window-vtile
 
 bind-key	S4-q		window-close
 bind-key	4-f		window-fullscreen
@@ -96,11 +97,11 @@ bind-key 	4-XF86Calculator	"/home/mss/.fehb.def"
 bind-key 	XF86Calculator		"feh --bg-fill --randomize /home/mss/cust/chan"
 bind-key	S4-XF86Calculator	"feh --bg-fill /home/mss/cust/other/black.png"
 
-bind-key	XF86AudioRaiseVolume	"amixer set Master  3dB+"
-bind-key	XF86AudioLowerVolume	"amixer set Master  3dB-"
+bind-key	XF86AudioRaiseVolume	"sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done'"
+bind-key	XF86AudioLowerVolume	"sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done'"
 bind-key	S4-XF86AudioRaiseVolume	"amixer set Capture 3dB+"
 bind-key	S4-XF86AudioLowerVolume	"amixer set Capture 3dB-"
-bind-key	XF86AudioMute		"amixer set Master  toggle"
+bind-key	XF86AudioMute		"sh -c 'for hmm in Headphone Speaker; do amixer set $hmm toggle; done'"
 bind-key	XF86AudioMedia		"amixer set Capture toggle"
 
 bind-key	XF86AudioPlay		"mpc toggle"
