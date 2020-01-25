@@ -48,7 +48,7 @@ case $1 in
   
     if [ -z "$gitstat_pre" ]
      then gitstat="clean."
-     else gitstat="uncommited changes are listed below.\n\n$gitstat_pre"
+     else gitstat="\n\n$gitstat_pre"
     fi
   fi
   
@@ -56,7 +56,11 @@ case $1 in
    then
     gitdf="raw-packages.txt is missing."
    else
-    gitdf_pre=$(diff /mss/raw-packages.txt /mss/repo/pkg-management/raw-packages.txt)
+    gitdf_pre=$(diff -u /mss/raw-packages.txt /mss/repo/pkg-management/raw-packages.txt \
+                 | awk '/^---/   {print "- local"" --->",$3"\t"$4};                     \
+                        /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"};                \
+                        /^+[a-z,0-9]/;                                                  \
+                        /^-[a-z,0-9]/')
     
     if [ -z "$gitdf_pre" ]
      then gitdf="no difference."
