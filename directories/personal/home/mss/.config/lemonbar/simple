@@ -16,16 +16,16 @@ alsa_capture(){
   && alsa_capture="${f5}muted${fr}"                        \
   || alsa_capture="$(echo ${cap_data} | awk '{print $6}')"
 
-alsa_capture="%{A3:amixer -q -D default sset Capture toggle:}\
-%{A4:amixer -q -D default sset Capture 3dB+ unmute:}\
-%{A5:amixer -q -D default sset Capture 3dB- unmute:}\
+alsa_capture="%{A3:amixer -q -D default sset Capture toggle > /dev/null:}\
+%{A4:amixer -q -D default sset Capture 3dB+ unmute > /dev/null:}\
+%{A5:amixer -q -D default sset Capture 3dB- unmute > /dev/null:}\
 ${alsa_capture}%{A}%{A}%{A}"
 }
 
 #alsa_master(){
 # mas_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
-# [ "$(echo $mas_data | awk '{print $6}')" = "off" ]        \
-#  && alsa_master="muted"                                   \
+# [ "$(echo $mas_data | awk '{print $6}')" = "off" ]       \
+#  && alsa_master="muted"                                  \
 #  || alsa_master="$(echo ${mas_data} | awk '{print $4}')"
 #
 #  alsa_master="%{A3:amixer -q -D default sset Master toggle > /dev/null:}\
@@ -36,8 +36,8 @@ ${alsa_capture}%{A}%{A}%{A}"
 
 alsa_head(){
  head_data=$(amixer -D default get Headphone | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
- [ "$(echo $head_data | awk '{print $7}')" = "off" ]        \
-  && alsa_head="${f5}muted${fr}"                            \
+ [ "$(echo $head_data | awk '{print $7}')" = "off" ]     \
+  && alsa_head="${f5}muted${fr}"                         \
   || alsa_head="$(echo ${head_data} | awk '{print $5}')"
 
   alsa_head="%{A3:amixer -q -D default sset Headphone toggle > /dev/null:}\
@@ -48,8 +48,8 @@ ${alsa_head}%{A}%{A}%{A}"
 
 alsa_speak(){
  speak_data=$(amixer -D default get Speaker | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
- [ "$(echo $speak_data | awk '{print $7}')" = "off" ]        \
-  && alsa_speak="${f5}muted${fr}"                                     \
+ [ "$(echo $speak_data | awk '{print $7}')" = "off" ]      \
+  && alsa_speak="${f5}muted${fr}"                          \
   || alsa_speak="$(echo ${speak_data} | awk '{print $5}')"
 
   alsa_speak="%{A3:amixer -q -D default sset Speaker toggle > /dev/null:}\
@@ -92,8 +92,10 @@ cpustat2(){
  used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
  thrd=$(awk '{print $4}' /proc/loadavg)
  load=$((100 * ${used} / (${s2_total} - ${s1_total})))
- temp0=$(sensors coretemp-isa-0000 | awk '/Core 0/ {gsub("+",""); gsub("°C",""); print $3}')
- temp1=$(sensors coretemp-isa-0000 | awk '/Core 1/ {gsub("+",""); gsub("°C",""); print $3}')
+#temp0=$(sensors coretemp-isa-0000 | awk '/Core 0/ {gsub("+",""); gsub("°C",""); print $3}')
+#temp1=$(sensors coretemp-isa-0000 | awk '/Core 1/ {gsub("+",""); gsub("°C",""); print $3}')
+ temp0=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp2_input)
+ temp1=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp3_input)
 
  cpustat="${f2}$load${f3}% ${f2}${thrd} ${f2}$temp0${f3}/${f2}$temp1${f3}c${fr}"
 }
