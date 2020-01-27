@@ -322,7 +322,7 @@ sysvinit-2.96
 tar-1.32
 texinfo-6.6
 tzdb-2019c
-util-linux-2.34
+util-linux-2.35
 vim-8.2.0116
 xml-parser-2.44
 xz-5.2.4
