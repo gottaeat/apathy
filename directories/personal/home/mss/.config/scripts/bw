@@ -1,5 +1,7 @@
 #!/mss/bin/sh
-bwadapter="eth0"
+#bwadapter="eth0"
+bwadapter="wlan0"
+
 [ -z "$(pidof openvpn)" ] && memepn=off || memepn=on
 
 read rx1 < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
@@ -8,10 +10,15 @@ read tx1 < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
 read rx2 < "/sys/class/net/${bwadapter}/statistics/rx_bytes"
 read tx2 < "/sys/class/net/${bwadapter}/statistics/tx_bytes"
 
-rx_kib=$((($rx2 - $rx1) / 1024))
-tx_kib=$((($tx2 - $tx2) / 1024))
+#rx_kib=$(($(($rx2 - $rx1)) / 1024))
+#tx_kib=$(($(($tx2 - $tx2)) / 1024))
+#total_rx=$(($rx2 / 1048576))
+#total_tx=$(($tx2 / 1048576))
 
-total_rx=$(($rx2 / 1048576))
-total_tx=$(($tx2 / 1048576))
+rx_kib=$(echo "(${rx2} - ${rx1}) / 1024" | bc)
+tx_kib=$(echo "(${tx2} - ${tx1}) / 1024" | bc)
+
+total_rx=$(echo "$rx2 / 1048576" | bc)
+total_tx=$(echo "$tx2 / 1048576" | bc)
 
 printf "${rx_kib}(${total_rx})rx ${tx_kib}(${total_tx})tx ${memepn}\n"
