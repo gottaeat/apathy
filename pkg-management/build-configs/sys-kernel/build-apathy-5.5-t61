@@ -18,7 +18,7 @@ _confdir="${_repodir}/configs"
 
 confname="5.5-apathy-t61-nonfree-gcc-bmq-27-jan-2020.config"
 _useconf="${_confdir}/5.5/${confname}"
-localver="5.4-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
+localver="5.5-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
 # c >> functions
 apply_alfredchen(){
@@ -172,10 +172,23 @@ read answerbuildkern
 if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
  then
   aprint_ret "running make, do tail -f /tmp/kernel-build.log to view."
-   /bin/busybox time make          \
+   datebefore=$(date +%s)
+   /bin/busybox time   \
+   nice --adjustment=0 \
+   make V=0            \
    CC=x86_64-apathy-linux-musl-gcc \
    -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
   evalretkill
+
+  dateafter=$(date +%s)
+  timespent=$(($dateafter - $datebefore))
+  humantime=$(printf "%dd %dh %dm\n"                      \
+              "$(echo "${timespent}/86400"        | bc)"  \
+              "$(echo "(${timespent}%86400)/3600" | bc)"  \
+              "$(echo "(${timespent}%3600)/60"    | bc)")
+  
+  aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
+
  else
   aprint "not running make."
   aprint_nc
@@ -257,42 +270,3 @@ if [ "$answerclean" != "${answerclean#[Yy]}" ]
  else
   aprint "not cleaning up the workdir."
 fi
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
