@@ -1,0 +1,12 @@
+/usr/include/mpf2mpfr.h
+/usr/include/mpfr.h
+
+/usr/lib/libmpfr.la
+/usr/lib/libmpfr.so
+/usr/lib/libmpfr.so.6
+/usr/lib/libmpfr.so.6.0.2
+
+/usr/lib/pkgconfig/mpfr.pc
+
+/usr/share/doc
+/usr/share/info
