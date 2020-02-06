@@ -1,0 +1,9 @@
+/etc/lilo.conf_example
+
+/usr/bin/keytab-lilo.pl
+/usr/bin/lilo
+/usr/bin/lilo-uuid-diskid
+/usr/bin/liloconfig
+/usr/bin/mkrescue
+
+/usr/share/man

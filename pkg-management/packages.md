@@ -368,6 +368,9 @@
 
 [d] blfs	> wpa-supplicant-2.9		--> arch config w/o dbus w/ -I/usr/include/libnl3
 [d] alpine	>> libnl3-3.5.0
+
+[d] gentoo+arch	> lilo-24.2
+[d] arch	>> bin86-0.16.21		--> don't remember where the fuck i found the sauce from
 ```
 ```
 ### base mlfs packages
