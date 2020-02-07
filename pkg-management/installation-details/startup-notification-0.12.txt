@@ -1,0 +1,9 @@
+/usr/include/startup-notification-1.0
+
+/usr/lib/libstartup-notification-1.a
+/usr/lib/libstartup-notification-1.la
+/usr/lib/libstartup-notification-1.so
+/usr/lib/libstartup-notification-1.so.0
+/usr/lib/libstartup-notification-1.so.0.0.0
+
+/usr/lib/pkgconfig/libstartup-notification-1.0.pc
