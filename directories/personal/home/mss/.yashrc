@@ -54,7 +54,7 @@ YASH_PS2S=
 # ensure job control works
 case $- in (*m*) trap - TSTP TTIN TTOU; esac
 # colored ls without alias
-ls() { command ls --color=tty "$@"; }
+ls() { command ls -h --color=tty "$@"; }
 # initialize event handlers
 COMMAND_NOT_FOUND_HANDLER=()
 PROMPT_COMMAND=() 
@@ -93,7 +93,7 @@ esac
 ### aliases
 ## program related
 alias tmux="tmux -2"
-alias feh="feh -d --scale-down --auto-zoom -g 1280x720"
+alias feh="feh -d --scale-down --auto-zoom -g 1280x800"
 alias fixfuckinggpg="gpg-connect-agent updatestartuptty /bye"
 alias ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
 ## make verbose
@@ -113,11 +113,11 @@ alias a2="/mss/bin/a2norpc"
 alias a2r="/mss/bin/a2rpc"
 alias l="ls -Askh --color=tty"
 alias ll="ls -Askhw1 --color=tty"
-alias lll="ls -la --color=tty"
+alias lll="ls -alh --color=tty"
 alias grep="grep --color=auto"
 alias poz="yash --posix"
 alias mpvfb="mpv --profile=sw-fast --vo=drm --gpu-api=opengl"
-alias fetchall="clear;fetch | tail -14;pver | tail -6;pkg | tail -6"
+alias fetchall="clear;fetch | tail -14;pver | tail -6;pkg stats | tail -6"
 alias fetchall_nc="(clear;fetch nocolor | tail -14;pver nocolor | tail -6;pkg nocolor | tail -6) | sed 's/\x1B\[[0-9;]\+[A-Za-z]//g'"
 ##b tmux
 alias td="tmux detach"
@@ -132,6 +132,7 @@ alias grs="git reset HEAD~1 --soft"
 alias atog="amixer set Master toggle"
 alias mtog="mpc toggle"
 ##e dirs
+alias cdo="cd \$OLDPWD; echo 'pwd: $PWD'"
 alias cdw="cd /mss/work"
 alias cdr="cd /mss/repo"
 alias cdt="cd /mss/tools"

@@ -26,14 +26,15 @@ unbind-mouse	all
 
 #>>cwm functions
 #>keyboard
-bind-key	S4-Return	"st -g 80x22"
-bind-key	4-Return	"st -g 120x30 -e tmux"
+bind-key	S4-Return	"st -g 80x20"
+bind-key	4-Return	"st -g 120x33 -e tmux"
 bind-key	4-d		"dmenu_run -b"
 bind-key	S4-d		"/home/mss/.config/scripts/menuboi"
 
 bind-key	S4-r		restart
 bind-key	M-Tab		window-cycle
 bind-key	M-v		window-vtile
+bind-key	M-h		window-htile
 
 bind-key	S4-q		window-close
 bind-key	4-f		window-fullscreen
@@ -83,19 +84,19 @@ bind-mouse	S4-4		"mpc volume +5"
 bind-mouse	S4-2		"mpc toggle"
 
 #>>my functions
-bind-key	4-b			"/mss/bin/switchcompositor vsync"
-bind-key	S4-b			"/mss/bin/switchcompositor novsync"
+bind-key	4-b			"/mss/bin/switchcompositor novsync"
+bind-key	S4-b			"/mss/bin/switchcompositor vsync"
 bind-key	4-x			"/home/mss/.config/lemonbar/main"
 bind-key	4-c			"/home/mss/.config/scripts/chrootmenu"
 bind-key	4-p			"/mss/bin/maimscrot"
 bind-key 	S4-p			"/mss/bin/maimclip"
 bind-key	4-o			"/mss/bin/maimcrop"
 
-bind-key 	Pause			"xtrlock"
+bind-key 	4-n			"xtrlock"
 
-bind-key 	4-XF86Calculator	"/home/mss/.fehb.def"
-bind-key 	XF86Calculator		"feh --bg-fill --randomize /home/mss/cust/chan"
-bind-key	S4-XF86Calculator	"feh --bg-fill /home/mss/cust/other/black.png"
+bind-key 	S4-m			"/home/mss/.fehb.def"
+bind-key 	4-m			"feh --bg-fill --randomize /home/mss/cust/chan"
+bind-key	M-m			"feh --bg-fill /home/mss/cust/other/black.png"
 
 bind-key	XF86AudioRaiseVolume	"sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done'"
 bind-key	XF86AudioLowerVolume	"sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done'"
