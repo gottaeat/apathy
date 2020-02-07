@@ -132,7 +132,7 @@ alias grs="git reset HEAD~1 --soft"
 alias atog="amixer set Master toggle"
 alias mtog="mpc toggle"
 ##e dirs
-alias cdo="cd \$OLDPWD; echo 'pwd: $PWD'"
+alias cdo="cd "\$OLDPWD"; echo pwd: \$PWD"
 alias cdw="cd /mss/work"
 alias cdr="cd /mss/repo"
 alias cdt="cd /mss/tools"
