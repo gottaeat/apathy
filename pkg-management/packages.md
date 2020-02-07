@@ -360,9 +360,9 @@
 [d] self	> slmenu-0.1
 [d] self	> apathy-st-0.8.2
 [d] alpine	> lz4-1.9.2
-[d] self	> cwm				--> from github.com/leahneukirchen/cwm
-[d] self	> lemonbar			--> from github.com/krypt-n/bar
-[d] self	> wmctrl-1.07			--> inst from alp, patches from void
+[r] self	> cwm				--> from github.com/leahneukirchen/cwm
+[r] self	> lemonbar			--> from github.com/krypt-n/bar
+[r] self	> wmctrl-1.07			--> inst from alp, patches from void
 [d] alpine	> aria2-1.35.0
 [d] self	> links-2.20.2
 
@@ -371,6 +371,13 @@
 
 [d] gentoo+arch	> lilo-24.2
 [d] arch	>> bin86-0.16.21		--> don't remember where the fuck i found the sauce from
+
+[d] alpine	> i3wm-gaps-4.17.1
+[d] alpine	>> yajl-2.1.0
+[d] alpine	>> xcb-util-xrm-1.3
+[d] alpine	>> startup-notification-0.12
+
+[d] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
 ```
 ```
 ### base mlfs packages
