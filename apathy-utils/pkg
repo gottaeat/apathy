@@ -1,48 +1,68 @@
 #!/mss/bin/sh
-
 . /mss/bin/apathy-funcs
 
-if [ ! "$(cat /proc/1/mountinfo | head -1)" = "$(cat /proc/$$/mountinfo | head -1)" ]
- then tsize_chr="(chroot)"
-fi
-
-tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}') ${tsize_chr}"
+localraw="/mss/raw-packages.txt"
+reporaw="/mss/repo/pkg-management/raw-packages.txt"
+localmd="/mss/packages.md"
+repomd="/mss/repo/pkg-management/packages.md"
 
 case $1 in
- *rmv*|*removed*)
-  if [ ! -f "/mss/packages.md" ]
+ sync)
+   aprint_ret "${c_lcyan}(repo -> local)${c_reset}\tsyncing ${c_lcyan}raw-packages.txt${c_reset}."
+    cp /mss/repo/pkg-management/raw-packages.txt /mss/raw-packages.txt
+   evalret
+
+   aprint_ret "${c_lcyan}(repo -> local)${c_reset}\tsyncing ${c_lcyan}packages.md${c_reset}."
+    cp /mss/repo/pkg-management/packages.md      /mss/packages.md
+   evalret
+   exit 0
+ ;;
+ convert)
+  if [ ! -f "${repomd}" ]
    then
-    printf "\n ! can't display removed packages, packages.md not found.\n\n"
+    aprint_fail "${c_lcyan}(repo)${c_reset}${c_lcyan}packages.md${c_reset} not found."
     exit 1
    else
-    rlist=$(grep "\[r\]" /mss/packages.md | sed 's/~//g' | awk '{print "\t"$3}' | sort -s)
-    printf "\n * removed packages\t: $rcount\n * complete list\t:\n$rlist\n\n" | less
+    aprint "${c_lcyan}(repo)\t\t${c_reset}converting ${c_lcyan}packages.md${c_reset} to ${c_lcyan}raw-packages.txt${c_reset}."
+    grep -v -e \# -e \` -e \! "${repomd}" | awk '/\[d\]/ {print $4}' > "${reporaw}"
   fi
  ;;
- *inst*|*installed*)
-  if [ ! -f "/mss/raw-packages.txt" ]
+ removed)
+  if [ ! -f "${localmd}" ]
    then
-    printf "\n ! can't display installed packages, raw-packages.txt not found.\n\n"
+    aprint_fail "${c_lcyan}(local)\t\tpackages.md${c_reset} does not exist."
     exit 1
-   else 
-    ilist=$(cat /mss/raw-packages.txt | awk '{print "\t"$1}' | sort -s)
-    printf "\n * installed packages\t: $count\n * complete list\t:\n$ilist\n\n" | less
+   else
+    aprint "${c_lcyan}(local)${c_reset}\t\tremoved packages are:"
+    awk '/\[r\]/ {print "\t\t\t- "$4}' "${localmd}"
   fi
  ;;
- *)
-  if [ ! -f "/mss/packages.md" ]
-   then rcount="packages.md is missing."
-   else rcount=$(grep "\[r\]" /mss/packages.md | wc -l)
+ installed)
+  if [ ! -f "${localraw}" ]
+   then
+    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}raw-packages.txt${c_reset} is missing." 
+    exit 1
+   else
+    aprint "${c_lcyan}(local)${c_reset}\t\tinstalled packages are: "
+    awk '{print "\t\t\t- "$1}' "${localraw}"
   fi
-  
-  if [ ! -f "/mss/raw-packages.txt" ]
-   then count="raw-packages.txt is missing."
-   else count=$(wc -l /mss/raw-packages.txt | awk '{print $1}')
+ ;;
+ stats)
+  tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}')"
+
+  if [ ! -f "${localmd}" ]
+   then rcount="l${c_lcyan}(local)\t\t${c_lcyan}packages.md${c_reset} is missing."
+   else rcount=$(grep "\[r\]" "${localmd}" | wc -l)
+  fi
+
+  if [ ! -f "${localraw}" ]
+   then count="${c_lcyan}(local)\t\t$raw-packages.txt${c_reset} is missing."
+   else count=$(awk 'END{print NR}' "${localraw}")
   fi
   
   if [ ! -d "/mss/repo" ]
    then
-    gitstat="local repo dir is missing."
+    gitstat="${c_lcyan}(repo)\t\t/mss/repo${c_reset} is missing."
    else
     gitstat_pre=$(cd /mss/repo && git status -s)
   
@@ -52,18 +72,18 @@ case $1 in
     fi
   fi
   
-  if [ ! -f "/mss/raw-packages.txt" ] || [ ! -f "/mss/repo/pkg-management/raw-packages.txt" ]
+  if [ ! -f "${localraw}" ] || [ ! -f "${reporaw}" ]
    then
-    gitdf="raw-packages.txt is missing."
+    gitdf="${c_lcyan}(local, repo)${c_reset}\t${c_lcyan}raw-packages.txt${c_reset} is missing."
    else
-    gitdf_pre=$(diff -u /mss/raw-packages.txt /mss/repo/pkg-management/raw-packages.txt \
-                 | awk '/^---/   {print "- local"" --->",$3"\t"$4};                     \
-                        /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"};                \
-                        /^+[a-z,0-9]/;                                                  \
+    gitdf_pre=$(diff -u "${localraw}" "${reporaw}"                       \
+                 | awk '/^---/   {print "- local"" --->",$3"\t"$4};      \
+                        /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"}; \
+                        /^+[a-z,0-9]/;                                   \
                         /^-[a-z,0-9]/')
     
     if [ -z "$gitdf_pre" ]
-     then gitdf="no difference."
+     then gitdf="none."
      else gitdf=$(printf "\n\n$gitdf_pre\n")
     fi
   fi
@@ -76,4 +96,7 @@ case $1 in
  aprint "${c_green}git repo status\t${c_blue}:${c_reset} ${gitstat}"
  aprint_nc
  ;;
+ *)
+  aprint "invalid flag."
+  aprint_usage "{sync|convert|removed|instealled|stats}"
 esac
