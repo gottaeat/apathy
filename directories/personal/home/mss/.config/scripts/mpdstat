@@ -61,9 +61,9 @@ echo "${state}"
 
 # i3blocks interaction
 case $BLOCK_BUTTON in
- 1) mpc next		;;
- 2) mpc toggle		;;
- 3) mpc prev		;;
- 4) mpc volume +10	;;
- 5) mpc volume -10	;;
+ 1) mpc next;       pkill -RTMIN+1 i3block;;
+ 2) mpc toggle;     pkill -RTMIN+1 i3block;;
+ 3) mpc prev;       pkill -RTMIN+1 i3block;;
+ 4) mpc volume +10                        ;;
+ 5) mpc volume -10	                  ;;
 esac

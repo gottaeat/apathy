@@ -1,0 +1,14 @@
+#!/mss/bin/sh
+head_data=$(amixer -D default get Headphone | awk 'NR==6 {gsub("\\[",""); gsub("\\]",""); print}')
+
+[ "$(echo $head_data | awk '{print $7}')" = "off" ]     \
+ && alsa_head="muted"                                   \
+ || alsa_head="$(echo ${head_data} | awk '{print $5}')"
+
+echo "${alsa_head}"
+
+case $BLOCK_BUTTON in
+ 3) amixer -q -D default set Headphone toggle;      pkill -RTMIN+1 i3blocks;;
+ 4) amixer -q -D default set Headphone 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
+ 5) amixer -q -D default set Headphone 3dB- unmute; pkill -RTMIN+1 i3blocks;;
+esac

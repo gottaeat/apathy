@@ -1,2 +1,2 @@
 #!/mss/bin/sh
-free --mebi | awk 'NR==2 {print $3"mib"}'
+free --mebi | awk 'NR==2 {print $3"m"}'

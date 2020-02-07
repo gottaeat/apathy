@@ -18,44 +18,48 @@ color=#ababab
 
 [mpdstat]
 command=~/.config/scripts/mpdstat
-color=#ababab
+color=#747474
 interval=1
 signal=1
 
-[time]
-command=date '+%a %d %I:%M:%S%P'
+[alsa_head]
+command=~/.config/scripts/alsa_head
 interval=1
-color=#f7f7f7
-min_width=
-separator_block_width=3
+color=#ababab
+signal=1
+separator_block_width=5
 separator=false
+
+[alsa_speak]
+command=~/.config/scripts/alsa_speak
+interval=1
+color=#ababab
+signal=1
+separator_block_width=5
+separator=false
+
+[alsa_capture]
+command=~/.config/scripts/alsa_capture
+interval=1
+color=#747474
+signal=1
 
 [weather]
 command=~/.config/scripts/weather
 interval=300
 color=#747474
 
-[alsa-master]
-command=~/.config/scripts/alsa-master
-interval=1
-color=#f7f7f7
-signal=1
-separator_block_width=5
-separator=false
+[ifacestat]
+command=~/.config/scripts/ifacestat
+interval=300
+color=#ababab
 
-[mpdvol]
-command=~/.config/scripts/mpdvol
+[date]
+command=date '+%a %d %I:%M:%S%P'
 interval=1
-color=#999999
-signal=1
-separator_block_width=4
+color=#ababab
+separator_block_width=3
 separator=false
-
-[alsa-capture]
-command=~/.config/scripts/alsa-capture
-interval=1
-color=#f7f7f7
-signal=1
 
 [uptime]
 command=~/.config/scripts/upt

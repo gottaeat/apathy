@@ -1,0 +1,14 @@
+#!/mss/bin/sh
+read eth0stat  < /sys/class/net/eth0/operstate
+read wlan0stat < /sys/class/net/wlan0/operstate
+
+[ "${wlan0stat}" = "up" ] \
+ && \
+  noise="$(awk '/wlan0/ {gsub("\\.",""); print $4}' /proc/net/wireless)" \
+  wlan0stat="${noise}dB" \
+ || \
+  wlan0stat="dn"
+
+[ "${eth0stat}" = "down" ] && eth0stat="dn"
+
+echo "eth0:${eth0stat} wlan0:${wlan0stat}"

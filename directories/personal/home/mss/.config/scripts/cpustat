@@ -10,9 +10,10 @@ s2_total=$(($(echo $s2_data | awk '{gsub(" ","+"); gsub("cpu","0"); print}')))
 s2_col4=$(echo $s2_data | awk '{print $5}')
 
 used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
-perc=$((100 * ${used} / (${s2_total} - ${s1_total})))
+thrd=$(awk '{print $4}' /proc/loadavg)
+load=$((100 * ${used} / (${s2_total} - ${s1_total})))
 
-temp=$(sensors coretemp-isa-0000 \
-      | awk '/Core 0/ {gsub("+",""); gsub("°C",""); print $3"c"}')
+temp0=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp2_input)
+temp1=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp3_input)
 
-echo "${perc}%(${temp})"
+echo "${load}% ${thrd} ${temp0}/${temp1}c"

@@ -1,7 +1,8 @@
 #!/mss/bin/sh
-utime=$(cat /proc/uptime | awk '{print $1}')
+utime_b=$(awk '{print $1}' /proc/uptime)
 
-printf "%dd %dh %dm\n"               \
- "$(echo "${utime}/86400"     | bc)"  \
- "$(echo "${utime}/3600"      | bc)"  \
- "$(echo "(${utime}%3600)/60" | bc)"
+echo "$(printf "%dd %dh %dm\n"                      \
+          "$(echo "${utime_b}/86400"        | bc)"  \
+          "$(echo "(${utime_b}%86400)/3600" | bc)"  \
+          "$(echo "(${utime_b}%3600)/60"    | bc)")"
+
