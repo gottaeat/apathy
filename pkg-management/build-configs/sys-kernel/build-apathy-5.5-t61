@@ -16,7 +16,7 @@ _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
 _confdir="${_repodir}/configs"
 
-confname="5.5-apathy-t61-nonfree-gcc-bmq-27-jan-2020.config"
+confname="5.5-apathy-t61-nonfree-gcc-bmq-08-feb-2020.config"
 _useconf="${_confdir}/5.5/${confname}"
 localver="5.5-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
