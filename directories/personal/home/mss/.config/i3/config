@@ -5,8 +5,7 @@ floating_modifier		$mod
 bindsym $mod+Shift+q		kill
 bindsym $mod+Shift+r		restart
 bindsym $mod+Return		exec st -g 120x35
-bindsym $mod+Shift+Return	exec st -g 120x35 -e tmux
-
+bindsym	$mod+Shift+Return	exec st -g 120x35 -e tmux
 
 ## b >> base binds
 # c1 >> movement
@@ -47,11 +46,19 @@ bindsym	$mod+r			mode		"resize"
 
 ## c >> workspaces
 # c1 >> set workspace names
-set $ws1	1:I
-set $ws2	2:II
-set $ws3	3:III
-set $ws4	4:IV
-set $ws5	5:V
+set	$ws1	1:lvds:1
+set	$ws2	2:lvds:2
+set	$ws3	3:lvds:3
+set	$ws4	4:vga:1
+set	$ws5	5:vga:2
+set	$ws6	6:vga:3
+
+workspace 1 output LVDS-1
+workspace 2 output LVDS-1
+workspace 3 output LVDS-1
+workspace 4 output VGA-1
+workspace 5 output VGA-1
+workspace 6 output VGA-1
 
 # c2 >> workspace related binds
 bindsym $mod+1		workspace $ws1
@@ -59,14 +66,16 @@ bindsym $mod+2		workspace $ws2
 bindsym $mod+3		workspace $ws3
 bindsym $mod+4		workspace $ws4
 bindsym $mod+5		workspace $ws5
+bindsym $mod+6		workspace $ws6
 bindsym $mod+Shift+1	move container to workspace $ws1
 bindsym $mod+Shift+2	move container to workspace $ws2
 bindsym $mod+Shift+3	move container to workspace $ws3
 bindsym $mod+Shift+4	move container to workspace $ws4
 bindsym $mod+Shift+5	move container to workspace $ws5
+bindsym $mod+Shift+6	move container to workspace $ws6
 
 # c3 >> assign and define stuff based on window class
-assign		[class="Pale moon"]	$ws2
+assign		[class="Pale moon"]	$ws4
 for_window	[class="Xmessage"]	floating enable
 for_window	[class="^.*"]		border pixel 1
 
@@ -76,13 +85,13 @@ for_window	[class="^.*"]		border pixel 1
 font pango:vanilla 7
 
 # d2 >> set the colorscheme
-client.focused		#000000	#464646	#000000	#000000
-client.unfocused	#000000	#101010	#000000	#000000
-client.focused_inactive	#000000	#101010	#000000	#000000
-client.urgent		#000000	#101010	#000000	#000000
+client.focused		#252525	#252525	#f7f7f7	#252525
+client.unfocused	#101010	#101010	#ababab	#101010
+client.focused_inactive	#101010	#101010	#ababab	#101010
+client.urgent		#101010	#101010	#ababab	#101010
 
 # d3 >> gaps
-gaps inner 5
+gaps inner 2
 gaps outer 0
 
 ## e >> define bar and bar colorscheme
@@ -125,11 +134,11 @@ bindsym $mod+Shift+m			exec feh --bg-fill			/home/mss/cust/other/black.png
 bindsym	$alt+m				exec /home/mss/.fehb.def
 
 # f3 >> alsa
-bindsym XF86AudioRaiseVolume		exec sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done' 
-bindsym XF86AudioLowerVolume		exec sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done'
+bindsym XF86AudioRaiseVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done' "
+bindsym XF86AudioLowerVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done'"
 bindsym $mod+Shift+XF86AudioRaiseVolume	exec amixer set Capture 3dB+
 bindsym $mod+Shift+XF86AudioLowerVolume	exec amixer set Capture 3dB-
-bindsym XF86AudioMute			exec sh -c 'for hmm in Headphone Speaker; do amixer set $hmm toggle; done'
+bindsym XF86AudioMute			exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm toggle; done'"
 bindsym	XF86AudioMedia			exec amixer set Capture toggle
 
 # f4 >> mpd
@@ -142,7 +151,8 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 
 
 ## g >> autostart
-exec_always				xrandr --output VGA-1 --primary
+exec_always				xrandr --output LVDS-1 --primary
+exec_always				xrandr --output VGA-1  --auto    --right-of LVDS-1
 exec_always	--no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
 exec		--no-startup-id		exec /mss/bin/switchcompositor novsync
 exec		--no-startup-id		cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
