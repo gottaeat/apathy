@@ -198,10 +198,15 @@ read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  then
-  aprint "installing the built kernel."
-  doas cp arch/x86/boot/bzImage /boot/vmlinuz    &&
-  doas cp System.map            /boot/System.map &&
-  doas cp .config               /boot/config
+  aprint_ret "installing the built kernel."
+   doas cp arch/x86/boot/bzImage /boot/vmlinuz    &&
+   doas cp System.map            /boot/System.map &&
+   doas cp .config               /boot/config
+  evalretkill
+
+  aprint_ret "running ${c_lcyan}lilo${c_reset}."
+   doas -- lilo
+  evalret
  else
   aprint "not installing the built kernel."
 fi
