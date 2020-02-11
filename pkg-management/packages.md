@@ -347,7 +347,7 @@
 [d] alpine	> mutt-1.13.3
 [d] alpine	> lzip-1.21
 
-[d] self	> apathy-browser-28.8.1
+[d] self	> apathy-browser-28.8.2.1
 [d] alpine	>> zip-30
 
 [d] self	> gcompat-0.4.0			--> moved to /lib64
