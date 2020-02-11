@@ -1,7 +1,6 @@
-diff --git a/application/palemoon/base/content/aboutDialog.xul b/application/palemoon/base/content/aboutDialog.xul
-index 6edfc2155..0592c8ce5 100644
---- a/application/palemoon/base/content/aboutDialog.xul
-+++ b/application/palemoon/base/content/aboutDialog.xul
+diff -uraN a/application/palemoon/base/content/aboutDialog.xul b/application/palemoon/base/content/aboutDialog.xul
+--- a/application/palemoon/base/content/aboutDialog.xul	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/base/content/aboutDialog.xul	2020-02-10 11:51:51.873607145 +0300
 @@ -63,10 +63,8 @@
            or getting involved in our development by tackling some of the issues found in our GitHub issue tracker.
  #endif
@@ -15,10 +14,9 @@ index 6edfc2155..0592c8ce5 100644
  #endif
          </description>    
      </vbox>
-diff --git a/application/palemoon/branding/shared/locales/browserconfig.properties b/application/palemoon/branding/shared/locales/browserconfig.properties
-index 92d237144..b5e4d464b 100644
---- a/application/palemoon/branding/shared/locales/browserconfig.properties
-+++ b/application/palemoon/branding/shared/locales/browserconfig.properties
+diff -uraN a/application/palemoon/branding/shared/locales/browserconfig.properties b/application/palemoon/branding/shared/locales/browserconfig.properties
+--- a/application/palemoon/branding/shared/locales/browserconfig.properties	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/shared/locales/browserconfig.properties	2020-02-10 11:51:51.874607132 +0300
 @@ -3,5 +3,5 @@
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
@@ -27,10 +25,9 @@ index 92d237144..b5e4d464b 100644
 -browser.startup.homepage_reset=http://start.palemoon.org/
 +browser.startup.homepage=https://mss.neocities.org/startpage/
 +browser.startup.homepage_reset=https://mss.neocities.org/startpage/
-diff --git a/application/palemoon/branding/shared/pref/preferences.inc b/application/palemoon/branding/shared/pref/preferences.inc
-index fe1a2f003..f58e5ff77 100644
---- a/application/palemoon/branding/shared/pref/preferences.inc
-+++ b/application/palemoon/branding/shared/pref/preferences.inc
+diff -uraN a/application/palemoon/branding/shared/pref/preferences.inc b/application/palemoon/branding/shared/pref/preferences.inc
+--- a/application/palemoon/branding/shared/pref/preferences.inc	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/shared/pref/preferences.inc	2020-02-10 11:51:51.875607120 +0300
 @@ -1,91 +1,34 @@
 -// ===| General |==============================================================
 +// mightyluna
@@ -134,11 +131,10 @@ index fe1a2f003..f58e5ff77 100644
 -
 -// ============================================================================
 +pref("services.sync.APILevel", 1);
-diff --git a/application/palemoon/branding/shared/pref/uaoverrides.inc b/application/palemoon/branding/shared/pref/uaoverrides.inc
-index 028b29b41..1b2d1d9af 100644
---- a/application/palemoon/branding/shared/pref/uaoverrides.inc
-+++ b/application/palemoon/branding/shared/pref/uaoverrides.inc
-@@ -1,83 +1,16 @@
+diff -uraN a/application/palemoon/branding/shared/pref/uaoverrides.inc b/application/palemoon/branding/shared/pref/uaoverrides.inc
+--- a/application/palemoon/branding/shared/pref/uaoverrides.inc	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/shared/pref/uaoverrides.inc	2020-02-10 11:45:59.507012333 +0300
+@@ -1,84 +1,16 @@
 -// ===| Site Specific User Agent Overrides |===================================
 -
 -#define GUAO_PREF general.useragent.override
@@ -179,8 +175,8 @@ index 028b29b41..1b2d1d9af 100644
 -pref("@GUAO_PREF@.googlevideos.com","Mozilla/5.0 (@OS_SLICE@ rv:38.9) @GK_SLICE@ @GRE_VERSION_SLICE@ Firefox/38.9 @PM_SLICE@");
 -pref("@GUAO_PREF@.gstatic.com","Mozilla/5.0 (@OS_SLICE@ rv:31.9) @GK_SLICE@ @GRE_VERSION_SLICE@ Firefox/31.9 @PM_SLICE@");
 -pref("@GUAO_PREF@.yahoo.com","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefox/99.9 (Pale Moon)");
--pref("@GUAO_PREF@.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:42.0) @GK_SLICE@ Firefox/42.0 @PM_SLICE@");
--pref("@GUAO_PREF@.gaming.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:42.0) @GK_SLICE@ Firefox/42.0");
+-pref("@GUAO_PREF@.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:62.0) @GK_SLICE@ Firefox/62.0 @PM_SLICE@");
+-pref("@GUAO_PREF@.gaming.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:62.0) @GK_SLICE@ Firefox/62.0");
 -pref("@GUAO_PREF@.dropbox.com","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefox/99.9 (Pale Moon)");
 -
 -pref("@GUAO_PREF@.players.brightcove.net","Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko");
@@ -206,6 +202,7 @@ index 028b29b41..1b2d1d9af 100644
 -pref("@GUAO_PREF@.altibox.dk","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
 -pref("@GUAO_PREF@.altibox.no","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
 -pref("@GUAO_PREF@.firefox.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+-pref("@GUAO_PREF@.github.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
 -
 -// UA-Sniffing domains below have indicated no interest in supporting Pale Moon (BOO!)
 -pref("@GUAO_PREF@.humblebundle.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
@@ -238,10 +235,9 @@ index 028b29b41..1b2d1d9af 100644
 +// webgl and canvas 
 +pref("webgl.disabled", "true");
 +pref("canvas.poisondata", "true");
-diff --git a/application/palemoon/branding/unofficial/branding.nsi b/application/palemoon/branding/unofficial/branding.nsi
-index 62ed242a2..3f4b8d624 100644
---- a/application/palemoon/branding/unofficial/branding.nsi
-+++ b/application/palemoon/branding/unofficial/branding.nsi
+diff -uraN a/application/palemoon/branding/unofficial/branding.nsi b/application/palemoon/branding/unofficial/branding.nsi
+--- a/application/palemoon/branding/unofficial/branding.nsi	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/unofficial/branding.nsi	2020-02-10 11:51:51.875607120 +0300
 @@ -8,9 +8,9 @@
  
  # BrandFullNameInternal is used for some registry and file system values
@@ -258,20 +254,18 @@ index 62ed242a2..3f4b8d624 100644
 +!define URLUpdateInfo         "https://mss.neocities.org/apathy/"
 +!define HelpLink              "https://mss.neocities.org/apathy/"
 +!define URLSystemRequirements "https://mss.neocities.org/apathy/"
-diff --git a/application/palemoon/branding/unofficial/configure.sh b/application/palemoon/branding/unofficial/configure.sh
-index c03b8382a..3ea27ce6f 100644
---- a/application/palemoon/branding/unofficial/configure.sh
-+++ b/application/palemoon/branding/unofficial/configure.sh
+diff -uraN a/application/palemoon/branding/unofficial/configure.sh b/application/palemoon/branding/unofficial/configure.sh
+--- a/application/palemoon/branding/unofficial/configure.sh	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/unofficial/configure.sh	2020-02-10 11:51:51.876607107 +0300
 @@ -2,4 +2,4 @@
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
 -MOZ_APP_DISPLAYNAME="New Moon"
 +MOZ_APP_DISPLAYNAME=apathybrowser
-diff --git a/application/palemoon/branding/unofficial/locales/en-US/brand.dtd b/application/palemoon/branding/unofficial/locales/en-US/brand.dtd
-index debb7442d..c8ad64ea3 100644
---- a/application/palemoon/branding/unofficial/locales/en-US/brand.dtd
-+++ b/application/palemoon/branding/unofficial/locales/en-US/brand.dtd
+diff -uraN a/application/palemoon/branding/unofficial/locales/en-US/brand.dtd b/application/palemoon/branding/unofficial/locales/en-US/brand.dtd
+--- a/application/palemoon/branding/unofficial/locales/en-US/brand.dtd	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/unofficial/locales/en-US/brand.dtd	2020-02-10 11:51:51.877607095 +0300
 @@ -2,7 +2,7 @@
     - License, v. 2.0. If a copy of the MPL was not distributed with this
     - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
@@ -283,10 +277,9 @@ index debb7442d..c8ad64ea3 100644
 +<!ENTITY  brandFullName         "apathy browser">
 +<!ENTITY  vendorShortName       "mssx86">
  <!ENTITY  trademarkInfo.part1   " ">
-diff --git a/application/palemoon/branding/unofficial/locales/en-US/brand.properties b/application/palemoon/branding/unofficial/locales/en-US/brand.properties
-index 863a7c83b..b8085a5b2 100644
---- a/application/palemoon/branding/unofficial/locales/en-US/brand.properties
-+++ b/application/palemoon/branding/unofficial/locales/en-US/brand.properties
+diff -uraN a/application/palemoon/branding/unofficial/locales/en-US/brand.properties b/application/palemoon/branding/unofficial/locales/en-US/brand.properties
+--- a/application/palemoon/branding/unofficial/locales/en-US/brand.properties	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/unofficial/locales/en-US/brand.properties	2020-02-10 11:51:51.877607095 +0300
 @@ -2,8 +2,8 @@
  # License, v. 2.0. If a copy of the MPL was not distributed with this
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -299,10 +292,9 @@ index 863a7c83b..b8085a5b2 100644
 +vendorShortName=mssx86
  
  syncBrandShortName=Sync
-diff --git a/application/palemoon/branding/unofficial/pref/palemoon-branding.js b/application/palemoon/branding/unofficial/pref/palemoon-branding.js
-index bf46b747a..a5d379a0e 100644
---- a/application/palemoon/branding/unofficial/pref/palemoon-branding.js
-+++ b/application/palemoon/branding/unofficial/pref/palemoon-branding.js
+diff -uraN a/application/palemoon/branding/unofficial/pref/palemoon-branding.js b/application/palemoon/branding/unofficial/pref/palemoon-branding.js
+--- a/application/palemoon/branding/unofficial/pref/palemoon-branding.js	2020-02-04 16:23:07.000000000 +0300
++++ b/application/palemoon/branding/unofficial/pref/palemoon-branding.js	2020-02-10 11:51:51.877607095 +0300
 @@ -3,8 +3,8 @@
  #include ../../shared/pref/preferences.inc
  #include ../../shared/pref/uaoverrides.inc
