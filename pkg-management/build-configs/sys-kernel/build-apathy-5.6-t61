@@ -157,9 +157,9 @@ if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
  then
   aprint_ret "running make, do tail -f /tmp/kernel-build.log to view."
    datebefore=$(date +%s)
-   /bin/busybox time   \
-   nice --adjustment=0 \
-   make V=0            \
+   /bin/busybox time    \
+   nice --adjustment=10 \
+   make V=0             \
    CC=x86_64-apathy-linux-musl-gcc \
    -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
   evalretkill
