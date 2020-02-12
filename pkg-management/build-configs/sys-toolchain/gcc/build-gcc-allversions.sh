@@ -100,12 +100,27 @@ read answerbuildgcc
 
 if [ "$answerbuildgcc" != "${answerbuildgcc#[Yy]}" ]
  then
-  aprint_ret "running make, tail -f /tmp/gcc-build.log to view."
-   /bin/busybox time make -j$(($(nproc)+1)) >>/tmp/gcc-build.log 2>&1
+  aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  aprint_ret "running make, do tail -f /tmp/gcc-build.log to view."
+  datebefore=$(date +%s)
+
+  /bin/busybox time                \
+  nice --adjustment=10             \
+  make V=0                         \
+  CC=x86_64-apathy-linux-musl-gcc  \
+  CXX=x86_64-apathy-linux-musl-g++ \
+  -j$(nproc) >>/tmp/gcc-build.log 2>&1
   evalretkill
 
+  dateafter=$(date +%s)
+  timespent=$(($dateafter - $datebefore))
+  humantime=$(printf "%dd %dh %dm\n"                    \
+            "$(echo "${timespent}/86400"        | bc)"  \
+            "$(echo "(${timespent}%86400)/3600" | bc)"  \
+            "$(echo "(${timespent}%3600)/60"    | bc)")
+
   aprint_nc
-  aprint "build complete."
+  aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
  else
   aprint "not running make."
   aprint_nc
