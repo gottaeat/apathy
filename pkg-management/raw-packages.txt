@@ -284,7 +284,7 @@ gawk-5.0.1
 gcc-9.2.0
 gdbm-1.18.1
 gettext-0.20.1
-gmp-6.1.2
+gmp-6.2.0
 gperf-3.1
 grep-3.4
 groff-1.22.4
