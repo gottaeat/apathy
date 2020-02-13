@@ -14,7 +14,7 @@ export GSETTINGS_BACKEND="dconf"
 
 # compile bits
 export MAKEFLAGS="-j 2"
-export CFLAGS="-march=native"
+export CFLAGS="-march=native -mtune=native"
 export CXXFLAGS="${CFLAGS}"
 export CHOST="x86_64-apathy-linux-musl"
 export CBUILD="${CHOST}"
