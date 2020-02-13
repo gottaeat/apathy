@@ -1,0 +1,5 @@
+#!/mss/bin/sh
+DEVICE_ID=$(xinput list | sed -n '/TPPS/s%.*id=\([0-9]\+\).*%\1%p')
+ACCEL_SPEED=$(xinput list-props "$DEVICE_ID" | sed -n '/Accel\ Speed\ (/s%.*Accel Speed (\([0-9]\+\)).*%\1%p')
+
+xinput set-prop $DEVICE_ID $ACCEL_SPEED -1
