@@ -8,7 +8,7 @@ cap_data=$(amixer -D default get Capture | awk 'NR==6 {gsub("\\[",""); gsub("\\]
 echo "${alsa_capture}"
 
 case $BLOCK_BUTTON in
- 3) amixer -q -D default set Capture toggle;      pkill -RTMIN+1 i3blocks;;
- 4) amixer -q -D default set Capture 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
- 5) amixer -q -D default set Capture 3dB- unmute; pkill -RTMIN+1 i3blocks;;
+ 3) amixer set Capture toggle;      pkill -RTMIN+1 i3blocks;;
+ 4) amixer set Capture 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
+ 5) amixer set Capture 3dB- unmute; pkill -RTMIN+1 i3blocks;;
 esac

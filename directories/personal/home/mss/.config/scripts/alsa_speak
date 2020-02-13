@@ -8,7 +8,7 @@ speak_data=$(amixer -D default get Speaker | awk 'NR==6 {gsub("\\[",""); gsub("\
 echo "${alsa_speak}"
 
 case $BLOCK_BUTTON in
- 3) amixer -q -D default set Speaker toggle;      pkill -RTMIN+1 i3blocks;;
- 4) amixer -q -D default set Speaker 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
- 5) amixer -q -D default set Speaker 3dB- unmute; pkill -RTMIN+1 i3blocks;;
+ 3) amixer set Speaker toggle;      pkill -RTMIN+1 i3blocks;;
+ 4) amixer set Speaker 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
+ 5) amixer set Speaker 3dB- unmute; pkill -RTMIN+1 i3blocks;;
 esac
