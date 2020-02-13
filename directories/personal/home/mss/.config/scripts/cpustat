@@ -13,7 +13,7 @@ used=$(((${s2_total} - ${s1_total}) - (${s2_col4} - ${s1_col4})))
 thrd=$(awk '{print $4}' /proc/loadavg)
 load=$((100 * ${used} / (${s2_total} - ${s1_total})))
 
-temp0=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp2_input)
-temp1=$(cut -b1-2 /sys/class/hwmon/hwmon1/temp3_input)
+temp0=$(cut -b1-2 /sys/class/hwmon/hwmon2/temp2_input)
+temp1=$(cut -b1-2 /sys/class/hwmon/hwmon2/temp3_input)
 
 echo "${load}% ${thrd} ${temp0}/${temp1}c"
