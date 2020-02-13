@@ -4,8 +4,8 @@ set	$alt			Mod1
 floating_modifier		$mod
 bindsym $mod+Shift+q		kill
 bindsym $mod+Shift+r		restart
-bindsym $mod+Return		exec st -g 120x35
-bindsym	$mod+Shift+Return	exec st -g 120x35 -e tmux
+bindsym $mod+Return		exec st
+bindsym $mod+Shift+Return	exec st -e tmux
 
 ## b >> base binds
 # c1 >> movement
@@ -46,19 +46,12 @@ bindsym	$mod+r			mode		"resize"
 
 ## c >> workspaces
 # c1 >> set workspace names
-set	$ws1	1:lvds:1
-set	$ws2	2:lvds:2
-set	$ws3	3:lvds:3
-set	$ws4	4:vga:1
-set	$ws5	5:vga:2
-set	$ws6	6:vga:3
-
-workspace 1 output LVDS-1
-workspace 2 output LVDS-1
-workspace 3 output LVDS-1
-workspace 4 output VGA-1
-workspace 5 output VGA-1
-workspace 6 output VGA-1
+set	$ws1	1:a
+set	$ws2	2:b
+set	$ws3	3:c
+set	$ws4	4:d
+set	$ws5	5:e
+set	$ws6	6:f
 
 # c2 >> workspace related binds
 bindsym $mod+1		workspace $ws1
@@ -75,23 +68,24 @@ bindsym $mod+Shift+5	move container to workspace $ws5
 bindsym $mod+Shift+6	move container to workspace $ws6
 
 # c3 >> assign and define stuff based on window class
-assign		[class="Pale moon"]	$ws4
+assign		[class="Pale moon"]	$ws2
 for_window	[class="Xmessage"]	floating enable
 for_window	[class="^.*"]		border pixel 1
 
 
 ## d >> visual garbage
 # d1 >> set the font
-font pango:vanilla 7
+#font pango: scientifica 7
+font pango:Terminus 9
 
 # d2 >> set the colorscheme
-client.focused		#252525	#252525	#f7f7f7	#252525
-client.unfocused	#101010	#101010	#ababab	#101010
-client.focused_inactive	#101010	#101010	#ababab	#101010
-client.urgent		#101010	#101010	#ababab	#101010
+client.focused		#252525	#000000	#f7f7f7	#252525 #252525
+client.unfocused	#101010	#000000	#ababab	#101010 #101010
+client.focused_inactive	#101010	#000000	#ababab	#101010 #101010
+client.urgent		#101010	#000000	#ababab	#101010 #101010
 
 # d3 >> gaps
-gaps inner 2
+gaps inner 5
 gaps outer 0
 
 ## e >> define bar and bar colorscheme
@@ -101,6 +95,7 @@ bar {
   strip_workspace_numbers	yes
   position			top
   separator_symbol		"|"
+  height			12
 
 colors {
   background		#000000
@@ -134,12 +129,11 @@ bindsym $mod+Shift+m			exec feh --bg-fill			/home/mss/cust/other/black.png
 bindsym	$alt+m				exec /home/mss/.fehb.def
 
 # f3 >> alsa
-bindsym XF86AudioRaiseVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done' "
-bindsym XF86AudioLowerVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done'"
-bindsym $mod+Shift+XF86AudioRaiseVolume	exec amixer set Capture 3dB+
-bindsym $mod+Shift+XF86AudioLowerVolume	exec amixer set Capture 3dB-
-bindsym XF86AudioMute			exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm toggle; done'"
-bindsym	XF86AudioMedia			exec amixer set Capture toggle
+bindsym XF86AudioRaiseVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB+; done; pkill -RTMIN+1 i3blocks'"
+bindsym XF86AudioLowerVolume		exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm 3dB-; done; pkill -RTMIN+1 i3blocks'"
+bindsym $mod+Shift+XF86AudioRaiseVolume	exec "sh -c 'amixer set Capture 3dB+: pkill -RTMIN+1 i3blocks'"
+bindsym $mod+Shift+XF86AudioLowerVolume	exec "sh -c 'amixer set Capture 3dB-; pkill -RTMIN+1 i3blocks'"
+bindsym XF86AudioMute			exec "sh -c 'for hmm in Headphone Speaker; do amixer set $hmm toggle; done; pkill -RTMIN+1 i3blocks'"
 
 # f4 >> mpd
 bindsym XF86AudioPlay			exec mpc toggle
@@ -154,5 +148,5 @@ bindsym $mod+XF86AudioLowerVolume	exec mpc volume -5
 exec_always				xrandr --output LVDS-1 --primary
 exec_always				xrandr --output VGA-1  --auto    --right-of LVDS-1
 exec_always	--no-startup-id		setxkbmap us,tr -option 'grp:alt_shift_toggle'
-exec		--no-startup-id		exec /mss/bin/switchcompositor novsync
+exec		--no-startup-id		exec /mss/bin/switchcompositor vsync
 exec		--no-startup-id		cp /home/mss/.fehbg /home/mss/.fehb.def && /home/mss/.fehbg
