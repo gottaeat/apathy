@@ -49,10 +49,10 @@ command=~/.config/scripts/weather
 interval=300
 color=#747474
 
-[ifacestat]
-command=~/.config/scripts/ifacestat
-interval=300
-color=#ababab
+#[ifacestat]
+#command=~/.config/scripts/ifacestat
+#interval=300
+#color=#ababab
 
 [date]
 command=date '+%a %d %I:%M:%S%P'
