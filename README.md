@@ -41,7 +41,7 @@ languages:
  * perl 5.30.1
 
 video/audio:
- * xorg (x11r7), mesa 19.3.2
+ * xorg (x11r7), mesa 19.3.3
  * alsa 1.2.1.2
 
 shells:
