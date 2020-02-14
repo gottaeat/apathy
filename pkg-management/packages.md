@@ -378,6 +378,7 @@
 [d] alpine	>> startup-notification-0.12
 
 [d] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
+[d] alpine	> samurai-1.0
 ```
 ```
 ### base mlfs packages
@@ -433,7 +434,7 @@
 [d] mlfs	> musl-fts-1.2.7
 [d] mlfs	> musl-obstack-1.1
 [d] mlfs	> ncurses-6.1
-[d] mlfs	> ninja-1.9.0
+[r] mlfs	> ninja-1.9.0
 [d] mlfs	> patch-2.7.6
 [d] mlfs	> perl-5.30.1
 [d] mlfs	> pkg-config-0.29.2

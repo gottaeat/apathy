@@ -54,7 +54,7 @@ shells:
 
  > total partition size : 1480.95mib
  > local package count  : 333
- > removed packages     : 4
+ > removed packages     : 5
 ```
 
 ## dotfiles
