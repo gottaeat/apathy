@@ -161,7 +161,10 @@ if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
    nice --adjustment=10 \
    make V=0             \
    CC=x86_64-apathy-linux-musl-gcc \
-   -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
+   -j1 >>/tmp/kernel-build.log 2>&1
+#  cores+1 literally rapes this chip, just build with
+#  a single thread.
+#  -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
   evalretkill
 
   dateafter=$(date +%s)
