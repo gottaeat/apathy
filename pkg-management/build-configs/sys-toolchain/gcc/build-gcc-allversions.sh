@@ -109,7 +109,10 @@ if [ "$answerbuildgcc" != "${answerbuildgcc#[Yy]}" ]
   make V=0                         \
   CC=x86_64-apathy-linux-musl-gcc  \
   CXX=x86_64-apathy-linux-musl-g++ \
-  -j$(nproc) >>/tmp/gcc-build.log 2>&1
+  -j1 >>/tmp/gcc-build.log 2>&1
+#  build with -j1, this chip fucking dies
+#  with cores+1
+#  -j$(nproc) >>/tmp/gcc-build.log 2>&1
   evalretkill
 
   dateafter=$(date +%s)
