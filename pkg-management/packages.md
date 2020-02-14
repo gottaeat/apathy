@@ -314,7 +314,7 @@
 
 [d] alpine	> numlockx-1.2
 
-[d] self	> mpv-0.31.0
+[d] self	> mpv-0.32.0
 
 [d] alpine	> mpd-0.21.10
 [d] alpine	>> libcue-2.2.1

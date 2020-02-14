@@ -213,7 +213,7 @@ ffmpeg-4.2.1
 lame-3.100
 openjpeg-2.3.1
 numlockx-1.2
-mpv-0.31.0
+mpv-0.32.0
 mpd-0.21.10
 libcue-2.2.1
 mpg123-1.25.13

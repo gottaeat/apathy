@@ -1,0 +1,8 @@
+/etc/mpv
+
+/usr/bin/mpv
+
+/usr/share/applications
+/usr/share/doc
+/usr/share/icons
+/usr/share/zsh
