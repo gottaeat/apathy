@@ -1,0 +1,16 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  for blockdevice in /sys/block/sd*; do
+   ainitmes "setting bfq as the scheduler for ${blockdevice}."
+    echo bfq > ${blockdevice}/queue/scheduler
+   evalret
+  done
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac

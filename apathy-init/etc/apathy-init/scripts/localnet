@@ -1,0 +1,32 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+if [ ! -f /etc/hostname ]
+ then hname="localhost"
+ else read hname < /etc/hostname
+fi
+ 
+case "$1" in
+ start)
+  ainitmes "bringing up the loopback interface."
+   ip addr add 127.0.0.1/8 label lo dev lo >/dev/null 2>&1
+   ip link set lo up                       >/dev/null 2>&1
+  evalret
+
+  ainitmes "setting the hostname to $hname."
+   hostname "${hname}"
+  evalret
+ ;;
+ stop)
+  ainitmes "bringing down the loopback interface."
+   ip link set lo down                     >/dev/null 2>&1
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

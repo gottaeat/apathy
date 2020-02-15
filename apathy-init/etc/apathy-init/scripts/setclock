@@ -1,0 +1,19 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "hardware clock to system."
+   hwclock --hctosys --utc >/dev/null
+  evalret
+ ;;
+ stop)
+  ainitmes "system clock to hardware."
+   hwclock --systohc >/dev/null
+  evalret
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac

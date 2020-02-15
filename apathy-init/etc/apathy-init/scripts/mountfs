@@ -1,0 +1,46 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "${1}" in
+ start)
+  ainitmes "remounting the rootfs in ro mode."
+   mount --options remount,rw /      >/dev/null 2>&1
+  evalret
+
+  mkdir -p /dev/pts
+
+  ainitmes "mounting the entries in fstab."
+   mount --all --test-opts no_netdev >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "unmounting all mounted devices."
+   losetup -D
+   umount --all --detach-loop --read-only \
+    --types notmpfs,nosysfs,nodevtmpfs,noproc,nodevpts \
+    >/dev/null 2>&1
+  local exitval="${?}"
+
+  if [ ${exitval} -eq 0 ]
+   then
+    succprompt
+   else
+    if [ ${exitval} -eq 32 ]
+     then
+      succprompt
+      ainitmes "${0} exited with 32.\n"
+      ainitmes "user probably ran stripper.\n"
+     else
+      failprompt
+    fi
+  fi
+
+  ainitmes "mounting rootfs in ro mode."
+   mount --options remount,ro /      >/dev/null 2>&1
+  evalret
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac

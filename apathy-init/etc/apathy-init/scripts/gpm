@@ -1,0 +1,28 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+DAEMON=/usr/sbin/gpm 
+DAEMONOPTS="-m /dev/input/mice -t imps2"
+
+case "$1" in
+ start)
+  ainitmes "starting gpm."
+   /usr/sbin/gpm -m /dev/input/mice -t imps2 >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "stopping gpm."
+   local pid="$(pidof gpm)"
+   if [ -z "$pid" ]
+    then failprompt; ainitmes "gpm is not running."; failprompt 
+    else kill -TERM "${pid}"; evalret
+   fi
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

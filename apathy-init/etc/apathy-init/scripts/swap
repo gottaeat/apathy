@@ -1,0 +1,22 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "activating all swap." 
+   swapon -a >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "deactivating all swap."
+   swapoff -a >/dev/null 2>&1
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

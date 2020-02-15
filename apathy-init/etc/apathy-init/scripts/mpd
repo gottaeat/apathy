@@ -1,0 +1,31 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+PIDFILE=/run/mpd.pid
+DAEMON=/usr/bin/mpd
+DAEMON_OPTS="-p $PIDFILE /etc/mpd.conf"
+USER=mpd
+
+case "$1" in
+ start)
+  ainitmes "starting mpd."
+   echo > /var/lib/mpd/log
+
+   start-stop-daemon --start --quiet -b \
+    --chuid $USER \
+    --exec  $DAEMON $DAEMON_OPTS
+   evalret
+ ;;
+ stop)
+  ainitmes "stopping mpd."
+   start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" 
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

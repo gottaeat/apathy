@@ -1,0 +1,18 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "${1}" in
+ start)
+  ainitmes "cleaning /tmp."
+   cd /tmp && find . -xdev -mindepth 1 ! -name lost+found -delete
+  evalret
+
+  ainitmes "utilizing utmp."
+   > /var/run/utmp && chmod 664 /var/run/utmp && chgrp utmp /var/run/utmp
+  evalret
+ ;;
+ *)
+  ainitusage "{start}"
+  exit 1
+ ;;
+esac

@@ -1,0 +1,21 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "starting udev."
+   /sbin/udevd --daemon                                    && 
+   /sbin/udevadm trigger --action=add    --type=subsystems &&
+   /sbin/udevadm trigger --action=add    --type=devices    &&
+   /sbin/udevadm trigger --action=change --type=devices
+  evalret
+
+  ainitmes "telling udev to settle if it did not already."
+   [ -z "$OMIT_UDEV_SETTLE" ] && /sbin/udevadm settle
+  evalret
+ ;;
+ *)
+  ainitusage "{start}"
+  exit 1
+ ;;
+esac

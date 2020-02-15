@@ -1,0 +1,31 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+UNICODE="1"
+KEYMAP="us"
+FONT="ter-v12n -m 8859-1"
+
+case "${1}" in
+ start)
+  ainitmes "setting up the consolefont."
+   setfont ${FONT}
+  evalret
+
+  ainitmes "figuring out the mode setting command."
+   MODE_COMMAND="printf '\033%G' && kbd_mode -u" || \
+   MODE_COMMAND="printf '\033%@\033(K' && kbd_mode -a"
+  evalret
+
+  ainitmes "appyling the mode setting command to all terms."
+   for TTY in $(grep 'respawn' /etc/inittab | awk '{gsub("--noclear",""); gsub("tty",""); print $2}')
+    do openvt -f -w -c ${TTY} -- /bin/sh -c '${MODE_COMMAND}'; done
+  evalret
+
+  ainitmes "setting the keymap."
+   loadkeys ${KEYMAP} 2>&1 >/dev/null
+  evalret
+ ;;
+ *) ainitusage "{start}"
+    exit 1
+ ;;
+esac

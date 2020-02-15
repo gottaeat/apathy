@@ -1,0 +1,20 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "intializing the kernel random number generator."
+   [ -f /var/tmp/random-seed ] && cat /var/tmp/random-seed > /dev/urandom
+   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "saving the random seed to /var/tmp."
+   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
+  evalret
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac

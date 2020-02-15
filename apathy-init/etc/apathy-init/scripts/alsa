@@ -1,0 +1,19 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "restoring alsa volume states."
+   alsactl restore >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "saving alsa volume states."
+   alsactl store   >/dev/null 2>&1
+  evalret
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac

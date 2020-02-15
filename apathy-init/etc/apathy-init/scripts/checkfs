@@ -1,0 +1,18 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "${1}" in
+ start)
+  ainitmes "mounting rootfs in rw mode."
+   mount -n -o remount,ro / >/dev/null 2>&1
+  evalret
+
+  ainitmes "checking the files systems."
+   fsck -a -A -C -T >/dev/null 2>&1
+  evalret
+ ;;
+ *)
+  ainitusage "{start}"
+  exit 1
+ ;;
+esac

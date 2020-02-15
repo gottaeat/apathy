@@ -1,0 +1,42 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "starting iptables."
+   /mss/bin/sh /etc/apathy-init/config/iptables.conf
+  evalret
+ ;;
+ lock)
+  ainitmes "locking system iptables."
+   iptables --policy INPUT   DROP     &&
+   iptables --policy OUTPUT  DROP     &&
+   iptables --policy FORWARD DROP     &&
+   iptables --flush                   &&
+   iptables -t mangle --flush         &&
+   iptables --delete-chain            &&
+   iptables -t mangle --delete-chain  &&
+   iptables -A INPUT  -i lo -j ACCEPT &&
+   iptables -A OUTPUT -o lo -j ACCEPT
+  evalret
+ ;;
+ clear|stop)
+  ainitmes "clearing system iptables."
+   iptables --policy INPUT   ACCEPT
+   iptables --policy OUTPUT  ACCEPT
+   iptables --policy FORWARD ACCEPT
+   iptables --flush
+   iptables -t mangle --flush
+   iptables --delete-chain
+   iptables -t mangle --delete-chain
+  evalret
+ ;;
+ status)
+  iptables --numeric --list
+  iptables -t mangle --numeric --list
+ ;;
+ *)
+  ainitusage "{start|lock|clear|stop|status}"
+  exit 1
+ ;;
+esac
