@@ -3,11 +3,11 @@
 
 case "${1}" in
  start)
-  ainitmes "cleaning /tmp."
+  ainitmes "cleaning ${c_lcyan}/tmp${c_reset}."
    cd /tmp && find . -xdev -mindepth 1 ! -name lost+found -delete
   evalret
 
-  ainitmes "utilizing utmp."
+  ainitmes "utilizing ${c_lcyan}utmp${c_reset}."
    > /var/run/utmp && chmod 664 /var/run/utmp && chgrp utmp /var/run/utmp
   evalret
  ;;

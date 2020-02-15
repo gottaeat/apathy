@@ -3,11 +3,11 @@
 
 case "${1}" in
  start)
-  ainitmes "mounting rootfs in rw mode."
+  ainitmes "mounting ${c_lcyan}rootfs in ${c_lcyan}rw${c_reset} mode."
    mount -n -o remount,ro / >/dev/null 2>&1
   evalret
 
-  ainitmes "checking the files systems."
+  ainitmes "running ${c_lcyan}fsck${c_reset}."
    fsck -a -A -C -T >/dev/null 2>&1
   evalret
  ;;

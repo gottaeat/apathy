@@ -3,13 +3,13 @@
 
 case "$1" in
  stop)
-  ainitmes "sending TERM to all processes."
+  ainitmes "sending ${c_lcyan}TERM${c_reset} to all processes."
    killall5 -15
   evalret
 
   sleep 3
 
-  ainitmes "sending KILL to remaining processes."
+  ainitmes "sending ${c_lcyan}KILL${c_reset} to remaining processes."
    killall5 -9
   evalret
  ;;

@@ -6,12 +6,12 @@ DAEMONOPTS="-m /dev/input/mice -t imps2"
 
 case "$1" in
  start)
-  ainitmes "starting gpm."
+  ainitmes "starting ${c_lcyan}gpm${c_reset}."
    /usr/sbin/gpm -m /dev/input/mice -t imps2 >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "stopping gpm."
+  ainitmes "stopping ${c_lcyan}gpm${c_reset}."
    local pid="$(pidof gpm)"
    if [ -z "$pid" ]
     then failprompt; ainitmes "gpm is not running."; failprompt 

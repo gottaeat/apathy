@@ -7,22 +7,22 @@ FONT="ter-v12n -m 8859-1"
 
 case "${1}" in
  start)
-  ainitmes "setting up the consolefont."
+  ainitmes "setting up the ${c_lcyan}consolefont${c_reset}."
    setfont ${FONT}
   evalret
 
-  ainitmes "figuring out the mode setting command."
+  ainitmes "figuring out the ${c_lcyan}mode command${c_reset}."
    MODE_COMMAND="printf '\033%G' && kbd_mode -u" || \
    MODE_COMMAND="printf '\033%@\033(K' && kbd_mode -a"
   evalret
 
-  ainitmes "appyling the mode setting command to all terms."
+  ainitmes "appyling the ${c_lcyan}mode command${c_reset} to all ${c_lcyan}terms${c_reset}."
    for TTY in $(grep 'respawn' /etc/inittab | awk '{gsub("--noclear",""); gsub("tty",""); print $2}')
     do openvt -f -w -c ${TTY} -- /bin/sh -c '${MODE_COMMAND}'; done
   evalret
 
-  ainitmes "setting the keymap."
-   loadkeys ${KEYMAP} 2>&1 >/dev/null
+  ainitmes "setting the ${c_lcyan}keymap${c_reset}."
+   loadkeys ${KEYMAP} >/dev/null 2>&1
   evalret
  ;;
  *) ainitusage "{start}"

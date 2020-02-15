@@ -4,21 +4,21 @@
 case "$1" in
  start)
 
-  ainitmes "mounting /run"
+  ainitmes "mounting ${c_lcyan}/run${c_reset}."
    if ! mountpoint /run >/dev/null;  then mount /run; fi &&
    mkdir -p /run/lock /run/shm                           &&
    chmod 1777 /run/shm /run/lock
   evalret
 
-  ainitmes "mounting /proc"
+  ainitmes "mounting ${c_lcyan}/proc${c_reset}."
    if ! mountpoint /proc >/dev/null; then mount -o nosuid,noexec,nodev /proc; fi
   evalret
 
-  ainitmes "mounting /sys"
+  ainitmes "mounting ${c_lcyan}/sys${c_reset}."
    if ! mountpoint /sys >/dev/null;  then mount -o nosuid,noexec,nodev /sys; fi
   evalret
 
-  ainitmes "mounting /dev"
+  ainitmes "mounting ${c_lcyan}/dev${c_reset}."
    if ! mountpoint /dev >/dev/null;  then mount -o mode=0755,nosuid /dev; fi
   evalret
 

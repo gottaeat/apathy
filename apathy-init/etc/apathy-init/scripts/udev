@@ -3,14 +3,14 @@
 
 case "$1" in
  start)
-  ainitmes "starting udev."
+  ainitmes "starting ${c_lcyan}udev${c_reset}."
    /sbin/udevd --daemon                                    && 
    /sbin/udevadm trigger --action=add    --type=subsystems &&
    /sbin/udevadm trigger --action=add    --type=devices    &&
    /sbin/udevadm trigger --action=change --type=devices
   evalret
 
-  ainitmes "telling udev to settle if it did not already."
+  ainitmes "telling ${c_lcyan}udev${c_reset} to ${c_lcyan}settle${c_reset} if it did not already."
    [ -z "$OMIT_UDEV_SETTLE" ] && /sbin/udevadm settle
   evalret
  ;;

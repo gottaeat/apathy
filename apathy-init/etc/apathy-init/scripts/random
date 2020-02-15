@@ -3,13 +3,13 @@
 
 case "$1" in
  start)
-  ainitmes "intializing the kernel random number generator."
+  ainitmes "intializing the ${c_lcyan}kernel random number generator${c_reset}."
    [ -f /var/tmp/random-seed ] && cat /var/tmp/random-seed > /dev/urandom
    dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "saving the random seed to /var/tmp."
+  ainitmes "saving the ${c_lcyan}random seed${c_reset} to ${c_lcyan}/var/tmp${c_reset}."
    dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
   evalret
  ;;

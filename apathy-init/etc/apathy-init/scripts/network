@@ -30,32 +30,32 @@ case "${1}" in
  start)
   if [ "${IFACE}" = "wlan0" ]
    then
-    ainitmes "connecting wlan0 to wlan via wpa_supplicant" 
+    ainitmes "connecting ${c_lcyan}wlan0${c_reset} to ${c_lcyan}wlan${c_reset} via ${c_lcyan}wpa_supplicant${c_reset}." 
      wpa_supplicant -B -i "${IFACE}" -c "${WPACONFIG}" >/dev/null 2>&1
     evalret
   fi
 
-   ainitmes "adding ${IP} to ${IFACE}."
+   ainitmes "adding ${c_lcyan}${IP}${c_reset} to ${c_lcyan}${IFACE}${c_reset}."
     ip addr add "${IP}"/"${PREFIX}" broadcast "${BROADCAST}" dev "${IFACE}"
    evalret
 
-   ainitmes "bringing the interface up."
+   ainitmes "bringing ${c_lcyan}up${c_reset} the ${c_lcyan}interface${c_reset}."
     ip link set ${IFACE} up
    evalret
 
-   ainitmes "setting up the default gateway."
+   ainitmes "setting up the ${c_lcyan}default gateway${c_reset}."
     ip route add default via ${GATEWAY} dev ${IFACE}
    evalret
  ;;
  stop)
   if [ "${IFACE}" = "wlan0" ]
    then
-    ainitmes "killing wpa_supplicant."
+    ainitmes "killing ${c_lcyan}wpa_supplicant${c_reset}."
      kill -TERM $(pidof wpa_supplicant) >/dev/null 2>&1
     evalret
   fi
 
-  ainitmes "removing ${IP} from ${IFACE}."
+  ainitmes "removing ${c_lcyan}${IP}${c_reset} from ${c_lcyan}${IFACE}${c_reset}."
    ip addr del "${IP}"/"${PREFIX}" broadcast "${BROADCAST}" dev "${IFACE}"
   evalret
 
@@ -63,7 +63,7 @@ case "${1}" in
  # ip route del default >/dev/null 2>&1
  #evalret
 
-  ainitmes "bringing ${IFACE} down."
+  ainitmes "bringing ${c_lcyan}down${c_reset} the ${c_lcyan}interface${c_reset}."
    ip link set ${IFACE} down
   evalret
  ;;

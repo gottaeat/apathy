@@ -3,12 +3,12 @@
 
 case "$1" in
  start)
-  ainitmes "starting iptables."
+  ainitmes "starting ${c_lcyan}iptables${c_reset}."
    /mss/bin/sh /etc/apathy-init/config/iptables.conf
   evalret
  ;;
  lock)
-  ainitmes "locking system iptables."
+  ainitmes "${c_lcyan}locking${c_reset} system ${c_lcyan}iptables${c_reset}."
    iptables --policy INPUT   DROP     &&
    iptables --policy OUTPUT  DROP     &&
    iptables --policy FORWARD DROP     &&
@@ -21,7 +21,7 @@ case "$1" in
   evalret
  ;;
  clear|stop)
-  ainitmes "clearing system iptables."
+  ainitmes "${c_lcyan}clearing${c_reset} system ${c_lcyan}iptables${c_reset}."
    iptables --policy INPUT   ACCEPT
    iptables --policy OUTPUT  ACCEPT
    iptables --policy FORWARD ACCEPT

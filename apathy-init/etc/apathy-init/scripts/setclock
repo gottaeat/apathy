@@ -3,12 +3,12 @@
 
 case "$1" in
  start)
-  ainitmes "hardware clock to system."
+  ainitmes "setting the clock ${c_lcyan}(hardware to system)${c_reset}."
    hwclock --hctosys --utc >/dev/null
   evalret
  ;;
  stop)
-  ainitmes "system clock to hardware."
+  ainitmes "setting the clock ${c_lcyan}(system to hardware)${c_reset}"
    hwclock --systohc >/dev/null
   evalret
  ;;

@@ -3,12 +3,12 @@
 
 case "$1" in
  start)
-  ainitmes "activating all swap." 
+  ainitmes "activating ${c_lcyan}swap${c_reset}." 
    swapon -a >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "deactivating all swap."
+  ainitmes "deactivating ${c_lcyan}swap${c_reset}."
    swapoff -a >/dev/null 2>&1
   evalret
  ;;
