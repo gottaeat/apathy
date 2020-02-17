@@ -1,0 +1,10 @@
+/usr/bin/weechat
+/usr/bin/weechat-curses
+/usr/bin/weechat-headless
+
+/usr/include/weechat
+/usr/lib/pkgconfig/weechat.pc
+/usr/lib/weechat
+
+/usr/share/applications
+/usr/share/icons

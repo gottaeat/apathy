@@ -337,7 +337,7 @@
 [d] alpine	> imagemagick-7.0.9.16
 [d] alpine	>> lcms2-2.9
 
-[d] self	> weechat-2.7
+[r] self	> weechat-2.7
 [d] alpine	> feh-3.3
 
 [d] alpine	> mupdf-1.16.1
@@ -380,6 +380,7 @@
 [r] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
 [d] alpine	> samurai-1.0
 [d] self	> dwm-6.2
+[d] self	> irssi-1.2.2
 ```
 ```
 ### base mlfs packages
