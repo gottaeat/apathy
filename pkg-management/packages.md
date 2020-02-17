@@ -372,13 +372,14 @@
 [d] gentoo+arch	> lilo-24.2
 [d] arch	>> bin86-0.16.21		--> don't remember where the fuck i found the sauce from
 
-[d] alpine	> i3wm-gaps-4.17.1
-[d] alpine	>> yajl-2.1.0
-[d] alpine	>> xcb-util-xrm-1.3
-[d] alpine	>> startup-notification-0.12
+[r] alpine	> i3wm-gaps-4.17.1
+[r] alpine	>> yajl-2.1.0
+[r] alpine	>> xcb-util-xrm-1.3
+[r] alpine	>> startup-notification-0.12
 
-[d] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
+[r] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
 [d] alpine	> samurai-1.0
+[d] self	> dwm-6.2
 ```
 ```
 ### base mlfs packages
