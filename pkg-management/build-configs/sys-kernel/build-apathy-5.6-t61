@@ -22,7 +22,7 @@ localver="5.6-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALV
 
 # c >> functions
 apply_alfredchen(){
- _alpatches="0001-bmq-v5.5-r0.patch"
+ _alpatches="0001-bmq_v5.5-r1.patch"
 
  for pp in $_alpatches
   do
@@ -33,12 +33,43 @@ apply_alfredchen(){
 }
 
 apply_bfq(){
- _bfqpatches=""
+ _bfqpatches="0001-DEBUG-add-logs-and-BUG_ONs.patch
+              0002-do-not-plug-I-O-for-bfq_queues-with-no-pro.patch
+              0003-DEBUG-check-proc-refs-in-case-of-requeue.patch
+              0004-do-not-insert-oom-queue-into-position-tree.patch
+              0005-DEBUG-fix-check-on-oom-in-split-add-more-c.patch
+              0006-get-extra-ref-to-prevent-a-queue-from-bein.patch
+              0007-DEBUG-check-that-an-entity-on-a-st-is-not-.patch
+              0008-DEBUG-init_entity-should-actually-be-invok.patch
+              0009-extend-incomplete-name-of-field-on_st.patch
+              0010-remove-ifdefs-from-around-gets-puts-of-bfq.patch
+              0011-get-a-ref-to-a-group-when-adding-it-to-a-s.patch
+              0012-clarify-the-goal-of-bfq_split_bfqq.patch
+              0013-blkcg-Make-bfq-disable-iocost-when-enabled.patch
+              0014-elevator-set-default-scheduler-to-bfq-for-blk-mq.patch
+              0015-block-Set-bfq-dev-instead-of-bfq.patch"
 
  for pp in $_bfqpatches
   do
    aprint_patch "applying" "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/bfq-dev/${pp} >>/tmp/kernel-build.log 2>&1
+   evalretkill
+  done
+}
+
+apply_bfq_rev(){
+ _bfqrevpatches="0001-clarify-the-goal-of-bfq_split_bfqq.patch
+                 0002-get-a-ref-to-a-group-when-adding-it.patch
+                 0003-remove-ifdefs-from-around-gets-puts.patch
+                 0004-extend-incomplete-name-of-field-on_.patch
+                 0005-get-extra-ref-to-prevent-a-queue-fr.patch
+                 0006-do-not-insert-oom-queue-into-positi.patch
+                 0007-do-not-plug-I-O-for-bfq_queues-with.patch"
+
+ for pp in $_bfqrevpatches
+  do
+   aprint_patch "applying" "${pp}"
+   patch -p1 < "${patchdir}"/apathy/5.6/bfq-revert/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
 }
@@ -59,7 +90,10 @@ apply_block(){
 apply_misc(){
  _miscpatches="0001-cpu-family-specific-optimization.patch
                0002-make-O3-always-available.patch
-               0003-ohgodohfuck-panic.patch"
+               0003-LL-kconfig-add-750Hz-timer-interrupt-kernel-config-o.patch
+               0004-sched-core-nr_migrate-256-increases-number-of-tasks-.patch
+               0005-mm-set-2048-for-address_space-level-file-read-ahead-.patch
+               0006-ohgodohfuck-panic.patch"
 
  for pp in $_miscpatches
   do
@@ -129,8 +163,10 @@ evalretkill
 aprint_nc
 aprint "applying the alfredchen patches."
 apply_alfredchen
-#aprint "applying the bfq-dev (lucjan) patches."
-#apply_bfq
+aprint "applying the bfq revert patches."
+apply_bfq_rev
+aprint "applying the bfq-dev (lucjan) patches."
+apply_bfq
 aprint "applying the block patches."
 apply_block
 aprint "applying the misc patches."
