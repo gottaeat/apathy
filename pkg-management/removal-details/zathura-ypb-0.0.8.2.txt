@@ -1,0 +1,4 @@
+/usr/bin/zat
+/usr/bin/zat.bms
+
+/usr/share/man

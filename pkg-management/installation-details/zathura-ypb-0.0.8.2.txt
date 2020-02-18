@@ -1,9 +1,0 @@
-
-/usr
-/usr/bin
-/usr/bin/zat
-/usr/bin/zat.bms
-/usr/share
-/usr/share/man
-/usr/share/man/man1
-/usr/share/man/man1/zat.1

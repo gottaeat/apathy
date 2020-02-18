@@ -382,8 +382,8 @@
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
 
-[d] arch-aur	> zathura-ypb-0.0.8.2
-[d] alpine	>> poppler-0.82.0
+[r] arch-aur	> zathura-ypb-0.0.8.2
+[r] alpine	>> poppler-0.82.0
 ```
 ```
 ### base mlfs packages
