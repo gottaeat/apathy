@@ -340,7 +340,7 @@
 [r] self	> weechat-2.7
 [d] alpine	> feh-3.3
 
-[d] alpine	> mupdf-1.16.1
+[r] alpine	> mupdf-1.16.1
 [d] alpine	>> jbig2dec-0.17		--> w/o --without-libpng
 
 [d] alpine	> gpgme-1.13.1
@@ -381,6 +381,9 @@
 [d] alpine	> samurai-1.0
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
+
+[d] arch-aur	> zathura-ypb-0.0.8.2
+[d] alpine	>> poppler-0.82.0
 ```
 ```
 ### base mlfs packages

@@ -1,0 +1,15 @@
+/usr/bin/mupdf-gl
+/usr/bin/mupdf-x11
+/usr/bin/mupdf-x11-curl
+/usr/bin/muraster
+/usr/bin/mutool
+
+/usr/include/mupdf
+
+/usr/lib/libmupdf.so
+/usr/lib/libmupdf.so.0
+/usr/lib/libmupdfthird.so
+/usr/lib/libmupdfthird.so.0
+
+/usr/share/doc
+/usr/share/man
