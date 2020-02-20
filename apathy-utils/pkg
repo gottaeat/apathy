@@ -47,7 +47,7 @@ case $1 in
     awk '{print "\t\t\t- "$1}' "${localraw}"
   fi
  ;;
- stats)
+ stats|*)
   tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}')"
 
   if [ ! -f "${localmd}" ]
@@ -96,7 +96,4 @@ case $1 in
  aprint "${c_green}git repo status\t${c_blue}:${c_reset} ${gitstat}"
  aprint_nc
  ;;
- *)
-  aprint "invalid flag."
-  aprint_usage "{sync|convert|removed|instealled|stats}"
 esac
