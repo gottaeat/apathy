@@ -1,6 +1,13 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-init-funcs
 
+#    unmounting all mounted devices.
+#  w exited with 32, probably ran stripper.
+#  f mounting rootfs in ro mode.
+#    /etc/apathy-init/scripts/mountfs exited with 32.
+#    continue anyway? (y/n): n
+
+
 case "${1}" in
  start)
   ainitmes "remounting the ${c_lcyan}rootfs${c_reset} in ${c_lcyan}ro${c_reset} mode."
@@ -9,35 +16,39 @@ case "${1}" in
 
   mkdir -p /dev/pts
 
-  ainitmes "${c_lcyan}mounting${c_reset} the entries in ${c_lcyan}fstab${c_reset}."
+  ainitmes "mounting the entries in ${c_lcyan}fstab${c_reset}."
    mount --all --test-opts no_netdev >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "${c_lcyan}unmounting${c_reset} all ${c_lcyan}mounted devices${c_reset}."
+  ainitmes "unmounting all ${c_lcyan}mounted devices${c_reset}."
    losetup -D
    umount --all --detach-loop --read-only \
     --types notmpfs,nosysfs,nodevtmpfs,noproc,nodevpts \
     >/dev/null 2>&1
-  local exitval="${?}"
 
-  if [ ${exitval} -eq 0 ]
-   then
-    succprompt
-   else
-    if [ ${exitval} -eq 32 ]
-     then
-      succprompt
-      ainitmes "${0} exited with 32.\n"
-      ainitmes "user probably ran stripper.\n"
-     else
-      failprompt
-    fi
-  fi
+   umountexit1="${?}"
+
+   if [ "${umountexit1}" -eq "32" ]
+    then
+     warnprompt; ainitmes "exited with 32, probably ran ${c_lcyan}stripper${c_reset}."
+     warnprompt
+    else
+     exit "${umountexit1}"; evalret
+   fi
 
   ainitmes "mounting ${c_lcyan}rootfs${c_reset} in ${c_lcyan}ro${c_reset} mode."
    mount --options remount,ro /      >/dev/null 2>&1
-  evalret
+
+   umountexit2="${?}"
+
+   if [ "${umountexit2}" -eq "32" ]
+    then
+     warnprompt; ainitmes "exited with 32, probably ran ${c_lcyan}stripper${c_reset}."
+     warnprompt
+    else
+     exit "${umountexit2}"; evalret
+   fi
  ;;
  *)
   ainitusage "{start|stop}"
