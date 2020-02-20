@@ -8,7 +8,7 @@ fi
  
 case "$1" in
  start)
-  ainitmes "${c_lcyan}bringing up${c_reset} the ${c_lcyan}loopback interface${c_reset}."
+  ainitmes "bringing up the ${c_lcyan}loopback interface${c_reset}."
    ip addr add 127.0.0.1/8 label lo dev lo >/dev/null 2>&1
    ip link set lo up                       >/dev/null 2>&1
   evalret
@@ -18,7 +18,7 @@ case "$1" in
   evalret
  ;;
  stop)
-  ainitmes "${c_lcyan}bringing down${c_lcyan} the ${c_lcyan}loopback interface${c_lcyan}."
+  ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
    ip link set lo down                     >/dev/null 2>&1
   evalret
  ;;
