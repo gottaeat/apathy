@@ -19,7 +19,7 @@ case "$1" in
     else kill -TERM "${pid}"; evalret
    fi
 
-  ainitmes "stopping the system log daemon."
+  ainitmes "stopping the ${c_lcyan}system log daemon${c_reset}."
    local pid="$(pidof syslogd)"
    if [ -z "$pid" ]
     then failprompt; ainitmes "syslogd ${c_lcyan}is not running${c_reset}."; failprompt
