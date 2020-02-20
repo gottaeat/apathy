@@ -37,7 +37,7 @@ case "$answer" in
   aprint "playing twitch.tv/${c_lcyan}${selectedstream}${c_reset}."
 
   mpv "https://twitch.tv/${selectedstream}" \
-   --ytdl-format="${quality}" >/dev/null 2>&1
+   --ytdl-format="${quality}" >/dev/null 2>&1 &
  ;;
  n|N|no)
   aprint "exiting with 0."
