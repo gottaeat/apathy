@@ -11,7 +11,13 @@ case "$1" in
 
   ainitmes "sending ${c_lcyan}KILL${c_reset} to remaining processes."
    killall5 -9
-  evalret
+
+   sigkillexit="${?}"
+
+   if [ "${sigkillexit}" -eq 2 ]
+    then warnprompt; ainitmes "no processes were killed."; warnprompt
+    else exit "${sigkillexit}"; evalret
+   fi
  ;;
 *)
   ainitusage "{stop}"
