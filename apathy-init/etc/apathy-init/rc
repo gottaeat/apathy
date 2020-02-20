@@ -20,6 +20,7 @@ printlogo(){
  ainit_nc
 }
 
+
 welcome(){
  initver="$(/sbin/init --version | awk 'NR==1 {print tolower($1)$2,$4}')"
  curdate="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($1),$2,$3}')"
@@ -49,7 +50,7 @@ case "${1}" in
   $sdir/gpm		stop
   $sdir/mpd		stop
   $sdir/dnscrypt-proxy	stop
-  $sdir/ssh		stop
+ #$sdir/ssh		stop
   $sdir/alsa		stop
   $sdir/random		stop
   $sdir/network		stop
@@ -62,12 +63,10 @@ case "${1}" in
   halt -d -f -i -p
  ;;
  1)
-  ainitmes "runlevel 1 is gay."
-  warnprompt
+  ainitmes "runlevel 1 is disabled."; warnprompt
  ;;
  2)
-  ainitmes "runlevel 2 is gay."
-  warnprompt
+  ainitmes "runlevel 2 is disabled."; warnprompt
  ;;
  3)
   $sdir/sysklogd	start
@@ -77,15 +76,13 @@ case "${1}" in
   $sdir/gpm		start
   $sdir/mpd		start
   $sdir/dnscrypt-proxy	start
-  $sdir/ssh		start
+ #$sdir/ssh		start
  ;;
  4)
-  ainitmes "runlevel 4 is gay."
-  warnprompt
+  ainitmes "runlevel 4 is disabled."; warnprompt
  ;;
  5)
-  ainitmes "runlevel 5 is gay."
-  warnprompt
+  ainitmes "runlevel 5 is disabled."; warnprompt
  ;;
  6)
   goodbye
@@ -93,7 +90,7 @@ case "${1}" in
   $sdir/gpm		stop
   $sdir/mpd		stop
   $sdir/dnscrypt-proxy	stop
-  $sdir/ssh		stop
+ #$sdir/ssh		stop
   $sdir/alsa		stop
   $sdir/random		stop
   $sdir/network		stop
@@ -106,9 +103,10 @@ case "${1}" in
   reboot -d -f -i
  ;;
  S)
+  /bin/ash /etc/apathy-init/config/term-colors.conf
   welcome
 
-  $sdir/mountvirtfs	start
+  $sdir/mountvirtfs	start || /bin/ash
   $sdir/localnet	start
   $sdir/udev		start
   $sdir/swap		start
