@@ -9,7 +9,7 @@ aprint_ret "${c_red}
 aprint_nc
 
 dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
-read model < /sys/devices/virtual/dmi/id/product_name
+read model < /sys/devices/virtual/dmi/id/product_family
 read _host < /etc/hostname
 cpu=$(awk '/model name/ {print $5,$7}' /proc/cpuinfo | tail -1)
 freq=$(awk '/MHz/ {print int($4)"mhz"}' /proc/cpuinfo | tail -1)
