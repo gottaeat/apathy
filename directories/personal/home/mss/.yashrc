@@ -44,7 +44,7 @@ FCEDIT="/usr/bin/vim"
 
 # prompts
 [ $(id -u) -eq 0 ] && _user="\fb #" || _user="\fw $"
-YASH_PS1='${_user} \fb[${${${PWD:/~/\~}##*/}:-$PWD}]\fD: '
+YASH_PS1='${_user} \fc[${${${PWD:/~/\~}##*/}:-$PWD}]\fD: '
 YASH_PS1R=
 YASH_PS1S=
 YASH_PS2="\fc > \fD"
