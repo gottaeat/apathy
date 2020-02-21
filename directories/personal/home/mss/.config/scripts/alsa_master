@@ -1,0 +1,14 @@
+#!/mss/bin/sh
+master_data=$(amixer -D default get Master | awk 'NR==5 {gsub("\\[",""); gsub("\\]",""); print}')
+
+[ "$(echo $master_data | awk '{print $6}')" = "off" ]     \
+ && alsa_master="muted"                                   \
+ || alsa_master="$(echo ${master_data} | awk '{print $4}')"
+
+echo "${alsa_master}"
+
+case $BLOCK_BUTTON in
+ 3) amixer set Master toggle;      pkill -RTMIN+1 i3blocks;;
+ 4) amixer set Master 3dB+ unmute; pkill -RTMIN+1 i3blocks;;
+ 5) amixer set Master 3dB- unmute; pkill -RTMIN+1 i3blocks;;
+esac
