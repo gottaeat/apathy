@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-sel=$(printf "apathy-browser\nkill-i3\nreboot\npoweroff" | dmenu -b -p "meh:")
+sel=$(printf "apathy-browser\nkill-dwm\nreboot\npoweroff" | dmenu -b -p "meh:")
 
 case "$sel" in
  poweroff)
@@ -10,9 +10,9 @@ case "$sel" in
   kill -KILL $(pidof apathy-browser)
   doas -- init 6
  ;;
- kill-i3)
+ kill-dwm)
   kill -KILL $(pidof apathy-browser)
-  kill -TERM $(pidof i3)
+  kill -TERM -$(ps -o pgid $(pidof dwm) | awk 'NR==2 {gsub(" ",""); print}')
  ;;
  apathy-browser)
   apathy-browser
