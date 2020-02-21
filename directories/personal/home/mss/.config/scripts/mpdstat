@@ -17,12 +17,12 @@ if [ ! -z $(pidof mpd) ]
     if [ -z "${artist_pre}" ] || [ -z "${song_pre}" ]
      then
       song=$(mpc --format "[%file%]" current | sed 's/unorganized\///;s/.mp3//;s/.flac//;s/.wav//' \
-       | awk -v len=35 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+       | awk -v len=25 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
      else
       artist=$(echo "${artist_pre}" \
        | awk -v len=20 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
       art=$(echo "${song_pre}" \
-       | awk -v len=25 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
+       | awk -v len=15 '{ if (length($0) > len) print substr($0, 1, len-3) "..."; else print; }')
       song="${artist} - ${art}"
     fi
 
@@ -44,7 +44,7 @@ if [ ! -z $(pidof mpd) ]
      then dur="$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))"
      else dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
     fi
-    
+
     # e >> get play/pause state and export final state
     plpa="$(echo "${mpc_status}" | awk 'NR==2 {print $1}')"
   
