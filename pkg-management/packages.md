@@ -384,6 +384,8 @@
 
 [r] arch-aur	> zathura-ypb-0.0.8.2
 [r] alpine	>> poppler-0.82.0
+
+[d] self	> mawk-1.3.4-20200120
 ```
 ```
 ### base mlfs packages
@@ -408,7 +410,7 @@
 [d] mlfs	> file-5.37
 [d] mlfs	> findutils-4.6.0
 [d] mlfs	> flex-2.6.4
-[d] mlfs	> gawk-5.0.1
+[r] mlfs	> gawk-5.0.1
 [d] mlfs	> gcc-9.2.1-20200215
 [d] mlfs	> gdbm-1.18.1
 [d] mlfs	> gettext-0.20.1

@@ -255,6 +255,7 @@ bin86-0.16.21
 samurai-1.0
 dwm-6.2
 irssi-1.2.2
+mawk-1.3.4-20200120
 acl-2.2.53
 argp-standalone-1.3
 attr-2.4.48
@@ -276,7 +277,6 @@ expat-2.2.8
 file-5.37
 findutils-4.6.0
 flex-2.6.4
-gawk-5.0.1
 gcc-9.2.1-20200215
 gdbm-1.18.1
 gettext-0.20.1

@@ -1,0 +1,11 @@
+/usr/bin/gawk
+/usr/bin/gawk-5.0.1
+
+/usr/include/gawkapi.h
+/usr/lib/gawk
+/usr/libexec/awk
+/usr/share/awk
+
+/usr/share/info
+/usr/share/locale
+/usr/share/man
