@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/mss/bin/sh
 
 . /mss/bin/apathy-funcs
 
@@ -20,11 +20,11 @@ export repo="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"	
 export srcdir=/mss/work/UXP							&&
 export _instdir="${srcdir}/KEK"							&&
 export pkgname="apathy-browser musl (palemoon)"					&&
-export pkgver=28.8.2.1								&&
+export pkgver=28.8.3								&&
 export _pmappdir=/usr/lib/apathy-browser-${pkgver}				&&
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"					&&
 export MOZCONFIG="$srcdir/mozconfig"						&&
-export CFLAGS="-march=native -O2 -Wno-format-overflow"				&&
+export CFLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"		&&
 export CXXFLAGS="${CFLAGS}"							&&
 export LDFLAGS="-Wl,-rpath,${_pmappdir}"
 evalretkill
