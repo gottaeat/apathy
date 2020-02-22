@@ -79,7 +79,7 @@ case $1 in
     gitdf_pre=$(diff -u "${localraw}" "${reporaw}"                       \
                  | awk '/^---/   {print "- local"" --->",$3"\t"$4};      \
                         /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"}; \
-                        /^+[a-z,0-9]/;                                   \
+                        /^\+[a-z,0-9]/;                                  \
                         /^-[a-z,0-9]/')
     
     if [ -z "$gitdf_pre" ]
