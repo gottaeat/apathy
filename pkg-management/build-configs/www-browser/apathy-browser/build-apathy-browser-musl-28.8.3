@@ -59,17 +59,12 @@ aprint_ret "changing about-background.png"
 cp "${repo}"/files/about-background.png "${srcdir}"/application/palemoon/branding/unofficial/content
 evalretkill
 
-# d6 >> apply patch from bmlfs
-#aprint_ret "applying font rendering fix on x86 machines."
-#patch -Np0 < "${repo}"/0002-i686-fix.patch >> /tmp/apathy-browser-build.log 2>&1
-#evalretkill
-
-# d7 >> run sed from arch
+# d6 >> run sed from arch
 aprint_ret "running sed for locale fix."
 sed -i 's#xlocale#locale#' "${srcdir}"/intl/icu/source/i18n/digitlst.cpp
 evalretkill
 
-# d8 >> print mach vars
+# d7 >> print mach vars
 aprint_nc
 aprint_pvars "srcdir\t"			"${srcdir}"
 aprint_pvars "pkgname\t"		"${pkgname}"
@@ -82,24 +77,43 @@ aprint_pvars "cxxflags\t"		"${CXXFLAGS}"
 aprint_pvars "ldflags\t"		"${LDFLAGS}"
 aprint_nc
 
-# d9 >> check everything and ask to run mach
+# d8 >> check everything and ask to run mach
 aprint_ask "ready to run mach, shall we continue? (y/n): "
 
 read answerbuild
  if [ "$answerbuild" != "${answerbuild#[Yy]}" ]
   then
    vi mozconfig
-   aprint "running mach."
-   aprint "tail -f /tmp/apathy-browser-build.log to view progress."
+   aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+   aprint_ret "running mach, do tail -f /tmp/apathy-browser-build.log to view."
+   datebefore=$(date +%s)
+
+   CC=x86_64-apathy-linux-musl-gcc  \
+   CXX=x86_64-apathy-linux-musl-g++ \
+   /bin/busybox time                \
+   nice --adjustment=10             \
    python2.7 mach build >> /tmp/apathy-browser-build.log 2>&1
+   evalretkill
+
+   dateafter=$(date +%s)
+   timespent=$(($dateafter - $datebefore))
+   humantime=$(printf "%dd %dh %dm\n"                    \
+             "$(echo "${timespent}/86400"        | bc)"  \
+             "$(echo "(${timespent}%86400)/3600" | bc)"  \
+             "$(echo "(${timespent}%3600)/60"    | bc)")
+
+   aprint_nc
+   aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
   else
-   aprint "not running mach."
+   aprint "not running make."
+   aprint_nc
    exit 0
  fi
 
-# d10 >> ask to install build
+
+# d9 >> ask to install build
 aprint_nc
-aprint_ask "build complete, shall we run the installer? (y/n): "
+aprint_ask "shall we run the installer? (y/n): "
 
 read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
