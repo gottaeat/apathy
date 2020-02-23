@@ -235,7 +235,7 @@ jbig2dec-0.17
 gpgme-1.13.1
 mutt-1.13.3
 lzip-1.21
-apathy-browser-28.8.2.1
+apathy-browser-28.8.3
 zip-30
 gcompat-0.4.0
 libucontext-0.1.3
