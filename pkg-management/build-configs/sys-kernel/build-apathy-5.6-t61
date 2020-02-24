@@ -244,7 +244,7 @@ if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
   evalretkill
 
   aprint_ret "running ${c_lcyan}lilo${c_reset}."
-   doas -- lilo
+   doas -- lilo >/dev/null 2>&1
   evalret
  else
   aprint "not installing the built kernel."
