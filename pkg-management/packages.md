@@ -386,6 +386,7 @@
 [r] alpine	>> poppler-0.82.0
 
 [d] self	> mawk-1.3.4-20200120
+[d] self	> star-1.6
 ```
 ```
 ### base mlfs packages
@@ -453,7 +454,7 @@
 [d] mlfs	> shadow-4.7
 [d] mlfs	> sysklogd-1.5.1
 [d] mlfs	> sysvinit-2.96
-[d] mlfs	> tar-1.32
+[r] mlfs	> tar-1.32
 [d] mlfs	> texinfo-6.6
 [d] mlfs	> tzdb-2019c
 [d] self	> util-linux-2.35
