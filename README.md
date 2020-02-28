@@ -23,6 +23,8 @@ once the base is done, progressing further can be accomplished by reading packag
 ```
 toolchain:
  * gcc 9.2.1-20200222 (c,c++), argp-standalone 1.3
+ * llvm-9.0.1, clang-9.0.1
+ * rustc-1,41,0
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
@@ -39,6 +41,7 @@ languages:
  * python 2.7.17, 3.8.0
  * lua 5.2.4
  * perl 5.30.1
+ * node.js-13.9.0
 
 video/audio:
  * xorg (x11r7), mesa 20.0.0
@@ -52,8 +55,8 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1439.02mib
- > local package count  : 328
+ > total partition size : 1998.68mib
+ > local package count  : 332
  > removed packages     : 16
 ```
 
