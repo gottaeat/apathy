@@ -391,6 +391,7 @@
 [d] self	> clang-9.0.1
 [d] self	> rustc-1.41.0
 [d] self	> nodejs-13.9.0
+[d] self	> gtk+-3.24.14
 ```
 ```
 ### base mlfs packages
