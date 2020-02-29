@@ -386,7 +386,7 @@
 [r] alpine	>> poppler-0.82.0
 
 [d] self	> mawk-1.3.4-20200120
-[d] self	> star-1.6
+[r] self	> star-1.6
 [d] self	> llvm-9.0.1
 [d] self	> clang-9.0.1
 [d] self	> rustc-1.41.0
@@ -459,7 +459,7 @@
 [d] mlfs	> shadow-4.7
 [d] mlfs	> sysklogd-1.5.1
 [d] mlfs	> sysvinit-2.96
-[r] mlfs	> tar-1.32
+[d] mlfs	> tar-1.32
 [d] mlfs	> texinfo-6.6
 [d] mlfs	> tzdb-2019c
 [d] self	> util-linux-2.35
