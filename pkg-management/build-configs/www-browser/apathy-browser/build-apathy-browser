@@ -1,0 +1,137 @@
+#!/mss/bin/sh
+# apathy-musl 1.2 - mss@waifu.club
+# build script for pale moon, version 2
+
+. /mss/bin/apathy-funcs
+
+# a1 >> check if variables are set
+[ -z $1 ] && aprint_fail "no tarball specified as \$1, exiting." && exit 1
+[ -z $2 ] && aprint_fail "no niceness specified as \$2, exiting." && exit 1
+
+# a2 >> check if $1 exists in sauces
+saucedir="/mss/work/sauces"
+[ ! -f "${saucedir}/${1}" ] \
+ && aprint_fail "${c_lcyan}${1}${c_reset} does not exist in saucedir, exiting" \
+ && exit 1
+
+# b1 >> set the vars
+logdir="/mss/work/logs"
+repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
+srcdir="$(echo ${PWD}/${1} | sed 's/.tar.[xg]z//' )"
+instdir="${srcdir}/KEK"
+
+pmver="$(echo ${1} | sed 's/UXP-PM//;s/_Release.tar.gz//')"
+redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
+pmappdir="/usr/lib/apathy-browser-${pmver}"
+
+export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
+export MOZCONFIG="$srcdir/mozconfig"
+export CFLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"
+export CXXFLAGS="${CFLAGS}"
+export LDFLAGS="-Wl,-rpath=${pmappdir}"
+export LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
+export MOZ_LINK_FLAGS="${LDFLAGS}"
+
+# b2 >> set and check if niceness is above 0
+niceness="${2}"
+[ "$niceness" -lt 0 ] && aprint_fail "niceness below 0 requires root access." && exit 1
+
+# c0 >> print vars
+aprint_nc
+lsdetail "pm version" "${pmver}"
+lsdetail "niceness"   "${niceness}"
+lsdetail "cflags"     "${CFLAGS}"
+lsdetail "cxxflags"   "${CXXFLAGS}"
+lsdetail "ldflags"    "$(echo ${LDFLAGS} | fold -w 52)"
+aprint_nc
+
+# c1 >> extarct the tarball
+aprint_ret "extracting ${c_lcyan}${1}${c_reset}."
+ tar xf "${saucedir}"/"${1}" > "$redirect_to" 2>&1
+evalretkill
+
+# c2 >> cd to work
+aprint_ret "changing the active directory to ${c_lcyan}${srcdir}${c_reset}."
+ cd "${srcdir}"
+evalretkill
+
+# c3 >> copy mozconfig
+aprint_ret "copying ${c_lcyan}mozconfig${c_reset}."
+ cp -v "${repodir}"/apathy-musl-mozconfig.config "${srcdir}"/mozconfig \
+  >> "$redirect_to" 2>&1
+evalretkill
+
+# c4 >> apply branding
+aprint_ret "applying the ${c_lcyan}apathy-browser branding${c_reset} patch."
+ patch -p1 < "${repodir}"/apathy-browser-branding.patch \
+  >> "$redirect_to" 2>&1
+evalretkill
+
+# c5 >> change about-background.png
+aprint_ret "changing ${c_lcyan}about-background.png${c_reset}."
+ cp -v "${repodir}"/files/about-background.png \
+  "${srcdir}"/application/palemoon/branding/unofficial/content \
+  >> "$redirect_to" 2>&1
+evalretkill
+
+# c6 >> run sed from arch
+aprint_ret "running sed for ${c_lcyan}locale fix${c_reset}."
+ sed -i 's#xlocale#locale#' "${srcdir}"/intl/icu/source/i18n/digitlst.cpp
+evalretkill
+
+
+# d1 >> check everything and ask to run mach
+aprint_nc
+aprint_ask "ready to run mach, shall we continue? (y/n): "
+
+read answerbuild
+ if [ "$answerbuild" != "${answerbuild#[Yy]}" ]
+  then
+   vi mozconfig
+   aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+   aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
+   aprint_ret "running mach."
+   datebefore=$(date +%s)
+
+    CC=x86_64-apathy-linux-musl-gcc  \
+    CXX=x86_64-apathy-linux-musl-g++ \
+    /bin/busybox time                \
+    nice --adjustment=${niceness}    \
+    python2.7 ./mach build >> "$redirect_to" 2>&1
+   evalretkill
+
+   dateafter=$(date +%s)
+   timespent=$(($dateafter - $datebefore))
+   humantime=$(printf "%dd %dh %dm\n"                    \
+             "$(echo "${timespent}/86400"        | bc)"  \
+             "$(echo "(${timespent}%86400)/3600" | bc)"  \
+             "$(echo "(${timespent}%3600)/60"    | bc)")
+
+   aprint_nc
+   aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
+  else
+   aprint "not running make."
+   aprint_nc
+   exit 0
+ fi
+
+# d2 >> ask to install build
+aprint_nc
+aprint_ask "shall we run the installer? (y/n): "
+
+read answerinst
+ if [ "$answerinst" != "${answerinst#[Yy]}" ]
+  then
+   aprint_ret "installing to ${c_lcyan}${_instdir}${c_reset}."
+    DESTDIR="${_instdir}" python2.7 mach install >> "$redirect_to" 2>&1 
+   evalret
+
+   aprint_ret "removing unnecessary directories."
+    rm -rf ${_instdir}/usr/include                              &&
+    rm -rf ${_instdir}/usr/lib/apathy-browser-devel-${pkgver}   &&
+    rm -rf ${_instdir}/usr/share
+   evalret
+  else
+   aprint "not installing."
+   exit 0
+ fi
