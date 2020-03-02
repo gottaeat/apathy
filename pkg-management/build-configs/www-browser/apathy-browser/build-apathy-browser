@@ -122,14 +122,14 @@ aprint_ask "shall we run the installer? (y/n): "
 read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
   then
-   aprint_ret "installing to ${c_lcyan}${_instdir}${c_reset}."
-    DESTDIR="${_instdir}" python2.7 mach install >> "$redirect_to" 2>&1 
+   aprint_ret "installing to ${c_lcyan}${instdir}${c_reset}."
+    DESTDIR="${instdir}" python2.7 mach install >> "$redirect_to" 2>&1 
    evalret
 
    aprint_ret "removing unnecessary directories."
-    rm -rf ${_instdir}/usr/include                              &&
-    rm -rf ${_instdir}/usr/lib/apathy-browser-devel-${pkgver}   &&
-    rm -rf ${_instdir}/usr/share
+    rm -rf ${instdir}/usr/include                              &&
+    rm -rf ${instdir}/usr/lib/apathy-browser-devel-${pmver}    &&
+    rm -rf ${instdir}/usr/share
    evalret
   else
    aprint "not installing."
