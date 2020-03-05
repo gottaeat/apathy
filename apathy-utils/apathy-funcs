@@ -34,7 +34,7 @@ aprint_nc(){    printf "\n"; }
 aprint_succ(){  printf "${sbefore}${@}"; printf "${cur_zero}${succ}${col}${succ_end}\n"; return 0; }
 aprint_fail(){  printf "${sbefore}${@}"; printf "${cur_zero}${fail}${col}${fail_end}\n"; return 0; }
 
-aprint_patch(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}.";  return 0; }
+aprint_patch(){ printf "${c_lcyan} p ${c_green}${@}${c_reset}."; return 0; }
 aprint_pvars(){ aprint_ret "${c_blue}${1}\t${c_reset}:${c_lcyan} ${2}${c_reset}\n"; return 0; }
 
 aprint_usage(){ aprint "${c_green}usage${c_reset}: ${@}"; }

@@ -26,7 +26,7 @@ apply_alfredchen(){
 
  for pp in $_alpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/alfredchen/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
@@ -51,7 +51,7 @@ apply_bfq(){
 
  for pp in $_bfqpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/bfq-dev/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
@@ -68,7 +68,7 @@ apply_bfq_rev(){
 
  for pp in $_bfqrevpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/bfq-revert/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
@@ -81,7 +81,7 @@ apply_block(){
 
  for pp in $_blockpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/block/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
@@ -97,7 +97,7 @@ apply_misc(){
 
  for pp in $_miscpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/misc/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
@@ -122,7 +122,7 @@ apply_clearlinux(){
 
  for pp in $_cpatches
   do
-   aprint_patch "applying" "${pp}"
+   aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/clearlinux/${pp} >>/tmp/kernel-build.log 2>&1
    evalretkill
   done
