@@ -36,7 +36,7 @@ core userland:
  * libressl-3.0.2
 
 languages:
- * python 2.7.17, 3.8.0
+ * python 2.7.17, 3.8.1
  * lua 5.2.4
  * perl 5.30.1
 
