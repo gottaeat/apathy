@@ -302,7 +302,7 @@ make-4.3
 meson-0.51.2
 mpc-1.1.0
 mpfr-4.0.2
-musl-1.1.24
+musl-1.2.0
 musl-fts-1.2.7
 musl-obstack-1.1
 ncurses-6.1

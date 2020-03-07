@@ -25,7 +25,7 @@ toolchain:
  * gcc 9.2.1-20200229 (c,c++), argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
- * musl libc 1.1.24, musl-fts 1.2.7, musl-obstack 1.1
+ * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
  * gcompat 0.4.0 + libucontext 0.1.3
 
 core userland:
