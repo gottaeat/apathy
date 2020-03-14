@@ -1,0 +1,51 @@
+From f1e30ce95bce854e4be76d8ed111adbe1834adde Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 Mar 2020 07:00:39 +0300
+Subject: [PATCH 2/2] remove pocket.
+
+---
+ browser/base/content/browser-context.inc | 8 --------
+ browser/components/moz.build             | 1 -
+ 2 files changed, 9 deletions(-)
+
+diff --git a/browser/base/content/browser-context.inc b/browser/base/content/browser-context.inc
+index 302812293e..a7d9723d3e 100644
+--- a/browser/base/content/browser-context.inc
++++ b/browser/base/content/browser-context.inc
+@@ -90,10 +90,6 @@
+                 label="&saveLinkCmd.label;"
+                 accesskey="&saveLinkCmd.accesskey;"
+                 oncommand="gContextMenu.saveLink();"/>
+-      <menuitem id="context-savelinktopocket"
+-                label="&saveLinkToPocketCmd.label;"
+-                accesskey="&saveLinkToPocketCmd.accesskey;"
+-                oncommand= "Pocket.savePage(gContextMenu.browser, gContextMenu.linkURL);"/>
+       <menuitem id="context-copyemail"
+                 label="&copyEmailCmd.label;"
+                 accesskey="&copyEmailCmd.accesskey;"
+@@ -268,10 +264,6 @@
+                 label="&savePageCmd.label;"
+                 accesskey="&savePageCmd.accesskey2;"
+                 oncommand="gContextMenu.savePageAs();"/>
+-      <menuitem id="context-pocket"
+-                label="&saveToPocketCmd.label;"
+-                accesskey="&saveToPocketCmd.accesskey;"
+-                oncommand="Pocket.savePage(gContextMenu.browser, gContextMenu.browser.currentURI.spec, gContextMenu.browser.contentTitle);"/>
+       <menuseparator id="context-sep-sendpagetodevice" class="sync-ui-item"
+                      hidden="true"/>
+       <menu id="context-sendpagetodevice"
+diff --git a/browser/components/moz.build b/browser/components/moz.build
+index 674be6fb7e..3f1694b328 100644
+--- a/browser/components/moz.build
++++ b/browser/components/moz.build
+@@ -44,7 +44,6 @@ DIRS += [
+     'newtab',
+     'originattributes',
+     'places',
+-    'pocket',
+     'preferences',
+     'privatebrowsing',
+     'protocolhandler',
+-- 
+2.23.0
+

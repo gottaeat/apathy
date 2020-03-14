@@ -1,0 +1,198 @@
+From 222388a51b16ba2b5378f42bd52247b4689611f2 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 Mar 2020 17:25:34 +0300
+Subject: [PATCH] add apathy browser branding.
+
+---
+ browser/branding/unofficial/branding.nsi      | 20 +++---
+ browser/branding/unofficial/configure.sh      |  2 +-
+ .../unofficial/locales/en-US/brand.dtd        | 10 +--
+ .../unofficial/locales/en-US/brand.ftl        | 10 +--
+ .../unofficial/locales/en-US/brand.properties | 10 +--
+ .../unofficial/pref/firefox-branding.js       | 65 +++++++++++--------
+ 6 files changed, 65 insertions(+), 52 deletions(-)
+
+diff --git a/browser/branding/unofficial/branding.nsi b/browser/branding/unofficial/branding.nsi
+index 91170d4b3c..7a3f2eb1db 100644
+--- a/browser/branding/unofficial/branding.nsi
++++ b/browser/branding/unofficial/branding.nsi
+@@ -8,16 +8,16 @@
+ 
+ # BrandFullNameInternal is used for some registry and file system values
+ # instead of BrandFullName and typically should not be modified.
+-!define BrandFullNameInternal "Mozilla Developer Preview"
+-!define BrandFullName         "Mozilla Developer Preview"
+-!define CompanyName           "mozilla.org"
+-!define URLInfoAbout          "https://www.mozilla.org"
+-!define HelpLink              "https://support.mozilla.org"
+-
+-!define URLStubDownloadX86 "https://download.mozilla.org/?os=win&lang=${AB_CD}&product=firefox-latest"
+-!define URLStubDownloadAMD64 "https://download.mozilla.org/?os=win64&lang=${AB_CD}&product=firefox-latest"
+-!define URLStubDownloadAArch64 "https://download.mozilla.org/?os=win64-aarch64&lang=${AB_CD}&product=firefox-latest"
+-!define URLManualDownload "https://www.mozilla.org/${AB_CD}/firefox/installer-help/?channel=release&installer_lang=${AB_CD}"
++!define BrandFullNameInternal "apathy browser"
++!define BrandFullName         "apathy browser"
++!define CompanyName           "apathy"
++!define URLInfoAbout          "https://github.com/mssx86/apathy"
++!define HelpLink              "https://github.com/mssx86/apathy"
++
++!define URLStubDownloadX86 "https://github.com/mssx86/apathy"
++!define URLStubDownloadAMD64 "https://github.com/mssx86/apathy"
++!define URLStubDownloadAArch64 "https://github.com/mssx86/apathy"
++!define URLManualDownload "https://github.com/mssx86/apathy"
+ !define URLSystemRequirements "https://www.mozilla.org/firefox/system-requirements/"
+ !define Channel "unofficial"
+ 
+diff --git a/browser/branding/unofficial/configure.sh b/browser/branding/unofficial/configure.sh
+index edd3bd3e86..42b40159c9 100644
+--- a/browser/branding/unofficial/configure.sh
++++ b/browser/branding/unofficial/configure.sh
+@@ -2,4 +2,4 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-MOZ_APP_DISPLAYNAME=Nightly
++MOZ_APP_DISPLAYNAME=apathy browser
+diff --git a/browser/branding/unofficial/locales/en-US/brand.dtd b/browser/branding/unofficial/locales/en-US/brand.dtd
+index 1710be75ba..1408f667e9 100644
+--- a/browser/branding/unofficial/locales/en-US/brand.dtd
++++ b/browser/branding/unofficial/locales/en-US/brand.dtd
+@@ -2,12 +2,12 @@
+    - License, v. 2.0. If a copy of the MPL was not distributed with this
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ 
+-<!ENTITY  brandShorterName      "Nightly">
+-<!ENTITY  brandShortName        "Nightly">
+-<!ENTITY  brandFullName         "Nightly">
++<!ENTITY  brandShorterName      "apathy browser">
++<!ENTITY  brandShortName        "apathy browser">
++<!ENTITY  brandFullName         "apathy browser">
+ <!-- LOCALIZATION NOTE (brandProductName):
+    This brand name can be used in messages where the product name needs to
+    remain unchanged across different versions (Nightly, Beta, etc.). -->
+-<!ENTITY  brandProductName      "Firefox">
+-<!ENTITY  vendorShortName       "Mozilla">
++<!ENTITY  brandProductName      "apathy browser">
++<!ENTITY  vendorShortName       "apathy">
+ <!ENTITY  trademarkInfo.part1   " ">
+diff --git a/browser/branding/unofficial/locales/en-US/brand.ftl b/browser/branding/unofficial/locales/en-US/brand.ftl
+index ef268375fe..514babb185 100644
+--- a/browser/branding/unofficial/locales/en-US/brand.ftl
++++ b/browser/branding/unofficial/locales/en-US/brand.ftl
+@@ -12,11 +12,11 @@
+ ##
+ ## Reference: https://www.mozilla.org/styleguide/communications/translation/
+ 
+--brand-shorter-name = Nightly
+--brand-short-name = Nightly
+--brand-full-name = Nightly
++-brand-shorter-name = apathy browser
++-brand-short-name = apathy browser
++-brand-full-name = apathy browser
+ # This brand name can be used in messages where the product name needs to
+ # remain unchanged across different versions (Nightly, Beta, etc.).
+--brand-product-name = Firefox
+--vendor-short-name = Mozilla
++-brand-product-name = apathy browser
++-vendor-short-name = apathy
+ trademarkInfo = { " " }
+diff --git a/browser/branding/unofficial/locales/en-US/brand.properties b/browser/branding/unofficial/locales/en-US/brand.properties
+index 7c86db3f43..9584067a12 100644
+--- a/browser/branding/unofficial/locales/en-US/brand.properties
++++ b/browser/branding/unofficial/locales/en-US/brand.properties
+@@ -2,13 +2,13 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-brandShorterName=Nightly
+-brandShortName=Nightly
+-brandFullName=Nightly
++brandShorterName=apathy browser
++brandShortName=apathy browser
++brandFullName=apathy browser
+ # LOCALIZATION NOTE(brandProductName):
+ # This brand name can be used in messages where the product name needs to
+ # remain unchanged across different versions (Nightly, Beta, etc.).
+-brandProductName=Firefox
+-vendorShortName=Mozilla
++brandProductName=apathy browser
++vendorShortName=apathy
+ 
+ syncBrandShortName=Sync
+diff --git a/browser/branding/unofficial/pref/firefox-branding.js b/browser/branding/unofficial/pref/firefox-branding.js
+index 038f4565c0..ac8367d957 100644
+--- a/browser/branding/unofficial/pref/firefox-branding.js
++++ b/browser/branding/unofficial/pref/firefox-branding.js
+@@ -1,30 +1,43 @@
+-/* This Source Code Form is subject to the terms of the Mozilla Public
+- * License, v. 2.0. If a copy of the MPL was not distributed with this
+- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++// url overrides
++pref("browser.startup.homepage" , "https://mss.neocities.org/startpage");
++pref("browser.startup.homepage", "https://mss.neocities.org/startpage");
++pref("startup.homepage_override_url", "https://mss.neocities.org/startpage");
++pref("startup.homepage_welcome_url", "https://mss.neocities.org/startpage");
+ 
+-pref("startup.homepage_override_url", "");
+-pref("startup.homepage_welcome_url", "");
+-pref("startup.homepage_welcome_url.additional", "");
+-// The time interval between checks for a new version (in seconds)
+-pref("app.update.interval", 86400); // 24 hours
+-// Give the user x seconds to react before showing the big UI. default=24 hours
+-pref("app.update.promptWaitTime", 86400);
+-// URL user can browse to manually if for some reason all update installation
+-// attempts fail.
+-pref("app.update.url.manual", "https://nightly.mozilla.org");
+-// A default value for the "More information about this update" link
+-// supplied in the "An update is available" page of the update wizard.
+-pref("app.update.url.details", "https://nightly.mozilla.org");
++pref("app.feedback.baseURL", "https://github.com/mssx86/apathy");
++pref("app.privacyURL", "https://github.com/mssx86/apathy/");
++pref("app.releaseNotesURL", "https://github.com/mssx86/apathy/");
++pref("app.support.baseURL", "https://github.com/mssx86/apathy");
++pref("app.support.inputURL", "https://github.com/mssx86/apathy");
++pref("app.vendorURL", "https://github.com/mssx86/apathy/");
+ 
+-// The number of days a binary is permitted to be old
+-// without checking for an update.  This assumes that
+-// app.update.checkInstallTime is true.
+-pref("app.update.checkInstallTime.days", 2);
++pref("startup.homepage_welcome_url.additional", "");
++pref("browser.customizemode.tip0.learnMoreUrl", "");
++pref("browser.uitour.url", "");
++pref("app.update.url.manual", "");
++pref("app.update.url.details", "");
+ 
+-// Give the user x seconds to reboot before showing a badge on the hamburger
+-// button. default=immediately
+-pref("app.update.badgeWaitTime", 0);
++// customization
++pref("accessibility.force_disabled", 1);
++pref("browser.aboutConfig.showWarning", false);
++pref("browser.display.background_color", "#2a2a2e");
++pref("browser.download.autohideButton", false);
++pref("browser.preferences.defaultPerformanceSettings.enabled", false);
++pref("browser.shell.checkDefaultBrowser", false);
++pref("browser.uidensity", 1); 
++pref("extensions.activeThemeID", "firefox-compact-dark@mozilla.org");
++pref("extensions.allowPrivateBrowsingByDefault", true);
++pref("findbar.highlightAll", true);
++pref("general.autoScroll", false);
++pref("general.smoothScroll", false);
++pref("reader.color_scheme", "dark");
++pref("toolkit.cosmeticAnimations.enabled", false);
++pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
++pref("ui.systemUsesDarkTheme", true);
+ 
+-// Number of usages of the web console or scratchpad.
+-// If this is less than 5, then pasting code into the web console or scratchpad is disabled
+-pref("devtools.selfxss.count", 5);
++// set ddg the default search engine
++pref("browser.search.defaultenginename", "DuckDuckGo");
++pref("browser.search.defaultenginename.US", "DuckDuckGo");
++pref("browser.search.order.1", "DuckDuckGo");
++pref("browser.search.order.2", "Google");
++pref("browser.search.order.US.1", "DuckDuckGo");
+-- 
+2.23.0
+

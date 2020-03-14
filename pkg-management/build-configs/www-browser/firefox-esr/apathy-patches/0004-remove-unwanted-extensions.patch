@@ -1,0 +1,26 @@
+From a77e8763d4da6bbcf94ffa0b5ecfae3b92b9d7f9 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 Mar 2020 17:32:31 +0300
+Subject: [PATCH] remove unwanted extensions.
+
+---
+ browser/extensions/moz.build | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
+index d82083e1c5..51c7f4caba 100644
+--- a/browser/extensions/moz.build
++++ b/browser/extensions/moz.build
+@@ -6,9 +6,5 @@
+ 
+ DIRS += [
+     'formautofill',
+-    'fxmonitor',
+     'pdfjs',
+-    'screenshots',
+-    'webcompat',
+-    'report-site-issue'
+ ]
+-- 
+2.23.0
+
