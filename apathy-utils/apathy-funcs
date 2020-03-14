@@ -1,6 +1,7 @@
 #!/mss/bin/sh
 umask 022
-PATH=/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin
+export LANG=C
 
 c_reset="\\033[0;39m"    # grey
 c_green="\\033[1;32m"   # green
