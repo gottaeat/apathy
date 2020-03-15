@@ -22,7 +22,7 @@ once the base is done, progressing further can be accomplished by reading packag
 #### major components:
 ```
 toolchain:
- * gcc 9.2.1-20200305 (c,c++), argp-standalone 1.3
+ * gcc 9.3.0 (c,c++), argp-standalone 1.3
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
@@ -52,7 +52,7 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1438.94mib
+ > total partition size : 1438.72mib
  > local package count  : 328
  > removed packages     : 21
 ```
