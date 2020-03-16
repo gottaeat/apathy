@@ -22,7 +22,7 @@ localver="5.6-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALV
 
 # c >> functions
 apply_alfredchen(){
- _alpatches="0001-bmq_v5.5-r2.patch"
+ _alpatches="0001-bmq_v5.5-r3.patch"
 
  for pp in $_alpatches
   do
