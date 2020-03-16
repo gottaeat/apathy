@@ -1,7 +1,7 @@
-From 4cf2a3aabe26fb134b56c0e5023119a1f0967d9a Mon Sep 17 00:00:00 2001
+From 5494148d8ef6b13cfee6dd2b818a74b1b837f1cb Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Fri, 7 Feb 2020 00:32:01 +0100
-Subject: [PATCH 2/7] Revert "block, bfq: get a ref to a group when adding it
+Subject: [PATCH 2/8] Revert "block, bfq: get a ref to a group when adding it
  to a service tree"
 
 This reverts commit 33d79b5cef2062617477434ac6187b605ed7072e.
@@ -14,7 +14,7 @@ Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
  3 files changed, 3 insertions(+), 12 deletions(-)
 
 diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index 09b69a3ed..cae488b58 100644
+index f0ff6654af28..83c5e64412e8 100644
 --- a/block/bfq-cgroup.c
 +++ b/block/bfq-cgroup.c
 @@ -332,7 +332,7 @@ static void bfqg_put(struct bfq_group *bfqg)
@@ -27,7 +27,7 @@ index 09b69a3ed..cae488b58 100644
  	/* see comments in bfq_bic_update_cgroup for why refcounting bfqg */
  	bfqg_get(bfqg);
 diff --git a/block/bfq-iosched.h b/block/bfq-iosched.h
-index d1233af9c..2c7cec737 100644
+index d1233af9c684..2c7cec737b2a 100644
 --- a/block/bfq-iosched.h
 +++ b/block/bfq-iosched.h
 @@ -985,7 +985,6 @@ struct bfq_group *bfq_find_set_group(struct bfq_data *bfqd,
@@ -39,7 +39,7 @@ index d1233af9c..2c7cec737 100644
  
  #ifdef CONFIG_BFQ_GROUP_IOSCHED
 diff --git a/block/bfq-wf2q.c b/block/bfq-wf2q.c
-index eb0e2a6da..26776bdbd 100644
+index eb0e2a6daabe..26776bdbdf36 100644
 --- a/block/bfq-wf2q.c
 +++ b/block/bfq-wf2q.c
 @@ -533,9 +533,7 @@ static void bfq_get_entity(struct bfq_entity *entity)
@@ -70,5 +70,5 @@ index eb0e2a6da..26776bdbd 100644
  
  /**
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.25.1.460.g2f268890c2.dirty
 

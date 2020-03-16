@@ -1,7 +1,7 @@
-From 5550eb3dd7a54a038105cc002f06640c4347b2e7 Mon Sep 17 00:00:00 2001
+From 3c648ba4960bdaccd84084a59e9648af9fb4b517 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Thu, 30 Jan 2020 15:51:26 +0100
-Subject: [PATCH 11/15] block, bfq: get a ref to a group when adding it to a
+Subject: [PATCH 11/19] block, bfq: get a ref to a group when adding it to a
  service tree
 
 BFQ schedules generic entities, which may represent either bfq_queues
@@ -80,5 +80,5 @@ index 1076bb98e..68cecec22 100644
  
  /**
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

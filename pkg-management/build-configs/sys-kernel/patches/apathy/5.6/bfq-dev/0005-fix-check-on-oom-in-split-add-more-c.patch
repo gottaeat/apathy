@@ -1,7 +1,7 @@
-From 86fa4a74eeee63df57ce413922a34568a01ba8aa Mon Sep 17 00:00:00 2001
+From 0a16f73ac44167ec67e278ddb83025b5c181f1f9 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Tue, 17 Dec 2019 07:58:57 +0100
-Subject: [PATCH 05/15] block, bfq, DEBUG: fix check on oom in split, add more
+Subject: [PATCH 05/19] block, bfq, DEBUG: fix check on oom in split, add more
  checks on oom merging
 
 Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
@@ -57,5 +57,5 @@ index da1b5e183..3c81a4707 100644
  	}
  
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

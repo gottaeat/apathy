@@ -1,7 +1,7 @@
-From cdd0d655e15abda256a7fc5c2e073a7613da1ad1 Mon Sep 17 00:00:00 2001
+From e28945a159e0d72a1b874837386f7a6dbd82df33 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Thu, 30 Jan 2020 14:54:21 +0100
-Subject: [PATCH 12/15] block, bfq: clarify the goal of bfq_split_bfqq()
+Subject: [PATCH 12/19] block, bfq: clarify the goal of bfq_split_bfqq()
 
 The exact, general goal of the function bfq_split_bfqq() is not that
 apparent. Add a comment to make it clear.
@@ -25,5 +25,5 @@ index 637b22381..6aabadc27 100644
   * was the last process referring to that bfqq.
   */
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

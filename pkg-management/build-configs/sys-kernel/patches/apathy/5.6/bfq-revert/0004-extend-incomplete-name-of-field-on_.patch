@@ -1,7 +1,7 @@
-From 68310aa5df66f73d4f1446300b45a97023b4f3af Mon Sep 17 00:00:00 2001
+From ea1446f7bbc4fce4d3bdedd64fc022093bfb66e9 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Fri, 7 Feb 2020 00:32:02 +0100
-Subject: [PATCH 4/7] Revert "block, bfq: extend incomplete name of field
+Subject: [PATCH 4/8] Revert "block, bfq: extend incomplete name of field
  on_st"
 
 This reverts commit 558b8297a994678ec9409a37aadc08f349ff9400.
@@ -15,10 +15,10 @@ Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
  4 files changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/block/bfq-cgroup.c b/block/bfq-cgroup.c
-index c818c6476..8ab7f18ff 100644
+index 1af9e52a0e37..bed77b5e40b8 100644
 --- a/block/bfq-cgroup.c
 +++ b/block/bfq-cgroup.c
-@@ -659,7 +659,7 @@ void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+@@ -660,7 +660,7 @@ void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
  
  	if (bfq_bfqq_busy(bfqq))
  		bfq_deactivate_bfqq(bfqd, bfqq, false, false);
@@ -28,7 +28,7 @@ index c818c6476..8ab7f18ff 100644
  	bfqg_and_blkg_put(bfqq_group(bfqq));
  
 diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 28770ec7c..15dfb0844 100644
+index 28770ec7c06f..15dfb0844644 100644
 --- a/block/bfq-iosched.c
 +++ b/block/bfq-iosched.c
 @@ -1059,7 +1059,7 @@ bfq_bfqq_resume_state(struct bfq_queue *bfqq, struct bfq_data *bfqd,
@@ -41,7 +41,7 @@ index 28770ec7c..15dfb0844 100644
  }
  
 diff --git a/block/bfq-iosched.h b/block/bfq-iosched.h
-index f1cb89def..8526f20c5 100644
+index f1cb89def7f8..8526f20c53bc 100644
 --- a/block/bfq-iosched.h
 +++ b/block/bfq-iosched.h
 @@ -150,7 +150,7 @@ struct bfq_entity {
@@ -54,7 +54,7 @@ index f1cb89def..8526f20c5 100644
  	/* B-WF2Q+ start and finish timestamps [sectors/weight] */
  	u64 start, finish;
 diff --git a/block/bfq-wf2q.c b/block/bfq-wf2q.c
-index 26776bdbd..ffe9ce9fa 100644
+index 26776bdbdf36..ffe9ce9faa89 100644
 --- a/block/bfq-wf2q.c
 +++ b/block/bfq-wf2q.c
 @@ -645,7 +645,7 @@ static void bfq_forget_entity(struct bfq_service_tree *st,
@@ -97,5 +97,5 @@ index 26776bdbd..ffe9ce9fa 100644
  		 * If no process is referencing in_serv_bfqq any
  		 * longer, then the service reference may be the only
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.25.1.460.g2f268890c2.dirty
 

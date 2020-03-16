@@ -1,7 +1,7 @@
-From 7ab01ea414e52abc606c7b824e3456ee68f355eb Mon Sep 17 00:00:00 2001
+From 7f648ec53a98274e8284080f7bf6952e4bfa1fc3 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Fri, 7 Feb 2020 20:07:39 +0100
-Subject: [PATCH 14/15] elevator: set default scheduler to bfq for blk-mq
+Subject: [PATCH 14/19] elevator: set default scheduler to bfq for blk-mq
 
 Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
 ---
@@ -32,5 +32,5 @@ index 4eab3d70e..79669aa39 100644
  
  /*
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

@@ -1,7 +1,7 @@
-From 9f6b3905a02d4cba54ba4f5cc120ff5558302568 Mon Sep 17 00:00:00 2001
+From 5637fd97e3a528090fc1a2d1ccfca9cf9e12150b Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Mon, 2 Dec 2019 16:24:20 +0100
-Subject: [PATCH 03/15] block, bfq, DEBUG: check proc refs in case of requeue
+Subject: [PATCH 03/19] block, bfq, DEBUG: check proc refs in case of requeue
 
 Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
 ---
@@ -22,5 +22,5 @@ index c5e99300b..5a26fed79 100644
  		/*
  		 * Resort priority tree of potential close cooperators.
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

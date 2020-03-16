@@ -1,7 +1,7 @@
-From 40bf5174c90ecffaf3c1d81d5e2047c695777e1d Mon Sep 17 00:00:00 2001
+From ec3292402420e9d603f8b221e9d2cb3c014c7500 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Tue, 17 Dec 2019 07:58:41 +0100
-Subject: [PATCH 04/15] block, bfq: do not insert oom queue into position tree
+Subject: [PATCH 04/19] block, bfq: do not insert oom queue into position tree
 
 BFQ maintains an ordered list, implemented with an RB tree, of
 head-request positions of non-empty bfq_queues. This position tree,
@@ -38,5 +38,5 @@ index 5a26fed79..da1b5e183 100644
  	 * bfqq cannot be merged any longer (see comments in
  	 * bfq_setup_cooperator): no point in adding bfqq into the
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

@@ -1,7 +1,7 @@
-From 9950513ec6b14d35640f3912b4ae314e7eb44eac Mon Sep 17 00:00:00 2001
+From 4d5cd7cfdd3f0da355532b9cec9736b79bc6a7e7 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Thu, 23 Jan 2020 10:46:08 +0100
-Subject: [PATCH 08/15] block, bfq, DEBUG: init_entity should actually be
+Subject: [PATCH 08/19] block, bfq, DEBUG: init_entity should actually be
  invoked only on bfqqs
 
 Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
@@ -32,5 +32,5 @@ index 4741abd0e..b7f06e7da 100644
  	entity->orig_weight = entity->new_weight;
  	if (bfqq) {
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

@@ -1,7 +1,7 @@
-From ec870d26070b3a75d08d9352bb201db8e8de2cf3 Mon Sep 17 00:00:00 2001
+From 1bd00b3fac2cac572ea96ee21769dfb3ac6dafc8 Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Thu, 23 Jan 2020 10:45:08 +0100
-Subject: [PATCH 07/15] block, bfq, DEBUG: check that an entity on a st is not
+Subject: [PATCH 07/19] block, bfq, DEBUG: check that an entity on a st is not
  freed
 
 Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
@@ -26,5 +26,5 @@ index ab80cea47..4741abd0e 100644
  
  static void bfqg_and_blkg_get(struct bfq_group *bfqg)
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

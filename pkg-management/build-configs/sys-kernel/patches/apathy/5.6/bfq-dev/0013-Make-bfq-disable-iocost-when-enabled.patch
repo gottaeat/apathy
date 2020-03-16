@@ -1,7 +1,7 @@
-From 8872a06d2f5aaeb579d0480e7fd6f80423cc0af6 Mon Sep 17 00:00:00 2001
+From 9f99b32314eada78e8183d0505a07112309ff9af Mon Sep 17 00:00:00 2001
 From: Tejun Heo <tj@kernel.org>
 Date: Tue, 1 Oct 2019 20:33:15 +0100
-Subject: [PATCH 13/15] blkcg: Make bfq disable iocost when enabled
+Subject: [PATCH 13/19] blkcg: Make bfq disable iocost when enabled
 
 Both iocost and bfq implement weight based IO control.  Currently, bfq
 is using io.bfq prefix but wants to drop the bfq part.  To avoid
@@ -157,7 +157,7 @@ index e4a6949fd..82bbdaf34 100644
  
  struct blkcg {
 diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index db552b9f9..705da0132 100644
+index 75f687301..284a20ebf 100644
 --- a/kernel/cgroup/cgroup.c
 +++ b/kernel/cgroup/cgroup.c
 @@ -4000,6 +4000,7 @@ int cgroup_rm_cftypes(struct cftype *cfts)
@@ -177,5 +177,5 @@ index db552b9f9..705da0132 100644
  /**
   * cgroup_add_legacy_cftypes - add an array of cftypes for legacy hierarchies
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 

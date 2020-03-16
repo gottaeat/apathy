@@ -33,21 +33,25 @@ apply_alfredchen(){
 }
 
 apply_bfq(){
- _bfqpatches="0001-DEBUG-add-logs-and-BUG_ONs.patch
+ _bfqpatches="0001-add-logs-and-BUG_ONs.patch
               0002-do-not-plug-I-O-for-bfq_queues-with-no-pro.patch
-              0003-DEBUG-check-proc-refs-in-case-of-requeue.patch
+              0003-check-proc-refs-in-case-of-requeue.patch
               0004-do-not-insert-oom-queue-into-position-tree.patch
-              0005-DEBUG-fix-check-on-oom-in-split-add-more-c.patch
+              0005-fix-check-on-oom-in-split-add-more-c.patch
               0006-get-extra-ref-to-prevent-a-queue-from-bein.patch
-              0007-DEBUG-check-that-an-entity-on-a-st-is-not-.patch
-              0008-DEBUG-init_entity-should-actually-be-invok.patch
+              0007-check-that-an-entity-on-a-st-is-not-.patch
+              0008-init_entity-should-actually-be-invok.patch
               0009-extend-incomplete-name-of-field-on_st.patch
               0010-remove-ifdefs-from-around-gets-puts-of-bfq.patch
               0011-get-a-ref-to-a-group-when-adding-it-to-a-s.patch
               0012-clarify-the-goal-of-bfq_split_bfqq.patch
-              0013-blkcg-Make-bfq-disable-iocost-when-enabled.patch
+              0013-Make-bfq-disable-iocost-when-enabled.patch
               0014-elevator-set-default-scheduler-to-bfq-for-blk-mq.patch
-              0015-block-Set-bfq-dev-instead-of-bfq.patch"
+              0015-Set-bfq-dev-instead-of-bfq.patch
+              0016-fix-overwrite-of-bfq_group-pointer-in-bfq_.patch
+              0017-check-curr_bfqg-in-bfq_find_set_grou.patch
+              0018-check-process-refs.patch
+              0019-extra-check-on-in-service-status.patch"
 
  for pp in $_bfqpatches
   do
@@ -64,7 +68,8 @@ apply_bfq_rev(){
                  0004-extend-incomplete-name-of-field-on_.patch
                  0005-get-extra-ref-to-prevent-a-queue-fr.patch
                  0006-do-not-insert-oom-queue-into-positi.patch
-                 0007-do-not-plug-I-O-for-bfq_queues-with.patch"
+                 0007-do-not-plug-I-O-for-bfq_queues-with.patch
+                 0009-fix-overwrite-of-bfq_group-pointer-.patch"
 
  for pp in $_bfqrevpatches
   do

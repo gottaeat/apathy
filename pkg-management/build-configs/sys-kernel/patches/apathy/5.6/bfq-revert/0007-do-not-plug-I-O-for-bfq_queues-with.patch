@@ -1,7 +1,7 @@
-From b71d4cac0ae790d8fe8fffbfcdafbeeb32b37e85 Mon Sep 17 00:00:00 2001
+From 28d5418da7da0b59e0fa4dc24735c7113774d937 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Fri, 7 Feb 2020 00:32:04 +0100
-Subject: [PATCH 7/7] Revert "block, bfq: do not plug I/O for bfq_queues with
+Subject: [PATCH 7/8] Revert "block, bfq: do not plug I/O for bfq_queues with
  no proc refs"
 
 This reverts commit c6df9ff2d068672b17d92ad6d6b93ade3c044372.
@@ -12,7 +12,7 @@ Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
  1 file changed, 12 deletions(-)
 
 diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 55d4328e7..4686b68b4 100644
+index 55d4328e7c12..4686b68b48b4 100644
 --- a/block/bfq-iosched.c
 +++ b/block/bfq-iosched.c
 @@ -3443,10 +3443,6 @@ static void bfq_dispatch_remove(struct request_queue *q, struct request *rq)
@@ -49,5 +49,5 @@ index 55d4328e7..4686b68b4 100644
  		return true;
  
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.25.1.460.g2f268890c2.dirty
 

@@ -1,7 +1,7 @@
-From b2b964cab802770cd53641b973d74bba9e824556 Mon Sep 17 00:00:00 2001
+From 48b66bed017be2b6926cd5449f6ca6f97400251e Mon Sep 17 00:00:00 2001
 From: Paolo Valente <paolo.valente@linaro.org>
 Date: Mon, 13 May 2019 11:06:24 +0200
-Subject: [PATCH 01/15] block, bfq, DEBUG: add logs and BUG_ONs
+Subject: [PATCH 01/19] block, bfq, DEBUG: add logs and BUG_ONs
 
 Signed-off-by: Paolo Valente <paolo.valente@linaro.org>
 ---
@@ -3597,7 +3597,7 @@ index ffe9ce9fa..2de48bee8 100644
 +
  }
 diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 053ea4b51..510dd18e0 100644
+index f629d40c6..0ea0ef888 100644
 --- a/include/linux/blkdev.h
 +++ b/include/linux/blkdev.h
 @@ -109,6 +109,10 @@ typedef __u32 __bitwise req_flags_t;
@@ -3612,5 +3612,5 @@ index 053ea4b51..510dd18e0 100644
  /* flags that prevent us from merging requests: */
  #define RQF_NOMERGE_FLAGS \
 -- 
-2.25.0.191.gde93cc14ab.dirty
+2.26.0.rc1.dirty
 
