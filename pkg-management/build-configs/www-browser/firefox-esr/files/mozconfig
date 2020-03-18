@@ -1,6 +1,6 @@
 ### directories
-ac_add_options --prefix=/opt/apathy-browser-68.6.0esr
-ac_add_options --libdir=/opt/apathy-browser-68.6.0esr
+ac_add_options --prefix=/opt/firefox-68.6.0esr
+ac_add_options --libdir=/opt/firefox-68.6.0esr
 
 ### compiler stuff
 ac_add_options --enable-optimize="-march=native -mtune=native -O2"
@@ -18,9 +18,7 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 mk_add_options MOZ_MAKE_FLAGS="-j2"
 
 ### branding
-ac_add_options --with-app-name=apathy-browser
-ac_add_options --with-app-basename="apathy browser"
-ac_add_options --with-branding=browser/branding/unofficial
+ac_add_options --with-branding=browser/branding/aurora
 ac_add_options --with-distribution-id=org.apathy
 
 ### disable bloat
