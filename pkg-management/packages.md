@@ -394,7 +394,8 @@
 [o] self	> cbindgen-0.13.1
 [o] self	> nodejs-13.9.0
 
-[r] self	> gtk+-3.24.14
+[d] self	> firefox-68.6.0esr
+[d] self	>> gtk+-3.24.14
 ```
 ```
 ### base mlfs packages
