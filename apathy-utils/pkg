@@ -51,8 +51,13 @@ case $1 in
   tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}')"
 
   if [ ! -f "${localmd}" ]
-   then rcount="l${c_lcyan}(local)\t\t${c_lcyan}packages.md${c_reset} is missing."
-   else rcount=$(grep "\[r\]" "${localmd}" | wc -l)
+   then
+    rcount="l${c_lcyan}(local)\t\t${c_lcyan}packages.md${c_reset} is missing."
+    ondemand="${c_green}(${c_reset}none${c_green})${c_reset}"
+   else
+    rcount=$(grep "\[r\]" "${localmd}" | wc -l)
+    ocount=$(grep "\[o\]" "${localmd}" | wc -l)
+    ondemand="${c_green}(${c_blue}+${c_reset}${ocount}${c_green})${c_reset}"
   fi
 
   if [ ! -f "${localraw}" ]
@@ -90,7 +95,7 @@ case $1 in
 
  aprint_nc
  aprint "${c_green}total partition size\t${c_blue}:${c_reset} ${tsize}"
- aprint "${c_green}local package count\t${c_blue}:${c_reset} ${count}"
+ aprint "${c_green}local package count\t${c_blue}:${c_reset} ${count} ${ondemand}"
  aprint "${c_green}removed packages\t${c_blue}:${c_reset} ${rcount}"
  aprint "${c_green}local and git diff\t${c_blue}:${c_reset} ${gitdf}"
  aprint "${c_green}git repo status\t${c_blue}:${c_reset} ${gitstat}"
