@@ -347,7 +347,7 @@
 [d] alpine	> mutt-1.13.3
 [d] alpine	> lzip-1.21
 
-[r] self	> apathy-browser-28.8.3
+[d] self	> apathy-browser-28.8.4
 [d] alpine	>> zip-30
 
 [d] self	> gcompat-0.4.0			--> moved to /lib64
@@ -394,8 +394,8 @@
 [o] self	> cbindgen-0.13.1
 [o] self	> nodejs-13.9.0
 
-[d] self	> firefox-68.6.0esr
-[d] self	>> gtk+-3.24.14
+[r] self	> firefox-68.6.0esr
+[r] self	>> gtk+-3.24.14
 ```
 ```
 ### base mlfs packages
