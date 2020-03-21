@@ -1,55 +1,83 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-
 rootcheck
 
-aprint_ask "this script will strip bins and libs which could be harmful."
-aprint_nc
-aprint_ask "are you sure you want to procceed? (y/n): "
+case "${@}" in y|Y|yes) answerstrip="yes";; esac
 
-read answer
+if [ -z "$answerstrip" ]; then
+ aprint_nc
+ aprint_ask "this script will strip bins and libs, which can be harmful."; aprint_nc
+ aprint_ask "are you sure you want to procceed? (y/n): "
 
-
-if [ "$answer" != "${answer#[Yy]}" ]
- then
-  aprint_nc
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.a \t${c_green}/usr/lib\t\t${c_lcyan}(--strip-debug)"${c_reset}
-  find /usr/lib		-type f -name \*.a -exec strip --strip-debug {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.so \t${c_green}/lib\t\t\t${c_lcyan}(--strip-unneeded)${c_reset}"
-  find /lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}.so \t${c_green}/usr/lib\t\t${c_lcyan}(--strip-unneeded)${c_reset}"
-  find /usr/lib		-type f \( -name \*.so* -a ! -name \*dbg \) -exec strip --strip-unneeded {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/bin\t\t\t${c_lcyan}(--strip-all)${c_reset}"
-  find /bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
-  evalretkill
-  
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/sbin\t\t\t${c_lcyan}(--strip-all)${c_reset}"
-  find /sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/bin\t\t${c_lcyan}(--strip-all)${c_reset}"
-  find /usr/bin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/sbin\t\t${c_lcyan}(--strip-all)${c_reset}"
-  find /usr/sbin		-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${c_blue}stripping\t: ${c_lcyan}all \t${c_green}/usr/libexec\t\t${c_lcyan}(--strip-all)${c_reset}"
-  find /usr/libexec	-type f -exec strip --strip-all {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_nc
-  aprint "stripping is complete."
-  aprint_nc
-  exit 0
- elif [ "$answer" != "${answer#[Nn]}" ];	then	exit 1
- else aprint_fail "input Yy or Nn, exiting.";		exit 1
+ read answerstrip
 fi
+
+aprint_nc
+case "$answerstrip" in
+ y|Y|yes)
+  aprint "stripping:"
+  aprint_ret "${c_lcyan}*.a${c_reset}            under  ${c_green}/usr/lib${c_reset}      with  ${c_lcyan}--strip-debug${c_reset}"
+   find /usr/lib -type f      \
+    -name \*.a                \
+    -exec strip --strip-debug \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}*.so (!*.dbg)${c_reset}  under  ${c_green}/lib${c_reset}          with  ${c_lcyan}--strip-unneeded${c_reset}"
+   find /lib -type f                    \
+    \( -name \*.so* -a ! -name \*dbg \) \
+    -exec strip --strip-unneeded        \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}*.so (!*.dbg)${c_reset}  under  ${c_green}/usr/lib${c_reset}      with  ${c_lcyan}--strip-unneeded${c_reset}"
+   find /usr/lib -type f                \
+    \( -name \*.so* -a ! -name \*dbg \) \
+    -exec strip --strip-unneeded        \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/bin${c_reset}          with  ${c_lcyan}--strip-all${c_reset}"
+   find /bin -type f        \
+    -exec strip --strip-all \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+ 
+  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/sbin${c_reset}         with  ${c_lcyan}--strip-all${c_reset}"
+   find /sbin -type f       \
+    -exec strip --strip-all \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/bin${c_reset}      with  ${c_lcyan}--strip-all${c_reset}"
+   find /usr/bin -type f    \
+    -exec strip --strip-all \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/sbin${c_reset}     with  ${c_lcyan}--strip-all${c_reset}"
+   find /usr/sbin -type f   \
+    -exec strip --strip-all \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+
+  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/libexec${c_reset}  with  ${c_lcyan}--strip-all${c_reset}"
+   find /usr/libexec -type f \
+    -exec strip --strip-all  \
+    {} ';' > /dev/null 2>&1
+  evalretkill
+  aprint "stripping complete."
+  aprint_nc
+ ;;
+ n|N|no)
+  aprint "${c_lcyan}not${c_reset} stripping."
+  aprint_nc
+  exit 1
+ ;;
+ *)
+  aprint_fail "input either ${c_lcyan}y|Y|yes${c_reset} or ${c_lcyan}n|N|no${c_reset}, exiting."
+  aprint_nc
+  exit 1
+ ;;
+esac
+  
