@@ -1,0 +1,23 @@
+#!/mss/bin/sh
+rsync \
+\
+ --links          \
+ --copy-dirlinks  \
+ --hard-links     \
+ --perms          \
+ --executability  \
+ --acls           \
+ --xattrs         \
+ --owner          \
+ --group          \
+ --times          \
+ --devices        \
+ --specials       \
+\
+ --fake-super     \
+ --recursive      \
+\
+ --human-readable \
+ --progress       \
+\
+ "${@}"
