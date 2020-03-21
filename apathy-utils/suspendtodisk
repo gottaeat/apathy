@@ -1,0 +1,48 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+rootcheck
+
+case "${@}" in y|Y|yes) answersusp="yes";; esac
+
+if [ -z "$answersusp" ]; then
+ aprint_nc
+ aprint_ask "this action will suspend the machine"; aprint_nc
+ aprint_ask "and write the current state to swap."; aprint_nc
+ aprint_ask "would you like to continue? (y/n): "
+
+ read answersusp
+fi
+
+aprint_nc
+case "$answersusp" in
+ y|Y|yes)
+  aprint "date before suspend is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  datebefore="$(date +%s)"
+  aprint "suspending ${c_lcyan}now${c_reset}."
+
+  echo disk > /sys/power/state
+
+
+  dateafter=$(date +%s)
+  timespent=$(($dateafter - $datebefore))
+  humantime=$(printf "%dd %dh %dm\n"                    \
+            "$(echo "${timespent}/86400"        | bc)"  \
+            "$(echo "(${timespent}%86400)/3600" | bc)"  \
+            "$(echo "(${timespent}%3600)/60"    | bc)")
+
+  aprint_nc
+  aprint "woke up from suspend at ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  aprint "slept for ${c_lcyan}${humantime}${c_reset}."
+ ;;
+ n|N|no)
+  aprint "${c_lcyan}not${c_reset} suspending."
+  aprint_nc
+  exit 1
+ ;;
+ *)
+  aprint_fail "input either ${c_lcyan}y|Y|yes${c_reset} or ${c_lcyan}n|N|no${c_reset}, exiting."
+  aprint_nc
+  exit 1
+ ;;
+esac
+
