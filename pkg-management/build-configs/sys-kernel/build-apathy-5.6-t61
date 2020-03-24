@@ -15,10 +15,14 @@ _makedir="${_workdir}/linux-${__kerver}"
 _repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
 patchdir="${_repodir}/patches"
 _confdir="${_repodir}/configs"
+__logdir="/mss/work/logs"
+redirect="${__logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${__kerver}.log"
 
-confname="5.6-apathy-t61-nonfree-gcc-bmq-4-mar-2020.config"
+confname="5.6-apathy-t61-nonfree-gcc-bmq-20200324_205145.config"
 _useconf="${_confdir}/5.6/${confname}"
 localver="5.6-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
+
+_cctouse="x86_64-apathy-linux-musl-gcc"
 
 # c >> functions
 apply_alfredchen(){
@@ -27,7 +31,7 @@ apply_alfredchen(){
  for pp in $_alpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/alfredchen/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/alfredchen/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -51,12 +55,19 @@ apply_bfq(){
               0016-fix-overwrite-of-bfq_group-pointer-in-bfq_.patch
               0017-check-curr_bfqg-in-bfq_find_set_grou.patch
               0018-check-process-refs.patch
-              0019-extra-check-on-in-service-status.patch"
+              0019-extra-check-on-in-service-status.patch
+              0020-fix-use-after-free-in-bfq_idle_slice_.patch
+              0021-revert-fix-use-after-free-in-bfq_idle.patch
+              0022-fix-use-after-free-in-bfq_idle_slice_.patch
+              0023-move-forward-the-getting-of-an-extra-.patch
+              0024-turn-put_queue-into-release_process_r.patch
+              0025-make-reparent_leaf_entity-actually-wo.patch
+              0026-invoke-flush_idle_tree-after-reparent.patch"
 
  for pp in $_bfqpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/bfq-dev/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/bfq-dev/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -74,7 +85,7 @@ apply_bfq_rev(){
  for pp in $_bfqrevpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/bfq-revert/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/bfq-revert/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -87,7 +98,7 @@ apply_block(){
  for pp in $_blockpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/block/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/block/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -103,7 +114,7 @@ apply_misc(){
  for pp in $_miscpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/misc/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/misc/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -128,7 +139,7 @@ apply_clearlinux(){
  for pp in $_cpatches
   do
    aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.6/clearlinux/${pp} >>/tmp/kernel-build.log 2>&1
+   patch -p1 < "${patchdir}"/apathy/5.6/clearlinux/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -141,7 +152,7 @@ aprint_pvars "confname" "${confname}"
 # d1 >> clear old log
 aprint_nc
 aprint_ret "cleaning the old log, if it exists."
- printf '' > "/tmp/kernel-build.log"
+ printf '' > ${redirect}
 evalret
 
 # d2 >> unpack the kernel
@@ -150,18 +161,19 @@ if [ ! -f "${saucedir}/${1}" ]
 fi
 
 aprint_ret "unpacking the kernel sauce."
- tar xf ${saucedir}/${1} --directory="${_workdir}" >>/tmp/kernel-build.log 2>&1
+ tar xf ${saucedir}/${1} --directory="${_workdir}" >> ${redirect} 2>&1
 evalretkill
 cd "${_makedir}"
 
 # d3 >> run mrproper
 aprint_ret "running mrproper"
- make mrproper >>/tmp/kernel-build.log 2>&1
+ make CC="$_cctouse" \
+  mrproper >> ${redirect} 2>&1
 evalretkill
 
 # d4 >> copy config
 aprint_ret "copying the kernel config stated above."
- cp -v "${_useconf}" "${_makedir}"/.config >>/tmp/kernel-build.log 2>&1
+ cp -v "${_useconf}" "${_makedir}"/.config >> ${redirect} 2>&1
 evalretkill
 
 # d5 >> apply patches
@@ -185,27 +197,31 @@ aprint_ask "run menuconfig for manual config? (y/n): "
 read answermenuconf
 
 if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
- then aprint "running menuconfig." && make menuconfig
- else aprint "not running menuconfig."
+ then
+  aprint "running menuconfig."
+  make CC="$_cctouse" \
+   menuconfig
+ else
+  aprint "not running menuconfig."
+  aprint_nc
 fi
 
 # d7 >> run make
-aprint_nc
 aprint_ask "run make? (y/n): "
 read answerbuildkern
 
 if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
  then
-  aprint_ret "running make, do tail -f /tmp/kernel-build.log to view."
-   datebefore=$(date +%s)
-   /bin/busybox time    \
-   nice --adjustment=10 \
-   make V=0             \
-   CC=x86_64-apathy-linux-musl-gcc \
-   -j2 >>/tmp/kernel-build.log 2>&1
-#  cores+1 literally rapes this chip, just build with
-#  a single thread.
-#  -j$(($(nproc)+1)) >>/tmp/kernel-build.log 2>&1
+  aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  aprint "redirecting output to ${c_lcyan}${redirect}${c_reset}."
+  aprint_ret "running make."
+  datebefore=$(date +%s)
+
+   /bin/busybox time     \
+    nice --adjustment=10 \
+    make CC="$_cctouse"   \
+     -j2 >> ${redirect} 2>&1
+
   evalretkill
 
   dateafter=$(date +%s)
@@ -230,7 +246,10 @@ if [ -z $(grep "=m" .config) ]
   aprint "no modules found in config to install, skipping."
  else
   aprint "found modules, installing them."
-  doas -- make modules_install >>/tmp/kernel-build.log
+
+   doas -- make CC="$_cctouse" \
+    modules_install >> ${redirect} 2>&1
+
   evalretkill
   export modules=yes
 fi
@@ -242,11 +261,10 @@ read answerkinst
 
 if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
  then
-  aprint_ret "installing the built kernel."
+  aprint "installing the built kernel."
    doas cp arch/x86/boot/bzImage /boot/vmlinuz    &&
    doas cp System.map            /boot/System.map &&
    doas cp .config               /boot/config
-  evalretkill
 
   aprint_ret "running ${c_lcyan}lilo${c_reset}."
    doas -- lilo >/dev/null 2>&1
