@@ -1,0 +1,14 @@
+/sbin/bootlogd
+/sbin/fstab-decode
+/sbin/halt
+/sbin/init
+/sbin/killall5
+/sbin/poweroff
+/sbin/reboot
+/sbin/runlevel
+/sbin/shutdown
+/sbin/telinit
+
+/usr/include/initreq.h
+
+/usr/share/man
