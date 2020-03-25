@@ -1,0 +1,26 @@
+#!/mss/bin/sh
+. /mss/initbits/bin/apathy-init-funcs
+
+case "$1" in
+ stop)
+  ainitmes "sending ${c_lcyan}TERM${c_reset} to all processes."
+   /mss/initbits/bin/killall5 -s TERM
+  evalret
+
+  sleep 3
+
+  ainitmes "sending ${c_lcyan}KILL${c_reset} to remaining processes."
+   /mss/initbits/bin/killall5 -s KILL
+
+   sigkillexit="${?}"
+
+   if [ "${sigkillexit}" -eq 2 ]
+    then warnprompt; ainitmes "no processes were killed."; warnprompt
+    else exit "${sigkillexit}"; evalret
+   fi
+ ;;
+*)
+  ainitusage "{stop}"
+  exit 1
+ ;;
+esac

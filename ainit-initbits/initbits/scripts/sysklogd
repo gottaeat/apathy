@@ -1,0 +1,33 @@
+#!/mss/bin/sh
+. /mss/initbits/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "starting the ${c_lcyan}system log daemon${c_reset}."
+   syslogd -m 0
+  evalret
+
+  ainitmes "starting the ${c_lcyan}kernel log daemon${c_reset}."
+   klogd
+  evalret
+ ;;
+ stop)
+  ainitmes "stopping the ${c_lcyan}kernel log daemon${c_reset}."
+   local pid="$(pidof klogd)"
+   if [ -z "$pid" ]
+    then failprompt; ainitmes "klogd ${c_lcyan}is not running${c_reset}."; failprompt
+    else kill -TERM "${pid}"; evalret
+   fi
+
+  ainitmes "stopping the ${c_lcyan}system log daemon${c_reset}."
+   local pid="$(pidof syslogd)"
+   if [ -z "$pid" ]
+    then failprompt; ainitmes "syslogd ${c_lcyan}is not running${c_reset}."; failprompt
+    else kill -TERM "${pid}"; evalret
+   fi
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

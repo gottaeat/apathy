@@ -1,0 +1,37 @@
+#!/mss/bin/sh
+. /mss/initbits/bin/apathy-init-funcs
+
+PIDFILE=/run/dnscrypt-proxy.pid
+DAEMON=/opt/dnscrypt-proxy/dnscrypt-proxy
+USER=root
+
+case "$1" in
+ start)
+  ainitmes "starting ${c_lcyan}dnscrypt-proxy${c_reset}."
+   cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
+
+   start-stop-daemon --start --quiet -b -m \
+    --pidfile $PIDFILE \
+    --chuid   $USER    \
+    --exec    $DAEMON
+
+  evalret
+ ;;
+ stop)
+  ainitmes "stopping ${c_lcyan}dnscrypt-proxy${c_reset}."
+
+  case "$(tail -1 /etc/resolv.conf)" in
+   *edns0*) cp /etc/resolv.conf.quad /etc/resolv.conf ;;
+  esac
+
+  start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

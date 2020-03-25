@@ -1,0 +1,24 @@
+#!/mss/bin/sh
+. /mss/initbits/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "starting the ${c_lcyan}ssh${c_reset} daemon."
+   /usr/sbin/sshd >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitmes "stopping the ${c_lcyan}ssh${c_reset} daemon"
+   read sshdpgid < /run/sshd.pid
+   kill -TERM ${sshdpgid}
+  evalret
+
+  ainitmes "terminating the ${c_lcyan}existing ssh${c_reset} sessions."
+   for pid in $(pgrep sshd); do kill -TERM "$pid"; done
+  evalret
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac
