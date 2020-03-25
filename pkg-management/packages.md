@@ -388,8 +388,8 @@
 [d] self	> mawk-1.3.4-20200120
 [r] self	> star-1.6
 
-[o] self	> llvm-9.0.1
-[o] self	> clang-9.0.1
+[o] self	> llvm-10.0.0
+[o] self	> clang-10.0.0
 [o] self	> rustc-1.41.0
 [o] self	> cbindgen-0.13.1
 [o] self	> nodejs-13.9.0
