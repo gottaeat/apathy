@@ -1,7 +1,7 @@
 # apathy
 apathy is a 64 bit libre linux distribution built from scratch for my own purposes using [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) for its base; utilizing `musl` libc, `libressl`, partially `busybox` and `sinit` with [a home-brewed init structure](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-initbits) written in posix shell.
 
-<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/fetch.png"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/asset.png"></p>
 
 ## about
 apathy (which at one point was called *mssLinux*) initially used *lfs-8.4* as its base and the rest was mostly built off of reading gentoo `ebuild`'s and arch/parabola `PKGBUILD`'s. i started writing the [apathy-utils](https://github.com/mssx86/apathy/tree/apathy-musl/apathy-utils) and [scripts](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss/.config/scripts) alongside the first iteration of the init structure, which was named [ainit-sysv-mk-i](https://github.com/mssx86/apathy/tree/apathy-musl/misc/ainit-sysv/ainit-sysv-mk-i) when i was using this version. last state of the `apathy 1.3 pure64` can be found at the [apathy-glibc branch](https://github.com/mssx86/apathy/tree/apathy-glibc).
@@ -19,15 +19,13 @@ building the base that *apathy musl 1.2* uses can be accomplished by following t
 
 once the base is done, progressing further can be accomplished by reading package recipes and gathering patches for building software with `musl` from [pkgs.alpinelinux.org](https://pkgs.alpinelinux.org/packages?name=&branch=edge&arch=x86_64) and [voidlinux.org/packages](https://voidlinux.org/packages/). patches for building via `libressl` can be obtained from [gentoo libressl testing overlay](https://github.com/gentoo/libressl). i serve patches that i used to build all the software listed at [packages.md](https://github.com/mssx86/apathy/blob/apathy-musl/pkg-management/packages.md) in [here](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management/patches).
 
-<p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/init.png"></p>
-
 
 ## overview
 #### major components:
 ```
 toolchain:
  * gcc 9.3.1 20200321 (c,c++), argp-standalone 1.3
- * *(ondmenand)* llvm-10.0.0, clang-10.0.0, rustc-1.41.0, cbindgen-13.9.0
+ * (ondemand) llvm-10.0.0, clang-10.0.0, rustc-1.41.0, cbindgen-13.9.0
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
@@ -44,7 +42,7 @@ languages:
  * python 2.7.17, 3.8.1
  * lua 5.2.4
  * perl 5.30.1
- * *(ondemand)* node.js-13.9.0
+ * (ondemand) node.js-13.9.0
 
 video/audio:
  * xorg (x11r7), mesa 20.0.1
