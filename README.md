@@ -1,14 +1,18 @@
 # apathy
-apathy is a 64 bit libre linux distribution built from scratch for my own purposes using [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) for its base; utilizing `musl` libc, `libressl`, partially `busybox` and `sysvinit` with [a home-brewed init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) written in posix shell.
+apathy is a 64 bit libre linux distribution built from scratch for my own purposes using [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) for its base; utilizing `musl` libc, `libressl`, partially `busybox` and `sinit` with [a home-brewed init structure](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-initbits) written in posix shell.
 
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/fetch.png"></p>
 
 ## about
-apathy (which at one point was called *mssLinux*) initially used lfs-8.4/9.0-rc1 as its base and the rest was mostly built off of reading gentoo `ebuild`'s and arch/parabola `PKGBUILD`'s. i wrote most of the [apathy-utils](https://github.com/mssx86/apathy/tree/apathy-musl/apathy-utils) and [scripts](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss/.config/scripts) alongside the [init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) when i was using this version.
+apathy (which at one point was called *mssLinux*) initially used lfs-8.4/9.0-rc1 as its base and the rest was mostly built off of reading gentoo `ebuild`'s and arch/parabola `PKGBUILD`'s. i wrote most of the [apathy-utils](https://github.com/mssx86/apathy/tree/apathy-musl/apathy-utils) and [scripts](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss/.config/scripts) alongside the [first iteration of the init structure](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-sysv-deprecated/ainit-sysv-mk-i) when i was using this version.
 
-after wanting to have a `musl` based system of my own, i stumbled upon `mlfs`, written by [dslm4515](https://github.com/dslm4515). attempting to build a base using their work didn't work out so i contributed to their work to a degree where a functional base system could be built via doing testing/fixing/editorial work on their project. `apathy-musl 1.0` was what i called the system i built during this time, using `mlfs` as the base.
+wanting to have a `musl` based system of my own, i have stumbled upon `mlfs`, written by [dslm4515](https://github.com/dslm4515). attempting to build a base using their work didn't work out so i contributed to their work to a degree where a functional base system could be built via doing testing/fixing/editorial work on their project. `apathy-musl 1.0` was what i called the system i built during this time, using `mlfs` as the base.
 
 after getting used to living with `musl` and `libressl`, i forked `mlfs` and rewrote it from scratch using a cleaner documentation style, updated packages, a different init system, different shells and more different choices in software, which i named [apathy-mlfs](https://github.com/mssx86/apathy-mlfs). my previous system utilizing my one and only g3258 and my current t61 is built on top of this book, though i've updated certain packages and patches when building for the t61 without updating the book.
+
+shortly after i made my switch to the t61, i rewrote the init structure from scratch. instead of doing runlevel symlinking, i completely rewrote `rc` and managed the runlevels by using simply case statements. also rewrote and simplified the `apathy-init-functions`, which was taken straight from the `lfs 8.4`'s init structure and posixified. named this state [ainit-sysv-mk-ii](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-sysv-deprecated/ainit-sysv-mk-ii).
+
+having always used `sysvinit` on my distributions, i made my switch to the suckless' `sinit-1.1`. i've modified/configured/built `sinit`, `sbase` and `ubase`, took the static binaries and man pages of the components i needed, made the required changes to the almost-portable `ainit-sysv-mk-ii`, removed the bits that were required for managing runlevels and made changes to the init scripts that required components from either `sysvinit` or `util-linux` which i have replaced with the sucklessware equivalents. i this structure [ainit-initbits](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-initbits), it is the current init system of apathy.
 
 ## building a similar system
 building the base that *apathy musl 1.2* uses can be accomplished by following the documentation available at [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) which also includes and already working toolchain for skipping the `cross-toolchain` and `toolchain` steps so jumping straigth into building the final system is possible.
@@ -31,7 +35,7 @@ toolchain:
 core userland:
  * util-linux 2.35, coreutils 8.31
  * busybox 1.31.1 (statically linked, defconfig)
- * sysklogd 1.5.1, sysvinit 2.96
+ * sysklogd 1.5.1, sinit-1.1-apathy
  * eudev 3.2.9, doas from openbsd 6.5
  * libressl-3.0.2
 
