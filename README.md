@@ -27,6 +27,7 @@ once the base is done, progressing further can be accomplished by reading packag
 ```
 toolchain:
  * gcc 9.3.1 20200321 (c,c++), argp-standalone 1.3
+ * *(ondmenand)* llvm-10.0.0, clang-10.0.0, rustc-1.41.0, cbindgen-13.9.0
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
@@ -43,6 +44,7 @@ languages:
  * python 2.7.17, 3.8.1
  * lua 5.2.4
  * perl 5.30.1
+ * *(ondemand)* node.js-13.9.0
 
 video/audio:
  * xorg (x11r7), mesa 20.0.1
