@@ -1,0 +1,31 @@
+.Dd February 2, 2015
+.Dt KILLALL5 8
+.Os ubase 0.1-apathy
+.Sh NAME
+.Nm killall5
+.Nd send a signal to all processes
+.Sh SYNOPSIS
+.Nm
+.Op Fl o Ar pid1,pid2,...,pidN
+.Op Fl s Ar signal
+.Sh DESCRIPTION
+.Nm
+is an implementation of the SystemV
+.Xr killall 8
+command. It sends a signal to all processes except kernel threads and the
+processes in its own session. It is primarily used by the system's init
+scripts.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl o
+Tell
+.Nm
+to omit processes with that process id.
+.It Fl s Ar signal
+Send
+.Ar signal
+instead of the default SIGTERM.
+.El
+.Sh SEE ALSO
+.Xr halt 8 ,
+.Xr reboot 8

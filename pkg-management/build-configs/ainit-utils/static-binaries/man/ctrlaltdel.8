@@ -1,0 +1,31 @@
+.Dd September 7, 2015
+.Dt CTRLALTDEL 8
+.Os ubase 0.1-apathy
+.Sh NAME
+.Nm ctrlaltdel
+.Nd toggle Ctrl-Alt-Del behaviour
+.Sh SYNOPSIS
+.Nm
+.Fl h | s
+.Sh DESCRIPTION
+.Nm
+toggles the function of Ctrl-Alt-Del based on the two choices given in
+.Pa linux/kernel/sys.c :
+.Bl -tag -width Ds
+.It hard reset
+reboot the computer immediately without calling
+.Xr sync 2 .
+.It soft reset
+send SIGINT to
+.Xr init 8 .
+.El
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl h
+Set to hard reset.
+.It Fl s
+Set to soft reset.
+.El
+.Sh SEE ALSO
+.Xr sync 2 ,
+.Xr init 8
