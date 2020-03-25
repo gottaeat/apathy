@@ -396,6 +396,8 @@
 
 [r] self	> firefox-68.6.0esr
 [r] self	>> gtk+-3.24.14
+
+[d] self	> sinit-1.1-apathy
 ```
 ```
 ### base mlfs packages
@@ -462,7 +464,7 @@
 [d] alpine	> sed-4.8
 [d] mlfs	> shadow-4.7
 [d] mlfs	> sysklogd-1.5.1
-[d] mlfs	> sysvinit-2.96
+[r] mlfs	> sysvinit-2.96
 [d] mlfs	> tar-1.32
 [d] mlfs	> texinfo-6.6
 [d] mlfs	> tzdb-2019c
