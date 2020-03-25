@@ -1,0 +1,25 @@
+.Dd September 9, 2015
+.Dt EJECT 1
+.Os ubase
+.Sh NAME
+.Nm eject
+.Nd control device trays
+.Sh SYNOPSIS
+.Nm
+.Op Fl t
+.Op Ar device ...
+.Sh DESCRIPTION
+.Nm
+opens the tray of each
+.Ar device .
+If no
+.Ar device
+is given
+.Nm
+opens the tray of
+.Pa /dev/sr0 .
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl t
+Close instead of open the tray.
+.El

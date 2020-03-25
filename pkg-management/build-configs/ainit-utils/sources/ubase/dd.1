@@ -1,0 +1,66 @@
+.Dd February 2, 2015
+.Dt DD 1
+.Os ubase
+.Sh NAME
+.Nm dd
+.Nd convert and copy a file
+.Sh SYNOPSIS
+.Nm
+.Op Ar operand...
+.Sh DESCRIPTION
+.Nm
+copies the standard input to the standard output. By default input data is
+read and written in 64kB blocks. When finished,
+.Nm
+displays the number of records read and written as well as the total number
+of bytes copied.
+.Nm
+syncs the filesystem once it is done copying. If you want to disable that use
+the
+.Ar nosync
+option.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Ar bs Ns Op Ar =N
+If
+.Ar bs
+is not specified, the default blocksize is 64kB. If
+.Ar bs
+is specified
+without setting it to a specific value then an optimal value between the
+source and target filesystem will be selected. If this process fails it will
+fallback to the system's pagesize. Adjust
+.Ar N
+to set the block size of the transfers in bytes.
+.It Ar count=N
+Copy only
+.Ar N
+input blocks.
+.It Ar direct
+Use direct I/O for data.
+.It Ar if=file
+Read input from
+.Ar file
+instead of the standard input.
+.It Ar nosync
+Do not sync the filesystem once we are done copying.
+.It Ar quiet
+Enable quiet output.
+.It Ar of=file
+Write output to
+.Ar file
+instead of the standard output. If an initial portion of the output
+.Ar file
+is skipped using the seek operand, the output file is truncated at that
+point.
+.It Ar seek=N
+Seek
+.Ar N
+blocks from the beginning of the output before copying.
+.It Ar skip=N
+Skip
+.Ar N
+blocks from the beginning of the input before copying.
+.It Ar conv=notrunc
+Do not truncate the output file.
+.El

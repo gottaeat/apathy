@@ -1,0 +1,58 @@
+.Dd February 2, 2015
+.Dt UNSHARE 1
+.Os ubase
+.Sh NAME
+.Nm unshare
+.Nd run program with some namespaces unshared from parent
+.Sh SYNOPSIS
+.Nm
+.Op Fl muinpU
+.Ar cmd
+.Op Ar args...
+.Sh DESCRIPTION
+.Nm
+unshares the indicated namespaces from the parent process and then executes
+the specified program. The namespaces to be unshared are indicated via
+options.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl i
+Unshare the System V IPC namespace, so that the calling process has a
+private copy of the System V IPC namespace which is not shared with
+any other process. This flag has the same effect as the
+.Xr clone 2
+.Dv CLONE_NEWIPC
+flag.
+.It Fl m
+Unshare the mount namespace, so that the calling process has a private
+copy of its namespace which is not shared with any other process.
+This flag has the same effect as the
+.Xr clone 2
+.Dv CLONE_NEWNS
+flag.
+.It Fl n
+Unshare the network namespace, so that the calling process is moved
+into a new network namespace which is not shared with any previously
+existing process. This flag has the same effect as the
+.Xr clone 2
+.Dv CLONE_NEWNET
+flag.
+.It Fl u
+Unshare the UTS IPC namespace, so that the calling process has a
+private copy of the UTS namespace which is not shared with any other
+process. This flag has the same effect as the
+.Xr clone 2
+.Dv CLONE_NEWUTS
+flag.
+.It Fl p
+Create the process in a new PID namespace. This flag has the same
+effect as the
+.Xr clone 2
+.Dv CLONE_NEWPID
+flag.
+.It Fl U
+The process will have a distinct set of UIDs, GIDs and capabilities.
+.El
+.Sh SEE ALSO
+.Xr clone 2 ,
+.Xr unshare 2

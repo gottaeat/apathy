@@ -1,0 +1,39 @@
+.Dd February 2, 2015
+.Dt SU 1
+.Os ubase
+.Sh NAME
+.Nm su
+.Nd run a command with a substitute user and group ID
+.Sh SYNOPSIS
+.Nm
+.Op Fl lp
+.Op Ar username
+.Sh DESCRIPTION
+.Nm
+allows to run commands with a substitute user and group ID. When called
+without arguments,
+.Nm
+defaults to running an interactive shell as root. For backward compatibility
+.Nm
+defaults to not change the current directory and to only set the environment
+variables
+.Ev HOME
+and
+.Ev SHELL
+(plus
+.Ev USER
+and
+.Ev LOGNAME
+if the target
+.Ar username
+is not root).
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl l
+Starts the shell as login shell with an environment similar to a real
+login.
+.It Fl p
+Preserves the whole environment. This option is ignored if the
+.Fl l
+option is specified.
+.El

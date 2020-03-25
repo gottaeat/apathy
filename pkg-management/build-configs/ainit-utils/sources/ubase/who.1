@@ -1,0 +1,28 @@
+.Dd February 2, 2015
+.Dt WHO 1
+.Os ubase
+.Sh NAME
+.Nm who
+.Nd print who has logged on
+.Sh SYNOPSIS
+.Nm
+.Op Fl lm
+.Sh DESCRIPTION
+.Nm
+prints a list of who has logged on, their controlling tty, and the
+time at which they logged on.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl l
+Print LOGIN processes as well.
+.It Fl m
+Only show users on current tty.
+.El
+.Sh SEE ALSO
+.Xr utmp 5
+.Sh BUGS
+.Nm
+relies on the utmp file to be updated responsibly. This
+doesn't always happen, which can cause
+.Nm
+to print completely bogus data.

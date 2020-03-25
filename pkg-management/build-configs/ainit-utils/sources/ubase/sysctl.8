@@ -1,0 +1,24 @@
+.Dd February 2, 2015
+.Dt SYSCTL 8
+.Os ubase
+.Sh NAME
+.Nm sysctl
+.Nd configure kernel parameters at runtime
+.Sh SYNOPSIS
+.Nm
+.Op Fl p Ar file
+.Ar variable Ns Oo Ar =value Oc Ns ...
+.Sh DESCRIPTION
+.Nm
+modifies kernel parameters at runtime. The parameters available are those
+listed under
+.Pa /proc/sys/ .
+Procfs is required for sysctl support in Linux. You can use
+.Nm
+to both read and write sysctl data.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl p
+Load the sysctl key=value pairs from
+.Ar file .
+.El

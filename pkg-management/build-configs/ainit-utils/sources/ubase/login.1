@@ -1,0 +1,27 @@
+.Dd February 2, 2015
+.Dt LOGIN 1
+.Os ubase
+.Sh NAME
+.Nm login
+.Nd log into the system
+.Sh SYNOPSIS
+.Nm
+.Op Fl p
+.Ar username
+.Sh DESCRIPTION
+.Nm
+logs the
+.Ar username
+into the system. It sets
+.Ev HOME ,
+.Ev SHELL ,
+.Ev USER ,
+.Ev LOGNAME
+and the
+.Ev PATH environment variables and invokes the login shell as specified in
+.Pa /etc/passwd .
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl p
+Preserve the environment.
+.El

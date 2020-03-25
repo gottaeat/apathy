@@ -1,0 +1,15 @@
+.Dd September 7, 2015
+.Dt CHVT 1
+.Os ubase
+.Sh NAME
+.Nm chvt
+.Nd change foreground virtual terminal
+.Sh SYNOPSIS
+.Nm
+.Ar num
+.Sh DESCRIPTION
+.Nm
+brings
+.Pf /dev/tty Ar num
+to the foreground. This has the same effect as
+.Pf Ctrl-Alt-F Ar num .

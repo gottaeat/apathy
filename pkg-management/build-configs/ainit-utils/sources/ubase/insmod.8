@@ -1,0 +1,18 @@
+.Dd February 2, 2015
+.Dt INSMOD 8
+.Os ubase
+.Sh NAME
+.Nm insmod
+.Nd insert a module into the Linux kernel
+.Sh SYNOPSIS
+.Nm
+.Ar filename
+.Op Ar args...
+.Sh DESCRIPTION
+.Nm
+inserts the module specified by
+.Ar filename
+into the kernel. It does not handle module dependencies.
+.Sh SEE ALSO
+.Xr lsmod 8 ,
+.Xr rmmod 8

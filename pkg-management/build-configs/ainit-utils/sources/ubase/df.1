@@ -1,0 +1,27 @@
+.Dd February 2, 2015
+.Dt DF 1
+.Os ubase
+.Sh NAME
+.Nm df
+.Nd show file system usage
+.Sh SYNOPSIS
+.Nm
+.Op Fl ahis
+.Sh DESCRIPTION
+.Nm
+displays the amount of disk space available on a file system.
+If no arguments are given,
+.Nm
+shows all the file systems using 512-byte blocks.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl a
+Show all file systems including dummy ones. This is the default
+option.
+.It Fl h
+Not implemented.
+.It Fl i
+Not implemented.
+.It Fl s
+Not implemented.
+.El

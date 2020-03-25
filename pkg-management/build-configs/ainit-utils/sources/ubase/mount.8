@@ -1,0 +1,61 @@
+.Dd February 2, 2015
+.Dt MOUNT 8
+.Os ubase
+.Sh NAME
+.Nm mount
+.Nd mount a filesystem
+.Sh SYNOPSIS
+.Nm
+.Op Fl BMRan
+.Op Fl o Ar options
+.Op Fl t Ar fstype
+.Op Ar source
+.Op Ar target
+.Sh DESCRIPTION
+.Nm
+attaches the filesystem specified to the filesystem hierarchy. The
+.Xr umount 8
+command will detach it again.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl B
+Remount a subtree somewhere else (so that its contents are visible in both
+places).
+.It Fl M
+Move a subtree to some other place.
+.It Fl R
+Remount a subtree and all possible submounts somewhere else (so that its
+contents are available in both places).
+.It Fl a
+Mount all filesystems mentioned in
+.Pa /etc/fstab .
+.It Fl n
+Mount without writing in
+.Pa /etc/mtab .
+This is the default action.
+.It Fl o Ar options
+Specify a comma separated string of filesystem specific options.
+.It Fl t Ar fstype
+Set the filesystem type. More than one type may be specified in a comma
+separated list. The list of file system types can be prefixed with "no" to
+specify the file system types for which action should not be taken. For
+example, the
+.Nm
+command:
+.Bd -literal
+# mount -a -t nonfs,ext4
+
+.Ed
+mounts all file systems except those of type NFS and EXT4.
+.Nm
+will attempt to execute a program in your
+.Ev PATH
+mount.XXX where XXX is replaced by the type name. For example, NFS file
+systems are mounted by the program
+.Pa mount.nfs .
+.El
+.Sh SEE ALSO
+.Xr mount 2 ,
+.Xr umount 2 ,
+.Xr swapon 8 ,
+.Xr umount 8

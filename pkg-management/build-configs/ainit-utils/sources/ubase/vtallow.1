@@ -1,0 +1,21 @@
+.Dd December 5, 2014
+.Dt VTALLOW 1
+.Os ubase
+.Sh NAME
+.Nm vtallow
+.Nd enable or disable the VT switch
+.Sh SYNOPSIS
+.Nm vtallow
+.Ar n | Ar y
+.Sh DESCRIPTION
+.Nm
+controls the VT switch lock.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Ar n
+Disable VT switching.
+.It Ar y
+Enable VT switching.
+.El
+.Sh SEE ALSO
+.Xr chvt 1

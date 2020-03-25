@@ -1,0 +1,15 @@
+.Dd February 2, 2015
+.Dt PASSWD 1
+.Os ubase
+.Sh NAME
+.Nm passwd
+.Nd change a user's password
+.Sh SYNOPSIS
+.Nm
+.Op Ar username
+.Sh DESCRIPTION
+.Nm
+changes the user's password. The user is prompted for their current password.
+If the current password is correctly typed, a new password is requested. The
+new password must be entered twice to avoid typing errors. The superuser is
+not required to provide a user's current password.

@@ -1,0 +1,15 @@
+.Dd February 2, 2015
+.Dt READAHEAD 8
+.Os ubase
+.Sh NAME
+.Nm preload
+.Nd preload files into disk cache
+.Sh SYNOPSIS
+.Nm
+.Ar file...
+.Sh DESCRIPTION
+.Nm
+preloads files into the kernel's disk cache. The number of pages preloaded
+depends on the kernel but it is usually around 2MB.
+.Sh SEE ALSO
+.Xr readahead 2

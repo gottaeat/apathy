@@ -1,0 +1,21 @@
+.Dd February 2, 2015
+.Dt HALT 8
+.Os ubase
+.Sh NAME
+.Nm halt
+.Nd power-off or reboot the machine
+.Sh SYNOPSIS
+.Nm
+.Op Fl pr
+.Sh DESCRIPTION
+.Nm
+can be used to power-off or reboot the machine.
+This is a low-level tool and should not be used directly or data-loss
+can happen if the filesystems are not properly unmounted first.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl p
+Power-off the machine.
+.It Fl r
+Reboot the machine.
+.El

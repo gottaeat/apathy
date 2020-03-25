@@ -1,0 +1,28 @@
+.Dd February 2, 2015
+.Dt DMESG 1
+.Os ubase
+.Sh NAME
+.Nm dmesg
+.Nd print or control the kernel ring buffer
+.Sh SYNOPSIS
+.Nm
+.Op Fl Ccr
+.Op Fl n Ar level
+.Sh DESCRIPTION
+.Nm
+examines or controls the kernel ring buffer. By default it reads all the
+messages from the kernel ring buffer and prints them to stdout.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl C
+Clear the ring buffer.
+.It Fl c
+Clear the ring buffer after printing its contents.
+.It Fl n Ar level
+Set the console
+.Ar level .
+The log levels are defined in the file
+.Pa include/linux/kern_levels.h .
+.It Fl r
+Print the raw message buffer.
+.El

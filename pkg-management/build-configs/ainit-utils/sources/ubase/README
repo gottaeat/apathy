@@ -1,0 +1,29 @@
+ubase - suckless linux base utils
+=================================
+
+ubase is  a collection of  tools similar  in spirit to  util-linux but
+much simpler.
+
+The complement  of ubase  is sbase[1] which  mostly follows  POSIX and
+provides all the portable tools.  Together they are intended to form a
+base system similar to busybox but much smaller and suckless.
+
+Building
+--------
+
+To  build ubase,  simply  type  make.  You  may  have  to fiddle  with
+config.mk and config.h depending on your system.
+
+You  can  also  build  ubase-box,  which  generates  a  single  binary
+containing  all  the  required  tools.    You  can  then  symlink  the
+individual tools to ubase-box or run: make ubase-box-install.
+
+To run the tools for ubase-box directly use: ubase-box cmd [args]
+
+Ideally you will  want to statically link ubase.   We highly recommend
+using musl-libc[2].
+
+ubase is known to compile with gcc, clang and tcc.
+
+[1] http://git.suckless.org/sbase/
+[2] http://www.musl-libc.org/

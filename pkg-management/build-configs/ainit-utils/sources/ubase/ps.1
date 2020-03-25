@@ -1,0 +1,29 @@
+.Dd February 2, 2015
+.Dt PS 1
+.Os ubase
+.Sh NAME
+.Nm ps
+.Nd display process status
+.Sh SYNOPSIS
+.Nm
+.Op Fl aAdef
+.Sh DESCRIPTION
+.Nm
+displays information about active processes.  When given no options,
+.Nm
+prints information about processes of the current user that has a
+controlling terminal.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl a
+Select all processes except both session leaders and processes not
+associated with a terminal.
+.It Fl A
+Select all processes.  Identical to \fB-e\fR.
+.It Fl d
+Select all processes except session leaders.
+.It Fl e
+Select all processes.  Identical to \fB-A\fR.
+.It Fl f
+Do full-format listing.
+.El

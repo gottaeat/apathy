@@ -1,0 +1,40 @@
+.Dd February 2, 2015
+.Dt UMOUNT 8
+.Os ubase
+.Sh NAME
+.Nm umount
+.Nd unmount file systems
+.Sh SYNOPSIS
+.Nm
+.Op Fl fln
+.Ar target...
+.Nm
+.Op Fl fln
+.Fl a
+.Sh DESCRIPTION
+.Nm
+detaches the
+.Ar target
+filesystem(s). A file system is specified by giving the directory where it
+has been mounted. Giving the special device on which the file system
+lives may also work, but is obsolete, mainly because it will fail in
+case this device was mounted on more than one directory.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl a
+All of the file systems described in
+.Pa /proc/mounts
+are unmounted. The proc filesystem is not unmounted.
+.It Fl f
+Force unmount (in case of an unreachable NFS server).
+.It Fl l
+Lazy unmount. Detach the filesystem from the fs hierarchy now, and cleanup
+all references to the filesystem as soon as it is not busy anymore.
+.It Fl n
+Unmount without writing in
+.Pa /etc/mtab .
+This is the default action.
+.El
+.Sh SEE ALSO
+.Xr umount 2 ,
+.Xr mount 8
