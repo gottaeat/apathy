@@ -522,8 +522,8 @@ pref("browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features", false
 pref("offline-apps.allow_by_default", false);
 
 // isolation
-pref("privacy.firstparty.isolate", true);
-pref("privacy.firstparty.isolate.restrict_opener_access", true);
+//pref("privacy.firstparty.isolate", true);
+//pref("privacy.firstparty.isolate.restrict_opener_access", true);
 pref("browser.startup.blankWindow", false);
 
 // pocket / hello
