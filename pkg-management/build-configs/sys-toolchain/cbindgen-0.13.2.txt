@@ -1,0 +1,4 @@
+cargo fetch --locked
+cargo build --release --frozen
+
+file target/release/cbindgen
