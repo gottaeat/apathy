@@ -1,0 +1,114 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+/* --- tab style --- */
+.tab-content{
+ background-color:    #000000   !important;
+ border:              solid 1px !important;
+ border-color:        #000000   !important;
+ border-bottom-color: #525252   !important;
+}
+
+.tab-content[selected="true"]{
+ border-bottom-color: #f7f7f7   !important;
+}
+
+/* style of the border at the very bottom */
+#navigator-toolbox {border-color:     #101010 !important;}
+#tabbrowser-tabs   {background-color: #000000 !important;}
+
+/* tabs at bottom */
+#titlebar { -moz-box-ordinal-group: 2 !important;}
+
+/* disable the line above tabs */
+#TabsToolbar .tabbrowser-tab .tab-line {display: none !important;}
+
+/* disable tab separator */
+.tabbrowser-tab::before, .tabbrowser-tab::after{display: none !important;}
+
+/* render the close button only when hovered */
+.tabbrowser-tab:not(:hover) .tab-close-button         {display: none  !important;}
+.tabbrowser-tab:not([pinned]):hover .tab-close-button {display: block !important;}
+.tabbrowser-tab .tab-close-button {
+ fill:    #ffffff !important;
+ padding: 0px  !important;
+ margin:  0px  !important;
+ width:   14px !important;
+ height:  14px !important;
+}
+
+/* meme */
+.tabbrowser-tab           {opacity: 0.75 !important;}
+.tabbrowser-tab:hover     {opacity: 1    !important;}
+.tabbrowser-tab[selected] {opacity: 1    !important;}
+
+/* tab height*/
+:root {
+ --tab-toolbar-navbar-overlap: 0px !important; /* fix for full screen mode */
+ --tab-min-height: 22px !important;
+}
+:root #tabbrowser-tabs {--tab-min-height: 22px !important;}
+#TabsToolbar {height: var(--tab-min-height) !important;}
+
+/* new tab icon style */
+.tabs-newtab-button.toolbarbutton-1 .toolbarbutton-icon {
+ fill:        #ffffff !important;
+ padding:     0px     !important;
+ margin-left: 2px     !important;
+ width:       12px    !important;
+ height:      12px    !important;
+}
+
+.tabs-newtab-button.toolbarbutton-1:hover .toolbarbutton-icon {fill: #ffffff !important;}
+/* --- tab style end --- */
+
+
+/* --- bookmarks style ---*/
+/* hide icons for bookmark folders */
+#personal-bookmarks .bookmark-item[container="true"] .toolbarbutton-icon { display:none!important;}
+
+/* change padding of bookmark icons */
+#personal-bookmarks #PlacesToolbar toolbarbutton.bookmark-item {
+ margin:  0px !important;
+ padding: 2px !important;
+}
+
+#PlacesToolbar .bookmark-item:hover {
+ border-radius:    0px     !important;
+ background-color: #252525 !important;
+ color:            #ffffff !important;
+}
+
+#PlacesToolbar {
+ background-color: #000000 !important;
+ color:            #ffffff !important;
+}
+
+#PersonalToolbar {
+ box-shadow:       none    !important;
+ background-color: #000000 !important;
+ background-image: none    !important;
+ font-weight:      bold    !important;
+}
+/* --- bookmarks style end ---*/
+
+
+/* --- url bar style --- */
+#urlbar{
+ background-color: #000000   !important;
+ box-shadow:       none      !important;
+ border-radius:    0px       !important;
+ border-color:     #101010   !important;
+ color :           #ffffff   !important;
+}
+#urlbar:hover{box-shadow: none !important;}
+#nav-bar-customization-target {background-color: #000000 !important;}
+#page-action-buttons{display: none !important;}
+/* --- url bar style end --- */
+
+
+/* --- toolbar buttons style --- */
+.toolbarbutton-1 {
+ fill:             #ffffff !important;
+ background-color: #000000 !important;
+}
+/* --- toolbar buttons style end--- */
