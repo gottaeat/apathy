@@ -141,7 +141,7 @@ read answerinst
  if [ "$answerinst" != "${answerinst#[Yy]}" ]
   then
    aprint_ret "installing to ${c_lcyan}${instdir}${c_reset}."
-    DESTDIR="${instdir}" python2.7 mach install >> "$redirect_to" 2>&1 
+    DESTDIR="${instdir}" ./mach install >> "$redirect_to" 2>&1 
    evalret
 
    aprint_ret "removing unnecessary directories."
