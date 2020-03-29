@@ -1,6 +1,0 @@
-#!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
-rootcheck
-
-ainitmes "powering off the system."
-kill -s USR1 1

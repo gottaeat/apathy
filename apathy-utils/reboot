@@ -1,6 +1,0 @@
-#!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
-rootcheck
-
-ainitmes "rebooting the system."
-kill -s INT 1
