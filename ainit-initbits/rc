@@ -1,11 +1,10 @@
 #!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
-
 # a1 >> set vars
-sdir="/mss/initbits/scripts"
-initver="sinit-1.1-apathy"
-curdate="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($1),$2,$3}')"
-curkern="$(uname -r)"
+bitsdir="/mss/initbits"
+sdir="${bitsdir}/scripts"
+
+# a2 >> source the funcs
+. "${bitsdir}"/bin/apathy-init-funcs
 
 # a2 >> shut dmesg up for the love of god
 dmesg --console-off
@@ -14,48 +13,26 @@ dmesg --console-off
 trap "" INT QUIT TSTP
 
 # b1 >> funcs
-printlogo(){
- ainit_nc
- ainitmes "${c_red}   __,  ,_   __,  -/- /_";     ainit_nc
- ainitmes " (_/(__/_)_(_/(__/__/ (__(_/_";        ainit_nc
- ainitmes "      /                  _/_";         ainit_nc
- ainitmes "     /                  (/${c_reset}"; ainit_nc
- ainit_nc
-}
+banner(){
+ datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
+ datefmt="${c_green}${datefmt}${c_reset}"
 
-welcome(){
- clear; printlogo
+ clear
 
- ainitmes "welcome to ${c_blue}apathy ${c_red}musl ${c_green}1.2${c_reset}."; ainit_nc
- ainitmes "running on kernel ${c_green}${curkern}${c_reset}.";                ainit_nc
- 
- ainit_nc
- ainitmes "${c_green}${curdate}${c_reset} - ${c_green}${initver}${c_reset}";  ainit_nc
- ainit_nc
-}
-
-goodbye(){
- clear; printlogo
-
- ainitmes "shutting ${c_blue}apathy ${c_red}musl ${c_green}1.2${c_reset} down."; ainit_nc
- ainit_nc
+ ainit_nc; ainit_nc
+ ainitmes "${c_blue}apathy ${c_red}musl ${c_lcyan}1.2 - ${datefmt}"; ainit_nc
+ ainit_nc; ainit_nc
 }
 
 initboi(){
- /bin/ash /mss/initbits/config/term-colors.conf
- welcome
+ banner
 
- /mss/initbits/bin/ctrlaltdel -s
+ ctrlaltdel -s
 
  $sdir/mountvirtfs	start || /bin/ash
  $sdir/localnet		start
  $sdir/udev		start
-
- cd /dev
- ln -sf /proc/self/fd/0  stdin
- ln -sf /proc/self/fd/1  stdout
- ln -sf /proc/self/fd/2  stderr
- cd - 1>/dev/null
+ $sdir/stdstreams	start
 
  $sdir/swap		start
  $sdir/checkfs		start
@@ -74,8 +51,6 @@ initboi(){
  $sdir/dnscrypt-proxy	start
 #$sdir/ssh		start
 
- : > /var/run/utmp
-
  /mss/bin/sh -c '/mss/initbits/bin/respawn \
                  /mss/initbits/bin/getty   \
                  /dev/tty1 linux' &>/dev/null &
@@ -85,10 +60,12 @@ initboi(){
  /mss/bin/sh -c '/mss/initbits/bin/respawn \
                  /mss/initbits/bin/getty   \
                  /dev/tty3 linux' &>/dev/null &
+
+ ainit_nc
 }
 
 poweroffboi(){
- goodbye
+ banner
 
  $sdir/gpm		stop
  $sdir/mpd		stop
@@ -103,13 +80,11 @@ poweroffboi(){
  $sdir/mountfs		stop
  $sdir/localnet		stop
 
- /mss/initbits/bin/sync
- sleep 3
- /mss/initbits/bin/halt -p
+ sync; sleep 3; halt -p
 }
 
 rebootboi(){
- goodbye
+ banner
 
  $sdir/gpm		stop
  $sdir/mpd		stop
@@ -124,9 +99,7 @@ rebootboi(){
  $sdir/mountfs		stop
  $sdir/localnet		stop
 
- /mss/initbits/bin/sync
- sleep 3
- /mss/initbits/bin/halt -r
+ sync; sleep 3; halt -r
 }
 
 case "${1}" in
