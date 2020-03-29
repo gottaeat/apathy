@@ -7,6 +7,7 @@ case "$1" in
    ainitmes "setting ${c_lcyan}bfq${c_reset} as the scheduler for ${c_lcyan}${blockdevice}${c_reset}."
     echo bfq > ${blockdevice}/queue/scheduler
    evalret
+   sleep 1
   done
  ;;
  *)
