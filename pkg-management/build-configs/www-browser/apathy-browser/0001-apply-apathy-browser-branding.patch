@@ -1,0 +1,341 @@
+From a8ae44ab3a0256fa83b3b882afb99e508adc6a00 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sun, 29 Mar 2020 04:38:49 +0300
+Subject: [PATCH] apply apathy browser branding.
+
+---
+ palemoon/base/content/aboutDialog.xul         |   7 +-
+ .../shared/locales/browserconfig.properties   |   4 +-
+ palemoon/branding/shared/pref/preferences.inc | 110 +++++-------------
+ palemoon/branding/shared/pref/uaoverrides.inc |  44 +------
+ palemoon/branding/unofficial/branding.nsi     |  12 +-
+ palemoon/branding/unofficial/configure.sh     |   2 +-
+ .../unofficial/locales/en-US/brand.dtd        |   6 +-
+ .../unofficial/locales/en-US/brand.properties |   6 +-
+ .../unofficial/pref/palemoon-branding.js      |   4 +-
+ 9 files changed, 56 insertions(+), 139 deletions(-)
+
+diff --git a/palemoon/base/content/aboutDialog.xul b/palemoon/base/content/aboutDialog.xul
+index 6edfc2155..1bcc01584 100644
+--- a/palemoon/base/content/aboutDialog.xul
++++ b/palemoon/base/content/aboutDialog.xul
+@@ -63,10 +63,9 @@
+           or getting involved in our development by tackling some of the issues found in our GitHub issue tracker.
+ #endif
+ #else
+-          &brandFullName; is released by &vendorShortName;.
+-        </description>
+-        <description class="text-credits">
+-          This is an unofficial build of Pale Moon. For official builds, please go to <label class="text-link" href="http://www.palemoon.org/">the Pale Moon website</label>.
++        &brandFullName; is a  <label class="text-link" href="https://www.palemoon.org/">pale moon</label> fork released by &vendorShortName;.</description>
++        <description class="text-credits text-center">details can be found at <label class="text-link" href="https://github.com/mssx86/apathy/">apathy linux repo</label>.
++
+ #endif
+         </description>    
+     </vbox>
+diff --git a/palemoon/branding/shared/locales/browserconfig.properties b/palemoon/branding/shared/locales/browserconfig.properties
+index 92d237144..b5e4d464b 100644
+--- a/palemoon/branding/shared/locales/browserconfig.properties
++++ b/palemoon/branding/shared/locales/browserconfig.properties
+@@ -3,5 +3,5 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ # Do NOT localize or otherwise change these values
+-browser.startup.homepage=http://start.palemoon.org/
+-browser.startup.homepage_reset=http://start.palemoon.org/
++browser.startup.homepage=https://mss.neocities.org/startpage/
++browser.startup.homepage_reset=https://mss.neocities.org/startpage/
+diff --git a/palemoon/branding/shared/pref/preferences.inc b/palemoon/branding/shared/pref/preferences.inc
+index fe1a2f003..cf793c528 100644
+--- a/palemoon/branding/shared/pref/preferences.inc
++++ b/palemoon/branding/shared/pref/preferences.inc
+@@ -1,91 +1,41 @@
+-// ===| General |==============================================================
+-
+-pref("startup.homepage_welcome_url","http://www.palemoon.org/firstrun.shtml");
+-
+-pref("app.vendorURL", "http://www.palemoon.org/");
+-
+-
+-// User Interface
+-pref("browser.identity.ssl_domain_display", 1); //show domain verified SSL (blue)
+-
+-// ============================================================================
+-
+-// ===| Application Update Service |===========================================
+-
+-// The time interval between the downloading of mar file chunks in the
+-// background (in seconds)
++// set urls
++pref("startup.homepage_welcome_url","https://mss.neocities.org/apathy/");
++pref("app.vendorURL", "https://github.com/mssx86/apathy");
++
++// from privacy watchdog
++pref("extensions.blocklist.enabled", false);
++pref("services.sync.prefs.sync.security.OCSP.enabled", false);
++pref("security.OCSP.GET.enabled", false);
++pref("security.OCSP.require", false);
++pref("security.OCSP.enabled", 0);
++pref("geo.enabled", false);
++pref("webgl.disabled", "true");
++pref("canvas.poisondata", "true");
++
++// pm 28.9.0.2 defaults
++pref("browser.identity.ssl_domain_display", 1);
+ pref("app.update.download.backgroundInterval", 600);
+-
+-// Give the user x seconds to react before showing the big UI. default=48 hours
+ pref("app.update.promptWaitTime", 172800);
+-
+-// ============================================================================
+-
+-// ===| Add-ons Manager |======================================================
+-
+-// Add-on window fixes
+ pref("extensions.getMoreThemesURL", "https://addons.palemoon.org/themes/");
+-
+-pref("extensions.update.autoUpdateDefault", true); // Automatically update extensions by default
++pref("extensions.update.autoUpdateDefault", true);
+ pref("extensions.getAddons.maxResults", 10);
+ pref("extensions.getAddons.cache.enabled", false);
+-
+-// ============================================================================
+-
+-// ===| DOM |==================================================================
+-
+-// Set max script runtimes to sane values
+-pref("dom.max_chrome_script_run_time", 90); //Some addons need ample time!
+-pref("dom.max_script_run_time", 20); //Should be plenty for a page script to do what it needs
+-
+-// ============================================================================
+-
+-// ===| Plugins |==============================================================
+-
+-pref("plugin.default.state", 2); //Allow plugins to run by default
+-pref("plugin.expose_full_path", true); //Security: expose the full path to the plugin
++pref("dom.max_chrome_script_run_time", 90);
++pref("dom.max_script_run_time", 20);
++pref("plugin.default.state", 2);
++pref("plugin.expose_full_path", true);
+ pref("dom.ipc.plugins.timeoutSecs", 20);
+-
+-// ============================================================================
+-
+-// ===| Graphics |=============================================================
+-
+ pref("nglayout.initialpaint.delay", 300);
+-
+-// ============================================================================
+-
+-// ===| Image |================================================================
+-
+ pref("image.mem.max_ms_before_yield", 50);
+-pref("image.mem.decode_bytes_at_a_time", 65536); //larger chunks
+-
+-// ============================================================================
+-
+-// ===| Sync |=================================================================
+-
+-// Pale Moon Sync server URLs
+-pref("services.sync.serverURL","https://pmsync.palemoon.org/sync/index.php/");
+-pref("services.sync.jpake.serverURL","https://keyserver.palemoon.org/");
+-pref("services.sync.termsURL", "http://www.palemoon.org/sync/terms.shtml");
+-pref("services.sync.privacyURL", "http://www.palemoon.org/sync/privacy.shtml");
+-pref("services.sync.statusURL", "https://pmsync.palemoon.org/status/");
+-pref("services.sync.syncKeyHelpURL", "http://www.palemoon.org/sync/help/recoverykey.shtml");
+-
+-pref("services.sync.APILevel", 1); // FSyncMS doesn't support 'info/configuration' requests
+-
+-// ============================================================================
+-
+-// ===| Misc. |================================================================
+-
+-// Make sure we shortcut out of a11y to save walking unnecessary code
++pref("image.mem.decode_bytes_at_a_time", 65536);
+ pref("accessibility.force_disabled", 1);
+-
+-// ============================================================================
+-
+-// ===| DevTools |=============================================================
+-
+-// Number of usages of the web console or scratchpad.
+-// If this is less than 5, then pasting code into the web console or scratchpad is disabled
+ pref("devtools.selfxss.count", 100);
+ 
+-// ============================================================================
++// disable sync
++pref("services.sync.serverURL","");
++pref("services.sync.jpake.serverURL","");
++pref("services.sync.termsURL", "");
++pref("services.sync.privacyURL", "");
++pref("services.sync.statusURL", "");
++pref("services.sync.syncKeyHelpURL", "");
++pref("services.sync.APILevel", 1);
+diff --git a/palemoon/branding/shared/pref/uaoverrides.inc b/palemoon/branding/shared/pref/uaoverrides.inc
+index 5a0ef27c5..87f51aa36 100644
+--- a/palemoon/branding/shared/pref/uaoverrides.inc
++++ b/palemoon/branding/shared/pref/uaoverrides.inc
+@@ -1,32 +1,20 @@
+-// ===| Site Specific User Agent Overrides |===================================
+-
++// defines from default 28.9.0.2
+ #define GUAO_PREF general.useragent.override
+-
+ #define GRE_VERSION @MOZILLA_UAVERSION_U@
+ #define GRE_VERSION_SLICE Goanna/@GRE_VERSION@
+ #define GRE_DATE_SLICE Goanna/20170101
+ #define PM_SLICE PaleMoon/@MOZ_APP_VERSION@
+-
+ #define GK_VERSION @MOZILLA_COMPATVERSION_U@
+ #define GK_SLICE Gecko/20100101
+ #define FX_SLICE Firefox/@GK_VERSION@
+-
+-#ifdef XP_UNIX
+-#ifndef XP_MACOSX
+ #define OS_SLICE X11; Linux x86_64;
+-#else
+-#define OS_SLICE Macintosh; Intel Mac OS X 10.11;
+-#endif
+-#else
+-#define OS_SLICE Windows NT 6.1; WOW64;
+-#endif
+ 
+-// Special-case AMO
+-// We send the native UA slice now, since they no longer offer any compatible extensions for us.
+-// This will result in an "only with Firefox" message which suits us fine, because it's the truth.
+-pref("@GUAO_PREF@.addons.mozilla.org","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
++// apathy-browser overrides
++pref("@GUAO_PREF@.pixiv.net", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) Gecko/20100101 Firefox/68.0");
++pref("@GUAO_PREF@.deezer.com", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) Gecko/20100101 Firefox/68.0");
+ 
+-// Required for domains that have proven unresponsive to requests from users
++// default useragent overrides from 28.9.0.2
++pref("@GUAO_PREF@.addons.mozilla.org","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+ pref("@GUAO_PREF@.live.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
+ pref("@GUAO_PREF@.msn.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
+ pref("@GUAO_PREF@.bing.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
+@@ -41,25 +29,13 @@ pref("@GUAO_PREF@.yahoo.com","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefo
+ pref("@GUAO_PREF@.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:60.0) @GK_SLICE@ Firefox/60.0 @PM_SLICE@");
+ pref("@GUAO_PREF@.gaming.youtube.com","Mozilla/5.0 (@OS_SLICE@ rv:42.0) @GK_SLICE@ Firefox/42.0");
+ pref("@GUAO_PREF@.dropbox.com","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefox/99.9 (Pale Moon)");
+-
+ pref("@GUAO_PREF@.players.brightcove.net","Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko");
+-
+-// The never-ending Facebook debacle...
+ pref("@GUAO_PREF@.facebook.com","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefox/99.9 (Pale Moon)");
+ pref("@GUAO_PREF@.fbcdn.net","Mozilla/5.0 (@OS_SLICE@ rv:99.9) @GK_SLICE@ Firefox/99.9 (Pale Moon)");
+-
+-
+-// UA-Sniffing domains below are pending responses from their operators - temp workaround
+ pref("@GUAO_PREF@.chase.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@");
+-// For Amazon Prime videos
+ pref("@GUAO_PREF@.www.amazon.com","Mozilla/5.0 (@OS_SLICE@ rv:45.9) @GK_SLICE@ Firefox/45.9 (Pale Moon)");
+-// Soundcloud uses Firefox-exclusive combinations of code. Never pass Firefox slice.
+ pref("@GUAO_PREF@.soundcloud.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+-// Daily motion only likes strict Firefox UAs
+ pref("@GUAO_PREF@.dailymotion.com","Mozilla/5.0 (@OS_SLICE@ rv:52.0) @GK_SLICE@ Firefox/52.0");
+-
+-
+-// The following requires native mode. Or it blocks.. "too old firefox", breakage, etc.
+ pref("@GUAO_PREF@.deviantart.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+ pref("@GUAO_PREF@.deviantart.net","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+ pref("@GUAO_PREF@.altibox.dk","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+@@ -68,19 +44,11 @@ pref("@GUAO_PREF@.firefox.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_D
+ pref("@GUAO_PREF@.mozilla.org","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+ pref("@GUAO_PREF@.mozilla.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+ pref("@GUAO_PREF@.github.com","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
+-
+-// UA-Sniffing domains below have indicated no interest in supporting Pale Moon (BOO!)
+ pref("@GUAO_PREF@.humblebundle.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
+ pref("@GUAO_PREF@.privat24.ua","Mozilla/5.0 (@OS_SLICE@ rv:38.0) @GK_SLICE@ Firefox/38.0");
+ pref("@GUAO_PREF@.citi.com","Mozilla/5.0 (@OS_SLICE@ rv:57.0) @GK_SLICE@ Firefox/57.0 (Pale Moon)");
+ pref("@GUAO_PREF@.netflix.com","Mozilla/5.0 (@OS_SLICE@ rv:45.9) @GK_SLICE@ Firefox/45.9");
+ pref("@GUAO_PREF@.netflximg.net","Mozilla/5.0 (@OS_SLICE@ rv:45.9) @GK_SLICE@ Firefox/45.9");
+-
+-// UA-sniffing domains that are "app/vendor-specific" and do not like Pale Moon
+ pref("@GUAO_PREF@.web.whatsapp.com","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36");
+-
+-// The following domains do not like the Goanna slice
+ pref("@GUAO_PREF@.hitbox.tv","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@");
+ pref("@GUAO_PREF@.yuku.com","Mozilla/5.0 (@OS_SLICE@ rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ @PM_SLICE@");
+-
+-// ============================================================================
+diff --git a/palemoon/branding/unofficial/branding.nsi b/palemoon/branding/unofficial/branding.nsi
+index 62ed242a2..d3a3873cb 100644
+--- a/palemoon/branding/unofficial/branding.nsi
++++ b/palemoon/branding/unofficial/branding.nsi
+@@ -8,9 +8,9 @@
+ 
+ # BrandFullNameInternal is used for some registry and file system values
+ # instead of BrandFullName and typically should not be modified.
+-!define BrandFullNameInternal "New Moon"
+-!define CompanyName           "Moonchild Productions"
+-!define URLInfoAbout          "http://www.palemoon.org"
+-!define URLUpdateInfo         "http://www.palemoon.org"
+-!define HelpLink              "http://www.palemoon.org"
+-!define URLSystemRequirements "http://www.palemoon.org/download.shtml"
++!define BrandFullNameInternal "apathy browser"
++!define CompanyName           "mssx86 - apathy linux"
++!define URLInfoAbout          "https://github.com/mssx86/apathy"
++!define URLUpdateInfo         "https://github.com/mssx86/apathy"
++!define HelpLink              "https://github.com/mssx86/apathy"
++!define URLSystemRequirements "https://github.com/mssx86/apathy"
+diff --git a/palemoon/branding/unofficial/configure.sh b/palemoon/branding/unofficial/configure.sh
+index c03b8382a..d61f4c2c4 100644
+--- a/palemoon/branding/unofficial/configure.sh
++++ b/palemoon/branding/unofficial/configure.sh
+@@ -2,4 +2,4 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-MOZ_APP_DISPLAYNAME="New Moon"
++MOZ_APP_DISPLAYNAME="apathy browser"
+diff --git a/palemoon/branding/unofficial/locales/en-US/brand.dtd b/palemoon/branding/unofficial/locales/en-US/brand.dtd
+index debb7442d..c8ad64ea3 100644
+--- a/palemoon/branding/unofficial/locales/en-US/brand.dtd
++++ b/palemoon/branding/unofficial/locales/en-US/brand.dtd
+@@ -2,7 +2,7 @@
+    - License, v. 2.0. If a copy of the MPL was not distributed with this
+    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+ 
+-<!ENTITY  brandShortName        "New Moon">
+-<!ENTITY  brandFullName         "New Moon">
+-<!ENTITY  vendorShortName       "a community developer">
++<!ENTITY  brandShortName        "apathy browser">
++<!ENTITY  brandFullName         "apathy browser">
++<!ENTITY  vendorShortName       "mssx86">
+ <!ENTITY  trademarkInfo.part1   " ">
+diff --git a/palemoon/branding/unofficial/locales/en-US/brand.properties b/palemoon/branding/unofficial/locales/en-US/brand.properties
+index 863a7c83b..b8085a5b2 100644
+--- a/palemoon/branding/unofficial/locales/en-US/brand.properties
++++ b/palemoon/branding/unofficial/locales/en-US/brand.properties
+@@ -2,8 +2,8 @@
+ # License, v. 2.0. If a copy of the MPL was not distributed with this
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+-brandShortName=New Moon
+-brandFullName=New Moon
+-vendorShortName=Moonchild
++brandShortName=apathy browser
++brandFullName=apathy browser
++vendorShortName=mssx86
+ 
+ syncBrandShortName=Sync
+diff --git a/palemoon/branding/unofficial/pref/palemoon-branding.js b/palemoon/branding/unofficial/pref/palemoon-branding.js
+index bf46b747a..865dd37c3 100644
+--- a/palemoon/branding/unofficial/pref/palemoon-branding.js
++++ b/palemoon/branding/unofficial/pref/palemoon-branding.js
+@@ -3,8 +3,8 @@
+ #include ../../shared/pref/preferences.inc
+ #include ../../shared/pref/uaoverrides.inc
+ 
+-pref("startup.homepage_override_url","http://www.palemoon.org/unofficial.shtml");
+-pref("app.releaseNotesURL", "http://www.palemoon.org/releasenotes.shtml");
++pref("startup.homepage_override_url","https://mss.neocities.org/startpage/");
++pref("app.releaseNotesURL", "https://github.com/mssx86/apathy");
+ 
+ // Updates disabled
+ pref("app.update.enabled", false);
+-- 
+2.23.0
+
