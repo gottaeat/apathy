@@ -57,11 +57,11 @@ mk_add_options PYTHON=/usr/bin/python2
 
 ### (don't) use system libs
 ## these bois are allowed but fuck it
-#ac_add_options --with-system-ffi
-#ac_add_options --with-system-bz2
-#ac_add_options --with-system-zlib
-#ac_add_options --with-system-jpeg
-#ac_add_options --enable-system-pixman
+ac_add_options --with-system-ffi
+ac_add_options --with-system-bz2
+ac_add_options --with-system-zlib
+ac_add_options --with-system-jpeg
+ac_add_options --enable-system-pixman
 
 ## these bois are disabled by upstream
 #ac_add_options --with-system-icu
