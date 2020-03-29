@@ -98,7 +98,8 @@ aprint_ret "copying the ${c_lcyan}apathy-browser branding${c_reset} files."
  cp -v "${branding}"/configure.sh             "${srcdir}"/palemoon/branding/unofficial/               >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/brand.dtd                "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/brand.properties         "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/palemoon-branding.js     "${srcdir}"/palemoon/branding/unofficial/pref/          >> "$redirect_to" 2>&1
+ cp -v "${branding}"/palemoon-branding.js     "${srcdir}"/palemoon/branding/unofficial/pref/          >> "$redirect_to" 2>&1 &&
+ cp -v "${branding}"/about-background.png     "${srcdir}"/palemoon/branding/unofficial/content/       >> "$redirect_to" 2>&1
 evalretkill
 
 # d1 >> check everything and ask to run mach
