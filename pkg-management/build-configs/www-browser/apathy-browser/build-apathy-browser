@@ -5,53 +5,76 @@
 . /mss/bin/apathy-funcs
 
 # a1 >> check if variables are set
-[ -z $1 ] && aprint_fail "no tarball specified as \$1, exiting." && exit 1
-[ -z $2 ] && aprint_fail "no niceness specified as \$2, exiting." && exit 1
+[ -z $1 ] \
+ && aprint_fail "no ${c_lcyan}uxp${c_reset} tarball specified as ${c_lcyan}\$1${c_reset}, exiting." \
+ && exit 1
+[ -z $2 ] \
+ && aprint_fail "no ${c_lcyan}pale moon${c_reset} tarball specified as ${c_lcyan}\$2${c_reset}, exiting." \
+ && exit 1
 
-# a2 >> check if $1 exists in sauces
+# a2 >> check if $1 and $2 exists in sauces
 saucedir="/mss/work/sauces"
 [ ! -f "${saucedir}/${1}" ] \
  && aprint_fail "${c_lcyan}${1}${c_reset} does not exist in saucedir, exiting" \
  && exit 1
+[ ! -f "${saucedir}/${2}" ] \
+ && aprint_fail "${c_lcyan}${2}${c_reset} does not exist in saucedir, exiting" \
+ && exit 1
 
 # b1 >> set the vars
+uxpfull="$(echo ${1} | sed 's/.tar.gz//')"
+pmfull="$(echo ${2} | sed 's/.tar.gz//')"
+
+uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
+pmver="$(echo ${pmfull} | sed 's/Pale-Moon-//;s/_Release//;s/.tar.gz//')"
+
 logdir="/mss/work/logs"
 repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
-srcdir="$(echo ${PWD}/${1} | sed 's/.tar.[xg]z//' )"
+srcdir="${PWD}/${pmfull}"
 instdir="${srcdir}/KEK"
 
-pmver="$(echo ${1} | sed 's/UXP-PM//;s/_Release.tar.gz//')"
-redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
+#redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
+redirect_to="/tmp/test1"
 pmappdir="/usr/lib/apathy-browser-${pmver}"
 
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 export MOZCONFIG="$srcdir/mozconfig"
-export CFLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"
+export CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
 export CXXFLAGS="${CFLAGS}"
 export LDFLAGS="-Wl,-rpath=${pmappdir}"
 export LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
 export MOZ_LINK_FLAGS="${LDFLAGS}"
 
-# b2 >> set and check if niceness is above 0
-niceness="${2}"
-[ "$niceness" -lt 0 ] && aprint_fail "niceness below 0 requires root access." && exit 1
-
 # c0 >> print vars
 aprint_nc
-lsdetail "pm version" "${pmver}"
-lsdetail "niceness"   "${niceness}"
-lsdetail "cflags"     "${CFLAGS}"
-lsdetail "cxxflags"   "${CXXFLAGS}"
-lsdetail "ldflags"    "$(echo ${LDFLAGS} | fold -w 52)"
+lsdetail "pm version"  "${pmver}"
+lsdetail "uxp version" "${uxpver}"
+lsdetail "cflags"      "${CFLAGS}"
+lsdetail "cxxflags"    "${CXXFLAGS}"
+lsdetail "ldflags"     "$(echo ${LDFLAGS} | fold -w 52)"
 aprint_nc
 
-# c1 >> extarct the tarball
+# c1.1 >> extarct the pale moon code
+aprint_ret "extracting ${c_lcyan}${2}${c_reset}."
+ tar xf "${saucedir}"/"${2}" > "$redirect_to" 2>&1
+evalretkill
+
+# c1.2 >> extract the uxp code
 aprint_ret "extracting ${c_lcyan}${1}${c_reset}."
- tar xf "${saucedir}"/"${1}" > "$redirect_to" 2>&1
+ hehpwd="$PWD"
+ cd "${srcdir}"
+ tar xf "${saucedir}"/"${1}" >> "$redirect_to" 2>&1
+evalretkill
+
+# c1.3 >> move uxp to platform
+aprint_ret "moving the ${c_lcyan}uxp code${c_reset} to ${c_lcyan}platform/${c_reset}."
+ cd "$hehpwd"
+ rm -rfv "${srcdir}/platform"                        >> "$redirect_to" 2>&1
+ mv -v   "${srcdir}/${uxpfull}" "${srcdir}/platform" >> "$redirect_to" 2>&1
 evalretkill
 
 # c2 >> cd to work
-aprint_ret "changing the active directory to ${c_lcyan}${srcdir}${c_reset}."
+aprint_ret "cd to ${c_lcyan}${srcdir}${c_reset}."
  cd "${srcdir}"
 evalretkill
 
@@ -62,22 +85,17 @@ aprint_ret "copying ${c_lcyan}mozconfig${c_reset}."
 evalretkill
 
 # c4 >> apply branding
-aprint_ret "applying the ${c_lcyan}apathy-browser branding${c_reset} patch."
- patch -p1 < "${repodir}"/apathy-browser-branding.patch \
-  >> "$redirect_to" 2>&1
-evalretkill
+#aprint_ret "applying the ${c_lcyan}apathy-browser branding${c_reset} patch."
+# patch -p1 < "${repodir}"/apathy-browser-branding.patch \
+#  >> "$redirect_to" 2>&1
+#evalretkill
 
 # c5 >> change about-background.png
-aprint_ret "changing ${c_lcyan}about-background.png${c_reset}."
- cp -v "${repodir}"/files/about-background.png \
-  "${srcdir}"/application/palemoon/branding/unofficial/content \
-  >> "$redirect_to" 2>&1
-evalretkill
-
-# c6 >> run sed from arch
-aprint_ret "running sed for ${c_lcyan}locale fix${c_reset}."
- sed -i 's#xlocale#locale#' "${srcdir}"/intl/icu/source/i18n/digitlst.cpp
-evalretkill
+#aprint_ret "changing ${c_lcyan}about-background.png${c_reset}."
+# cp -v "${repodir}"/files/about-background.png \
+#  "${srcdir}"/application/palemoon/branding/unofficial/content \
+#  >> "$redirect_to" 2>&1
+#evalretkill
 
 
 # d1 >> check everything and ask to run mach
@@ -96,8 +114,7 @@ read answerbuild
     CC=x86_64-apathy-linux-musl-gcc  \
     CXX=x86_64-apathy-linux-musl-g++ \
     /bin/busybox time                \
-    nice --adjustment=${niceness}    \
-    python2.7 ./mach build >> "$redirect_to" 2>&1
+    ./mach build >> "$redirect_to" 2>&1
    evalretkill
 
    dateafter=$(date +%s)
