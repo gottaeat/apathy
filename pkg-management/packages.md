@@ -7,7 +7,7 @@
 # https://github.com/gentoo/libressl
 ```
 ```
-[d] alpine	> opendoas-git
+[d] alpine	> opendoas-6.6.1
 [d] bmlfs	> ca-certificates-20190110
 [d] alp+blfs	> iptables-1.8.4
 [d] alpine	> lsof-4.93.2

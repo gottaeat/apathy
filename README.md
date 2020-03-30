@@ -37,7 +37,7 @@ core userland:
  * util-linux 2.35, coreutils 8.31
  * busybox 1.31.1 (statically linked, defconfig)
  * sysklogd 1.5.1, sinit-1.1-apathy
- * eudev 3.2.9, doas from openbsd 6.5
+ * eudev 3.2.9, doas from openbsd 6.6.1
  * libressl-3.0.2
 
 languages:
