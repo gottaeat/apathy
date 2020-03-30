@@ -3,7 +3,7 @@
 
 triplet=$(cc -dumpmachine)
 ccver=$(gcc --version | head -1)
-init=$(/sbin/init --version | awk 'NR==1 {print tolower($1)$2,$4}')
+init="sinit 1.1 (apathy)"
 tls=$(openssl version | awk 'NR==1 {print tolower($1),$2}')
 
 case ${triplet} in
