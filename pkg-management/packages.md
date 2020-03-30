@@ -378,7 +378,7 @@
 [r] alpine	>> startup-notification-0.12
 
 [r] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
-[d] alpine	> samurai-1.0
+[d] alpine	> samurai-1.1
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
 
