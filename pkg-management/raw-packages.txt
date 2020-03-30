@@ -30,8 +30,6 @@ libnl-1.1.4
 iftop-0.17
 libpcap-1.9.1
 libidn-1.35
-nss-3.49.1
-nspr-4.24
 sqlite-3.30.1
 python-2.7.17
 gnupg-2.2.19

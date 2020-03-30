@@ -54,8 +54,8 @@
 
 [d] alpine	> libidn-1.35
 
-[d] blfs	> nss-3.49.1			--> patch was for 3.49, not 3.49.1
-[d] alpine	>> nspr-4.24
+[r] blfs	> nss-3.49.1			--> patch was for 3.49, not 3.49.1
+[r] alpine	>> nspr-4.24
 [d] alpine	>> sqlite-3.30.1		--> normally installed after, moved here
 
 [d] alpine	> python-2.7.17			--> without ipv6

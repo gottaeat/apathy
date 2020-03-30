@@ -25,7 +25,9 @@ once the base is done, progressing further can be accomplished by reading packag
 ```
 toolchain:
  * gcc 9.3.1 20200321 (c,c++), argp-standalone 1.3
- * (ondemand) llvm-10.0.0, clang-10.0.0, rustc-1.42.0, cbindgen-0.13.2
+ * (ondemand) llvm-10.0.0, clang-10.0.0
+ * (ondemand) rustc-1.42.0, cbindgen-0.13.2
+ * (ondemand) go-1.14.1
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
@@ -56,10 +58,9 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1439.6mib
- > local package count  : 328 (+5)
- > removed packages     : 18
-
+ > total partition size : 1439.93mib
+ > local package count  : 326 (+5)
+ > removed packages     : 21
 ```
 
 ## dotfiles
