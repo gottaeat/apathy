@@ -1,17 +1,21 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-if [ -z "$1" ]; then aprint_fail "no url given, exiting."; exit 1; fi
-#if [ "$2" = "novid" ]
-# then extraflags="--no-video"
-# else extraflags="--vo=gpu,drm"
-#fi
+[ -z "$1" ] && aprint_fail "no url given, exiting." && exit 1
 
-youtube-dl --list-format ${1} | grep "^[0-9]" > /tmp/ytquality.tmp
+q_pre=$(youtube-dl --list-format "${1}" | awk 'f;/format\ code/{f=1}')
+q_pre=$(echo "$q_pre" | grep -v [video,audio]\ only)
+q_lines="$(echo "${q_pre}" | wc -l)"
 
-qlines=$(wc -l /tmp/ytquality.tmp)
-quality=$(cat /tmp/ytquality.tmp | slmenu -b -l ${qlines} -p " * select stream quality:" | awk '{print $1}')
+quality="$(echo "${q_pre}" \
+          | slmenu -b -l ${q_lines} -p "stream quality:" \
+          | awk '{print $1}')"
 
 clear
 aprint "playing ${c_lcyan}${1}${c_reset}."
 
-mpv "${1}" --ytdl-format=${quality}
+if [ "$2" = "--audio-only" ]
+ then
+  mpv --ytdl-format="${quality}" --no-video "${1}"
+ else
+  mpv --ytdl-format="${quality}" "${1}"
+fi

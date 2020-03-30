@@ -2,39 +2,36 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-if [ -z "$1" ]
-then
- aprint_nc; aprint_fail "no ovpn config selected, exiting."
- aprint_nc; exit 1
-fi
+[ -z "${1}" ] \
+ && aprint_fail "no ovpn specified, exiting." \
+ && exit 1
 
-ovpn_name=$(printf "${1}\n" | sed 's:.*/::')
-
-case "${ovpn_name}" in
- *FreeVPN.be*) _domain=be ;;
- *FreeVPN.co*) _domain=co ;;
- *FreeVPN.eu*) _domain=eu ;;
- *FreeVPN.im*) _domain=im ;;
- *FreeVPN.it*) _domain=it ;;
- *FreeVPN.me*) _domain=me ;;
- *FreeVPN.se*) _domain=se ;;
-esac
+ovpn_name=$(echo "${1}" | sed 's:.*/::')
 
 aprint_nc
-aprint_ret "getting auth details for ovpn from freevpn.${_domain}."
-passboi=$(curl -s https://freevpn.${_domain}/accounts	\
- | grep -o 'Password.*'					\
- | awk -v FS="(Password:</b> |</li>)" '{print $2}')
+aprint_ret "getting auth."
+
+ databoi="$(curl -s "https://freevpn.me/accounts" \
+           | grep -o 'Password:<\/b> .\{0,12\}'   \
+           | sed ' s/Password:<\/b>//g')"
 evalretkill
 
-aprint "pass\t\t\t: ${passboi}"
+aprint_ret "setting auth and user."
+ case "${ovpn_name}" in
+  *Server1*) passboi=$(echo $databoi | awk '{print $1}') ;;
+  *Server2*) passboi=$(echo $databoi | awk '{print $2}') ;;
+ esac
+evalretkill
+
+lsdetail "pass" "${passboi}"
+lsdetail "ovpn" "${ovpn_name}"
 aprint_nc
 
 aprint_ret "setting pass in auth.txt."
-printf "freevpn.${_domain}\n" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt &&
-printf "${passboi}\n" >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt
+ echo "freevpn.me" > /mnt/mss/stuff/techy-bits/openvpn/auth.txt
+ echo "$passboi"   >> /mnt/mss/stuff/techy-bits/openvpn/auth.txt
 evalretkill
 
-aprint "connecting to\t: ${ovpn_name}"
-openvpn --config $1 > /tmp/vpn.log 2>&1 || \
- aprint_fail "failed, check /tmp/vpn.log."
+aprint "connecting."
+openvpn --config $1 > /tmp/vpn.log 2>&1 \
+ || aprint_fail "failed, check /tmp/vpn.log."
