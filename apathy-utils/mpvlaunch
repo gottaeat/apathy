@@ -1,0 +1,4 @@
+#!/mss/bin/sh
+argboi=$(echo "$@" | sed 's/&/\\&/g;s/ /\\ /g')
+
+st -e yash -c "printf '\033k'mpvlaunch'\033\\';/mss/bin/slmenu-mpv $argboi"
