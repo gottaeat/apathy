@@ -261,7 +261,7 @@ attr-2.4.48
 autoconf-2.69
 automake-1.16.1
 bc-2.4.0
-binutils-2.33.1
+binutils-2.34
 bison-3.4.2
 busybox-1.31.1
 bzip2-1.0.8

@@ -29,7 +29,7 @@ toolchain:
  * (ondemand) rustc-1.42.0, cbindgen-0.13.2
  * (ondemand) go-1.14.1
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
- * binutils 2.33.1, linux 5.2 headers
+ * binutils 2.34, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
  * gcompat 0.4.0 + libucontext 0.1.3
 
@@ -58,7 +58,7 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1439.93mib
+ > total partition size : 1451.33mib
  > local package count  : 326 (+5)
  > removed packages     : 21
 ```
