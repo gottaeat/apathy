@@ -67,6 +67,8 @@ initboi(){
 poweroffboi(){
  banner
 
+ stty onlcr
+
  $sdir/gpm		stop
  $sdir/mpd		stop
  $sdir/dnscrypt-proxy	stop
