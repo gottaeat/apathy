@@ -398,6 +398,7 @@
 [r] self	>> gtk+-3.24.14
 
 [d] self	> sinit-1.1-apathy
+[d] alpine	> zstd-1.4.4
 ```
 ```
 ### base mlfs packages
