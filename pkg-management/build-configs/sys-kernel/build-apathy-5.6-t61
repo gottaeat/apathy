@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.1 - mss@waifu.club
-# build script for 5.6-rcX kernels, version 1, for thinkpad t61
+# build script for 5.6 kernels, version 1, for thinkpad t61
 
 . /mss/bin/apathy-funcs
 
@@ -18,7 +18,7 @@ _confdir="${_repodir}/configs"
 __logdir="/mss/work/logs"
 redirect="${__logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${__kerver}.log"
 
-confname="5.6-apathy-t61-nonfree-gcc-bmq-20200324_205145.config"
+confname="5.6-apathy-t61-nonfree-gcc-bmq-20200403_051938.config"
 _useconf="${_confdir}/5.6/${confname}"
 localver="5.6-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -37,32 +37,22 @@ apply_alfredchen(){
 }
 
 apply_bfq(){
- _bfqpatches="0001-add-logs-and-BUG_ONs.patch
-              0002-do-not-plug-I-O-for-bfq_queues-with-no-pro.patch
-              0003-check-proc-refs-in-case-of-requeue.patch
-              0004-do-not-insert-oom-queue-into-position-tree.patch
-              0005-fix-check-on-oom-in-split-add-more-c.patch
-              0006-get-extra-ref-to-prevent-a-queue-from-bein.patch
-              0007-check-that-an-entity-on-a-st-is-not-.patch
-              0008-init_entity-should-actually-be-invok.patch
-              0009-extend-incomplete-name-of-field-on_st.patch
-              0010-remove-ifdefs-from-around-gets-puts-of-bfq.patch
-              0011-get-a-ref-to-a-group-when-adding-it-to-a-s.patch
-              0012-clarify-the-goal-of-bfq_split_bfqq.patch
-              0013-Make-bfq-disable-iocost-when-enabled.patch
-              0014-elevator-set-default-scheduler-to-bfq-for-blk-mq.patch
-              0015-Set-bfq-dev-instead-of-bfq.patch
-              0016-fix-overwrite-of-bfq_group-pointer-in-bfq_.patch
-              0017-check-curr_bfqg-in-bfq_find_set_grou.patch
-              0018-check-process-refs.patch
-              0019-extra-check-on-in-service-status.patch
-              0020-fix-use-after-free-in-bfq_idle_slice_.patch
-              0021-revert-fix-use-after-free-in-bfq_idle.patch
-              0022-fix-use-after-free-in-bfq_idle_slice_.patch
-              0023-move-forward-the-getting-of-an-extra-.patch
-              0024-turn-put_queue-into-release_process_r.patch
-              0025-make-reparent_leaf_entity-actually-wo.patch
-              0026-invoke-flush_idle_tree-after-reparent.patch"
+ _bfqpatches="0001-block-bfq-move-forward-the-getting-of-an-extra-ref-i.patch
+              0002-block-bfq-turn-put_queue-into-release_process_ref-in.patch
+              0003-block-bfq-make-reparent_leaf_entity-actually-work-on.patch
+              0004-block-bfq-invoke-flush_idle_tree-after-reparent_acti.patch
+              0005-block-bfq-DEBUG-add-logs-and-BUG_ONs-to-5.6.patch
+              0007-block-bfq-DEBUG-add-BUG_ONs-to-bfq_reparent_leaf_ent.patch
+              0008-block-bfq-DEBUG-remove-useless-BUG_ON-in-bfq_pd_offl.patch
+              0009-block-bfq-DEBUG-check-that-queues-to-move-are-actual.patch
+              0010-block-bfq-DEBUG-log-and-check-total-number-of-reqs-q.patch
+              0011-block-bfq-DEBUG-log-early-exit-from-finish_requeue_r.patch
+              0012-block-bfq-DEBUG-move-check-bfqd-queued-to-lock-prote.patch
+              0013-blkcg-Make-bfq-disable-iocost-when-enabled.patch
+              0015-port-block-bfq-fix-use-after-free-in-bfq_idle_slice_.patch
+              0016-Documentation-update-bfq-iosched.rst.patch
+              0017-elevator-set-default-scheduler-to-bfq-for-blk-mq.patch
+              0018-block-Set-bfq-dev-instead-of-bfq.patch"
 
  for pp in $_bfqpatches
   do
@@ -73,14 +63,7 @@ apply_bfq(){
 }
 
 apply_bfq_rev(){
- _bfqrevpatches="0001-clarify-the-goal-of-bfq_split_bfqq.patch
-                 0002-get-a-ref-to-a-group-when-adding-it.patch
-                 0003-remove-ifdefs-from-around-gets-puts.patch
-                 0004-extend-incomplete-name-of-field-on_.patch
-                 0005-get-extra-ref-to-prevent-a-queue-fr.patch
-                 0006-do-not-insert-oom-queue-into-positi.patch
-                 0007-do-not-plug-I-O-for-bfq_queues-with.patch
-                 0009-fix-overwrite-of-bfq_group-pointer-.patch"
+ _bfqrevpatches=""
 
  for pp in $_bfqrevpatches
   do
@@ -115,6 +98,23 @@ apply_misc(){
   do
    aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.6/misc/${pp} >> ${redirect} 2>&1
+   evalretkill
+  done
+}
+
+apply_zstd(){
+ _zstdpatches="0001-lib-prepare-zstd-for-preboot-environment.patch
+               0002-lib-prepare-xxhash-for-preboot-environment.patch
+               0003-lib-add-zstd-support-to-decompress.patch
+               0004-init-add-support-for-zstd-compressed-kernel.patch
+               0005-usr-add-support-for-zstd-compressed-initramfs.patch
+               0006-x86-bump-ZO_z_extra_bytes-margin-for-zstd.patch
+               0007-x86-Add-support-for-ZSTD-compressed-kernel.patch"
+
+ for pp in $_zstdpatches
+  do
+   aprint_patch "${pp}"
+   patch -p1 < "${patchdir}"/apathy/5.6/zstd/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -180,12 +180,14 @@ evalretkill
 aprint_nc
 aprint "applying the alfredchen patches."
 apply_alfredchen
-aprint "applying the bfq revert patches."
-apply_bfq_rev
+#aprint "applying the bfq revert patches."
+#apply_bfq_rev
 aprint "applying the bfq-dev (lucjan) patches."
 apply_bfq
 aprint "applying the block patches."
 apply_block
+aprint "applying the zstd patches."
+apply_zstd
 aprint "applying the misc patches."
 apply_misc
 aprint "applying the clearlinux patchset."
