@@ -1,0 +1,43 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+
+muslcfgdir="/mss/repo/apathy-utils/muslcfg"
+
+cguess="$(find . -type f -name config\.guess)"
+  csub="$(find . -type f -name config\.sub)"
+
+aprint_nc
+aprint "found these ${c_lcyan}config.guess${c_reset} files: "
+for guess in $cguess; do aprint_nm "$guess"; done
+
+aprint_nc
+aprint "found these ${c_lcyan}config.sub${c_reset} files: "
+for sub in $csub; do aprint_nm "$sub"; done
+
+aprint_nc
+aprint_ask "shall we replace? (y/n): "
+read answerreplace
+
+case $answerreplace in
+ y|Y|yes)
+  aprint_nc
+
+  for guess in $cguess; do
+   aprint_ret "replacing ${c_lcyan}$guess${c_reset}."
+    cp "${muslcfgdir}"/config.guess-musl "$guess"
+   evalret
+  done
+
+  for sub in $csub; do
+   aprint_ret "replacing ${c_lcyan}$sub${c_reset}."
+    cp "${muslcfgdir}"/config.sub-musl "$sub"
+   evalret
+  done
+
+  aprint_nc
+ ;;
+ n|N|no)
+  aprint "not replacing config files, exiting."
+  exit 1
+ ;;
+esac 
