@@ -1,13 +1,47 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-if	[ -z $1 ]; then aprint_fail "no dir or file to pkgup selected in \$1, exiting."; exit 1
-elif	[ -z $2 ]; then aprint_fail "no archive name in \$2 specified, exiting."; exit 1
-fi
+[ -z $1 ] && aprint_fail "no dir or file to pkgup selected in \$1, exiting." && exit 1
+[ -z $2 ] && aprint_fail "no archive name in \$2 specified, exiting."        && exit 1
 
-if	[ -d $1 ]; then aprint "pkgtype is ${c_lcyan}dir${c_reset}."
-elif	[ -f $1 ]; then aprint "pkgtype is ${c_lcyan}file${c_reset}."
-else	aprint_fail "pkgtype not understood or does not exist, exiting."; exit 1
-fi
+bname="$(echo "${1}" | sed 's/\///g;s/ /_/g')"
+zname="$(echo "${2}" | sed 's/\///g;s/ /_/g')"
 
-tar -cf - ${1} | xz -9e --threads=2 --verbose -c - > ${2}.tar.xz
+redirect_to="/tmp/pkgup-$bname-$(date +%s)"
+
+[ -f "${redirect_to}" ] && rm -f "${redirect_to}"
+mkfifo "${redirect_to}"
+
+aprint_nc
+aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
+
+aprint_nc
+aprint "packaging ${c_lcyan}${bname}${c_reset} to ${c_lcyan}${zname}.tar.zst${c_reset}."
+aprint_ret "creating ${c_lcyan}${bname}.tar${c_reset}."
+ tar cfp "${bname}".tar "${bname}" > "${redirect_to}" 2>&1
+evalretkill
+
+sizebefore=$(du -sh "${bname}".tar | awk '{print $1}')
+datebefore=$(date +%s)
+
+aprint_ret "comressing to ${c_lcyan}${zname}.tar.zst${c_reset}."
+ /bin/busybox time \
+  zstd --rm -v -19 "${bname}".tar -o "${zname}".tar.zst \
+   >> "${redirect_to}" 2>&1
+evalret
+
+dateafter=$(date +%s)
+sizeafter=$(du -sh "${zname}".tar.zst | awk '{print $1}')
+
+timespent=$(($dateafter - $datebefore))
+humantime=$(printf "%dd %dh %dm %02.fs\n"             \
+          "$(echo "${timespent}/86400"        | bc)"  \
+          "$(echo "(${timespent}%86400)/3600" | bc)"  \
+          "$(echo "(${timespent}%3600)/60"    | bc)"  \
+          "$(echo "${timespent}%60"           | bc)")
+
+aprint_nc
+aprint "pkgup finished in ${c_lcyan}${humantime}${c_reset}."
+aprint "size of the end result is ${c_lcyan}${sizeafter}${c_reset}. (was ${c_lcyan}${sizebefore}${c_reset})"
+aprint_nc
