@@ -47,7 +47,7 @@ languages:
  * (ondemand) node.js-13.9.0
 
 video/audio:
- * xorg (x11r7), mesa 20.0.2
+ * xorg (x11r7), mesa 20.0.4
  * alsa 1.2.1.2
 
 shells:
