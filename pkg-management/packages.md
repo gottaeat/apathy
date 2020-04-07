@@ -399,6 +399,7 @@
 
 [d] self	> sinit-1.1-apathy
 [d] alpine	> zstd-1.4.4
+[d] self	> qemu-4.2.0
 ```
 ```
 ### base mlfs packages
