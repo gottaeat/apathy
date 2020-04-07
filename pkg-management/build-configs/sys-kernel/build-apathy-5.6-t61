@@ -26,7 +26,7 @@ _cctouse="x86_64-apathy-linux-musl-gcc"
 
 # c >> functions
 apply_alfredchen(){
- _alpatches="0001-bmq_v5.6-r0.patch"
+ _alpatches="bmq_v5.6-r1.patch"
 
  for pp in $_alpatches
   do
