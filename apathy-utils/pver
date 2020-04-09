@@ -1,26 +1,20 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-triplet=$(cc -dumpmachine)
-ccver=$(gcc --version | head -1)
+triplet=$(gcc -dumpmachine)
+ccver=$(gcc -v 2>&1 | awk '/version / {sub(/version /,""); print}')
 init="sinit 1.1 (apathy)"
-tls=$(openssl version | awk 'NR==1 {print tolower($1),$2}')
+tls=$(openssl version | awk '{print tolower($0)}')
 
 case ${triplet} in
- *gnu*)
-  _vlibc=$(ldd --version | awk 'NR==1 {print $4}')
-  _libc="glibc ${_vlibc} ($(uname -m))"
- ;;
- *musl*)
-  _vlibc=$(ldd 2>&1 | awk 'NR==2 {print $2}')
-  _libc="musl ${_vlibc} ($(uname -m))"
- ;;
+ *gnu*)  libc="glibc $(ldd --version | awk '/libc/ {print $4}')" ;;
+ *musl*) libc="musl $(ldd 2>&1 | awk '/Version/ {print $2}')"    ;;
 esac
 
 aprint_nc
 lsdetail "init" "${init}"
 lsdetail "tls"  "${tls}"
-lsdetail "libc" "${_libc}"
+lsdetail "libc" "${libc} ($(uname -m))"
 lsdetail "trpl" "${triplet}"
 lsdetail "cc"   "${ccver}"
 aprint_nc

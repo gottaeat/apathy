@@ -1,30 +1,55 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
+printlogo(){
 aprint_ret "${c_red}
   __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
      /                  (/${c_reset}\n"
-aprint_nc
+}
 
-dist=$(awk 'gsub("DISTRIB_ID=", ""),gsub("\"", "")' /etc/lsb-release)
+dist=$(awk '/PRETTY_NAME/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)
+ cpu=$(awk '/model name/{family=$5; model=$8}; /MHz/{hz=int($4)}; END{print family, model, "@", hz"mhz"}' /proc/cpuinfo)
+
 read model < /sys/devices/virtual/dmi/id/product_family
 read _host < /etc/hostname
-cpu=$(awk '/model name/ {print $5,$8}' /proc/cpuinfo | tail -1)
-freq=$(awk '/MHz/ {print int($4)"mhz"}' /proc/cpuinfo | tail -1)
-kern_pre=$(uname -r)
-kern="${kern_pre%%-*} (${kern_pre#*-})"
-_binsh="$(file /bin/sh | awk '{gsub(" symbolic link to",""); sub(/\/bin\//, "", $2) }1')"
-_sh="$(basename $SHELL) $($SHELL --version | awk 'NR==1 {print $5}') (${_binsh})"
-upt=$(uptime --pretty | sed 's/up //;s/\ days\?,/d/;s/\ hours\?,\?/h/;s/\ minutes\?/m/')
-mem=$(free --mebi | awk 'NR==2 {print $3"/"$2"mib"}')
 
+kern_pre=$(uname -r)
+    kern="${kern_pre%%-*} (${kern_pre#*-})"
+
+usershell=$(basename $(grep $LOGNAME /etc/passwd | cut -d: -f7))
+    binsh=$(realpath /bin/sh | awk 'sub(/\/bin\//,"")')
+    shell="$usershell $($usershell --version | awk 'NR==1 {ver=$5}; END{print ver}') (/bin/sh: ${binsh})"
+
+mem=$(awk '/Avail/    {avail=int($2/1024)};     \
+           /MemTotal/ {total=int($2/1024)};     \
+           END{print (total-avail)"/"total"m"}' \
+           /proc/meminfo)
+
+upt_pre=$(awk '{print int($1)}' /proc/uptime)
+
+   [ "${upt_pre}" -lt 3600  ]                   \
+&& upt=$(printf "%02d:%02.0f\n"                 \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")          \
+|| [ "${upt_pre}" -lt 86400 ]                   \
+&& upt=$(printf "%02d:%02d:%02.0f\n"            \
+                 "$(((${upt_pre}%86400)/3600))" \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")          \
+|| upt=$(printf "%d:%02d:%02d:%02.0f\n"         \
+                 "$((${upt_pre}/86400))"        \
+                 "$(((${upt_pre}%86400)/3600))" \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")
+
+printlogo; aprint_nc
 lsdetail "os"   "${dist}"
 lsdetail "kern" "${kern}"
 lsdetail "host" "${c_green}${_host}${c_reset} on ${c_lcyan}${model}${c_reset}"
-lsdetail "sh"   "${_sh}"
-lsdetail "cpu"  "${cpu} @ ${freq}"
+lsdetail "sh"   "${shell}"
+lsdetail "cpu"  "${cpu}"
 lsdetail "mem"  "${mem}"
-lsdetail "upt"  "${upt}"
+lsdetail "upt"  "${upt} ($upt_pre)"
 aprint_nc
