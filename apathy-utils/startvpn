@@ -8,7 +8,7 @@ rootcheck
 
 ovpn_name=$(echo "${1}" | sed 's:.*/::')
 
-aprint_nc
+clear; aprint_nc
 aprint_ret "getting auth."
 
  databoi="$(curl -s "https://freevpn.me/accounts" \
