@@ -25,6 +25,8 @@ banner(){
 }
 
 initboi(){
+ datebefore=$(date +%s)
+
  banner
 
  ctrlaltdel -s
@@ -62,12 +64,14 @@ initboi(){
                  /dev/tty3 linux' &>/dev/null &
 
  ainit_nc
+ dateafter=$(date +%s) timespent=$(($dateafter - $datebefore))
+ ainitmes "boot completed in ${c_lcyan}${timespent}${c_reset} seconds."; ainit_nc
+ ainit_nc
 }
 
 poweroffboi(){
- banner
-
  stty onlcr
+ banner
 
  $sdir/gpm		stop
  $sdir/mpd		stop
@@ -86,6 +90,7 @@ poweroffboi(){
 }
 
 rebootboi(){
+ stty onlcr
  banner
 
  $sdir/gpm		stop
