@@ -57,7 +57,7 @@ visualizer_in_stereo = yes
 visualizer_sync_interval = 30
 visualizer_type = spectrum
 visualizer_look = **
-visualizer_color = white
+visualizer_color = cyan, white
 
 # alternative mode header lines
 #alternative_header_first_line_format = $b$1$aqqu$/a$9 {%t}|{%f} $1$atqq$/a$9$/b

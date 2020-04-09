@@ -1,15 +1,23 @@
 ##### ~/.yashrc
 ### variables
-# path and lang
-export PATH="/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin:/home/mss/execs"
+# path
+mypath="/usr/sbin:/usr/bin:/sbin:/bin"
+mypath="$mypath:/mss/bin:/home/mss/execs"
+#mypath="$mypath:/opt/llvm-10.0.0/bin"
+#mypath="$mypath:/opt/node.js-13.9.0/bin"
+#mypath="$mypath:/opt/rustc-1.42.0/bin"
+export PATH="$mypath"
+
+mypkgconfig="/usr/share/pkgconfig:/usr/lib/pkgconfig"
+#mypkgconfig="$mypkgconfig:/opt/webkitgtk-2.28.0/lib/pkgconfig"
+export PKG_CONFIG_PATH="$mypkgconfig"
+
+export MPD_HOST="/var/lib/mpd/socket"
+
+# lang
 export LANG="en_US.utf8"
 
-# stuff taken from gentoo
-export LESS="-R -M --shift 5"
-export OPENGL_PROFILE="xorg-x11"
-export GSETTINGS_BACKEND="dconf"
-
-### compile bits
+# compile bits
 export MAKEFLAGS="-j 2"
 export CFLAGS="-march=native -mtune=native"
 export CXXFLAGS="${CFLAGS}"
@@ -18,7 +26,7 @@ export CBUILD="${CHOST}"
 export CC="${CHOST}-gcc"
 export CXX="${CHOST}-g++"
 export ARCH="x86_64"
-export buildforapathy="--prefix=/usr --disable-static --build=${CBUILD} --host=${CHOST}"
+export buildforapathy="--prefix=/usr --disable-nls --disable-static --build=${CBUILD} --host=${CHOST}"
  
 # default programs
 export EDITOR="/usr/bin/vim"
@@ -30,9 +38,8 @@ export XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
-# from blfs book
+# essential paths
 export INFOPATH="/usr/info"
-export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/share/pkgconfig"
 export MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
 export INPUTRC="/etc/inputrc"
@@ -71,6 +78,8 @@ set --hist-space
 # set C-l to clear screen like zsh/bash
 bindkey -av '\^L' clear-and-redraw-all
 
+# set fbterm colors
+[ "$TERM" = "linux" ] && [ ! "$(tty)" = "/dev/tty1" ] && /bin/ash /home/mss/execs/linuxcolors1.sh
 
 ### functions
 # cd automatically when dirs are executed
@@ -79,16 +88,7 @@ if [ -d "$1" ]; then HANDLED=true; cd -- "$@"; break -i; fi
 COMMAND_NOT_FOUND_HANDLER=('_autocd "$@"')
 
 # check if running
-cir(){
-stat=$(ps aux | egrep "${1}" | sed '/grep/d')
-
-case $2 in
- s|-s)	printf "${stat}\n" ;;
- k|-k)	printf "${stat}\n" | awk '{print $2}' | xargs kill -SIGKILL ;;
- *)	printf "what in the everloving fuck is ${2}?\n" ;;
-esac
-}
-
+cdo(){ cd "$OLDPWD";}
 
 ### aliases
 ## program related
@@ -102,7 +102,6 @@ alias cp="cp -v"
 alias mv="mv -v"
 alias mkdir="mkdir -pv"
 alias mount="mount -v"
-
 ## shortcuts
 ##a literal shortcuts
 alias nc="ncmpcpp"
@@ -116,7 +115,7 @@ alias lll="ls -alh --color=tty"
 alias grep="grep --color=auto"
 alias poz="yash --posix"
 alias mpvfb="mpv --profile=sw-fast --vo=drm --gpu-api=opengl"
-alias fetchall="clear;fetch | tail -14;pver | tail -6;pkg stats | tail -6"
+alias fetchall="clear;fetch | tail -14;pver | tail -6;pkg stats | head -7 | tail -6"
 alias fetchall_nc="(clear;fetch nocolor | tail -14;pver nocolor | tail -6;pkg nocolor | tail -6) | sed 's/\x1B\[[0-9;]\+[A-Za-z]//g'"
 ##b tmux
 alias td="tmux detach"
@@ -125,13 +124,13 @@ alias tk="tmux kill-session -t"
 alias tl="tmux ls"
 ##c git
 alias gs="git status -s"
-alias gpo="git push origin master"
+alias gpo="git push"
 alias grs="git reset HEAD~1 --soft"
+alias gcd1="git clone --depth=1"
 ##d sound
 alias atog="amixer set Master toggle"
 alias mtog="mpc toggle"
 ##e dirs
-alias cdo="cd "\$OLDPWD""
 alias cdw="cd /mss/work"
 alias cdr="cd /mss/repo"
 alias cdt="cd /mss/tools"
@@ -143,3 +142,6 @@ alias cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
 alias :q!="exit"
 alias :wq="exit"
 alias :wq!="exit"
+##g init
+alias reboot="doas -- kill -s INT 1"
+alias poweroff="doas -- kill -s USR1 1"
