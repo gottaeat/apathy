@@ -1,3 +1,2 @@
 #!/mss/bin/sh
-read hmm < /tmp/bw-read.tmp
-echo $hmm
+cat /tmp/bw-read.tmp
