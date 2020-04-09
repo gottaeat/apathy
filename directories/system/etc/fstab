@@ -4,11 +4,11 @@
 #[sda2][swap][apathy swap]
 /dev/sda2  swap               swap  pri=100                   0  2
 
-#[sda2][ext4][stuff storage]
+#[sda3][ext4][stuff storage]
 /dev/sda3  /mnt/mss/stuff     ext4  rw,relatime,data=ordered  0  2
 
 ## mount home
-/mnt/mss/stuff/techy-bits/local-backup  /home/mss                              auto defaults,nofail,nobootwait,bind  0  2
+/mnt/mss/stuff/techy-bits/local-backup  /home/mss  auto  defaults,nofail,nobootwait,bind  0  2
 
 ## virtfs+tmpfs
 proc      /proc     proc      nosuid,noexec,nodev      0  0

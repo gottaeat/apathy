@@ -13,7 +13,7 @@ set mouse=
 syntax on
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 
-colorscheme elflord
+colorscheme industry
 
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
