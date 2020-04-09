@@ -1,8 +1,17 @@
 #!/mss/bin/sh
-utime_b=$(awk '{print $1}' /proc/uptime)
+upt=$(awk '{print int($1)}' /proc/uptime)
 
-echo "$(printf "%dd %dh %dm\n"                      \
-          "$(echo "${utime_b}/86400"        | bc)"  \
-          "$(echo "(${utime_b}%86400)/3600" | bc)"  \
-          "$(echo "(${utime_b}%3600)/60"    | bc)")"
-
+   [ "${upt}" -lt 3600  ]             \
+&& printf "%02d:%02.0f\n"               \
+           "$(((${upt}%3600)/60))"    \
+           "$((${upt}%60))"           \
+|| [ "${upt}" -lt 86400 ]             \
+&& printf "%02d:%02d:%02.0f\n"          \
+           "$(((${upt}%86400)/3600))" \
+           "$(((${upt}%3600)/60))"    \
+           "$((${upt}%60))"           \
+|| printf "%d:%02d:%02d:%02.0f\n"       \
+           "$((${upt}/86400))"        \
+           "$(((${upt}%86400)/3600))" \
+           "$(((${upt}%3600)/60))"    \
+           "$((${upt}%60))"
