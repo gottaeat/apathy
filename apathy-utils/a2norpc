@@ -9,4 +9,5 @@ exec aria2c               \
  --file-allocation=none   \
  --follow-torrent=false   \
  --seed-ratio=0           \
+ --seed-time=0            \
  "${@}"
