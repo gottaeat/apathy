@@ -1,2 +1,2 @@
 #!/mss/bin/sh
-free --mebi | awk 'NR==2 {print $3"m"}'
+awk '/Avail/ {print "av:"int($2/1014)"m"}' /proc/meminfo
