@@ -1,0 +1,6 @@
+/usr/bin/cuebreakpoints
+/usr/bin/cueconvert
+/usr/bin/cueprint
+/usr/bin/cuetag.sh
+
+/usr/share/man

@@ -399,7 +399,9 @@
 
 [d] self	> sinit-1.1-apathy
 [d] alpine	> zstd-1.4.4
-[d] self	> qemu-4.2.0
+[r] self	> qemu-4.2.0
+[d] alpine	> cuetools-1.4.1
+[d] alpine	> shntool-3.0.10
 ```
 ```
 ### base mlfs packages
