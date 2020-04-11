@@ -18,6 +18,7 @@ s_succ="${c_green}s${c_reset}"
 
 ainit_nc(){ printf "\n";}
 ainitmes(){ printf "${sbefore}${@}";}
+ainitmes_nospace(){ printf "${@}";}
 ainitusage(){ printf "${sbefore}usage: ${@}.\n";}
 failprompt(){ printf "${cur_zero}${pbefore}${s_fail}\n";}
 warnprompt(){ printf "${cur_zero}${pbefore}${s_warn}\n";}
