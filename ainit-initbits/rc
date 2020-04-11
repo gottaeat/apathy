@@ -25,6 +25,7 @@ banner(){
 }
 
 initboi(){
+  dmesgtime=$(dmesg | grep "Run /sbin/init" -B1 | awk 'NR==1 {sub(/\]/,""); print $2}')
  datebefore=$(date +%s)
 
  banner
@@ -39,7 +40,7 @@ initboi(){
  $sdir/swap		start
  $sdir/checkfs		start
  $sdir/mountfs		start
- $sdir/setsched		start
+#$sdir/setsched		start
  $sdir/cleanfs		start
  $sdir/alsa		start
  $sdir/console		start
@@ -65,7 +66,9 @@ initboi(){
 
  ainit_nc
  dateafter=$(date +%s) timespent=$(($dateafter - $datebefore))
- ainitmes "boot completed in ${c_lcyan}${timespent}${c_reset} seconds."; ainit_nc
+
+ ainitmes "${c_green}init${c_reset} got called after ${c_lcyan}${dmesgtime}${c_reset} seconds.";              ainit_nc
+ ainitmes "${c_green}rc${c_reset} finished in ${c_lcyan}${timespent}${c_reset} seconds."; ainit_nc
  ainit_nc
 }
 
