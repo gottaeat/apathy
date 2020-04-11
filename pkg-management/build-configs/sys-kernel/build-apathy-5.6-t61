@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.1 - mss@waifu.club
-# build script for 5.6 kernels, version 1, for thinkpad t61
+# build script for 5.6 kernels, version 2, for thinkpad t61
 
 . /mss/bin/apathy-funcs
 
@@ -18,7 +18,7 @@ _confdir="${_repodir}/configs"
 __logdir="/mss/work/logs"
 redirect="${__logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${__kerver}.log"
 
-confname="5.6-apathy-t61-nonfree-gcc-bmq-20200403_051938.config"
+confname="5.6-apathy-t61-nonfree-gcc-bmq-20200411_143115.config"
 _useconf="${_confdir}/5.6/${confname}"
 localver="5.6-$(grep 'CONFIG_LOCALVERSION=' "${_useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -156,8 +156,8 @@ aprint "applying the zstd patches."
 apply_zstd
 aprint "applying the misc patches."
 apply_misc
-aprint "applying the clearlinux patchset."
-apply_clearlinux
+#aprint "applying the clearlinux patchset."
+#apply_clearlinux
 
 # d6 >> run menuconfig
 aprint_nc
@@ -235,7 +235,7 @@ if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
    doas cp .config               /boot/config
 
   aprint_ret "running ${c_lcyan}lilo${c_reset}."
-   doas -- lilo >/dev/null 2>&1
+   doas -- lilo >> ${redirect} 2>&1
   evalret
  else
   aprint "not installing the built kernel."
@@ -257,9 +257,9 @@ if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
 
   mkdir -p "${_workdir}/pkgup/boot"
 
-  cp -i ${_makedir}/arch/x86/boot/bzImage "${_workdir}/pkgup/boot/vmlinuz"
-  cp -i ${_makedir}/System.map            "${_workdir}/pkgup/boot/System.map"
-  cp -i ${_makedir}/.config               "${_workdir}/pkgup/boot/config"
+  cp -iv ${_makedir}/arch/x86/boot/bzImage "${_workdir}/pkgup/boot/vmlinuz"    >> ${redirect} 2>&1
+  cp -iv ${_makedir}/System.map            "${_workdir}/pkgup/boot/System.map" >> ${redirect} 2>&1
+  cp -iv ${_makedir}/.config               "${_workdir}/pkgup/boot/config"     >> ${redirect} 2>&1
   
   if [ "${modules}" = "yes" ]
    then
@@ -268,7 +268,7 @@ if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
   fi
 
   cd "${_workdir}"
-  /mss/bin/pkgup "pkgup" "${storepkg}"/"${archivename}" > /dev/null 2>&1    &&
+  /mss/bin/pkgup "pkgup" "${storepkg}"/"${archivename}" >> ${redirect} 2>&1
   rm -rf "${_workdir}/pkgup"
 
   evalret
