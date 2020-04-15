@@ -220,7 +220,7 @@ libupnp-1.8.4
 libshout-2.4.3
 boost-1.69.0
 mpc-0.33
-ncmpcpp-0.8.2
+ncmpcpp-0.9-20200415
 maim-5.5.3
 slop-7.4
 glm-0.9.9.6

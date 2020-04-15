@@ -325,7 +325,7 @@
 [d] bmlfs	>> boost-1.69.0			--> jesus fucking christ
 
 [d] alpine	> mpc-0.33
-[d] arch	> ncmpcpp-0.8.2			--> w/ buildforapathy
+[d] arch	> ncmpcpp-0.9-20200415		--> from git
 
 [d] arch	> maim-5.5.3
 [d] alpine	>> slop-7.4
