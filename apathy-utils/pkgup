@@ -4,13 +4,10 @@
 [ -z $1 ] && aprint_fail "no dir or file to pkgup selected in \$1, exiting." && exit 1
 [ -z $2 ] && aprint_fail "no archive name in \$2 specified, exiting."        && exit 1
 
-bname="$(echo "${1}" | sed 's/\///g;s/ /_/g')"
-zname="$(echo "${2}" | sed 's/\///g;s/ /_/g')"
+bname="$(echo "${1}" | sed 's/\/$//g;s/ /_/g')"
+zname="$(echo "${2}" | sed 's/\/$//g;s/ /_/g')"
 
 redirect_to="/tmp/pkgup-$bname-$(date +%s)"
-
-[ -f "${redirect_to}" ] && rm -f "${redirect_to}"
-mkfifo "${redirect_to}"
 
 aprint_nc
 aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
