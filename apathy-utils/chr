@@ -8,10 +8,6 @@ fi
 
 aprint_nc
 
-aprint_ret "allowing all connections to X."
- xhost + > /dev/null 2>&1
-evalretkill
-
 aprint_ret "mounting."
  mount --bind "$1" "$1"                    &&
  mount -t proc /proc "$1"/proc             &&
@@ -38,10 +34,6 @@ aprint_ret "exited chroot, unmounting."
  umount -l "$1"/dev  &&
  umount -l "$1"/run  &&
  umount -l "$1" 
-evalretkill
-
-aprint_ret "reverting xhost perms."
- xhost - > /dev/null 2>&1
 evalretkill
 
 aprint_nc
