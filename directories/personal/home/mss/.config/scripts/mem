@@ -1,2 +1,2 @@
 #!/mss/bin/sh
-awk '/Avail/ {print "av:"int($2/1014)"m"}' /proc/meminfo
+awk '/Avail/ {print int($2/1014)"m"}' /proc/meminfo
