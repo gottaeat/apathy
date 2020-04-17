@@ -57,10 +57,12 @@ shells:
 #### current package count and partition size:
 ```
  $  ~: pkg
- > total partition size : 1455.35mib
+
+ > total partition size : 1428.19mib
  > local package count  : 329 (+5)
  > removed packages     : 22
 ```
+
 
 ## dotfiles
 alongside all of the [system related configurations](https://github.com/mssx86/apathy/tree/apathy-musl/directories/system/etc), the [init structure](https://github.com/mssx86/apathy/tree/apathy-musl/init-scripts) to the [package build scripts and configurations](https://github.com/mssx86/apathy/tree/apathy-musl/pkg-management), i also serve my personal configurations [here](https://github.com/mssx86/apathy/tree/apathy-musl/directories/personal/home/mss).
