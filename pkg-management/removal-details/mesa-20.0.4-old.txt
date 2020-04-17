@@ -9,6 +9,7 @@
 /usr/include/GL/glx.h
 /usr/include/GL/glxext.h
 /usr/include/GL/internal/dri_interface.h
+/usr/include/GL/osmesa.h
 /usr/include/GLES/egl.h
 /usr/include/GLES/gl.h
 /usr/include/GLES/glext.h
@@ -40,6 +41,9 @@
 /usr/lib/libGLESv2.so
 /usr/lib/libGLESv2.so.2
 /usr/lib/libGLESv2.so.2.0.0
+/usr/lib/libOSMesa.so
+/usr/lib/libOSMesa.so.8
+/usr/lib/libOSMesa.so.8.0.0
 /usr/lib/libgbm.so
 /usr/lib/libgbm.so.1
 /usr/lib/libgbm.so.1.0.0
@@ -53,5 +57,6 @@
 /usr/lib/pkgconfig/gl.pc
 /usr/lib/pkgconfig/glesv1_cm.pc
 /usr/lib/pkgconfig/glesv2.pc
+/usr/lib/pkgconfig/osmesa.pc
 
 /usr/share/drirc.d/00-mesa-defaults.conf
