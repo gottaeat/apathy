@@ -100,20 +100,10 @@
 # xml garbage end
 
 # someone fucking shoot me
- !d	libpng
- !d	freetype w/o harfbuzz
- !d	pcre -> glib
- !d	icu -> gobj-int -> shared-mime -> deskt-file
- !d	pixman -> cairo -> harfbuzz
- !d	re freetype
- !d	re cairo
- !d	re harfbuzz
- !d	re freetype
- !d	fontconfig
- !d	re cairo
+# warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
 
-[d] self	> fontconfig-2.13.1
-[d] self	>> freetype-2.10.1		--> patches from bmlfs, can do alpine
+[d] self	> fontconfig-2.13.92
+[d] self	>> freetype-2.10.1
 [d] bmlfs	>>> libpng-1.6.37
 [d] bmlfs	>>> harfbuzz-2.6.4
 [d] alp+bmlfs	>>>> glib-2.62.4		--> inst from bmlfs, patches from alpine
@@ -122,8 +112,10 @@
 [d] bmlfs	>>>> gobject-introspection-1.60.2
 [d] bmlfs	>>>> shared-mime-info-1.12
 [d] bmlfs	>>>> desktop-file-utils-0.24
-[d] alp+bmlfs	>>>> cairo-1.16.0		--> inst from bmlfs, patches from alpine
-[d] bmlfs	>>>>> pixman-0.38.4
+
+[d] self	> cairo-1.16.0
+[d] bmlfs	>> pixman-0.38.4
+
 # someone fucking shoot me end
 
 # xorg libs
