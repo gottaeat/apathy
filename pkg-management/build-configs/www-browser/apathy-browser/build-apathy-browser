@@ -12,6 +12,14 @@
  && aprint_fail "no ${c_lcyan}pale moon${c_reset} tarball specified as ${c_lcyan}\$2${c_reset}, exiting." \
  && exit 1
 
+case $3 in y|Y|yes)
+ export answerbuild="y" answerinst="y"
+ aprint_nc
+ aprint "${c_red}building and installing without asking for confirmation${c_reset}."
+ aprint_nc
+ ;;
+esac
+
 # a2 >> check if $1 and $2 exists in sauces
 saucedir="/mss/work/sauces"
 [ ! -f "${saucedir}/${1}" ] \
@@ -104,53 +112,59 @@ evalretkill
 
 # d1 >> check everything and ask to run mach
 aprint_nc
-aprint_ask "ready to run mach, shall we continue? (y/n): "
+if [ -z "$answerbuild" ]; then
+ aprint_ask "ready to run mach, shall we continue? (y/n): "
+ read answerbuild
+fi
 
-read answerbuild
- if [ "$answerbuild" != "${answerbuild#[Yy]}" ]
-  then
-   vi mozconfig
-   aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
-   aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
-   aprint_ret "running mach."
-   datebefore=$(date +%s)
+case "$answerbuild" in
+ y|Y|yes)
+  aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
+  aprint_ret "running mach."
+  datebefore=$(date +%s)
 
-    /bin/busybox time                \
-    ./mach build >> "$redirect_to" 2>&1
-   evalretkill
+   /bin/busybox time                \
+   ./mach build >> "$redirect_to" 2>&1
+  evalretkill
 
-   dateafter=$(date +%s)
-   timespent=$(($dateafter - $datebefore))
-   humantime=$(printf "%dd %dh %dm\n"                    \
-             "$(echo "${timespent}/86400"        | bc)"  \
-             "$(echo "(${timespent}%86400)/3600" | bc)"  \
-             "$(echo "(${timespent}%3600)/60"    | bc)")
+  dateafter=$(date +%s)
+  timespent=$(($dateafter - $datebefore))
+  humantime=$(printf "%dd %dh %dm\n"                    \
+            "$(echo "${timespent}/86400"        | bc)"  \
+            "$(echo "(${timespent}%86400)/3600" | bc)"  \
+            "$(echo "(${timespent}%3600)/60"    | bc)")
 
-   aprint_nc
-   aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
-  else
-   aprint "not running make."
-   aprint_nc
-   exit 0
- fi
-
+  aprint_nc
+  aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
+ ;;
+ n|N|no)
+  aprint "not running make."
+  aprint_nc
+  exit 0
+ ;;
+esac
 # d2 >> ask to install build
 aprint_nc
-aprint_ask "shall we run the installer? (y/n): "
+if [ -z "$answerinst" ]; then
+ aprint_ask "shall we run the installer? (y/n): "
+ read answerinst
+fi
 
-read answerinst
- if [ "$answerinst" != "${answerinst#[Yy]}" ]
-  then
-   aprint_ret "installing to ${c_lcyan}${instdir}${c_reset}."
-    DESTDIR="${instdir}" ./mach install >> "$redirect_to" 2>&1 
-   evalret
+case "$answerinst" in
+ y|Y|yes)
+  aprint_ret "installing to ${c_lcyan}${instdir}${c_reset}."
+   DESTDIR="${instdir}" ./mach install >> "$redirect_to" 2>&1 
+  evalret
 
-   aprint_ret "removing unnecessary directories."
-    rm -rf ${instdir}/usr/include                              &&
-    rm -rf ${instdir}/usr/lib/apathy-browser-devel-${pmver}    &&
-    rm -rf ${instdir}/usr/share
-   evalret
-  else
-   aprint "not installing."
-   exit 0
- fi
+  aprint_ret "removing unnecessary directories."
+   rm -rf ${instdir}/usr/include                              &&
+   rm -rf ${instdir}/usr/lib/apathy-browser-devel-${pmver}    &&
+   rm -rf ${instdir}/usr/share
+  evalret
+ ;;
+ n|N|no)
+  aprint "not installing."
+  exit 0
+ ;;
+esac
