@@ -27,24 +27,34 @@ case $1 in
     grep -v -e \# -e \` -e \! "${repomd}" | awk '/\[d\]/ {print $4}' > "${reporaw}"
   fi
  ;;
- removed)
+ r|removed)
   if [ ! -f "${localmd}" ]
    then
-    aprint_fail "${c_lcyan}(local)\t\tpackages.md${c_reset} does not exist."
+    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
     exit 1
    else
-    aprint "${c_lcyan}(local)${c_reset}\t\tremoved packages are:"
-    awk '/\[r\]/ {print "\t\t\t- "$4}' "${localmd}"
+    aprint "${c_lcyan}(local)${c_reset}\t\tremoved packages are: "
+    awk '/^\[r/{printf ("%s\t\t%s\n", $2, $4)}' "${localmd}"
   fi
  ;;
- installed)
-  if [ ! -f "${localraw}" ]
+ d|installed)
+  if [ ! -f "${localmd}" ]
    then
-    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}raw-packages.txt${c_reset} is missing." 
+    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
     exit 1
    else
     aprint "${c_lcyan}(local)${c_reset}\t\tinstalled packages are: "
-    awk '{print "\t\t\t- "$1}' "${localraw}"
+    awk '/^\[d/{printf ("\t%s\t\t%s\n", $2, $4)}' "${localmd}"
+  fi
+ ;;
+ o|ondemand)
+  if [ ! -f "${localmd}" ]
+   then
+    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
+    exit 1
+   else
+    aprint "${c_lcyan}(local)${c_reset}\t\tondemand packages are: "
+    awk '/^\[o/{printf ("\t%s\t\t%s\n", $2, $4)}' "${localmd}"
   fi
  ;;
  stats|*)

@@ -58,7 +58,7 @@
 [r] alpine	>> nspr-4.24
 [d] alpine	>> sqlite-3.30.1		--> normally installed after, moved here
 
-[d] alpine	> python-2.7.17			--> without ipv6
+[d] self	> python-2.7.17
 
 [d] alpine	> gnupg-2.2.19
 [d] alpine	>> npth-1.6
@@ -455,7 +455,7 @@
 [d] mlfs	> pkg-config-0.29.2
 [d] mlfs	> procps-ng-3.3.15
 [d] mlfs	> psmisc-23.2
-[d] mlfs	> python-3.8.1
+[d] self	> python-3.8.1
 [d] mlfs	> readline-8.0
 [d] alpine	> sed-4.8
 [d] mlfs	> shadow-4.7
