@@ -128,8 +128,8 @@ read answerbuildkern
 
 if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
  then
-  aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
-  aprint "redirecting output to ${c_lcyan}${redirect}${c_reset}."
+  aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
+  aprint "redirecting output to ${cl_grn}${redirect}${c_res}."
   aprint_ret "running make."
   datebefore=$(date +%s)
 
@@ -147,7 +147,7 @@ if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
               "$(echo "(${timespent}%86400)/3600" | bc)"  \
               "$(echo "(${timespent}%3600)/60"    | bc)")
   
-  aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
+  aprint "build finished in ${cl_grn}${humantime}${c_res}."
 
  else
   aprint "not running make."
@@ -182,7 +182,7 @@ if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
    doas cp System.map            /boot/System.map &&
    doas cp .config               /boot/config
 
-  aprint_ret "running ${c_lcyan}lilo${c_reset}."
+  aprint_ret "running ${cl_grn}lilo${c_res}."
    doas -- lilo >> ${redirect} 2>&1
   evalret
  else

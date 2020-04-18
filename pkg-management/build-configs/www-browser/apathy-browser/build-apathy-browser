@@ -6,16 +6,16 @@
 
 # a1 >> check if variables are set
 [ -z $1 ] \
- && aprint_fail "no ${c_lcyan}uxp${c_reset} tarball specified as ${c_lcyan}\$1${c_reset}, exiting." \
+ && aprint_fail "no ${cl_grn}uxp${c_res} tarball specified as ${cl_grn}\$1${c_res}, exiting." \
  && exit 1
 [ -z $2 ] \
- && aprint_fail "no ${c_lcyan}pale moon${c_reset} tarball specified as ${c_lcyan}\$2${c_reset}, exiting." \
+ && aprint_fail "no ${cl_grn}pale moon${c_res} tarball specified as ${cl_grn}\$2${c_res}, exiting." \
  && exit 1
 
 case $3 in y|Y|yes)
  export answerbuild="y" answerinst="y"
  aprint_nc
- aprint "${c_red}building and installing without asking for confirmation${c_reset}."
+ aprint "${cb_red}building and installing without asking for confirmation${c_res}."
  aprint_nc
  ;;
 esac
@@ -23,10 +23,10 @@ esac
 # a2 >> check if $1 and $2 exists in sauces
 saucedir="/mss/work/sauces"
 [ ! -f "${saucedir}/${1}" ] \
- && aprint_fail "${c_lcyan}${1}${c_reset} does not exist in saucedir, exiting" \
+ && aprint_fail "${cl_grn}${1}${c_res} does not exist in saucedir, exiting" \
  && exit 1
 [ ! -f "${saucedir}/${2}" ] \
- && aprint_fail "${c_lcyan}${2}${c_reset} does not exist in saucedir, exiting" \
+ && aprint_fail "${cl_grn}${2}${c_res} does not exist in saucedir, exiting" \
  && exit 1
 
 # b1 >> set the vars
@@ -68,36 +68,36 @@ lsdetail "ldflags"     "$(echo ${LDFLAGS} | fold -w 52)"
 aprint_nc
 
 # c1.1 >> extract the pale moon code
-aprint_ret "extracting ${c_lcyan}${2}${c_reset}."
+aprint_ret "extracting ${cl_grn}${2}${c_res}."
  tar xf "${saucedir}"/"${2}" > "$redirect_to" 2>&1
 evalretkill
 
 # c1.2 >> extract the uxp code
-aprint_ret "extracting ${c_lcyan}${1}${c_reset}."
+aprint_ret "extracting ${cl_grn}${1}${c_res}."
  prevpwd="$PWD"
  cd "${srcdir}"
  tar xf "${saucedir}"/"${1}" >> "$redirect_to" 2>&1
 evalretkill
 
 # c1.3 >> move uxp to platform
-aprint_ret "moving the ${c_lcyan}uxp code${c_reset} to ${c_lcyan}platform/${c_reset}."
+aprint_ret "moving the ${cl_grn}uxp code${c_res} to ${cl_grn}platform/${c_res}."
  cd "$prevpwd"
  rm -rfv "${srcdir}/platform"                        >> "$redirect_to" 2>&1
  mv -v   "${srcdir}/${uxpfull}" "${srcdir}/platform" >> "$redirect_to" 2>&1
 evalretkill
 
 # c2 >> cd to work
-aprint_ret "cd to ${c_lcyan}${srcdir}${c_reset}."
+aprint_ret "cd to ${cl_grn}${srcdir}${c_res}."
  cd "${srcdir}"
 evalretkill
 
 # c3 >> copy mozconfig
-aprint_ret "copying ${c_lcyan}mozconfig${c_reset}."
+aprint_ret "copying ${cl_grn}mozconfig${c_res}."
  cp -v "${filesdir}"/mozconfig "${srcdir}"/mozconfig >> "$redirect_to" 2>&1
 evalretkill
 
 # c4 >> apply branding
-aprint_ret "copying the ${c_lcyan}apathy-browser branding${c_reset} files."
+aprint_ret "copying the ${cl_grn}apathy-browser branding${c_res} files."
  cp -v "${branding}"/aboutDialog.xul          "${srcdir}"/palemoon/base/content/                      >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/browserconfig.properties "${srcdir}"/palemoon/branding/shared/locales/           >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/preferences.inc          "${srcdir}"/palemoon/branding/shared/pref/              >> "$redirect_to" 2>&1 &&
@@ -119,8 +119,8 @@ fi
 
 case "$answerbuild" in
  y|Y|yes)
-  aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
-  aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
+  aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
+  aprint "redirecting output to ${cl_grn}${redirect_to}${c_res}."
   aprint_ret "running mach."
   datebefore=$(date +%s)
 
@@ -136,7 +136,7 @@ case "$answerbuild" in
             "$(echo "(${timespent}%3600)/60"    | bc)")
 
   aprint_nc
-  aprint "build finished in ${c_lcyan}${humantime}${c_reset}."
+  aprint "build finished in ${cl_grn}${humantime}${c_res}."
  ;;
  n|N|no)
   aprint "not running make."
@@ -153,7 +153,7 @@ fi
 
 case "$answerinst" in
  y|Y|yes)
-  aprint_ret "installing to ${c_lcyan}${instdir}${c_reset}."
+  aprint_ret "installing to ${cl_grn}${instdir}${c_res}."
    DESTDIR="${instdir}" ./mach install >> "$redirect_to" 2>&1 
   evalret
 
