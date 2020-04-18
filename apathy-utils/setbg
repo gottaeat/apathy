@@ -1,5 +1,0 @@
-#!/mss/bin/sh
-. /mss/bin/apathy-funcs
-
-if [ -z $1 ]; then aprint_fail "no video selected in ${c_lcyan}\$1${c_reset}."; exit 1; fi
-xwinwrap -g 1366x768 -ni -s -b -ov -- mpv --no-audio --loop -wid WID $1
