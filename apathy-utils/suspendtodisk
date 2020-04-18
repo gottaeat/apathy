@@ -16,9 +16,9 @@ fi
 aprint_nc
 case "$answersusp" in
  y|Y|yes)
-  aprint "date before suspend is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
+  aprint "date before suspend is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
   datebefore="$(date +%s)"
-  aprint "suspending ${c_lcyan}now${c_reset}."
+  aprint "suspending ${cl_grn}now${c_res}."
 
   echo disk > /sys/power/state
 
@@ -31,16 +31,16 @@ case "$answersusp" in
             "$(echo "(${timespent}%3600)/60"    | bc)")
 
   aprint_nc
-  aprint "woke up from suspend at ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
-  aprint "slept for ${c_lcyan}${humantime}${c_reset}."
+  aprint "woke up from suspend at ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
+  aprint "slept for ${cl_grn}${humantime}${c_res}."
  ;;
  n|N|no)
-  aprint "${c_lcyan}not${c_reset} suspending."
+  aprint "${cl_grn}not${c_res} suspending."
   aprint_nc
   exit 1
  ;;
  *)
-  aprint_fail "input either ${c_lcyan}y|Y|yes${c_reset} or ${c_lcyan}n|N|no${c_reset}, exiting."
+  aprint_fail "input either ${cl_grn}y|Y|yes${c_res} or ${cl_grn}n|N|no${c_res}, exiting."
   aprint_nc
   exit 1
  ;;

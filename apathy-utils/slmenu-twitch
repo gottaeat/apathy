@@ -34,7 +34,7 @@ case "$answer" in
    | awk '{print $1}')
 
   clear
-  aprint "playing twitch.tv/${c_lcyan}${selectedstream}${c_reset}."
+  aprint "playing twitch.tv/${cl_grn}${selectedstream}${c_res}."
 
   mpv "https://twitch.tv/${selectedstream}" \
    --ytdl-format="${quality}" >/dev/null 2>&1 &

@@ -16,52 +16,52 @@ aprint_nc
 case "$answerstrip" in
  y|Y|yes)
   aprint "stripping:"
-  aprint_ret "${c_lcyan}*.a${c_reset}            under  ${c_green}/usr/lib${c_reset}      with  ${c_lcyan}--strip-debug${c_reset}"
+  aprint_ret "${cl_grn}*.a${c_res}            under  ${cb_grn}/usr/lib${c_res}      with  ${cl_grn}--strip-debug${c_res}"
    find /usr/lib -type f      \
     -name \*.a                \
     -exec strip --strip-debug \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}*.so (!*.dbg)${c_reset}  under  ${c_green}/lib${c_reset}          with  ${c_lcyan}--strip-unneeded${c_reset}"
+  aprint_ret "${cl_grn}*.so (!*.dbg)${c_res}  under  ${cb_grn}/lib${c_res}          with  ${cl_grn}--strip-unneeded${c_res}"
    find /lib -type f                    \
     \( -name \*.so* -a ! -name \*dbg \) \
     -exec strip --strip-unneeded        \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}*.so (!*.dbg)${c_reset}  under  ${c_green}/usr/lib${c_reset}      with  ${c_lcyan}--strip-unneeded${c_reset}"
+  aprint_ret "${cl_grn}*.so (!*.dbg)${c_res}  under  ${cb_grn}/usr/lib${c_res}      with  ${cl_grn}--strip-unneeded${c_res}"
    find /usr/lib -type f                \
     \( -name \*.so* -a ! -name \*dbg \) \
     -exec strip --strip-unneeded        \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/bin${c_reset}          with  ${c_lcyan}--strip-all${c_reset}"
+  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/bin${c_res}          with  ${cl_grn}--strip-all${c_res}"
    find /bin -type f        \
     -exec strip --strip-all \
     {} ';' > /dev/null 2>&1
   evalretkill
  
-  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/sbin${c_reset}         with  ${c_lcyan}--strip-all${c_reset}"
+  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/sbin${c_res}         with  ${cl_grn}--strip-all${c_res}"
    find /sbin -type f       \
     -exec strip --strip-all \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/bin${c_reset}      with  ${c_lcyan}--strip-all${c_reset}"
+  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/bin${c_res}      with  ${cl_grn}--strip-all${c_res}"
    find /usr/bin -type f    \
     -exec strip --strip-all \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/sbin${c_reset}     with  ${c_lcyan}--strip-all${c_reset}"
+  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/sbin${c_res}     with  ${cl_grn}--strip-all${c_res}"
    find /usr/sbin -type f   \
     -exec strip --strip-all \
     {} ';' > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_lcyan}all${c_reset}            under  ${c_green}/usr/libexec${c_reset}  with  ${c_lcyan}--strip-all${c_reset}"
+  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/libexec${c_res}  with  ${cl_grn}--strip-all${c_res}"
    find /usr/libexec -type f \
     -exec strip --strip-all  \
     {} ';' > /dev/null 2>&1
@@ -70,12 +70,12 @@ case "$answerstrip" in
   aprint_nc
  ;;
  n|N|no)
-  aprint "${c_lcyan}not${c_reset} stripping."
+  aprint "${cl_grn}not${c_res} stripping."
   aprint_nc
   exit 1
  ;;
  *)
-  aprint_fail "input either ${c_lcyan}y|Y|yes${c_reset} or ${c_lcyan}n|N|no${c_reset}, exiting."
+  aprint_fail "input either ${cl_grn}y|Y|yes${c_res} or ${cl_grn}n|N|no${c_res}, exiting."
   aprint_nc
   exit 1
  ;;

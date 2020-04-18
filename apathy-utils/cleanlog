@@ -4,18 +4,17 @@ rootcheck
 
 cd /var/log
 
-for log in *
- do
+for log in *; do
   if [ -f "${log}" ]
    then
-    aprint_ret "cleaning ${c_lcyan}${log}${c_reset}." 
+    aprint_ret "cleaning ${cl_grn}${log}${c_res}." 
     printf '' > "${log}"
     evalret
    else
-    aprint_fail "${c_lcyan}${log}${c_reset} is a directory."
+    aprint_fail "${cl_grn}${log}${c_res} is a directory."
   fi
  done
 
-aprint_ret "cleaning ${c_lcyan}/var/lib/mpd/log${c_reset}."
+aprint_ret "cleaning ${cl_grn}/var/lib/mpd/log${c_res}."
 printf '' > /var/lib/mpd/log
 evalret

@@ -2,7 +2,7 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-if [ -z $1 ]; then aprint_fail "no option specified in ${c_lcyan}\$1${c_reset}."; exit 1; fi
+if [ -z $1 ]; then aprint_fail "no option specified in ${cl_grn}\$1${c_res}."; exit 1; fi
 
 case $1 in
  dnscrypt|-d)
@@ -15,11 +15,11 @@ case $1 in
   if [ -z "$(pidof dnscrypt-proxy)" ]
    then
     aprint_ret "starting dnscrypt."
-    /etc/init.d/dnscrypt-proxy start > /dev/null 2>&1
+    /mss/initbits/scripts/dnscrypt-proxy start > /dev/null 2>&1
     evalretkill
    else
     aprint_ret "restarting dnscrypt."
-    /etc/init.d/dnscrypt-proxy restart > /dev/null 2>&1
+    /mss/initbits/scripts//dnscrypt-proxy restart > /dev/null 2>&1
     evalretkill
   fi
   aprint_nc
@@ -36,7 +36,7 @@ case $1 in
   if [ ! -z "$(pidof dnscrypt-proxy)" ]
    then
     aprint_ret "stopping dnscrypt."
-    /etc/init.d/dnscrypt-proxy stop > /dev/null 2>&1
+    /mss/initbits/scripts/dnscrypt-proxy stop > /dev/null 2>&1
     evalretkill
   fi
   aprint_nc
@@ -44,5 +44,5 @@ case $1 in
   aprint_nc
  ;;
  *)
-  aprint_fail "pick either: ${c_lcyan}quad|-q${c_reset} or ${c_lcyan}dnscrypt|-d${c_reset}"
+  aprint_fail "pick either: ${cl_grn}quad|-q${c_res} or ${cl_grn}dnscrypt|-d${c_res}"
 esac

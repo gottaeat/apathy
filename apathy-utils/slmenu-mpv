@@ -11,7 +11,7 @@ quality="$(echo "${q_pre}" \
           | awk '{print $1}')"
 
 clear
-aprint "playing ${c_lcyan}${1}${c_reset}."
+aprint "playing ${cl_grn}${1}${c_res}."
 
 if [ "$2" = "--audio-only" ]
  then

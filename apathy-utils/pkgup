@@ -10,19 +10,19 @@ zname="$(echo "${2}" | sed 's/\/$//g;s/ /_/g')"
 redirect_to="/tmp/pkgup-$bname-$(date +%s)"
 
 aprint_nc
-aprint "current date is ${c_lcyan}$(date '+%a %d %I:%M:%S%P')${c_reset}."
-aprint "redirecting output to ${c_lcyan}${redirect_to}${c_reset}."
+aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
+aprint "redirecting output to ${cl_grn}${redirect_to}${c_res}."
 
 aprint_nc
-aprint "packaging ${c_lcyan}${bname}${c_reset} to ${c_lcyan}${zname}.tar.zst${c_reset}."
-aprint_ret "creating ${c_lcyan}${bname}.tar${c_reset}."
+aprint "packaging ${cl_grn}${bname}${c_res} to ${cl_grn}${zname}.tar.zst${c_res}."
+aprint_ret "creating ${cl_grn}${bname}.tar${c_res}."
  tar cfp "${bname}".tar "${bname}" > "${redirect_to}" 2>&1
 evalretkill
 
 sizebefore=$(du -sh "${bname}".tar | awk '{print $1}')
 datebefore=$(date +%s)
 
-aprint_ret "comressing to ${c_lcyan}${zname}.tar.zst${c_reset}."
+aprint_ret "comressing to ${cl_grn}${zname}.tar.zst${c_res}."
  /bin/busybox time \
   zstd --rm -v -19 "${bname}".tar -o "${zname}".tar.zst \
    >> "${redirect_to}" 2>&1
@@ -39,6 +39,6 @@ humantime=$(printf "%dd %dh %dm %02.fs\n"             \
           "$(echo "${timespent}%60"           | bc)")
 
 aprint_nc
-aprint "pkgup finished in ${c_lcyan}${humantime}${c_reset}."
-aprint "size of the end result is ${c_lcyan}${sizeafter}${c_reset}. (was ${c_lcyan}${sizebefore}${c_reset})"
+aprint "pkgup finished in ${cl_grn}${humantime}${c_res}."
+aprint "size of the end result is ${cl_grn}${sizeafter}${c_res}. (was ${cl_grn}${sizebefore}${c_res})"
 aprint_nc

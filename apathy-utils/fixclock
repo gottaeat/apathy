@@ -12,7 +12,7 @@ case "${curr_dns}" in
   /etc/init.d/dnscrypt-proxy stop > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "replacing ${c_lcyan}resolv.conf${c_reset}."
+  aprint_ret "replacing ${cl_grn}resolv.conf${c_res}."
   cp /etc/resolv.conf.quad /etc/resolv.conf
   evalretkill
   
@@ -20,7 +20,7 @@ case "${curr_dns}" in
   ntpd -q -g > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "placing the ${c_lcyan}dnscrypt resolv.conf${c_reset} back."
+  aprint_ret "placing the ${cl_grn}dnscrypt resolv.conf${c_res} back."
   cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
   evalretkill
 

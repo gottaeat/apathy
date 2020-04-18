@@ -2,12 +2,10 @@
 . /mss/bin/apathy-funcs
 rootcheck
 
-if   [ -z "$1" ]; then aprint_fail "no mount point selected, exiting."; exit 1
-elif [ -z "$2" ]; then aprint_fail "no user selected, exiting.";        exit 1
-fi
+[ -z "$1" ] && aprint_fail "no mount point selected, exiting." && exit 1
+[ -z "$2" ] && aprint_fail "no user selected, exiting."        && exit 1
 
 aprint_nc
-
 aprint_ret "mounting."
  mount --bind "$1" "$1"                    &&
  mount -t proc /proc "$1"/proc             &&
@@ -16,7 +14,7 @@ aprint_ret "mounting."
  mount --make-rslave --rbind /run "$1"/run
 evalretkill
 
-aprint "chrooting to ${c_lcyan}$1${c_reset} as user ${c_lcyan}$2${c_reset}."
+aprint "chrooting to ${cl_grn}$1${c_res} as user ${cl_grn}$2${c_res}."
 aprint_nc
  chroot "$1"         \
   /bin/env -i        \
