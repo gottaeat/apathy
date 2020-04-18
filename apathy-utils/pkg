@@ -2,113 +2,66 @@
 . /mss/bin/apathy-funcs
 
 localraw="/mss/raw-packages.txt"
-reporaw="/mss/repo/pkg-management/raw-packages.txt"
-localmd="/mss/packages.md"
-repomd="/mss/repo/pkg-management/packages.md"
+ localmd="/mss/packages.md"
+ reporaw="/mss/repo/pkg-management/raw-packages.txt"
+  repomd="/mss/repo/pkg-management/packages.md"
 
-case $1 in
- sync)
-   aprint_ret "${c_lcyan}(repo -> local)${c_reset}\tsyncing ${c_lcyan}raw-packages.txt${c_reset}."
-    cp /mss/repo/pkg-management/raw-packages.txt /mss/raw-packages.txt
-   evalret
+[ ! -f ${localraw} ] && aprint_fail "(local) ${cl_grn}raw-packages.txt${c_res} is not found."
+[ ! -f ${localmd}  ] && aprint_fail "(local) ${cl_grn}packages.md${c_res} is not found."
+[ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
+[ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
 
-   aprint_ret "${c_lcyan}(repo -> local)${c_reset}\tsyncing ${c_lcyan}packages.md${c_reset}."
-    cp /mss/repo/pkg-management/packages.md      /mss/packages.md
-   evalret
-   exit 0
- ;;
- convert)
-  if [ ! -f "${repomd}" ]
-   then
-    aprint_fail "${c_lcyan}(repo)${c_reset}${c_lcyan}packages.md${c_reset} not found."
-    exit 1
-   else
-    aprint "${c_lcyan}(repo)\t\t${c_reset}converting ${c_lcyan}packages.md${c_reset} to ${c_lcyan}raw-packages.txt${c_reset}."
-    grep -v -e \# -e \` -e \! "${repomd}" | awk '/\[d\]/ {print $4}' > "${reporaw}"
-  fi
- ;;
- r|removed)
-  if [ ! -f "${localmd}" ]
-   then
-    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
-    exit 1
-   else
-    aprint "${c_lcyan}(local)${c_reset}\t\tremoved packages are: "
-    awk '/^\[r/{printf ("%s\t\t%s\n", $2, $4)}' "${localmd}"
-  fi
- ;;
- d|installed)
-  if [ ! -f "${localmd}" ]
-   then
-    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
-    exit 1
-   else
-    aprint "${c_lcyan}(local)${c_reset}\t\tinstalled packages are: "
-    awk '/^\[d/{printf ("\t%s\t\t%s\n", $2, $4)}' "${localmd}"
-  fi
- ;;
- o|ondemand)
-  if [ ! -f "${localmd}" ]
-   then
-    aprint_fail "${c_lcyan}(local)${c_reset}\t\t${c_lcyan}packages.md${c_reset} is missing." 
-    exit 1
-   else
-    aprint "${c_lcyan}(local)${c_reset}\t\tondemand packages are: "
-    awk '/^\[o/{printf ("\t%s\t\t%s\n", $2, $4)}' "${localmd}"
-  fi
- ;;
- stats|*)
-  tsize="$(df --block-size=KiB / | awk 'NR==2 {print $3/1024"mib"}')"
+print_removed(){   awk '/^\[r\]/ {print $4}' "${localmd}";}
+print_installed(){ awk '/^\[d\]/ {print $4}' ${localmd};}
+print_ondemand(){  awk '/^\[o\]/ {print $4}' ${localmd};}
+print_help(){      aprint_usage "{d|o|r|stats|convert|sync}."; exit 1;}
 
-  if [ ! -f "${localmd}" ]
-   then
-    rcount="l${c_lcyan}(local)\t\t${c_lcyan}packages.md${c_reset} is missing."
-    ondemand="${c_green}(${c_reset}none${c_green})${c_reset}"
-   else
-    rcount=$(grep "\[r\]" "${localmd}" | wc -l)
-    ocount=$(grep "\[o\]" "${localmd}" | wc -l)
-    ondemand="${c_green}(${c_blue}+${c_reset}${ocount}${c_green})${c_reset}"
-  fi
+sync_raw(){ 
+ aprint_ret "(repo -> local) syncing raw-packages.txt"
+  cp "${reporaw}" "${localraw}"
+ evalret
+}
 
-  if [ ! -f "${localraw}" ]
-   then count="${c_lcyan}(local)\t\t$raw-packages.txt${c_reset} is missing."
-   else count=$(awk 'END{print NR}' "${localraw}")
-  fi
-  
-  if [ ! -d "/mss/repo" ]
-   then
-    gitstat="${c_lcyan}(repo)\t\t/mss/repo${c_reset} is missing."
-   else
-    gitstat_pre=$(cd /mss/repo && git status -s)
-  
-    if [ -z "$gitstat_pre" ]
-     then gitstat="clean."
-     else gitstat="\n\n$gitstat_pre"
-    fi
-  fi
-  
-  if [ ! -f "${localraw}" ] || [ ! -f "${reporaw}" ]
-   then
-    gitdf="${c_lcyan}(local, repo)${c_reset}\t${c_lcyan}raw-packages.txt${c_reset} is missing."
-   else
-    gitdf_pre=$(diff -u "${localraw}" "${reporaw}"                       \
-                 | awk '/^---/   {print "- local"" --->",$3"\t"$4};      \
-                        /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"}; \
-                        /^\+[a-z,0-9]/;                                  \
-                        /^-[a-z,0-9]/')
-    
-    if [ -z "$gitdf_pre" ]
-     then gitdf="none."
-     else gitdf=$(printf "\n\n$gitdf_pre\n")
-    fi
-  fi
+convert_lists(){
+ aprint_ret "(repo -> repo) generating raw-packages.txt."
+  grep -v -e \# -e \` -e \! "${repomd}" | awk '/\[d\]/ {print $4}' > "${reporaw}"
+ evalret
+}
 
- aprint_nc
- aprint "${c_green}total partition size\t${c_blue}:${c_reset} ${tsize}"
- aprint "${c_green}local package count\t${c_blue}:${c_reset} ${count} ${ondemand}"
- aprint "${c_green}removed packages\t${c_blue}:${c_reset} ${rcount}"
- aprint "${c_green}local and git diff\t${c_blue}:${c_reset} ${gitdf}"
- aprint "${c_green}git repo status\t${c_blue}:${c_reset} ${gitstat}"
- aprint_nc
- ;;
+stats(){
+ gitdf_pre=$(diff -u "${localraw}" "${reporaw}"                      \
+             | awk '/^---/   {print "- local"" --->",$3"\t"$4};      \
+                    /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"}; \
+                    /^\+[a-z,0-9]/;                                  \
+                    /^-[a-z,0-9]/')
+
+ [ -z "$gitdf_pre" ] \
+  && gitdf="none" || gitdf="\n\n$gitdf_pre\n"
+
+ [ -z "$(cd /mss/repo && git status -s)" ] \
+  && gitstat="clean" || gitstat="dirty"
+
+ 
+    partsize="$(df / | awk 'NR==2 {print $3/1024"mib"}')"
+ c_installed="$(print_installed | wc -l)"
+   c_removed="$(print_removed   | wc -l)"
+  c_ondemand="$(print_ondemand  | wc -l)"
+
+aprint_nc
+aprint "${cb_red}total partition size\t${cb_blu}:${c_res} ${partsize}"
+aprint "${cb_red}local package count\t${cb_blu}:${c_res} ${c_installed} (+${c_ondemand})"
+aprint "${cb_red}removed packages\t${cb_blu}:${c_res} ${c_removed}"
+aprint "${cb_red}local and git diff\t${cb_blu}:${c_res} ${gitdf}"
+aprint "${cb_red}git repo status\t${cb_blu}:${c_res} ${gitstat}"
+aprint_nc
+}
+
+case "$1" in
+   stats) stats           ;;
+       d) print_installed ;;
+       o) print_ondemand  ;;
+       r) print_removed   ;;
+ convert) convert_lists   ;;
+    sync) sync_raw        ;;
+       *) print_help      ;;
 esac
