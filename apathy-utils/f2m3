@@ -1,14 +1,38 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
+
+foundflac="$(find . -type f -name \*.flac)"
+
+if [ -z "$foundflac" ]
+ then
+  aprint_nc
+  aprint_fail "found no flac files, exiting."
+  aprint_nc
+  exit 1
+ else
+  aprint_nc
+  aprint "found these ${cl_grn}flac${c_res} files: "
+  for penis in $foundflac; do aprint_nm "$penis"; done
+  aprint_nc
+fi
+
 for thing in *.flac
  do
   meme=$(echo ${thing} | sed 's/\.flac//g')
-  aprint_ret "${c_blue}cnv: ${c_lcyan}${meme}${c_reset}."
-  ffmpeg -i "${meme}".flac -threads 8 -ab 320k -map_metadata 0 -id3v2_version 3 "${meme}".mp3 > /dev/null 2>&1
+
+  aprint_ret "${cb_blu}converting: ${cl_grn}${meme}${c_res}."
+  ffmpeg -i "${meme}".flac \
+   -threads 8              \
+   -ab 320k                \
+   -map_metadata 0         \
+   -id3v2_version 3        \
+   "${meme}".mp3           \
+    > /dev/null 2>&1
   evalretkill
 
-  aprint_ret "${c_blue}rmv: ${c_lcyan}flac files${c_reset}."
-  rm -rf "${meme}.flac"
+  aprint_ret "${cb_blu}removing: ${cl_grn}flac files${c_res}."
+   rm -rf "${meme}.flac"
   evalret
+
   aprint_nc
  done
