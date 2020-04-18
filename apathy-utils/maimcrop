@@ -1,14 +1,23 @@
 #!/mss/bin/sh
 dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimcrop")
-loc="/home/mss/screenshots/grabs/$dat.png"
+loc="/home/mss/screenshots/grabs/${dat}.png"
 
 if [ -z "$1" ]
  then
-  export savloc="$loc"
-  maim -s -u > $loc || rm -rfv $savloc && exit 1
- else
-  export savloc="$1"
-  maim -s -u > $1 || rm -rfv $savloc && exit 1
-fi &&
+  savloc="${loc}"
+  maim -s -u > "${loc}"
 
-printf " * screen grabbed to: ${savloc}.\n"
+  local error_value="${?}"
+  [ ! "${error_value}" = 0 ] && rm -rfv "${savloc}"
+
+ else
+  savloc="$1"
+  maim -s -u > "${1}"
+
+  local error_value="${?}"
+  [ ! "${error_value}" = 0 ] && rm -rfv "${savloc}"
+fi
+
+aprint_nc
+aprint "grab saved to ${cb_grn}${savloc}${c_res}."
+aprint_nc

@@ -1,21 +1,23 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-
 dat=$(date "+%Y-%m-%d_%I-%M-%S%P_ttygrab")
 loc="/home/mss/screenshots/tty/$dat.png"
 
 grab_tty(){ fbcat > /tmp/tty.ppm ;}
 
 if [ -z "$1" ]
- then grab_tty && convert /tmp/tty.ppm $loc && export savloc="$loc"
- else grab_tty && convert /tmp/tty.ppm $1 && export savloc="$1"
+ then
+  savloc="${loc}"
+  grab_tty
+  convert /tmp/tty.ppm "${loc}"
+ else
+  savloc="$1"
+  grab_tty
+  convert /tmp/tty.ppm "${1}"
 fi
 
-aprint_nc
-aprint "tty grabbed to ${c_lcyan}${savloc}${c_reset}."
-
-aprint_ret "removing the temp ppm."
 rm -rf /tmp/tty.ppm
-evalretkill
 
+aprint_nc
+aprint "tty grabbed to ${cb_grn}${savloc}${c_res}."
 aprint_nc

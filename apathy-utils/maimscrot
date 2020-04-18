@@ -1,14 +1,16 @@
 #!/mss/bin/sh
 dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
-loc="/home/mss/screenshots/entire/$dat.png"
+loc="/home/mss/screenshots/entire/${dat}.png"
 
 if [ -z "$1" ]
  then
-  export savloc="$loc"
-  maim -u > $loc
+  savloc="${loc}"
+  maim -u > "${loc}"
  else
-  export savloc="$1"
-  maim -u > $1
-fi &&
+  savloc="${1}"
+  maim -u > "${1}"
+fi
 
-printf " * screen grabbed to: ${savloc}.\n"
+aprint_nc
+aprint "screen grabbed to ${cb_grn}${savloc}${c_res}."
+aprint_nc
