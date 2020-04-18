@@ -12,7 +12,7 @@ pcre2-10.34
 libedit-20191231.3.1
 openssh-8.1_p1
 libssh2-1.9.0
-cmake-3.16.2
+cmake-3.17.1
 libuv-1.34.1
 libarchive-3.4.1
 usbutils-012

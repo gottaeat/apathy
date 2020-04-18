@@ -28,7 +28,7 @@
 [d] alp+blfs	> openssh-8.1_p1		--> patches from alp, config is a mix
 [d] alpine	> libssh2-1.9.0
 
-[d] blfs	> cmake-3.16.2
+[d] self	> cmake-3.17.1
 [d] alpine	>> libuv-1.34.1
 [d] alpine	>> libarchive-3.4.1
 
