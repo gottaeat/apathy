@@ -11,9 +11,11 @@ localraw="/mss/raw-packages.txt"
 [ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
 [ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
 
+from(){            awk '/'$1'/{print $2}' "${localmd}";}
+
 print_removed(){   awk '/^\[r\]/ {print $4}' "${localmd}";}
-print_installed(){ awk '/^\[d\]/ {print $4}' ${localmd};}
-print_ondemand(){  awk '/^\[o\]/ {print $4}' ${localmd};}
+print_installed(){ awk '/^\[d\]/ {print $4}' "${localmd}";}
+print_ondemand(){  awk '/^\[o\]/ {print $4}' "${localmd}";}
 print_help(){      aprint_usage "{d|o|r|stats|convert|sync}."; exit 1;}
 
 sync_raw(){ 
@@ -59,6 +61,7 @@ aprint_nc
 case "$1" in
    stats) stats           ;;
        d) print_installed ;;
+       f) from "$2"       ;;
        o) print_ondemand  ;;
        r) print_removed   ;;
  convert) convert_lists   ;;
