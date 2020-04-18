@@ -1,0 +1,5 @@
+#!/mss/bin/sh
+case "$(setxkbmap -query | awk '/layout/{print $2}')" in
+ tr) setxkbmap us ;;
+ us) setxkbmap tr ;;
+esac
