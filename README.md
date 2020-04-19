@@ -24,7 +24,7 @@ once the base is done, progressing further can be accomplished by reading packag
 #### major components:
 ```
 toolchain:
- * gcc 9.3.1 20200411 (c,c++), argp-standalone 1.3
+ * gcc 9.3.1 20200418 (c,c++), argp-standalone 1.3
  * (ondemand) llvm-10.0.0, clang-10.0.0
  * (ondemand) rustc-1.42.0, cbindgen-0.13.2
  * (ondemand) go-1.14.1
