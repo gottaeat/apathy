@@ -1,6 +1,8 @@
 # apathy
 apathy is a 64 bit libre linux distribution built from scratch for my own purposes using [apathy-mlfs](https://github.com/mssx86/apathy-mlfs) for its base; utilizing `musl` libc, `libressl`, partially `busybox` and `sinit` with [a home-brewed init structure](https://github.com/mssx86/apathy/tree/apathy-musl/ainit-initbits) written in posix shell.
 
+any questions regarding building a similar system or anything at all could be asked at *mss* on [rizon](https://www.rizon.net/chat) at **#apathy**.
+
 <p align="center"><img src="https://raw.githubusercontent.com/mssx86/apathy/apathy-musl/assets/asset.png"></p>
 
 ## about
