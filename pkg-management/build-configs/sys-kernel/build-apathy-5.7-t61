@@ -18,7 +18,7 @@ patchdir="${repodir}/patches"
   logdir="/mss/work/logs"
 redirect="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
-confname="5.7-apathy-t61-nonfree-gcc-bmq-20200415_050847.config"
+confname="5.7-apathy-t61-nonfree-gcc-bmq-ukms-zstd-20200422_232149.config"
  useconf="${confdir}/5.7/${confname}"
 localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -45,6 +45,17 @@ apply_misc(){
   do
    aprint_patch "${pp}"
    patch -p1 < "${patchdir}"/apathy/5.7/misc/${pp} >> ${redirect} 2>&1
+   evalretkill
+  done
+}
+
+apply_uksm(){
+ _uksmpatches="0001-uksm-5.6-for-5.7-rc2-mss.patch"
+
+ for pp in $_uksmpatches
+  do
+   aprint_patch "${pp}"
+   patch -p1 < "${patchdir}"/apathy/5.7/uksm/${pp} >> ${redirect} 2>&1
    evalretkill
   done
 }
@@ -102,6 +113,8 @@ evalretkill
 aprint_nc
 aprint "applying the alfredchen patches."
 apply_alfredchen
+aprint "applying the uksm patches."
+apply_uksm
 aprint "applying the zstd patches."
 apply_zstd
 aprint "applying the misc patches."
