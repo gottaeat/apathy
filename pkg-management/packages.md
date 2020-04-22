@@ -92,12 +92,13 @@
 [d] bmlfs	> libxcb-1.13.1
 
 # xml garbage
-[d] bmlfs	> libxslt-1.1.33
-[d] bmlfs	>> libxml2-2.9.9		--> withy python3 modules
-[d] bmlfs	>> docbook-xml-4.5
-[d] bmlfs	>>> sgml-common-0.6.3
-[d] bmlfs	>> docbook-xsl-1.79.2
+[r] bmlfs	> libxslt-1.1.33
+[r] bmlfs	>> docbook-xml-4.5
+[r] bmlfs	>>> sgml-common-0.6.3
+[r] bmlfs	>> docbook-xsl-1.79.2
 # xml garbage end
+
+[d] self	> libxml2-2.9.10
 
 # someone fucking shoot me
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
@@ -105,8 +106,8 @@
 [d] self	> fontconfig-2.13.92
 [d] self	>> freetype-2.10.1
 [d] bmlfs	>>> libpng-1.6.37
-[d] bmlfs	>>> harfbuzz-2.6.4
-[d] alp+bmlfs	>>>> glib-2.62.4		--> inst from bmlfs, patches from alpine
+[d] self	>>> harfbuzz-2.6.4
+[d] self	>>>> glib-2.64.2
 [d] bmlfs	>>>>> pcre-8.43
 [d] bmlfs	>>>> icu-65.1
 [d] bmlfs	>>>> gobject-introspection-1.60.2
@@ -161,7 +162,7 @@
 [d] self	> xcb-util-wm-0.4.1
 [d] self	> xcb-util-cursor-0.1.3
 
-[d] alp+self	> mesa-20.0.4
+[d] self	> mesa-20.0.4
 [d] alp+bmlfs	>> libdrm-2.4.100		--> patch from alpine, rest is bmlfs
 [d] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.0.14

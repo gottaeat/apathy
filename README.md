@@ -60,9 +60,9 @@ shells:
 ```
  $  ~: pkg
 
- > total partition size : 1242.92mib
- > local package count  : 329 (+5)
- > removed packages     : 22
+ > total partition size : 1192.62mib
+ > local package count  : 324 (+5)
+ > removed packages     : 27
 ```
 
 ## dotfiles
