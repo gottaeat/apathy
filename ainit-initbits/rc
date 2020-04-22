@@ -49,6 +49,7 @@ initboi(){
  $sdir/iptables		start
  $sdir/network		start
  $sdir/random		start
+ $sdir/earlyoom		start
  $sdir/gpm		start
  $sdir/mpd		start
  $sdir/dnscrypt-proxy	start
@@ -76,6 +77,7 @@ poweroffboi(){
  stty onlcr
  banner
 
+ $sdir/earlyoom		stop
  $sdir/gpm		stop
  $sdir/mpd		stop
  $sdir/dnscrypt-proxy	stop
@@ -95,7 +97,8 @@ poweroffboi(){
 rebootboi(){
  stty onlcr
  banner
-
+ 
+ $sdir/earlyoom		stop
  $sdir/gpm		stop
  $sdir/mpd		stop
  $sdir/dnscrypt-proxy	stop
