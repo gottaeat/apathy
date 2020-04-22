@@ -10,8 +10,12 @@
 #define OS_SLICE X11; Linux x86_64;
 
 // apathy-browser overrides
-pref("@GUAO_PREF@.pixiv.net", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) Gecko/20100101 Firefox/68.0");
-pref("@GUAO_PREF@.deezer.com", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) Gecko/20100101 Firefox/68.0");
+pref("@GUAO_PREF@.pixiv.net", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) @GK_SLICE@ Firefox/68.0");
+pref("@GUAO_PREF@.deezer.com", "Mozilla/5.0 (@OS_SLICE@ rv:68.0) @GK_SLICE@ Firefox/68.0");
+pref("@GUAO_PREF@.anilist.co", "Mozilla/5.0 (@OS_SLICE@; rv:60.0) @GK_SLICE@ Firefox/60.0 @PM_SLICE@");
+pref("@GUAO_PREF@.addons.thunderbird.net", "Mozilla/5.0 (@OS_SLICE@; rv:1.9a1) Gecko/20060814 Firefox/51.0");
+pref("@GUAO_PREF@.pornhub.com", "Mozilla/5.0 (@OS_SLICE@; rv:1.9a1) Gecko/20060814 Firefox/51.0");
+pref("@GUAO_PREF@.pornhubpremium.com", "Mozilla/5.0 (@OS_SLICE@; rv:1.9a1) Gecko/20060814 Firefox/51.0");
 
 // default useragent overrides from 28.9.0.2
 pref("@GUAO_PREF@.addons.mozilla.org","Mozilla/5.0 (@OS_SLICE@ rv:@GRE_VERSION@) @GRE_DATE_SLICE@ @PM_SLICE@");
