@@ -1,6 +1,39 @@
 // set urls
 pref("startup.homepage_welcome_url","https://mss.neocities.org/apathy/");
 pref("app.vendorURL", "https://github.com/mssx86/apathy");
+pref("browser.newtab.choice", 2);
+pref("browser.newtab.myhome", "https://mss.neocities.org/startpage/");
+pref("browser.newtab.url", "https://mss.neocities.org/startpage/");
+pref("browser.newtabpage.storageVersion", 1);
+
+// personal configuration
+pref("browser.bookmarks.restore_default_bookmarks", false);
+pref("browser.cache.disk.capacity", 102400);
+pref("browser.cache.disk.smart_size.enabled", false);
+pref("browser.download.dir", "/home/mss/dl");
+pref("browser.download.folderList", 2);
+pref("browser.download.panel.shown", true);
+pref("browser.download.useDownloadDir", true);
+pref("browser.feeds.showFirstRunUI", false);
+pref("browser.shell.checkDefaultBrowser", false);
+pref("extensions.blocklist.level", 99);
+pref("font.default.x-western", "sans-serif");
+pref("font.name.monospace.x-western", "xos4 Terminus");
+pref("font.name.sans-serif.x-western", "Liberation Sans");
+pref("font.name.serif.x-western", "Liberation Sans");
+pref("general.smoothScroll", false);
+pref("general.smoothScroll.lines", false);
+pref("general.smoothScroll.mouseWheel", false);
+pref("general.smoothScroll.pages", false);
+pref("general.smoothScroll.scrollbars", false);
+pref("general.warnOnAboutConfig", false);
+pref("layers.acceleration.enabled", true);
+pref("layers.acceleration.force", true);
+pref("middlemouse.contentLoadURL", false);
+pref("pref.privacy.disable_button.view_passwords", false);
+pref("privacy.donottrackheader.enabled", true);
+pref("signon.autofillForms", true);
+pref("status4evar.progress.toolbar.css", "#ff5555");
 
 // from privacy watchdog
 pref("extensions.blocklist.enabled", false);
