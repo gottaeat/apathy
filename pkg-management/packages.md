@@ -395,6 +395,7 @@
 [r] self	> qemu-4.2.0
 [d] alpine	> cuetools-1.4.1
 [d] alpine	> shntool-3.0.10
+[d] self	> earlyoom-1.6-apathy
 ```
 ```
 ### base mlfs packages
