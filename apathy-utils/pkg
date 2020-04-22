@@ -18,9 +18,12 @@ print_installed(){ awk '/^\[d\]/ {print $4}' "${localmd}";}
 print_ondemand(){  awk '/^\[o\]/ {print $4}' "${localmd}";}
 print_help(){      aprint_usage "{d|o|r|stats|convert|sync}."; exit 1;}
 
-sync_raw(){ 
+sync(){ 
  aprint_ret "(repo -> local) syncing raw-packages.txt"
   cp "${reporaw}" "${localraw}"
+ evalret
+ aprint_ret "(repo -> local) syncing packages.md"
+  cp "${repomd}" "${localmd}"
  evalret
 }
 
@@ -65,6 +68,6 @@ case "$1" in
        o) print_ondemand  ;;
        r) print_removed   ;;
  convert) convert_lists   ;;
-    sync) sync_raw        ;;
+    sync) sync            ;;
        *) print_help      ;;
 esac
