@@ -67,7 +67,7 @@ gobject-introspection-1.60.2
 shared-mime-info-1.12
 desktop-file-utils-0.24
 cairo-1.16.0
-pixman-0.38.4
+pixman-0.40.0
 xtrans-1.4.0
 libX11-1.6.9
 libXext-1.3.4

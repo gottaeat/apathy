@@ -1,8 +1,8 @@
 ### sources used:
 ```
 # https://pkgs.alpinelinux.org
+# https://github.com/kisslinux/repo
 # http://linuxfromscratch.org/blfs/view/9.0
-# https://github.com/rancher/buildroot
 # https://github.com/dslm4515/bmlfs
 # https://github.com/gentoo/libressl
 ```
@@ -115,7 +115,7 @@
 [d] bmlfs	>>>> desktop-file-utils-0.24
 
 [d] self	> cairo-1.16.0
-[d] bmlfs	>> pixman-0.38.4
+[d] bmlfs	>> pixman-0.40.0
 
 # someone fucking shoot me end
 
