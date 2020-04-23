@@ -60,7 +60,7 @@ shells:
 ```
  $ [repo]: pkg stats
 
- > total partition size : 1160.14mib
+ > total partition size : 1158.25mib
  > local package count  : 323 (+5)
  > removed packages     : 29
 ```
