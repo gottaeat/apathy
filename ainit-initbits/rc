@@ -85,11 +85,11 @@ poweroffboi(){
  $sdir/alsa		stop
  $sdir/random		stop
  $sdir/network		stop
+ $sdir/localnet		stop
  $sdir/sysklogd		stop
  $sdir/sendsignals	stop
  $sdir/swap		stop
  $sdir/mountfs		stop
- $sdir/localnet		stop
 
  sync; sleep 3; halt -p
 }
@@ -106,11 +106,11 @@ rebootboi(){
  $sdir/alsa		stop
  $sdir/random		stop
  $sdir/network		stop
+ $sdir/localnet		stop
  $sdir/sysklogd		stop
  $sdir/sendsignals	stop
  $sdir/swap		stop
  $sdir/mountfs		stop
- $sdir/localnet		stop
 
  sync; sleep 3; halt -r
 }
