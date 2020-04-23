@@ -231,7 +231,7 @@
 ```
 ```
 ### gui fuckery
-[d] bmlfs	> atk-2.34.1
+[d] self	> atk-2.36.0
 [d] bmlfs	> atkmm-2.28.0
 [d] bmlfs	>> glibmm-2.60.0
 [d] bmlfs	>>> libsigc++-2.10.2

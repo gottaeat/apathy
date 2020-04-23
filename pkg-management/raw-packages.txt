@@ -153,7 +153,7 @@ xf86-input-synaptics-1.9.1
 libva-2.6.0
 intel-vaapi-driver-2.4.0
 xinit-1.4.1
-atk-2.34.1
+atk-2.36.0
 atkmm-2.28.0
 glibmm-2.60.0
 libsigc++-2.10.2
