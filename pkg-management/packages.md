@@ -110,7 +110,7 @@
 [d] self	>>>> glib-2.64.2
 [d] bmlfs	>>>>> pcre-8.43
 [d] bmlfs	>>>> icu-65.1
-[d] bmlfs	>>>> gobject-introspection-1.60.2
+[r] bmlfs	>>>> gobject-introspection-1.60.2
 [r] bmlfs	>>>> shared-mime-info-1.12
 [r] bmlfs	>>>> desktop-file-utils-0.24
 
