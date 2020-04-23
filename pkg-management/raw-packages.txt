@@ -47,7 +47,7 @@ p11-kit-0.23.18.1
 openvpn-2.4.8
 lzo-2.10
 jq-1.6
-dnscrypt-proxy-2.0.36
+dnscrypt-proxy-2.0.42
 start-stop-daemon
 util-macros-1.19.2
 xorgproto-2019.2
