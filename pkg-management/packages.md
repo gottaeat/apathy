@@ -239,12 +239,12 @@
 [d] bmlfs	> freeglut-3.2.1
 [d] bmlfs	>> glu-9.0.1
 
-[d] bmlfs	> gdk-pixbuf-2.40.0
+[d] self	> gdk-pixbuf-2.40.0
 [d] bmlfs	>> libjpeg-turbo-2.0.4
 [d] bmlfs	>>> nasm-2.14.02
 		>> ?
 [d] bmlfs	>>> libcroco-0.6.13
-[d] bmlfs	>>> pango-1.42.4
+[d] self	>>> pango-1.42.4
 [d] bmlfs	>>>> fribidi-1.0.8
 [d] bmlfs	>>> vala-0.46.5
 [d] bmlfs	>> tiff-4.1.0
