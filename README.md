@@ -58,11 +58,11 @@ shells:
 
 #### current package count and partition size:
 ```
- $  ~: pkg
+ $ [repo]: pkg stats
 
- > total partition size : 1190.62mib
- > local package count  : 326 (+5)
- > removed packages     : 26
+ > total partition size : 1182.12mib
+ > local package count  : 324 (+5)
+ > removed packages     : 28
 ```
 
 ## dotfiles

@@ -111,8 +111,8 @@
 [d] bmlfs	>>>>> pcre-8.43
 [d] bmlfs	>>>> icu-65.1
 [d] bmlfs	>>>> gobject-introspection-1.60.2
-[d] bmlfs	>>>> shared-mime-info-1.12
-[d] bmlfs	>>>> desktop-file-utils-0.24
+[r] bmlfs	>>>> shared-mime-info-1.12
+[r] bmlfs	>>>> desktop-file-utils-0.24
 
 [d] self	> cairo-1.16.0
 [d] bmlfs	>> pixman-0.40.0
