@@ -246,7 +246,7 @@
 [d] bmlfs	>>> libcroco-0.6.13
 [d] self	>>> pango-1.42.4
 [d] bmlfs	>>>> fribidi-1.0.8
-[d] bmlfs	>>> vala-0.46.5
+[r] bmlfs	>>> vala-0.46.5
 [d] bmlfs	>> tiff-4.1.0
 
 [d] self	> gtk+-2.24.32
