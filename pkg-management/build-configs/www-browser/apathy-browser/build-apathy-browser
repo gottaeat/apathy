@@ -16,7 +16,6 @@ case $3 in y|Y|yes)
  export answerbuild="y" answerinst="y"
  aprint_nc
  aprint "${cb_red}building and installing without asking for confirmation${c_res}."
- aprint_nc
  ;;
 esac
 
@@ -29,33 +28,35 @@ saucedir="/mss/work/sauces"
  && aprint_fail "${cl_grn}${2}${c_res} does not exist in saucedir, exiting" \
  && exit 1
 
-# b1 >> set the vars
-uxpfull="$(echo ${1} | sed 's/.tar.gz//')"
-pmfull="$(echo ${2} | sed 's/.tar.gz//')"
+# b0 >> set the vars
+# b1 >> script vars
+    uxpfull="$(echo ${1} | sed 's/.tar.gz//')"
+     pmfull="$(echo ${2} | sed 's/.tar.gz//')"
 
-uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
-pmver="$(echo ${pmfull} | sed 's/Pale-Moon-//;s/_Release//;s/.tar.gz//')"
+     uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
+      pmver="$(echo ${pmfull} | sed 's/Pale-Moon-//;s/_Release//;s/.tar.gz//')"
 
-logdir="/mss/work/logs"
-repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
-filesdir="${repodir}/files"
-branding="${repodir}/branding"
+     logdir="/mss/work/logs"
+    repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
+   filesdir="${repodir}/files"
+   branding="${repodir}/branding"
 
-srcdir="${PWD}/${pmfull}"
-instdir="${srcdir}/KEK"
+     srcdir="${PWD}/${pmfull}"
+    instdir="${srcdir}/KEK"
 
 redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
-pmappdir="/usr/lib/apathy-browser-${pmver}"
+   pmappdir="/usr/lib/apathy-browser-${pmver}"
 
+# b2 >> build vars
 export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
-export MOZCONFIG="$srcdir/mozconfig"
-export CC=x86_64-apathy-linux-musl-gcc
-export CXX=x86_64-apathy-linux-musl-g++ 
-export CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
-export CXXFLAGS="${CFLAGS}"
-export LDFLAGS="-Wl,-rpath=${pmappdir}"
-export LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
-export MOZ_LINK_FLAGS="${LDFLAGS}"
+export           MOZCONFIG="$srcdir/mozconfig"
+export                  CC="x86_64-apathy-linux-musl-gcc"
+export                 CXX="x86_64-apathy-linux-musl-g++"
+export              CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
+export            CXXFLAGS="${CFLAGS}"
+export             LDFLAGS="-Wl,-rpath=${pmappdir}"
+export             LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
+export      MOZ_LINK_FLAGS="${LDFLAGS}"
 
 # c0 >> print vars
 aprint_nc
