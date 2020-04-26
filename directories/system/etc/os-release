@@ -1,0 +1,6 @@
+NAME="apathy"
+ID=apathy
+VERSION_ID=1.1
+PRETTY_NAME="apathy musl 1.2"
+HOME_URL="https://mss.neocities.org/apathy"
+BUG_REPORT_URL="https://github.com/mssx86/apathy"
