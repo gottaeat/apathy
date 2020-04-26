@@ -47,7 +47,7 @@ upt_pre=$(awk '{print int($1)}' /proc/uptime)
 printlogo; aprint_nc
 lsdetail "os"   "${dist}"
 lsdetail "kern" "${kern}"
-lsdetail "host" "${cb_blk}${_host}${c_res} on ${cb_blu}${model}${c_res}"
+lsdetail "host" "${cl_grn}${_host}${c_res} on ${cb_blu}${model}${c_res}"
 lsdetail "sh"   "${shell}"
 lsdetail "cpu"  "${cpu}"
 lsdetail "mem"  "${mem}"
