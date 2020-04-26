@@ -1,4 +1,5 @@
 #!/mss/bin/sh
+. /mss/bin/apathy-funcs
 dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
 loc="/home/mss/screenshots/entire/${dat}.png"
 
