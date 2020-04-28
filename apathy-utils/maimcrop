@@ -9,14 +9,20 @@ if [ -z "$1" ]
   maim -s -u > "${loc}"
 
   local error_value="${?}"
-  [ ! "${error_value}" = 0 ] && rm -rfv "${savloc}"
+  if [ ! "${error_value}" = 0 ]; then
+   rm -rfv "${savloc}"
+   exit 1
+  fi
 
  else
   savloc="$1"
   maim -s -u > "${1}"
 
   local error_value="${?}"
-  [ ! "${error_value}" = 0 ] && rm -rfv "${savloc}"
+  if [ ! "${error_value}" = 0 ]; then
+   rm -rfv "${savloc}"
+   exit 1
+  fi
 fi
 
 aprint_nc
