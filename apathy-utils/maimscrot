@@ -1,16 +1,27 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
-loc="/home/mss/screenshots/entire/${dat}.png"
 
-if [ -z "$1" ]
- then
-  savloc="${loc}"
-  maim -u > "${loc}"
- else
-  savloc="${1}"
-  maim -u > "${1}"
-fi
+       dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
+       loc="/home/mss/screenshots/entire/${dat}.png"
+primaryres="$(xrandr | awk '/primary/{print $4}')"
+
+[ -z "${1}" ] && savloc="${loc}" || savloc="${1}"
+
+aprint_nc
+lsdetail "primary screen res" "${primaryres}"
+aprint_nc
+
+aprint_ret "grabbing screen." 
+ maim -u > /tmp/maimcrop.tmp
+evalretkill
+
+aprint_ret "cropping the first monitor." 
+ convert /tmp/maimcrop.tmp -crop "${primaryres}" ${savloc}
+evalretkill
+
+aprint_ret "removing temp files."
+ rm -f /tmp/maimcrop.tmp
+evalretkill
 
 aprint_nc
 aprint "screen grabbed to ${cb_grn}${savloc}${c_res}."
