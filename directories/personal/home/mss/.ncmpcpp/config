@@ -3,7 +3,7 @@ ncmpcpp_directory                 = ~/.ncmpcpp
 lyrics_directory                  = ~/.ncmpcpp/lyrics
 
 # > connection settings
-m > connectpd_host                          = mpdboi
+mpd_host                          = mpdboi
 mpd_port                          = 6600
 mpd_connection_timeout            = 120
 mpd_music_dir                     = /mnt/mss/stuff/media/music
@@ -27,19 +27,19 @@ message_delay_time                = 1
 #system_encoding                  = "" 
 
 # > song format
-song_list_format                      = {%a - %t $R%b}|{%f}
-song_status_format                    = {$b%a - %t$/b}|{$b%f$/b}
+song_list_format                      = { }{%a $2$b%t$9$/b}|{%f}{$R$b$5%l$9$/b }
+song_status_format                    = {%a $b%t$/b}|{$b%f$/b}
 song_library_format                   = {%n - }{%t}|{%f}
 
 alternative_header_first_line_format  = $b$2$aqqu$/a$0$/b $b{%a - %t}|{%f}$/b $b$2$atqq$/a$0$/b
-alternative_header_second_line_format = %b (%y)
+alternative_header_second_line_format = {%b (%y)}
 current_item_prefix                   = $r
 current_item_suffix                   = $/r
-current_item_inactive_column_prefix   = 
-current_item_inactive_column_suffix   = 
+current_item_inactive_column_prefix   =
+current_item_inactive_column_suffix   =
 now_playing_prefix                    = $b
 now_playing_suffix                    = $/b
-browser_playlist_prefix               = "$7$rplaylist$/r$9 "
+browser_playlist_prefix               = "$7$r p $/r$9 "
 selected_item_prefix                  = $5
 selected_item_suffix                  = $9
 modified_item_prefix                  = $3> $9
@@ -52,16 +52,16 @@ browser_sort_format                   = {%n}|{%a - %t}|{%f} {%l}
 song_columns_list_format              = (20)[]{a} (50)[]{t|f} (20)[]{b}
 
 # > various
-execute_on_song_change             = ""
-execute_on_player_state_change     = ""
+execute_on_song_change             = "pkill -RTMIN+1 dwmblocks"
+execute_on_player_state_change     = "pkill -RTMIN+1 dwmblocks"
 
 playlist_show_mpd_host             = yes  
 playlist_show_remaining_time       = no
 playlist_shorten_total_times       = yes
-playlist_separate_albums           = yes
+playlist_separate_albums           = no
 
 playlist_display_mode              = classic
-browser_display_mode               = classic
+browser_display_mode               = columns
 
 search_engine_display_mode         = classic
 playlist_editor_display_mode       = classic
@@ -93,7 +93,7 @@ cyclic_scrolling                   = no
 lines_scrolled                     = 2
 
 lyrics_fetchers                             = lyricwiki, azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
-follow_now_playing_lyrics                   = no
+follow_now_playing_lyrics                   = yes
 fetch_lyrics_for_current_song_in_background = no
 store_lyrics_in_song_dir                    = no
 
@@ -103,7 +103,7 @@ allow_for_physical_item_deletion            = no
 lastfm_preferred_language                   = en
 space_add_mode                              = add_remove
 show_hidden_files_in_local_browser          = no
-screen_switcher_mode                        = playlist, browser, visualizer, clock
+screen_switcher_mode                        = playlist, browser, visualizer, outputs, clock
 startup_screen                              = playlist
 
 startup_slave_screen                        = ""
