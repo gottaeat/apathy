@@ -16,7 +16,9 @@ pref("browser.download.panel.shown", true);
 pref("browser.download.useDownloadDir", true);
 pref("browser.feeds.showFirstRunUI", false);
 pref("browser.shell.checkDefaultBrowser", false);
+pref("browser.tabs.closeWindowWithLastTab", false);
 pref("extensions.blocklist.level", 99);
+pref("extensions.blocklist.pingCountVersion" 0);
 pref("font.default.x-western", "sans-serif");
 pref("font.name.monospace.x-western", "xos4 Terminus");
 pref("font.name.sans-serif.x-western", "Liberation Sans");
@@ -34,6 +36,7 @@ pref("pref.privacy.disable_button.view_passwords", false);
 pref("privacy.donottrackheader.enabled", true);
 pref("signon.autofillForms", true);
 pref("status4evar.progress.toolbar.css", "#ff5555");
+pref("xpinstall.whitelist.required", true);
 
 // from privacy watchdog
 pref("extensions.blocklist.enabled", false);
