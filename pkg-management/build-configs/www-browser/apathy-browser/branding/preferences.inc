@@ -8,13 +8,20 @@ pref("browser.newtabpage.storageVersion", 1);
 
 // personal configuration
 pref("browser.bookmarks.restore_default_bookmarks", false);
-pref("browser.cache.disk.capacity", 102400);
+pref("browser.cache.disk.capacity", 30720);
 pref("browser.cache.disk.smart_size.enabled", false);
+pref("browser.cache.disk.smart_size.first_run", false);
+pref("browser.cache.disk.smart_size.use_old_max", false);
+pref("browser.display.use_document_fonts", 0);
 pref("browser.download.dir", "/home/mss/dl");
 pref("browser.download.folderList", 2);
 pref("browser.download.panel.shown", true);
 pref("browser.download.useDownloadDir", true);
 pref("browser.feeds.showFirstRunUI", false);
+pref("browser.pagethumbnails.storage_version", 3);
+pref("browser.places.smartBookmarksVersion", 4);
+pref("browser.preferences.advanced.selectedTabIndex", 1);
+pref("browser.preferences.privacy.selectedTabIndex", 0);
 pref("browser.shell.checkDefaultBrowser", false);
 pref("browser.tabs.closeWindowWithLastTab", false);
 pref("extensions.blocklist.level", 99);
@@ -35,7 +42,13 @@ pref("middlemouse.contentLoadURL", false);
 pref("pref.privacy.disable_button.view_passwords", false);
 pref("privacy.donottrackheader.enabled", true);
 pref("signon.autofillForms", true);
+pref("status4evar.addonbar.windowGripper", false);
+pref("status4evar.download.label.force", false);
+pref("status4evar.firstRun", false);
+pref("status4evar.migration", 8);
 pref("status4evar.progress.toolbar.css", "#ff5555");
+pref("status4evar.progress.toolbar.force", true);
+pref("status4evar.progress.toolbar.style", true);
 pref("xpinstall.whitelist.required", true);
 
 // from privacy watchdog
