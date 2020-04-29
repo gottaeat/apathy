@@ -25,7 +25,7 @@ pref("browser.preferences.privacy.selectedTabIndex", 0);
 pref("browser.shell.checkDefaultBrowser", false);
 pref("browser.tabs.closeWindowWithLastTab", false);
 pref("extensions.blocklist.level", 99);
-pref("extensions.blocklist.pingCountVersion" 0);
+pref("extensions.blocklist.pingCountVersion", 0);
 pref("font.default.x-western", "sans-serif");
 pref("font.name.monospace.x-western", "xos4 Terminus");
 pref("font.name.sans-serif.x-western", "Liberation Sans");
