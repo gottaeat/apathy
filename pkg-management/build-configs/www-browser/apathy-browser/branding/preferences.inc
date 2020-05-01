@@ -42,13 +42,6 @@ pref("middlemouse.contentLoadURL", false);
 pref("pref.privacy.disable_button.view_passwords", false);
 pref("privacy.donottrackheader.enabled", true);
 pref("signon.autofillForms", true);
-pref("status4evar.addonbar.windowGripper", false);
-pref("status4evar.download.label.force", false);
-pref("status4evar.firstRun", false);
-pref("status4evar.migration", 8);
-pref("status4evar.progress.toolbar.css", "#ff5555");
-pref("status4evar.progress.toolbar.force", true);
-pref("status4evar.progress.toolbar.style", true);
 pref("xpinstall.whitelist.required", true);
 
 // from privacy watchdog
