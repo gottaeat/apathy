@@ -52,7 +52,7 @@ export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 export           MOZCONFIG="$srcdir/mozconfig"
 export                  CC="x86_64-apathy-linux-musl-gcc"
 export                 CXX="x86_64-apathy-linux-musl-g++"
-export              CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
+export              CFLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"
 export            CXXFLAGS="${CFLAGS}"
 export             LDFLAGS="-Wl,-rpath=${pmappdir}"
 export             LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
@@ -99,6 +99,7 @@ evalretkill
 
 # c4 >> apply branding
 aprint_ret "copying the ${cl_grn}apathy-browser branding${c_res} files."
+ cp -v "${branding}"/bookmarks.html.in        "${srcdir}"/palemoon/locales/generic/profile/           >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/aboutDialog.xul          "${srcdir}"/palemoon/base/content/                      >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/browserconfig.properties "${srcdir}"/palemoon/branding/shared/locales/           >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/preferences.inc          "${srcdir}"/palemoon/branding/shared/pref/              >> "$redirect_to" 2>&1 &&
