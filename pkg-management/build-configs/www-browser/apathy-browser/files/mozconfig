@@ -5,7 +5,7 @@ ac_add_options --libdir=/usr/lib
 ### compiler stuff
 ac_add_options --host=x86_64-apathy-linux-musl
 ac_add_options --target=x86_64-apathy-linux-musl
-ac_add_options --enable-optimize="-march=native -mtune=native -O2 -Wno-format-overflow"
+ac_add_options --enable-optimize="-march=native -mtune=native -O3 -Wno-format-overflow"
 ac_add_options --disable-warnings-as-errors
 ac_add_options --enable-gold=no
 ac_add_options --disable-jemalloc
@@ -19,9 +19,9 @@ ac_add_options --disable-debug-symbols
 mk_add_options AUTOCLOBBER=1
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/pmbuild
 mk_add_options MOZ_MAKE_FLAGS="-j2"
-mk_add_options CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
-mk_add_options CXXLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
-mk_add_options LDFLAGS="-Wl,-rpath=/usr/lib/apathy-browser-28.9.1 -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
+mk_add_options CFLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"
+mk_add_options CXXLAGS="-march=native -mtune=native -O3 -Wno-format-overflow"
+mk_add_options LDFLAGS="-Wl,-rpath=/usr/lib/apathy-browser-28.9.2 -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
 
 ### branding
 ac_add_options --enable-application=palemoon
