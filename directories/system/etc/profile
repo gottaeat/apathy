@@ -1,8 +1,8 @@
-# security stuff
 umask 022
 unset ROOTPATH
 
-# colors
+## a >> vars
+# a1 >> colors
  c_res="\033[0;39m"
 cl_blk="\033[0;30m" cb_blk="\033[1;30m"
 cl_red="\033[0;31m" cb_red="\033[1;31m"
@@ -13,28 +13,31 @@ cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
 cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
 cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 
-# path
-mypath="/usr/sbin:/usr/bin:/sbin:/bin"
-mypath="$mypath:/mss/bin:/home/mss/execs"
+# a2 >> path
+ mypath="/usr/sbin:/usr/bin:/sbin:/bin"
+ mypath="$mypath:/mss/bin:/home/mss/execs"
 #mypath="$mypath:/opt/i3/bin"
 #mypath="$mypath:/opt/llvm-10.0.0/bin"
 #mypath="$mypath:/opt/node.j-13.9.0/bin"
 #mypath="$mypath:/opt/rustc-1.42.0/bin"
 export PATH="$mypath"
 
-#export LD_LIBRARY_PATH="/opt/i3/lib"
+# a3 >> ld_library_path
+#myldlibrarypath="/opt/i3/lib"
+#export LD_LIBRARY_PATH="$myldlibrarypath"
 
-mypkgconfig="/usr/share/pkgconfig:/usr/lib/pkgconfig"
-#mypkgconfig="$mypkgconfig:/opt/webkitgtk-2.28.0/lib/pkgconfig"
+# a4 >> pkg_config_path
+ mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
+#mypkgconfigpath="$mypkgconfigpath:/opt/webkitgtk-2.28.0/lib/pkgconfig"
 export PKG_CONFIG_PATH="$mypkgconfig"
 
-# define socket for ncmpcpp local dir browse
+# a5 >> mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
 
-# lang
+# a6 >> lang
 export LANG="en_US.utf8"
 
-# compile bits
+# a7 >> build related flags
 export MAKEFLAGS="-j 2"
 export CFLAGS="-march=native -mtune=native"
 export CXXFLAGS="${CFLAGS}"
@@ -45,28 +48,40 @@ export CXX="${CHOST}-g++"
 export ARCH="x86_64"
 export buildforapathy="--prefix=/usr --disable-nls --disable-static --build=${CBUILD} --host=${CHOST}"
 
-# default programs
+# a8 >> default programs
 export EDITOR="/usr/bin/vim"
 export PAGER="/usr/bin/less"
 export GPG_TTY=$(tty)
 
-# xdg stuff
+# a7 >> xdg
 export XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
-# essential paths
+# a8 >> essential paths
 export INFOPATH="/usr/info"
 export MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
 export INPUTRC="/etc/inputrc"
 
-### ash/bash specific
-# prompts
+
+## b >> ash/bash settings
+# b1 >> prompts
 [ $(id -u) -eq 0 ] && _user="\[\e[34m\] \#\[\e[m\] " || _user="\[\e[37m\]$\[\e[m\] "
 export PS1="${_user}\[\e[34m\]\W\[\e[m\] "
 export PS2="\[\e[33m\] -> \[\e[m\] "
 
-# history
+# b2 >> history
 export HISTSIZE=1000
 export HISTIGNORE="&:[bf]g:exit"
+
+## c >> functions
+rmall(){
+ for file in $(ls -Aw1); do
+  rm -rf "$file"
+ done \
+ || printf "${cb_red}oh god oh fuck${c_res}!\n" \
+ && printf "${cb_grn}all good my guy${c_res}.\n"
+}
+
+cdo(){ cd - >/dev/null 2>&1;}
