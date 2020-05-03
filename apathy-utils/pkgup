@@ -1,8 +1,8 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-[ -z $1 ] && aprint_fail "no dir or file to pkgup selected in \$1, exiting." && exit 1
-[ -z $2 ] && aprint_fail "no archive name in \$2 specified, exiting."        && exit 1
+[ -z "$1" ] && aprint_fail "no dir or file to pkgup selected in \$1, exiting." && exit 1
+[ -z "$2" ] && aprint_fail "no archive name in \$2 specified, exiting."        && exit 1
 
 bname="$(echo "${1}" | sed 's/\/$//g;s/ /_/g')"
 zname="$(echo "${2}" | sed 's/\/$//g;s/ /_/g')"
