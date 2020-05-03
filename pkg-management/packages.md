@@ -20,7 +20,7 @@
 [d] alpine	> curl-7.68.0
 		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busynox /bin/ntpd
 
-[d] self	> git-2.26.1
+[d] self	> git-2.26.2
 [d] alpine	>> expat-2.2.9
 [d] alpine	>> pcre2-10.34
 [d] alpine	>>> libedit-20191231.3.1
