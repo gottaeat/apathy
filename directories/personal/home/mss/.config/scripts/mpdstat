@@ -19,17 +19,17 @@ if [ -z $(pidof mpd) ]
         song="$(echo "$song_pre"     | awk '{if (length($0) > 20) print substr($0, 1, 17) "..."; else print }')" \
         title="$artist - $song"
 
-     dur_pre="$(echo "${mpc_status}" \
-                | awk 'NR==2 {gsub("\/|:"," ");           \
-                       curr=($4*60)+$5; total=($6*60)+$7} \
-                       END {print total-curr}')"
+    dur_pre="$(echo "${mpc_status}" \
+               | awk 'NR==2 {gsub("\/|:"," ");           \
+                      curr=($4*60)+$5; total=($6*60)+$7} \
+                      END {print total-curr}')"
 
- [ "$dur_pre" -gt "3599" ] \
-      && dur="$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))" \
-      || dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
+    [ "$dur_pre" -gt "3599" ] \
+     && dur="$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))" \
+     || dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
 
-     [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] \
-      && state="[paused] ${title}" || state="${title} ${dur}"
+    [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] \
+     && state="[paused] ${title}" || state="${title} ${dur}"
    else
     state="empty playlist"
   fi
