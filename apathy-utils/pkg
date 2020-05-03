@@ -16,7 +16,7 @@ from(){            awk '/'$1'/{print $2}' "${localmd}";}
 print_removed(){   awk '/^\[r\]/ {print $4}' "${localmd}";}
 print_installed(){ awk '/^\[d\]/ {print $4}' "${localmd}";}
 print_ondemand(){  awk '/^\[o\]/ {print $4}' "${localmd}";}
-print_help(){      aprint_usage "{d|o|r|stats|convert|sync}."; exit 1;}
+print_help(){      aprint_usage "{from|pver|sync|stats|convert}{d|o|r}."; exit 1;}
 
 sync(){ 
  aprint_ret "(repo -> local) syncing raw-packages.txt"
@@ -52,22 +52,39 @@ stats(){
    c_removed="$(print_removed   | wc -l)"
   c_ondemand="$(print_ondemand  | wc -l)"
 
-aprint_nc
-aprint "${cb_red}total partition size\t${cb_blu}:${c_res} ${partsize}"
-aprint "${cb_red}local package count\t${cb_blu}:${c_res} ${c_installed} (+${c_ondemand})"
-aprint "${cb_red}removed packages\t${cb_blu}:${c_res} ${c_removed}"
-aprint "${cb_red}local and git diff\t${cb_blu}:${c_res} ${gitdf}"
-aprint "${cb_red}git repo status\t${cb_blu}:${c_res} ${gitstat}"
-aprint_nc
+ aprint_nc
+ aprint "${cb_red}total partition size\t${cb_blu}:${c_res} ${partsize}"
+ aprint "${cb_red}local package count\t${cb_blu}:${c_res} ${c_installed} (+${c_ondemand})"
+ aprint "${cb_red}removed packages\t${cb_blu}:${c_res} ${c_removed}"
+ aprint "${cb_red}local and git diff\t${cb_blu}:${c_res} ${gitdf}"
+ aprint "${cb_red}git repo status\t${cb_blu}:${c_res} ${gitstat}"
+ aprint_nc
+}
+
+pver(){
+    init="sinit 1.1 (apathy)"
+     tls=$(openssl version | awk '{print tolower($0)}')
+    libc="musl $(ldd 2>&1 | awk '/Version/ {print $2}') ($(uname -m))"
+ triplet=$(gcc -dumpmachine)
+   ccver=$(gcc -v 2>&1 | awk '/version / {sub(/version /,""); print}')
+
+ aprint_nc
+ aprint "${cb_red}init\t${cb_blu}:${c_res} ${init}"
+ aprint "${cb_red}tls\t${cb_blu}:${c_res} ${tls}"
+ aprint "${cb_red}libc\t${cb_blu}:${c_res} ${libc}"
+ aprint "${cb_red}trpl\t${cb_blu}:${c_res} ${triplet}"
+ aprint "${cb_red}cc\t${cb_blu}:${c_res} ${ccver}"
+ aprint_nc
 }
 
 case "$1" in
+    from) from "$2"       ;;
+    pver) pver            ;;
+    sync) sync            ;;
    stats) stats           ;;
+ convert) convert_lists   ;;
        d) print_installed ;;
-       f) from "$2"       ;;
        o) print_ondemand  ;;
        r) print_removed   ;;
- convert) convert_lists   ;;
-    sync) sync            ;;
        *) print_help      ;;
 esac
