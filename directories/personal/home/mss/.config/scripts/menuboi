@@ -1,20 +1,17 @@
 #!/mss/bin/sh
-sel=$(printf "apathy-browser\nkill-dwm\nreboot\npoweroff" | dmenu -b -p "meh:")
+sel=$(printf "apathy-browser\nkill-dwm\nreboot\npoweroff" \
+      | dmenu -b -p "meh:")
+
+killdwm(){
+ kill -TERM \
+  -"$(ps -o pgid $(pidof dwm)     \
+      | awk 'NR==2 {gsub(" ",""); \
+      print}')"
+}
 
 case "$sel" in
- poweroff)
-  kill -KILL $(pidof apathy-browser)
-  doas -- init 0
- ;;
- reboot)
-  kill -KILL $(pidof apathy-browser)
-  doas -- init 6
- ;;
- kill-dwm)
-  kill -KILL $(pidof apathy-browser)
-  kill -TERM -$(ps -o pgid $(pidof dwm) | awk 'NR==2 {gsub(" ",""); print}')
- ;;
- apathy-browser)
-  apathy-browser
- ;;
+ poweroff)       killdwm && doas -- kill -USR1 1 ;;
+ reboot)         killdwm && doas -- kill -INT 1  ;;
+ kill-dwm)       killdwm        ;;
+ apathy-browser) apathy-browser ;;
 esac
