@@ -1,0 +1,9 @@
+/usr/include/openvpn-msg.h
+/usr/include/openvpn-plugin.h
+
+/usr/lib/openvpn
+
+/usr/sbin/openvpn
+
+/usr/share/doc
+/usr/share/man

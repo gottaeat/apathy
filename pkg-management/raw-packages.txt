@@ -44,7 +44,7 @@ libtasn1-4.15
 libunistring-0.9.10
 nettle-3.5.1
 p11-kit-0.23.18.1
-openvpn-2.4.8
+openvpn-2.4.9
 lzo-2.10
 jq-1.6
 dnscrypt-proxy-2.0.42

@@ -73,7 +73,7 @@
 [d] alpine	>>> nettle-3.5.1		--> no --disable-openssl
 [d] alpine	>>> p11-kit-0.23.18.1
 
-[d] alpine	> openvpn-2.4.8		--> with --disable-plugin-auth-pam
+[d] self	> openvpn-2.4.9
 [d] alpine	>> lzo-2.10
 
 [d] devbin	> jq-1.6
