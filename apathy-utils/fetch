@@ -10,7 +10,8 @@ aprint_ret "${cb_red}
 }
 
 dist=$(awk '/PRETTY_NAME/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)
- cpu=$(awk '/model name/{family=$5; model=$8}; /MHz/{hz=int($4)}; END{print family, model, "@", hz"mhz"}' /proc/cpuinfo)
+ cpu=$(awk '/model name/{sub(/\(TM\)/,""); familya=$5; familyb=$6; model=$8}; /MHz/{hz=int($4)}; \
+             END{print familya, familyb, model, "@", hz"mhz"}' /proc/cpuinfo)
 
 read model < /sys/devices/virtual/dmi/id/product_family
 read _host < /etc/hostname
