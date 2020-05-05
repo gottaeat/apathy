@@ -1,0 +1,17 @@
+/usr/bin/intel-virtual-output
+/usr/bin/xf86-video-intel-backlight-helper
+
+/usr/lib/libI810XvMC.la
+/usr/lib/libI810XvMC.so
+/usr/lib/libI810XvMC.so.1
+/usr/lib/libI810XvMC.so.1.0.0
+/usr/lib/libIntelXvMC.la
+/usr/lib/libIntelXvMC.so
+/usr/lib/libIntelXvMC.so.1
+/usr/lib/libIntelXvMC.so.1.0.0
+
+/usr/lib/xorg/modules/drivers/intel_drv.la
+/usr/lib/xorg/modules/drivers/intel_drv.so
+
+/usr/share/man
+/usr/share/polkit-1
