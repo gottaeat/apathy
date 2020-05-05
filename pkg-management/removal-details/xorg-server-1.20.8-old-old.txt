@@ -195,11 +195,9 @@
 /usr/lib/xorg/modules/libwfb.so
 /usr/lib/xorg/protocol.txt
 
-/usr/libexec/Xorg
-/usr/libexec/Xorg.wrap
-
+/usr/share/X11/xkb
 /usr/share/X11/xorg.conf.d/10-quirks.conf
+
 /usr/share/aclocal/xorg-server.m4
 
 /usr/share/man
-/var/lib/xkb

@@ -1,22 +1,9 @@
 /usr/bin/X
-/usr/bin/Xdmx
-/usr/bin/Xephyr
 /usr/bin/Xnest
 /usr/bin/Xorg
 /usr/bin/Xvfb
 /usr/bin/cvt
-/usr/bin/dmxaddinput
-/usr/bin/dmxaddscreen
-/usr/bin/dmxinfo
-/usr/bin/dmxreconfig
-/usr/bin/dmxresize
-/usr/bin/dmxrminput
-/usr/bin/dmxrmscreen
-/usr/bin/dmxtodmx
-/usr/bin/dmxwininfo
 /usr/bin/gtf
-/usr/bin/vdltodmx
-/usr/bin/xdmxconfig
 
 /usr/include/xorg/BT.h
 /usr/include/xorg/IBM.h
@@ -208,12 +195,8 @@
 /usr/lib/xorg/modules/libwfb.so
 /usr/lib/xorg/protocol.txt
 
-/usr/libexec/Xorg
-/usr/libexec/Xorg.wrap
-
+/usr/share/X11/xkb/compiled/README.compiled
 /usr/share/X11/xorg.conf.d/10-quirks.conf
+
 /usr/share/aclocal/xorg-server.m4
-
-/var/lib/xkb
-
 /usr/share/man
