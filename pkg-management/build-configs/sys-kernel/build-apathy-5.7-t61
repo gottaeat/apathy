@@ -26,7 +26,7 @@ localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVE
 
 # c >> functions
 apply_alfredchen(){
- _alpatches="0001-bmq-v5.6-r3-for-5.7-rc4-mss.patch"
+ _alpatches=""
 
  for pp in $_alpatches
   do
@@ -111,8 +111,8 @@ evalretkill
 
 # d5 >> apply patches
 aprint_nc
-aprint "applying the alfredchen patches."
-apply_alfredchen
+#aprint "applying the alfredchen patches."
+#apply_alfredchen
 aprint "applying the uksm patches."
 apply_uksm
 aprint "applying the zstd patches."
