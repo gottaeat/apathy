@@ -18,7 +18,7 @@ patchdir="${repodir}/patches"
   logdir="/mss/work/logs"
 redirect="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
-confname="5.7-gcc-bmq-uksm-zstd-o3-ohgod-graysky2-20200428_223251.config"
+confname="5.7-apathy-gcc-cfs-ukms-zstd-o3-graysky-20200505_145815.config"
  useconf="${confdir}/5.7/${confname}"
 localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
