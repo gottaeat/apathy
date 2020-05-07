@@ -1,0 +1,6 @@
+/bin/cpio
+/bin/mt
+
+/usr/share/info
+/usr/share/locale
+/usr/share/man

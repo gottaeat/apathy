@@ -413,7 +413,7 @@
 [d] mlfs	> bzip2-1.0.8
 [d] mlfs	> check-0.12.0
 [d] self	> coreutils-8.32
-[d] mlfs	> cpio-2.12
+[r] bbox	> cpio-2.12		--> /bin/busybox provides /bin/{cpio,mt}
 [d] self	> diffutils-3.7
 [d] mlfs	> e2fsprogs-1.45.3
 [d] mlfs	> elfutils-0.176
