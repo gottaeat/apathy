@@ -263,7 +263,7 @@
 
 [d] bmlfs	> autoconf-2.13
 [d] bmlfs	> libwebp-1.0.3
-[d] bmlfs	> yasm-1.3.0
+[d] self	> yasm-1.3.0
 
 ```
 ### audio libraries and codecs

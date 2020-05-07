@@ -1,0 +1,11 @@
+/usr/bin/vsyasm
+/usr/bin/yasm
+/usr/bin/ytasm
+
+/usr/include/libyasm
+/usr/include/libyasm-stdint.h
+/usr/include/libyasm.h
+
+/usr/lib/libyasm.a
+
+/usr/share/man
