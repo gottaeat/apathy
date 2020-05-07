@@ -226,7 +226,7 @@
 [d] bmlfs	> libva-2.6.0
 [d] bmlfs	> intel-vaapi-driver-2.4.0
 
-[d] self	> xf86-video-intel-846b53
+[r] self	> xf86-video-intel-846b53
 # xorg drivers end
 [d] alpine	> xinit-1.4.1
 ### xorg fuckery end

@@ -152,7 +152,6 @@ libinput-1.15.0
 xf86-input-synaptics-1.9.1
 libva-2.6.0
 intel-vaapi-driver-2.4.0
-xf86-video-intel-846b53
 xinit-1.4.1
 atk-2.36.0
 atkmm-2.28.0
