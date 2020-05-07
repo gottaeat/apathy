@@ -223,7 +223,6 @@ lcms2-2.9
 feh-3.3
 jbig2dec-0.17
 gpgme-1.13.1
-mutt-1.13.3
 lzip-1.21
 apathy-browser-28.9.2
 zip-30

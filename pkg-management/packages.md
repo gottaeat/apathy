@@ -339,7 +339,7 @@
 [d] alpine	>> jbig2dec-0.17		--> w/o --without-libpng
 
 [d] alpine	> gpgme-1.13.1
-[d] alpine	> mutt-1.13.3
+[r] alpine	> mutt-1.13.3
 [d] alpine	> lzip-1.21
 
 [d] self	> apathy-browser-28.9.2
