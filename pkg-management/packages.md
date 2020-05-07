@@ -412,7 +412,7 @@
 [d] mlfs	> busybox-1.31.1
 [d] mlfs	> bzip2-1.0.8
 [d] mlfs	> check-0.12.0
-[d] mlfs	> coreutils-8.32
+[d] self	> coreutils-8.32
 [d] mlfs	> cpio-2.12
 [d] mlfs	> diffutils-3.7
 [d] mlfs	> e2fsprogs-1.45.3
@@ -472,7 +472,7 @@
 [d] mlfs	> vim-8.2.0116
 [d] mlfs	> xml-parser-2.44
 [d] mlfs	> xz-5.2.4
-[d] mlfs	> yash-2.49
+[d] self	> yash-2.49
 [d] mlfs	> zlib-1.2.11
 ### base mlfs packages end
 ```
