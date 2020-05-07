@@ -245,7 +245,7 @@
 [d] bmlfs	>> libjpeg-turbo-2.0.4
 [d] bmlfs	>>> nasm-2.14.02
 		>> ?
-[d] bmlfs	>>> libcroco-0.6.13
+[r] bmlfs	>>> libcroco-0.6.13
 [d] self	>>> pango-1.42.4
 [d] bmlfs	>>>> fribidi-1.0.8
 [r] bmlfs	>>> vala-0.46.5
