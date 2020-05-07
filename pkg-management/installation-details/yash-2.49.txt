@@ -1,0 +1,4 @@
+/bin/yash
+
+/usr/share/man
+/usr/share/yash
