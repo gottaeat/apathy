@@ -415,7 +415,7 @@
 [d] self	> coreutils-8.32
 [r] bbox	> cpio-2.12		--> /bin/busybox provides /bin/{cpio,mt}
 [d] self	> diffutils-3.7
-[d] mlfs	> e2fsprogs-1.45.3
+[d] self	> e2fsprogs-1.45.6
 [d] mlfs	> elfutils-0.176
 [d] mlfs	> eudev-3.2.9
 [d] mlfs	> expat-2.2.8
