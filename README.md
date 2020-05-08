@@ -61,8 +61,8 @@ shells:
  $ [repo]: pkg stats
 
  > total partition size : 1151.38mib
- > local package count  : 319 (+5)
- > removed packages     : 34
+ > local package count  : 317 (+5)
+ > removed packages     : 36
 ```
 
 ## dotfiles

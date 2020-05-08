@@ -271,7 +271,6 @@ findutils-4.7.0
 flex-2.6.4
 gcc-9.3.1-20200418
 gdbm-1.18.1
-gettext-0.20.1
 gmp-6.2.0
 gperf-3.1
 grep-3.4
@@ -279,7 +278,6 @@ groff-1.22.4
 gzip-1.10
 iana-etc-2.30
 inetutils-1.9.4
-intltool-0.51.0
 iproute2-5.4.0
 kbd-2.2.0
 kmod-26
