@@ -43,7 +43,7 @@ core userland:
  * libressl-3.0.2
 
 languages:
- * python 2.7.17, 3.8.1
+ * python 2.7.17, 3.8.2
  * lua 5.2.4
  * perl 5.30.1
  * (ondemand) node.js-13.9.0
