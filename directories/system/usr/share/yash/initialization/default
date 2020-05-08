@@ -13,6 +13,7 @@ cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 # a2 >> path
  mypath="/usr/sbin:/usr/bin:/sbin:/bin"
  mypath="$mypath:/mss/bin:/home/mss/execs"
+#mypath="$mypath:/opt/cataclysm-dda-0.e/bin"
 #mypath="$mypath:/opt/i3/bin"
 #mypath="$mypath:/opt/llvm-10.0.0/bin"
 #mypath="$mypath:/opt/node.j-13.9.0/bin"
@@ -26,40 +27,41 @@ export PATH="$mypath"
 # a4 >> pkg_config_path
  mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 #mypkgconfigpath="$mypkgconfigpath:/opt/webkitgtk-2.28.0/lib/pkgconfig"
-export PKG_CONFIG_PATH="$mypkgconfig"
+export PKG_CONFIG_PATH="$mypkgconfigpath"
 
 # a5 >> mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
 
 # a6 >> lang
-export LANG="en_US.utf8"
+export LANG=
+export LC_ALL=en_US.utf8
 
 # a7 >> build related flags
 export MAKEFLAGS="-j 2"
-export CFLAGS="-march=native -mtune=native"
-export CXXFLAGS="${CFLAGS}"
-export CHOST="x86_64-apathy-linux-musl"
-export CBUILD="${CHOST}"
-export CC="${CHOST}-gcc"
-export CXX="${CHOST}-g++"
-export ARCH="x86_64"
-export buildforapathy="--prefix=/usr --disable-nls --disable-static --build=${CBUILD} --host=${CHOST}"
+export    CFLAGS="-march=native -mtune=native"
+export  CXXFLAGS="${CFLAGS}"
+export     CHOST="x86_64-apathy-linux-musl"
+export    CBUILD="${CHOST}"
+export        CC="${CHOST}-gcc"
+export       CXX="${CHOST}-g++"
+export      ARCH="x86_64"
+export    abuild="--prefix=/usr --disable-nls --disable-static --build=${CBUILD} --host=${CHOST}"
  
 # a8 >> default programs
-export EDITOR="/usr/bin/vim"
-export PAGER="/usr/bin/less"
+export  EDITOR="/usr/bin/vim"
+export   PAGER="/usr/bin/less"
 export GPG_TTY=$(tty)
 
 # a7 >> xdg
-export XDG_DATA_DIRS="/usr/share"
+export   XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
 # a8 >> essential paths
 export INFOPATH="/usr/info"
-export MANPATH="/usr/share/man"
+export  MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
-export INPUTRC="/etc/inputrc"
+export  INPUTRC="/etc/inputrc"
 
 
 ## b >> yash settings
@@ -77,36 +79,19 @@ set --hist-space
 # b3 >> clear screen with C-l
 bindkey -av '\^L' clear-and-redraw-all
 
-# b5 >> set vi mode editor
+# b4 >> set vi mode editor
 FCEDIT="/usr/bin/vim"
 
-# b6 >> prompts
+# b5 >> prompts
 [ $(id -u) -eq 0 ] && _user="\fb #" || _user="\fw $"
-YASH_PS1='${_user} \fc[${${${PWD:/~/\~}##*/}:-$PWD}]\fD: '
+ YASH_PS1='${_user} \fc[${${${PWD:/~/\~}##*/}:-$PWD}]\fD: '
 YASH_PS1R=
 YASH_PS1S=
-YASH_PS2="\fc > \fD"
+ YASH_PS2="\fc > \fD"
 YASH_PS2R="\fc < \fD"
 YASH_PS2S=
 
-# b7 >> ensure that the job control works
-case $- in (*m*) trap - TSTP TTIN TTOU; esac
-
-# b8 >> initialize event handlers
-            YASH_AFTER_CD=()
-           PROMPT_COMMAND=() 
-COMMAND_NOT_FOUND_HANDLER=()
-
-
 ## c >> functions
-rmall(){
- for file in $(ls -Aw1); do
-  rm -rf "$file"
- done \
- || printf "${cb_red}oh god oh fuck${c_res}!\n" \
- && printf "${cb_grn}all good my guy${c_res}.\n"
-}
-
 cdo(){ cd - >/dev/null 2>&1;}
 
 
@@ -115,6 +100,7 @@ cdo(){ cd - >/dev/null 2>&1;}
 alias         l="ls -Askh   --color=auto"
 alias        ll="ls -Askhw1 --color=auto"
 alias       lll="ls -Alh    --color=auto"
+alias        ls="ls         --color=auto"
 alias      grep="grep       --color=auto"
 
 # d2 >> cd
@@ -147,7 +133,6 @@ alias      atog="amixer set Master toggle"
 alias      mtog="mpc toggle"
 alias       feh="feh -d --scale-down --auto-zoom"
 alias        nc="ncmpcpp"
-alias     mpvfb="mpv --profile=sw-fast --vo=drm --gpu-api=opengl"
 
 # d6 >> verbosity
 alias        cp="cp -v"
@@ -158,8 +143,8 @@ alias     mount="mount -v"
 
 # d7 >> ease of access
 alias        a2="/mss/bin/a2norpc"
-alias        da="doas --"
 alias       poz="yash --posix"
+alias    please="doas --"
 alias  fetchall="clear; fetch | tail -14; pkg pver | tail -6; pkg stats | tail -6"
 alias    reboot="doas -- kill -s INT 1"
 alias  poweroff="doas -- kill -s USR1 1"
