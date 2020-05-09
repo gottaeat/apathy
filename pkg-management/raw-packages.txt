@@ -306,7 +306,6 @@ sed-4.8
 shadow-4.7
 sysklogd-1.5.1
 tar-1.32
-texinfo-6.6
 tzdb-2019c
 util-linux-2.35
 vim-8.2.0116
