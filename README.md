@@ -30,6 +30,7 @@ toolchain:
  * (ondemand) llvm-10.0.0, clang-10.0.0
  * (ondemand) rustc-1.42.0, cbindgen-0.13.2
  * (ondemand) go-1.14.1
+ * (ondemand) boost-1.72.0
  * mpfr 4.0.2, gmp 6.2.0, mpc 1.1.0
  * binutils 2.33.1, linux 5.2 headers
  * musl libc 1.2.0, musl-fts 1.2.7, musl-obstack 1.1
@@ -60,8 +61,8 @@ shells:
 ```
  $ [repo]: pkg stats
 
- > total partition size : 1138.69mib
- > local package count  : 317 (+5)
+ > total partition size : 975.516mib
+ > local package count  : 316 (+6)
  > removed packages     : 36
 ```
 

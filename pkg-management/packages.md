@@ -317,7 +317,7 @@
 [d] alpine	>> libmpdclient-2.17
 [d] alpine	>> libupnp-1.8.4
 [d] alpine	>> libshout-2.4.3
-[d] bmlfs	>> boost-1.69.0			--> jesus fucking christ
+[o] self	>> boost-1.72.0
 
 [d] alpine	> mpc-0.33
 [d] arch	> ncmpcpp-0.9-20200415		--> from git
