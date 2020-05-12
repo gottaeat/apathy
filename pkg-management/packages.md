@@ -165,7 +165,7 @@
 [d] self	> mesa-20.0.4
 [d] alp+bmlfs	>> libdrm-2.4.100		--> patch from alpine, rest is bmlfs
 [d] bmlfs	>> libvdpau-1.2
-[d] bmlfs	>> mako-1.0.14
+[d] bmlfs	>> mako-1.1.1
 [d] bmlfs	>>> markupsafe-1.1.1
 
 # xorg apps
