@@ -50,7 +50,7 @@ languages:
  * (ondemand) node.js-13.9.0
 
 video/audio:
- * xorg (x11r7), mesa 20.0.4
+ * xorg (x11r7), mesa 20.0.6
  * alsa 1.2.1.2
 
 shells:
@@ -61,7 +61,7 @@ shells:
 ```
  $ [repo]: pkg stats
 
- > total partition size : 968.953mib
+ > total partition size : 969.137mib
  > local package count  : 315 (+6)
  > removed packages     : 37
 ```
