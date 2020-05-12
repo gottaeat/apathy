@@ -75,62 +75,6 @@ export PS2="\[\e[33m\] -> \[\e[m\] "
 
 # b2 >> history
 export HISTSIZE=1000
-export HISTIGNORE="&:[bf]g:exit"
 
 ## c >> functions
 cdo(){ cd - >/dev/null 2>&1;}
-
-
-## d >> aliases
-# d1 >> colored ls and grep
-alias         l="ls -Askh   --color=auto"
-alias        ll="ls -Askhw1 --color=auto"
-alias       lll="ls -Alh    --color=auto"
-alias        ls="ls         --color=auto"
-alias      grep="grep       --color=auto"
-
-# d2 >> cd
-alias       cda="cd /mnt/mss/stuff/media/anime"
-alias       cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
-alias       cdm="cd /mnt/mss/stuff/media/music"
-alias       cdr="cd /mss/repo"
-alias       cds="cd /mnt/mss/stuff"
-alias       cdw="cd /mss/work"
-alias      cdt1="cd /mss/work/table"
-alias      cdt2="cd /mss/work/table2"
-alias      cdt3="cd /mss/work/table3"
-alias      cdt4="cd /mss/work/table4"
-alias      cdt5="cd /mss/work/table5"
-
-# d3 >> tmux
-alias      tmux="tmux -2"
-alias        ta="tmux attach"
-alias        td="tmux detach"
-alias        tk="tmux kill-session -t"
-alias        tl="tmux ls"
-
-# d4 >> git
-alias        gs="git status -s"
-alias      gcd1="git clone --depth=1"
-
-# d5 >> media
-alias       ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
-alias      atog="amixer set Master toggle"
-alias      mtog="mpc toggle"
-alias       feh="feh -d --scale-down --auto-zoom"
-alias        nc="ncmpcpp"
-
-# d6 >> verbosity
-alias        cp="cp -v"
-alias        ln="ln -v"
-alias        mv="mv -v"
-alias     mkdir="mkdir -pv"
-alias     mount="mount -v"
-
-# d7 >> ease of access
-alias        a2="/mss/bin/a2norpc"
-alias       poz="yash --posix"
-alias    please="doas --"
-alias  fetchall="clear; fetch | tail -14; pkg pver | tail -6; pkg stats | tail -6"
-alias    reboot="doas -- kill -s INT 1"
-alias  poweroff="doas -- kill -s USR1 1"
