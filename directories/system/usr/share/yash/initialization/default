@@ -83,13 +83,11 @@ bindkey -av '\^L' clear-and-redraw-all
 FCEDIT="/usr/bin/vim"
 
 # b5 >> prompts
-[ $(id -u) -eq 0 ] && _user="\fb #" || _user="\fw $"
- YASH_PS1='${_user} \fc[${${${PWD:/~/\~}##*/}:-$PWD}]\fD: '
-YASH_PS1R=
-YASH_PS1S=
- YASH_PS2="\fc > \fD"
-YASH_PS2R="\fc < \fD"
-YASH_PS2S=
+[ "$(id -u)" -eq 0 ] \
+ && YASH_PS1='\fob $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD' \
+ || YASH_PS1='\fok $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD'
+    YASH_PS2="\fc > \fD"
+   YASH_PS2R="\fc <\fD"
 
 ## c >> functions
 cdo(){ cd - >/dev/null 2>&1;}
