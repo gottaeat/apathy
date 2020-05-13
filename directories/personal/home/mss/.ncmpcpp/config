@@ -13,11 +13,11 @@ mpd_crossfade_time                = 2
 # > music visualizer
 visualizer_fifo_path              = /tmp/mpd.fifo
 visualizer_output_name            = visualizer thingy
-visualizer_in_stereo              = yes
+visualizer_in_stereo              = no
 visualizer_sync_interval          = 10
 visualizer_type                   = spectrum
 visualizer_look                   = ..
-visualizer_color                  = cyan
+visualizer_color                  = black:b
 
 # > delays
 playlist_disable_highlight_delay  = 5
@@ -37,7 +37,7 @@ current_item_prefix                   = $r
 current_item_suffix                   = $/r
 current_item_inactive_column_prefix   =
 current_item_inactive_column_suffix   =
-now_playing_prefix                    = $b
+now_playing_prefix                    = $b$3>$9 
 now_playing_suffix                    = $/b
 browser_playlist_prefix               = "$7$r p $/r$9 "
 selected_item_prefix                  = $5
@@ -49,7 +49,7 @@ browser_sort_mode                     = name
 browser_sort_format                   = {%n}|{%a - %t}|{%f} {%l}
 
 # > columns
-song_columns_list_format              = (20)[]{a} (50)[]{t|f} (20)[]{b}
+song_columns_list_format              = (40)[]{a} (50)[]{t|f} (10)[]{b}
 
 # > various
 execute_on_song_change             = "pkill -RTMIN+1 dwmblocks"
@@ -143,7 +143,7 @@ state_flags_color              = default:b
 main_window_color              = white
 color1                         = blue
 color2                         = white
-progressbar_color              = cyan:b
+progressbar_color              = black:b
 progressbar_elapsed_color      = red:b
 statusbar_color                = cyan
 statusbar_time_color           = red:b

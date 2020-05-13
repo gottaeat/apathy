@@ -1,42 +1,7 @@
-! layers
-*.foreground:		#ffffff
-*.background:		#000000
-*.cursorColor:		#464646
-
-*color0:	#101010
-*color1:	#252525
-*color2:	#464646
-*color3:	#525252
-*color4:	#ababab
-*color5:	#b9b9b9
-*color6:	#e3e3e3
-*color7:	#ffffff
-*color8:	#7c7c7c
-*color9:	#999999
-*color10:	#a0a0a0
-*color11:	#8e8e8e
-*color12:	#868686
-*color13:	#686868
-*color14:	#747474
-*color15:	#5e5e5e
-
-! urxvt garbage
-URxvt*termName:		rxvt-unicode-256color
-URxvt*internalBorder:	7
-URxvt.saveLines:	20000
-URxvt*scrollTtyOutput:	false
-URxvt*scrollWithBuffer:	true
-URxvt*scrollTtyKeypress:true
-URxvt*scrollBar:	false
-URxvt*scrollBar_right:	false
-URxvt*transparent:	false
-URxvt*depth:		32
-URxvt.background:	[90]#000000
-URxvt.font:		xft:Terminus:size=9
-URxvt.boldFont:		
-URxvt.letterSpace:	0
-*antialias:		true
-*autohint:		true
-URxvt.perl-ext-common:	default,matcher
-URxvt.url-launcher:	apathy-browser
-URxvt.matcher.button:	1
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
