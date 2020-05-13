@@ -3,12 +3,13 @@ let skip_defaults_vim=1
 set backupdir=~/.config/vim/backups
 set directory=~/.config/vim/swaps
 
+set nocompatible
+set mouse=
+
 set ruler
 set number
-
-set nocompatible
-set backspace=2
-set mouse=
+set backspace=indent,eol,start
+set laststatus=2
 
 syntax on
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
