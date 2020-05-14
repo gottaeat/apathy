@@ -1,9 +1,9 @@
 // set urls
-pref("startup.homepage_welcome_url","https://mss.neocities.org/apathy/");
+pref("startup.homepage_welcome_url","https://mssx86.github.io/");
 pref("app.vendorURL", "https://github.com/mssx86/apathy");
 pref("browser.newtab.choice", 2);
-pref("browser.newtab.myhome", "https://mss.neocities.org/startpage/");
-pref("browser.newtab.url", "https://mss.neocities.org/startpage/");
+pref("browser.newtab.myhome", "https://mssx86.github.io/startpage/");
+pref("browser.newtab.url", "https://mssx86.github.io/startpage/");
 pref("browser.newtabpage.storageVersion", 1);
 
 // personal configuration
