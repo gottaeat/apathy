@@ -19,7 +19,7 @@ mk_add_options MOZ_MAKE_FLAGS="-j2"
 
 ### branding
 ac_add_options --disable-official-branding
-ac_add_options --with-branding=browser/branding/aurora
+ac_add_options --with-branding=browser/branding/unofficial
 ac_add_options --with-distribution-id=org.apathy
 
 ### disable bloat
