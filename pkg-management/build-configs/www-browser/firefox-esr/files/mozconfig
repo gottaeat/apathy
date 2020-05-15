@@ -1,6 +1,6 @@
 ### directories
-ac_add_options --prefix=/opt/firefox-68.6.0esr
-ac_add_options --libdir=/opt/firefox-68.6.0esr
+ac_add_options --prefix=/usr
+ac_add_options --libdir=/usr/lib
 
 ### compiler stuff
 ac_add_options --enable-optimize="-march=native -mtune=native -O2"
@@ -18,6 +18,7 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 mk_add_options MOZ_MAKE_FLAGS="-j2"
 
 ### branding
+ac_add_options --disable-official-branding
 ac_add_options --with-branding=browser/branding/aurora
 ac_add_options --with-distribution-id=org.apathy
 
@@ -52,11 +53,12 @@ ac_add_options MOZ_SERVICES_METRICS=
 ac_add_options MOZ_TELEMETRY_REPORTING=
 
 ### use system libraries if possible
+ac_add_options --without-system-nspr
+ac_add_options --without-system-nss
+ac_add_options --without-system-libvpx
 ac_add_options --enable-system-ffi
 ac_add_options --enable-system-pixman
 ac_add_options --enable-system-sqlite
-ac_add_options --with-system-nspr
-ac_add_options --with-system-nss
 ac_add_options --with-system-jpeg
 ac_add_options --with-system-zlib
 ac_add_options --with-system-bz2
@@ -65,4 +67,3 @@ ac_add_options --with-system-pixman
 ac_add_options --with-system-ffi
 ac_add_options --with-system-webp
 ac_add_options --with-system-icu
-ac_add_options --without-system-libvpx
