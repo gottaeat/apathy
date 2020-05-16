@@ -1,55 +1,29 @@
 // personal
-pref("browser.startup.homepage", "https://mss.neocities.org/startpage");
-pref("startup.homepage_override_url", "https://mss.neocities.org/startpage");
-pref("startup.homepage_welcome_url", "https://mss.neocities.org/startpage");
-
-pref("browser.download.dir", "/home/mss/dl");
-pref("browser.download.folderList, 2);
-
-pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
-pref("browser.newtabpage.activity-stream.feeds.topsites", false);
-pref("browser.newtabpage.activity-stream.prerender", false);
-pref("browser.newtabpage.activity-stream.section.highlights.includeBookmarks", false);
-pref("browser.newtabpage.activity-stream.section.highlights.includeDownloads", false);
-pref("browser.newtabpage.activity-stream.section.highlights.includeVisited", false);
-pref("browser.newtabpage.activity-stream.showSearch", false);
-pref("browser.newtabpage.storageVersion", 1);
-
-pref("devtools.onboarding.telemetry.logged, true);
-pref("toolkit.telemetry.enabled", false);
-pref("permissions.default.camera", 2);
-pref("permissions.default.desktop-notification", 2);
-pref("permissions.default.geo", 2);
-pref("permissions.default.microphone", 2);
-
 pref("accessibility.force_disabled", 1);
-pref("webgl.disabled", true);
-pref("webgl.enable-webgl2", false);
 pref("browser.preferences.defaultPerformanceSettings.enabled", false);
-pref("dom.ipc.processCount", 2);
-
-pref("browser.download.autohideButton", false);
 pref("browser.shell.checkDefaultBrowser", false);
-pref("general.warnOnAboutConfig", false);
+pref("browser.startup.homepage", "https://mssx86.github.io/startpage");
+pref("browser.uidensity", 1);
+pref("dom.ipc.processCount", 2);
 pref("findbar.highlightAll", true);
+pref("font.default.x-western", "sans-serif");
+pref("font.name.monospace.ja", "xos4 Terminus");
+pref("font.name.monospace.x-western", "xos4 Terminus");
+pref("font.name.sans-serif.ja", "xos4 Terminus");
+pref("font.name.sans-serif.x-western", "Liberation Sans");
+pref("font.name.serif.ja", "xos4 Terminus");
+pref("font.name.serif.x-western", "Liberation Sans");
 pref("general.autoScroll", false);
 pref("general.smoothScroll", false);
-pref("browser.uidensity", 1);
-pref("ui.systemUsesDarkTheme", true);
+pref("general.warnOnAboutConfig", false);
 pref("reader.color_scheme", "dark");
+pref("startup.homepage_override_url", "https://mssx86.github.io/startpage");
+pref("startup.homepage_welcome_url", "https://mssx86.github.io/startpage");
 pref("toolkit.cosmeticAnimations.enabled", false);
 pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-pref("font.name.monospace.x-western", "Terminus");
-pref("font.name.sans-serif.x-western", "DejaVu Sans");
-pref("font.name.serif.x-western", "DejaVu Sans");
-
-pref("browser.search.region", "US");
-pref("browser.urlbar.placeholderName", "DuckDuckGo");
-pref("browser.search.defaultenginename", "DuckDuckGo");
-pref("browser.search.defaultenginename.US", "DuckDuckGo");
-pref("browser.search.order.1", "DuckDuckGo");
-pref("browser.search.order.2", "Google");
-pref("browser.search.order.US.1", "DuckDuckGo");
+pref("ui.systemUsesDarkTheme", true);
+pref("webgl.disabled", true);
+pref("webgl.enable-webgl2", false);
 
 // --- from kiss begin ---
 // startup
