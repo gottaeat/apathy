@@ -1,5 +1,10 @@
-apathy
-======
+
+
+   __,  ,_   __,  -/- /_
+  (_/(__/_)_(_/(__/__/ (__(_/_
+       /                  _/_
+      /                  (/
+
 apathy is a linux "distribution" built on top of apathy-mlfs, which can be
 found at https://github.com/mssx86/apathy-mlfs, for my own purposes. it uses
 musl libc, libressl, partially busybox and a home-brewed init structure written
@@ -8,7 +13,6 @@ in posix shell.
 because it is intended for my use only, this repository does not contain an
 image to boot from or a stage3 tarball to unpack, though it is possible to
 build a system using the base that apathy uses.
-
 
 
 simplified list of major components
@@ -34,15 +38,6 @@ simplified list of major components
 
  > tls
    - libressl 3.0.2   - gnutls-3.6.13      - nettle-3.5.1
-
-
-
-stats
-=====
- - total partition size -> 968.137mib
- - local package count  -> 315 (+6)
- - removed packages     -> 37
-
 
 
 simplified repository tree
@@ -79,7 +74,6 @@ simplified repository tree
      │                             uaoverrides/prefs.js.
      └─ patches ─────────────────> patches to be used with recipes under
                                    build-configs/.
-
 
 
 history
