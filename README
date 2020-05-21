@@ -18,7 +18,7 @@ build a system using the base that apathy uses.
 simplified list of major components
 ===================================
  > toolchain
-   - musl 1.2.0       - binutils 2.33.1    - gcc 9.3.1 (20200418)
+   - musl 1.2.0       - binutils 2.34      - gcc 9.3.1 (20200418)
    - mpfr 4.0.2       - gmp 6.2.0          - mpc 1.1.0 
    - musl-fts 1.2.7   - musl-obstack 1.1   - argp-standalone 1.3
    - gcompat 0.4.0    - libucontext 0.1.3
