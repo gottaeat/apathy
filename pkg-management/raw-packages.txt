@@ -7,7 +7,6 @@ sysfsutils-2.1.0
 sysstat-12.2.0
 curl-7.68.0
 git-2.26.2
-expat-2.2.9
 pcre2-10.34
 libedit-20191231.3.1
 openssh-8.1_p1
@@ -264,7 +263,7 @@ diffutils-3.7
 e2fsprogs-1.45.6
 elfutils-0.176
 eudev-3.2.9
-expat-2.2.8
+expat-2.2.9
 file-5.37
 findutils-4.7.0
 flex-2.6.4

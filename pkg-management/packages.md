@@ -21,7 +21,6 @@
 		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busynox /bin/ntpd
 
 [d] self	> git-2.26.2
-[d] alpine	>> expat-2.2.9
 [d] alpine	>> pcre2-10.34
 [d] alpine	>>> libedit-20191231.3.1
 
@@ -418,7 +417,7 @@
 [d] self	> e2fsprogs-1.45.6
 [d] mlfs	> elfutils-0.176
 [d] mlfs	> eudev-3.2.9
-[d] mlfs	> expat-2.2.8
+[d] alpine	> expat-2.2.9
 [d] mlfs	> file-5.37
 [d] self	> findutils-4.7.0
 [d] mlfs	> flex-2.6.4
