@@ -47,6 +47,13 @@ pref("privacy.donottrackheader.enabled", true);
 pref("signon.autofillForms", true);
 pref("xpinstall.whitelist.required", true);
 
+// disable webgl
+pref("webgl.disabled", true);
+pref("webgl.min_capability_mode", true);
+pref("webgl.disable-extensions", true);
+pref("webgl.disable-fail-if-major-performance-caveat", true);
+pref("webgl.enable-debug-renderer-info", false);
+
 // from privacy watchdog
 pref("extensions.blocklist.enabled", false);
 pref("services.sync.prefs.sync.security.OCSP.enabled", false);
@@ -54,7 +61,6 @@ pref("security.OCSP.GET.enabled", false);
 pref("security.OCSP.require", false);
 pref("security.OCSP.enabled", 0);
 pref("geo.enabled", false);
-pref("webgl.disabled", "true");
 pref("canvas.poisondata", "true");
 
 // pm 28.9.0.2 defaults
