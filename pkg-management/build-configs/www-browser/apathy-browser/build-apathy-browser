@@ -1,103 +1,88 @@
 #!/mss/bin/sh
-# apathy-musl 1.2 - mss@waifu.club
-# build script for pale moon, version 2
+# apathy-musl 1.2 - mss@tutanota.de
+# build script for apathy-browser, version 3.
 
 . /mss/bin/apathy-funcs
 
-# a1 >> check if variables are set
-[ -z $1 ] \
- && aprint_fail "no ${cl_grn}uxp${c_res} tarball specified as ${cl_grn}\$1${c_res}, exiting." \
- && exit 1
-[ -z $2 ] \
- && aprint_fail "no ${cl_grn}pale moon${c_res} tarball specified as ${cl_grn}\$2${c_res}, exiting." \
- && exit 1
+# a >> check if variables are set
+[ -z $1 ] && aprint_fail "no uxp tarball specified as \$1, exiting."       && exit 1
+[ -z $2 ] && aprint_fail "no pale moon tarball specified as \$2, exiting." && exit 1
 
-case $3 in y|Y|yes)
- export answerbuild="y" answerinst="y"
- aprint_nc
- aprint "${cb_red}building and installing without asking for confirmation${c_res}."
- ;;
-esac
+# b >> script vars
+      logdir="/mss/work/logs"
+    saucedir="/mss/work/sauces"
 
-# a2 >> check if $1 and $2 exists in sauces
-saucedir="/mss/work/sauces"
-[ ! -f "${saucedir}/${1}" ] \
- && aprint_fail "${cl_grn}${1}${c_res} does not exist in saucedir, exiting" \
- && exit 1
-[ ! -f "${saucedir}/${2}" ] \
- && aprint_fail "${cl_grn}${2}${c_res} does not exist in saucedir, exiting" \
- && exit 1
+     repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
+    filesdir="${repodir}/files"
+    branding="${repodir}/branding"
 
-# b0 >> set the vars
-# b1 >> script vars
-    uxpfull="$(echo ${1} | sed 's/.tar.gz//')"
-     pmfull="$(echo ${2} | sed 's/.tar.gz//')"
+     uxpfull="$(echo ${1}       | sed 's/\.tar//;s/\.[gx]z//')"
+      pmfull="$(echo ${2}       | sed 's/\.tar//;s/\.[gx]z//')"
+      uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
+       pmver="$(echo ${pmfull}  | sed 's/Pale-Moon-//;s/_Release//')"
 
-     uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
-      pmver="$(echo ${pmfull} | sed 's/Pale-Moon-//;s/_Release//;s/.tar.gz//')"
+      srcdir="${PWD}/${pmfull}"
+     instdir="${srcdir}/KEK"
+    pmappdir="/usr/lib/apathy-browser-${pmver}"
 
-     logdir="/mss/work/logs"
-    repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
-   filesdir="${repodir}/files"
-   branding="${repodir}/branding"
+ redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
 
-     srcdir="${PWD}/${pmfull}"
-    instdir="${srcdir}/KEK"
+# c >> check if specified tarballs actually exist
+[ ! -f "${saucedir}/${1}" ] && aprint_fail "${1} does not exist in saucedir, exiting" && exit 1
+[ ! -f "${saucedir}/${2}" ] && aprint_fail "${2} does not exist in saucedir, exiting" && exit 1
 
-redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
-   pmappdir="/usr/lib/apathy-browser-${pmver}"
-
-# b2 >> build vars
-export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
-export           MOZCONFIG="$srcdir/mozconfig"
-export                  CC="x86_64-apathy-linux-musl-gcc"
-export                 CXX="x86_64-apathy-linux-musl-g++"
+# d >> build vars
+export               CHOST="x86_64-apathy-linux-musl"
+export                  CC="${CHOST}-gcc"
+export                 CXX="${CHOST}-g++"
 export              CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
 export            CXXFLAGS="${CFLAGS}"
 export             LDFLAGS="-Wl,-rpath=${pmappdir}"
-export             LDFLAGS="${LDFLAGS} -Wl,--as-needed -Wl,--no-keep-memory -Wl,--stats"
+
+export           MOZCONFIG="$srcdir/mozconfig"
+export MOZBUILD_STATE_PATH="$srcdir/mozbuild"
 export      MOZ_LINK_FLAGS="${LDFLAGS}"
 
-# c0 >> print vars
+# e >> print vars
 aprint_nc
 lsdetail "pm version"  "${pmver}"
 lsdetail "uxp version" "${uxpver}"
 aprint_nc
 lsdetail "cflags"      "${CFLAGS}"
 lsdetail "cxxflags"    "${CXXFLAGS}"
-lsdetail "ldflags"     "$(echo ${LDFLAGS} | fold -w 52)"
+lsdetail "ldflags"     "${LDFLAGS}"
 aprint_nc
 
-# c1.1 >> extract the pale moon code
+# f1 >> extract the pale moon code
 aprint_ret "extracting ${cl_grn}${2}${c_res}."
- tar xf "${saucedir}"/"${2}" > "$redirect_to" 2>&1
+ tar xf "${saucedir}/${2}" > "$redirect_to" 2>&1
 evalretkill
 
-# c1.2 >> extract the uxp code
+# f2 >> extract the uxp code
 aprint_ret "extracting ${cl_grn}${1}${c_res}."
  prevpwd="$PWD"
  cd "${srcdir}"
- tar xf "${saucedir}"/"${1}" >> "$redirect_to" 2>&1
+ tar xf "${saucedir}/${1}" >> "$redirect_to" 2>&1
 evalretkill
 
-# c1.3 >> move uxp to platform
+# f3 >> move uxp to platform
 aprint_ret "moving the ${cl_grn}uxp code${c_res} to ${cl_grn}platform/${c_res}."
  cd "$prevpwd"
  rm -rfv "${srcdir}/platform"                        >> "$redirect_to" 2>&1
  mv -v   "${srcdir}/${uxpfull}" "${srcdir}/platform" >> "$redirect_to" 2>&1
 evalretkill
 
-# c2 >> cd to work
+# g1 >> cd to work
 aprint_ret "cd to ${cl_grn}${srcdir}${c_res}."
  cd "${srcdir}"
 evalretkill
 
-# c3 >> copy mozconfig
+# g2 >> copy mozconfig
 aprint_ret "copying ${cl_grn}mozconfig${c_res}."
  cp -v "${filesdir}"/mozconfig "${srcdir}"/mozconfig >> "$redirect_to" 2>&1
 evalretkill
 
-# c4 >> apply branding
+# g3 >> apply branding
 aprint_ret "copying the ${cl_grn}apathy-browser branding${c_res} files."
  cp -v "${branding}"/bookmarks.html.in        "${srcdir}"/palemoon/locales/generic/profile/           >> "$redirect_to" 2>&1 &&
  cp -v "${branding}"/aboutDialog.xul          "${srcdir}"/palemoon/base/content/                      >> "$redirect_to" 2>&1 &&
@@ -112,12 +97,10 @@ aprint_ret "copying the ${cl_grn}apathy-browser branding${c_res} files."
  cp -v "${branding}"/about-background.png     "${srcdir}"/palemoon/branding/unofficial/content/       >> "$redirect_to" 2>&1
 evalretkill
 
-# d1 >> check everything and ask to run mach
+# h1 >> check everything and ask to run mach
 aprint_nc
-if [ -z "$answerbuild" ]; then
- aprint_ask "ready to run mach, shall we continue? (y/n): "
- read answerbuild
-fi
+aprint_ask "ready to run mach, shall we continue? (y/n): "
+read answerbuild
 
 case "$answerbuild" in
  y|Y|yes)
@@ -126,8 +109,8 @@ case "$answerbuild" in
   aprint_ret "running mach."
   datebefore=$(date +%s)
 
-   /bin/busybox time                \
-   ./mach build >> "$redirect_to" 2>&1
+   /bin/busybox time \
+    ./mach build >> "$redirect_to" 2>&1
   evalretkill
 
   dateafter=$(date +%s)
@@ -140,18 +123,17 @@ case "$answerbuild" in
   aprint_nc
   aprint "build finished in ${cl_grn}${humantime}${c_res}."
  ;;
- n|N|no)
+ *)
   aprint "not running make."
   aprint_nc
   exit 0
  ;;
 esac
-# d2 >> ask to install build
+
+# h2 >> ask to install build
 aprint_nc
-if [ -z "$answerinst" ]; then
- aprint_ask "shall we run the installer? (y/n): "
- read answerinst
-fi
+aprint_ask "shall we run the installer? (y/n): "
+read answerinst
 
 case "$answerinst" in
  y|Y|yes)
@@ -165,7 +147,7 @@ case "$answerinst" in
    rm -rf ${instdir}/usr/share
   evalret
  ;;
- n|N|no)
+ *)
   aprint "not installing."
   exit 0
  ;;
