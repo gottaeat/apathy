@@ -1,7 +1,4 @@
 /bin/ldd
-
-/etc/ld-musl-x86_64.path
-
 /lib/ld-musl-x86_64.so.1
 
 /usr/bin/getconf
