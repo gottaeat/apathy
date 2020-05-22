@@ -268,7 +268,7 @@ expat-2.2.8
 file-5.37
 findutils-4.7.0
 flex-2.6.4
-gcc-9.3.1-20200418
+gcc-10.1.0
 gdbm-1.18.1
 gmp-6.2.0
 gperf-3.1
