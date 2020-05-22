@@ -7,7 +7,7 @@ ifacelist=$(awk '{gsub(":",""); print $1}' /proc/net/dev \
 case "${ifacelist}" in
  *wlan0*)
   IFACE="wlan0"
-  WPACONFIG=/etc/wpa_supplicant/mssNetwork.conf
+  WPACONFIG=/etc/wpa_supplicant/solitude.conf
  ;;
  *)
   if [ -z "$(grep "eth0" /proc/net/dev)" ]
