@@ -6,6 +6,19 @@
 # https://github.com/dslm4515/bmlfs
 # https://github.com/gentoo/libressl
 ```
+
+### basic explanation of the format used here:
+```
+[ ] text	> package-version
+ │  │
+ │  └─────────────> source of the build recipe.
+ │
+ ├─> d: done ─────> currently installed to the local system.
+ ├─> r: removed ──> simply removed. 
+ └─> o: ondemand ─> this package got built and archived. only unarchived
+                    when it is needed.
+```
+
 ```
 [d] alpine	> opendoas-6.6.1
 [d] bmlfs	> ca-certificates-20190110
@@ -397,6 +410,7 @@
 [d] alpine	> cuetools-1.4.1
 [d] alpine	> shntool-3.0.10
 [d] self	> earlyoom-1.6-apathy
+[d] alpine	> xdelta3-3.1.0
 ```
 ```
 ### base mlfs packages
