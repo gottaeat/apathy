@@ -354,7 +354,7 @@
 [r] alpine	> mutt-1.13.3
 [d] alpine	> lzip-1.21
 
-[d] self	> apathy-browser-28.9.3
+[r] self	> apathy-browser-28.9.3
 [d] alpine	>> zip-30
 
 [d] self	> gcompat-0.4.0			--> moved to /lib64
@@ -401,8 +401,8 @@
 [o] self	> cbindgen-0.13.2
 [o] self	> nodejs-13.9.0
 
-[r] self	> firefox-68.6.0esr
-[r] self	>> gtk+-3.24.14
+[d] self	> firefox-68.8.0esr
+[d] self	>> gtk+-3.4.4
 
 [d] self	> sinit-1.1-apathy
 [d] alpine	> zstd-1.4.4
