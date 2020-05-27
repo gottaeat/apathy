@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-sel=$(printf "apathy-browser\nkill-dwm\nreboot\npoweroff" \
+sel=$(printf "firefox\nkill-dwm\nreboot\npoweroff" \
       | dmenu -b -p "meh:")
 
 killdwm(){
@@ -13,5 +13,5 @@ case "$sel" in
  poweroff)       killdwm && doas -- kill -USR1 1 ;;
  reboot)         killdwm && doas -- kill -INT 1  ;;
  kill-dwm)       killdwm        ;;
- apathy-browser) apathy-browser ;;
+ firefox) firefox ;;
 esac

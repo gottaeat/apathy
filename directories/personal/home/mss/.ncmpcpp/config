@@ -17,7 +17,7 @@ visualizer_in_stereo              = no
 visualizer_sync_interval          = 10
 visualizer_type                   = spectrum
 visualizer_look                   = ..
-visualizer_color                  = black:b
+visualizer_color                  = blue:b
 
 # > delays
 playlist_disable_highlight_delay  = 5
@@ -37,8 +37,8 @@ current_item_prefix                   = $r
 current_item_suffix                   = $/r
 current_item_inactive_column_prefix   =
 current_item_inactive_column_suffix   =
-now_playing_prefix                    = $b$3>$9 
-now_playing_suffix                    = $/b
+now_playing_prefix                    = $b$5 
+now_playing_suffix                    = $/b$9
 browser_playlist_prefix               = "$7$r p $/r$9 "
 selected_item_prefix                  = $5
 selected_item_suffix                  = $9

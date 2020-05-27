@@ -14,7 +14,7 @@ xrandr --auto --output VGA-1  --right-of LVDS-1
 /home/mss/.fehbg &
 cp /home/mss/.fehbg /home/mss/.fehb.def &
 
-/mss/bin/disableaccel &
+     /mss/bin/disableaccel &
 #/mss/bin/switchcompositor &
 
 while true; do /home/mss/.config/scripts/bw-write; done &
