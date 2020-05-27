@@ -17,7 +17,6 @@ cl_whi="\033[0;37m" cb_whi="\033[1;37m"
  mypath="/usr/sbin:/usr/bin:/sbin:/bin"
  mypath="$mypath:/mss/bin:/home/mss/execs"
 #mypath="$mypath:/opt/cataclysm-dda-0.e/bin"
-#mypath="$mypath:/opt/i3/bin"
 #mypath="$mypath:/opt/llvm-10.0.0/bin"
 #mypath="$mypath:/opt/node.j-13.9.0/bin"
 #mypath="$mypath:/opt/rustc-1.42.0/bin"
@@ -29,7 +28,6 @@ export PATH="$mypath"
 
 # a4 >> pkg_config_path
  mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
-#mypkgconfigpath="$mypkgconfigpath:/opt/webkitgtk-2.28.0/lib/pkgconfig"
 export PKG_CONFIG_PATH="$mypkgconfigpath"
 
 # a5 >> mpd socket
@@ -55,12 +53,12 @@ export  EDITOR="/usr/bin/vim"
 export   PAGER="/usr/bin/less"
 export GPG_TTY=$(tty)
 
-# a7 >> xdg
+# a9 >> xdg
 export   XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
-# a8 >> essential paths
+# a10 >> essential paths
 export INFOPATH="/usr/info"
 export  MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"

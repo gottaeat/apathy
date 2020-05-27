@@ -10,6 +10,7 @@ set ruler
 set number
 set backspace=indent,eol,start
 set laststatus=2
+set colorcolumn=80
 
 syntax on
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
