@@ -53,6 +53,7 @@ initboi(){
  $sdir/gpm		start
  $sdir/mpd		start
  $sdir/dnscrypt-proxy	start
+#$sdir/transmission	start
 #$sdir/ssh		start
 
  /mss/bin/sh -c '/mss/initbits/bin/respawn \
@@ -81,6 +82,7 @@ poweroffboi(){
  $sdir/gpm		stop
  $sdir/mpd		stop
  $sdir/dnscrypt-proxy	stop
+#$sdir/transmission	stop
 #$sdir/ssh		stop
  $sdir/alsa		stop
  $sdir/random		stop
@@ -102,6 +104,7 @@ rebootboi(){
  $sdir/gpm		stop
  $sdir/mpd		stop
  $sdir/dnscrypt-proxy	stop
+#$sdir/transmission	stop
 #$sdir/ssh		stop
  $sdir/alsa		stop
  $sdir/random		stop

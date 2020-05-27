@@ -1,0 +1,34 @@
+#!/mss/bin/sh
+. /mss/initbits/bin/apathy-init-funcs
+
+case "$1" in
+ start)
+  ainitmes "starting ${c_lcyan}transmission${c_reset}."
+   su mss -c \
+    'transmission-daemon \
+     --allowed "127.0.0.1" \
+     --port    "9091"      \
+     --no-auth             \
+     --no-watch-dir        \
+     --no-incomplete-dir   \
+     --dht                 \
+     --utp                 \
+     --paused              \
+     --portmap             \
+     --pid-file "/run/transmission.pid"'
+  evalret
+ ;;
+ stop)
+  ainitmes "stopping ${c_lcyan}transmission${c_reset}."
+   read transpid < /run/transmission.pid
+   kill -TERM "$transpid"
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac
