@@ -1,0 +1,45 @@
+*{
+ color:            #ababab;
+ background-color: #000000;
+
+ padding:              1px;
+
+ border-color:     #101010;
+ border-style:       solid;
+ border-width:         1px;
+ border-radius:          0;
+}
+
+*:insensitive{
+ color:            #525252;
+ border-color:     #252525;
+ background-color: #101010;
+}
+
+*:selected{
+ color:            #00aaaa;
+ border-color:     #464646;
+ background-color: #252525;
+}
+
+*:selected:focused{
+ color:            #f7f7f7;
+ border-color:     #464646;
+ background-color: #252525;
+}
+
+*:hover{
+ color:            #ababab;
+ border-color:     #525252;
+ background-color: #101010;
+}
+
+.slider,
+.progressbar,
+.cell.progressbar, 
+.entry.progressbar,
+.view.cell.progressbar {
+ color:            #ababab;
+ border-color:     #000000;
+ background-color: #252525;
+}
