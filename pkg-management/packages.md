@@ -411,6 +411,7 @@
 [d] alpine	> shntool-3.0.10
 [d] self	> earlyoom-1.6-apathy
 [d] alpine	> xdelta3-3.1.0
+[d] self	> transmission-3.0
 ```
 ```
 ### base mlfs packages
