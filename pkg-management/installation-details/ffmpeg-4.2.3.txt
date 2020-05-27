@@ -44,6 +44,5 @@
 /usr/lib/pkgconfig/libswresample.pc
 /usr/lib/pkgconfig/libswscale.pc
 
-/usr/share/doc
 /usr/share/ffmpeg
 /usr/share/man
