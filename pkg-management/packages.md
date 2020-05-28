@@ -405,7 +405,7 @@
 [d] self	>> gtk+-3.4.4
 
 [d] self	> sinit-1.1-apathy
-[d] alpine	> zstd-1.4.4
+[d] self	> zstd-1.4.5
 [r] self	> qemu-4.2.0
 [d] alpine	> cuetools-1.4.1
 [d] alpine	> shntool-3.0.10
