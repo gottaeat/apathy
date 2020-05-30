@@ -9,7 +9,7 @@ pref("browser.startup.homepage", "");
 pref("browser.uidensity", 1);
 pref("devtools.onboarding.telemetry.logged", false);
 pref("devtools.theme", dark);
-pref("dom.ipc.processCount", 2);
+pref("dom.ipc.processCount", 1);
 pref("findbar.highlightAll", true);
 pref("font.default.x-western", "sans-serif");
 pref("font.name.monospace.ja", "xos4 Terminus");
