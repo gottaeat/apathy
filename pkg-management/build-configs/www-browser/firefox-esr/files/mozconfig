@@ -3,10 +3,11 @@ ac_add_options --prefix=/usr
 ac_add_options --libdir=/usr/lib
 
 ### compiler stuff
-ac_add_options --enable-optimize="-march=native -mtune=native -O2"
+ac_add_options --enable-optimize="-march=native -mtune=native -O2 -w"
 ac_add_options --enable-install-strip
 ac_add_options --enable-strip
 ac_add_options --enable-release
+ac_add_options --enable-rust-simd
 ac_add_options --disable-elf-hack
 ac_add_options --disable-gold
 ac_add_options --disable-jemalloc
@@ -18,6 +19,7 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
 mk_add_options MOZ_MAKE_FLAGS="-j2"
 
 ### branding
+ac_add_options --enable-application=browser
 ac_add_options --disable-official-branding
 ac_add_options --with-branding=browser/branding/unofficial
 ac_add_options --with-distribution-id=org.apathy
