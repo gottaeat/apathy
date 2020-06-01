@@ -4,7 +4,7 @@
 case "$1" in
  start)
   ainitmes "starting the ${c_lcyan}ssh${c_reset} daemon."
-   /usr/sbin/sshd >/dev/null 2>&1
+   /usr/bin/sshd >/dev/null 2>&1
   evalret
  ;;
  stop)
