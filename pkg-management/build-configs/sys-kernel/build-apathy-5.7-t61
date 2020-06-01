@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.7-rc kernels, version 1, for thinkpad t61
+# build script for 5.7 kernels, version 1, for thinkpad t61
 
 . /mss/bin/apathy-funcs
 
