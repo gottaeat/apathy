@@ -37,7 +37,7 @@
 [d] alpine	>> pcre2-10.34
 [d] alpine	>>> libedit-20191231.3.1
 
-[d] alp+blfs	> openssh-8.1_p1		--> patches from alp, config is a mix
+[d] self	> openssh-8.3_p1
 [d] alpine	> libssh2-1.9.0
 
 [d] self	> cmake-3.17.1
