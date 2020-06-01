@@ -1,0 +1,9 @@
+/etc/ca-certificates.conf
+/etc/ssl/certs
+/etc/ssl/certs.pem
+
+/usr/sbin/update-ca-certificates
+
+/usr/share/ca-certificates
+
+/usr/share/man
