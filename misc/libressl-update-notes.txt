@@ -1,0 +1,66 @@
+# > 1
+find \
+ /bin /lib /lib64 /mss/bin/ /mss/initbits/bin/ /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+# > 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -x $file 2>/dev/null | grep -e libcrypto -e libssl -e libtls)"
+ if [ ! -z "${meme}" ];then
+  printf "$file\n"
+ fi
+done 2>&1 | tee /tmp/linked.txt
+
+# > 3
+/usr/bin/scp
+/usr/bin/wpa_supplicant
+/usr/bin/ssh
+/usr/bin/ssh-agent
+/usr/bin/transmission-remote
+/usr/bin/ssh-add
+/usr/bin/wpa_passphrase
+/usr/bin/transmission-cli
+/usr/bin/links
+/usr/bin/irssi
+/usr/bin/aria2c
+/usr/bin/openssl
+/usr/bin/curl
+/usr/bin/bsdtar
+/usr/bin/sshd
+/usr/bin/ssh-keygen
+/usr/bin/bsdcat
+/usr/bin/transmission-edit
+/usr/bin/sftp
+/usr/bin/bsdcpio
+/usr/bin/transmission-show
+/usr/bin/Xnest
+/usr/bin/ssh-keyscan
+/usr/bin/Xvfb
+/usr/bin/ocspcheck
+/usr/bin/transmission-create
+/usr/bin/transmission-daemon
+/usr/lib/libtls.a
+/usr/lib/libssl.a
+/usr/lib/ssh/sftp-server
+/usr/lib/ssh/ssh-keysign
+/usr/lib/ssh/ssh-pkcs11-helper
+/usr/lib/ssh/ssh-sk-helper
+/usr/lib/libssl.so.48.0.1
+/usr/lib/libcrypto.so.46.0.1
+/usr/lib/firefox/libssl3.so
+/usr/lib/firefox/libxul.so
+/usr/lib/libshout.so.3.2.0
+/usr/lib/libcrypto.a
+/usr/lib/libevent_openssl-2.1.so.7.0.0
+/usr/lib/python2.7/lib-dynload/_hashlib.so
+/usr/lib/python2.7/lib-dynload/_ssl.so
+/usr/lib/libtls.so.20.0.1
+/usr/lib/libarchive.so.13.4.1
+/usr/lib/python3.8/lib-dynload/_ssl.cpython-38-x86_64-linux-gnu.so
+/usr/lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so
+/usr/lib/libcurl.so.4.6.0
+/usr/libexec/git-core/git-imap-send
+/usr/libexec/Xorg
+/usr/sbin/openvpn
