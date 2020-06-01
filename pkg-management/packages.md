@@ -55,7 +55,7 @@
 [d] alpine	>> popt-1.16
 
 [d] alpine	> tmux-3.0a			--> with my own patch for corner chars
-[d] alpine	>> libevent-2.1.11		--> with my own config, without malloc
+[d] self	>> libevent-2.1.11
 
 [d] alpine	> htop-2.2.0			--> with --disable-cgroup
 [d] alpine	> strace-5.4			--> built on default lts alpine kernel
@@ -370,10 +370,10 @@
 [r] self	> cwm				--> from github.com/leahneukirchen/cwm
 [r] self	> lemonbar			--> from github.com/krypt-n/bar
 [r] self	> wmctrl-1.07			--> inst from alp, patches from void
-[d] alpine	> aria2-1.35.0
+[d] self	> aria2-1.35.0
 [d] self	> links-2.20.2
 
-[d] blfs	> wpa-supplicant-2.9		--> arch config w/o dbus w/ -I/usr/include/libnl3
+[d] self	> wpa_supplicant-2.9
 [d] alpine	>> libnl3-3.5.0
 
 [d] gentoo+arch	> lilo-24.2
