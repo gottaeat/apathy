@@ -38,7 +38,7 @@
 [d] alpine	>>> libedit-20191231.3.1
 
 [d] self	> openssh-8.3_p1
-[d] alpine	> libssh2-1.9.0
+[d] self	> libssh2-1.9.0
 
 [d] self	> cmake-3.17.1
 [d] alpine	>> libuv-1.34.1
