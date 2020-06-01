@@ -285,7 +285,7 @@ less-551
 libcap-2.27
 libffi-3.2.1
 libpipeline-1.5.1
-libressl-3.0.2
+libressl-3.2.0
 libtool-2.4.6
 m4-1.4.18
 make-4.3

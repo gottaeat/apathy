@@ -38,7 +38,7 @@ simplified list of major components
    - yash 2.49
 
  > tls
-   - libressl 3.0.2   - gnutls-3.6.13      - nettle-3.5.1
+   - libressl 3.2.0   - gnutls-3.6.13      - nettle-3.5.1
 
 
 simplified repository tree
