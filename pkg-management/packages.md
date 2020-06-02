@@ -397,8 +397,8 @@
 
 [o] self	> llvm-10.0.0
 [o] self	> clang-10.0.0
-[o] self	> rustc-1.42.0
-[o] self	> cbindgen-0.13.2
+[o] self	> rustc-1.43.1
+[o] self	> cbindgen-0.14.2
 [o] self	> nodejs-13.9.0
 
 [d] self	> firefox-68.8.0esr

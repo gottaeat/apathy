@@ -28,8 +28,8 @@ simplified list of major components
    - perl 5.30.1
 
  > toolchain (ondemand)
-   - llvm-10.0.0      - clang-10.0.0       - rustc-1.42.0
-   - cbindgen-0.13.2  - go-1.14.1          - node.js-13.9.0
+   - llvm-10.0.0      - clang-10.0.0       - rustc-1.43.1
+   - cbindgen-0.14.2  - go-1.14.1          - node.js-13.9.0
    - boost 1.72.0
 
  > core userland
