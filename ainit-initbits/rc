@@ -1,7 +1,7 @@
 #!/mss/bin/sh
 # a1 >> set vars
 bitsdir="/mss/initbits"
-sdir="${bitsdir}/scripts"
+   sdir="${bitsdir}/scripts"
 
 # a2 >> source the funcs
 . "${bitsdir}"/bin/apathy-init-funcs
@@ -25,12 +25,10 @@ banner(){
 }
 
 initboi(){
-  dmesgtime=$(dmesg | grep "Run /sbin/init" -B1 | awk 'NR==1 {sub(/\]/,""); print $2}')
+  dmesgtime=$(dmesg | awk '/Run \/sbin\/init/ {sub(/\]/,""); print $2}')
  datebefore=$(date +%s)
 
- banner
-
- ctrlaltdel -s
+ ctrlaltdel -s; banner
 
  $sdir/mountvirtfs	start || /bin/ash
  $sdir/localnet		start
@@ -66,57 +64,31 @@ initboi(){
                  /mss/initbits/bin/getty   \
                  /dev/tty3 linux' &>/dev/null &
 
- ainit_nc
  dateafter=$(date +%s) timespent=$(($dateafter - $datebefore))
 
- ainitmes "${c_green}init${c_reset} got called after ${c_lcyan}${dmesgtime}${c_reset} seconds.";              ainit_nc
- ainitmes "${c_green}rc${c_reset} finished in ${c_lcyan}${timespent}${c_reset} seconds."; ainit_nc
+ ainit_nc
+ ainitmes "init: ${c_lcyan}${dmesgtime}${c_reset}s"; ainit_nc
+ ainitmes "rc  : ${c_lcyan}${timespent}${c_reset}s"; ainit_nc
  ainit_nc
 }
 
-poweroffboi(){
- stty onlcr
- banner
+goingdown(){
+ stty onlcr; banner
 
- $sdir/earlyoom		stop
- $sdir/gpm		stop
- $sdir/mpd		stop
- $sdir/dnscrypt-proxy	stop
-#$sdir/transmission	stop
 #$sdir/ssh		stop
  $sdir/alsa		stop
  $sdir/random		stop
  $sdir/network		stop
  $sdir/localnet		stop
- $sdir/sysklogd		stop
  $sdir/sendsignals	stop
  $sdir/swap		stop
  $sdir/mountfs		stop
 
- sync; sleep 3; halt -p
+ sync; sleep 3
 }
 
-rebootboi(){
- stty onlcr
- banner
- 
- $sdir/earlyoom		stop
- $sdir/gpm		stop
- $sdir/mpd		stop
- $sdir/dnscrypt-proxy	stop
-#$sdir/transmission	stop
-#$sdir/ssh		stop
- $sdir/alsa		stop
- $sdir/random		stop
- $sdir/network		stop
- $sdir/localnet		stop
- $sdir/sysklogd		stop
- $sdir/sendsignals	stop
- $sdir/swap		stop
- $sdir/mountfs		stop
-
- sync; sleep 3; halt -r
-}
+poweroffboi(){ goingdown; halt -p;}
+rebootboi(){   goingdown; halt -r;}
 
 case "${1}" in
  init)      initboi     ;;
