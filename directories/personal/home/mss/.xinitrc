@@ -11,13 +11,11 @@ numlockx on
 xrandr --auto --output LVDS-1 --primary
 xrandr --auto --output VGA-1  --right-of LVDS-1
 
-/home/mss/.fehbg &
-cp /home/mss/.fehbg /home/mss/.fehb.def &
+/mss/bin/disableaccel
+/home/mss/.fehbg
+cp /home/mss/.fehbg /home/mss/.fehb.def
 
-     /mss/bin/disableaccel &
-#/mss/bin/switchcompositor &
+/home/mss/execs/redshift -O 3500k
 
-while true; do /home/mss/.config/scripts/bw-write; done &
 dwmblocks &
-#oneko -neko -time 100000 -speed 30 -bg white -fg black &
 while true; do dwm 2> /tmp/.dwm.log; done

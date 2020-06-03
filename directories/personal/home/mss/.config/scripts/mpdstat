@@ -1,38 +1,62 @@
 #!/mss/bin/sh
-if [ -z $(pidof mpd) ]
- then
-  state="not running"
+gettitle(){
+ mpc -f "[%file%]" current                \
+  | awk '{gsub("^.*\/","")};              \
+         {if (length($0) > 35)            \
+           print substr($0, 1, 32) "..."; \
+          else print }'
+}
+
+getartist(){
+ echo "$artist_pre"                       \
+  | awk '{if (length($0) > 15)            \
+           print substr($1, 1, 12) "..."; \
+          else print }'
+}
+
+getsong(){
+ echo "$song_pre"                                   \
+  | awk '{if (length($0) > '$len')                  \
+           print substr($0, 1, '$((len-3))') "..."; \
+          else print }'
+}
+
+calcdur(){
+ dur_pre=$(echo "${mpc_status}"             \
+  | awk 'NR==2 {gsub("\/|:"," ");           \
+         curr=($4*60)+$5; total=($6*60)+$7} \
+         END {print total-curr}')
+
+ [ "$dur_pre" -gt 3599 ] \
+  && printf '%02d:%02d:%02d\n'      \
+            "$(($dur_pre/3600))"    \
+            "$(($dur_pre%3600/60))" \
+            "$(($dur_pre%60)))"     \
+  || printf '%02d:%02d\n'           \
+            "$(($dur_pre%3600/60))" \
+            "$(($dur_pre%60))"
+}
+
+
+if [ -z "$(pidof mpd)" ];
+ then echo "dead"
  else
   mpc_status="$(mpc status)"
 
-  if [ ! "$(echo "$mpc_status" | wc -l)" -lt 3 ]
-   then
-    artist_pre=$(mpc --format "[%artist%]" current)
-    song_pre=$(mpc   --format "[%title%]"  current)
-  
-    [ -z "${artist_pre}" ] || [ -z "${song_pre}" ] \
-     && title="$(mpc -f "[%file%]" current   \
-                  | awk '{gsub("^.*\/","")}; \
-                         {if   (length($0) > 20) print substr($0, 1, 17) "..."; \
-                         else print }')" \
-     || artist="$(echo "$artist_pre" | awk '{if (length($0) > 15) print substr($0, 1, 12) "..."; else print }')" \
-        song="$(echo "$song_pre"     | awk '{if (length($0) > 20) print substr($0, 1, 17) "..."; else print }')" \
-        title="$artist - $song"
-
-    dur_pre="$(echo "${mpc_status}" \
-               | awk 'NR==2 {gsub("\/|:"," ");           \
-                      curr=($4*60)+$5; total=($6*60)+$7} \
-                      END {print total-curr}')"
-
-    [ "$dur_pre" -gt "3599" ] \
-     && dur="$(printf '%02d:%02d:%02d\n' $(($dur_pre/3600)) $(($dur_pre%3600/60)) $(($dur_pre%60)))" \
-     || dur="$(printf '%02d:%02d\n' $(($dur_pre%3600/60)) $(($dur_pre%60)))"
-
-    [ "$(echo "${mpc_status}" | awk 'NR==2 {print $1}')" = "[paused]" ] \
-     && state="[paused] ${title}" || state="${title} ${dur}"
+  if [ "$(echo "$mpc_status" | wc -l)" -lt 3 ];
+   then echo "idle"
    else
-    state="empty playlist"
+    artist_pre=$(mpc -f %artist% current)
+      song_pre=$(mpc -f %title%  current)
+ 
+    [ -z "${artist_pre}" ] || [ -z "${song_pre}" ] \
+     && title="$(gettitle)"                        \
+     || case "$@" in
+         noartist) title="$(len=35 getsong)"                ;;
+                *) title="$(getartist) - $(len=20 getsong)" ;;
+        esac
+     
+    [ ! -z "$(echo "${mpc_status}" | awk '/\[paused\]/')" ] \
+     && echo "[p] ${title}" || echo "${title} $(calcdur)"
   fi
 fi
-
-echo "${state}"

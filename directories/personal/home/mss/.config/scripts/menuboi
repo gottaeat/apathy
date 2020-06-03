@@ -3,6 +3,8 @@ sel=$(printf "firefox\nkill-dwm\nreboot\npoweroff" \
       | dmenu -b -p "meh:")
 
 killdwm(){
+ /home/mss/execs/redshift -x
+
  kill -TERM \
   -"$(ps -o pgid $(pidof dwm)     \
       | awk 'NR==2 {gsub(" ",""); \

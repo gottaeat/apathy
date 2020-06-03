@@ -1,0 +1,4 @@
+#!/mss/bin/sh
+printf "%s %dm\n" \
+"$(awk '{print $1}'                   /proc/loadavg)" \
+"$(awk '/Avail/ {print int($2/1024)}' /proc/meminfo)"
