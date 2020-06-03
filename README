@@ -1,4 +1,3 @@
-```
 
 
    __,  ,_   __,  -/- /_
@@ -75,50 +74,3 @@ simplified repository tree
      │                             uaoverrides/prefs.js.
      └─ patches ─────────────────> patches to be used with recipes under
                                    build-configs/.
-
-
-history
-=======
-versioning is done solely for defining the "era" of apathy that used different
-compontents, it does not mean anything.
-
-    1. mssLinux 1.1, apathy gnu/linux 1.{2,3}:
-       - it initially used linux from scratch 8.4 as its base and the rest was
-         built off of reading gentoo ebuild's and arch linux PKGBUILDS.
-       - first iterations of utilities under apathy-utils/ is written here.
-         same goes for ainit-sysv-mk-i which is just a posixified version of
-         lfs-bootscripts so that i could boot with dash.
-       - latest state of this "release" can be found at the apathy-glibc branch
-         of this repo.
-
-    2. apathy musl 1.0
-       - it used "mlfs" written by github user dslm4515 as its base and the
-         rest was built off of reading alpine APKBUILD's.
-       - pretty much everything else is straight from the glibc apathy.
-
-    3. apathy musl 1.1
-       - i forked mlfs to apathy-mlfs. cleaned up the documentation, simplified
-         things, changed the shells, the init system, updated majority of the
-         software alongside with patches, and used it as the base for this
-         "release".
-       - pretty much everything else is the same as the previous mlfs based
-         system.
-
-    4. apathy musl 1.2 - part 1
-       - having sold my g3258 and bought a thinkpad t61, i decided on
-         rebuilding the system as the previous haswell chip had instructions
-         that my core2 duo in the t61 didn't have.
-       - the `init-functions` and `rc` from lfs-bootscripts got rewritten and
-         named `ainit-sysv-mk-ii`. instead of doing runlevel based symlinking,
-         now `rc` handled everything by case statements. the whole structure
-         got much more portable to move between init's.
-
-    5. apathy musl 1.2 - part 2
-       - i removed the runlevel management bits from rc and moved the already
-         portable ainit-sysv-mk-ii to sinit. instead of util-linux and coreutils
-         bits, i used components from static sbase and ubase builds.
-       - at this stage, instead of blindly taking the build recips from alpine,
-         i started trimming down the fat and writing my own recipes more. the
-         size of the distribution went down from 1450mib to 960mib without
-         losing functionality.
-```
