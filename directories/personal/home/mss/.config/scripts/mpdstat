@@ -1,8 +1,8 @@
 #!/mss/bin/sh
 gettitle(){
- mpc -f "[%file%]" current                \
-  | awk '{gsub("^.*\/","")};              \
-         {if (length($0) > 35)            \
+ mpc -f "[%file%]" current \
+  | awk '{gsub(/^.*\/|\.[^.]*$/,"");      \
+          if (length($0) > 35)            \
            print substr($0, 1, 32) "..."; \
           else print }'
 }
