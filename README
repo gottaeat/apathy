@@ -70,7 +70,7 @@ simplified repository tree
      ├─ build-configs ───────────> custom home-brewed build recipes for a
      │   │                         variety of software.
      │   └─ www-browser
-     │       └─ apathy-browser ──> pale moon fork with custom branding and
-     │                             uaoverrides/prefs.js.
+     │       └─ apathy-browser ──> unmaintained pale moon "fork" with custom
+     │                             branding and uaoverrides/prefs.js.
      └─ patches ─────────────────> patches to be used with recipes under
                                    build-configs/.
