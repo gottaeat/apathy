@@ -1,10 +1,10 @@
 #!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
+. /mss/init/bin/funcs
 
 case "$1" in
  start)
   ainitmes "starting ${c_lcyan}iptables${c_reset}."
-   . /mss/initbits/config/iptables.conf
+   . /mss/init/config/iptables.conf
   evalret
  ;;
  lock)

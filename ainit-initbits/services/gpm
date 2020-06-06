@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
+. /mss/init/bin/funcs
 
 DAEMON=/usr/sbin/gpm 
 DAEMONOPTS="-m /dev/input/mice -t imps2"

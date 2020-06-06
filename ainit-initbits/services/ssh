@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
+. /mss/init/bin/funcs
 
 case "$1" in
  start)

@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/initbits/bin/apathy-init-funcs
+. /mss/init/bin/funcs
 
 PIDFILE=/run/dnscrypt-proxy.pid
 DAEMON=/opt/dnscrypt-proxy/dnscrypt-proxy
