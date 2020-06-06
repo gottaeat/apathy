@@ -1,22 +1,16 @@
 #!/mss/bin/sh
 . /mss/init/bin/funcs
 
-DAEMON=/usr/sbin/gpm 
-DAEMONOPTS="-m /dev/input/mice -t imps2"
-
 case "$1" in
  start)
-  ainitmes "starting ${c_lcyan}gpm${c_reset}."
-   /usr/sbin/gpm -m /dev/input/mice -t imps2 >/dev/null 2>&1
+  ainitmes "${c_lcyan}(gpm)${c_reset}: starting."
+   gpm -m /dev/input/mice -t imps2 >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "stopping ${c_lcyan}gpm${c_reset}."
-   local pid="$(pidof gpm)"
-   if [ -z "$pid" ]
-    then failprompt; ainitmes "gpm is not running."; failprompt 
-    else kill -TERM "${pid}"; evalret
-   fi
+  ainitmes "${c_lcyan}(gpm)${c_reset}: stopping."
+   kill -TERM "$(pidof gpm)"
+   evalret
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

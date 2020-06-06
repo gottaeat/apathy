@@ -3,7 +3,7 @@
 
 case "$1" in
  start)
-  ainitmes "starting ${c_lcyan}transmission${c_reset}."
+  ainitmes "${c_lcyan}(transmission)${c_reset}: starting."
    su mss -c \
     'transmission-daemon \
      --allowed "127.0.0.1" \
@@ -19,7 +19,7 @@ case "$1" in
   evalret
  ;;
  stop)
-  ainitmes "stopping ${c_lcyan}transmission${c_reset}."
+  ainitmes "${c_lcyan}(transmission)${c_reset}: stopping."
    read transpid < /run/transmission.pid
    kill -TERM "$transpid"
   evalret

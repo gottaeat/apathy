@@ -3,12 +3,12 @@
 
 case "$1" in
  start)
-  ainitmes "starting ${c_lcyan}iptables${c_reset}."
+  ainitmes "${c_lcyan}(iptables)${c_reset}: starting."
    . /mss/init/config/iptables.conf
   evalret
  ;;
  lock)
-  ainitmes "${c_lcyan}locking${c_reset} system ${c_lcyan}iptables${c_reset}."
+  ainitmes "${c_lcyan}(iptables)${c_reset}: locking."
    iptables --policy INPUT   DROP     &&
    iptables --policy OUTPUT  DROP     &&
    iptables --policy FORWARD DROP     &&
@@ -21,7 +21,7 @@ case "$1" in
   evalret
  ;;
  clear|stop)
-  ainitmes "${c_lcyan}clearing${c_reset} system ${c_lcyan}iptables${c_reset}."
+  ainitmes "${c_lcyan}(iptables)${c_reset}: clearing."
    iptables --policy INPUT   ACCEPT
    iptables --policy OUTPUT  ACCEPT
    iptables --policy FORWARD ACCEPT

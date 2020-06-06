@@ -7,7 +7,7 @@ USER=root
 
 case "$1" in
  start)
-  ainitmes "starting ${c_lcyan}dnscrypt-proxy${c_reset}."
+  ainitmes "${c_lcyan}(dnscrypt-proxy)${c_reset}: starting."
    cp /etc/resolv.conf.dnscrypt /etc/resolv.conf
 
    start-stop-daemon --start --quiet -b -m \
@@ -18,7 +18,7 @@ case "$1" in
   evalret
  ;;
  stop)
-  ainitmes "stopping ${c_lcyan}dnscrypt-proxy${c_reset}."
+  ainitmes "${c_lcyan}(dnscrypt-proxy)${c_reset}: stopping."
 
   case "$(tail -1 /etc/resolv.conf)" in
    *edns0*) cp /etc/resolv.conf.quad /etc/resolv.conf ;;

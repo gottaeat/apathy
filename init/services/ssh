@@ -3,17 +3,17 @@
 
 case "$1" in
  start)
-  ainitmes "starting the ${c_lcyan}ssh${c_reset} daemon."
+  ainitmes "${c_lcyan}(ssh)${c_reset}: starting."
    /usr/bin/sshd >/dev/null 2>&1
   evalret
  ;;
  stop)
-  ainitmes "stopping the ${c_lcyan}ssh${c_reset} daemon"
+  ainitmes "${c_lcyan}(ssh)${c_reset}: stopping."
    read sshdpgid < /run/sshd.pid
    kill -TERM ${sshdpgid}
   evalret
 
-  ainitmes "terminating the ${c_lcyan}existing ssh${c_reset} sessions."
+  ainitmes "${c_lcyan}(ssh)${c_reset}: terminating existing sessions."
    for pid in $(pgrep sshd); do kill -TERM "$pid"; done
   evalret
  ;;
