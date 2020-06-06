@@ -134,16 +134,16 @@ goingdown(){
 #$sdir/ssh		stop
  $sdir/network		stop
 
+ ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
+  ip link set lo down >/dev/null 2>&1
+ evalret
+
  ainitmes "saving ${c_lcyan}alsa volume states${c_reset}."
   alsactl store   >/dev/null 2>&1
  evalret
 
  ainitmes "saving the ${c_lcyan}random seed${c_reset}."
   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
- evalret
-
- ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
-  ip link set lo down >/dev/null 2>&1
  evalret
 
  ainitmes "terminating ${c_lcyan}remaining processes${c_reset}."
@@ -155,8 +155,12 @@ goingdown(){
  evalret
 
  ainitmes "unmounting all ${c_lcyan}mounted devices${c_reset}."
-  umount -rat nosysfs,noproc,nodevtmpfs,notmpfs && sync
+  umount -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
  evalret
+#  umountexit2="${?}"
+#  [ "${umountexit2}" -eq "32" ] && [ -f "/tmp/stripper-ran.tmp" ] \
+#   && exval="0" || exval="${umountexit2}"
+#  return "${exval}"; evalret
 }
 
 poweroffboi(){ goingdown && halt -p;}
