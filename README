@@ -43,35 +43,35 @@ simplified list of major components
 simplified repository tree
 ==========================
  .
- ├─ init ────────────────────────> home brewed init system written in posix
- │                                 shell, using sinit with static bins from
- │                                 ubase and sbase.
- ├─ utils ───────────────────────> many small utilities used in apathy, written
- │                                 in posix shell.
+ ├─ init ───────────────────────> home brewed init system written in posix
+ │                                shell, using sinit with static bins from
+ │                                ubase and sbase.
+ ├─ utils ──────────────────────> many small utilities used in apathy, written
+ │                                in posix shell.
  ├─ directories
- │  ├─ personal ─────────────────> personal configuration files.
- │  └─ system ───────────────────> base system configuration files that goes
- │                                 under /etc and /usr. 
+ │  ├─ personal ────────────────> personal configuration files.
+ │  └─ system ──────────────────> base system configuration files that goes
+ │                                under /etc and /usr. 
  ├── misc
  │   ├─ ainit-sysv
- │   │   ├─ ainit-sysv-mk-i ─────> a posixified version of lfs-bootscripts,
- │   │   │                         used when the system was called mssLinux.
- │   │   └─ ainit-sysv-mk-ii ────> first from-scratch init system, using gnu
- │   │                             coreutils and sysvinit.
- │   └─ g3258-memorial ──────────> notes and details saved from my old system
- │                                 where i built almost everything on.
+ │   │  ├─ ainit-sysv-mk-i ─────> a posixified version of lfs-bootscripts,
+ │   │  │                         used when the system was called mssLinux.
+ │   │  └─ ainit-sysv-mk-ii ────> first from-scratch init system, using gnu
+ │   │                            coreutils and sysvinit.
+ │   └─ g3258-memorial ─────────> notes and details saved from my old system
+ │                                where i built almost everything on.
  └─── pkg-management
-     ├─ packages.md ─────────────> a formatted list of all installed, removed 
-     │                             and ondemand packages with extra notes about
-     │                             the installation/removal process.
-     ├─ raw-packages.txt ────────> list of all installed programs in plain
-     │                             unformatted text.
-     ├─ installation-details ────> directory listings of installed programs.
-     ├─ removal-details ─────────> directory listings of removed programs.
-     ├─ build-configs ───────────> custom home-brewed build recipes for a
-     │   │                         variety of software.
-     │   └─ www-browser
-     │       └─ apathy-browser ──> unmaintained pale moon "fork" with custom
-     │                             branding and uaoverrides/prefs.js.
-     └─ patches ─────────────────> patches to be used with recipes under
-                                   build-configs/.
+      ├─ packages.md ───────────> a formatted list of all installed, removed 
+      │                           and ondemand packages with extra notes about
+      │                           the installation/removal process.
+      ├─ raw-packages.txt ──────> list of all installed programs in plain
+      │                           unformatted text.
+      ├─ installation-details ──> directory listings of installed programs.
+      ├─ removal-details ───────> directory listings of removed programs.
+      ├─ build-configs ─────────> custom home-brewed build recipes for a
+      │  │                        variety of software.
+      │  └─ www-browser
+      │     └─ apathy-browser ──> unmaintained pale moon "fork" with custom
+      │                           branding and uaoverrides/prefs.js.
+      └─ patches ───────────────> patches to be used with recipes under
+                                  build-configs/.
