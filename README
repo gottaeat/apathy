@@ -43,8 +43,9 @@ simplified list of major components
 simplified repository tree
 ==========================
  .
- ├─ ainit-initbits ──────────────> my init system written in posix shell, using
- │                                 sinit+sbase+ubase.
+ ├─ init ────────────────────────> home brewed init system written in posix
+ │                                 shell, using sinit with static bins from
+ │                                 ubase and sbase.
  ├─ apathy-utils ────────────────> many small utilities used in apathy, written
  │                                 in posix shell.
  ├─ directories
