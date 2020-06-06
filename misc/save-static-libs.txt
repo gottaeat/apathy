@@ -1,0 +1,1 @@
+libc.a libcrypt.a libdl.a libelf.a libm.a libpthread.a libresolv.a librt.a libstdc++.a libstdc++fs.a libsupc++.a libutil.a liby.a 
