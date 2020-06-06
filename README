@@ -34,7 +34,7 @@ simplified list of major components
  > core userland
    - util-linux 2.35  - coreutils 8.32     - busybox 1.31.1
    - sysklogd 1.5.1   - sinit 1.1          - eudev 3.2.9
-   - yash 2.49
+   - yash 2.50
 
  > tls
    - libressl 3.2.0   - gnutls-3.6.13      - nettle-3.5.1

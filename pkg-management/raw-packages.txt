@@ -312,5 +312,5 @@ util-linux-2.35
 vim-8.2.0116
 xml-parser-2.44
 xz-5.2.4
-yash-2.49
+yash-2.50
 zlib-1.2.11
