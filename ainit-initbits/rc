@@ -19,14 +19,14 @@ initboi(){
  ainitmes "mounting ${c_lcyan}pseudo${c_reset} filesystems."
   ainit_mount nosuid,noexec,nodev    proc     proc /proc &&
   ainit_mount nosuid,noexec,nodev    sysfs    sys  /sys  &&
-  ainit_mount mode=0755,nosuid,nodev tmpfs    run  /run  &&
+  ainit_mount defaults               tmpfs    run  /run  &&
   ainit_mount mode=0755,nosuid       devtmpfs dev  /dev  &&
 
   mkdir -p   /run/lock /run/shm /dev/pts &&
   chmod 1777 /run/lock /run/shm          &&
   ln    -sfn /run/shm  /dev/shm          &&
 
-  ainit_mount mode=0620,gid=5,nosuid,noexec devpts devpts /dev/pts
+  ainit_mount gid=5,mode=620 devpts devpts /dev/pts
  evalret
 
  ainitmes "setting ${c_lcyan}standard streams${c_reset}."
