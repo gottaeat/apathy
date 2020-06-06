@@ -46,7 +46,7 @@ simplified repository tree
  ├─ init ────────────────────────> home brewed init system written in posix
  │                                 shell, using sinit with static bins from
  │                                 ubase and sbase.
- ├─ apathy-utils ────────────────> many small utilities used in apathy, written
+ ├─ utils ───────────────────────> many small utilities used in apathy, written
  │                                 in posix shell.
  ├─ directories
  │  ├─ personal ─────────────────> personal configuration files.
