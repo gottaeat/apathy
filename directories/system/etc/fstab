@@ -1,19 +1,9 @@
 #[sda1][ext4][apathy-musl]
 /dev/sda1  /                  ext4  defaults                  0  1
-
 #[sda2][swap][apathy swap]
-/dev/sda2  swap               swap  pri=100                   0  2
-
+/dev/sda2  swap               swap  pri=100                   0  0
 #[sda3][ext4][stuff storage]
-/dev/sda3  /mnt/mss/stuff     ext4  rw,relatime,data=ordered  0  2
+/dev/sda3  /mnt/mss/stuff     ext4  rw,relatime,data=ordered  0  1
 
-## mount home
-/mnt/mss/stuff/techy-bits/local-backup  /home/mss  auto  defaults,nofail,nobootwait,bind  0  2
-
-## virtfs+tmpfs
-proc      /proc     proc      nosuid,noexec,nodev      0  0
-sysfs     /sys      sysfs     nosuid,noexec,nodev      0  0
-devpts    /dev/pts  devpts    gid=5,mode=620           0  0
-tmpfs     /run      tmpfs     defaults                 0  0
-devtmpfs  /dev      devtmpfs  mode=0755,nosuid         0  0
-tmpfs     /mss/ram  tmpfs     nodev,nosuid,size=512M   0  0 
+#mount home, since i need it and all
+/mnt/mss/stuff/techy-bits/local-backup  /home/mss  auto  defaults,nofail,nobootwait,bind  0  0
