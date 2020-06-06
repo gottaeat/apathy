@@ -101,10 +101,11 @@ initboi(){
  evalret
 
  ainit_nc
+ ainitmes "${c_blue}services${c_reset}:"; ainit_nc
 
  $sdir/gpm		start
  $sdir/iptables		start
- $sdir/network		start
+ $sdir/network		start wlan0 solitude
  $sdir/mpd		start
  $sdir/dnscrypt-proxy	start
 #$sdir/transmission	start
@@ -123,8 +124,8 @@ initboi(){
  dateafter=$(date +%s) timespent=$(($dateafter - $datebefore))
 
  ainit_nc
- ainitmes "${c_lcyan}init${c_reset}: ${dmesgtime}s"; ainit_nc
- ainitmes "${c_lcyan}rc  ${c_reset}: ${timespent}s"; ainit_nc
+ ainitmes "${c_blue}init${c_reset}: ${dmesgtime}s"; ainit_nc
+ ainitmes "${c_blue}rc  ${c_reset}: ${timespent}s"; ainit_nc
  ainit_nc
 }
 
@@ -132,7 +133,7 @@ goingdown(){
  stty onlcr; banner
 
 #$sdir/ssh		stop
- $sdir/network		stop
+ $sdir/network		stop wlan0
 
  ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
   ip link set lo down >/dev/null 2>&1
@@ -157,10 +158,6 @@ goingdown(){
  ainitmes "unmounting all ${c_lcyan}mounted devices${c_reset}."
   umount -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
  evalret
-#  umountexit2="${?}"
-#  [ "${umountexit2}" -eq "32" ] && [ -f "/tmp/stripper-ran.tmp" ] \
-#   && exval="0" || exval="${umountexit2}"
-#  return "${exval}"; evalret
 }
 
 poweroffboi(){ goingdown && halt -p;}
