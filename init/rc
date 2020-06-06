@@ -11,9 +11,6 @@ dmesg --console-off
 
 # b1 >> funcs
 initboi(){
-  dmesgtime=$(dmesg | awk '/Run \/sbin\/init/ {sub(/\]/,""); print $2}')
- datebefore=$(date +%s)
-
  ctrlaltdel -s; banner
 
  ainitmes "mounting ${c_lcyan}pseudo${c_reset} filesystems."
@@ -121,11 +118,6 @@ initboi(){
                  /mss/init/bin/getty   \
                  /dev/tty3 linux' &>/dev/null &
 
- dateafter=$(date +%s) timespent=$(($dateafter - $datebefore))
-
- ainit_nc
- ainitmes "${c_blue}init${c_reset}: ${dmesgtime}s"; ainit_nc
- ainitmes "${c_blue}rc  ${c_reset}: ${timespent}s"; ainit_nc
  ainit_nc
 }
 

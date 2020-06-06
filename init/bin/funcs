@@ -43,7 +43,7 @@ banner(){
 
  ainit_nc; ainit_nc
  ainitmes "${c_blue}apathy ${c_red}musl ${c_lcyan}1.2 - ${datefmt}"; ainit_nc
- ainit_nc
+ ainit_nc; ainit_nc
 }
 
 if [ "$(id -u)" -ne 0 ]; then
