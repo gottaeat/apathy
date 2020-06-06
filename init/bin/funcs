@@ -25,13 +25,8 @@ succprompt(){ printf "${cur_zero}${pbefore}${s_succ}\n";}
 evalret(){
  if [ ${?} -eq 0 ]
   then succprompt
-  else
-   failprompt
-   ainitmes "service exited with ${exitval}.";ainit_nc
-   ainitmes "dropping to a root shell.";      ainit_nc
-   ainit_nc
-   /bin/sh
-  fi
+  else failprompt; ainitmes "service exited with ${exitval}."; ainit_nc
+ fi
 }
 
 ainit_mount(){
@@ -48,7 +43,7 @@ banner(){
 
  ainit_nc; ainit_nc
  ainitmes "${c_blue}apathy ${c_red}musl ${c_lcyan}1.2 - ${datefmt}"; ainit_nc
- ainit_nc; ainit_nc
+ ainit_nc
 }
 
 if [ "$(id -u)" -ne 0 ]; then
