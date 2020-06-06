@@ -79,7 +79,7 @@
 [d] alpine	>> libgcrypt-1.8.5
 [d] alpine	>> libksba-1.3.5
 [d] alpine	>> pinentry-1.1.0		--> tty only
-[d] alpine	>> gnutls-3.6.13		--> no --disable-openssl-compatibility
+[d] self	>> gnutls-3.6.14
 [d] alpine	>>> libtasn1-4.15
 [d] alpine	>>> libunistring-0.9.10
 [d] alpine	>>> nettle-3.5.1		--> no --disable-openssl
