@@ -27,12 +27,11 @@ evalret(){
   then succprompt
   else
    failprompt
-   ainitmes "service exited with ${exitval}.\n"
-   ainitmes "shall we continue? (y/n): "
-
-   read userinput
-   case ${userinput} in y|Y|yes)  return 0;; *) /bin/sh;; esac
- fi
+   ainitmes "service exited with ${exitval}.";ainit_nc
+   ainitmes "dropping to a root shell.";      ainit_nc
+   ainit_nc
+   /bin/sh
+  fi
 }
 
 ainit_mount(){
