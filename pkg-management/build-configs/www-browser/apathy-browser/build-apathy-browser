@@ -35,7 +35,7 @@
 export               CHOST="x86_64-apathy-linux-musl"
 export                  CC="${CHOST}-gcc"
 export                 CXX="${CHOST}-g++"
-export              CFLAGS="-march=native -mtune=native -O2 -Wno-format-overflow"
+export              CFLAGS="-march=native -mtune=native -O2 -w"
 export            CXXFLAGS="${CFLAGS}"
 export             LDFLAGS="-Wl,-rpath=${pmappdir}"
 
