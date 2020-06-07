@@ -18,7 +18,7 @@ patchdir="${repodir}/patches"
   logdir="/mss/work/logs"
 redirect="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
-confname="5.7-gcc-bmq-uksm-zstd-o2-ohgod-graysky2-20200513_192154.config"
+confname="5.7-gcc-bfq-uksm-zstd-o3-ohgod-graysky2-20200607_200912.config"
  useconf="${confdir}/5.7/${confname}"
 localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
 
@@ -26,7 +26,7 @@ localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVE
 
 # c >> functions
 apply_alfredchen(){
- _alpatches=""
+ _alpatches="0001-bmq-v5.7.patch"
 
  for pp in $_alpatches
   do
@@ -38,6 +38,7 @@ apply_alfredchen(){
 
 apply_misc(){
  _miscpatches="0001-cpu-family-specific-optimization.patch
+               0002-make-O3-always-available.patch
                0003-ohgodohfuck-panic.patch"
 
  for pp in $_miscpatches
@@ -110,8 +111,8 @@ evalretkill
 
 # d5 >> apply patches
 aprint_nc
-#aprint "applying the alfredchen patches."
-#apply_alfredchen
+aprint "applying the alfredchen patches."
+apply_alfredchen
 aprint "applying the uksm patches."
 apply_uksm
 aprint "applying the zstd patches."
