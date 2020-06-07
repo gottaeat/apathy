@@ -5,31 +5,31 @@
 . /mss/bin/apathy-funcs
 
 # a >> check if variables are set
-[ -z $1 ] && aprint_fail "no uxp tarball specified as \$1, exiting."       && exit 1
-[ -z $2 ] && aprint_fail "no pale moon tarball specified as \$2, exiting." && exit 1
+[ -z $1 ] && aprint_fail "specify uxp tarball as \$1."       && exit 1
+[ -z $2 ] && aprint_fail "specify pale moon tarball as \$2." && exit 1
 
 # b >> script vars
-      logdir="/mss/work/logs"
-    saucedir="/mss/work/sauces"
+     logdir="/mss/work/logs"
+   saucedir="/mss/work/sauces"
 
-     repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
-    filesdir="${repodir}/files"
-    branding="${repodir}/branding"
+    repodir="/mss/repo/pkg-management/build-configs/www-browser/apathy-browser"
+   filesdir="${repodir}/files"
+   branding="${repodir}/branding"
 
-     uxpfull="$(echo ${1}       | sed 's/\.tar//;s/\.[gx]z//')"
-      pmfull="$(echo ${2}       | sed 's/\.tar//;s/\.[gx]z//')"
-      uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
-       pmver="$(echo ${pmfull}  | sed 's/Pale-Moon-//;s/_Release//')"
+    uxpfull="$(echo ${1}       | sed 's/\.tar//;s/\.[gx]z//')"
+     pmfull="$(echo ${2}       | sed 's/\.tar//;s/\.[gx]z//')"
+     uxpver="$(echo ${uxpfull} | sed 's/UXP-RELBASE_//')"
+      pmver="$(echo ${pmfull}  | sed 's/Pale-Moon-//;s/_Release//')"
 
-      srcdir="${PWD}/${pmfull}"
-     instdir="${srcdir}/KEK"
-    pmappdir="/usr/lib/apathy-browser-${pmver}"
+     srcdir="${PWD}/${pmfull}"
+    instdir="${srcdir}/KEK"
+   pmappdir="/usr/lib/apathy-browser-${pmver}"
 
- redirect_to="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
+rdr="${logdir}"/$(date "+%Y%m%d_%H%M%S")-apathy-browser-"${pmver}".log
 
 # c >> check if specified tarballs actually exist
-[ ! -f "${saucedir}/${1}" ] && aprint_fail "${1} does not exist in saucedir, exiting" && exit 1
-[ ! -f "${saucedir}/${2}" ] && aprint_fail "${2} does not exist in saucedir, exiting" && exit 1
+[ ! -f "${saucedir}/${1}" ] && aprint_fail "${1} does not exist." && exit 1
+[ ! -f "${saucedir}/${2}" ] && aprint_fail "${2} does not exist." && exit 1
 
 # d >> build vars
 export               CHOST="x86_64-apathy-linux-musl"
@@ -55,21 +55,21 @@ aprint_nc
 
 # f1 >> extract the pale moon code
 aprint_ret "extracting ${cl_grn}${2}${c_res}."
- tar xf "${saucedir}/${2}" > "$redirect_to" 2>&1
+ tar xf "${saucedir}/${2}" > "$rdr" 2>&1
 evalretkill
 
 # f2 >> extract the uxp code
 aprint_ret "extracting ${cl_grn}${1}${c_res}."
  prevpwd="$PWD"
  cd "${srcdir}"
- tar xf "${saucedir}/${1}" >> "$redirect_to" 2>&1
+ tar xf "${saucedir}/${1}" >> "$rdr" 2>&1
 evalretkill
 
 # f3 >> move uxp to platform
-aprint_ret "moving the ${cl_grn}uxp code${c_res} to ${cl_grn}platform/${c_res}."
+aprint_ret "moving ${cl_grn}uxp${c_res} to ${cl_grn}platform/${c_res}."
  cd "$prevpwd"
- rm -rfv "${srcdir}/platform"                        >> "$redirect_to" 2>&1
- mv -v   "${srcdir}/${uxpfull}" "${srcdir}/platform" >> "$redirect_to" 2>&1
+ rm -rfv "${srcdir}/platform"                        >> "$rdr" 2>&1
+ mv -v   "${srcdir}/${uxpfull}" "${srcdir}/platform" >> "$rdr" 2>&1
 evalretkill
 
 # g1 >> cd to work
@@ -79,22 +79,33 @@ evalretkill
 
 # g2 >> copy mozconfig
 aprint_ret "copying ${cl_grn}mozconfig${c_res}."
- cp -v "${filesdir}"/mozconfig "${srcdir}"/mozconfig >> "$redirect_to" 2>&1
+ cp -v "${filesdir}"/mozconfig "${srcdir}"/mozconfig >> "$rdr" 2>&1
 evalretkill
 
 # g3 >> apply branding
 aprint_ret "copying the ${cl_grn}apathy-browser branding${c_res} files."
- cp -v "${branding}"/bookmarks.html.in        "${srcdir}"/palemoon/locales/generic/profile/           >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/aboutDialog.xul          "${srcdir}"/palemoon/base/content/                      >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/browserconfig.properties "${srcdir}"/palemoon/branding/shared/locales/           >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/preferences.inc          "${srcdir}"/palemoon/branding/shared/pref/              >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/uaoverrides.inc          "${srcdir}"/palemoon/branding/shared/pref/              >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/branding.nsi             "${srcdir}"/palemoon/branding/unofficial/               >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/configure.sh             "${srcdir}"/palemoon/branding/unofficial/               >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/brand.dtd                "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/brand.properties         "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/palemoon-branding.js     "${srcdir}"/palemoon/branding/unofficial/pref/          >> "$redirect_to" 2>&1 &&
- cp -v "${branding}"/about-background.png     "${srcdir}"/palemoon/branding/unofficial/content/       >> "$redirect_to" 2>&1
+ cp -v "${branding}"/bookmarks.html.in        \
+ "${srcdir}"/palemoon/locales/generic/profile/           >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/aboutDialog.xul          \
+ "${srcdir}"/palemoon/base/content/                      >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/browserconfig.properties \
+ "${srcdir}"/palemoon/branding/shared/locales/           >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/preferences.inc          \
+ "${srcdir}"/palemoon/branding/shared/pref/              >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/uaoverrides.inc          \
+ "${srcdir}"/palemoon/branding/shared/pref/              >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/branding.nsi             \
+ "${srcdir}"/palemoon/branding/unofficial/               >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/configure.sh             \
+ "${srcdir}"/palemoon/branding/unofficial/               >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/brand.dtd                \
+ "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/brand.properties         \
+ "${srcdir}"/palemoon/branding/unofficial/locales/en-US/ >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/palemoon-branding.js     \
+ "${srcdir}"/palemoon/branding/unofficial/pref/          >> "$rdr" 2>&1 &&
+ cp -v "${branding}"/about-background.png     \
+ "${srcdir}"/palemoon/branding/unofficial/content/       >> "$rdr" 2>&1
 evalretkill
 
 # h1 >> check everything and ask to run mach
@@ -105,12 +116,12 @@ read answerbuild
 case "$answerbuild" in
  y|Y|yes)
   aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
-  aprint "redirecting output to ${cl_grn}${redirect_to}${c_res}."
+  aprint "redirecting output to ${cl_grn}${rdr}${c_res}."
   aprint_ret "running mach."
   datebefore=$(date +%s)
 
    /bin/busybox time \
-    ./mach build >> "$redirect_to" 2>&1
+    ./mach build >> "$rdr" 2>&1
   evalretkill
 
   dateafter=$(date +%s)
@@ -138,7 +149,7 @@ read answerinst
 case "$answerinst" in
  y|Y|yes)
   aprint_ret "installing to ${cl_grn}${instdir}${c_res}."
-   DESTDIR="${instdir}" ./mach install >> "$redirect_to" 2>&1 
+   DESTDIR="${instdir}" ./mach install >> "$rdr" 2>&1 
   evalret
 
   aprint_ret "removing unnecessary directories."
