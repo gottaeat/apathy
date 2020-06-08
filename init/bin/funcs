@@ -14,6 +14,7 @@ cur_zero="\\033[0G"
   s_fail="${c_red}f${c_reset}"
   s_warn="${c_blue}w${c_reset}"
   s_succ="${c_green}s${c_reset}"
+   s_arm="${c_lcyan}└${c_reset}"
 
 ainit_nc(){   printf "\n";}
 ainitmes(){   printf "${sbefore}${@}";}
@@ -21,11 +22,19 @@ ainitusage(){ printf "${sbefore}usage: ${@}.\n";}
 failprompt(){ printf "${cur_zero}${pbefore}${s_fail}\n";}
 warnprompt(){ printf "${cur_zero}${pbefore}${s_warn}\n";}
 succprompt(){ printf "${cur_zero}${pbefore}${s_succ}\n";}
+armprompt(){  printf "${cur_zero}${pbefore}${s_arm}\n";}
+
 
 evalret(){
- if [ ${?} -eq 0 ]
+ local exitval="${?}"
+
+ if [ ${exitval} -eq 0 ]
   then succprompt
-  else failprompt; ainitmes "service exited with ${exitval}."; ainit_nc
+  else
+   failprompt
+   ainitmes "${c_red}service exited with ${c_green}${exitval}${c_reset}."
+   armprompt
+   sleep 2
  fi
 }
 
