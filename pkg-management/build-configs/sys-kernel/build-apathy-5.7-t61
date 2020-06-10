@@ -1,156 +1,87 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.7 kernels, version 1, for thinkpad t61
+# build script for 5.7 kernels, version 2, for thinkpad t61.
 
 . /mss/bin/apathy-funcs
 
 # a >> check if variables are set
-if [ -z ${1} ]; then aprint_fail "no looncucks version specified, exiting."; exit 1; fi
+[ -z ${1} ] && aprint_fail "specify a linux tarball with \$1." && exit 1
 
-# b1 >> set script vars
-saucedir="/mss/work/sauces"
-  kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//;s/.tar.gz//')
- workdir="/mss/work/table"
- makedir="${workdir}/linux-${kerver}"
- repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
-patchdir="${repodir}/patches"
- confdir="${repodir}/configs"
-  logdir="/mss/work/logs"
-redirect="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
+# b >> set script vars
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+  repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
+ saucedir="/mss/work/sauces"
+  workdir="/mss/work/table"
+   logdir="/mss/work/logs"
 
-confname="5.7-gcc-bfq-uksm-zstd-o3-ohgod-graysky2-20200607_200912.config"
- useconf="${confdir}/5.7/${confname}"
-localver="5.7-$(grep 'CONFIG_LOCALVERSION=' "${useconf}" | sed 's/CONFIG_LOCALVERSION="-//;s/\"//g')"
+   kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//;s/.tar.gz//')
+  makedir="${workdir}/linux-${kerver}"
+ patchdir="${repodir}/patches"
+  confdir="${repodir}/configs"
+      rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- cctouse="x86_64-apathy-linux-musl-gcc"
+ confname="5.7-gcc-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200610_220739.config"
+  useconf="${confdir}/5.7/${confname}"
+ localver="5.7$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+                    print}' ${useconf})"
 
-# c >> functions
-apply_alfredchen(){
- _alpatches="0001-bmq-v5.7.patch"
+       CC="x86_64-apathy-linux-musl-gcc"
 
- for pp in $_alpatches
-  do
-   aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.7/alfredchen/${pp} >> ${redirect} 2>&1
-   evalretkill
-  done
-}
-
-apply_misc(){
- _miscpatches="0001-cpu-family-specific-optimization.patch
-               0002-make-O3-always-available.patch
-               0003-ohgodohfuck-panic.patch"
-
- for pp in $_miscpatches
-  do
-   aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.7/misc/${pp} >> ${redirect} 2>&1
-   evalretkill
-  done
-}
-
-apply_uksm(){
- _uksmpatches="0001-uksm-5.7.patch"
-
- for pp in $_uksmpatches
-  do
-   aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.7/uksm/${pp} >> ${redirect} 2>&1
-   evalretkill
-  done
-}
-
-apply_zstd(){
- _zstdpatches="0001-lib-prepare-zstd-for-preboot-environment.patch
-               0002-lib-prepare-xxhash-for-preboot-environment.patch
-               0003-lib-add-zstd-support-to-decompress.patch
-               0004-init-add-support-for-zstd-compressed-kernel.patch
-               0005-usr-add-support-for-zstd-compressed-initramfs.patch
-               0006-x86-bump-ZO_z_extra_bytes-margin-for-zstd.patch
-               0007-x86-Add-support-for-ZSTD-compressed-kernel.patch"
-
- for pp in $_zstdpatches
-  do
-   aprint_patch "${pp}"
-   patch -p1 < "${patchdir}"/apathy/5.7/zstd/${pp} >> ${redirect} 2>&1
-   evalretkill
-  done
-}
-
-# d0 >> print some shit
+# c1 >> print details
 aprint_nc
+lsdetail "release"  "${kerver}"
 lsdetail "localver" "${localver}"
 lsdetail "confname" "${confname}"
 
-# d1 >> clear old log
-aprint_nc
-aprint_ret "cleaning the old log, if it exists."
- printf '' > ${redirect}
-evalret
-
-# d2 >> unpack the kernel
+# c2 >> unpack the kernel
 if [ ! -f "${saucedir}/${1}" ]
- then aprint_fail "kernel sauce does not exist in saucedir, exiting."; exit 1;
+ then aprint_fail "tarball does not exist."; exit 1
+ else
+  aprint_nc; aprint_ret "unpacking the kernel sauce."
+   tar xf ${saucedir}/${1} --directory="${workdir}" >> "${rdr}" 2>&1
+  evalretkill
 fi
 
-aprint_ret "unpacking the kernel sauce."
- tar xf ${saucedir}/${1} --directory="${workdir}" >> ${redirect} 2>&1
-evalretkill
-cd "${makedir}"
-
-# d3 >> run mrproper
+# c3 >> run mrproper
 aprint_ret "running mrproper"
- make CC="$cctouse" \
-  mrproper >> ${redirect} 2>&1
+ cd "${makedir}"; make CC="$CC" mrproper >> "${rdr}" 2>&1
 evalretkill
 
-# d4 >> copy config
+# c4 >> copy config
 aprint_ret "copying the kernel config stated above."
- cp -v "${useconf}" "${makedir}"/.config >> ${redirect} 2>&1
+ cp -v "${useconf}" "${makedir}"/.config >> "${rdr}" 2>&1
 evalretkill
 
-# d5 >> apply patches
+# d1 >> apply patches
 aprint_nc
-aprint "applying the alfredchen patches."
-apply_alfredchen
-aprint "applying the uksm patches."
-apply_uksm
-aprint "applying the zstd patches."
-apply_zstd
-aprint "applying the misc patches."
-apply_misc
+for apatch in ck misc uksm zstd; do
+ aprint_ret "applying ${cl_grn}${apatch}${c_res} patches."
+  for pp in "${patchdir}"/apathy/5.7/"${apatch}"/*; do
+   patch -p1 < "${pp}" >> "${rdr}" 2>&1
+  done
+ evalretkill
+done
 
-# d6 >> run menuconfig
-aprint_nc
-aprint_ask "run menuconfig for manual config? (y/n): "
+# d2 >> run menuconfig
+aprint_nc; aprint_ask "run menuconfig for manual config? (y/n): "
 read answermenuconf
 
-if [ "$answermenuconf" != "${answermenuconf#[Yy]}" ]
- then
-  aprint "running menuconfig."
-  make CC="$cctouse" \
-   menuconfig
- else
-  aprint "not running menuconfig."
-  aprint_nc
-fi
+case "$answermenuconf" in
+ yes|Y|y) aprint "running menuconfig.";     make CC="$CC" menuconfig ;;
+ *)       aprint "not running menuconfig."; aprint_nc                ;;
+esac
 
-# d7 >> run make
+# d3 >> run make
 aprint_ask "run make? (y/n): "
 read answerbuildkern
 
-if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
- then
+case "$answerbuildkern" in
+ yes|Y|y)
   aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
-  aprint "redirecting output to ${cl_grn}${redirect}${c_res}."
-  aprint_ret "running make."
+  aprint "redirecting output to ${cl_grn}${rdr}${c_res}."
   datebefore=$(date +%s)
 
-   /bin/busybox time     \
-    nice --adjustment=10 \
-    make CC="$cctouse"   \
-     -j2 >> ${redirect} 2>&1
-
+  aprint_ret "running make."; make CC="$CC" -j2 >> "${rdr}" 2>&1
   evalretkill
 
   dateafter=$(date +%s)
@@ -161,92 +92,64 @@ if [ "$answerbuildkern" != "${answerbuildkern#[Yy]}" ]
               "$(echo "(${timespent}%3600)/60"    | bc)")
   
   aprint "build finished in ${cl_grn}${humantime}${c_res}."
+ ;;
+ *) aprint "not running make."; aprint_nc; exit 0 ;;
+esac
 
- else
-  aprint "not running make."
-  aprint_nc
-  exit 0
-fi
-
-# e1 >> install modules if they exist
-aprint_nc
-if [ -z $(grep "=m" .config) ]
- then
-  aprint "no modules found in config to install, skipping."
- else
-  aprint "found modules, installing them."
-
-   doas -- make CC="$cctouse" \
-    modules_install >> ${redirect} 2>&1
-
-  evalretkill
-  export modules=yes
-fi
-
-# e2 >> install kernel
-aprint_nc
-aprint_ask "install the built kernel? (y/n): "
+# e1 >> install kernel
+aprint_nc; aprint_ask "install the built kernel? (y/n): "
 read answerkinst
 
-if [ "$answerkinst" != "${answerkinst#[Yy]}" ]
- then
+case "${answerkinst}" in
+ yes|Y|y)
   aprint "installing the built kernel."
-   doas cp arch/x86/boot/bzImage /boot/vmlinuz    &&
-   doas cp System.map            /boot/System.map &&
-   doas cp .config               /boot/config
+   doas cp -v arch/x86/boot/bzImage /boot/vmlinuz    >> "${rdr}" 2>&1 &&
+   doas cp -v System.map            /boot/System.map >> "${rdr}" 2>&1 &&
+   doas cp -v .config               /boot/config     >> "${rdr}" 2>&1
 
   aprint_ret "running ${cl_grn}lilo${c_res}."
-   doas -- lilo >> ${redirect} 2>&1
+   doas -- lilo >> "${rdr}" 2>&1
   evalret
- else
-  aprint "not installing the built kernel."
-fi
+ ;;
+ *) aprint "not installing the built kernel." ;;
+esac
 
-# e3 >> package up the built kernel
-aprint_nc
-aprint_ask "package up the built kernel? (y/n): "
+# e2 >> package up the built kernel
+aprint_nc; aprint_ask "package up the built kernel? (y/n): "
 read answerpkgup
 
-if [ "$answerpkgup" != "${answerpkgup#[Yy]}" ]
- then
+case "${answerpkgup}" in
+ yes|Y|y)
   aprint_ret "packaging up the built kernel."
 
-  localver=$(grep 'CONFIG_LOCALVERSION=' ${makedir}/.config | sed 's/CONFIG_LOCALVERSION=//;s/\"//g')
-  pkgupname="${kerver}${localver}"
-  archivename="${pkgupname}-$(date +%s)"
-  storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+      localver="$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+                       print}' ${useconf})"
+   archivename="${kerver}${localver}-$(date +%s)"
 
   mkdir -p "${workdir}/pkgup/boot"
 
-  cp -iv ${makedir}/arch/x86/boot/bzImage "${workdir}/pkgup/boot/vmlinuz"    >> ${redirect} 2>&1
-  cp -iv ${makedir}/System.map            "${workdir}/pkgup/boot/System.map" >> ${redirect} 2>&1
-  cp -iv ${makedir}/.config               "${workdir}/pkgup/boot/config"     >> ${redirect} 2>&1
+  cp -iv ${makedir}/arch/x86/boot/bzImage \
+   "${workdir}/pkgup/boot/vmlinuz"    >> "${rdr}" 2>&1
+  cp -iv ${makedir}/System.map            \
+   "${workdir}/pkgup/boot/System.map" >> "${rdr}" 2>&1
+  cp -iv ${makedir}/.config               \
+   "${workdir}/pkgup/boot/config"     >> "${rdr}" 2>&1
   
-  if [ "${modules}" = "yes" ]
-   then
-    mkdir -p "${workdir}/pkgup/lib/modules"
-    cp -r /lib/modules/"${pkgupname}"     "${workdir}/pkgup/lib/modules}"
-  fi
-
   cd "${workdir}"
-  /mss/bin/pkgup "pkgup" "${storepkg}"/"${archivename}" >> ${redirect} 2>&1
+  /mss/bin/pkgup "pkgup" "${storepkg}"/"${archivename}" >> "${rdr}" 2>&1
   rm -rf "${workdir}/pkgup"
 
   evalret
- else
-  aprint "not running pkgup."
-fi
+ ;;
+ *) aprint "not running pkgup." ;;
+esac
 
-# d9 >> clean up ram.
-aprint_nc
-aprint_ask "clean up the workdir in ram? (y/n): "
+
+# f1 >> clean up ram.
+aprint_nc; aprint_ask "clean up the workdir in ram? (y/n): "
 read answerclean
 
-if [ "$answerclean" != "${answerclean#[Yy]}" ]
- then
-  aprint_ret "cleaning up the workdir."
-  rm -rf ${makedir}
-  evalret
- else
-  aprint "not cleaning up the workdir."
-fi
+case "${answerclean}" in
+ yes|Y|y) aprint_ret "cleaning up the workdir."; rm -rf ${makedir}; evalret ;;
+ *)       aprint "not cleaning up the workdir."                             ;;
+esac
