@@ -384,7 +384,7 @@
 [r] alpine	>> xcb-util-xrm-1.3
 [r] alpine	>> startup-notification-0.12
 
-[r] self	> i3blocks-1.4		--> PREFIX=/usr SYSCONFDIR=/etc LIBEXECDIR=/usr/lib VERSION="1.4-apathy"
+[r] self	> i3blocks-1.4
 [d] alpine	> samurai-1.1
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
@@ -395,11 +395,13 @@
 [d] self	> mawk-1.3.4-20200120
 [r] self	> star-1.6
 
-[o] self	> llvm-10.0.0
-[o] self	> clang-10.0.0
-[o] self	> rustc-1.43.1
-[o] self	> cbindgen-0.14.2
-[o] self	> nodejs-13.9.0
+[o] self	> go-1.14.1
+
+[d] self	> llvm-10.0.0
+[d] self	> clang-10.0.0
+[d] self	> rustc-1.43.1
+[d] self	> cbindgen-0.14.2
+[d] self	> nodejs-13.9.0
 
 [d] self	> firefox-68.9.0esr
 [d] self	>> gtk+-3.4.4

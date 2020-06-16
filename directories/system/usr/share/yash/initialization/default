@@ -1,66 +1,54 @@
 ## a >> vars
-# a1 >> colors
- c_res="\033[0;39m"
-cl_blk="\033[0;30m" cb_blk="\033[1;30m"
-cl_red="\033[0;31m" cb_red="\033[1;31m"
-cl_grn="\033[0;32m" cb_grn="\033[1;32m"
-cl_yel="\033[0;33m" cb_yel="\033[1;33m"
-cl_blu="\033[0;34m" cb_blu="\033[1;34m"
-cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
-cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
-cl_whi="\033[0;37m" cb_whi="\033[1;37m"
-
-# a2 >> path
+# a1 >> path
  mypath="/usr/sbin:/usr/bin:/sbin:/bin"
  mypath="$mypath:/mss/bin:/home/mss/execs"
-#mypath="$mypath:/opt/cataclysm-dda-0.e/bin"
-#mypath="$mypath:/opt/llvm-10.0.0/bin"
-#mypath="$mypath:/opt/node.j-13.9.0/bin"
-#mypath="$mypath:/opt/rustc-1.42.0/bin"
+ mypath="$mypath:/opt/llvm-10.0.0/bin"
+ mypath="$mypath:/opt/rustc-1.43.1/bin"
+ mypath="$mypath:/opt/cbindgen-0.14.2/bin"
+ mypath="$mypath:/opt/node.js-13.9.0/bin"
 export PATH="$mypath"
 
-# a3 >> ld_library_path
-#myldlibrarypath="/opt/i3/lib"
-#export LD_LIBRARY_PATH="$myldlibrarypath"
+# a2 >> library_path
+ mylibpath="/opt/llvm-10.0.0/lib"
+ mylibpath="$mylibpath:/opt/rustc-1.43.1/lib"
+export    LIBRARY_PATH="$mylibpath"
+export LD_LIBRARY_PATH="$LIBRARY_PATH"
 
-# a4 >> pkg_config_path
+# a3 >> pkg_config_path
  mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 export PKG_CONFIG_PATH="$mypkgconfigpath"
 
-# a5 >> mpd socket
+# a4 >> mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
 
-# a6 >> lang
+# a5 >> lang
 export LANG=
 export LC_ALL=en_US.utf8
 
-# a7 >> build related flags
-export MAKEFLAGS="-j 2"
+# a6 >> build related flags
 export    CFLAGS="-march=native -mtune=native"
 export  CXXFLAGS="${CFLAGS}"
-export     CHOST="x86_64-apathy-linux-musl"
+export MAKEFLAGS="-j 2"
+export      ARCH="x86_64"
+export     CHOST="${ARCH}-apathy-linux-musl"
 export    CBUILD="${CHOST}"
 export        CC="${CHOST}-gcc"
 export       CXX="${CHOST}-g++"
-export      ARCH="x86_64"
-export    abuild="--prefix=/usr --disable-nls --disable-static --build=${CBUILD} --host=${CHOST}"
  
-# a8 >> default programs
-export  EDITOR="/usr/bin/vim"
-export   PAGER="/usr/bin/less"
+# a7 >> default programs
+export   PAGER="less"
+export  EDITOR="vim"
 export GPG_TTY=$(tty)
 
-# a9 >> xdg
+# a8 >> xdg
 export   XDG_DATA_DIRS="/usr/share"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_DIRS="/etc/xdg"
 
-# a10 >> essential paths
-export INFOPATH="/usr/info"
+# a9 >> essential paths
+export  INPUTRC="/etc/inputrc"
 export  MANPATH="/usr/share/man"
 export INFOPATH="/usr/share/info"
-export  INPUTRC="/etc/inputrc"
-
 
 ## b >> yash settings
 # b1 >> history 
@@ -78,7 +66,7 @@ set --hist-space
 bindkey -av '\^L' clear-and-redraw-all
 
 # b4 >> set vi mode editor
-FCEDIT="/usr/bin/vim"
+FCEDIT="vim"
 
 # b5 >> prompts
 [ "$(id -u)" -eq 0 ] \
