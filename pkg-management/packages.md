@@ -116,9 +116,9 @@
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
 
 [d] self	> fontconfig-2.13.92
-[d] self	>> freetype-2.10.1
+[d] self	>> freetype-2.10.2
 [d] bmlfs	>>> libpng-1.6.37
-[d] self	>>> harfbuzz-2.6.4
+[d] self	>>> harfbuzz-2.6.7
 [d] self	>>>> glib-2.64.2
 [d] bmlfs	>>>>> pcre-8.43
 [d] bmlfs	>>>> icu-65.1
