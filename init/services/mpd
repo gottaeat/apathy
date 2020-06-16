@@ -13,7 +13,7 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping."
-   start-stop-daemon --stop --quiet --oknodo --pidfile "$PIDFILE" 
+   kill -TERM $(cat /run/mpd.pid)
   evalret
  ;;
  restart)
