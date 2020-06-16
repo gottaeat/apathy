@@ -196,7 +196,7 @@ xtrlock-2.11
 youtube-dl-2020.01.01
 compton-5.1
 libev-4.31
-ffmpeg-4.2.3
+ffmpeg-4.3.0
 lame-3.100
 openjpeg-2.3.1
 numlockx-1.2
