@@ -2,15 +2,13 @@
 # a1 >> path
  mypath="/usr/sbin:/usr/bin:/sbin:/bin"
  mypath="$mypath:/mss/bin:/home/mss/execs"
- mypath="$mypath:/opt/llvm-10.0.0/bin"
  mypath="$mypath:/opt/rustc-1.43.1/bin"
  mypath="$mypath:/opt/cbindgen-0.14.2/bin"
  mypath="$mypath:/opt/node.js-13.9.0/bin"
 export PATH="$mypath"
 
 # a2 >> library_path
- mylibpath="/opt/llvm-10.0.0/lib"
- mylibpath="$mylibpath:/opt/rustc-1.43.1/lib"
+ mylibpath="/opt/rustc-1.43.1/lib"
 export    LIBRARY_PATH="$mylibpath"
 export LD_LIBRARY_PATH="$LIBRARY_PATH"
 
