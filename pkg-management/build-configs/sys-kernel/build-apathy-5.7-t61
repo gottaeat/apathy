@@ -20,12 +20,33 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="5.7-gcc-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200619_070823.config"
+ confname="5.7-llvm-clang-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200619_085215.config"
   useconf="${confdir}/5.7/${confname}"
  localver="5.7$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
 
-       CC="x86_64-apathy-linux-musl-gcc"
+# c >> set make vars
+mymake(){
+ make                 \
+ CC=clang             \
+ LD=ld                \
+ AR=llvm-ar           \
+ AS=llvm-as           \
+ NM=llvm-nm           \
+\
+ HOSTCC=clang         \
+ HOSTCXX=clang++      \
+ HOSTAR=llvm-ar       \
+ HOSTLD=ld            \
+\
+ STRIP=llvm-strip     \
+ OBJCOPY=llvm-objcopy \
+ OBJDUMP=llvm-objdump \
+ OBJSIZE=llvm-size    \
+ READELF=llvm-readelf \
+\
+ -j2 "$@"
+}
 
 # c1 >> print details
 aprint_nc
@@ -44,7 +65,7 @@ fi
 
 # c3 >> run mrproper
 aprint_ret "running mrproper"
- cd "${makedir}"; make CC="$CC" mrproper >> "${rdr}" 2>&1
+ cd "${makedir}"; mymake mrproper >> "${rdr}" 2>&1
 evalretkill
 
 # c4 >> copy config
@@ -67,8 +88,8 @@ aprint_nc; aprint_ask "run menuconfig for manual config? (y/n): "
 read answermenuconf
 
 case "$answermenuconf" in
- yes|Y|y) aprint "running menuconfig.";     make CC="$CC" menuconfig ;;
- *)       aprint "not running menuconfig."; aprint_nc                ;;
+ yes|Y|y) aprint "running menuconfig.";     mymake menuconfig ;;
+ *)       aprint "not running menuconfig."; aprint_nc         ;;
 esac
 
 # d3 >> run make
@@ -81,7 +102,7 @@ case "$answerbuildkern" in
   aprint "redirecting output to ${cl_grn}${rdr}${c_res}."
   datebefore=$(date +%s)
 
-  aprint_ret "running make."; make CC="$CC" -j2 >> "${rdr}" 2>&1
+  aprint_ret "running make."; mymake >> "${rdr}" 2>&1
   evalretkill
 
   dateafter=$(date +%s)
