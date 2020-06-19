@@ -123,7 +123,7 @@ case "${answerpkgup}" in
   aprint_ret "packaging up the built kernel."
 
       localver="$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
-                       print}' ${useconf})"
+                       print}' ${makedir}/.config)"
    archivename="${kerver}${localver}-$(date +%s)"
 
   mkdir -p "${workdir}/pkgup/boot"
