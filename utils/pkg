@@ -63,17 +63,24 @@ stats(){
 
 pver(){
     init="sinit 1.1 (apathy)"
-     tls=$(openssl version | awk '{print tolower($0)}')
+    bbox="$(busybox | awk 'NR==1{print tolower($1),$2}')"
+    tlsa=$(openssl version | awk '{print tolower($0)}')
+    tlsb=$(gnutls-cli --version | awk 'NR==1 {sub(/-cli/,""); print}') 
     libc="musl $(ldd 2>&1 | awk '/Version/ {print $2}') ($(uname -m))"
- triplet=$(gcc -dumpmachine)
-   ccver=$(gcc -v 2>&1 | awk '/version / {sub(/version /,""); print}')
+    trpl=$(gcc -dumpmachine)
+     cca=$(gcc -v 2>&1 | awk '/version / {sub(/version | $/,""); print}')
+     ccb=$(clang --version | awk 'NR==1 {print $1,$2,$4}')
 
  aprint_nc
- aprint "${cb_red}init\t${cb_blu}:${c_res} ${init}"
- aprint "${cb_red}tls\t${cb_blu}:${c_res} ${tls}"
- aprint "${cb_red}libc\t${cb_blu}:${c_res} ${libc}"
- aprint "${cb_red}trpl\t${cb_blu}:${c_res} ${triplet}"
- aprint "${cb_red}cc\t${cb_blu}:${c_res} ${ccver}"
+ lsdetail "libc" "$libc"
+ lsdetail "cca"  "$cca"
+ lsdetail "ccb"  "$ccb"
+ lsdetail "trpl" "$trpl"
+ aprint_nc
+ lsdetail "init" "$init"
+ lsdetail "bbox" "$bbox"
+ lsdetail "tlsa" "$tlsa"
+ lsdetail "tlsb" "$tlsb"
  aprint_nc
 }
 
