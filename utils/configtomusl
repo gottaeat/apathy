@@ -1,7 +1,9 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-muslcfgdir="/mss/repo/apathy-utils/muslcfg"
+case $1 in y|Y|yes) answerreplace=y;; esac
+
+muslcfgdir="/mss/bin/muslcfg"
 
 cguess="$(find . -type f -name config\.guess)"
   csub="$(find . -type f -name config\.sub)"
@@ -15,8 +17,10 @@ aprint "found these ${cl_grn}config.sub${c_res} files: "
 for sub in $csub; do aprint_nm "$sub"; done
 
 aprint_nc
-aprint_ask "shall we replace? (y/n): "
-read answerreplace
+if [ -z "$anwerreplace" ]; then
+ aprint_ask "shall we replace? (y/n): "
+ read answerreplace
+fi
 
 case $answerreplace in
  y|Y|yes)
