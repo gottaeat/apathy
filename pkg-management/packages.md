@@ -91,7 +91,7 @@
 [d] self	> jq-1.6
 [d] self	> dnscrypt-proxy-2.0.42
 
-[d] self	> start-stop-daemon		--> github.com/daleobrien/start-stop-daemon
+[r] self	> start-stop-daemon		--> github.com/daleobrien/start-stop-daemon
 ```
 ```
 ### xorg fuckery

@@ -46,7 +46,6 @@ openvpn-2.4.9
 lzo-2.10
 jq-1.6
 dnscrypt-proxy-2.0.42
-start-stop-daemon
 util-macros-1.19.2
 xorgproto-2019.2
 libxau-1.0.9
