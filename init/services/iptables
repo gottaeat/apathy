@@ -1,5 +1,6 @@
 #!/mss/bin/sh
 . /mss/init/bin/funcs
+rootcheck
 
 case "$1" in
  start)

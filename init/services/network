@@ -1,5 +1,6 @@
 #!/mss/bin/sh
 . /mss/init/bin/funcs
+rootcheck
 
  ip="192.168.1.31"
  pref="24"
