@@ -323,7 +323,7 @@
 
 [d] self	> mpv-0.32.0
 
-[d] alpine	> mpd-0.21.10
+[d] self	> mpd-0.21.24
 [d] alpine	>> libcue-2.2.1
 [d] alpine	>> mpg123-1.25.13
 [d] self	>> libmpdclient-2.18
