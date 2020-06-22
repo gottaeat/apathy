@@ -399,7 +399,7 @@
 
 [d] self	> llvm-10.0.0
 [d] self	> clang-10.0.0
-[d] self	> rustc-1.43.1
+[d] self	> rustc-1.44.1
 [d] self	> cbindgen-0.14.2
 [d] self	> nodejs-13.9.0
 
