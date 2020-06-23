@@ -20,30 +20,30 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="5.7-llvm-clang-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200619_085215.config"
+ confname="5.7-gcc-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200619_070823.config"
   useconf="${confdir}/5.7/${confname}"
  localver="5.7$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
 
 # c >> set make vars
 mymake(){
- make                 \
- CC=clang             \
- LD=ld                \
- AR=llvm-ar           \
- AS=llvm-as           \
- NM=llvm-nm           \
+ make \
+ CC=x86_64-apathy-linux-musl-gcc      \
+ LD=ld                                \
+ AR=ar                                \
+ AS=as                                \
+ NM=nm                                \
 \
- HOSTCC=clang         \
- HOSTCXX=clang++      \
- HOSTAR=llvm-ar       \
- HOSTLD=ld            \
+ HOSTCC=x86_64-apathy-linux-musl-gcc  \
+ HOSTCXX=x86_64-apathy-linux-musl-g++ \
+ HOSTAR=ar                            \
+ HOSTLD=ld                            \
 \
- STRIP=llvm-strip     \
- OBJCOPY=llvm-objcopy \
- OBJDUMP=llvm-objdump \
- OBJSIZE=llvm-size    \
- READELF=llvm-readelf \
+ STRIP=strip                          \
+ OBJCOPY=objcopy                      \
+ OBJDUMP=objdump                      \
+ OBJSIZE=size                         \
+ READELF=readelf                      \
 \
  -j2 "$@"
 }
