@@ -20,7 +20,7 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="5.7-gcc-muqss-ck-uksm-zstd-o3-ohgod-graysky2-20200619_070823.config"
+ confname="5.7-gcc-bmq-ck-uksm-zstd-o3-ohgod-graysky2-20200623_093710.config"
   useconf="${confdir}/5.7/${confname}"
  localver="5.7$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
@@ -75,7 +75,7 @@ evalretkill
 
 # d1 >> apply patches
 aprint_nc
-for apatch in ck misc uksm zstd; do
+for apatch in alfredchen misc uksm zstd; do
  aprint_ret "applying ${cl_grn}${apatch}${c_res} patches."
   for pp in "${patchdir}"/apathy/5.7/"${apatch}"/*; do
    patch -p1 < "${pp}" >> "${rdr}" 2>&1
