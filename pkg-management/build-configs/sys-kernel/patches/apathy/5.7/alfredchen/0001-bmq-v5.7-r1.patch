@@ -563,10 +563,10 @@ index 21fb5a5662b5..ac31239aa51a 100644
  obj-$(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) += cpufreq_schedutil.o
 diff --git a/kernel/sched/bmq.c b/kernel/sched/bmq.c
 new file mode 100644
-index 000000000000..e4a8da074702
+index 000000000000..8e801de6551d
 --- /dev/null
 +++ b/kernel/sched/bmq.c
-@@ -0,0 +1,6013 @@
+@@ -0,0 +1,6024 @@
 +/*
 + *  kernel/sched/bmq.c
 + *
@@ -639,7 +639,7 @@ index 000000000000..e4a8da074702
 +
 +static inline void print_scheduler_version(void)
 +{
-+	printk(KERN_INFO "bmq: BMQ CPU Scheduler 5.7-r0 by Alfred Chen.\n");
++	printk(KERN_INFO "bmq: BMQ CPU Scheduler 5.7-r1 by Alfred Chen.\n");
 +}
 +
 +/**
@@ -3351,6 +3351,17 @@ index 000000000000..e4a8da074702
 +	task_access_unlock_irqrestore(p, lock, &flags);
 +
 +	return ns;
++}
++
++DEFINE_PER_CPU(unsigned long, thermal_pressure);
++
++void arch_set_thermal_pressure(struct cpumask *cpus,
++			       unsigned long th_pressure)
++{
++	int cpu;
++
++	for_each_cpu(cpu, cpus)
++		WRITE_ONCE(per_cpu(thermal_pressure, cpu), th_pressure);
 +}
 +
 +/* This manages tasks that have run out of timeslice during a scheduler_tick */
@@ -6619,10 +6630,10 @@ index 000000000000..375a1a805d86
 +{}
 diff --git a/kernel/sched/bmq_sched.h b/kernel/sched/bmq_sched.h
 new file mode 100644
-index 000000000000..59b3c43c7d9f
+index 000000000000..c0fae307869f
 --- /dev/null
 +++ b/kernel/sched/bmq_sched.h
-@@ -0,0 +1,520 @@
+@@ -0,0 +1,525 @@
 +#ifndef BMQ_SCHED_H
 +#define BMQ_SCHED_H
 +
@@ -6952,6 +6963,11 @@ index 000000000000..59b3c43c7d9f
 +	raw_spin_lock(&rq->lock);
 +
 +	return rq;
++}
++
++static inline int task_current(struct rq *rq, struct task_struct *p)
++{
++	return rq->curr == p;
 +}
 +
 +static inline bool task_running(struct task_struct *p)
