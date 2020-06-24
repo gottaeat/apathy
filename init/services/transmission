@@ -15,6 +15,7 @@ case "$1" in
      --utp                 \
      --paused              \
      --portmap             \
+     --global-seedratio 0  \
      --pid-file "/run/transmission.pid"'
   evalret
  ;;
