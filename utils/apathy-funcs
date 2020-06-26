@@ -1,18 +1,5 @@
 #!/mss/bin/sh
-umask 022
-export PATH=/opt/coreboi/bin:/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin
-
-# 1 >> define colors
- c_res="\033[0;39m"
-
-cl_blk="\033[0;30m" cb_blk="\033[1;30m"
-cl_red="\033[0;31m" cb_red="\033[1;31m"
-cl_grn="\033[0;32m" cb_grn="\033[1;32m"
-cl_yel="\033[0;33m" cb_yel="\033[1;33m"
-cl_blu="\033[0;34m" cb_blu="\033[1;34m"
-cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
-cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
-cl_whi="\033[0;37m" cb_whi="\033[1;37m"
+. /mss/bin/sourceme
 
 # 2 >> define prompts
     sbefore="   "

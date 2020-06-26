@@ -1,31 +1,13 @@
 umask 022
 unset ROOTPATH
+
+. /mss/bin/sourceme || source /mss/bin/sourceme
+
 ## a >> vars
-# a1 >> path
- mypath="/usr/sbin:/usr/bin:/sbin:/bin"
- mypath="$mypath:/mss/bin:/home/mss/execs"
- mypath="$mypath:/opt/rustc-1.44.1/bin"
- mypath="$mypath:/opt/cbindgen-0.14.2/bin"
- mypath="$mypath:/opt/node.js-13.9.0/bin"
-export PATH="$mypath"
-
-# a2 >> library_path
- mylibpath="/opt/rustc-1.44.1/lib"
-export    LIBRARY_PATH="$mylibpath"
-export LD_LIBRARY_PATH="$LIBRARY_PATH"
-
-# a3 >> pkg_config_path
- mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
-export PKG_CONFIG_PATH="$mypkgconfigpath"
-
-# a4 >> mpd socket
+# a1 >> mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
 
-# a5 >> lang
-export LANG=
-export LC_ALL=en_US.utf8
-
-# a6 >> build related flags
+# a2 >> build related flags
 export    CFLAGS="-march=native -mtune=native"
 export  CXXFLAGS="${CFLAGS}"
 export MAKEFLAGS="-j 2"
@@ -34,21 +16,6 @@ export     CHOST="${ARCH}-apathy-linux-musl"
 export    CBUILD="${CHOST}"
 export        CC="${CHOST}-gcc"
 export       CXX="${CHOST}-g++"
-
-# a7 >> default programs
-export   PAGER="less"
-export  EDITOR="vim"
-export GPG_TTY=$(tty)
-
-# a8 >> xdg
-export   XDG_DATA_DIRS="/usr/share"
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CONFIG_DIRS="/etc/xdg"
-
-# a9 >> essential paths
-export  INPUTRC="/etc/inputrc"
-export  MANPATH="/usr/share/man"
-export INFOPATH="/usr/share/info"
 
 ## b >> ash/bash settings
 # b1 >> prompts
@@ -60,6 +27,3 @@ export PS2="\[\e[33m\] -> \[\e[m\] "
 
 # b2 >> history
 export HISTSIZE=1000
-
-## c >> functions
-cdo(){ cd - >/dev/null 2>&1;}
