@@ -55,9 +55,7 @@ banner(){
  ainit_nc; ainit_nc
 }
 
-rootcheck(){
- if [ "$(id -u)" -ne 0 ]; then
-  ainitmes "this script must be run as uid 0, exiting."; failprompt
-  exit 1
- fi
-}
+if [ "$(id -u)" -ne 0 ]; then
+ ainitmes "this script must be run as uid 0, exiting."; failprompt
+ exit 1
+fi
