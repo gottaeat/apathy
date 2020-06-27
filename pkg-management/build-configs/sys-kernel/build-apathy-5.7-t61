@@ -20,7 +20,7 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="5.7-20200623_093710-gcc-bmq-uksm-zstd-o3-ohgod-graysky2.config"
+ confname="5.7-20200627_043051-llvm-clang-bmq-uksm-zstd-o3-ohgod-graysky2.config"
   useconf="${confdir}/5.7/${confname}"
  localver="5.7$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
@@ -28,22 +28,22 @@
 # c >> set make vars
 mymake(){
  make \
- CC=x86_64-apathy-linux-musl-gcc      \
- LD=ld                                \
- AR=ar                                \
- AS=as                                \
- NM=nm                                \
 \
- HOSTCC=x86_64-apathy-linux-musl-gcc  \
- HOSTCXX=x86_64-apathy-linux-musl-g++ \
- HOSTAR=ar                            \
- HOSTLD=ld                            \
+ CC=clang             \
+ LD=ld.bfd            \
+ AR=llvm-ar           \
+ NM=llvm-nm           \
 \
- STRIP=strip                          \
- OBJCOPY=objcopy                      \
- OBJDUMP=objdump                      \
- OBJSIZE=size                         \
- READELF=readelf                      \
+ STRIP=llvm-strip     \
+ OBJCOPY=llvm-objcopy \
+ OBJDUMP=llvm-objdump \
+ OBJSIZE=llvm-size    \
+\
+ READELF=llvm-readelf \
+ HOSTCC=clang         \
+ HOSTCXX=clang++      \
+ HOSTAR=llvm-ar       \
+ HOSTLD=ld.bfd        \
 \
  -j2 "$@"
 }
