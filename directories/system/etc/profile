@@ -3,28 +3,15 @@ unset ROOTPATH
 
 . /mss/bin/sourceme         || source /mss/bin/sourceme
 . /mss/bin/sourceme-aliases || source /mss/bin/sourceme-aliases
+. /mss/bin/sourceme-build   || source /mss/bin/sourceme-build
 
-## a >> vars
-# a1 >> mpd socket
-export MPD_HOST="/var/lib/mpd/socket"
-
-# a2 >> build related flags
-export    CFLAGS="-march=native -mtune=native"
-export  CXXFLAGS="${CFLAGS}"
-export MAKEFLAGS="-j 2"
-export      ARCH="x86_64"
-export     CHOST="${ARCH}-apathy-linux-musl"
-export    CBUILD="${CHOST}"
-export        CC="${CHOST}-gcc"
-export       CXX="${CHOST}-g++"
-
-## b >> ash/bash settings
-# b1 >> prompts
+## a >> ash/bash settings
+# a1 >> prompts
 [ $(id -u) -eq 0 ] \
  && _user="\[\e[34m\] \#\[\e[m\] " \
  || _user="\[\e[37m\]$\[\e[m\] "
 export PS1="${_user}\[\e[34m\]\W\[\e[m\] "
 export PS2="\[\e[33m\] -> \[\e[m\] "
 
-# b2 >> history
+# a2 >> history
 export HISTSIZE=1000

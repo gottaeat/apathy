@@ -1,0 +1,23 @@
+export    CFLAGS="-march=native -mtune=native -w"
+export  CXXFLAGS="${CFLAGS}"
+export MAKEFLAGS="-j 2"
+export      ARCH="x86_64"
+export     CHOST="${ARCH}-apathy-linux-musl"
+export    CBUILD="${CHOST}"
+export        CC="${CHOST}-gcc"
+export       CXX="${CHOST}-g++"
+
+bwllvm(){
+ export      CC=clang
+ export     CXX=clang++
+ export      LD=ld.bfd
+ export      AR=llvm-ar
+ export      AS=llvm-as
+ export      NM=llvm-nm
+ export  RANLIB=llvm-ranlib
+ export   STRIP=llvm-strip
+ export OBJCOPY=llvm-objcopy
+ export OBJDUMP=llvm-objdump
+ export OBJSIZE=llvm-size
+ export READELF=llvm-readelf
+}

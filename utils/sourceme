@@ -44,17 +44,3 @@ cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 
 ## b >> functions 
 cdo(){ cd - >/dev/null 2>&1;}
-bwllvm(){
- export CC=clang
- export CXX=clang++
- export LD=ld.bfd
- export AR=llvm-ar
- export AS=llvm-as
- export NM=llvm-nm
- export RANLIB=llvm-ranlib
- export STRIP=llvm-strip
- export OBJCOPY=llvm-objcopy
- export OBJDUMP=llvm-objdump
- export OBJSIZE=llvm-size
- export READELF=llvm-readelf
-}
