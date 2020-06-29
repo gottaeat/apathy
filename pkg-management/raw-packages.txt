@@ -56,7 +56,7 @@ libxml2-2.9.10
 fontconfig-2.13.92
 freetype-2.10.2
 libpng-1.6.37
-harfbuzz-2.6.7
+harfbuzz-2.6.8
 glib-2.64.2
 pcre-8.43
 icu-65.1
