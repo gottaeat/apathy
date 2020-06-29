@@ -1,7 +1,8 @@
 umask 022
 unset ROOTPATH
 
-. /mss/bin/sourceme || source /mss/bin/sourceme
+. /mss/bin/sourceme         || source /mss/bin/sourceme
+. /mss/bin/sourceme-aliases || source /mss/bin/sourceme-aliases
 
 ## a >> vars
 # a1 >> mpd socket

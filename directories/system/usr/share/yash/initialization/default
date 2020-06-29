@@ -1,4 +1,5 @@
 . /mss/bin/sourceme
+. /mss/bin/sourceme-aliases
 ## a >> vars
 # a1 >> mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
