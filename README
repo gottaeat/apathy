@@ -34,7 +34,7 @@ simplified list of major components
    - boost 1.72.0     - go-1.14.1
 
  > core userland
-   - util-linux 2.35  - coreutils 8.32     - busybox 1.31.1
+   - util-linux 2.35  - coreutils 8.32     - busybox 1.32.0
    - sysklogd 1.5.1   - sinit 1.1          - eudev 3.2.9
    - yash 2.50
 
