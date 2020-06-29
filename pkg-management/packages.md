@@ -254,7 +254,7 @@
 [d] bmlfs	>> glu-9.0.1
 
 [d] self	> gdk-pixbuf-2.40.0
-[d] bmlfs	>> libjpeg-turbo-2.0.4
+[d] self	>> libjpeg-turbo-2.0.5
 [d] bmlfs	>>> nasm-2.14.02
 		>> ?
 [r] bmlfs	>>> libcroco-0.6.13

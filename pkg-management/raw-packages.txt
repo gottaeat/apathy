@@ -157,7 +157,7 @@ libsigc++-2.10.2
 freeglut-3.2.1
 glu-9.0.1
 gdk-pixbuf-2.40.0
-libjpeg-turbo-2.0.4
+libjpeg-turbo-2.0.5
 nasm-2.14.02
 pango-1.42.4
 fribidi-1.0.8
