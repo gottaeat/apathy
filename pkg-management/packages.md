@@ -279,15 +279,15 @@
 
 ```
 ### audio libraries and codecs
-[d] alpine	> alsa-lib-1.2.1.2	--> w/o --disable-dep-tracking --without-versioned
+[d] self	> alsa-lib-1.2.3.1
 
 [d] alpine	> libvorbis-1.3.6
 [d] alpine	>> libogg-1.3.4
 
-[d] alpine	> alsa-plugins-1.2.1
+[d] self	> alsa-plugins-1.2.2
 [d] alpine	>> libsamplerate-0.1.9
 
-[d] alpine	> alsa-utils-1.2.1	--> w/ --disable-xmlto
+[d] self	> alsa-utils-1.2.3
 [d] bmlfs	>> fftw-3.3.8
 
 [d] alpine	> audiofile-0.3.6 
