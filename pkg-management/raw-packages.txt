@@ -260,7 +260,7 @@ autoconf-2.69
 automake-1.16.1
 bc-2.4.0
 binutils-2.34
-bison-3.4.2
+bison-3.4.4
 busybox-1.32.0
 bzip2-1.0.8
 check-0.12.0
