@@ -365,7 +365,7 @@
 [d] arch	> fim-0.5-rc3			--> w/ --disable-exif
 [d] self	> trackma-git			--> 17 jan 2020 snapshot
 [d] self	> slmenu-0.1
-[d] self	> apathy-st-0.8.2
+[d] self	> apathy-st-0.8.4
 [d] alpine	> lz4-1.9.2
 [r] self	> cwm				--> from github.com/leahneukirchen/cwm
 [r] self	> lemonbar			--> from github.com/krypt-n/bar
