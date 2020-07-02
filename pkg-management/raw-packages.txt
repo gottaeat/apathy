@@ -59,7 +59,6 @@ libpng-1.6.37
 harfbuzz-2.6.8
 glib-2.64.2
 pcre-8.43
-icu-65.1
 cairo-1.16.0
 pixman-0.40.0
 xtrans-1.4.0
