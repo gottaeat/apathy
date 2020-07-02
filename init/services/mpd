@@ -5,7 +5,7 @@ case "$1" in
  start)
   ainitmes "${c_lcyan}(mpd)${c_reset}: starting."
    echo > /var/lib/mpd/log
-   doas -u mpd /usr/bin/mpd /etc/mpd.conf
+   doas -u mpd /usr/bin/mpd /etc/mpd.conf >/dev/null 2>&1
    evalret
  ;;
  stop)
