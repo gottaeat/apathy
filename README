@@ -28,7 +28,7 @@ simplified list of major components
    - rustc-1.44.1     - cbindgen-0.14.3
 
    - python 2.7.1     - python 3.8.2       - lua 5.2.4
-   - perl 5.30.1      - node.js-13.9.0
+   - perl 5.30.1      - node.js-14.5.0
 
  > toolchain (ondemand)
    - boost 1.72.0     - go-1.14.1

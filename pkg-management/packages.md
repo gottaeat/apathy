@@ -401,7 +401,7 @@
 [d] self	> clang-10.0.0
 [d] self	> rustc-1.44.1
 [d] self	> cbindgen-0.14.3
-[d] self	> nodejs-13.9.0
+[d] self	> nodejs-14.5.0
 
 [d] self	> firefox-68.9.0esr
 [d] self	>> gtk+-3.4.4
