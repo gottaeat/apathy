@@ -26,27 +26,7 @@
                     print}' ${useconf})"
 
 # c >> set make vars
-mymake(){
- make \
-\
- CC=clang             \
- LD=ld.bfd            \
- AR=llvm-ar           \
- NM=llvm-nm           \
-\
- STRIP=llvm-strip     \
- OBJCOPY=llvm-objcopy \
- OBJDUMP=llvm-objdump \
- OBJSIZE=llvm-size    \
-\
- READELF=llvm-readelf \
- HOSTCC=clang         \
- HOSTCXX=clang++      \
- HOSTAR=llvm-ar       \
- HOSTLD=ld.bfd        \
-\
- -j2 "$@"
-}
+mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j2 "$@";}
 
 # c1 >> print details
 aprint_nc
