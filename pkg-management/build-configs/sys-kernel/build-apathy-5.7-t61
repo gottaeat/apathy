@@ -55,7 +55,7 @@ evalretkill
 
 # d1 >> apply patches
 aprint_nc
-for apatch in alfredchen misc uksm zstd; do
+for apatch in alfredchen misc zstd; do
  aprint_ret "applying ${cl_grn}${apatch}${c_res} patches."
   for pp in "${patchdir}"/apathy/5.7/"${apatch}"/*; do
    patch -p1 < "${pp}" >> "${rdr}" 2>&1
