@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.7 kernels, version 2, for thinkpad t61.
+# build script for 5.7 kernels, version 3, for thinkpad t61.
 
 . /mss/bin/apathy-funcs
 
@@ -55,12 +55,14 @@ evalretkill
 
 # d1 >> apply patches
 aprint_nc
+#+alfredchen -ck -uksm +misc +zstd
 for apatch in alfredchen misc zstd; do
- aprint_ret "applying ${cl_grn}${apatch}${c_res} patches."
+ aprint "applying ${cl_grn}${apatch}${c_res} patches."
   for pp in "${patchdir}"/apathy/5.7/"${apatch}"/*; do
-   patch -p1 < "${pp}" >> "${rdr}" 2>&1
+   aprint_ret "$(echo $pp | awk '{gsub(/^.*\//,""); print}')"
+    patch -p1 < "${pp}" >> "${rdr}" 2>&1
+   evalretkill
   done
- evalretkill
 done
 
 # d2 >> run menuconfig
