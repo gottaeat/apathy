@@ -243,7 +243,7 @@ clang-10.0.0
 rustc-1.44.1
 cbindgen-0.14.3
 nodejs-14.5.0
-firefox-68.10.0esr
+firefox-78.0.2esr
 gtk+-3.4.4
 sinit-1.1-apathy
 zstd-1.4.5
