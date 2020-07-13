@@ -1,0 +1,28 @@
+From 8c2e70fa090a586acacf7ca988bf5aa4c20d78ac Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 11 Jul 2020 03:33:22 +0300
+Subject: [PATCH 2/4] remove unwanted extensions.
+
+---
+ browser/extensions/moz.build | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
+index 4c9fa789d1..df8ea65d34 100644
+--- a/browser/extensions/moz.build
++++ b/browser/extensions/moz.build
+@@ -5,10 +5,6 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ DIRS += [
+-    'doh-rollout',
+     'formautofill',
+-    'pdfjs',
+-    'screenshots',
+-    'webcompat',
+-    'report-site-issue'
++    'pdfjs'
+ ]
+-- 
+2.26.2
+
