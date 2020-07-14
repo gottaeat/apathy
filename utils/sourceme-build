@@ -8,16 +8,16 @@ export        CC="${CHOST}-gcc"
 export       CXX="${CHOST}-g++"
 
 bwllvm(){
- export      CC=clang
- export     CXX=clang++
- export      LD=ld.bfd
- export      AR=llvm-ar
- export      AS=llvm-as
- export      NM=llvm-nm
- export  RANLIB=llvm-ranlib
- export   STRIP=llvm-strip
- export OBJCOPY=llvm-objcopy
- export OBJDUMP=llvm-objdump
- export OBJSIZE=llvm-size
- export READELF=llvm-readelf
+ export      CC="clang   --target=x86_64-apathy-linux-musl"
+ export     CXX="clang++ --target=x86_64-apathy-linux-musl"
+ export      LD="ld.bfd"
+ export      AR="llvm-ar"
+ export      AS="llvm-as"
+ export      NM="llvm-nm"
+ export  RANLIB="llvm-ranlib"
+ export   STRIP="llvm-strip"
+ export OBJCOPY="llvm-objcopy"
+ export OBJDUMP="llvm-objdump"
+ export OBJSIZE="llvm-size"
+ export READELF="llvm-readelf"
 }
