@@ -17,7 +17,7 @@ evalretkill
 aprint "chrooting to ${cl_grn}$1${c_res} as user ${cl_grn}$2${c_res}."
 aprint_nc
  chroot "$1"         \
-  /bin/env -i        \
+  /usr/bin/env -i    \
    HOME=/home/mss    \
    TERM="$TERM"      \
    PS1='[chroot] : ' \
