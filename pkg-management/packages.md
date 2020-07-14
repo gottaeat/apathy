@@ -395,7 +395,7 @@
 [d] self	> mawk-1.3.4-20200120
 [r] self	> star-1.6
 
-[o] self	> go-1.14.1
+[r] self	> go-1.14.1
 
 [d] self	> llvm-10.0.0
 [d] self	> clang-10.0.0
