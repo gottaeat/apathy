@@ -31,7 +31,7 @@ simplified list of major components
    - perl 5.30.1      - node.js-14.5.0
 
  > toolchain (ondemand)
-   - boost 1.72.0
+   - boost 1.72.0     - ruby-2.7.1
 
  > core userland
    - util-linux 2.35  - coreutils 8.32     - busybox 1.32.0
