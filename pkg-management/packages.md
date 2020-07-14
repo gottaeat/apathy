@@ -416,6 +416,7 @@
 [d] self	> transmission-3.0
 [o] self	> ruby-2.7.1
 [d] self	> mkvtoolnix-48.0.0
+[d] self	> mupdf-1.16.1
 ```
 ```
 ### base mlfs packages
