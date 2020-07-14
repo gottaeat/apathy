@@ -1,31 +1,7 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+clear
 
-if [ -z "$1" ]
- then stats=$(curl -s "https://tools.keycdn.com/geo.json" | jq '.data | .geo | .[]' | sed 's/\"//g')
- else stats=$(curl -s "https://tools.keycdn.com/geo.json?host=$1" | jq '.data | .geo | .[]' | sed 's/\"//g')
-fi
+myurl="https://tools.keycdn.com/geo.json"
+[ ! -z "$1" ] && myurl="${myurl}?host=$1"
 
-pstat(){ printf "$stats" ;}
-
-mhost=$(pstat | awk 'NR==1')
-mipad=$(pstat | awk 'NR==2')
-mrdns=$(pstat | awk 'NR==3')
-mispa=$(pstat | awk 'NR==5')
-mcont=$(pstat | awk 'NR==12')
-mcity=$(pstat | awk 'NR==10')
-mtime=$(pstat | awk 'NR==17')
-mcoun=$(pstat | awk 'NR==6')
-mpost=$(pstat | awk 'NR==11')
-mdate=$(pstat | awk 'NR==18')
-mcode=$(pstat | awk 'NR==7')
-
-aprint_nc
-lsdetail "ip\t"     "$mipad"
-lsdetail "host\t"   "$mhost"
-lsdetail "rdns\t"   "$mrdns"
-lsdetail "isp\t"    "$mispa"
-lsdetail "country"  "$mcoun ($mcode) ($mcont)"
-lsdetail "city\t"   "$mcity ($mpost)"
-lsdetail "timezone" "$mtime ($mdate)"
-aprint_nc
+curl -s "${myurl}" | jq '.data | .geo'

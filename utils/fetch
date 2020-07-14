@@ -9,19 +9,21 @@ aprint_ret "${cb_red}
      /                  (/${c_res}\n"
 }
 
-dist=$(awk '/PRETTY_NAME/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)
- cpu=$(awk '/model name/{sub(/\(TM\)/,""); familya=$5; familyb=$6; model=$8}; /MHz/{hz=int($4)}; \
-             END{print familya, familyb, model, "@", hz"mhz"}' /proc/cpuinfo)
+dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
+ cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
+            familya=tolower($5); familyb=tolower($6); model=tolower($8)}; \
+            /MHz/{hz=int($4)};                                            \
+            END{print familya, familyb, model, "@", hz"mhz"}' /proc/cpuinfo)"
 
-read model < /sys/devices/virtual/dmi/id/product_family
+model="$(awk '{print tolower($0)}' /sys/devices/virtual/dmi/id/product_family)"
 read _host < /etc/hostname
 
-kern_pre=$(uname -r)
-    kern="${kern_pre%%-*} (${kern_pre#*-})"
+ kern=$(uname -r)
 
 usershell=$(basename $(grep $LOGNAME /etc/passwd | cut -d: -f7))
-    binsh=$(realpath /bin/sh | awk 'sub(/\/bin\//,"")')
-    shell="$usershell $($usershell --version | awk 'NR==1 {ver=$5}; END{print ver}') (/bin/sh: ${binsh})"
+    binsh="(/bin/sh: $(realpath /bin/sh | awk 'sub(/\/bin\//,"")'))"
+    shell="$usershell $($usershell --version \
+                         | awk 'NR==1 {ver=$5}; END{print ver}')"
 
 mem=$(awk '/Avail/    {avail=int($2/1024)};     \
            /MemTotal/ {total=int($2/1024)};     \
@@ -45,11 +47,13 @@ upt_pre=$(awk '{print int($1)}' /proc/uptime)
                  "$(((${upt_pre}%3600)/60))"    \
                  "$((${upt_pre}%60))")
 
-printlogo; aprint_nc
+[ "$1" = "ascii" ] && printlogo
+
+aprint_nc
 lsdetail "os"   "${dist}"
 lsdetail "kern" "${kern}"
 lsdetail "host" "${cl_grn}${_host}${c_res} on ${cb_blu}${model}${c_res}"
-lsdetail "sh"   "${shell}"
+lsdetail "sh"   "${shell} ${binsh}"
 lsdetail "cpu"  "${cpu}"
 lsdetail "mem"  "${mem}"
 lsdetail "upt"  "${upt} ($upt_pre)"
