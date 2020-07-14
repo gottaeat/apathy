@@ -15,7 +15,5 @@ xrandr --auto --output VGA-1  --right-of LVDS-1
 /home/mss/.fehbg
 cp /home/mss/.fehbg /home/mss/.fehb.def
 
-/home/mss/execs/redshift -O 3500k
-
 dwmblocks &
 while true; do dwm 2> /tmp/.dwm.log; done
