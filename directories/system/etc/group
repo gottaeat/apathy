@@ -3,7 +3,7 @@ bin:x:1:daemon
 sys:x:2:
 kmem:x:3:
 tape:x:4:mss
-tty:x:5:
+tty:x:5:mss
 daemon:x:6:mss
 floppy:x:7:mss
 disk:x:8:mss

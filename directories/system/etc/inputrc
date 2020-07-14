@@ -4,6 +4,7 @@ set input-meta On
 set convert-meta Off
 set output-meta On
 set bell-style none
+set enable-keypad On
 
 "\eOd": backward-word
 "\eOc": forward-word
