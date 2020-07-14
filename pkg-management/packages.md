@@ -415,6 +415,7 @@
 [d] alpine	> xdelta3-3.1.0
 [d] self	> transmission-3.0
 [o] self	> ruby-2.7.1
+[d] self	> mkvtoolnix-48.0.0
 ```
 ```
 ### base mlfs packages
