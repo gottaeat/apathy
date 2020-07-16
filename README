@@ -24,14 +24,14 @@ simplified list of major components
    - musl 1.2.0       - musl-fts 1.2.7     - musl-obstack 1.1
    - gcompat 0.4.0    - libucontext 0.1.3
 
-   - llvm-10.0.0      - clang-10.0.0
-   - rustc-1.44.1     - cbindgen-0.14.3
+   - llvm 10.0.0      - clang 10.0.0
+   - rustc 1.44.1     - cbindgen 0.14.3
 
    - python 2.7.1     - python 3.8.2       - lua 5.2.4
-   - perl 5.30.1      - node.js-14.5.0
+   - perl 5.30.1      - node.js 14.5.0
 
  > toolchain (ondemand)
-   - boost 1.72.0     - ruby-2.7.1
+   - boost 1.72.0     - ruby 2.7.1
 
  > core userland
    - util-linux 2.35  - coreutils 8.32     - busybox 1.32.0
@@ -39,7 +39,7 @@ simplified list of major components
    - yash 2.50
 
  > tls
-   - libressl 3.2.0   - gnutls-3.6.14      - nettle-3.5.1
+   - libressl 3.2.0   - gnutls 3.6.14
 
 
 simplified repository tree
