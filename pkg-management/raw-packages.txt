@@ -249,7 +249,7 @@ sinit-1.1-apathy
 zstd-1.4.5
 cuetools-1.4.1
 shntool-3.0.10
-earlyoom-1.6-apathy
+earlyoom-1.6.1-apathy
 xdelta3-3.1.0
 transmission-3.0
 mkvtoolnix-48.0.0
