@@ -93,9 +93,9 @@ initboi(){
   syslogd -m 0 && klogd
  evalret
 
-# ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
-#  earlyoom -p -r 0 >/dev/null 2>&1 &
-# evalret
+ ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
+  earlyoom -p -r 0 -M 102400,5120 -S 512000,256000 >/dev/null 2>&1 &
+ evalret
 
  ainit_nc
  ainitmes "${c_blue}services${c_reset}:"; ainit_nc
