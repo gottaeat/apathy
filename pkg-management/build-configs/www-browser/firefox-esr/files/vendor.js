@@ -4,6 +4,7 @@ pref("browser.aboutConfig.showWarning", false);
 pref("browser.cache.disk.enable", false);
 pref("browser.cache.memory.enable", false);
 pref("browser.cache.offline.enable", false);
+pref("browser.cache.offline.storage.enable", false);
 pref("browser.preferences.defaultPerformanceSettings.enabled", false);
 pref("browser.sessionstore.resume_from_crash", true);
 pref("browser.shell.checkDefaultBrowser", false);
