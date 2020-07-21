@@ -211,7 +211,7 @@ slop-7.4
 glm-0.9.9.6
 glew-2.1.0
 xclip-0.13
-imagemagick-7.0.9.16
+imagemagick-7.0.10.23
 lcms2-2.9
 feh-3.3
 jbig2dec-0.17

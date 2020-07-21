@@ -341,7 +341,7 @@
 
 [d] alpine	> xclip-0.13
 
-[d] alpine	> imagemagick-7.0.9.16
+[d] self	> imagemagick-7.0.10.23
 [d] alpine	>> lcms2-2.9
 
 [r] self	> weechat-2.7
