@@ -288,7 +288,7 @@
 [d] alpine	>> libsamplerate-0.1.9
 
 [d] self	> alsa-utils-1.2.3
-[d] bmlfs	>> fftw-3.3.8
+[r] bmlfs	>> fftw-3.3.8
 
 [d] alpine	> audiofile-0.3.6 
 [d] bmlfs	>> flac-1.3.3

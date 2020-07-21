@@ -1,0 +1,33 @@
+# > 1
+find \
+ /bin /lib /lib64 /mss/bin/ /mss/init/bin/ /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+# > 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -x $file 2>/dev/null \
+         | grep \
+            -e libfftw3 \
+            -e libfftw3_threads)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked.txt
+
+# > 3
+ncmpcpp
+imagemagick
+
+	/usr/bin/ncmpcpp
+	/usr/bin/magick
+
+	/usr/lib/libMagickCore-7.Q16HDRI.so.7.0.0
+	/usr/lib/libMagick++-7.Q16HDRI.so.4.0.0
+	/usr/lib/libMagickWand-7.Q16HDRI.so.7.0.0
+	/usr/lib/ImageMagick-7.0.9/modules-Q16HDRI/filters/*
+	/usr/lib/ImageMagick-7.0.9/modules-Q16HDRI/coders/*
+
+from fftw itself:	
+/usr/bin/fftw-wisdom
+/usr/lib/libfftw3.so.3.5.8
+/usr/lib/libfftw3_threads.so.3.5.8
