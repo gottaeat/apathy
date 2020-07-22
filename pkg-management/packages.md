@@ -397,8 +397,8 @@
 
 [r] self	> go-1.14.1
 
-[d] self	> llvm-10.0.0
-[d] self	> clang-10.0.0
+[d] self	> llvm-10.0.1
+[d] self	> clang-10.0.1
 [d] self	> rustc-1.44.1
 [d] self	> cbindgen-0.14.3
 [d] self	> nodejs-14.5.0
