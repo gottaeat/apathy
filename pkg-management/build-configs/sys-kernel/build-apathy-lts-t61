@@ -20,7 +20,7 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="4.19-20200710_022859-gcc-cfs-xz-o2.config"
+ confname="4.19-20200723_045609-gcc-cfs-xz-o2.config"
   useconf="${confdir}/4.19/${confname}"
  localver="4.19$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
