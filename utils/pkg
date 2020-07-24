@@ -63,7 +63,10 @@ stats(){
 
 pver(){
      tls=$(openssl version | awk '{print tolower($0)}')
-    libc="musl $(ldd 2>&1 | awk '/Version/ {print $2}') ($(uname -m))"
+    libc=$(ldd 2>&1 \
+           | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
+                  FNR == 2 {c=$2}              \
+                  END{print a,b,c,d}')
     trpl=$(gcc -dumpmachine)
      cca=$(gcc -v 2>&1 | awk '/version / {sub(/version | $/,""); print}')
      ccb=$(clang --version | awk 'NR==1 {print $1,$2,$4}')
