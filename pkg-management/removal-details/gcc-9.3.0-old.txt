@@ -67,11 +67,6 @@
 /usr/lib/libstdc++fs.la
 /usr/lib/libsupc++.a
 /usr/lib/libsupc++.la
-/usr/lib/libvtv.a
-/usr/lib/libvtv.la
-/usr/lib/libvtv.so
-/usr/lib/libvtv.so.0
-/usr/lib/libvtv.so.0.0.0
 
 /usr/share/info
 /usr/share/man

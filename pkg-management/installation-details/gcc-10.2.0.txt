@@ -8,19 +8,20 @@
 /usr/bin/gcov
 /usr/bin/gcov-dump
 /usr/bin/gcov-tool
+/usr/bin/lto-dump
 
 /usr/bin/x86_64-apathy-linux-musl-c++
 /usr/bin/x86_64-apathy-linux-musl-g++
 /usr/bin/x86_64-apathy-linux-musl-gcc
-/usr/bin/x86_64-apathy-linux-musl-gcc-9.3.0
+/usr/bin/x86_64-apathy-linux-musl-gcc-10.2.0
 /usr/bin/x86_64-apathy-linux-musl-gcc-ar
 /usr/bin/x86_64-apathy-linux-musl-gcc-nm
 /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib
 
-/usr/include/c++/9.3.0
-/usr/lib/gcc/x86_64-apathy-linux-musl/9.3.0
-/usr/libexec/gcc/x86_64-apathy-linux-musl/9.3.0
-/usr/share/gcc-9.3.0
+/usr/include/c++/10.2.0
+/usr/lib/gcc/x86_64-apathy-linux-musl/10.2.0
+/usr/libexec/gcc/x86_64-apathy-linux-musl/10.2.0
+/usr/share/gcc-10.2.0
 
 /usr/lib/libatomic.a
 /usr/lib/libatomic.la
