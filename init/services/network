@@ -25,7 +25,7 @@ case "${1}" in
      wpaconf="/etc/wpa_supplicant/${3}.conf"
    
      if [ ! -f "${wpaconf}" ]; then
-      aintimes "wpaconf not found.";failprompt; exit 1
+      ainitmes "wpaconf not found.";failprompt; exit 1
      fi
   
      ainitmes "${c_lcyan}(network)${c_reset}: invoking wpa_supplicant."
