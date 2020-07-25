@@ -1,0 +1,17 @@
+(11 runs) memtest86+ 5.01:
+==========================
+lowest  -> 000442da828 1090.6MB
+highest -> 0004c2da808 1218.6MB
+
+(15 runs) memtest86 4.3.7:
+==========================
+lowest  -> 000442da008 1090.8MB
+highest -> 0004c2dafe8 1218.8MB
+
+a bit of tolerance to both the end and the beginning of the faulty addresses:
+=============================================================================
+begin 1132462080 = 0x43800000 = 1080mb
+end   1289748480 = 0x4CE00000 = 1230mb
+diff   157286400 =  0x9600000 =  150mb
+
+memmap=0x9600000$0x43800000   
