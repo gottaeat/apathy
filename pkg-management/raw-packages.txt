@@ -295,7 +295,7 @@ m4-1.4.18
 make-4.3
 meson-0.54.1
 mpc-1.1.0
-mpfr-4.0.2
+mpfr-4.1.0
 musl-1.2.0
 musl-fts-1.2.7
 musl-obstack-1.1
