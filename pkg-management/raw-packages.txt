@@ -239,6 +239,7 @@ irssi-1.2.2
 mawk-1.3.4-20200120
 llvm-10.0.1
 clang-10.0.1
+lld-10.0.1
 rustc-1.45.0
 cbindgen-0.14.3
 nodejs-14.5.0
