@@ -1,6 +1,6 @@
-From 9cc216c1899b2b081c458a4ca6e17f069916685d Mon Sep 17 00:00:00 2001
+From abb3772c5147abd640c46c6d68e146d3d96f08ba Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 11 Jul 2020 03:17:20 +0300
+Date: Tue, 28 Jul 2020 04:18:14 +0300
 Subject: [PATCH 1/4] disable dbus properly.
 
 ---
@@ -75,7 +75,7 @@ index b1fca7cbca..888dd6d3fd 100644
   "audioipc-server",
   "authenticator",
 diff --git a/dom/ipc/ContentChild.cpp b/dom/ipc/ContentChild.cpp
-index 2fe91affcd..ae835b2c34 100644
+index a4e9f80674..eeac5d9ddc 100644
 --- a/dom/ipc/ContentChild.cpp
 +++ b/dom/ipc/ContentChild.cpp
 @@ -111,9 +111,7 @@
@@ -88,7 +88,7 @@ index 2fe91affcd..ae835b2c34 100644
  #include "nsIURIMutator.h"
  #include "nsIInputStreamChannel.h"
  #include "nsFocusManager.h"
-@@ -1624,9 +1622,7 @@ mozilla::ipc::IPCResult ContentChild::RecvSetProcessSandbox(
+@@ -1633,9 +1631,7 @@ mozilla::ipc::IPCResult ContentChild::RecvSetProcessSandbox(
    } else {
      // Pre-start audio before sandboxing; see bug 1443612.
      if (StaticPrefs::media_cubeb_sandbox()) {
