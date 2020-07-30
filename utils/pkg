@@ -68,8 +68,8 @@ pver(){
                   FNR == 2 {c=$2}              \
                   END{print a,b,c,d}')
     trpl=$(gcc -dumpmachine)
-     cca=$(gcc -v 2>&1 | awk '/version / {sub(/version | $/,""); print}')
-     ccb=$(clang --version | awk 'NR==1 {print $1,$2,$4}')
+     cca=$(gcc   --version | awk 'FNR == 1 {print}')
+     ccb=$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')
 
  aprint_nc
  lsdetail "tls " "$tls "
