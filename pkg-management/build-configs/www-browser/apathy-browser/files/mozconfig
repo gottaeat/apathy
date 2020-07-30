@@ -5,7 +5,7 @@ ac_add_options --libdir=/usr/lib
 ### compiler stuff
 ac_add_options --host=x86_64-apathy-linux-musl
 ac_add_options --target=x86_64-apathy-linux-musl
-ac_add_options --enable-optimize="-march=native -mtune=native -O2 -w"
+ac_add_options --enable-optimize="-march=native -mtune=native -O3 -w"
 ac_add_options --disable-warnings-as-errors
 ac_add_options --enable-gold=no
 ac_add_options --disable-jemalloc
@@ -49,7 +49,7 @@ ac_add_options --disable-necko-wifi
 ac_add_options --disable-updater
 ac_add_options --disable-sync
 ac_add_options --x-libraries=/usr/lib
-ac_add_options --enable-default-toolkit=cairo-gtk2
+ac_add_options --enable-default-toolkit=cairo-gtk3
 mk_add_options PYTHON=/usr/bin/python2
 
 ### (don't) use system libs
