@@ -219,7 +219,7 @@ gpgme-1.13.1
 lzip-1.21
 apathy-browser-28.11.0
 zip-30
-gcompat-0.4.0
+gcompat-0.0.0
 libucontext-0.11
 sfeed-git
 vifm-0.10.1

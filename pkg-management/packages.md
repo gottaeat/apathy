@@ -357,7 +357,7 @@
 [d] self	> apathy-browser-28.11.0
 [d] alpine	>> zip-30
 
-[d] self	> gcompat-0.4.0			--> moved to /lib64
+[d] self	> gcompat-0.0.0
 [d] self	>> libucontext-0.11
 
 [d] self	> sfeed-git			--> git.codemadness.org/sfeed

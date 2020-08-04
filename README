@@ -22,7 +22,7 @@ simplified list of major components
    - mpfr 4.1.0       - gmp 6.2.0          - mpc 1.1.0
 
    - musl 1.2.1       - musl-fts 1.2.7     - musl-obstack 1.1
-   - gcompat 0.4.0    - libucontext 0.11
+   - gcompat 0.9.0    - libucontext 0.11
 
    - llvm 10.0.1      - clang 10.0.1       - lld 10.0.1
    - polly 10.0.1
