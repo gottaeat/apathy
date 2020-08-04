@@ -25,6 +25,8 @@ simplified list of major components
    - gcompat 0.4.0    - libucontext 0.1.3
 
    - llvm 10.0.1      - clang 10.0.1       - lld 10.0.1
+   - polly 10.0.1
+
    - rustc 1.45.0     - cbindgen 0.14.3
 
    - python 2.7.1     - python 3.8.2       - lua 5.2.4
