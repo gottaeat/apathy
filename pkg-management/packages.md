@@ -358,7 +358,7 @@
 [d] alpine	>> zip-30
 
 [d] self	> gcompat-0.4.0			--> moved to /lib64
-[d] alpine	>> libucontext-0.1.3		--> ARCH=x86_64
+[d] self	>> libucontext-0.11
 
 [d] self	> sfeed-git			--> git.codemadness.org/sfeed
 [d] self	> vifm-0.10.1
