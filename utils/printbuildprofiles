@@ -1,0 +1,151 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+
+## programs
+# > gcc
+prog_gcc(){
+ export       CC="${CHOST}-gcc"
+ export      CXX="${CHOST}-g++"
+ export       LD="ld.bfd"
+ export    STRIP="strip"
+ export  OBJCOPY="objcopy"
+ export  OBJDUMP="objdump"
+ export  OBJSIZE="size"
+ export  READELF="readelf"
+}
+
+# > clang
+prog_clang(){
+ export      CC="clang"
+ export     CXX="clang++"
+ export      LD="ld.lld"
+ export      AR="llvm-ar"
+ export      AS="llvm-as"
+ export      NM="llvm-nm"
+ export   STRIP="llvm-strip"
+ export  RANLIB="llvm-ranlib"
+ export OBJCOPY="llvm-objcopy"
+ export OBJDUMP="llvm-objdump"
+ export OBJSIZE="llvm-size"
+ export READELF="llvm-readelf"
+}
+
+## flags
+# > base
+           cflags_base="-w -march=native -mtune=native -O3 -fstack-protector-strong"
+          ldflags_base="-Wl,-O1 -Wl,--as-needed -Wl,--gc-sections"
+
+# > gcc
+       gcc_cflags_base="${cflags_base} -fno-common -fgraphite-identity -floop-nest-optimize -ftree-vectorize"  
+      gcc_ldflags_base="${ldflags_base}"
+
+        gcc_lto_cflags="${cflags_base} -flto=2 -fuse-linker-plugin -fno-fat-lto-objects"
+       gcc_lto_ldflags="${gcc_ldflags_base}"
+
+# > clang
+     clang_cflags_base="${cflags_base} -fuse-ld=lld -mllvm -polly"
+    clang_ldflags_base="${ldflags_base} -Wl,--icf=safe -Wl,--hash-style=gnu"
+
+ clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=2"
+clang_ldflags_lto_full="${clang_ldflags_base} -Wl,-lto-O3"
+
+ clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=2"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,-lto-O3 -Wl,--thinlto-jobs=2"
+
+
+## profiles
+# gcc - binutils - no lto
+bwprof_one(){
+ profname="gcc - binutils - no lto"
+ prog_gcc
+
+ export   CFLAGS="${gcc_cflags_base}"
+ export CXXFLAGS="${CFLAGS}"
+ export  LDFLAGS="${CFLAGS} ${gcc_ldflags_base}"
+}
+
+# gcc - binutils - w/ lto
+bwprof_two(){
+ profname="gcc - binutils - w/ lto"
+ prog_gcc
+
+ export       AR="${CC}-ar"
+ export       AS="${CC}-as"
+ export       NM="${CC}-nm"
+ export   RANLIB="${CC}-ranlib"
+
+ export   CFLAGS="${gcc_lto_cflags}"
+ export CXXFLAGS="${CFLAGS}"
+ export  LDFLAGS="${CFLAGS} ${gcc_lto_ldflags}"
+}
+
+# clang - llvm - no lto
+bwprof_three(){
+ profname="clang - llvm - no lto"
+ prog_clang
+
+ export   CFLAGS="${clang_cflags_base}"
+ export CXXFLAGS="${CFLAGS}"
+ export  LDFLAGS="${CFLAGS} ${clang_ldflags_base}"
+}
+
+# clang - llvm - full lto
+bwprof_four(){
+ profname="clang - llvm - full lto"
+ prog_clang
+
+ export   CFLAGS="${clang_cflags_lto_full}"
+ export CXXFLAGS="${CFLAGS}"
+ export  LDFLAGS="${CFLAGS} ${clang_ldflags_lto_full}"
+}
+
+# clang - llvm - thin lto
+bwprof_five(){
+ profname="clang - llvm - thin lto"
+ prog_clang
+
+ export   CFLAGS="${clang_cflags_lto_thin}"
+ export CXXFLAGS="${CFLAGS}"
+ export  LDFLAGS="${CFLAGS} ${clang_ldflags_lto_thin}"
+}
+
+printvarthingies(){
+ aprint "${profname}"
+
+ aprint_nc
+ printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+  "export      CC=\"${CC}\""     \
+  "export     CXX=\"${CXX}\""     \
+  "export      LD=\"${LD}\""      \
+  "export      AR=\"${AR}\""      \
+  "export      AS=\"${AS}\""      \
+  "export      NM=\"${NM}\""      \
+  "export   STRIP=\"${STRIP}\""   \
+  "export  RANLIB=\"${RANLIB}\""  \
+  "export OBJCOPY=\"${OBJCOPY}\"" \
+  "export OBJDUMP=\"${OBJDUMP}\"" \
+  "export OBJSIZE=\"${OBJSIZE}\"" \
+  "export READELF=\"${READELF}\""
+ aprint_nc
+ printf "%s\n%s\n%s\n" \
+  "export   CFLAGS=\"${CFLAGS}\""   \
+  "export CXXFLAGS=\"${CXXFLAGS}\"" \
+  "export  LDFLAGS=\"${LDFLAGS}\""
+ aprint_nc
+}
+
+case "$1" in
+ 1) bwprof_one  ; printvarthingies ;;
+ 2) bwprof_two  ; printvarthingies ;;
+ 3) bwprof_three; printvarthingies ;;
+ 4) bwprof_four ; printvarthingies ;;
+ 5) bwprof_five ; printvarthingies ;;
+ env)
+  profname="current environment variables are:"
+  printvarthingies
+ ;;
+ *)
+  aprint_fail "${cb_red}1-5${c_res}, or ${cb_red}print${c_res} exiting."
+  exit 1
+ ;;
+esac
