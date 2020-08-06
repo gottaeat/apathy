@@ -401,7 +401,7 @@
 [d] self	> clang-10.0.1
 [d] self	> lld-10.0.1
 [d] self	> polly-10.0.1
-[d] self	> rustc-1.45.0
+[d] self	> rustc-1.45.2
 [d] self	> cbindgen-0.14.3
 [d] self	> nodejs-14.5.0
 
