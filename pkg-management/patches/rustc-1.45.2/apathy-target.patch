@@ -1,0 +1,25 @@
+diff -uraN a/src/librustc_target/spec/mod.rs b/src/librustc_target/spec/mod.rs
+--- a/src/librustc_target/spec/mod.rs	2020-06-17 23:17:05.000000000 +0300
++++ b/src/librustc_target/spec/mod.rs	2020-07-11 13:11:42.049414317 +0300
+@@ -325,6 +325,7 @@
+ }
+ 
+ supported_targets! {
++    ("x86_64-apathy-linux-musl", x86_64_apathy_linux_musl),
+     ("x86_64-unknown-linux-gnu", x86_64_unknown_linux_gnu),
+     ("x86_64-unknown-linux-gnux32", x86_64_unknown_linux_gnux32),
+     ("i686-unknown-linux-gnu", i686_unknown_linux_gnu),
+diff -uraN a/src/librustc_target/spec/x86_64_apathy_linux_musl.rs b/src/librustc_target/spec/x86_64_apathy_linux_musl.rs
+--- a/src/librustc_target/spec/x86_64_apathy_linux_musl.rs	1970-01-01 02:00:00.000000000 +0200
++++ b/src/librustc_target/spec/x86_64_apathy_linux_musl.rs	2020-07-11 13:14:26.320360647 +0300
+@@ -0,0 +1,10 @@
++use crate::spec::TargetResult;
++
++pub fn target() -> TargetResult {
++    let mut base = super::x86_64_unknown_linux_musl::target()?;
++
++    base.llvm_target = "x86_64-apathy-linux-musl".to_string();
++    base.target_vendor = "apathy".to_string();
++
++    Ok(base)
++}
