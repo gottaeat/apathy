@@ -32,25 +32,25 @@ prog_clang(){
 
 ## flags
 # > base
-           cflags_base="-w -march=native -mtune=native -O3 -fstack-protector-strong"
-          ldflags_base="-Wl,-O1 -Wl,--as-needed -Wl,--gc-sections"
+           cflags_base="-w -O3 -mtune=native -march=native -fstack-protector-strong"
+          ldflags_base="-Wl,--as-needed -Wl,--gc-sections -Wl,-O2"
 
 # > gcc
        gcc_cflags_base="${cflags_base} -fno-common -fgraphite-identity -floop-nest-optimize -ftree-vectorize"  
       gcc_ldflags_base="${ldflags_base}"
 
-        gcc_lto_cflags="${cflags_base} -flto=2 -fuse-linker-plugin -fno-fat-lto-objects"
+        gcc_lto_cflags="${gcc_cflags_base} -flto=2 -fuse-linker-plugin -fno-fat-lto-objects"
        gcc_lto_ldflags="${gcc_ldflags_base}"
 
 # > clang
      clang_cflags_base="${cflags_base} -fuse-ld=lld -mllvm -polly"
-    clang_ldflags_base="${ldflags_base} -Wl,--icf=safe -Wl,--hash-style=gnu"
+    clang_ldflags_base="${ldflags_base} -Wl,--icf=all"
 
  clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=2"
 clang_ldflags_lto_full="${clang_ldflags_base} -Wl,-lto-O3"
 
  clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=2"
-clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,-lto-O3 -Wl,--thinlto-jobs=2"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,-lto-O3 -Wl,--thinlto-jobs=2 -Wl,--thinlto-cache-dir=/mss/work/thinltocache"
 
 
 ## profiles
@@ -60,8 +60,8 @@ bwprof_one(){
  prog_gcc
 
  export   CFLAGS="${gcc_cflags_base}"
- export CXXFLAGS="${CFLAGS}"
- export  LDFLAGS="${CFLAGS} ${gcc_ldflags_base}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="\${CFLAGS} ${gcc_ldflags_base}"
 }
 
 # gcc - binutils - w/ lto
@@ -75,8 +75,8 @@ bwprof_two(){
  export   RANLIB="${CC}-ranlib"
 
  export   CFLAGS="${gcc_lto_cflags}"
- export CXXFLAGS="${CFLAGS}"
- export  LDFLAGS="${CFLAGS} ${gcc_lto_ldflags}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="\${CFLAGS} ${gcc_lto_ldflags}"
 }
 
 # clang - llvm - no lto
@@ -85,8 +85,8 @@ bwprof_three(){
  prog_clang
 
  export   CFLAGS="${clang_cflags_base}"
- export CXXFLAGS="${CFLAGS}"
- export  LDFLAGS="${CFLAGS} ${clang_ldflags_base}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="\${CFLAGS} ${clang_ldflags_base}"
 }
 
 # clang - llvm - full lto
@@ -95,8 +95,8 @@ bwprof_four(){
  prog_clang
 
  export   CFLAGS="${clang_cflags_lto_full}"
- export CXXFLAGS="${CFLAGS}"
- export  LDFLAGS="${CFLAGS} ${clang_ldflags_lto_full}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="\${CFLAGS} ${clang_ldflags_lto_full}"
 }
 
 # clang - llvm - thin lto
@@ -105,8 +105,8 @@ bwprof_five(){
  prog_clang
 
  export   CFLAGS="${clang_cflags_lto_thin}"
- export CXXFLAGS="${CFLAGS}"
- export  LDFLAGS="${CFLAGS} ${clang_ldflags_lto_thin}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="\${CFLAGS} ${clang_ldflags_lto_thin}"
 }
 
 printvarthingies(){
