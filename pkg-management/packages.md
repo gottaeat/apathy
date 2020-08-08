@@ -354,7 +354,7 @@
 [r] alpine	> mutt-1.13.3
 [d] alpine	> lzip-1.21
 
-[d] self	> apathy-browser-28.11.0
+[r] self	> apathy-browser-28.11.0
 [d] alpine	>> zip-30
 
 [d] self	> gcompat-0.0.0
