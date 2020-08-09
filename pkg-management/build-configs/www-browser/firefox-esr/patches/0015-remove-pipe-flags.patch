@@ -1,0 +1,335 @@
+From d04a631d1846ab3abee277550a2615a7c5c96605 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sun, 9 Aug 2020 20:05:18 +0300
+Subject: [PATCH] remove -pipe flags.
+
+---
+ build/gyp_includes/common.gypi                |  1 -
+ js/src/old-configure.in                       |  5 ---
+ .../trunk/peerconnection_client.target.mk     |  2 -
+ .../webrtc/build/config/compiler/BUILD.gn     |  3 --
+ nsprpub/configure                             | 42 -------------------
+ nsprpub/configure.in                          | 28 -------------
+ old-configure.in                              |  5 ---
+ security/nss/coreconf/BeOS.mk                 |  2 +-
+ security/nss/coreconf/Darwin.mk               |  2 +-
+ security/nss/coreconf/Linux.mk                |  2 +-
+ security/nss/coreconf/NCR3.0.mk               |  2 +-
+ security/nss/coreconf/NetBSD.mk               |  2 +-
+ security/nss/coreconf/OpenBSD.mk              |  2 +-
+ security/nss/coreconf/QNX.mk                  |  2 +-
+ security/nss/coreconf/ReliantUNIX.mk          |  2 +-
+ security/nss/coreconf/config.gypi             |  2 -
+ security/nss/tests/bogo/bogo.sh               |  2 +-
+ 17 files changed, 9 insertions(+), 97 deletions(-)
+
+diff --git a/build/gyp_includes/common.gypi b/build/gyp_includes/common.gypi
+index 8cd6ef7557..7f634fb7c4 100644
+--- a/build/gyp_includes/common.gypi
++++ b/build/gyp_includes/common.gypi
+@@ -2157,7 +2157,6 @@
+           # Don't export any symbols (for example, to plugins we dlopen()).
+           # Note: this is *required* to make some plugins work.
+           '-fvisibility=hidden',
+-          '-pipe',
+         ],
+         'cflags_cc': [
+           '-fno-rtti',
+diff --git a/js/src/old-configure.in b/js/src/old-configure.in
+index 29d3287311..793e36e3bb 100644
+--- a/js/src/old-configure.in
++++ b/js/src/old-configure.in
+@@ -1292,11 +1292,6 @@ dnl Check for gcc -pipe support
+ dnl ========================================================
+ AC_MSG_CHECKING([for -pipe support])
+ if test -n "$GNU_CC" -a -n "$GNU_CXX"; then
+-    dnl Any gcc that supports firefox supports -pipe.
+-    CFLAGS="$CFLAGS -pipe"
+-    CXXFLAGS="$CXXFLAGS -pipe"
+-    AC_MSG_RESULT([yes])
+-else
+     AC_MSG_RESULT([no])
+ fi
+ 
+diff --git a/media/webrtc/trunk/peerconnection_client.target.mk b/media/webrtc/trunk/peerconnection_client.target.mk
+index 3c4320a180..4649159a36 100644
+--- a/media/webrtc/trunk/peerconnection_client.target.mk
++++ b/media/webrtc/trunk/peerconnection_client.target.mk
+@@ -56,7 +56,6 @@ CFLAGS_Debug := \
+ 	-Wno-unused-parameter \
+ 	-Wno-missing-field-initializers \
+ 	-fvisibility=hidden \
+-	-pipe \
+ 	-fPIC \
+ 	-pthread \
+ 	-I/usr/include/gtk-2.0 \
+@@ -146,7 +145,6 @@ CFLAGS_Release := \
+ 	-Wno-unused-parameter \
+ 	-Wno-missing-field-initializers \
+ 	-fvisibility=hidden \
+-	-pipe \
+ 	-fPIC \
+ 	-pthread \
+ 	-I/usr/include/gtk-2.0 \
+diff --git a/media/webrtc/trunk/webrtc/build/config/compiler/BUILD.gn b/media/webrtc/trunk/webrtc/build/config/compiler/BUILD.gn
+index 4ae4ce2f22..45f45505a7 100644
+--- a/media/webrtc/trunk/webrtc/build/config/compiler/BUILD.gn
++++ b/media/webrtc/trunk/webrtc/build/config/compiler/BUILD.gn
+@@ -322,9 +322,6 @@ config("compiler") {
+       ldflags += [ "-fPIC" ]
+     }
+ 
+-    # Use pipes for communicating between sub-processes. Faster.
+-    cflags += [ "-pipe" ]
+-
+     ldflags += [
+       "-Wl,-z,noexecstack",
+       "-Wl,-z,now",
+diff --git a/nsprpub/configure b/nsprpub/configure
+index 2fe15c7c64..c09a55d9f6 100755
+--- a/nsprpub/configure
++++ b/nsprpub/configure
+@@ -5332,48 +5332,6 @@ fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for gcc -pipe support" >&5
+ $as_echo_n "checking for gcc -pipe support... " >&6; }
+ if test -n "$GNU_CC" && test -n "$GNU_CXX" && test -n "$GNU_AS"; then
+-    echo '#include <stdio.h>' > dummy-hello.c
+-    echo 'int main() { printf("Hello World\n"); return 0; }' >> dummy-hello.c
+-    ${CC} -S dummy-hello.c -o dummy-hello.s 2>&5
+-    cat dummy-hello.s | ${AS} -o dummy-hello.S - 2>&5
+-    if test $? = 0; then
+-        _res_as_stdin="yes"
+-    else
+-        _res_as_stdin="no"
+-    fi
+-    if test "$_res_as_stdin" = "yes"; then
+-        _SAVE_CFLAGS=$CFLAGS
+-        CFLAGS="$CFLAGS -pipe"
+-        cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+- #include <stdio.h>
+-int
+-main ()
+-{
+-printf("Hello World\n");
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-if ac_fn_c_try_compile "$LINENO"; then :
+-  _res_gcc_pipe="yes"
+-else
+-  _res_gcc_pipe="no"
+-fi
+-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+-        CFLAGS=$_SAVE_CFLAGS
+-    fi
+-    if test "$_res_as_stdin" = "yes" && test "$_res_gcc_pipe" = "yes"; then
+-        _res="yes";
+-        CFLAGS="$CFLAGS -pipe"
+-        CXXFLAGS="$CXXFLAGS -pipe"
+-    else
+-        _res="no"
+-    fi
+-    rm -f dummy-hello.c dummy-hello.s dummy-hello.S dummy-hello a.out
+-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $_res" >&5
+-$as_echo "$_res" >&6; }
+-else
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+ $as_echo "no" >&6; }
+ fi
+diff --git a/nsprpub/configure.in b/nsprpub/configure.in
+index 1c23fefa46..f1410ad978 100644
+--- a/nsprpub/configure.in
++++ b/nsprpub/configure.in
+@@ -642,34 +642,6 @@ dnl Check for gcc -pipe support
+ dnl ========================================================
+ AC_MSG_CHECKING([for gcc -pipe support])
+ if test -n "$GNU_CC" && test -n "$GNU_CXX" && test -n "$GNU_AS"; then
+-    echo '#include <stdio.h>' > dummy-hello.c
+-    echo 'int main() { printf("Hello World\n"); return 0; }' >> dummy-hello.c
+-    ${CC} -S dummy-hello.c -o dummy-hello.s 2>&5
+-    cat dummy-hello.s | ${AS} -o dummy-hello.S - 2>&5
+-    if test $? = 0; then
+-        _res_as_stdin="yes"
+-    else
+-        _res_as_stdin="no"
+-    fi
+-    if test "$_res_as_stdin" = "yes"; then
+-        _SAVE_CFLAGS=$CFLAGS
+-        CFLAGS="$CFLAGS -pipe"
+-        AC_TRY_COMPILE( [ #include <stdio.h> ],
+-            [printf("Hello World\n");],
+-            [_res_gcc_pipe="yes"],
+-            [_res_gcc_pipe="no"] )
+-        CFLAGS=$_SAVE_CFLAGS
+-    fi
+-    if test "$_res_as_stdin" = "yes" && test "$_res_gcc_pipe" = "yes"; then
+-        _res="yes";
+-        CFLAGS="$CFLAGS -pipe"
+-        CXXFLAGS="$CXXFLAGS -pipe"
+-    else
+-        _res="no"
+-    fi
+-    rm -f dummy-hello.c dummy-hello.s dummy-hello.S dummy-hello a.out
+-    AC_MSG_RESULT([$_res])
+-else
+     AC_MSG_RESULT([no])
+ fi
+ 
+diff --git a/old-configure.in b/old-configure.in
+index dfb072b19c..46d6a8c652 100644
+--- a/old-configure.in
++++ b/old-configure.in
+@@ -2300,11 +2300,6 @@ dnl Check for gcc -pipe support
+ dnl ========================================================
+ AC_MSG_CHECKING([for -pipe support])
+ if test -n "$GNU_CC" -a -n "$GNU_CXX"; then
+-    dnl Any gcc that supports firefox supports -pipe.
+-    CFLAGS="$CFLAGS -pipe"
+-    CXXFLAGS="$CXXFLAGS -pipe"
+-    AC_MSG_RESULT([yes])
+-else
+     AC_MSG_RESULT([no])
+ fi
+ 
+diff --git a/security/nss/coreconf/BeOS.mk b/security/nss/coreconf/BeOS.mk
+index 750696da5f..be4a8409bd 100644
+--- a/security/nss/coreconf/BeOS.mk
++++ b/security/nss/coreconf/BeOS.mk
+@@ -32,7 +32,7 @@ ifdef BUILD_OPT
+ 	OPTIMIZER	= -O2
+ endif
+ 
+-OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch -pipe
++OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch
+ OS_LIBS			= -lbe
+ 
+ DEFINES			+= -DBEOS
+diff --git a/security/nss/coreconf/Darwin.mk b/security/nss/coreconf/Darwin.mk
+index 0569e1819d..8c1f596c3b 100644
+--- a/security/nss/coreconf/Darwin.mk
++++ b/security/nss/coreconf/Darwin.mk
+@@ -85,7 +85,7 @@ endif
+ # definitions so that the linker can catch multiply-defined symbols.
+ # Also, common symbols are not allowed with Darwin dynamic libraries.
+ 
+-OS_CFLAGS	= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -fno-common -pipe -DDARWIN -DHAVE_STRERROR -DHAVE_BSD_FLOCK $(DARWIN_SDK_CFLAGS)
++OS_CFLAGS	= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -fno-common -DDARWIN -DHAVE_STRERROR -DHAVE_BSD_FLOCK $(DARWIN_SDK_CFLAGS)
+ 
+ ifdef BUILD_OPT
+ ifeq (11,$(ALLOW_OPT_CODE_SIZE)$(OPT_CODE_SIZE))
+diff --git a/security/nss/coreconf/Linux.mk b/security/nss/coreconf/Linux.mk
+index 956f0e4a9e..05e29ee4d3 100644
+--- a/security/nss/coreconf/Linux.mk
++++ b/security/nss/coreconf/Linux.mk
+@@ -130,7 +130,7 @@ ifeq ($(USE_PTHREADS),1)
+ OS_PTHREAD = -lpthread 
+ endif
+ 
+-OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) $(ARCHFLAG) -pipe -ffunction-sections -fdata-sections -DHAVE_STRERROR
++OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) $(ARCHFLAG) -ffunction-sections -fdata-sections -DHAVE_STRERROR
+ ifeq ($(KERNEL),Linux)
+ 	OS_CFLAGS	+= -DLINUX -Dlinux
+ endif
+diff --git a/security/nss/coreconf/NCR3.0.mk b/security/nss/coreconf/NCR3.0.mk
+index 7b8e31be3b..b90d7c60d9 100644
+--- a/security/nss/coreconf/NCR3.0.mk
++++ b/security/nss/coreconf/NCR3.0.mk
+@@ -16,7 +16,7 @@ export PATH:=$(PATH):/opt/ncc/bin
+ ###
+ 
+ RANLIB           = true
+-GCC_FLAGS_EXTRA += -pipe
++GCC_FLAGS_EXTRA +=
+ 
+ DEFINES		+= -DSVR4 -DSYSV -DHAVE_STRERROR -DNCR
+ 
+diff --git a/security/nss/coreconf/NetBSD.mk b/security/nss/coreconf/NetBSD.mk
+index 654f1aec6f..2a40f8f68c 100644
+--- a/security/nss/coreconf/NetBSD.mk
++++ b/security/nss/coreconf/NetBSD.mk
+@@ -26,7 +26,7 @@ else
+ DLL_SUFFIX		= so.1.0
+ endif
+ 
+-OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch -pipe -DNETBSD -Dunix -DHAVE_STRERROR -DHAVE_BSD_FLOCK
++OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch -DNETBSD -Dunix -DHAVE_STRERROR -DHAVE_BSD_FLOCK
+ 
+ OS_LIBS			= -lcompat
+ 
+diff --git a/security/nss/coreconf/OpenBSD.mk b/security/nss/coreconf/OpenBSD.mk
+index acf8507aa7..e7c53c0788 100644
+--- a/security/nss/coreconf/OpenBSD.mk
++++ b/security/nss/coreconf/OpenBSD.mk
+@@ -26,7 +26,7 @@ endif
+ 
+ DLL_SUFFIX		= so.1.0
+ 
+-OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch -pipe -DOPENBSD
++OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Wall -Wno-switch -DOPENBSD
+ 
+ OS_LIBS			= 
+ 
+diff --git a/security/nss/coreconf/QNX.mk b/security/nss/coreconf/QNX.mk
+index b1187cb7f4..1595c6aafa 100644
+--- a/security/nss/coreconf/QNX.mk
++++ b/security/nss/coreconf/QNX.mk
+@@ -27,7 +27,7 @@ ifdef BUILD_OPT
+ 	OPTIMIZER	= -O2
+ endif
+ 
+-OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Vgcc_ntox86 -Wall -pipe -DNTO -DHAVE_STRERROR -D_QNX_SOURCE -D_POSIX_C_SOURCE=199506 -D_XOPEN_SOURCE=500
++OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -Vgcc_ntox86 -Wall -DNTO -DHAVE_STRERROR -D_QNX_SOURCE -D_POSIX_C_SOURCE=199506 -D_XOPEN_SOURCE=500
+ 
+ ifdef USE_PTHREADS
+ 	DEFINES		+= -D_REENTRANT
+diff --git a/security/nss/coreconf/ReliantUNIX.mk b/security/nss/coreconf/ReliantUNIX.mk
+index 8af2c3dba6..240d1297d0 100644
+--- a/security/nss/coreconf/ReliantUNIX.mk
++++ b/security/nss/coreconf/ReliantUNIX.mk
+@@ -14,7 +14,7 @@ ifdef NS_USE_GCC
+ 	AS          = $(CC)
+ 	ASFLAGS     += -x assembler-with-cpp
+ 	LD          = gld
+-	ODD_CFLAGS  = -pipe -Wall -Wno-format -Wno-switch
++	ODD_CFLAGS  = -Wall -Wno-format -Wno-switch
+ 	ifdef BUILD_OPT
+ 		OPTIMIZER += -O6
+ 	endif
+diff --git a/security/nss/coreconf/config.gypi b/security/nss/coreconf/config.gypi
+index 62d3cc71ec..e529277554 100644
+--- a/security/nss/coreconf/config.gypi
++++ b/security/nss/coreconf/config.gypi
+@@ -351,7 +351,6 @@
+           'OTHER_CFLAGS': [
+             '-fPIC',
+             '-fno-common',
+-            '-pipe',
+           ],
+         },
+         'conditions': [
+@@ -396,7 +395,6 @@
+           [ 'OS!="mac" and OS!="ios" and OS!="win"', {
+             'cflags': [
+               '-fPIC',
+-              '-pipe',
+               '-ffunction-sections',
+               '-fdata-sections',
+             ],
+diff --git a/security/nss/tests/bogo/bogo.sh b/security/nss/tests/bogo/bogo.sh
+index e3e9c32dfb..91526b00e5 100755
+--- a/security/nss/tests/bogo/bogo.sh
++++ b/security/nss/tests/bogo/bogo.sh
+@@ -44,7 +44,7 @@ cwd=$(pwd -P)
+ SOURCE_DIR="$(cd "$cwd"/../..; pwd -P)"
+ bogo_init
+ (cd "$BORING"/ssl/test/runner;
+- GOPATH="$cwd" go test -pipe -shim-path "${BINDIR}"/nss_bogo_shim \
++ GOPATH="$cwd" go test -shim-path "${BINDIR}"/nss_bogo_shim \
+ 	 -loose-errors -allow-unimplemented \
+ 	 -shim-config "${SOURCE_DIR}/gtests/nss_bogo_shim/config.json") \
+ 	 2>bogo.errors | tee bogo.log
+-- 
+2.26.2
+
