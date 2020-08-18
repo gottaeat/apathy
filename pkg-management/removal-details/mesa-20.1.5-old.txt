@@ -24,7 +24,9 @@
 /usr/include/KHR/khrplatform.h
 /usr/include/gbm.h
 
+/usr/lib/dri/i915_dri.so
 /usr/lib/dri/i965_dri.so
+/usr/lib/dri/swrast_dri.so
 
 /usr/lib/libEGL.so
 /usr/lib/libEGL.so.1
