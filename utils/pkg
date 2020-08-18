@@ -11,7 +11,12 @@ localraw="/mss/raw-packages.txt"
 [ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
 [ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
 
-from(){            awk '/'$1'/{print $2}' "${localmd}";}
+from(){
+if [ -z "$1" ]
+ then aprint_fail "specify a package name in ${cl_grn}\$1{c_res}."; exit 1
+ else awk '/'$1'/{print $4,"->",$2}' "${localmd}"
+fi
+}
 
 print_removed(){   awk '/^\[r\]/ {print $4}' "${localmd}";}
 print_installed(){ awk '/^\[d\]/ {print $4}' "${localmd}";}
