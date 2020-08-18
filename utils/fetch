@@ -41,7 +41,7 @@ upt_pre=$(awk '{print int($1)}' /proc/uptime)
                  "$(((${upt_pre}%86400)/3600))" \
                  "$(((${upt_pre}%3600)/60))"    \
                  "$((${upt_pre}%60))")          \
-|| upt=$(printf "%d:%02d:%02d:%02.0f\n"         \
+|| upt=$(printf "%dd + %02d:%02d:%02.0f\n"      \
                  "$((${upt_pre}/86400))"        \
                  "$(((${upt_pre}%86400)/3600))" \
                  "$(((${upt_pre}%3600)/60))"    \
