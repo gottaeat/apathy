@@ -303,7 +303,7 @@
 [d] bmlfs	> libvpx-1.8.2
 [d] bmlfs	> opus-1.3.1
 [d] bmlfs	> taglib-1.11.1
-[d] bmlfs	> x264-20191119-2245
+[d] self	> x264-20191119-2245
 [d] self	> x265-3.4
 ### audio libraries and codecs end
 ```
