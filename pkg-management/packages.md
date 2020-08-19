@@ -272,11 +272,11 @@
 [d] alpine	>> libid3tag-0.15.1b
 ### gui fuckery end
 ```
-
+```
 [d] bmlfs	> autoconf-2.13
 [d] bmlfs	> libwebp-1.0.3
 [d] self	> yasm-1.3.0
-
+```
 ```
 ### audio libraries and codecs
 [d] self	> alsa-lib-1.2.3.1
@@ -310,7 +310,7 @@
 ```
 [d] self	> dmenu-4.9
 [d] self	> xtrlock-2.11
-[d] devbin	> youtube-dl-2020.01.01
+[d] self	> youtube-dl-2020.07.28
 
 [d] self	> compton-5.1 		--> -Dconfig_file=false -Ddbus=false
 [d] alpine	>> libev-4.31
@@ -331,8 +331,8 @@
 [d] alpine	>> libshout-2.4.3
 [o] self	>> boost-1.72.0
 
-[d] alpine	> mpc-0.33
-[d] arch	> ncmpcpp-0.9-20200415		--> from git
+[d] self	> mpc-0.33
+[d] self	> ncmpcpp-0.9
 
 [d] arch	> maim-5.5.3
 [d] alpine	>> slop-7.4
@@ -347,7 +347,7 @@
 [r] self	> weechat-2.7
 [d] alpine	> feh-3.3
 
-[r] alpine	> mupdf-1.16.1
+[d] self	> mupdf-1.16.1
 [d] alpine	>> jbig2dec-0.17		--> w/o --without-libpng
 
 [d] alpine	> gpgme-1.13.1
@@ -362,7 +362,7 @@
 
 [d] self	> sfeed-git			--> git.codemadness.org/sfeed
 [d] self	> vifm-0.10.1
-[d] arch	> fim-0.5-rc3			--> w/ --disable-exif
+[d] self	> fim-0.5-rc3			--> w/ --disable-exif
 [d] self	> trackma-git			--> 17 jan 2020 snapshot
 [d] self	> slmenu-0.1
 [d] self	> apathy-st-0.8.4
@@ -376,7 +376,7 @@
 [d] self	> wpa_supplicant-2.9
 [d] alpine	>> libnl3-3.5.0
 
-[d] gentoo+arch	> lilo-24.2
+[d] self	> lilo-24.2
 [d] arch	>> bin86-0.16.21		--> don't remember where the fuck i found the sauce from
 
 [r] alpine	> i3wm-gaps-4.17.1
@@ -418,7 +418,6 @@
 [d] self	> transmission-3.0
 [o] self	> ruby-2.7.1
 [d] self	> mkvtoolnix-48.0.0
-[d] self	> mupdf-1.16.1
 ```
 ```
 ### base mlfs packages
