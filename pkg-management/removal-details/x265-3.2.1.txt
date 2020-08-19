@@ -1,0 +1,10 @@
+/usr/bin/x265
+
+/usr/include/x265.h
+/usr/include/x265_config.h
+
+/usr/lib/libx265.a
+/usr/lib/libx265.so
+/usr/lib/libx265.so.179
+
+/usr/lib/pkgconfig/x265.pc
