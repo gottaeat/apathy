@@ -13,7 +13,7 @@ localraw="/mss/raw-packages.txt"
 
 from(){
 if [ -z "$1" ]
- then aprint_fail "specify a package name in ${cl_grn}\$1{c_res}."; exit 1
+ then aprint_fail "specify a package name in ${cl_grn}\$1${c_res}."; exit 1
  else awk '/'$1'/{print $4,"->",$2}' "${localmd}"
 fi
 }
