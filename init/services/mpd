@@ -7,6 +7,12 @@ case "$1" in
    echo > /var/lib/mpd/log
    doas -u mpd /usr/bin/mpd /etc/mpd.conf >/dev/null 2>&1
    evalret
+  ainitmes "${c_lcyan}(mpd)${c_reset}: setting up."
+   mpc repeat  on  >/dev/null 2>&1 &&
+   mpc random  off >/dev/null 2>&1 &&
+   mpc single  off >/dev/null 2>&1 &&
+   mpc consume off >/dev/null 2>&1
+  evalret
  ;;
  stop)
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping."
