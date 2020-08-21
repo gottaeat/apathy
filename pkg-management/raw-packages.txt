@@ -4,7 +4,7 @@ lsof-4.93.2
 lm_sensors-3.6.0
 sysfsutils-2.1.0
 sysstat-12.2.0
-curl-7.71.1
+curl-7.72.0
 git-2.26.2
 pcre2-10.34
 libedit-20191231.3.1
