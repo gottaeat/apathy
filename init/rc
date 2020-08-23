@@ -93,6 +93,10 @@ initboi(){
   syslogd -m 0 && klogd
  evalret
 
+ ainitmes "setting the ${c_lcyan}time${c_reset}."
+  ntpd -n -q >/dev/null 2>&1 && hwclock --systohc
+ evalret
+
  ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
   earlyoom -p -r 0 -M 102400,5120 -S 512000,256000 >/dev/null 2>&1 &
  evalret
