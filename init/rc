@@ -156,8 +156,8 @@ goingdown(){
  evalret
 }
 
-poweroffboi(){ goingdown && halt -p;}
-rebootboi(){   goingdown && halt -r;}
+poweroffboi(){ goingdown && sync; sync; sync; halt -p;}
+rebootboi(){   goingdown && sync; sync; sync; halt -r;}
 
 case "${1}" in
  init)      initboi     ;;
