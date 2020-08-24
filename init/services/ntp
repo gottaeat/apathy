@@ -1,0 +1,25 @@
+#!/mss/bin/sh
+. /mss/init/bin/funcs
+
+case "$1" in
+ start)
+  ainitmes "${c_lcyan}(ntp)${c_reset}: setting the time."
+   ntpd -n -q >/dev/null 2>&1 &
+  evalret
+  ainitmes "${c_lcyan}(ntp)${c_reset}: sys -> hwclock."
+   hwclock --systohc
+  evalret
+ ;;
+ stop)
+  ainitmes "${c_lcyan}(ntp)${c_reset}: sys -> hwclock."
+   hwclock --systohc
+  evalret
+ ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
+ *)
+  ainitusage "{start|stop|restart}"
+  exit 1
+ ;;
+esac

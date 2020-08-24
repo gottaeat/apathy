@@ -93,10 +93,6 @@ initboi(){
   syslogd -m 0 && klogd
  evalret
 
- ainitmes "setting the ${c_lcyan}time${c_reset}."
-  ntpd -n -q >/dev/null 2>&1 && hwclock --systohc
- evalret
-
  ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
   earlyoom -p -r 0 -M 102400,5120 -S 512000,256000 >/dev/null 2>&1 &
  evalret
@@ -109,6 +105,7 @@ initboi(){
  $sdir/network		start wlan0 solitude
  $sdir/mpd		start
  $sdir/dnscrypt-proxy	start
+ $sdir/ntp		start
 #$sdir/transmission	start
 #$sdir/ssh		start
 
@@ -130,6 +127,7 @@ goingdown(){
 
 #$sdir/ssh		stop
  $sdir/network		stop wlan0
+ $sdir/ntp		stop
 
  ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
   ip link set lo down >/dev/null 2>&1
