@@ -135,7 +135,7 @@
 # alias fm='./configure $XORG_CONFIG && make && doas -- make install && \
 #           echo done && cd .. && rm -rf * && ls -lahw1'
 [d] self	> xtrans-1.4.0
-[d] self	> libX11-1.6.9
+[d] self	> libX11-1.6.12
 [d] self	> libXext-1.3.4
 [d] self	> libICE-1.0.10
 [d] self	> libSM-1.2.3
