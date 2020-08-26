@@ -21,6 +21,7 @@ ac_add_options --disable-tests
 
 ac_add_options --enable-optimize="-w -O3 -mtune=native -march=native -fstack-protector-strong -fuse-ld=lld"
 ac_add_options --enable-linker="lld"
+ac_add_options --enable-lto="thin"
 
 # 3 >> set build dir and makeflags
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
@@ -35,9 +36,9 @@ ac_add_options --with-branding=browser/branding/unofficial
 # 5 >> features
 ac_add_options --enable-alsa
 ac_add_options --enable-ffmpeg
-ac_add_options --enable-webrtc
-ac_add_options --enable-smoosh
+ac_add_options --disable-smoosh
 ac_add_options --disable-webspeech
+ac_add_options --disable-webrtc
 ac_add_options --disable-synth-speechd
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
