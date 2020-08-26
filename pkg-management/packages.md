@@ -405,7 +405,7 @@
 [d] self	> cbindgen-0.14.3
 [d] self	> nodejs-14.5.0
 
-[d] self	> firefox-78.1.0esr
+[d] self	> firefox-78.2.0esr
 [d] self	>> gtk+-3.4.4
 
 [d] self	> sinit-1.1-apathy
