@@ -14,6 +14,7 @@ case "$1" in
     *edns0*) cp /etc/resolv.conf.quad /etc/resolv.conf ;;
    esac
    kill -TERM $(pidof dnscrypt-proxy)
+  evalret
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start
