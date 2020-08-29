@@ -401,8 +401,8 @@
 [d] self	> clang-10.0.1
 [d] self	> lld-10.0.1
 [d] self	> polly-10.0.1
-[d] self	> rustc-1.45.2
-[d] self	> cbindgen-0.14.3
+[d] self	> rustc-1.46.0
+[d] self	> cbindgen-0.14.4
 [d] self	> nodejs-14.5.0
 
 [d] self	> firefox-78.2.0esr

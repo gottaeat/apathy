@@ -27,7 +27,7 @@ simplified list of major components
    - llvm 10.0.1      - clang 10.0.1       - lld 10.0.1
    - polly 10.0.1
 
-   - rustc 1.45.2     - cbindgen 0.14.3
+   - rustc 1.46.0     - cbindgen 0.14.4
 
    - python 2.7.1     - python 3.8.2       - lua 5.2.4
    - perl 5.30.1      - node.js 14.5.0
