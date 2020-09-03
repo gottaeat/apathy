@@ -1,0 +1,158 @@
+#!/mss/bin/sh
+# apathy musl 1.2 - mss@tutanota.de
+# build script for 5.8 kernels, version 1, for thinkpad x230.
+
+. /mss/bin/apathy-funcs
+
+# a >> check if variables are set
+[ -z ${1} ] && aprint_fail "specify a linux tarball with \$1." && exit 1
+
+# b >> set script vars
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+  repodir="/mss/repo/pkg-management/build-configs/sys-kernel"
+ saucedir="/mss/work/sauces"
+  workdir="/mss/work/table"
+   logdir="/mss/work/logs"
+
+   kerver=$(printf "${1}" | sed 's/linux-//;s/.tar.xz//;s/.tar.gz//')
+  makedir="${workdir}/linux-${kerver}"
+ patchdir="${repodir}/patches"
+  confdir="${repodir}/configs"
+      rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
+
+ confname="20200904_010653-gcc-bmq-lto-uksm-zstd-o3-ohgod-graysky2"
+  useconf="${confdir}/5.8/5.8-${confname}.config"
+ localver="5.8$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+                    print}' ${useconf})"
+
+# c >> set make vars
+mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j2 "$@";}
+
+# c1 >> print details
+aprint_nc
+lsdetail "release"  "${kerver}"
+lsdetail "localver" "${localver}"
+lsdetail "confname" "${confname}"
+
+# c2 >> unpack the kernel
+if [ ! -f "${saucedir}/${1}" ]
+ then aprint_fail "tarball does not exist."; exit 1
+ else
+  aprint_nc; aprint_ret "unpacking the kernel sauce."
+   tar xf ${saucedir}/${1} --directory="${workdir}" >> "${rdr}" 2>&1
+  evalretkill
+fi
+
+# c3 >> run mrproper
+aprint_ret "running mrproper"
+ cd "${makedir}"; mymake mrproper >> "${rdr}" 2>&1
+evalretkill
+
+# c4 >> copy config
+aprint_ret "copying the kernel config stated above."
+ cp -v "${useconf}" "${makedir}"/.config >> "${rdr}" 2>&1
+evalretkill
+
+# d1 >> apply patches
+aprint_nc
+#+lto +alfredchen -ck +uksm +misc +zstd
+for apatch in lto alfredchen misc uksm zstd-gcclto; do
+ aprint "applying ${cl_grn}${apatch}${c_res} patches."
+  for pp in "${patchdir}"/apathy/5.8/"${apatch}"/*; do
+   aprint_ret "${cb_blu}$(echo $pp | awk '{gsub(/^.*\//,""); print}')${c_res}"
+    patch -p1 < "${pp}" >> "${rdr}" 2>&1
+   evalretkill
+  done
+done
+
+# d2 >> run menuconfig
+aprint_nc; aprint_ask "run menuconfig for manual config? (y/n): "
+read answermenuconf
+
+case "$answermenuconf" in
+ yes|Y|y) aprint "running menuconfig.";     mymake menuconfig ;;
+ *)       aprint "not running menuconfig."; aprint_nc         ;;
+esac
+
+# d3 >> run make
+aprint_ask "run make? (y/n): "
+read answerbuildkern
+
+case "$answerbuildkern" in
+ yes|Y|y)
+  aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
+  aprint "redirecting output to ${cl_grn}${rdr}${c_res}."
+  datebefore=$(date +%s)
+
+  aprint_ret "running make."; mymake >> "${rdr}" 2>&1
+  evalretkill
+
+  dateafter=$(date +%s)
+  timespent=$(($dateafter - $datebefore))
+  humantime=$(printf "%dd %dh %dm\n"                      \
+              "$(echo "${timespent}/86400"        | bc)"  \
+              "$(echo "(${timespent}%86400)/3600" | bc)"  \
+              "$(echo "(${timespent}%3600)/60"    | bc)")
+  
+  aprint "build finished in ${cl_grn}${humantime}${c_res}."
+ ;;
+ *) aprint "not running make."; aprint_nc; exit 0 ;;
+esac
+
+# e1 >> install kernel
+aprint_nc; aprint_ask "install the built kernel? (y/n): "
+read answerkinst
+
+case "${answerkinst}" in
+ yes|Y|y)
+  aprint "installing the built kernel."
+   doas cp -v arch/x86/boot/bzImage /boot/vmlinuz    >> "${rdr}" 2>&1 &&
+   doas cp -v System.map            /boot/System.map >> "${rdr}" 2>&1 &&
+   doas cp -v .config               /boot/config     >> "${rdr}" 2>&1
+
+  aprint_ret "running ${cl_grn}lilo${c_res}."
+   doas -- lilo >> "${rdr}" 2>&1
+  evalret
+ ;;
+ *) aprint "not installing the built kernel." ;;
+esac
+
+# e2 >> package up the built kernel
+aprint_nc; aprint_ask "package up the built kernel? (y/n): "
+read answerpkgup
+
+case "${answerpkgup}" in
+ yes|Y|y)
+  aprint_ret "packaging up the built kernel."
+
+      localver="$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+                       print}' ${makedir}/.config)"
+   archivename="${kerver}${localver}-$(date +%s)"
+
+  mkdir -p "${workdir}/pkgup/boot"
+
+  cp -iv ${makedir}/arch/x86/boot/bzImage \
+   "${workdir}/pkgup/boot/vmlinuz"    >> "${rdr}" 2>&1
+  cp -iv ${makedir}/System.map            \
+   "${workdir}/pkgup/boot/System.map" >> "${rdr}" 2>&1
+  cp -iv ${makedir}/.config               \
+   "${workdir}/pkgup/boot/config"     >> "${rdr}" 2>&1
+  
+  cd "${workdir}"
+  /mss/bin/pkgup "pkgup" "${storepkg}"/"${archivename}" >> "${rdr}" 2>&1
+  rm -rf "${workdir}/pkgup"
+
+  evalret
+ ;;
+ *) aprint "not running pkgup." ;;
+esac
+
+
+# f1 >> clean up ram.
+aprint_nc; aprint_ask "clean up the workdir in ram? (y/n): "
+read answerclean
+
+case "${answerclean}" in
+ yes|Y|y) aprint_ret "cleaning up the workdir."; rm -rf ${makedir}; evalret ;;
+ *)       aprint "not cleaning up the workdir."                             ;;
+esac
