@@ -222,7 +222,7 @@
 [d] self	> xkeyboard-config-2.28
 
 [d] self	> xorg-server-1.20.9
-[d] bmlfs	>> libunwind-1.2.1
+[r] bmlfs	>> libunwind-1.3.1
 [d] bmlfs	>> libepoxy-1.5.3
 
 # xorg drivers
