@@ -397,10 +397,15 @@
 
 [r] self	> go-1.14.1
 
-[d] self	> llvm-10.0.1
-[d] self	> clang-10.0.1
-[d] self	> lld-10.0.1
-[d] self	> polly-10.0.1
+[d] self	> llvm-11.0.0-rc2
+[d] self	> clang-11.0.0-rc2
+[d] self	> lld-11.0.0-rc2
+[d] self	> polly-11.0.0-rc2
+[d] self	> libunwind-11.0.0-rc2
+[d] self	> libcxxabi-11.0.0-rc2
+[d] self	> libcxx-11.0.0-rc2
+[d] self	> compiler-rt-11.0.0-rc2
+
 [d] self	> rustc-1.46.0
 [d] self	> cbindgen-0.14.4
 [d] self	> nodejs-14.5.0
