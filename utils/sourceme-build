@@ -1,6 +1,6 @@
 export     CHOST="x86_64-apathy-linux-musl"
 export    CBUILD="${CHOST}"
-export MAKEFLAGS="-j2"
+export MAKEFLAGS="-j5"
 
 export       CC="${CHOST}-gcc"
 export      CXX="${CHOST}-g++"
