@@ -11,9 +11,7 @@
         "DisableFirefoxStudies": true,
         "DisableMasterPasswordCreation": true,
         "DisableSetDesktopBackground": true,
-        "DisableSystemAddonUpdate": true,
         "DontCheckDefaultBrowser": true,
-        "ExtensionUpdate": false,
         "NetworkPrediction": false,
         "OverridePostUpdatePage": "",
         "CaptivePortal": false
