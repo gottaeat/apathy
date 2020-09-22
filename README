@@ -24,9 +24,9 @@ simplified list of major components
    - musl 1.2.1         - musl-fts 1.2.7          - musl-obstack 1.1
    - gcompat 0.9.0      - libucontext 0.11
 
-   - llvm-11.0.0-rc2    - clang-11.0.0-rc2        - lld-11.0.0-rc2
-   - polly-11.0.0-rc2   - libunwind-11.0.0-rc2    - libcxxabi-11.0.0-rc2
-   - libcxx-11.0.0-rc2  - compiler-rt-11.0.0-rc2
+   - llvm-11.0.0-rc3    - clang-11.0.0-rc3        - lld-11.0.0-rc3
+   - polly-11.0.0-rc3   - libunwind-11.0.0-rc3    - libcxxabi-11.0.0-rc3
+   - libcxx-11.0.0-rc3  - compiler-rt-11.0.0-rc3
 
    - rustc 1.46.0       - cbindgen 0.14.4
 
