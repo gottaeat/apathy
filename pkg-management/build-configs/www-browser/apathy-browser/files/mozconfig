@@ -5,7 +5,7 @@ ac_add_options --libdir=/usr/lib
 ### compiler stuff
 ac_add_options --host=x86_64-apathy-linux-musl
 ac_add_options --target=x86_64-apathy-linux-musl
-ac_add_options --enable-optimize="-w -O3 -mtune=native -march=native -fstack-protector-strong -fno-common -fgraphite-identity -floop-nest-optimize -ftree-vectorize -fuse-ld=lld"
+ac_add_options --enable-optimize="-w -O3 -mtune=native -march=native -fstack-protector-strong -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize -fuse-ld=lld"
 ac_add_options --disable-warnings-as-errors
 ac_add_options --enable-gold=no
 ac_add_options --disable-jemalloc
