@@ -411,7 +411,7 @@
 [d] self	> nodejs-14.5.0
 
 [d] self	> firefox-78.3.0esr
-[d] self	>> gtk+-3.4.4
+[d] self	>> gtk+-3.24.23
 
 [d] self	> sinit-1.1-apathy
 [d] self	> zstd-1.4.5
