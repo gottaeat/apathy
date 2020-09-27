@@ -38,13 +38,13 @@ ac_add_options --enable-alsa
 ac_add_options --enable-ffmpeg
 ac_add_options --enable-smoosh
 ac_add_options --enable-webrtc
+ac_add_options --enable-eme="widevine"
 ac_add_options --disable-webspeech
 ac_add_options --disable-synth-speechd
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
 ac_add_options --disable-dbus
-ac_add_options --disable-eme
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-parental-controls
 ac_add_options --disable-pulseaudio
