@@ -160,7 +160,6 @@ nasm-2.14.02
 pango-1.42.4
 fribidi-1.0.8
 tiff-4.1.0
-gtk+-2.24.32
 libxkbcommon-0.8.4
 imlib2-1.6.1
 giflib-5.2.1

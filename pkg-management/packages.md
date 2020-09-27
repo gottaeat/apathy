@@ -263,7 +263,7 @@
 [r] bmlfs	>>> vala-0.46.5
 [d] bmlfs	>> tiff-4.1.0
 
-[d] self	> gtk+-2.24.32
+[r] self	> gtk+-2.24.32
 [d] bmlfs	> libxkbcommon-0.8.4
 
 [d] bmlfs	> imlib2-1.6.1
