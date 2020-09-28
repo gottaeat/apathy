@@ -4,14 +4,18 @@
 ## programs
 # > gcc
 prog_gcc(){
- export       CC="${CHOST}-gcc"
- export      CXX="${CHOST}-g++"
- export       LD="ld.bfd"
- export    STRIP="strip"
- export  OBJCOPY="objcopy"
- export  OBJDUMP="objdump"
- export  OBJSIZE="size"
- export  READELF="readelf"
+ export      CC="${CHOST}-gcc"
+ export     CXX="${CHOST}-g++"
+ export      LD="ld.bfd"
+ export      AR="${CHOST}-gcc-ar"
+ export      AS="as"
+ export      NM="${CHOST}-gcc-nm"
+ export   STRIP="strip"
+ export  RANLIB="${CHOST}-gcc-ranlib"
+ export OBJCOPY="objcopy"
+ export OBJDUMP="objdump"
+ export OBJSIZE="size"
+ export READELF="readelf"
 }
 
 # > clang
@@ -36,21 +40,21 @@ prog_clang(){
           ldflags_base="-Wl,--as-needed -Wl,--gc-sections -Wl,-O2"
 
 # > gcc
-       gcc_cflags_base="${cflags_base} -fno-common -fgraphite-identity -floop-nest-optimize -ftree-vectorize"  
+       gcc_cflags_base="${cflags_base} -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize"  
       gcc_ldflags_base="${ldflags_base}"
 
-        gcc_lto_cflags="${gcc_cflags_base} -flto=2 -fuse-linker-plugin -fno-fat-lto-objects"
+        gcc_lto_cflags="${gcc_cflags_base} -flto=1 -fuse-linker-plugin -fno-fat-lto-objects"
        gcc_lto_ldflags="${gcc_ldflags_base}"
 
 # > clang
-     clang_cflags_base="${cflags_base} -fuse-ld=lld -mllvm -polly"
+     clang_cflags_base="${cflags_base} -mllvm -polly -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
     clang_ldflags_base="${ldflags_base} -Wl,--icf=all"
 
- clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=2"
-clang_ldflags_lto_full="${clang_ldflags_base} -Wl,-lto-O3"
+ clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=1"
+clang_ldflags_lto_full="${clang_ldflags_base} -Wl,--lto-O3"
 
- clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=2"
-clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,-lto-O3 -Wl,--thinlto-jobs=2 -Wl,--thinlto-cache-dir=/mss/work/thinltocache"
+ clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=1"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3 -Wl,--thinlto-jobs=1 -Wl,--thinlto-cache-dir=/mss/work/thinltocache"
 
 
 ## profiles
@@ -68,11 +72,6 @@ bwprof_one(){
 bwprof_two(){
  profname="gcc - binutils - w/ lto"
  prog_gcc
-
- export       AR="${CC}-ar"
- export       AS="${CC}-as"
- export       NM="${CC}-nm"
- export   RANLIB="${CC}-ranlib"
 
  export   CFLAGS="${gcc_lto_cflags}"
  export CXXFLAGS="\${CFLAGS}"
@@ -145,7 +144,7 @@ case "$1" in
   printvarthingies
  ;;
  *)
-  aprint_fail "${cb_red}1-5${c_res}, or ${cb_red}print${c_res} exiting."
+  aprint_fail "${cb_red}1-5${c_res}, or ${cb_red}env${c_res} exiting."
   exit 1
  ;;
 esac
