@@ -1,4 +1,4 @@
-From 942a64023155844b1b6861826ec47f03dde11e2e Mon Sep 17 00:00:00 2001
+From 36535a152f75b4ed73b36ad7c3cdbf057700b247 Mon Sep 17 00:00:00 2001
 From: Nick Terrell <terrelln@fb.com>
 Date: Thu, 30 Jul 2020 12:08:37 -0700
 Subject: [PATCH 04/10] usr: add support for zstd compressed initramfs
@@ -29,7 +29,7 @@ Signed-off-by: Nick Terrell <terrelln@fb.com>
  2 files changed, 21 insertions(+)
 
 diff --git a/usr/Kconfig b/usr/Kconfig
-index 96afb03b6..2599bc21c 100644
+index 96afb03b65f9..2599bc21c1b2 100644
 --- a/usr/Kconfig
 +++ b/usr/Kconfig
 @@ -100,6 +100,15 @@ config RD_LZ4
@@ -67,7 +67,7 @@ index 96afb03b6..2599bc21c 100644
  	bool "None"
  	help
 diff --git a/usr/Makefile b/usr/Makefile
-index c12e6b15c..b1a81a40e 100644
+index c12e6b15ce72..b1a81a40eab1 100644
 --- a/usr/Makefile
 +++ b/usr/Makefile
 @@ -15,6 +15,7 @@ compress-$(CONFIG_INITRAMFS_COMPRESSION_LZMA)	:= lzma
@@ -79,5 +79,5 @@ index c12e6b15c..b1a81a40e 100644
  obj-$(CONFIG_BLK_DEV_INITRD) := initramfs_data.o
  
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.28.0.497.g54e85e7af1
 

@@ -1,4 +1,4 @@
-From 00fb87500ed1919d6180a38b84c7a05c07738136 Mon Sep 17 00:00:00 2001
+From 19a504c2ae7f414a7fc7d1bc601d32cc6828a401 Mon Sep 17 00:00:00 2001
 From: Piotr Gorski <lucjan.lucjanov@gmail.com>
 Date: Wed, 5 Aug 2020 16:41:38 -0800
 Subject: [PATCH 09/10] init: add support for zstd compressed modules
@@ -10,10 +10,10 @@ Signed-off-by: Piotr Gorski <lucjan.lucjanov@gmail.com>
  2 files changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index ea4ced7f4..ee95c6137 100644
+index 42c91deecf4a..08a5f69b4ca4 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -1030,8 +1030,8 @@ endif # INSTALL_MOD_STRIP
+@@ -1025,8 +1025,8 @@ endif # INSTALL_MOD_STRIP
  export mod_strip_cmd
  
  # CONFIG_MODULE_COMPRESS, if defined, will cause module to be compressed
@@ -24,7 +24,7 @@ index ea4ced7f4..ee95c6137 100644
  
  mod_compress_cmd = true
  ifdef CONFIG_MODULE_COMPRESS
-@@ -1041,6 +1041,9 @@ ifdef CONFIG_MODULE_COMPRESS
+@@ -1036,6 +1036,9 @@ ifdef CONFIG_MODULE_COMPRESS
    ifdef CONFIG_MODULE_COMPRESS_XZ
      mod_compress_cmd = $(XZ) -f
    endif # CONFIG_MODULE_COMPRESS_XZ
@@ -35,7 +35,7 @@ index ea4ced7f4..ee95c6137 100644
  export mod_compress_cmd
  
 diff --git a/init/Kconfig b/init/Kconfig
-index 2b6409fec..43ed3fef3 100644
+index 2b6409fec53f..43ed3fef3d03 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
 @@ -2186,8 +2186,8 @@ config MODULE_COMPRESS
@@ -69,5 +69,5 @@ index 2b6409fec..43ed3fef3 100644
  
  config MODULE_ALLOW_MISSING_NAMESPACE_IMPORTS
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.28.0.497.g54e85e7af1
 

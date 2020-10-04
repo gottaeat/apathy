@@ -1,4 +1,4 @@
-From 0efde356e415597f2ea790859df485bddcc94d7f Mon Sep 17 00:00:00 2001
+From f5c0db4537f4f63ab93d7134759b58f6425a1252 Mon Sep 17 00:00:00 2001
 From: Arvind Sankar <nivedita@alum.mit.edu>
 Date: Tue, 4 Aug 2020 19:48:17 -0400
 Subject: [PATCH 10/10] x86/boot/compressed: Use builtin mem functions for
@@ -52,7 +52,7 @@ Tested-by: Nick Terrell <nickrterrell@gmail.com>
  2 files changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
-index 39e592d0e..e478e40fb 100644
+index 39e592d0e0b4..e478e40fbe5a 100644
 --- a/arch/x86/boot/compressed/misc.c
 +++ b/arch/x86/boot/compressed/misc.c
 @@ -30,12 +30,9 @@
@@ -71,7 +71,7 @@ index 39e592d0e..e478e40fb 100644
  #define memmove		memmove
  
 diff --git a/arch/x86/boot/string.h b/arch/x86/boot/string.h
-index 995f7b7ad..a232da487 100644
+index 995f7b7ad512..a232da487cd2 100644
 --- a/arch/x86/boot/string.h
 +++ b/arch/x86/boot/string.h
 @@ -11,10 +11,7 @@ void *memcpy(void *dst, const void *src, size_t len);
@@ -87,5 +87,5 @@ index 995f7b7ad..a232da487 100644
  #define memset(d,c,l) __builtin_memset(d,c,l)
  #define memcmp	__builtin_memcmp
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.28.0.497.g54e85e7af1
 

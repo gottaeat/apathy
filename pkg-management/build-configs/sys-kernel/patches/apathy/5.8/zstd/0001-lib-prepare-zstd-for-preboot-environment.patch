@@ -1,4 +1,4 @@
-From a8f7c5dd5fb37f55b1ad9a2b165ce0aeb4ed4bea Mon Sep 17 00:00:00 2001
+From 7c64ecca9a3535fd55d9a697ea68ca0571cc2465 Mon Sep 17 00:00:00 2001
 From: Nick Terrell <terrelln@fb.com>
 Date: Thu, 30 Jul 2020 12:08:34 -0700
 Subject: [PATCH 01/10] lib: prepare zstd for preboot environment
@@ -25,7 +25,7 @@ Signed-off-by: Nick Terrell <terrelln@fb.com>
  2 files changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/lib/zstd/fse_decompress.c b/lib/zstd/fse_decompress.c
-index a84300e5a..0b353530f 100644
+index a84300e5a013..0b353530fb3f 100644
 --- a/lib/zstd/fse_decompress.c
 +++ b/lib/zstd/fse_decompress.c
 @@ -47,6 +47,7 @@
@@ -52,7 +52,7 @@ index a84300e5a..0b353530f 100644
  *  Templates
  ****************************************************************/
 diff --git a/lib/zstd/zstd_internal.h b/lib/zstd/zstd_internal.h
-index 1a79fab9e..dac753397 100644
+index 1a79fab9e13a..dac753397f86 100644
 --- a/lib/zstd/zstd_internal.h
 +++ b/lib/zstd/zstd_internal.h
 @@ -127,7 +127,14 @@ static const U32 OF_defaultNormLog = OF_DEFAULTNORMLOG;
@@ -90,5 +90,5 @@ index 1a79fab9e..dac753397 100644
  		ZSTD_copy8(op, ip);
  		op += 8;
 -- 
-2.28.0.rc2.1.g3d20111cbd
+2.28.0.497.g54e85e7af1
 
