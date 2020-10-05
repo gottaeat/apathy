@@ -16,8 +16,8 @@ visualizer_output_name            = visualizer thingy
 visualizer_in_stereo              = no
 visualizer_sync_interval          = 10
 visualizer_type                   = spectrum
-visualizer_look                   = ..
-visualizer_color                  = blue:b
+visualizer_look                   = .-
+visualizer_color                  = cyan
 
 # > delays
 playlist_disable_highlight_delay  = 5

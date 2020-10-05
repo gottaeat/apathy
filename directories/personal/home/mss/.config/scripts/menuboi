@@ -3,8 +3,6 @@ sel=$(printf "firefox\nkill-dwm\nreboot\npoweroff" \
       | dmenu -b -p "meh:")
 
 killdwm(){
- /home/mss/execs/redshift -x
-
  kill -TERM \
   -"$(ps -o pgid $(pidof dwm)     \
       | awk 'NR==2 {gsub(" ",""); \
@@ -13,7 +11,7 @@ killdwm(){
 
 case "$sel" in
  poweroff)       killdwm && doas -- kill -USR1 1 ;;
- reboot)         killdwm && doas -- kill -INT 1  ;;
- kill-dwm)       killdwm        ;;
- firefox) firefox ;;
+ reboot)         killdwm && doas -- kill -INT  1 ;;
+ kill-dwm)       killdwm                         ;;
+ firefox)        firefox                         ;;
 esac

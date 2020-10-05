@@ -11,9 +11,9 @@ numlockx on
 xrandr --auto --output LVDS-1 --primary
 xrandr --auto --output VGA-1  --right-of LVDS-1
 
-/mss/bin/disableaccel
+#/mss/bin/disableaccel
 /home/mss/.fehbg
 cp /home/mss/.fehbg /home/mss/.fehb.def
 
-dwmblocks &
-while true; do dwm 2> /tmp/.dwm.log; done
+/home/mss/.config/scripts/statusbar x &
+while :; do dwm 2>&1; done
