@@ -30,6 +30,7 @@ alias        tl="tmux ls"
 
 # a4 >> git
 alias        gs="git status -s"
+alias        gl="git log --oneline"
 alias      gcd1="git clone --depth=1"
 
 # a5 >> media
@@ -50,7 +51,7 @@ alias     mount="mount -v"
 alias        a2="/mss/bin/a2norpc"
 alias       poz="yash --posix"
 alias    onegai="doas --"
-alias  fetchall="(fetch ascii | head -13; pkg pver | head -6; pkg stats)"
+alias  fetchall="(fetch ascii | head -13; pkg pver | head -7; pkg stats)"
 alias      fuck="printenv | sort -su | less"
 alias    reboot="doas -- kill -INT 1"
 alias  poweroff="doas -- kill -USR1 1"
