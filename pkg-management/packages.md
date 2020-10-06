@@ -31,7 +31,7 @@
 
 [d] alpine	> sysstat-12.2.0
 [d] self	> curl-7.72.0
-		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busynox /bin/ntpd
+		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busybox /bin/ntpd
 
 [d] self	> git-2.26.2
 [d] alpine	>> pcre2-10.34
@@ -423,6 +423,7 @@
 [d] self	> transmission-3.0
 [o] self	> ruby-2.7.1
 [d] self	> mkvtoolnix-48.0.0
+[d] self	> pciutils-3.7.0
 ```
 ```
 ### base mlfs packages

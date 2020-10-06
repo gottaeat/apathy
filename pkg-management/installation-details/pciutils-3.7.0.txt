@@ -1,0 +1,7 @@
+/usr/bin/lspci
+/usr/bin/setpci
+/usr/bin/update-pciids
+
+/usr/share/hwdata
+
+/usr/share/man
