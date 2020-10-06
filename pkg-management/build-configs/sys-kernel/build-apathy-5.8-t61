@@ -20,7 +20,7 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="20200923_163133-gcc-bmq-lto-ksm-zstd-o3-ohgod-graysky2"
+ confname="20201006_042051-gcc-bmq-lto-ksm-zstd-o3-ohgod-graysky2"
   useconf="${confdir}/5.8/5.8-${confname}.config"
  localver="5.8$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
