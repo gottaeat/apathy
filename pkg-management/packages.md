@@ -57,7 +57,7 @@
 [d] alpine	> tmux-3.0a			--> with my own patch for corner chars
 [d] self	>> libevent-2.1.11
 
-[d] alpine	> htop-2.2.0			--> with --disable-cgroup
+[d] self	> htop-3.0.2
 [d] alpine	> strace-5.4			--> built on default lts alpine kernel
 [d] alpine	> libnl-1.1.4
 

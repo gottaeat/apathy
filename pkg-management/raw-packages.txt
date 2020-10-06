@@ -22,7 +22,7 @@ rsync-3.1.3
 popt-1.16
 tmux-3.0a
 libevent-2.1.11
-htop-2.2.0
+htop-3.0.2
 strace-5.4
 libnl-1.1.4
 iftop-0.17
