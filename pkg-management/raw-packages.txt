@@ -244,8 +244,8 @@ libunwind-11.0.0-rc3
 libcxxabi-11.0.0-rc3
 libcxx-11.0.0-rc3
 compiler-rt-11.0.0-rc3
-rustc-1.46.0
-cbindgen-0.14.4
+rustc-1.47.0
+cbindgen-0.15.0
 nodejs-14.5.0
 firefox-78.3.0esr
 gtk+-3.24.23

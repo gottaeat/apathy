@@ -406,8 +406,8 @@
 [d] self	> libcxx-11.0.0-rc3
 [d] self	> compiler-rt-11.0.0-rc3
 
-[d] self	> rustc-1.46.0
-[d] self	> cbindgen-0.14.4
+[d] self	> rustc-1.47.0
+[d] self	> cbindgen-0.15.0
 [d] self	> nodejs-14.5.0
 
 [d] self	> firefox-78.3.0esr
