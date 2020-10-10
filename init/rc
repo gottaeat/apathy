@@ -86,7 +86,7 @@ initboi(){
  evalret
 
  ainitmes "setting up the ${c_lcyan}console${c_reset}."
-  setfont  ter-v12n -m 8859-1 && loadkeys us >/dev/null 2>&1
+  setfont  ter-v14n -m 8859-1 && loadkeys us >/dev/null 2>&1
  evalret
 
  ainitmes "starting the ${c_lcyan}log daemons${c_reset}."
@@ -100,6 +100,7 @@ initboi(){
  ainit_nc
  ainitmes "${c_blue}services${c_reset}:"; ainit_nc
 
+ $sdir/thinkfan		start
  $sdir/gpm		start
  $sdir/iptables		start
  $sdir/network		start wlan0 solitude
@@ -107,7 +108,7 @@ initboi(){
  $sdir/dnscrypt-proxy	start
  $sdir/ntp		start
 #$sdir/transmission	start
-#$sdir/ssh		start
+ $sdir/ssh		start
 
  /mss/bin/sh -c '/mss/init/bin/respawn \
                  /mss/init/bin/getty   \
@@ -125,7 +126,8 @@ initboi(){
 goingdown(){
  stty onlcr; banner
 
-#$sdir/ssh		stop
+ $sdir/thinkfan		stop
+ $sdir/ssh		stop
  $sdir/network		stop wlan0
  $sdir/ntp		stop
 
