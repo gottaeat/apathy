@@ -424,6 +424,7 @@
 [o] self	> ruby-2.7.1
 [d] self	> mkvtoolnix-48.0.0
 [d] self	> pciutils-3.7.0
+[d] self	> thinkfan-1.2.1
 ```
 ```
 ### base mlfs packages

@@ -1,0 +1,4 @@
+/usr/sbin/thinkfan
+
+/usr/share/doc
+/usr/share/man
