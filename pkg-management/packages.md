@@ -397,14 +397,14 @@
 
 [r] self	> go-1.14.1
 
-[d] self	> llvm-11.0.0-rc3
-[d] self	> clang-11.0.0-rc3
-[d] self	> lld-11.0.0-rc3
-[d] self	> polly-11.0.0-rc3
-[d] self	> libunwind-11.0.0-rc3
-[d] self	> libcxxabi-11.0.0-rc3
-[d] self	> libcxx-11.0.0-rc3
-[d] self	> compiler-rt-11.0.0-rc3
+[d] self	> llvm-11.0.0-rc6
+[d] self	> clang-11.0.0-rc6
+[d] self	> lld-11.0.0-rc6
+[d] self	> polly-11.0.0-rc6
+[d] self	> libunwind-11.0.0-rc6
+[d] self	> libcxxabi-11.0.0-rc6
+[d] self	> libcxx-11.0.0-rc6
+[d] self	> compiler-rt-11.0.0-rc6
 
 [d] self	> rustc-1.47.0
 [d] self	> cbindgen-0.15.0
