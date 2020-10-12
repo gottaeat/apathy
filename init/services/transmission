@@ -6,16 +6,16 @@ case "$1" in
   ainitmes "${c_lcyan}(transmission)${c_reset}: starting."
    su mss -c \
     'transmission-daemon \
-     --allowed "127.0.0.1" \
-     --port    "9091"      \
-     --no-auth             \
-     --no-watch-dir        \
-     --no-incomplete-dir   \
-     --dht                 \
-     --utp                 \
-     --paused              \
-     --portmap             \
-     --global-seedratio 0  \
+     --allowed "127.0.0.1,192.168.*.*" \
+     --port    "9091"                  \
+     --no-auth                         \
+     --no-watch-dir                    \
+     --no-incomplete-dir               \
+     --dht                             \
+     --utp                             \
+     --paused                          \
+     --portmap                         \
+     --global-seedratio 0              \
      --pid-file "/run/transmission.pid"'
   evalret
  ;;
