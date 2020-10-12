@@ -4,7 +4,7 @@
 case "$1" in
  start)
   ainitmes "${c_lcyan}(thinkfan)${c_reset}: starting."
-   thinkfan -s 1 -n -q >/dev/null 2>&1 &
+   thinkfan -s 5 -n -q >/dev/null 2>&1 &
   evalret
  ;;
  stop)
