@@ -1,0 +1,1932 @@
+diff -uraN a/Documentation/kbuild/lto-build.rst b/Documentation/kbuild/lto-build.rst
+--- a/Documentation/kbuild/lto-build.rst	1970-01-01 02:00:00.000000000 +0200
++++ b/Documentation/kbuild/lto-build.rst	2020-10-13 14:02:30.480684498 +0300
+@@ -0,0 +1,74 @@
++=====================================================
++gcc link time optimization (LTO) for the Linux kernel
++=====================================================
++
++Link Time Optimization allows the compiler to optimize the complete program
++instead of just each file.
++
++The compiler can inline functions between files and do various other global
++optimizations, like specializing functions for common parameters,
++determing when global variables are clobbered, making functions pure/const,
++propagating constants globally, removing unneeded data and others.
++
++It will also drop unused functions which can make the kernel
++image smaller in some circumstances, in particular for small kernel
++configurations.
++
++For small monolithic kernels it can throw away unused code very effectively
++(especially when modules are disabled) and usually shrinks
++the code size.
++
++Build time and memory consumption at build time will increase, depending
++on the size of the largest binary. Modular kernels are less affected.
++With LTO incremental builds are less incremental, as always the whole
++binary needs to be re-optimized (but not re-parsed)
++
++Oops can be somewhat more difficult to read, due to the more aggressive
++inlining: it helps to use scripts/faddr2line.
++
++Normal "reasonable" builds work with less than 4GB of RAM, but very large
++configurations like allyesconfig typically need more memory. The actual
++memory needed depends on the available memory (gcc sizes its garbage
++collector pools based on that or on the ulimit -m limits) and
++the compiler version.
++
++Configuration:
++--------------
++- Enable CONFIG_LTO_MENU and then disable CONFIG_LTO_DISABLE.
++This is mainly to not have allyesconfig default to LTO.
++
++Requirements:
++-------------
++- Enough memory: 4GB for a standard build, more for allyesconfig
++The peak memory usage happens single threaded (when lto-wpa merges types),
++so dialing back -j options will not help much.
++
++A 32bit compiler is unlikely to work due to the memory requirements.
++You can however build a kernel targeted at 32bit on a 64bit host.
++
++FAQs:
++-----
++Q: I get a section type attribute conflict
++A: Usually because of someone doing
++const __initdata (should be const __initconst) or const __read_mostly
++(should be just const). Check both symbols reported by gcc.
++
++References:
++-----------
++
++Presentation on Kernel LTO
++(note, performance numbers/details outdated.  In particular gcc 4.9 fixed
++most of the build time problems):
++http://halobates.de/kernel-lto.pdf
++
++Generic gcc LTO:
++http://www.ucw.cz/~hubicka/slides/labs2013.pdf
++http://www.hipeac.net/system/files/barcelona.pdf
++
++Somewhat outdated too:
++http://gcc.gnu.org/projects/lto/lto.pdf
++http://gcc.gnu.org/projects/lto/whopr.pdf
++
++Happy Link-Time-Optimizing!
++
++Andi Kleen
+diff -uraN a/Makefile b/Makefile
+--- a/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/Makefile	2020-10-13 14:10:02.403694985 +0300
+@@ -438,6 +438,7 @@
+ else
+ CC		= $(CROSS_COMPILE)gcc
+ LD		= $(CROSS_COMPILE)ld
++LDFINAL		= $(LD)
+ AR		= $(CROSS_COMPILE)ar
+ NM		= $(CROSS_COMPILE)nm
+ OBJCOPY		= $(CROSS_COMPILE)objcopy
+@@ -512,7 +513,7 @@
+ export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC
+ export CPP AR NM STRIP OBJCOPY OBJDUMP OBJSIZE READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
+ export PERL PYTHON PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
+-export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD
++export KGZIP KBZIP2 KLZOP LZMA LZ4 XZ ZSTD LDFINAL
+ export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
+ 
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
+@@ -956,6 +957,7 @@
+ 
+ # include additional Makefiles when needed
+ include-y			:= scripts/Makefile.extrawarn
++include-$(CONFIG_LTO)		:= scripts/Makefile.lto
+ include-$(CONFIG_KASAN)		+= scripts/Makefile.kasan
+ include-$(CONFIG_KCSAN)		+= scripts/Makefile.kcsan
+ include-$(CONFIG_UBSAN)		+= scripts/Makefile.ubsan
+@@ -1155,7 +1157,7 @@
+ 
+ # Final link of vmlinux with optional arch pass after final link
+ cmd_link-vmlinux =                                                 \
+-	$(CONFIG_SHELL) $< "$(LD)" "$(KBUILD_LDFLAGS)" "$(LDFLAGS_vmlinux)";    \
++	$(CONFIG_SHELL) $< "$(LDFINAL)" "$(KBUILD_LDFLAGS)" "$(LDFLAGS_vmlinux)";    \
+ 	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+ 
+ vmlinux: scripts/link-vmlinux.sh autoksyms_recursive $(vmlinux-deps) FORCE
+@@ -1802,10 +1804,15 @@
+ 		-o -name '*.lex.c' -o -name '*.tab.[ch]' \
+ 		-o -name '*.asn1.[ch]' \
+ 		-o -name '*.symtypes' -o -name 'modules.order' \
+-		-o -name '.tmp_*.o.*' \
++		-o -name '.tmp_*.o' \
++		-o -name '.tmp_*.sym' \
++		-o -name '.tmp_*.S' \
++		-o -name '.tmp_System.map' \
++		-o -name '*.ver.[co]' \
++		-o -name '.tmp_*_vermerged.[co]' \
+ 		-o -name '*.c.[012]*.*' \
+ 		-o -name '*.ll' \
+-		-o -name '*.gcno' \) -type f -print | xargs rm -f
++		-o -name '*.gcno' -o -name '.kallsyms.pad' \) -type f -print | xargs rm -f
+ 
+ # Generate tags for editors
+ # ---------------------------------------------------------------------------
+diff -uraN a/arch/x86/Kconfig b/arch/x86/Kconfig
+--- a/arch/x86/Kconfig	2020-10-12 00:15:50.000000000 +0300
++++ b/arch/x86/Kconfig	2020-10-13 14:02:30.483684498 +0300
+@@ -148,7 +148,9 @@
+ 	select HAVE_ARCH_MMAP_RND_BITS		if MMU
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if MMU && COMPAT
+ 	select HAVE_ARCH_COMPAT_MMAP_BASES	if MMU && COMPAT
+-	select HAVE_ARCH_PREL32_RELOCATIONS
++	# LTO can move assembler to different files, so all
++	# the init functions would need to be global for this to work
++	select HAVE_ARCH_PREL32_RELOCATIONS	if !LTO
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
+ 	select HAVE_ARCH_STACKLEAK
+@@ -226,6 +228,7 @@
+ 	select PCI_DOMAINS			if PCI
+ 	select PCI_LOCKLESS_CONFIG		if PCI
+ 	select PERF_EVENTS
++	select ARCH_SUPPORTS_LTO
+ 	select RTC_LIB
+ 	select RTC_MC146818_LIB
+ 	select SPARSE_IRQ
+diff -uraN a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+--- a/arch/x86/kernel/alternative.c	2020-10-12 00:15:50.000000000 +0300
++++ b/arch/x86/kernel/alternative.c	2020-10-13 14:02:30.484684498 +0300
+@@ -634,11 +634,12 @@
+  * convention such that we can 'call' it from assembly.
+  */
+ 
+-extern void int3_magic(unsigned int *ptr); /* defined in asm */
++extern __visible void int3_magic(unsigned int *ptr); /* defined in asm */
+ 
+ asm (
+ "	.pushsection	.init.text, \"ax\", @progbits\n"
+ "	.type		int3_magic, @function\n"
++"	.globl		int3_magic\n"
+ "int3_magic:\n"
+ "	movl	$1, (%" _ASM_ARG1 ")\n"
+ "	ret\n"
+@@ -646,7 +647,7 @@
+ "	.popsection\n"
+ );
+ 
+-extern __initdata unsigned long int3_selftest_ip; /* defined in asm below */
++extern __initdata __visible unsigned long int3_selftest_ip; /* defined in asm below */
+ 
+ static int __init
+ int3_exception_notify(struct notifier_block *self, unsigned long val, void *data)
+@@ -687,6 +688,7 @@
+ 	asm volatile ("1: int3; nop; nop; nop; nop\n\t"
+ 		      ".pushsection .init.data,\"aw\"\n\t"
+ 		      ".align " __ASM_SEL(4, 8) "\n\t"
++		      ".globl int3_selftest_ip\n\t"
+ 		      ".type int3_selftest_ip, @object\n\t"
+ 		      ".size int3_selftest_ip, " __ASM_SEL(4, 8) "\n\t"
+ 		      "int3_selftest_ip:\n\t"
+diff -uraN a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+--- a/arch/x86/purgatory/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/arch/x86/purgatory/Makefile	2020-10-13 14:02:30.484684498 +0300
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ OBJECT_FILES_NON_STANDARD := y
++KBUILD_CFLAGS	     += $(DISABLE_LTO)
+ 
+ purgatory-y := purgatory.o stack.o setup-x86_$(BITS).o sha256.o entry64.o string.o
+ 
+diff -uraN a/arch/x86/realmode/Makefile b/arch/x86/realmode/Makefile
+--- a/arch/x86/realmode/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/arch/x86/realmode/Makefile	2020-10-13 14:02:30.485684498 +0300
+@@ -10,6 +10,7 @@
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+ KASAN_SANITIZE			:= n
+ KCSAN_SANITIZE			:= n
++KBUILD_CFLAGS 			+= $(DISABLE_LTO)
+ OBJECT_FILES_NON_STANDARD	:= y
+ 
+ subdir- := rm
+diff -uraN a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+--- a/drivers/firmware/efi/libstub/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/firmware/efi/libstub/Makefile	2020-10-13 14:02:30.486684498 +0300
+@@ -56,6 +56,7 @@
+ 
+ $(obj)/lib-%.o: $(srctree)/lib/%.c FORCE
+ 	$(call if_changed_rule,cc_o_c)
++	$(if $(CONFIG_MODVERSIONS),touch $(@:.o=.ver.c))
+ 
+ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o fdt.o string.o \
+ 				   $(patsubst %.c,lib-%.o,$(efi-deps-y))
+@@ -122,4 +123,5 @@
+ 		echo "$@: absolute symbol references not allowed in the EFI stub" >&2; \
+ 		/bin/false;						\
+ 	fi;								\
+-	$(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@
++	$(OBJCOPY) $(STUBCOPY_FLAGS-y) $< $@;				\
++	$(if $(CONFIG_MODVERSIONS),touch $(@:.o=.ver.c),true)
+diff -uraN a/drivers/gpu/drm/amd/amdkfd/kfd_iommu.c b/drivers/gpu/drm/amd/amdkfd/kfd_iommu.c
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_iommu.c	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_iommu.c	2020-10-13 14:02:30.486684498 +0300
+@@ -330,8 +330,8 @@
+ }
+ 
+ extern bool amd_iommu_pc_supported(void);
+-extern u8 amd_iommu_pc_get_max_banks(u16 devid);
+-extern u8 amd_iommu_pc_get_max_counters(u16 devid);
++extern u8 amd_iommu_pc_get_max_banks(unsigned devid);
++extern u8 amd_iommu_pc_get_max_counters(unsigned devid);
+ 
+ /** kfd_iommu_add_perf_counters - Add IOMMU performance counters to topology
+  */
+diff -uraN a/drivers/media/platform/sti/delta/delta-ipc.c b/drivers/media/platform/sti/delta/delta-ipc.c
+--- a/drivers/media/platform/sti/delta/delta-ipc.c	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/media/platform/sti/delta/delta-ipc.c	2020-10-13 14:02:30.487684498 +0300
+@@ -175,8 +175,8 @@
+ 	msg.ipc_buf_size = ipc_buf_size;
+ 	msg.ipc_buf_paddr = ctx->ipc_buf->paddr;
+ 
+-	memcpy(msg.name, name, sizeof(msg.name));
+-	msg.name[sizeof(msg.name) - 1] = 0;
++	memset(msg.name, 0, sizeof(msg.name));
++	strcpy(msg.name, name);
+ 
+ 	msg.param_size = param->size;
+ 	memcpy(ctx->ipc_buf->vaddr, param->data, msg.param_size);
+diff -uraN a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
+--- a/drivers/misc/lkdtm/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/misc/lkdtm/Makefile	2020-10-13 14:02:30.488684498 +0300
+@@ -20,3 +20,4 @@
+ targets += rodata.o rodata_objcopy.o
+ $(obj)/rodata_objcopy.o: $(obj)/rodata.o FORCE
+ 	$(call if_changed,objcopy)
++	$(if $(CONFIG_MODVERSIONS),touch $(obj)/rodata_objcopy.ver.c)
+diff -uraN a/drivers/ras/cec.c b/drivers/ras/cec.c
+--- a/drivers/ras/cec.c	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/ras/cec.c	2020-10-13 14:02:30.488684498 +0300
+@@ -553,20 +553,20 @@
+ 	.priority	= MCE_PRIO_CEC,
+ };
+ 
+-static void __init cec_init(void)
++static int __init cec_init(void)
+ {
+ 	if (ce_arr.disabled)
+-		return;
++		return 0;
+ 
+ 	ce_arr.array = (void *)get_zeroed_page(GFP_KERNEL);
+ 	if (!ce_arr.array) {
+ 		pr_err("Error allocating CE array page!\n");
+-		return;
++		return -ENOMEM;
+ 	}
+ 
+ 	if (create_debugfs_nodes()) {
+ 		free_page((unsigned long)ce_arr.array);
+-		return;
++		return -ENOMEM;
+ 	}
+ 
+ 	INIT_DELAYED_WORK(&cec_work, cec_work_fn);
+@@ -575,6 +575,7 @@
+ 	mce_register_decode_chain(&cec_nb);
+ 
+ 	pr_info("Correctable Errors collector initialized.\n");
++	return 0;
+ }
+ late_initcall(cec_init);
+ 
+diff -uraN a/drivers/xen/time.c b/drivers/xen/time.c
+--- a/drivers/xen/time.c	2020-10-12 00:15:50.000000000 +0300
++++ b/drivers/xen/time.c	2020-10-13 14:02:30.489684498 +0300
+@@ -144,7 +144,7 @@
+ }
+ 
+ /* return true when a vcpu could run but has no real cpu to run on */
+-bool xen_vcpu_stolen(int vcpu)
++__visible bool xen_vcpu_stolen(int vcpu)
+ {
+ 	return per_cpu(xen_runstate, vcpu).state == RUNSTATE_runnable;
+ }
+diff -uraN a/include/asm-generic/export.h b/include/asm-generic/export.h
+--- a/include/asm-generic/export.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/asm-generic/export.h	2020-10-13 14:02:30.490684498 +0300
+@@ -43,17 +43,6 @@
+ __kstrtab_\name:
+ 	.asciz "\name"
+ 	.previous
+-#ifdef CONFIG_MODVERSIONS
+-	.section ___kcrctab\sec+\name,"a"
+-	.balign KCRC_ALIGN
+-#if defined(CONFIG_MODULE_REL_CRCS)
+-	.long __crc_\name - .
+-#else
+-	.long __crc_\name
+-#endif
+-	.weak __crc_\name
+-	.previous
+-#endif
+ #endif
+ .endm
+ 
+diff -uraN a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+--- a/include/asm-generic/vmlinux.lds.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/asm-generic/vmlinux.lds.h	2020-10-13 14:02:30.491684498 +0300
+@@ -459,6 +459,12 @@
+ 									\
+ 	TRACEDATA							\
+ 									\
++	.kallsyms          : AT(ADDR(.kallsyms) - LOAD_OFFSET) {	\
++		__start_kallsyms = .;					\
++		*(.kallsyms)						\
++		__end_kallsyms = .;					\
++	}								\
++									\
+ 	/* Kernel symbol table: Normal symbols */			\
+ 	__ksymtab         : AT(ADDR(__ksymtab) - LOAD_OFFSET) {		\
+ 		__start___ksymtab = .;					\
+diff -uraN a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
+--- a/include/linux/compiler_attributes.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/linux/compiler_attributes.h	2020-10-13 14:02:30.492684498 +0300
+@@ -34,6 +34,7 @@
+ # define __GCC4_has_attribute___no_caller_saved_registers__ 0
+ # define __GCC4_has_attribute___noclone__             1
+ # define __GCC4_has_attribute___nonstring__           0
++# define __GCC4_has_attribute___no_reorder__          0
+ # define __GCC4_has_attribute___no_sanitize_address__ (__GNUC_MINOR__ >= 8)
+ # define __GCC4_has_attribute___no_sanitize_undefined__ (__GNUC_MINOR__ >= 9)
+ # define __GCC4_has_attribute___fallthrough__         0
+@@ -278,4 +279,14 @@
+  */
+ #define __weak                          __attribute__((__weak__))
+ 
++/*
++ * https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes
++ */
++
++#if __has_attribute(__no_reorder__)
++#define __noreorder			__attribute__((no_reorder))
++#else
++#define __noreorder
++#endif
++
+ #endif /* __LINUX_COMPILER_ATTRIBUTES_H */
+diff -uraN a/include/linux/export.h b/include/linux/export.h
+--- a/include/linux/export.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/linux/export.h	2020-10-13 14:02:30.494684498 +0300
+@@ -19,26 +19,6 @@
+ #define THIS_MODULE ((struct module *)0)
+ #endif
+ 
+-#ifdef CONFIG_MODVERSIONS
+-/* Mark the CRC weak since genksyms apparently decides not to
+- * generate a checksums for some symbols */
+-#if defined(CONFIG_MODULE_REL_CRCS)
+-#define __CRC_SYMBOL(sym, sec)						\
+-	asm("	.section \"___kcrctab" sec "+" #sym "\", \"a\"	\n"	\
+-	    "	.weak	__crc_" #sym "				\n"	\
+-	    "	.long	__crc_" #sym " - .			\n"	\
+-	    "	.previous					\n")
+-#else
+-#define __CRC_SYMBOL(sym, sec)						\
+-	asm("	.section \"___kcrctab" sec "+" #sym "\", \"a\"	\n"	\
+-	    "	.weak	__crc_" #sym "				\n"	\
+-	    "	.long	__crc_" #sym "				\n"	\
+-	    "	.previous					\n")
+-#endif
+-#else
+-#define __CRC_SYMBOL(sym, sec)
+-#endif
+-
+ #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
+ #include <linux/compiler.h>
+ /*
+@@ -78,7 +58,7 @@
+ 
+ #ifdef __GENKSYMS__
+ 
+-#define ___EXPORT_SYMBOL(sym, sec, ns)	__GENKSYMS_EXPORT_SYMBOL(sym)
++#define ___EXPORT_SYMBOL(sym, sec, ns)	__GENKSYMS_EXPORT_SYMBOL(sec, sym)
+ 
+ #else
+ 
+@@ -96,12 +76,13 @@
+  */
+ #define ___EXPORT_SYMBOL(sym, sec, ns)						\
+ 	extern typeof(sym) sym;							\
+-	extern const char __kstrtab_##sym[];					\
+-	extern const char __kstrtabns_##sym[];					\
+-	__CRC_SYMBOL(sym, sec);							\
++	extern const char __visible __kstrtab_##sym[];				\
++	extern const char __visible __kstrtabns_##sym[];			\
+ 	asm("	.section \"__ksymtab_strings\",\"aMS\",%progbits,1	\n"	\
++	    "   .globl __kstrtab_" #sym	"				\n"	\
+ 	    "__kstrtab_" #sym ":					\n"	\
+ 	    "	.asciz 	\"" #sym "\"					\n"	\
++	    "   .globl __kstrtabns_" #sym "				\n"	\
+ 	    "__kstrtabns_" #sym ":					\n"	\
+ 	    "	.asciz 	\"" ns "\"					\n"	\
+ 	    "	.previous						\n");	\
+diff -uraN a/include/linux/init.h b/include/linux/init.h
+--- a/include/linux/init.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/linux/init.h	2020-10-13 14:02:30.495684498 +0300
+@@ -193,7 +193,7 @@
+ 	    ".previous					\n");
+ #else
+ #define ___define_initcall(fn, id, __sec) \
+-	static initcall_t __initcall_##fn##id __used \
++	static initcall_t __initcall_##fn##id __used __noreorder \
+ 		__attribute__((__section__(#__sec ".init"))) = fn;
+ #endif
+ 
+diff -uraN a/include/linux/linkage.h b/include/linux/linkage.h
+--- a/include/linux/linkage.h	2020-10-12 00:15:50.000000000 +0300
++++ b/include/linux/linkage.h	2020-10-13 14:02:30.495684498 +0300
+@@ -23,17 +23,13 @@
+ #endif
+ 
+ #ifndef cond_syscall
+-#define cond_syscall(x)	asm(				\
+-	".weak " __stringify(x) "\n\t"			\
+-	".set  " __stringify(x) ","			\
+-		 __stringify(sys_ni_syscall))
++#define cond_syscall(x)	\
++	extern long x(void) __attribute__((alias("sys_ni_syscall"), weak));
+ #endif
+ 
+ #ifndef SYSCALL_ALIAS
+-#define SYSCALL_ALIAS(alias, name) asm(			\
+-	".globl " __stringify(alias) "\n\t"		\
+-	".set   " __stringify(alias) ","		\
+-		  __stringify(name))
++#define SYSCALL_ALIAS(a, name) \
++	long a(void) __attribute__((alias(__stringify(name))))
+ #endif
+ 
+ #define __page_aligned_data	__section(.data..page_aligned) __aligned(PAGE_SIZE)
+diff -uraN a/init/Kconfig b/init/Kconfig
+--- a/init/Kconfig	2020-10-12 00:15:50.000000000 +0300
++++ b/init/Kconfig	2020-10-13 14:02:30.497684498 +0300
+@@ -1347,6 +1347,86 @@
+ 	  present. This option is not well tested yet, so use at your
+ 	  own risk.
+ 
++config ARCH_SUPPORTS_LTO
++	bool
++
++# Some ar versions leak file descriptors when using the LTO
++# plugin and cause strange errors when ulimit -n is too low.
++# Pick an arbitrary threshold, which should be enough for most
++# kernel configs. This was a regression that is only
++# in some transient binutils version, so either older or
++# new enough is ok.
++# This might not be the exact range with this bug.
++config BAD_AR
++	depends on LD_VERSION = 230000000
++	depends on $(shell,ulimit -n) < 4000
++	def_bool y
++
++config LTO_MENU
++	bool "Enable gcc link time optimization (LTO)"
++	depends on ARCH_SUPPORTS_LTO
++# for now. Does LLVM need the gcc infrastructure at all?
++	depends on CC_IS_GCC
++# 4.7 works mostly, but it sometimes loses symbols on large builds
++# This can be worked around by marking those symbols visible,
++# but that is fairly ugly and the problem is gone with 4.8
++# 4.8 was very slow
++# 4.9 was missing __attribute__((noreorder)) for ordering initcalls,
++# and needed -fno-toplevel-reorder, which can lead to missing symbols
++# 5.0 ICEs with newer kernels
++# so only support 6.0+
++	depends on GCC_VERSION >= 60000
++# binutils before 2.27 has various problems with plugins
++	depends on LD_VERSION >= 227000000
++	depends on !BAD_AR
++	help
++	  Enable whole program (link time) optimizations (LTO) for the the
++	  whole kernel and each module.  This usually increases compile time,
++	  but can lead to better code. It allows the compiler to inline
++	  functions between different files and do other global optimization.
++	  It allows the compiler to drop unused code.
++
++	  With this option the compiler will also do some global checking over
++	  different source files.
++
++	  This requires a gcc 6.0 or later compiler and not too old binutils.
++
++	  On larger non modular configurations this may need more than 4GB of
++	  RAM for the link phase. It will likely not work on those with a
++	  32bit hosted compiler.
++
++	  For more information see Documentation/kbild/lto-build.rst
++
++config LTO_DISABLE
++         bool "Disable LTO again"
++         depends on LTO_MENU
++         default n
++         help
++           This option is merely here so that allyesconfig or allmodconfig do
++           not enable LTO. If you want to actually use LTO do not enable.
++
++config LTO
++	bool
++	default y
++	depends on LTO_MENU && !LTO_DISABLE
++
++config LTO_CP_CLONE
++	bool "Allow aggressive cloning for function specialization"
++	depends on LTO
++	help
++	  Allow the compiler to clone and specialize functions for specific
++	  arguments when it determines these arguments are very commonly
++	  called.  Experimential. Will increase text size.
++
++config SINGLE_LINK
++	bool "Use single linking step for final vmlinux"
++	default y if LTO
++	# for now. In theory should work everywhere except for um
++	depends on ARCH_SUPPORTS_LTO
++	help
++	  Use only a single linking step for the final vmlinux, making
++	  the build slightly faster.
++
+ config SYSCTL
+ 	bool
+ 
+@@ -1671,6 +1751,17 @@
+ 	  time constants, and no relocation pass is required at runtime to fix
+ 	  up the entries based on the runtime load address of the kernel.
+ 
++config KALLSYMS_SINGLE
++       bool "Single pass kallsyms"
++       default y if LTO
++       # For now. Needs to be tested on other architectures.
++       depends on X86
++       depends on !(KALLSYMS_ALL && LTO)
++       help
++         Use a single pass to generate kallsyms. This will speed up the build,
++	 but might slightly increase the binary size. Also an experimental
++	 feature. Only works for functions currently with LTO.
++
+ # end of the "standard kernel features (expert users)" menu
+ 
+ # syscall, maps, verifier
+diff -uraN a/kernel/Makefile b/kernel/Makefile
+--- a/kernel/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/kernel/Makefile	2020-10-13 14:02:30.498684498 +0300
+@@ -38,9 +38,6 @@
+ KCSAN_SANITIZE_kcov.o := n
+ CFLAGS_kcov.o := $(call cc-option, -fno-conserve-stack) -fno-stack-protector
+ 
+-# cond_syscall is currently not LTO compatible
+-CFLAGS_sys_ni.o = $(DISABLE_LTO)
+-
+ obj-y += sched/
+ obj-y += locking/
+ obj-y += power/
+diff -uraN a/kernel/bpf/core.c b/kernel/bpf/core.c
+--- a/kernel/bpf/core.c	2020-10-12 00:15:50.000000000 +0300
++++ b/kernel/bpf/core.c	2020-10-13 14:02:30.500684498 +0300
+@@ -1364,7 +1364,7 @@
+  *
+  * Decode and execute eBPF instructions.
+  */
+-static u64 __no_fgcse ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn, u64 *stack)
++static u64 __noreorder __no_fgcse ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn, u64 *stack)
+ {
+ #define BPF_INSN_2_LBL(x, y)    [BPF_##x | BPF_##y] = &&x##_##y
+ #define BPF_INSN_3_LBL(x, y, z) [BPF_##x | BPF_##y | BPF_##z] = &&x##_##y##_##z
+diff -uraN a/kernel/locking/spinlock.c b/kernel/locking/spinlock.c
+--- a/kernel/locking/spinlock.c	2020-10-12 00:15:50.000000000 +0300
++++ b/kernel/locking/spinlock.c	2020-10-13 14:02:30.502684498 +0300
+@@ -130,7 +130,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_TRYLOCK
+-int __lockfunc _raw_spin_trylock(raw_spinlock_t *lock)
++noinline int __lockfunc _raw_spin_trylock(raw_spinlock_t *lock)
+ {
+ 	return __raw_spin_trylock(lock);
+ }
+@@ -138,7 +138,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_TRYLOCK_BH
+-int __lockfunc _raw_spin_trylock_bh(raw_spinlock_t *lock)
++noinline int __lockfunc _raw_spin_trylock_bh(raw_spinlock_t *lock)
+ {
+ 	return __raw_spin_trylock_bh(lock);
+ }
+@@ -146,7 +146,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_LOCK
+-void __lockfunc _raw_spin_lock(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_lock(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_lock(lock);
+ }
+@@ -154,7 +154,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_LOCK_IRQSAVE
+-unsigned long __lockfunc _raw_spin_lock_irqsave(raw_spinlock_t *lock)
++noinline unsigned long __lockfunc _raw_spin_lock_irqsave(raw_spinlock_t *lock)
+ {
+ 	return __raw_spin_lock_irqsave(lock);
+ }
+@@ -162,7 +162,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_LOCK_IRQ
+-void __lockfunc _raw_spin_lock_irq(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_lock_irq(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_lock_irq(lock);
+ }
+@@ -170,7 +170,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_LOCK_BH
+-void __lockfunc _raw_spin_lock_bh(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_lock_bh(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_lock_bh(lock);
+ }
+@@ -178,7 +178,7 @@
+ #endif
+ 
+ #ifdef CONFIG_UNINLINE_SPIN_UNLOCK
+-void __lockfunc _raw_spin_unlock(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_unlock(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_unlock(lock);
+ }
+@@ -186,7 +186,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_UNLOCK_IRQRESTORE
+-void __lockfunc _raw_spin_unlock_irqrestore(raw_spinlock_t *lock, unsigned long flags)
++noinline void __lockfunc _raw_spin_unlock_irqrestore(raw_spinlock_t *lock, unsigned long flags)
+ {
+ 	__raw_spin_unlock_irqrestore(lock, flags);
+ }
+@@ -194,7 +194,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_UNLOCK_IRQ
+-void __lockfunc _raw_spin_unlock_irq(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_unlock_irq(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_unlock_irq(lock);
+ }
+@@ -202,7 +202,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_SPIN_UNLOCK_BH
+-void __lockfunc _raw_spin_unlock_bh(raw_spinlock_t *lock)
++noinline void __lockfunc _raw_spin_unlock_bh(raw_spinlock_t *lock)
+ {
+ 	__raw_spin_unlock_bh(lock);
+ }
+@@ -210,7 +210,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_TRYLOCK
+-int __lockfunc _raw_read_trylock(rwlock_t *lock)
++noinline int __lockfunc _raw_read_trylock(rwlock_t *lock)
+ {
+ 	return __raw_read_trylock(lock);
+ }
+@@ -218,7 +218,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_LOCK
+-void __lockfunc _raw_read_lock(rwlock_t *lock)
++noinline void __lockfunc _raw_read_lock(rwlock_t *lock)
+ {
+ 	__raw_read_lock(lock);
+ }
+@@ -226,7 +226,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_LOCK_IRQSAVE
+-unsigned long __lockfunc _raw_read_lock_irqsave(rwlock_t *lock)
++noinline unsigned long __lockfunc _raw_read_lock_irqsave(rwlock_t *lock)
+ {
+ 	return __raw_read_lock_irqsave(lock);
+ }
+@@ -234,7 +234,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_LOCK_IRQ
+-void __lockfunc _raw_read_lock_irq(rwlock_t *lock)
++noinline void __lockfunc _raw_read_lock_irq(rwlock_t *lock)
+ {
+ 	__raw_read_lock_irq(lock);
+ }
+@@ -242,7 +242,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_LOCK_BH
+-void __lockfunc _raw_read_lock_bh(rwlock_t *lock)
++noinline void __lockfunc _raw_read_lock_bh(rwlock_t *lock)
+ {
+ 	__raw_read_lock_bh(lock);
+ }
+@@ -250,7 +250,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_UNLOCK
+-void __lockfunc _raw_read_unlock(rwlock_t *lock)
++noinline void __lockfunc _raw_read_unlock(rwlock_t *lock)
+ {
+ 	__raw_read_unlock(lock);
+ }
+@@ -258,7 +258,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_UNLOCK_IRQRESTORE
+-void __lockfunc _raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
++noinline void __lockfunc _raw_read_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+ {
+ 	__raw_read_unlock_irqrestore(lock, flags);
+ }
+@@ -266,7 +266,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_UNLOCK_IRQ
+-void __lockfunc _raw_read_unlock_irq(rwlock_t *lock)
++noinline void __lockfunc _raw_read_unlock_irq(rwlock_t *lock)
+ {
+ 	__raw_read_unlock_irq(lock);
+ }
+@@ -274,7 +274,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_READ_UNLOCK_BH
+-void __lockfunc _raw_read_unlock_bh(rwlock_t *lock)
++noinline void __lockfunc _raw_read_unlock_bh(rwlock_t *lock)
+ {
+ 	__raw_read_unlock_bh(lock);
+ }
+@@ -282,7 +282,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_TRYLOCK
+-int __lockfunc _raw_write_trylock(rwlock_t *lock)
++noinline int __lockfunc _raw_write_trylock(rwlock_t *lock)
+ {
+ 	return __raw_write_trylock(lock);
+ }
+@@ -290,7 +290,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_LOCK
+-void __lockfunc _raw_write_lock(rwlock_t *lock)
++noinline void __lockfunc _raw_write_lock(rwlock_t *lock)
+ {
+ 	__raw_write_lock(lock);
+ }
+@@ -298,7 +298,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_LOCK_IRQSAVE
+-unsigned long __lockfunc _raw_write_lock_irqsave(rwlock_t *lock)
++noinline unsigned long __lockfunc _raw_write_lock_irqsave(rwlock_t *lock)
+ {
+ 	return __raw_write_lock_irqsave(lock);
+ }
+@@ -306,7 +306,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_LOCK_IRQ
+-void __lockfunc _raw_write_lock_irq(rwlock_t *lock)
++noinline void __lockfunc _raw_write_lock_irq(rwlock_t *lock)
+ {
+ 	__raw_write_lock_irq(lock);
+ }
+@@ -314,7 +314,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_LOCK_BH
+-void __lockfunc _raw_write_lock_bh(rwlock_t *lock)
++noinline void __lockfunc _raw_write_lock_bh(rwlock_t *lock)
+ {
+ 	__raw_write_lock_bh(lock);
+ }
+@@ -322,7 +322,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_UNLOCK
+-void __lockfunc _raw_write_unlock(rwlock_t *lock)
++noinline void __lockfunc _raw_write_unlock(rwlock_t *lock)
+ {
+ 	__raw_write_unlock(lock);
+ }
+@@ -330,7 +330,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_UNLOCK_IRQRESTORE
+-void __lockfunc _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
++noinline void __lockfunc _raw_write_unlock_irqrestore(rwlock_t *lock, unsigned long flags)
+ {
+ 	__raw_write_unlock_irqrestore(lock, flags);
+ }
+@@ -338,7 +338,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_UNLOCK_IRQ
+-void __lockfunc _raw_write_unlock_irq(rwlock_t *lock)
++noinline void __lockfunc _raw_write_unlock_irq(rwlock_t *lock)
+ {
+ 	__raw_write_unlock_irq(lock);
+ }
+@@ -346,7 +346,7 @@
+ #endif
+ 
+ #ifndef CONFIG_INLINE_WRITE_UNLOCK_BH
+-void __lockfunc _raw_write_unlock_bh(rwlock_t *lock)
++noinline void __lockfunc _raw_write_unlock_bh(rwlock_t *lock)
+ {
+ 	__raw_write_unlock_bh(lock);
+ }
+diff -uraN a/scripts/Makefile b/scripts/Makefile
+--- a/scripts/Makefile	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/Makefile	2020-10-13 14:10:51.464696124 +0300
+@@ -5,6 +5,7 @@
+ 
+ hostprogs-always-$(CONFIG_BUILD_BIN2C)			+= bin2c
+ hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
++hostprogs-always-$(CONFIG_KALLSYMS_SINGLE)		+= patchfile
+ hostprogs-always-$(BUILD_C_RECORDMCOUNT)		+= recordmcount
+ hostprogs-always-$(CONFIG_BUILDTIME_TABLE_SORT)		+= sorttable
+ hostprogs-always-$(CONFIG_ASN1)				+= asn1_compiler
+diff -uraN a/scripts/Makefile.build b/scripts/Makefile.build
+--- a/scripts/Makefile.build	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/Makefile.build	2020-10-13 14:02:30.503684498 +0300
+@@ -38,6 +38,8 @@
+ 
+ include scripts/Kbuild.include
+ 
++include scripts/Makefile.crc
++
+ # The filename Kbuild has precedence over Makefile
+ kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+ kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+@@ -125,7 +127,7 @@
+ # These mirror gensymtypes_S and co below, keep them in synch.
+ cmd_gensymtypes_c =                                                         \
+     $(CPP) -D__GENKSYMS__ $(c_flags) $< |                                   \
+-    scripts/genksyms/genksyms $(if $(1), -T $(2))                           \
++    scripts/genksyms/genksyms -c $(if $(1), -T $(2))                        \
+      $(patsubst y,-R,$(CONFIG_MODULE_REL_CRCS))                             \
+      $(if $(KBUILD_PRESERVE),-p)                                            \
+      -r $(firstword $(wildcard $(2:.symtypes=.symref) /dev/null))
+@@ -157,24 +159,25 @@
+ # When module versioning is enabled the following steps are executed:
+ # o compile a <file>.o from <file>.c
+ # o if <file>.o doesn't contain a __ksymtab version, i.e. does
+-#   not export symbols, it's done.
++#   not export symbols, we generate an empty <file>.ver.c and
++#   we are done.
+ # o otherwise, we calculate symbol versions using the good old
+-#   genksyms on the preprocessed source and postprocess them in a way
+-#   that they are usable as a linker script
+-# o generate .tmp_<file>.o from <file>.o using the linker to
+-#   replace the unresolved symbols __crc_exported_symbol with
+-#   the actual value of the checksum generated by genksyms
+-# o remove .tmp_<file>.o to <file>.o
++#   genksyms on the preprocessed source and generate C to
++#   a <file>.ver.c file. The C file contains symbols with the
++#   the CRC value for a symbol.
++# o later the .ver.c files are concatenated and linked with the
++#   the kernel or module.
++# o We also generate a .ver.o, but that is only used by modpost
++#   in case this was a single file module.
+ 
+ cmd_modversions_c =								\
+ 	if $(OBJDUMP) -h $@ | grep -q __ksymtab; then				\
+ 		$(call cmd_gensymtypes_c,$(KBUILD_SYMTYPES),$(@:.o=.symtypes))	\
+-		    > $(@D)/.tmp_$(@F:.o=.ver);					\
+-										\
+-		$(LD) $(KBUILD_LDFLAGS) -r -o $(@D)/.tmp_$(@F) $@ 		\
+-			-T $(@D)/.tmp_$(@F:.o=.ver);				\
+-		mv -f $(@D)/.tmp_$(@F) $@;					\
+-		rm -f $(@D)/.tmp_$(@F:.o=.ver);					\
++		    > $(@D)/$(@F:.o=.ver.c);					\
++		    $(if $(single-file-module),					\
++			$(CC) -c -o $(@D)/$(@F:.o=.ver.o) $(@D)/$(@F:.o=.ver.c);) \
++	else									\
++		echo > $(@D)/$(@F:.o=.ver.c);					\
+ 	fi
+ endif
+ 
+@@ -292,7 +295,8 @@
+ 	$(call if_changed,mod)
+ 
+ quiet_cmd_cc_lst_c = MKLST   $@
+-      cmd_cc_lst_c = $(CC) $(c_flags) -g -c -o $*.o $< && \
++      cmd_cc_lst_c = $(if $(CONFIG_LTO),$(warning Listing in LTO mode does not match final binary)) \
++		     $(CC) $(c_flags) -g -c -o $*.o $< && \
+ 		     $(CONFIG_SHELL) $(srctree)/scripts/makelst $*.o \
+ 				     System.map $(OBJDUMP) > $@
+ 
+@@ -320,7 +324,7 @@
+      grep "\<___EXPORT_SYMBOL\>" |                                          \
+      sed 's/.*___EXPORT_SYMBOL[[:space:]]*\([a-zA-Z0-9_]*\)[[:space:]]*,.*/EXPORT_SYMBOL(\1);/' ; } | \
+     $(CPP) -D__GENKSYMS__ $(c_flags) -xc - |                                \
+-    scripts/genksyms/genksyms $(if $(1), -T $(2))                           \
++    scripts/genksyms/genksyms -c $(if $(1), -T $(2))                        \
+      $(patsubst y,-R,$(CONFIG_MODULE_REL_CRCS))                             \
+      $(if $(KBUILD_PRESERVE),-p)                                            \
+      -r $(firstword $(wildcard $(2:.symtypes=.symref) /dev/null))
+@@ -351,12 +355,9 @@
+ cmd_modversions_S =								\
+ 	if $(OBJDUMP) -h $@ | grep -q __ksymtab; then				\
+ 		$(call cmd_gensymtypes_S,$(KBUILD_SYMTYPES),$(@:.o=.symtypes))	\
+-		    > $(@D)/.tmp_$(@F:.o=.ver);					\
+-										\
+-		$(LD) $(KBUILD_LDFLAGS) -r -o $(@D)/.tmp_$(@F) $@ 		\
+-			-T $(@D)/.tmp_$(@F:.o=.ver);				\
+-		mv -f $(@D)/.tmp_$(@F) $@;					\
+-		rm -f $(@D)/.tmp_$(@F:.o=.ver);					\
++		    > $(@D)/$(@F:.o=.ver.c);					\
++	else									\
++		echo > $(@D)/$(@F:.o=.ver.c);					\
+ 	fi
+ endif
+ 
+@@ -397,7 +398,9 @@
+ #
+ 
+ quiet_cmd_ar_builtin = AR      $@
+-      cmd_ar_builtin = rm -f $@; $(AR) cDPrST $@ $(real-prereqs)
++      cmd_ar_builtin = $(call merge_ksyms,.a,$(real-prereqs)); \
++		       rm -f $@; \
++		       $(AR) cDPrST $@ $(real-prereqs) $$TO
+ 
+ $(obj)/built-in.a: $(real-obj-y) FORCE
+ 	$(call if_changed,ar_builtin)
+@@ -427,8 +430,11 @@
+ # Do not replace $(filter %.o,^) with $(real-prereqs). When a single object
+ # module is turned into a multi object module, $^ will contain header file
+ # dependencies recorded in the .*.cmd file.
+-quiet_cmd_link_multi-m = LD [M]  $@
+-      cmd_link_multi-m = $(LD) $(ld_flags) -r -o $@ $(filter %.o,$^)
++quiet_cmd_link_multi-m = LDFINAL [M]  $@
++	cmd_link_multi-m = $(call merge_ksyms,.o,$(filter %.o,$^)); \
++		$(LDFINAL) $(ld_flags) -r $(KBUILD_MOD_LDFLAGS) \
++				-o $@ $(filter %.o,$^) $$TO; \
++		$(call update-ksyms,$@)
+ 
+ $(multi-used-m): FORCE
+ 	$(call if_changed,link_multi-m)
+diff -uraN a/scripts/Makefile.crc b/scripts/Makefile.crc
+--- a/scripts/Makefile.crc	1970-01-01 02:00:00.000000000 +0200
++++ b/scripts/Makefile.crc	2020-10-13 14:02:30.504684498 +0300
+@@ -0,0 +1,28 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# include after auto.conf
++
++ifdef CONFIG_MODVERSIONS
++# collect all the CRCs for kernel symbols in a single vermerged.o
++# $1: postfix of target
++# $2: input files
++# produces merged object in $$TO shell variable in same recipe
++#
++# The strange shell use is to keep the recipe inside shell argument limits.
++# We filter out all files that do not contain crcs.
++merge_ksyms = \
++	TC=$(@D)/.tmp_$(@F:$(1)=_vermerged.c); \
++	TO=$(@D)/.tmp_$(@F:$(1)=_vermerged.o); \
++	cat $(shell find $(patsubst %.o,%.ver.c,$(filter %.o,$(2))) \
++		/dev/null -type f -size +2) /dev/null > $$TC; \
++	$(CC) $(c_flags) -c -o $$TO $$TC; \
++        rm -f $$TC
++
++# after immediate linking generate a dummy .ver.c for the next step
++# it's not needed anymore becauses the CRCs are already linked in
++# $1: target
++update-ksyms = echo > $(1:.o=.ver.c)
++else
++merge_ksyms = true
++update-ksyms = true
++endif
+diff -uraN a/scripts/Makefile.lib b/scripts/Makefile.lib
+--- a/scripts/Makefile.lib	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/Makefile.lib	2020-10-13 14:02:30.505684499 +0300
+@@ -186,11 +186,13 @@
+ endif
+ 
+ part-of-module = $(if $(filter $(basename $@).o, $(real-obj-m)),y)
++single-file-module = $(if $(words $(obj-m)),1,,y)
+ quiet_modtag = $(if $(part-of-module),[M],   )
+ 
+ modkern_cflags =                                          \
+ 	$(if $(part-of-module),                           \
+-		$(KBUILD_CFLAGS_MODULE) $(CFLAGS_MODULE), \
++                $(if $(single-file-module),$(DISABLE_LTO))   \
++                $(KBUILD_CFLAGS_MODULE) $(CFLAGS_MODULE), \
+ 		$(KBUILD_CFLAGS_KERNEL) $(CFLAGS_KERNEL) $(modfile_flags))
+ 
+ modkern_aflags = $(if $(part-of-module),				\
+@@ -258,7 +260,8 @@
+ # ---------------------------------------------------------------------------
+ 
+ quiet_cmd_ar = AR      $@
+-      cmd_ar = rm -f $@; $(AR) cDPrsT $@ $(real-prereqs)
++      cmd_ar = $(call merge_ksyms,.a,$(real-prereqs)); \
++               rm -f $@; $(AR) cDPrsT $@ $(real-prereqs) $$TO
+ 
+ # Objcopy
+ # ---------------------------------------------------------------------------
+diff -uraN a/scripts/Makefile.lto b/scripts/Makefile.lto
+--- a/scripts/Makefile.lto	1970-01-01 02:00:00.000000000 +0200
++++ b/scripts/Makefile.lto	2020-10-13 14:02:30.505684499 +0300
+@@ -0,0 +1,68 @@
++#
++# Support for gcc link time optimization
++#
++
++DISABLE_LTO :=
++LTO_CFLAGS :=
++KBUILD_MOD_LDFLAGS :=
++KBUILD_MODPOST_LDFLAGS :=
++
++export DISABLE_LTO
++export LTO_CFLAGS
++export KBUILD_MOD_LDFLAGS
++export KBUILD_MODPOST_LDFLAGS
++
++ifdef CONFIG_LTO
++	LTO_CFLAGS := -flto
++	LTO_FINAL_CFLAGS := -fuse-linker-plugin
++
++	# gcc 8.x doesn't generate debuginfo if we don't
++	# specify -g on the final linking command line.
++	LTO_FINAL_CFLAGS += $(filter -g%, $(KBUILD_CFLAGS))
++
++# would be needed to support < 5.0
++#	LTO_FINAL_CFLAGS += -fno-toplevel-reorder
++
++	LTO_FINAL_CFLAGS += -flto=jobserver
++
++	KBUILD_MOD_LDFLAGS += -flinker-output=nolto-rel
++
++	# do full LTO before main kernel modpost
++	# XXX should switch to running modpost on the final executable
++	# to avoid the time overhead
++	KBUILD_MODPOST_LDFLAGS += -flinker-output=nolto-rel
++
++	# don't compile everything twice
++	# requires plugin ar
++	LTO_CFLAGS += -fno-fat-lto-objects
++
++	# Used to disable LTO for specific files (e.g. vdso)
++	DISABLE_LTO := -fno-lto
++
++	LTO_FINAL_CFLAGS += ${LTO_CFLAGS} -fwhole-program
++
++	KBUILD_CFLAGS += ${LTO_CFLAGS}
++
++ifdef CONFIG_LTO_CP_CLONE
++	LTO_FINAL_CFLAGS += -fipa-cp-clone
++endif
++
++	# allow extra flags from command line
++	LTO_FINAL_CFLAGS += ${LTO_EXTRA_CFLAGS}
++
++	# For LTO we need to use gcc to do the linking, not ld
++	# directly. Use a wrapper to convert the ld command line
++	# to gcc
++	LDFINAL := ${CONFIG_SHELL} ${srctree}/scripts/gcc-ld \
++                  ${LTO_FINAL_CFLAGS}
++
++	# LTO gcc creates a lot of files in TMPDIR, and with /tmp as tmpfs
++	# it's easy to drive the machine OOM. Use the object directory
++	# instead for temporaries.
++	TMPDIR ?= $(objtree)
++	export TMPDIR
++
++	# use plugin aware tools
++	AR = $(CROSS_COMPILE)gcc-ar
++	NM = $(CROSS_COMPILE)gcc-nm
++endif # CONFIG_LTO
+diff -uraN a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+--- a/scripts/Makefile.modfinal	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/Makefile.modfinal	2020-10-13 14:02:30.506684499 +0300
+@@ -6,7 +6,9 @@
+ PHONY := __modfinal
+ __modfinal:
+ 
++include include/config/auto.conf
+ include $(srctree)/scripts/Kbuild.include
++include $(srctree)/scripts/Makefile.crc
+ 
+ # for c_flags
+ include $(srctree)/scripts/Makefile.lib
+@@ -29,12 +31,13 @@
+ 
+ ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
+ 
+-quiet_cmd_ld_ko_o = LD [M]  $@
++quiet_cmd_ld_ko_o = LDFINAL [M]  $@
+       cmd_ld_ko_o =                                                     \
+-	$(LD) -r $(KBUILD_LDFLAGS)					\
++	$(call merge_ksyms,.ko,$(filter-out %.mod.o,$(filter %.o,$^)));	\
++	$(LDFINAL) -r $(KBUILD_MOD_LDFLAGS) $(KBUILD_LDFLAGS)		\
+ 		$(KBUILD_LDFLAGS_MODULE) $(LDFLAGS_MODULE)		\
+ 		$(addprefix -T , $(KBUILD_LDS_MODULE))			\
+-		-o $@ $(filter %.o, $^);				\
++		-o $@ $(filter %.o, $^) $$TO;				\
+ 	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+ 
+ $(modules): %.ko: %.o %.mod.o $(KBUILD_LDS_MODULE) FORCE
+diff -uraN a/scripts/elf_file_offset b/scripts/elf_file_offset
+--- a/scripts/elf_file_offset	1970-01-01 02:00:00.000000000 +0200
++++ b/scripts/elf_file_offset	2020-10-13 14:02:30.506684499 +0300
+@@ -0,0 +1,24 @@
++#!/bin/bash
++# find the file offset of a section in a ELF file
++# objdump --section-headers elf-file |
++# gawk -f elf_file_offset filesize=SIZE section=SECTIONNAME
++# gawk needed for strtonum()
++#Idx Name          Size      VMA               LMA               File off  Algn
++#  4 .kallsyms     001fd648  ffffffff81b1c068  0000000001b1c068  00d1c068  2**3
++
++$2 == section {
++	old = strtonum("0x" $3)
++	new = strtonum(filesize)
++	if (old < new) {
++		print "Not enough padding in vmlinux for new kallsyms, missing",new-old > "/dev/stderr"
++		print "Please lower (=increase) PAD_RATIO in kallsyms.c"
++		exit 1
++	}
++	print "0x" $6
++	# XXX doesn't exit in gawk 4.1.0 ?!?
++	#exit(0)
++}
++#END {
++#    print section " not found" > "/dev/stderr"
++#    exit 1
++#}
+diff -uraN a/scripts/gcc-ld b/scripts/gcc-ld
+--- a/scripts/gcc-ld	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/gcc-ld	2020-10-13 14:02:30.507684499 +0300
+@@ -8,11 +8,12 @@
+ 
+ while [ "$1" != "" ] ; do
+ 	case "$1" in
+-	-save-temps|-m32|-m64) N="$1" ;;
++	-save-temps*|-m32|-m64) N="$1" ;;
+ 	-r) N="$1" ;;
++	-flinker-output*) N="$1" ;;
+ 	-[Wg]*) N="$1" ;;
+ 	-[olv]|-[Ofd]*|-nostdlib) N="$1" ;;
+-	--end-group|--start-group)
++	--end-group|--start-group|--whole-archive|--no-whole-archive)
+ 		 N="-Wl,$1" ;;
+ 	-[RTFGhIezcbyYu]*|\
+ --script|--defsym|-init|-Map|--oformat|-rpath|\
+@@ -27,4 +28,6 @@
+ 	shift
+ done
+ 
++[ -n "$V" ] && echo >&2 $CC $ARGS
++
+ exec $CC $ARGS
+diff -uraN a/scripts/genksyms/genksyms.c b/scripts/genksyms/genksyms.c
+--- a/scripts/genksyms/genksyms.c	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/genksyms/genksyms.c	2020-10-13 14:02:30.508684499 +0300
+@@ -33,7 +33,7 @@
+ int in_source_file;
+ 
+ static int flag_debug, flag_dump_defs, flag_reference, flag_dump_types,
+-	   flag_preserve, flag_warnings, flag_rel_crcs;
++	   flag_preserve, flag_warnings, flag_rel_crcs, flag_c_output;
+ 
+ static int errors;
+ static int nsyms;
+@@ -631,7 +631,7 @@
+ 	return crc;
+ }
+ 
+-void export_symbol(const char *name)
++void export_symbol(const char *sec, const char *name)
+ {
+ 	struct symbol *sym;
+ 
+@@ -681,10 +681,15 @@
+ 			fputs(">\n", debugfile);
+ 
+ 		/* Used as a linker script. */
+-		printf(!flag_rel_crcs ? "__crc_%s = 0x%08lx;\n" :
+-		       "SECTIONS { .rodata : ALIGN(4) { "
+-		       "__crc_%s = .; LONG(0x%08lx); } }\n",
+-		       name, crc);
++		if (flag_c_output)
++			printf("int __attribute__((section(\".kcrctab%.*s%s\"))) __crc_%s = %#lx;\n",
++					sec[0] ? (int)strlen(sec) - 2 : 0, sec[0] ? sec + 1 : sec,
++					name, name, crc);
++		else
++			printf(!flag_rel_crcs ? "__crc_%s = 0x%08lx;\n" :
++				"SECTIONS { .rodata : ALIGN(4) { "
++				"__crc_%s = .; LONG(0x%08lx); } }\n",
++				name, crc);
+ 	}
+ }
+ 
+@@ -734,6 +739,7 @@
+ 	      "  -h, --help            Print this message\n"
+ 	      "  -V, --version         Print the release version\n"
+ 	      "  -R, --relative-crc    Emit section relative symbol CRCs\n"
++	      "  -c, --c-output	       Generate C output\n"
+ #else				/* __GNU_LIBRARY__ */
+ 	      "  -s                    Select symbol prefix\n"
+ 	      "  -d                    Increment the debug level (repeatable)\n"
+@@ -746,6 +752,7 @@
+ 	      "  -h                    Print this message\n"
+ 	      "  -V                    Print the release version\n"
+ 	      "  -R                    Emit section relative symbol CRCs\n"
++	      "  -c		       Generate C output\n"
+ #endif				/* __GNU_LIBRARY__ */
+ 	      , stderr);
+ }
+@@ -767,13 +774,14 @@
+ 		{"version", 0, 0, 'V'},
+ 		{"help", 0, 0, 'h'},
+ 		{"relative-crc", 0, 0, 'R'},
++		{"c-output", 0, 0, 'c'},
+ 		{0, 0, 0, 0}
+ 	};
+ 
+-	while ((o = getopt_long(argc, argv, "s:dwqVDr:T:phR",
++	while ((o = getopt_long(argc, argv, "s:dwqVDr:T:phRc",
+ 				&long_opts[0], NULL)) != EOF)
+ #else				/* __GNU_LIBRARY__ */
+-	while ((o = getopt(argc, argv, "s:dwqVDr:T:phR")) != EOF)
++	while ((o = getopt(argc, argv, "s:dwqVDr:T:phRc")) != EOF)
+ #endif				/* __GNU_LIBRARY__ */
+ 		switch (o) {
+ 		case 'd':
+@@ -799,6 +807,9 @@
+ 				return 1;
+ 			}
+ 			break;
++		case 'c':
++			flag_c_output = 1;
++			break;
+ 		case 'T':
+ 			flag_dump_types = 1;
+ 			dumpfile = fopen(optarg, "w");
+diff -uraN a/scripts/genksyms/genksyms.h b/scripts/genksyms/genksyms.h
+--- a/scripts/genksyms/genksyms.h	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/genksyms/genksyms.h	2020-10-13 14:02:30.508684499 +0300
+@@ -53,7 +53,7 @@
+ struct symbol *find_symbol(const char *name, enum symbol_type ns, int exact);
+ struct symbol *add_symbol(const char *name, enum symbol_type type,
+ 			  struct string_list *defn, int is_extern);
+-void export_symbol(const char *);
++void export_symbol(const char *, const char *);
+ 
+ void free_node(struct string_list *list);
+ void free_list(struct string_list *s, struct string_list *e);
+diff -uraN a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
+--- a/scripts/genksyms/parse.y	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/genksyms/parse.y	2020-10-13 14:02:30.509684499 +0300
+@@ -489,8 +489,10 @@
+ 	;
+ 
+ export_definition:
+-	EXPORT_SYMBOL_KEYW '(' IDENT ')' ';'
+-		{ export_symbol((*$3)->string); $$ = $5; }
++	EXPORT_SYMBOL_KEYW '(' STRING ',' IDENT ')' ';'
++		{ export_symbol((*$3)->string, (*$5)->string); $$ = $7; }
++	| EXPORT_SYMBOL_KEYW '(' IDENT ')' ';'
++		{ export_symbol("", (*$3)->string); $$ = $5; }
+ 	;
+ 
+ 
+diff -uraN a/scripts/kallsyms.c b/scripts/kallsyms.c
+--- a/scripts/kallsyms.c	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/kallsyms.c	2020-10-13 14:02:30.512684499 +0300
+@@ -25,6 +25,13 @@
+ #include <ctype.h>
+ #include <limits.h>
+ 
++/*
++ * The ratio to increase the padding, by how much the final kallsyms
++ * can be larger. This is for symbols that are not visible before
++ * final linking.
++ */
++#define PAD_RATIO 20 /* 1/x = ~5% */
++
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+ 
+ #define KSYM_NAME_LEN		128
+@@ -42,6 +49,14 @@
+ 	unsigned long long start, end;
+ };
+ 
++enum pads {
++	PAD_OFF,
++	PAD_NAMES,
++	PAD_MARKERS,
++	PAD_TOKTAB,
++	NUM_PAD
++};
++
+ static unsigned long long _text;
+ static unsigned long long relative_base;
+ static struct addr_range text_ranges[] = {
+@@ -71,7 +86,7 @@
+ static void usage(void)
+ {
+ 	fprintf(stderr, "Usage: kallsyms [--all-symbols] "
+-			"[--base-relative] < in.map > out.S\n");
++			"[--base-relative] [--pad=A,B,C] [--pad-file=name] < in.map > out.S\n");
+ 	exit(1);
+ }
+ 
+@@ -131,6 +146,7 @@
+ 	};
+ 
+ 	const char * const *p;
++	char *p2;
+ 
+ 	for (p = ignored_symbols; *p; p++)
+ 		if (!strcmp(name, *p))
+@@ -158,6 +174,12 @@
+ 	if (type == 'N' || type == 'n')
+ 		return true;
+ 
++	/* Don't include const symbols in the text section
++	 * unless --all-symbols is specified.
++	 */
++	if (toupper(type) != 'T' && !all_symbols)
++		return true;
++
+ 	if (toupper(type) == 'A') {
+ 		/* Keep these useful absolute symbols */
+ 		if (strcmp(name, "__kernel_syscall_via_break") &&
+@@ -167,6 +189,18 @@
+ 			return true;
+ 	}
+ 
++	/* gcc-nm produces extra weak symbols for C files
++	 * in the form
++	 * 000000000003aa8b W version.c.36323a88
++	 * ignore they are outside the supported range
++	 * and confuse the symbol generation, and they
++	 * are not useful for symbolization.
++	 */
++	if ((type = 'W' || type == 'w') &&
++		(p2 = strstr(name, ".c.")) &&
++		isxdigit(p2[3]))
++		return true;
++
+ 	return false;
+ }
+ 
+@@ -378,7 +412,14 @@
+ 	return s->percpu_absolute;
+ }
+ 
+-static void write_src(void)
++static void bad_padding(char *msg, int diff)
++{
++	fprintf(stderr, "kallsyms: %s padding too short: %d missing\n",
++			msg, diff);
++	exit(EXIT_FAILURE);
++}
++
++static void write_src(int *pad, int *opad)
+ {
+ 	unsigned int i, k, off;
+ 	unsigned int best_idx[256];
+@@ -394,7 +435,8 @@
+ 	printf("#define ALGN .balign 4\n");
+ 	printf("#endif\n");
+ 
+-	printf("\t.section .rodata, \"a\"\n");
++	printf("#ifndef NO_SYMS\n");
++	printf("\t.section .kallsyms, \"a\"\n");
+ 
+ 	if (!base_relative)
+ 		output_label("kallsyms_addresses");
+@@ -437,14 +479,30 @@
+ 			printf("\tPTR\t%#llx\n", table[i]->addr);
+ 		}
+ 	}
++	if (pad) {
++		if (i > pad[PAD_OFF])
++			bad_padding("address pointers", i - pad[PAD_OFF]);
++		for (; i < pad[PAD_OFF]; i++)
++			printf("\t%s\t0\n", base_relative ? ".long" : "PTR");
++	} else {
++		for (i = 0; i < table_cnt / PAD_RATIO; i++)
++			printf("\t%s\t0\n", base_relative ? ".long" : "PTR");
++		opad[PAD_OFF] = table_cnt + table_cnt/PAD_RATIO;
++	}
+ 	printf("\n");
++	printf("#endif\n");
+ 
+ 	if (base_relative) {
++		printf("#ifndef NO_REL\n");
++		printf("\t.section .rodata, \"a\"\n");
+ 		output_label("kallsyms_relative_base");
+ 		output_address(relative_base);
+ 		printf("\n");
++		printf("\t.previous\n");
++		printf("#endif\n");
+ 	}
+ 
++	printf("#ifndef NO_SYMS\n");
+ 	output_label("kallsyms_num_syms");
+ 	printf("\t.long\t%u\n", table_cnt);
+ 	printf("\n");
+@@ -471,11 +529,31 @@
+ 
+ 		off += table[i]->len + 1;
+ 	}
++	if (pad) {
++		if (off > pad[PAD_NAMES])
++			bad_padding("name table", off - pad[PAD_NAMES]);
++		if (off < pad[PAD_NAMES])
++			printf("\t.fill %d,1,0\n", pad[PAD_NAMES] - off);
++	} else {
++		printf("\t.fill %d,1,0\n", off/PAD_RATIO);
++		off += off/PAD_RATIO;
++		opad[PAD_NAMES] = off;
++	}
+ 	printf("\n");
+ 
+ 	output_label("kallsyms_markers");
+ 	for (i = 0; i < ((table_cnt + 255) >> 8); i++)
+ 		printf("\t.long\t%u\n", markers[i]);
++	if (pad) {
++		if (i > pad[PAD_MARKERS])
++			bad_padding("markers", i - pad[PAD_MARKERS]);
++		for (; i < pad[PAD_MARKERS]; i++)
++			printf("\t.long\t0\n");
++	} else {
++		for (k = 0; k < i/PAD_RATIO; k++)
++			printf("\t.long\t0\n");
++		opad[PAD_MARKERS] = i + i/PAD_RATIO;
++	}
+ 	printf("\n");
+ 
+ 	free(markers);
+@@ -488,12 +566,23 @@
+ 		printf("\t.asciz\t\"%s\"\n", buf);
+ 		off += strlen(buf) + 1;
+ 	}
++	if (pad) {
++		if (off > pad[PAD_TOKTAB])
++			bad_padding("token table", off - pad[PAD_TOKTAB]);
++		if (off < pad[PAD_TOKTAB])
++			printf("\t.fill %d,1,0\n", pad[PAD_TOKTAB] - off);
++	} else {
++		printf("\t.fill %d,1,0\n", off/PAD_RATIO);
++		off += off/PAD_RATIO;
++		opad[PAD_TOKTAB] = off;
++	}
+ 	printf("\n");
+ 
+ 	output_label("kallsyms_token_index");
+ 	for (i = 0; i < 256; i++)
+ 		printf("\t.short\t%d\n", best_idx[i]);
+ 	printf("\n");
++	printf("#endif\n");
+ }
+ 
+ 
+@@ -758,6 +847,10 @@
+ 
+ int main(int argc, char **argv)
+ {
++	int inpad[NUM_PAD], opad[NUM_PAD];
++	int *inpadp = NULL;
++	FILE *opadf = NULL;
++
+ 	if (argc >= 2) {
+ 		int i;
+ 		for (i = 1; i < argc; i++) {
+@@ -767,7 +860,23 @@
+ 				absolute_percpu = 1;
+ 			else if (strcmp(argv[i], "--base-relative") == 0)
+ 				base_relative = 1;
+-			else
++			else if (strncmp(argv[i], "--pad=", 6) == 0) {
++				inpadp = inpad;
++				if (sscanf(argv[i] + 6, "%d,%d,%d,%d",
++					   inpad + 0,
++					   inpad + 1,
++					   inpad + 2,
++					   inpad + 3) != NUM_PAD) {
++					fprintf(stderr, "Bad pad list\n");
++					exit(EXIT_FAILURE);
++				}
++			} else if (strncmp(argv[i], "--pad-file=", 11) == 0) {
++				opadf = fopen(argv[i] + 11, "w");
++				if (!opadf) {
++					fprintf(stderr, "Cannot open %s", argv[i]+11);
++					exit(EXIT_FAILURE);
++				}
++			} else
+ 				usage();
+ 		}
+ 	} else if (argc != 1)
+@@ -781,7 +890,11 @@
+ 	if (base_relative)
+ 		record_relative_base();
+ 	optimize_token_table();
+-	write_src();
+-
++	write_src(inpadp, opad);
++	if (opadf) {
++		fprintf(opadf, "--pad=%d,%d,%d,%d\n",
++			opad[0], opad[1], opad[2], opad[3]);
++		fclose(opadf);
++	}
+ 	return 0;
+ }
+diff -uraN a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+--- a/scripts/link-vmlinux.sh	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/link-vmlinux.sh	2020-10-13 14:02:30.513684499 +0300
+@@ -56,7 +56,7 @@
+ 		${KBUILD_VMLINUX_LIBS}				\
+ 		--end-group"
+ 
+-	${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${objects}
++	${LDFINAL} ${KBUILD_LDFLAGS} -r ${KBUILD_MODPOST_LDFLAGS} -o ${1} ${objects}
+ }
+ 
+ objtool_link()
+@@ -92,13 +92,15 @@
+ 	local objects
+ 	local strip_debug
+ 
+-	info LD ${output}
++	info LDFINAL ${output}
+ 
+ 	# skip output file argument
+ 	shift
+ 
+ 	# The kallsyms linking does not need debug symbols included.
+-	if [ "$output" != "${output#.tmp_vmlinux.kallsyms}" ] ; then
++	# except for LTO because gcc 10 LTO changes the layout of the data segment
++	# with --strip-debug
++	if [ "$output" != "${output#.tmp_vmlinux.kallsyms}" -a -z "$CONFIG_LTO" ] ; then
+ 		strip_debug=-Wl,--strip-debug
+ 	fi
+ 
+@@ -111,7 +113,7 @@
+ 			--end-group				\
+ 			${@}"
+ 
+-		${LD} ${KBUILD_LDFLAGS} ${LDFLAGS_vmlinux}	\
++		${LDFINAL} ${KBUILD_LDFLAGS} ${LDFLAGS_vmlinux}	\
+ 			${strip_debug#-Wl,}			\
+ 			-o ${output}				\
+ 			-T ${lds} ${objects}
+@@ -169,8 +171,8 @@
+ 	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+ }
+ 
+-# Create ${2} .o file with all symbols from the ${1} object file
+-kallsyms()
++# Create ${2} .S file with all symbols from the ${1} object file
++kallsyms_s()
+ {
+ 	info KSYM ${2}
+ 	local kallsymopt;
+@@ -186,14 +188,54 @@
+ 	if [ -n "${CONFIG_KALLSYMS_BASE_RELATIVE}" ]; then
+ 		kallsymopt="${kallsymopt} --base-relative"
+ 	fi
++	kallsymopt="${kallsymopt} $3 $4 $5"
++
++	local afile="${2}"
++
++	(
++	if [ -n "$CONFIG_LTO" -a -n "$CONFIG_KALLSYMS_SINGLE" -a -n "$CONFIG_CC_IS_GCC" ] &&
++		( ${OBJDUMP} -h ${1} | grep -q gnu\.lto) ; then
++        # workaround for slim LTO gcc-nm not outputing static symbols
++        # http://gcc.gnu.org/PR60016
++        # generate a fake symbol table based on the LTO function sections.
++        # This unfortunately "knows" about the internal LTO file format
++        # and only works for functions
++
++	# read the function names directly from the LTO object
++	objdump -h ${1} |
++		awk '/gnu\.lto_[a-z]/ { gsub(/\.gnu\.lto_/,""); gsub(/\..*/, ""); print "0 t " $2 } '
++	# read the non LTO symbols with readelf (which doesn't use the LTO plugin,
++	# so we only get pure ELF symbols)
++	# readelf doesn't handle ar, so we have to expand the objects
++	echo ${1} | sed 's/ /\n/g' | grep built-in.a | while read i ; do
++		${AR} t $i | while read j ; do readelf -s $j ; done
++	done | awk 'NF >= 8 { print "0 t " $8 } '
++	# now handle the objects
++	echo ${1} | sed 's/ /\n/g' | grep '\.o$' | while read i ; do
++		readelf -s $i
++	done | awk 'NF >= 8 {
++	if ($8 !~ /Name|__gnu_lto_slim|\.c(\.[0-9a-f]+)?/) { print "0 t " $8 }
++	}'
++	else
++		${NM} -n ${1}
++	fi
++	) | scripts/kallsyms ${kallsymopt} > ${afile}
++}
+ 
++kallsyms_o()
++{
+ 	local aflags="${KBUILD_AFLAGS} ${KBUILD_AFLAGS_KERNEL}               \
+ 		      ${NOSTDINC_FLAGS} ${LINUXINCLUDE} ${KBUILD_CPPFLAGS}"
+ 
+-	local afile="`basename ${2} .o`.S"
++	${CC} $3 $4 $5 ${aflags} -c -o ${2} ${1}
++}
+ 
+-	${NM} -n ${1} | scripts/kallsyms ${kallsymopt} > ${afile}
+-	${CC} ${aflags} -c -o ${2} ${afile}
++# Create ${2} .o file with all symbols from the ${1} object file
++kallsyms()
++{
++	local s=`basename $2 .o`.S
++	kallsyms_s "$1" $s $3 $4 $5 $6 $7
++	kallsyms_o $s $2
+ }
+ 
+ # Perform one step in kallsyms generation, including temporary linking of
+@@ -223,6 +265,11 @@
+ # Delete output files in case of error
+ cleanup()
+ {
++	# don't delete for make -i
++	case "$MFLAGS" in
++	*-i*) return ;;
++	esac
++
+ 	rm -f .btf.*
+ 	rm -f .tmp_System.map
+ 	rm -f .tmp_vmlinux*
+@@ -274,7 +321,7 @@
+ ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init need-builtin=1
+ 
+ #link vmlinux.o
+-info LD vmlinux.o
++info LDFINAL vmlinux.o
+ modpost_link vmlinux.o
+ objtool_link vmlinux.o
+ 
+@@ -301,7 +348,24 @@
+ kallsymso=""
+ kallsymso_prev=""
+ kallsyms_vmlinux=""
+-if [ -n "${CONFIG_KALLSYMS}" ]; then
++kallsymsorel=""
++if [ -n "${CONFIG_KALLSYMS}" -a -n "${CONFIG_KALLSYMS_SINGLE}" ]; then
++	# Generate kallsyms from the top level object files
++	# this is slightly off, and has wrong addresses,
++	# but gives us the conservative max length of the kallsyms
++	# table to link in something with the right size.
++	info KALLSYMS1 .tmp_kallsyms1.o
++	kallsyms_s "${KBUILD_VMLINUX_OBJS} ${KBUILD_VMLINUX_LIBS}" \
++		.tmp_kallsyms1.S \
++		--all-symbols \
++		"--pad-file=.kallsyms_pad"
++	# split the object into kallsyms with relocations and no relocations
++	# the relocations part does not change in step 2
++	kallsyms_o .tmp_kallsyms1.S .tmp_kallsyms1.o -DNO_REL
++	kallsyms_o .tmp_kallsyms1.S .tmp_kallsyms1rel.o -DNO_SYMS
++	kallsymso=.tmp_kallsyms1.o
++	kallsymsorel=.tmp_kallsyms1rel.o
++elif [ -n "${CONFIG_KALLSYMS}" ]; then
+ 
+ 	# kallsyms support
+ 	# Generate section listing all symbols and add it into vmlinux
+@@ -338,7 +402,53 @@
+ 	fi
+ fi
+ 
+-vmlinux_link vmlinux "${kallsymso}" ${btf_vmlinux_bin_o}
++if [ -z "${CONFIG_SINGLE_LINK}" ] ; then
++
++info LDFINAL vmlinux
++vmlinux_link vmlinux "${kallsymso} ${kallsymsorel}" ${btf_vmlinux_bin_o}
++
++else
++
++# Reuse the partial linking from the modpost vmlinux.o earlier
++
++info LD vmlinux
++${LD} ${KBUILD_LDFLAGS} ${LDFLAGS_vmlinux}	\
++			-o vmlinux		\
++			-T ${objtree}/${KBUILD_LDS} \
++			vmlinux.o ${kallsymso} ${kallsymsorel} ${btf_vmlinux_bin_o}
++
++fi
++
++if [ -n "${CONFIG_KALLSYMS}" -a -n "${CONFIG_KALLSYMS_SINGLE}" ] ; then
++	# Now regenerate the kallsyms table and patch it into the
++	# previously linked file. We tell kallsyms to pad it
++	# to the previous length, so that no symbol changes.
++	info KALLSYMS2 .tmp_kallsyms2.o
++	kallsyms_s vmlinux .tmp_kallsyms2.S `cat .kallsyms_pad`
++	kallsyms_o .tmp_kallsyms2.S .tmp_kallsyms2.o -DNO_REL
++
++	# sanity check the offsets
++	${NM} .tmp_kallsyms1.o >.tmp_kallsyms1.nm
++	${NM} .tmp_kallsyms2.o >.tmp_kallsyms2.nm
++	cmp .tmp_kallsyms1.nm .tmp_kallsyms2.nm
++	rm .tmp_kallsyms[12].nm
++
++	info OBJCOPY .tmp_kallsyms2.bin
++	${OBJCOPY} -O binary .tmp_kallsyms2.o .tmp_kallsyms2.bin
++
++	info PATCHFILE vmlinux
++	EF=scripts/elf_file_offset
++	if [ ! -r $EF ] ; then EF=source/$EF ; fi
++	SIZE=`stat -c%s .tmp_kallsyms2.bin`
++	OFF=`${OBJDUMP} --section-headers vmlinux |
++	     gawk -f $EF -v section=.kallsyms -v filesize=$SIZE`
++	if [ -z "$OFF" ] ; then
++		echo "Cannot find .kallsyms section in vmlinux binary"
++		exit 1
++	fi
++	scripts/patchfile vmlinux $OFF .tmp_kallsyms2.bin
++	kallsyms_vmlinux=vmlinux
++fi
+ 
+ # fill in BTF IDs
+ if [ -n "${CONFIG_DEBUG_INFO_BTF}" ]; then
+diff -uraN a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+--- a/scripts/mod/modpost.c	2020-10-12 00:15:50.000000000 +0300
++++ b/scripts/mod/modpost.c	2020-10-13 14:02:30.516684499 +0300
+@@ -1988,6 +1988,25 @@
+ 	return s;
+ }
+ 
++static bool open_ver_o(const char *name, struct elf_info *info)
++{
++	int nlen = strlen(name);
++	char *n = NOFAIL(malloc(nlen + 10));
++	char *p;
++	bool ret;
++
++	if (nlen > 6 && !strcmp(name + nlen - 6, ".ver.o"))
++		return false;
++	strcpy(n, name);
++	p = strrchr(n, '.');
++	if (p)
++		*p = 0;
++	strcat(n, ".ver.o");
++	ret = !access(n, R_OK) && parse_elf(info, n);
++	free(n);
++	return ret;
++}
++
+ static void read_symbols(const char *modname)
+ {
+ 	const char *symname;
+@@ -1995,8 +2014,9 @@
+ 	char *license;
+ 	char *namespace;
+ 	struct module *mod;
+-	struct elf_info info = { };
++	struct elf_info info = { }, vinfo = { };
+ 	Elf_Sym *sym;
++	bool have_ver_o;
+ 
+ 	if (!parse_elf(&info, modname))
+ 		return;
+@@ -2011,6 +2031,8 @@
+ 		free(tmp);
+ 	}
+ 
++	have_ver_o = open_ver_o(modname, &vinfo);
++
+ 	if (!mod->is_vmlinux) {
+ 		license = get_modinfo(&info, "license");
+ 		if (!license)
+@@ -2054,6 +2076,20 @@
+ 					  symname + strlen("__crc_"));
+ 	}
+ 
++	if (have_ver_o) {
++		/*
++		 * Also read CRCs from a .ver.o if available. They will be linked
++		 * into the module after modpost.
++		 */
++		for (sym = vinfo.symtab_start; sym < vinfo.symtab_stop; sym++) {
++			symname = remove_dot(vinfo.strtab + sym->st_name);
++			if (strstarts(symname, "__crc_")) {
++				handle_modversion(mod, &vinfo, sym,
++						  symname + strlen("__crc_"));
++			}
++		}
++	}
++
+ 	// check for static EXPORT_SYMBOL_* functions && global vars
+ 	for (sym = info.symtab_start; sym < info.symtab_stop; sym++) {
+ 		unsigned char bind = ELF_ST_BIND(sym->st_info);
+@@ -2078,6 +2114,8 @@
+ 	}
+ 
+ 	parse_elf_finish(&info);
++	if (have_ver_o)
++		parse_elf_finish(&vinfo);
+ 
+ 	/* Our trick to get versioning for module struct etc. - it's
+ 	 * never passed as an argument to an exported function, so
+diff -uraN a/scripts/patchfile.c b/scripts/patchfile.c
+--- a/scripts/patchfile.c	1970-01-01 02:00:00.000000000 +0200
++++ b/scripts/patchfile.c	2020-10-13 14:02:30.517684499 +0300
+@@ -0,0 +1,81 @@
++/* Patch file at specific offset
++ * patchfile file-to-patch offset patch-file [len-of-patch]
++ */
++#define _GNU_SOURCE 1
++#include <sys/mman.h>
++#include <unistd.h>
++#include <sys/fcntl.h>
++#include <sys/stat.h>
++#include <stdio.h>
++#include <unistd.h>
++#include <stdlib.h>
++
++#define ROUNDUP(x, y) (((x) + (y) - 1) & ~((y) - 1))
++
++static void *mmapfile(char *file, size_t *size)
++{
++	int pagesize = sysconf(_SC_PAGESIZE);
++	int fd = open(file, O_RDONLY);
++	void *res = NULL;
++	struct stat st;
++
++	*size = 0;
++	if (fd < 0)
++		return NULL;
++	if (fstat(fd, &st) >= 0) {
++		*size = st.st_size;
++		res = mmap(NULL, ROUNDUP(st.st_size, pagesize),
++				PROT_READ, MAP_SHARED,
++				fd, 0);
++		if (res == (void *)-1)
++			res = NULL;
++	}
++	close(fd);
++	return res;
++}
++
++static void usage(void)
++{
++	fprintf(stderr, "Usage: patchfile file-to-patch offset file-to-patch-in\n");
++	exit(1);
++}
++
++static size_t get_num(char *s)
++{
++	char *endp;
++	size_t v = strtoul(s, &endp, 0);
++	if (s == endp)
++		usage();
++	return v;
++}
++
++int main(int ac, char **av)
++{
++	char *patch;
++	size_t patchsize;
++	int infd;
++	size_t offset;
++
++	if (ac != 5 && ac != 4)
++		usage();
++	offset = get_num(av[2]);
++	patch = mmapfile(av[3], &patchsize);
++	if (av[4]) {
++		size_t newsize = get_num(av[4]);
++		if (newsize > patchsize)
++			fprintf(stderr, "kallsyms: warning, size larger than patch\n");
++		if (newsize < patchsize)
++			patchsize = newsize;
++	}
++	infd = open(av[1], O_RDWR);
++	if (infd < 0) {
++		fprintf(stderr, "Cannot open %s\n", av[1]);
++		exit(1);
++	}
++	if (pwrite(infd, patch, patchsize, offset) != patchsize) {
++		fprintf(stderr, "Cannot write patch to %s\n", av[1]);
++		exit(1);
++	}
++	close(infd);
++	return 0;
++}
