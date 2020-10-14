@@ -1,0 +1,26 @@
+# > 1
+find \
+ /bin /lib /lib64 /mss/bin/ /mss/init/bin/ /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+# > 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -x $file 2>/dev/null \
+        | grep \
+           -e libvdpau)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked.txt
+
+# > 3
+	/usr/bin/mpv
+	/usr/lib/libvdpau.so.1.0.0
+	/usr/lib/libavutil.so.56.51.100
+
+[d] mpv
+[d] ffmpeg
+
+vdpau's own libs:
+	/usr/lib/vdpau/libvdpau_trace.so.1.0.0
+	/usr/lib/vdpau/libvdpau_va_gl.so.1

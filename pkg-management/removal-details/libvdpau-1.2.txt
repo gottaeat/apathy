@@ -1,0 +1,12 @@
+/etc/vdpau_wrapper.cfg
+
+/usr/include/vdpau
+
+/usr/lib/libvdpau.la
+/usr/lib/libvdpau.so
+/usr/lib/libvdpau.so.1
+/usr/lib/libvdpau.so.1.0.0
+
+/usr/lib/pkgconfig/vdpau.pc
+
+/usr/lib/vdpau

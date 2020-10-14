@@ -176,7 +176,7 @@
 
 [d] self	> mesa-20.1.8
 [d] alp+bmlfs	>> libdrm-2.4.100		--> patch from alpine, rest is bmlfs
-[d] bmlfs	>> libvdpau-1.2
+[r] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.1.1
 [d] bmlfs	>>> markupsafe-1.1.1
 
