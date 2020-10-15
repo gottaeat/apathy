@@ -1,15 +1,30 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
+ mydevice="$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)"
+
 localraw="/mss/raw-packages.txt"
  localmd="/mss/packages.md"
- reporaw="/mss/repo/pkg-management/raw-packages.txt"
-  repomd="/mss/repo/pkg-management/packages.md"
 
-[ ! -f ${localraw} ] && aprint_fail "(local) ${cl_grn}raw-packages.txt${c_res} is not found."
-[ ! -f ${localmd}  ] && aprint_fail "(local) ${cl_grn}packages.md${c_res} is not found."
-[ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
-[ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found."
+case "${mydevice}" in
+ X220)
+  reporaw="/mss/repo/pkg-management/raw-packages-x220.txt"
+   repomd="/mss/repo/pkg-management/packages-x220.md"
+ ;;
+ T61)
+  reporaw="/mss/repo/pkg-management/raw-packages-t61.txt"
+   repomd="/mss/repo/pkg-management/packages-t61.md"
+ ;;
+ *)
+  aprint_fail "(repo) no device specific package details have found."
+  exit 1
+ ;;
+esac
+
+[ ! -f ${localraw} ] && aprint_fail "(local) ${cl_grn}raw-packages.txt${c_res} is not found." && exit 1
+[ ! -f ${localmd}  ] && aprint_fail "(local) ${cl_grn}packages.md${c_res} is not found."      && exit 1
+[ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found for your device: ${cb_blu}${mydevice}${c_res}" && exit 1
+[ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found for your device: ${cb_blu}${mydevice}${c_res}" && exit 1
 
 from(){
 if [ -z "$1" ]
