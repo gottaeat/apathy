@@ -425,6 +425,7 @@
 [d] self	> mkvtoolnix-48.0.0
 [d] self	> pciutils-3.7.0
 [d] self	> thinkfan-1.2.1
+[d] self	> v4l-utils-1.20.0
 ```
 ```
 ### base mlfs packages
