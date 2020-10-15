@@ -48,9 +48,12 @@ sync(){
 }
 
 convert_lists(){
- aprint_ret "(repo -> repo) generating raw-packages.txt."
-  grep -v -e \# -e \` -e \! "${repomd}" | awk '/\[d\]/ {print $4}' > "${reporaw}"
- evalret
+ aprint_ret "(repo -> repo) generating raw-packages.txt for ${cb_blu}all devices${c_res}."
+  for mdlist in /mss/repo/pkg-management/packages-*; do
+   cnvtxt="$(echo "${mdlist}" | sed 's/packages/raw-packages/;s/\.md$/\.txt/')"
+   grep -v -e \# -e \` -e \! "${mdlist}" | awk '/\[d\]/ {print $4}' > "${cnvtxt}"
+  done
+ evalret   
 }
 
 stats(){
