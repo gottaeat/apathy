@@ -30,7 +30,7 @@
 [d] alpine	>> sysfsutils-2.1.0
 
 [d] alpine	> sysstat-12.2.0
-[d] self	> curl-7.72.0
+[d] self	> curl-7.73.0
 		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busybox /bin/ntpd
 
 [d] self	> git-2.26.2
