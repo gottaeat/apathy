@@ -408,7 +408,7 @@
 
 [d] self	> rustc-1.47.0
 [d] self	> cbindgen-0.15.0
-[d] self	> nodejs-14.5.0
+[d] self	> nodejs-14.14.0
 
 [d] self	> firefox-78.3.1esr
 [d] self	>> gtk+-3.24.23

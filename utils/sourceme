@@ -5,7 +5,7 @@ mypath="$mypath:/mss/bin:/home/mss/execs"
 mypath="$mypath:/opt/llvm-11.0.0/bin"
 mypath="$mypath:/opt/rustc-1.47.0/bin"
 mypath="$mypath:/opt/cbindgen-0.15.0/bin"
-mypath="$mypath:/opt/node.js-14.5.0/bin"
+mypath="$mypath:/opt/node.js-14.14.0/bin"
 
 mylibpath="/opt/llvm-11.0.0/lib"
 mylibpath="$mylibpath:/opt/rustc-1.47.0/lib"
