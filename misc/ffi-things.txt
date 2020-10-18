@@ -1,0 +1,27 @@
+find \
+ /bin /lib /lib64 /mss/bin/ /mss/init/bin/ /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -x $file 2>/dev/null \
+         | grep \
+            -e libffi)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked.txt
+
+/usr/bin/trust
+/usr/bin/p11-kit
+/usr/lib/libgobject-2.0.so.0.6400.2
+/usr/lib/libgnutls.so.30.28.1
+/usr/lib/firefox/libxul.so
+/usr/lib/libgnutlsxx.so.28.1.0
+/usr/lib/libffi.so.6.0.4
+/usr/lib/python2.7/lib-dynload/_ctypes.so
+/usr/lib/pkcs11/p11-kit-client.so
+/usr/lib/libgnutls.so.30.27.0
+/usr/lib/python3.8/lib-dynload/_ctypes.cpython-38-x86_64-linux-gnu.so
+/usr/lib/libp11-kit.so.0.3.0
+/usr/libexec/p11-kit/p11-kit-remote
+/usr/libexec/p11-kit/p11-kit-server
