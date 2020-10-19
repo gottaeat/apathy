@@ -1,0 +1,13 @@
+diff -uraN a/browser/extensions/moz.build b/browser/extensions/moz.build
+--- a/browser/extensions/moz.build	2020-10-19 02:21:11.258362368 +0300
++++ b/browser/extensions/moz.build	2020-10-19 02:21:28.133362770 +0300
+@@ -5,9 +5,5 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ DIRS += [
+-    'doh-rollout',
+     'formautofill',
+-    'screenshots',
+-    'webcompat',
+-    'report-site-issue'
+ ]

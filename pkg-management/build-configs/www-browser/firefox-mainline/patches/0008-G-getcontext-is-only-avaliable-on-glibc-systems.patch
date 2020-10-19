@@ -1,0 +1,28 @@
+From f138f409eb6761299072d9244fac24dd7983e29e Mon Sep 17 00:00:00 2001
+From: "Jory A. Pratt" <anarchy@gentoo.org>
+Date: Mon, 6 Apr 2020 20:10:47 +0200
+Subject: [PATCH 16/40] musl: getcontext is only avaliable on glibc systems
+
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ tools/profiler/core/platform-linux-android.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/profiler/core/platform-linux-android.cpp b/tools/profiler/core/platform-linux-android.cpp
+index a7e68bc15f..3ee96f4082 100644
+--- a/tools/profiler/core/platform-linux-android.cpp
++++ b/tools/profiler/core/platform-linux-android.cpp
+@@ -546,8 +546,10 @@ static void PlatformInit(PSLockRef aLock) {}
+ ucontext_t sSyncUContext;
+ 
+ void Registers::SyncPopulate() {
++#if defined(__GLIBC__)
+   if (!getcontext(&sSyncUContext)) {
+     PopulateRegsFromContext(*this, &sSyncUContext);
+   }
++#endif
+ }
+ #endif
+-- 
+2.28.0
+

@@ -1,0 +1,19 @@
+{
+    "policies": {
+        "DisableAppUpdate": true,
+        "DisableFirefoxStudies": true,
+        "DisablePocket": true,
+        "DisableTelemetry": true,
+        "DontCheckDefaultBrowser": true,
+        "DisableFeedbackCommands": true,
+        "DisableFirefoxAccounts": true,
+        "DisableFirefoxScreenshots": true,
+        "DisableFirefoxStudies": true,
+        "DisableMasterPasswordCreation": true,
+        "DisableSetDesktopBackground": true,
+        "DontCheckDefaultBrowser": true,
+        "NetworkPrediction": false,
+        "OverridePostUpdatePage": "",
+        "CaptivePortal": false
+    }
+}

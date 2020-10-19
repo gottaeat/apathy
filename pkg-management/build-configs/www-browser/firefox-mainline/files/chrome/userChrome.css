@@ -1,0 +1,8 @@
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+#personal-bookmarks .bookmark-item[container="true"] .toolbarbutton-icon {display:       none !important;}
+#personal-bookmarks #PlacesToolbar toolbarbutton.bookmark-item           {margin:         0px !important;
+                                                                          padding:        2px !important;}
+
+#browser vbox#appcontent tabbrowser, #content, #tabbrowser-tabpanels, 
+browser[type=content-primary],browser[type=content] > html               {background: #000000 !important;}

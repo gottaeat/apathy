@@ -1,0 +1,28 @@
+From a963c35f74c1c37936fceb0d996df8e87d6a8d44 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Sat, 29 Aug 2020 22:06:15 +0200
+Subject: [PATCH 28/40] build: Disable -Werror
+
+Bug: https://bugzilla.mozilla.org/822978
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ build/moz.configure/warnings.configure | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/build/moz.configure/warnings.configure b/build/moz.configure/warnings.configure
+index cd098f2b70..d5bed14222 100755
+--- a/build/moz.configure/warnings.configure
++++ b/build/moz.configure/warnings.configure
+@@ -216,7 +216,8 @@ with only_when(depends(target)(lambda t: t.kernel == 'WINNT')):
+ check_and_add_gcc_warning('-Wno-gnu-zero-variadic-macro-arguments')
+ 
+ # Make it an error to be missing function declarations.
+-check_and_add_gcc_warning('-Werror=implicit-function-declaration')
++check_and_add_gcc_warning('-Werror=implicit-function-declaration',
++                         when='--enable-warnings-as-errors')
+ 
+ # Disable a warning with gcc 7. See bug 1320656
+ # We are far from using C++17 and the impact of the warning will be
+-- 
+2.28.0
+
