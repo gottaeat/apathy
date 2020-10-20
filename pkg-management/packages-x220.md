@@ -426,6 +426,7 @@
 [d] self	> pciutils-3.7.0
 [d] self	> thinkfan-1.2.1
 [d] self	> v4l-utils-1.20.0
+[d] self	> apulse-0f9f8487
 ```
 ```
 ### base mlfs packages
