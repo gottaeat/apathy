@@ -1,0 +1,28 @@
+From 8265c2caa5c0c6e616ba7e8b657add3bbb54b677 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Mon, 6 Apr 2020 20:47:13 +0200
+Subject: [PATCH 22/38] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK
+
+Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1196777
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ widget/gtk/nsWindow.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
+index 508dd49826..349b734593 100644
+--- a/widget/gtk/nsWindow.cpp
++++ b/widget/gtk/nsWindow.cpp
+@@ -161,7 +161,8 @@ const gint kEvents =
+ #if GTK_CHECK_VERSION(3, 4, 0)
+     GDK_SMOOTH_SCROLL_MASK | GDK_TOUCH_MASK |
+ #endif
+-    GDK_SCROLL_MASK | GDK_POINTER_MOTION_MASK | GDK_PROPERTY_CHANGE_MASK;
++    GDK_SCROLL_MASK | GDK_POINTER_MOTION_MASK | GDK_PROPERTY_CHANGE_MASK |
++    GDK_FOCUS_CHANGE_MASK;
+ 
+ #if !GTK_CHECK_VERSION(3, 22, 0)
+ typedef enum {
+-- 
+2.28.0
+

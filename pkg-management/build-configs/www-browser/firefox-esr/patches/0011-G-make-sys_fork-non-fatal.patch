@@ -1,0 +1,26 @@
+From 294eea253735f366b4ca53f6fb21098d73ccb844 Mon Sep 17 00:00:00 2001
+From: Johannes <johannes.brechtmann@gmail.com>
+Date: Fri, 1 May 2020 17:20:29 +0200
+Subject: [PATCH 18/38] musl: make SYS_fork non-fatal, musl uses it for fork(2)
+
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ security/sandbox/linux/SandboxFilter.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/security/sandbox/linux/SandboxFilter.cpp b/security/sandbox/linux/SandboxFilter.cpp
+index 86c64a6d4f..d11dab6fa6 100644
+--- a/security/sandbox/linux/SandboxFilter.cpp
++++ b/security/sandbox/linux/SandboxFilter.cpp
+@@ -1288,6 +1288,8 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
+         // usually do something reasonable on error.
+       case __NR_clone:
+         return ClonePolicy(Error(EPERM));
++      case __NR_fork:
++        return Error(ENOSYS);
+ 
+ #  ifdef __NR_fadvise64
+       case __NR_fadvise64:
+-- 
+2.28.0
+

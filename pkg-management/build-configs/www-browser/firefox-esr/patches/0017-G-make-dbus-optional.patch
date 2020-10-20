@@ -1,0 +1,465 @@
+From e0884b95c3913c495b84f75756de23fc798f3036 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Wed, 30 Sep 2020 02:56:14 +0200
+Subject: [PATCH 35/38] bmo#1561207: Make dbus optional
+
+Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1561207#c24
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ Cargo.lock                                    |  4 +-
+ media/audioipc/README_MOZILLA                 |  2 +-
+ media/audioipc/audioipc/Cargo.toml            |  2 +-
+ media/audioipc/client/Cargo.toml              |  2 +-
+ media/audioipc/client/src/context.rs          | 53 +++++++++++-----
+ media/audioipc/client/src/stream.rs           | 16 +++--
+ media/audioipc/server/Cargo.toml              |  2 +-
+ .../.cargo-checksum.json                      |  2 +-
+ .../rust/audio_thread_priority/Cargo.toml     |  4 +-
+ .../rust/audio_thread_priority/src/lib.rs     | 63 ++++++++++++++++---
+ .../audio_thread_priority/src/rt_linux.rs     |  2 +-
+ toolkit/library/gtest/rust/Cargo.toml         |  1 +
+ toolkit/library/rust/Cargo.toml               |  1 +
+ toolkit/library/rust/gkrust-features.mozbuild |  3 +
+ toolkit/library/rust/shared/Cargo.toml        |  3 +-
+ 15 files changed, 124 insertions(+), 36 deletions(-)
+
+diff --git a/Cargo.lock b/Cargo.lock
+index b1fca7cbca..19117e8368 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -113,9 +113,9 @@ dependencies = [
+ 
+ [[package]]
+ name = "audio_thread_priority"
+-version = "0.22.1"
++version = "0.23.4"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f8fba1500e466a39dd3faa5aed20a50dfe0aa1b905264a453bbe9f49508994cc"
++checksum = "cec7141c59547709f640219f15512026d416c0ca8ce7a5ac1524923ee65be2cb"
+ dependencies = [
+  "cfg-if",
+  "dbus",
+diff --git a/media/audioipc/README_MOZILLA b/media/audioipc/README_MOZILLA
+index d6f1e0487a..5193017c1a 100644
+--- a/media/audioipc/README_MOZILLA
++++ b/media/audioipc/README_MOZILLA
+@@ -5,4 +5,4 @@ Makefile.in build files for the Mozilla build system.
+ 
+ The audioipc-2 git repository is: https://github.com/djg/audioipc-2.git
+ 
+-The git commit ID used was c04a660a1fbb728de0833c87f1c92e97021359d9 (2020-06-18 11:24:15 +1200)
++The git commit ID used was 56be0bfc252096818ea8e1bd8cff1de315a623df (2020-07-16 21:58:48 +1200)
+diff --git a/media/audioipc/audioipc/Cargo.toml b/media/audioipc/audioipc/Cargo.toml
+index dfffa97f24..69e38bbe77 100644
+--- a/media/audioipc/audioipc/Cargo.toml
++++ b/media/audioipc/audioipc/Cargo.toml
+@@ -19,7 +19,7 @@ serde = "1"
+ serde_derive = "1"
+ tokio = "0.1"
+ tokio-io = "0.1"
+-audio_thread_priority = "0.22"
++audio_thread_priority = "0.23.4"
+ 
+ [target.'cfg(unix)'.dependencies]
+ iovec = "0.1"
+diff --git a/media/audioipc/client/Cargo.toml b/media/audioipc/client/Cargo.toml
+index 4a55c0162e..2119145607 100644
+--- a/media/audioipc/client/Cargo.toml
++++ b/media/audioipc/client/Cargo.toml
+@@ -9,7 +9,7 @@ description = "Cubeb Backend for talking to remote cubeb server."
+ edition = "2018"
+ 
+ [dependencies]
+-audio_thread_priority = "0.22"
++audio_thread_priority = "0.23.4"
+ audioipc = { path="../audioipc" }
+ cubeb-backend = "0.7"
+ futures = { version="0.1.18", default-features=false, features=["use_std"] }
+diff --git a/media/audioipc/client/src/context.rs b/media/audioipc/client/src/context.rs
+index 6b13900c54..7441d0c0e0 100644
+--- a/media/audioipc/client/src/context.rs
++++ b/media/audioipc/client/src/context.rs
+@@ -14,10 +14,13 @@ use audioipc::codec::LengthDelimitedCodec;
+ use audioipc::frame::{framed, Framed};
+ use audioipc::platformhandle_passing::{framed_with_platformhandles, FramedWithPlatformHandles};
+ use audioipc::{core, rpc};
+-use audioipc::{messages, messages::DeviceCollectionReq, messages::DeviceCollectionResp, ClientMessage, ServerMessage};
++use audioipc::{
++    messages, messages::DeviceCollectionReq, messages::DeviceCollectionResp, ClientMessage,
++    ServerMessage,
++};
+ use cubeb_backend::{
+-    ffi, Context, ContextOps, DeviceCollectionRef, DeviceId, DeviceType, Error, Ops, Result, Stream, StreamParams,
+-    StreamParamsRef,
++    ffi, Context, ContextOps, DeviceCollectionRef, DeviceId, DeviceType, Error, Ops, Result,
++    Stream, StreamParams, StreamParamsRef,
+ };
+ use futures::Future;
+ use futures_cpupool::{CpuFuture, CpuPool};
+@@ -35,8 +38,10 @@ struct CubebClient;
+ impl rpc::Client for CubebClient {
+     type Request = ServerMessage;
+     type Response = ClientMessage;
+-    type Transport =
+-        FramedWithPlatformHandles<audioipc::AsyncMessageStream, LengthDelimitedCodec<Self::Request, Self::Response>>;
++    type Transport = FramedWithPlatformHandles<
++        audioipc::AsyncMessageStream,
++        LengthDelimitedCodec<Self::Request, Self::Response>,
++    >;
+ }
+ 
+ pub const CLIENT_OPS: Ops = capi_new!(ClientContext, ClientStream);
+@@ -136,12 +141,16 @@ impl rpc::Server for DeviceCollectionServer {
+     type Request = DeviceCollectionReq;
+     type Response = DeviceCollectionResp;
+     type Future = CpuFuture<Self::Response, ()>;
+-    type Transport = Framed<audioipc::AsyncMessageStream, LengthDelimitedCodec<Self::Response, Self::Request>>;
++    type Transport =
++        Framed<audioipc::AsyncMessageStream, LengthDelimitedCodec<Self::Response, Self::Request>>;
+ 
+     fn process(&mut self, req: Self::Request) -> Self::Future {
+         match req {
+             DeviceCollectionReq::DeviceChange(device_type) => {
+-                trace!("ctx_thread: DeviceChange Callback: device_type={}", device_type);
++                trace!(
++                    "ctx_thread: DeviceChange Callback: device_type={}",
++                    device_type
++                );
+ 
+                 let devtype = cubeb_backend::DeviceType::from_bits_truncate(device_type);
+ 
+@@ -157,10 +166,14 @@ impl rpc::Server for DeviceCollectionServer {
+                 self.cpu_pool.spawn_fn(move || {
+                     run_in_callback(|| {
+                         if devtype.contains(cubeb_backend::DeviceType::INPUT) {
+-                            unsafe { input_cb.unwrap()(ptr::null_mut(), input_user_ptr as *mut c_void) }
++                            unsafe {
++                                input_cb.unwrap()(ptr::null_mut(), input_user_ptr as *mut c_void)
++                            }
+                         }
+                         if devtype.contains(cubeb_backend::DeviceType::OUTPUT) {
+-                            unsafe { output_cb.unwrap()(ptr::null_mut(), output_user_ptr as *mut c_void) }
++                            unsafe {
++                                output_cb.unwrap()(ptr::null_mut(), output_user_ptr as *mut c_void)
++                            }
+                         }
+                     });
+ 
+@@ -193,7 +206,8 @@ impl ContextOps for ClientContext {
+         let thread_create_callback = params.thread_create_callback;
+         let thread_destroy_callback = params.thread_destroy_callback;
+ 
+-        let server_stream = unsafe { audioipc::MessageStream::from_raw_fd(params.server_connection) };
++        let server_stream =
++            unsafe { audioipc::MessageStream::from_raw_fd(params.server_connection) };
+ 
+         let core = core::spawn_thread(
+             "AudioIPC Client RPC",
+@@ -217,8 +231,8 @@ impl ContextOps for ClientContext {
+         // will return errors the caller expects to handle.
+         let _ = send_recv!(rpc, ClientConnect(std::process::id()) => ClientConnected);
+ 
+-        let backend_id =
+-            send_recv!(rpc, ContextGetBackendId => ContextBackendId()).unwrap_or_else(|_| "(remote error)".to_string());
++        let backend_id = send_recv!(rpc, ContextGetBackendId => ContextBackendId())
++            .unwrap_or_else(|_| "(remote error)".to_string());
+         let backend_id = CString::new(backend_id).expect("backend_id query failed");
+ 
+         let cpu_pool = futures_cpupool::Builder::new()
+@@ -263,7 +277,11 @@ impl ContextOps for ClientContext {
+         send_recv!(self.rpc(), ContextGetPreferredSampleRate => ContextPreferredSampleRate())
+     }
+ 
+-    fn enumerate_devices(&mut self, devtype: DeviceType, collection: &DeviceCollectionRef) -> Result<()> {
++    fn enumerate_devices(
++        &mut self,
++        devtype: DeviceType,
++        collection: &DeviceCollectionRef,
++    ) -> Result<()> {
+         assert_not_in_callback();
+         let v: Vec<ffi::cubeb_device_info> = match send_recv!(self.rpc(),
+                              ContextGetDeviceEnumeration(devtype.bits()) =>
+@@ -286,7 +304,11 @@ impl ContextOps for ClientContext {
+         assert_not_in_callback();
+         unsafe {
+             let coll = &mut *collection.as_ptr();
+-            let mut devices = Vec::from_raw_parts(coll.device as *mut ffi::cubeb_device_info, coll.count, coll.count);
++            let mut devices = Vec::from_raw_parts(
++                coll.device as *mut ffi::cubeb_device_info,
++                coll.count,
++                coll.count,
++            );
+             for dev in &mut devices {
+                 if !dev.device_id.is_null() {
+                     let _ = CString::from_raw(dev.device_id as *mut _);
+@@ -361,7 +383,8 @@ impl ContextOps for ClientContext {
+                                  ContextSetupDeviceCollectionCallback =>
+                                  ContextSetupDeviceCollectionCallback())?;
+ 
+-            let stream = unsafe { audioipc::MessageStream::from_raw_fd(fds.platform_handles[0].into_raw()) };
++            let stream =
++                unsafe { audioipc::MessageStream::from_raw_fd(fds.platform_handles[0].into_raw()) };
+ 
+             // TODO: The lowest comms layer expects exactly 3 PlatformHandles, but we only
+             // need one here.  Drop the dummy handles the other side sent us to discard.
+diff --git a/media/audioipc/client/src/stream.rs b/media/audioipc/client/src/stream.rs
+index 483fb3e593..1db9899f2d 100644
+--- a/media/audioipc/client/src/stream.rs
++++ b/media/audioipc/client/src/stream.rs
+@@ -62,7 +62,8 @@ impl rpc::Server for CallbackServer {
+     type Request = CallbackReq;
+     type Response = CallbackResp;
+     type Future = CpuFuture<Self::Response, ()>;
+-    type Transport = Framed<audioipc::AsyncMessageStream, LengthDelimitedCodec<Self::Response, Self::Request>>;
++    type Transport =
++        Framed<audioipc::AsyncMessageStream, LengthDelimitedCodec<Self::Response, Self::Request>>;
+ 
+     fn process(&mut self, req: Self::Request) -> Self::Future {
+         match req {
+@@ -93,7 +94,10 @@ impl rpc::Server for CallbackServer {
+                 self.cpu_pool.spawn_fn(move || {
+                     // TODO: This is proof-of-concept. Make it better.
+                     let input_ptr: *const u8 = match input_shm {
+-                        Some(shm) => shm.get_slice(nframes as usize * input_frame_size).unwrap().as_ptr(),
++                        Some(shm) => shm
++                            .get_slice(nframes as usize * input_frame_size)
++                            .unwrap()
++                            .as_ptr(),
+                         None => ptr::null(),
+                     };
+                     let output_ptr: *mut u8 = match output_shm {
+@@ -169,9 +173,13 @@ impl<'ctx> ClientStream<'ctx> {
+         let rpc = ctx.rpc();
+         let data = send_recv!(rpc, StreamInit(init_params) => StreamCreated())?;
+ 
+-        debug!("token = {}, handles = {:?}", data.token, data.platform_handles);
++        debug!(
++            "token = {}, handles = {:?}",
++            data.token, data.platform_handles
++        );
+ 
+-        let stream = unsafe { audioipc::MessageStream::from_raw_fd(data.platform_handles[0].into_raw()) };
++        let stream =
++            unsafe { audioipc::MessageStream::from_raw_fd(data.platform_handles[0].into_raw()) };
+ 
+         let input_file = unsafe { data.platform_handles[1].into_file() };
+         let input_shm = if has_input {
+diff --git a/media/audioipc/server/Cargo.toml b/media/audioipc/server/Cargo.toml
+index 99afe54939..155e69621e 100644
+--- a/media/audioipc/server/Cargo.toml
++++ b/media/audioipc/server/Cargo.toml
+@@ -9,7 +9,7 @@ description = "Remote cubeb server"
+ edition = "2018"
+ 
+ [dependencies]
+-audio_thread_priority = "0.22"
++audio_thread_priority = "0.23.4"
+ audioipc = { path = "../audioipc" }
+ cubeb-core = "0.7.0"
+ futures = "0.1.29"
+diff --git a/third_party/rust/audio_thread_priority/.cargo-checksum.json b/third_party/rust/audio_thread_priority/.cargo-checksum.json
+index 9d6d3d5f37..b865bcc986 100644
+--- a/third_party/rust/audio_thread_priority/.cargo-checksum.json
++++ b/third_party/rust/audio_thread_priority/.cargo-checksum.json
+@@ -1 +1 @@
+-{"files":{"Cargo.toml":"ae2be582a99b1543db352c63c02a739dceb0c99ec3f632284d01f8504645c1e8","Makefile":"0f9a771cfb30c7c4b9961d82fdca4e9e229a955bb2e636474a4101389e18e938","README.md":"bcfa4948edf52fdacd485200a0c1c886a92232cc1931eeb4e1044050f46ec253","atp_test.cpp":"8075a040941a65fb9e3f7cbf0535853ca6661c3ac442ec35569b42b24bbec797","audio_thread_priority.h":"f0ecaf1b674f794cde0dc834028e074d4e4675d22ae96acf08b2ae1dceb3474e","generate_osx_bindings.sh":"06e4e03450f788ced18d31fff5660919e6f6ec1119ddace363ffeb82f0518a71","src/lib.rs":"bf13cd15ac452f11ff367b86693b5cd6f57f8b9a8524e8ab0777af1c84905dc4","src/mach_sys.rs":"352560fcb9b41d877cff92e5b3b04d6dc68b1f30508ce4b9aed78940120a883e","src/rt_linux.rs":"33f982272dd53b5e60f93ca7803c7fe3d6e615edd122bcc60cb5482e34cf8a35","src/rt_mach.rs":"a7b4deef4bebcdaa6ca6156fe5de5456bc8a61143d6764d1e3f54e639c9653da","src/rt_win.rs":"347e3ae753cefa38cf913f55f84a63a36d97f6be5f6e3c41e9da0c3ffa71ac17"},"package":"f8fba1500e466a39dd3faa5aed20a50dfe0aa1b905264a453bbe9f49508994cc"}
+\ No newline at end of file
++{"files":{"Cargo.toml":"cecac360f214709925c6b06c09687804f936da425ac19ed799bbda73aa216434","Makefile":"0f9a771cfb30c7c4b9961d82fdca4e9e229a955bb2e636474a4101389e18e938","README.md":"bcfa4948edf52fdacd485200a0c1c886a92232cc1931eeb4e1044050f46ec253","atp_test.cpp":"8075a040941a65fb9e3f7cbf0535853ca6661c3ac442ec35569b42b24bbec797","audio_thread_priority.h":"f0ecaf1b674f794cde0dc834028e074d4e4675d22ae96acf08b2ae1dceb3474e","generate_osx_bindings.sh":"06e4e03450f788ced18d31fff5660919e6f6ec1119ddace363ffeb82f0518a71","src/lib.rs":"1399de41dad784370f00e41cdf7185c123eb3d08ef38ee326de7d68c821bf23a","src/mach_sys.rs":"352560fcb9b41d877cff92e5b3b04d6dc68b1f30508ce4b9aed78940120a883e","src/rt_linux.rs":"b038c1d8d6be17756b0acf25bca7b722affd262322241dcf5dd7e93097df7775","src/rt_mach.rs":"a7b4deef4bebcdaa6ca6156fe5de5456bc8a61143d6764d1e3f54e639c9653da","src/rt_win.rs":"347e3ae753cefa38cf913f55f84a63a36d97f6be5f6e3c41e9da0c3ffa71ac17"},"package":"cec7141c59547709f640219f15512026d416c0ca8ce7a5ac1524923ee65be2cb"}
+\ No newline at end of file
+diff --git a/third_party/rust/audio_thread_priority/Cargo.toml b/third_party/rust/audio_thread_priority/Cargo.toml
+index 3a372e59dd..146ba1e007 100644
+--- a/third_party/rust/audio_thread_priority/Cargo.toml
++++ b/third_party/rust/audio_thread_priority/Cargo.toml
+@@ -13,7 +13,7 @@
+ [package]
+ edition = "2018"
+ name = "audio_thread_priority"
+-version = "0.22.1"
++version = "0.23.4"
+ authors = ["Paul Adenot <paul@paul.cx>"]
+ description = "Bump a thread to real-time priority, for audio work, on Linux, Windows and macOS"
+ license = "MPL-2.0"
+@@ -36,8 +36,10 @@ version = "0.15.0"
+ 
+ [features]
+ terminal-logging = ["simple_logger"]
++with_dbus = ["dbus"]
+ [target."cfg(target_os = \"linux\")".dependencies.dbus]
+ version = "0.6.4"
++optional = true
+ 
+ [target."cfg(target_os = \"linux\")".dependencies.libc]
+ version = "0.2"
+diff --git a/third_party/rust/audio_thread_priority/src/lib.rs b/third_party/rust/audio_thread_priority/src/lib.rs
+index b52b8718fe..2bdc8e7e5f 100644
+--- a/third_party/rust/audio_thread_priority/src/lib.rs
++++ b/third_party/rust/audio_thread_priority/src/lib.rs
+@@ -14,10 +14,14 @@ pub struct AudioThreadPriorityError {
+ }
+ 
+ impl AudioThreadPriorityError {
+-    fn new_with_inner(message: &str, inner: Box<dyn Error>) -> AudioThreadPriorityError {
+-        AudioThreadPriorityError {
+-            message: message.into(),
+-            inner: Some(inner),
++    cfg_if! {
++        if #[cfg(all(target_os = "linux", feature = "dbus"))] {
++            fn new_with_inner(message: &str, inner: Box<dyn Error>) -> AudioThreadPriorityError {
++                AudioThreadPriorityError {
++                    message: message.into(),
++                    inner: Some(inner),
++                }
++            }
+         }
+     }
+     fn new(message: &str) -> AudioThreadPriorityError {
+@@ -64,13 +68,13 @@ cfg_if! {
+         use rt_win::promote_current_thread_to_real_time_internal;
+         use rt_win::demote_current_thread_from_real_time_internal;
+         use rt_win::RtPriorityHandleInternal;
+-    } else if #[cfg(target_os = "linux")] {
++    } else if #[cfg(all(target_os = "linux", feature = "dbus"))] {
+         mod rt_linux;
+         extern crate dbus;
+         extern crate libc;
+-        use rt_linux::set_real_time_hard_limit_internal as set_real_time_hard_limit;
+         use rt_linux::promote_current_thread_to_real_time_internal;
+         use rt_linux::demote_current_thread_from_real_time_internal;
++        use rt_linux::set_real_time_hard_limit_internal as set_real_time_hard_limit;
+         use rt_linux::get_current_thread_info_internal;
+         use rt_linux::promote_thread_to_real_time_internal;
+         use rt_linux::demote_thread_from_real_time_internal;
+@@ -80,8 +84,27 @@ cfg_if! {
+         /// Size of a RtPriorityThreadInfo or atp_thread_info struct, for use in FFI.
+         pub static ATP_THREAD_INFO_SIZE: usize = std::mem::size_of::<RtPriorityThreadInfo>();
+     } else {
+-        // blanket implementations for Android and other systems.
++        // blanket implementations for Android, Linux Desktop without dbus and others
+         pub struct RtPriorityHandleInternal {}
++        #[derive(Clone, Copy)]
++        pub struct RtPriorityThreadInfoInternal {
++            _dummy: u8
++        }
++
++        cfg_if! {
++            if #[cfg(not(target_os = "linux"))] {
++                pub type RtPriorityThreadInfo = RtPriorityThreadInfoInternal;
++            }
++        }
++
++        impl RtPriorityThreadInfo {
++            pub fn serialize(&self) -> [u8; 1] {
++                [0]
++            }
++            pub fn deserialize(_: [u8; 1]) -> Self {
++                RtPriorityThreadInfo{_dummy: 0}
++            }
++        }
+         pub fn promote_current_thread_to_real_time_internal(_: u32, audio_samplerate_hz: u32) -> Result<RtPriorityHandle, AudioThreadPriorityError> {
+             if audio_samplerate_hz == 0 {
+                 return Err(AudioThreadPriorityError{message: "sample rate is zero".to_string(), inner: None});
+@@ -93,6 +116,32 @@ cfg_if! {
+             // no-op
+             Ok(())
+         }
++        pub fn set_real_time_hard_limit(
++            _: u32,
++            _: u32,
++        ) -> Result<(), AudioThreadPriorityError> {
++            Ok(())
++        }
++        pub fn get_current_thread_info_internal() -> Result<RtPriorityThreadInfo, AudioThreadPriorityError> {
++            Ok(RtPriorityThreadInfo{_dummy: 0})
++        }
++        pub fn promote_thread_to_real_time_internal(
++            _: RtPriorityThreadInfo,
++            _: u32,
++            audio_samplerate_hz: u32,
++        ) -> Result<RtPriorityHandle, AudioThreadPriorityError> {
++            if audio_samplerate_hz == 0 {
++                return Err(AudioThreadPriorityError::new("sample rate is zero"));
++            }
++            return Ok(RtPriorityHandle{});
++        }
++
++        pub fn demote_thread_from_real_time_internal(_: RtPriorityThreadInfo) -> Result<(), AudioThreadPriorityError> {
++            return Ok(());
++        }
++        #[no_mangle]
++        /// Size of a RtPriorityThreadInfo or atp_thread_info struct, for use in FFI.
++        pub static ATP_THREAD_INFO_SIZE: usize = std::mem::size_of::<RtPriorityThreadInfo>();
+     }
+ }
+ 
+diff --git a/third_party/rust/audio_thread_priority/src/rt_linux.rs b/third_party/rust/audio_thread_priority/src/rt_linux.rs
+index 117c2b3ceb..691992647d 100644
+--- a/third_party/rust/audio_thread_priority/src/rt_linux.rs
++++ b/third_party/rust/audio_thread_priority/src/rt_linux.rs
+@@ -33,7 +33,7 @@ impl From<dbus::Error> for AudioThreadPriorityError {
+ 
+ impl From<Box<dyn Error>> for AudioThreadPriorityError {
+     fn from(error: Box<dyn Error>) -> Self {
+-        AudioThreadPriorityError::new(&format!("{}", error.description()))
++        AudioThreadPriorityError::new(&format!("{}", error.to_string()))
+     }
+ }
+ 
+diff --git a/toolkit/library/gtest/rust/Cargo.toml b/toolkit/library/gtest/rust/Cargo.toml
+index dfaa0f6815..751458019f 100644
+--- a/toolkit/library/gtest/rust/Cargo.toml
++++ b/toolkit/library/gtest/rust/Cargo.toml
+@@ -33,6 +33,7 @@ webgpu = ["gkrust-shared/webgpu"]
+ remote_agent = ["gkrust-shared/remote"]
+ glean = ["gkrust-shared/glean"]
+ rust_fxa_client = ["gkrust-shared/rust_fxa_client"]
++with_dbus = ["gkrust-shared/with_dbus"]
+ 
+ [dependencies]
+ bench-collections-gtest = { path = "../../../../xpcom/rust/gtest/bench-collections" }
+diff --git a/toolkit/library/rust/Cargo.toml b/toolkit/library/rust/Cargo.toml
+index 1f5edc6af0..4f4a69ef62 100644
+--- a/toolkit/library/rust/Cargo.toml
++++ b/toolkit/library/rust/Cargo.toml
+@@ -34,6 +34,7 @@ webgpu = ["gkrust-shared/webgpu"]
+ remote_agent = ["gkrust-shared/remote"]
+ glean = ["gkrust-shared/glean"]
+ rust_fxa_client = ["gkrust-shared/rust_fxa_client"]
++with_dbus = ["gkrust-shared/with_dbus"]
+ 
+ [dependencies]
+ gkrust-shared = { path = "shared" }
+diff --git a/toolkit/library/rust/gkrust-features.mozbuild b/toolkit/library/rust/gkrust-features.mozbuild
+index 342f930700..b4286f9dfe 100644
+--- a/toolkit/library/rust/gkrust-features.mozbuild
++++ b/toolkit/library/rust/gkrust-features.mozbuild
+@@ -82,3 +82,6 @@ if CONFIG['MOZ_RUST_FXA_CLIENT']:
+ 
+ if CONFIG['MOZ_USING_WASM_SANDBOXING']:
+     gkrust_features += ['wasm_library_sandboxing']
++
++if CONFIG['MOZ_ENABLE_DBUS']:
++    gkrust_features += ['with_dbus']
+diff --git a/toolkit/library/rust/shared/Cargo.toml b/toolkit/library/rust/shared/Cargo.toml
+index 5fdb0eb2c0..e7ce4f3c35 100644
+--- a/toolkit/library/rust/shared/Cargo.toml
++++ b/toolkit/library/rust/shared/Cargo.toml
+@@ -41,7 +41,7 @@ storage = { path = "../../../../storage/rust" }
+ bookmark_sync = { path = "../../../components/places/bookmark_sync", optional = true }
+ shift_or_euc_c = "0.1.0"
+ chardetng_c = "0.1.1"
+-audio_thread_priority = "0.22.1"
++audio_thread_priority = "0.23.4"
+ mdns_service = { path="../../../../media/mtransport/mdns_service", optional = true }
+ neqo_glue = { path = "../../../../netwerk/socket/neqo_glue" }
+ rlbox_lucet_sandbox = { version = "0.1.0", optional = true }
+@@ -101,6 +101,7 @@ webgpu = ["wgpu_bindings"]
+ remote_agent = ["remote"]
+ glean = ["fog"]
+ rust_fxa_client = ["firefox-accounts-bridge"]
++with_dbus = ["audio_thread_priority/with_dbus"]
+ 
+ [lib]
+ path = "lib.rs"
+-- 
+2.28.0
+

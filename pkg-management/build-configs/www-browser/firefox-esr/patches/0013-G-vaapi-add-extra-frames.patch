@@ -1,0 +1,26 @@
+From 757c93200c5b2789ade6379795945fa1f1f7f623 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Wed, 3 Jun 2020 22:06:28 +0200
+Subject: [PATCH 24/38] VAAPI: Add extra frames
+
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp b/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
+index 6c97636505..76d6c93548 100644
+--- a/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
++++ b/dom/media/platforms/ffmpeg/FFmpegVideoDecoder.cpp
+@@ -43,7 +43,7 @@ typedef int VAStatus;
+ #endif
+ 
+ // Use some extra HW frames for potential rendering lags.
+-#define EXTRA_HW_FRAMES 6
++#define EXTRA_HW_FRAMES 20
+ 
+ typedef mozilla::layers::Image Image;
+ typedef mozilla::layers::PlanarYCbCrImage PlanarYCbCrImage;
+-- 
+2.28.0
+
