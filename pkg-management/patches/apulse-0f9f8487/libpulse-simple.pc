@@ -1,0 +1,6 @@
+Name: libpulse-simple
+Description: PulseAudio Simplified Synchronous Client Interface
+Version: 13.0
+Libs: -L/usr/lib/apulse -lpulse-simple -pthread
+Cflags: -L/usr/lib/apulse -D_REENTRANT
+Requires: libpulse
