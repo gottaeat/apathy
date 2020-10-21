@@ -1,4 +1,4 @@
-From 412b922a80b7e4b283776b984eb488055aefcbd5 Mon Sep 17 00:00:00 2001
+From 1d61537e14f072c937ec6a97d67a0d60efc7c5f6 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:59:48 +0200
 Subject: [PATCH 11/38] musl: Support custom vendor strings

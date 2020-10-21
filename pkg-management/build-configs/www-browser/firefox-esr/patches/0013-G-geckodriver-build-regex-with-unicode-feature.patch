@@ -1,4 +1,4 @@
-From e4dfa36140fdb51777cec43cd5a466323a4367c0 Mon Sep 17 00:00:00 2001
+From 96eb5214e488b9eab6a507bb327dd355548629c9 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 14 Jul 2020 20:50:55 +0200
 Subject: [PATCH 32/38] geckodriver: Build regex with unicode feature

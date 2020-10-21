@@ -1,4 +1,4 @@
-From d9f6081054acaf17c9d7b57132c21ebe1eff2955 Mon Sep 17 00:00:00 2001
+From ba53347b3e841786d98c85ddabe536d4f671c209 Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:19:23 -0600
 Subject: [PATCH 13/38] musl: Fix syscall wrappers

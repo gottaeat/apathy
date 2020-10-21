@@ -1,4 +1,4 @@
-From 300e01e71c9dc536d499d80563968c5fc7f7e34a Mon Sep 17 00:00:00 2001
+From 83fc2e3616ef15056be74f056a15e892038809b9 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Sat, 10 Oct 2020 16:10:20 +0200
 Subject: [PATCH 38/38] bmo#1663715: Update syn and proc-macro2 so that Firefox

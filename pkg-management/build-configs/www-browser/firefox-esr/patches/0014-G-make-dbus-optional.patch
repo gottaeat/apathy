@@ -1,4 +1,4 @@
-From e0884b95c3913c495b84f75756de23fc798f3036 Mon Sep 17 00:00:00 2001
+From 3e9768c6a1acdd5df2bc3bd6746bed68178c145c Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Wed, 30 Sep 2020 02:56:14 +0200
 Subject: [PATCH 35/38] bmo#1561207: Make dbus optional

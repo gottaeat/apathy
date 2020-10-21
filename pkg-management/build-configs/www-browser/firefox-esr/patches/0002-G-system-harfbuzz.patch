@@ -1,4 +1,4 @@
-From 4f59d8f228328ad7613b4b421084da9cec8adc72 Mon Sep 17 00:00:00 2001
+From 9f9cb7eb41e77e00f40cfdfc766ca08757e4fdf4 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:32:39 +0200
 Subject: [PATCH 04/38] bmo#847568: Support system harfbuzz

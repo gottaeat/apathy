@@ -1,4 +1,4 @@
-From 757c93200c5b2789ade6379795945fa1f1f7f623 Mon Sep 17 00:00:00 2001
+From 0b6c099f4afb300b99e0f7b1b4034a2b0226ac7f Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Wed, 3 Jun 2020 22:06:28 +0200
 Subject: [PATCH 24/38] VAAPI: Add extra frames

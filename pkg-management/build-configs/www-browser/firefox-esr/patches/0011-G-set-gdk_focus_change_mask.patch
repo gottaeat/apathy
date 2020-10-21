@@ -1,4 +1,4 @@
-From 8265c2caa5c0c6e616ba7e8b657add3bbb54b677 Mon Sep 17 00:00:00 2001
+From 2290ac61d4f1c302c1a014d5bc52a70c72a95688 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 20:47:13 +0200
 Subject: [PATCH 22/38] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK

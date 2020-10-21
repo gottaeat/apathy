@@ -1,4 +1,4 @@
-From 5b64cb9496f401c19a426aed1cfdff2dbcfdf424 Mon Sep 17 00:00:00 2001
+From 50c856c2f94be20800b5b2af30b8ae31c0cfa019 Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:16:38 -0600
 Subject: [PATCH 12/38] musl: Add alternate name for private siginfo struct
