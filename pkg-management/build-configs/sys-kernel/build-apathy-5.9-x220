@@ -58,7 +58,7 @@ aprint_nc
 #+lto -llvm +alfredchen +misc
 for apatch in lto alfredchen misc; do
  aprint "applying ${cl_grn}${apatch}${c_res} patches."
-  for pp in "${patchdir}"/apathy/5.9/"${apatch}"/*; do
+  for pp in "${patchdir}"/5.9/"${apatch}"/*; do
    aprint_ret "${cb_blu}$(echo $pp | awk '{gsub(/^.*\//,""); print}')${c_res}"
     patch -p1 < "${pp}" >> "${rdr}" 2>&1
    evalretkill
