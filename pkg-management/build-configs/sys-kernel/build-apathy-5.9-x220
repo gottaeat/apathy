@@ -26,7 +26,7 @@
                     print}' ${useconf})"
 
 # c >> set make vars
-mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j2 "$@";}
+mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j3 "$@";}
 
 # c1 >> print details
 aprint_nc
