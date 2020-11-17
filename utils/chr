@@ -20,7 +20,7 @@ aprint_nc
   /usr/bin/env -i    \
    HOME=/home/mss    \
    TERM="$TERM"      \
-   PS1='[chroot] : ' \
+   PS1='[chroot]:  ' \
    DISPLAY=:0        \
    PATH=/bin:/usr/bin:/sbin:/usr/sbin \
     /bin/su - $2
