@@ -15,6 +15,6 @@ export OBJDUMP="objdump"
 export OBJSIZE="size"
 export READELF="readelf"
 
-export   CFLAGS="-w -O3 -mtune=native -march=native -fstack-protector-strong -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize -flto=1 -fuse-linker-plugin -fno-fat-lto-objects"
+export   CFLAGS="-w -pipe -O3 -mtune=native -march=native -fstack-protector-strong -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize -flto -fuse-linker-plugin -fno-fat-lto-objects"
 export CXXFLAGS="${CFLAGS}"
 export  LDFLAGS="${CFLAGS} -Wl,--as-needed -Wl,--gc-sections -Wl,-O2"
