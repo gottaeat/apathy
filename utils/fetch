@@ -13,7 +13,7 @@ dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
  cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
             familya=tolower($5); familyb=tolower($6); model=tolower($8)}; \
             /MHz/{hz=int($4)};                                            \
-            END{print familya, familyb, model, "@", hz"mhz"}' /proc/cpuinfo)"
+            END{print familya, familyb, model, hz"mhz"}' /proc/cpuinfo)"
 
 model="$(awk '{print tolower($0)}' /sys/devices/virtual/dmi/id/product_family)"
 read _host < /etc/hostname
