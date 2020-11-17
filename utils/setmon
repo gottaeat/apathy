@@ -1,0 +1,12 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+monstat="$(xrandr | grep VGA-1 -A1 | tail -1 | grep \*)"
+
+if [ ! -z "${monstat}" ]
+ then
+  xrandr --output VGA-1 --off
+ else
+  xrandr --output VGA-1 --auto
+  xrandr --auto --output VGA-1  --right-of LVDS-1
+  ~/.fehbg
+fi
