@@ -11,7 +11,7 @@ case "$1" in
  stop)
   ainitmes "${c_lcyan}(dnscrypt-proxy)${c_reset}: stopping."
    case "$(tail -1 /etc/resolv.conf)" in
-    *edns0*) cp /etc/resolv.conf.quad /etc/resolv.conf ;;
+    *edns0*) cp /etc/resolv.conf.cloudflare /etc/resolv.conf ;;
    esac
    kill -TERM $(pidof dnscrypt-proxy)
   evalret

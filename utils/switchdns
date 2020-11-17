@@ -26,11 +26,11 @@ case $1 in
   aprint "dns resolver set to dnscrypt."
   aprint_nc
  ;;
- quad|-q)
+ cloudflare|-q)
   aprint_nc
 
-  aprint_ret "placing the quad resolv.conf."
-  cp /etc/resolv.conf.quad /etc/resolv.conf
+  aprint_ret "placing the cloudflare resolv.conf."
+  cp /etc/resolv.conf.cloudflare /etc/resolv.conf
   evalretkill
 
   if [ ! -z "$(pidof dnscrypt-proxy)" ]
@@ -40,9 +40,9 @@ case $1 in
     evalretkill
   fi
   aprint_nc
-  aprint "dns resolver set to quad."
+  aprint "dns resolver set to cloudflare."
   aprint_nc
  ;;
  *)
-  aprint_fail "pick either: ${cl_grn}quad|-q${c_res} or ${cl_grn}dnscrypt|-d${c_res}"
+  aprint_fail "pick either: ${cl_grn}cloudflare|-q${c_res} or ${cl_grn}dnscrypt|-d${c_res}"
 esac

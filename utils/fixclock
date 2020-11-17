@@ -13,7 +13,7 @@ case "${curr_dns}" in
   evalretkill
 
   aprint_ret "replacing ${cl_grn}resolv.conf${c_res}."
-  cp /etc/resolv.conf.quad /etc/resolv.conf
+  cp /etc/resolv.conf.cloudflare /etc/resolv.conf
   evalretkill
   
   aprint_ret "setting clock."
