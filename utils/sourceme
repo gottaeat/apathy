@@ -43,4 +43,5 @@ cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
 cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 
 ## b >> functions 
-cdo(){ cd - >/dev/null 2>&1;}
+cdo()  { cd - >/dev/null 2>&1;}
+tarup(){ tar cfp "${1}".tar "${1}";}
