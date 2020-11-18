@@ -246,7 +246,7 @@ compiler-rt-11.0.0
 rustc-1.47.0
 cbindgen-0.15.0
 nodejs-14.14.0
-firefox-78.4.1esr
+firefox-78.5.0esr
 gtk+-3.24.23
 sinit-1.1-apathy
 zstd-1.4.5
