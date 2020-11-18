@@ -1,4 +1,4 @@
-opendoas-6.6.1
+opendoas-6.8
 iptables-1.8.4
 lsof-4.93.2
 lm_sensors-3.6.0
