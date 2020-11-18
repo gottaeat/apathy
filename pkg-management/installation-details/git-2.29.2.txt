@@ -1,0 +1,9 @@
+/usr/bin/git
+/usr/bin/git-cvsserver
+/usr/bin/git-receive-pack
+/usr/bin/git-shell
+/usr/bin/git-upload-archive
+/usr/bin/git-upload-pack
+
+/usr/lib/git-core
+/usr/share/git-core
