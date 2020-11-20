@@ -1,0 +1,93 @@
+From fec0d010c89f03f1aaada25e5c365cdcbe84a45c Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 20 Nov 2020 03:35:26 +0300
+Subject: [PATCH] manually apply git-tiny from kiss.
+
+---
+ Makefile | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 1fb0ec1..0e35fbc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -817,8 +817,7 @@ export PYTHON_PATH
+ 
+ TEST_SHELL_PATH = $(SHELL_PATH)
+ 
+-LIB_FILE = libgit.a
+-XDIFF_LIB = xdiff/lib.a
++LIB_FILE = libgit.so
+ 
+ GENERATED_H += command-list.h
+ GENERATED_H += config-list.h
+@@ -1180,7 +1179,7 @@ THIRD_PARTY_SOURCES += compat/regex/%
+ THIRD_PARTY_SOURCES += sha1collisiondetection/%
+ THIRD_PARTY_SOURCES += sha1dc/%
+ 
+-GITLIBS = common-main.o $(LIB_FILE) $(XDIFF_LIB)
++GITLIBS = common-main.o $(LIB_FILE)
+ EXTLIBS =
+ 
+ GIT_USER_AGENT = git/$(GIT_VERSION)
+@@ -1221,7 +1220,7 @@ include config.mak.dev
+ endif
+ 
+ ALL_CFLAGS = $(DEVELOPER_CFLAGS) $(CPPFLAGS) $(CFLAGS)
+-ALL_LDFLAGS = $(LDFLAGS)
++ALL_LDFLAGS = $(LDFLAGS) -Wl,-rpath,$(gitexecdir_SQ)
+ 
+ comma := ,
+ empty :=
+@@ -1917,7 +1916,7 @@ ifneq ($(findstring s,$(MAKEFLAGS)),s)
+ ifndef V
+ 	QUIET_CC       = @echo '   ' CC $@;
+ 	QUIET_AR       = @echo '   ' AR $@;
+-	QUIET_LINK     = @echo '   ' LINK $@;
++	QUIET_LINK     = @echo '   ' CCLD $@;
+ 	QUIET_BUILT_IN = @echo '   ' BUILTIN $@;
+ 	QUIET_GEN      = @echo '   ' GEN $@;
+ 	QUIET_LNCP     = @echo '   ' LN/CP $@;
+@@ -2160,7 +2159,7 @@ git.sp git.s git.o: EXTRA_CPPFLAGS = \
+ 	'-DGIT_MAN_PATH="$(mandir_relative_SQ)"' \
+ 	'-DGIT_INFO_PATH="$(infodir_relative_SQ)"'
+ 
+-git$X: git.o GIT-LDFLAGS $(BUILTIN_OBJS) $(GITLIBS)
++git$X: GIT-LDFLAGS $(GITLIBS)
+ 	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
+ 		$(filter %.o,$^) $(LIBS)
+ 
+@@ -2530,11 +2529,8 @@ $(REMOTE_CURL_PRIMARY): remote-curl.o http.o http-walker.o GIT-LDFLAGS $(GITLIBS
+ 	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) $(filter %.o,$^) \
+ 		$(CURL_LIBCURL) $(EXPAT_LIBEXPAT) $(LIBS)
+ 
+-$(LIB_FILE): $(LIB_OBJS)
+-	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
+-
+-$(XDIFF_LIB): $(XDIFF_OBJS)
+-	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
++$(LIB_FILE): $(LIB_OBJS) $(BUILTIN_OBJS) $(XDIFF_OBJS) $(VCSSVN_OBJS) git.o
++	$(QUIET_LINK)$(RM) $@ && $(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -lz -lpthread -shared -o $@ $^
+ 
+ export DEFAULT_EDITOR DEFAULT_PAGER
+ 
+@@ -2927,6 +2923,7 @@ install: all
+ 	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(bindir_SQ)'
+ 	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) $(ALL_PROGRAMS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
++	$(INSTALL) $(LIB_FILE) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) -m 644 $(SCRIPT_LIB) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) $(install_bindir_programs) '$(DESTDIR_SQ)$(bindir_SQ)'
+ ifdef MSVC
+@@ -3138,7 +3135,7 @@ cocciclean:
+ clean: profile-clean coverage-clean cocciclean
+ 	$(RM) *.res
+ 	$(RM) $(OBJECTS)
+-	$(RM) $(LIB_FILE) $(XDIFF_LIB)
++	$(RM) $(LIB_FILE)
+ 	$(RM) $(ALL_PROGRAMS) $(SCRIPT_LIB) $(BUILT_INS) git$X
+ 	$(RM) $(TEST_PROGRAMS)
+ 	$(RM) $(FUZZ_PROGRAMS)
+-- 
+2.29.2
+
