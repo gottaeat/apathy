@@ -5,5 +5,5 @@
 /usr/bin/git-upload-archive
 /usr/bin/git-upload-pack
 
-/usr/libexec/git-core
+/usr/lib/git-core
 /usr/share/git-core
