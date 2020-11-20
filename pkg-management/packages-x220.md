@@ -502,7 +502,7 @@
 [d] mlfs	> vim-8.2.0116
 [d] mlfs	> xml-parser-2.44
 [d] mlfs	> xz-5.2.4
-[d] self	> yash-2.50
+[d] self	> yash-2.50 
 [d] mlfs	> zlib-1.2.11
 ### base mlfs packages end
 ```
