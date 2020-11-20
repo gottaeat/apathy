@@ -1,0 +1,229 @@
+From f37fd5cee0c0bca52b31634cd838b0e4c3290310 Mon Sep 17 00:00:00 2001
+From: Lennart Braun <lenerd@posteo.de>
+Date: Fri, 27 Mar 2020 00:04:14 +0100
+Subject: [PATCH] Add action to add streams via youtube-dl
+
+youtube-dl [0] is a "command-line program to download videos from
+YouTube.com" and many other websites, e.g. media libraries of public
+broadcasters.
+
+This commit adds a new action to ncmpcpp's playlist view: Pressing 'D',
+prompts for the URL of a website.  The input is passed to youtube-dl to
+retrieve the URL of the audio stream and available metadata.  If
+successful, the URL is added to the MPD playlist.
+
+[0]: https://github.com/ytdl-org/youtube-dl
+---
+ src/actions.cpp      | 98 ++++++++++++++++++++++++++++++++++++++++++++
+ src/actions.h        | 10 +++++
+ src/bindings.cpp     |  2 +
+ src/mpdpp.cpp        |  4 ++
+ src/mpdpp.h          |  1 +
+ src/screens/help.cpp |  1 +
+ 6 files changed, 116 insertions(+)
+
+diff --git a/src/actions.cpp b/src/actions.cpp
+index cc309a5f..574e1626 100644
+--- a/src/actions.cpp
++++ b/src/actions.cpp
+@@ -25,8 +25,17 @@
+ #include <boost/filesystem/operations.hpp>
+ #include <boost/locale/conversion.hpp>
+ #include <boost/lexical_cast.hpp>
++#include <boost/process/child.hpp>
++#include <boost/process/io.hpp>
++#include <boost/process/pipe.hpp>
++#include <boost/process/search_path.hpp>
++#include <boost/property_tree/exceptions.hpp>
++#include <boost/property_tree/json_parser.hpp>
++#include <boost/property_tree/ptree.hpp>
++#include <boost/property_tree/ptree_fwd.hpp>
+ #include <algorithm>
+ #include <iostream>
++#include <mpd/tag.h>
+ 
+ #include "actions.h"
+ #include "charset.h"
+@@ -2701,6 +2710,94 @@ void ShowServerInfo::run()
+ 	myServerInfo->switchTo();
+ }
+ 
++bool AddYoutubeDLItem::canBeRun()
++{
++	return myScreen == myPlaylist;
++}
++
++void AddYoutubeDLItem::run()
++{
++	using Global::wFooter;
++	namespace bp = boost::process;
++	namespace pt = boost::property_tree;
++
++	std::string url;
++	{
++		Statusbar::ScopedLock slock;
++		Statusbar::put() << "Add via youtube-dl: ";
++		url = wFooter->prompt();
++	}
++
++	// do nothing if no url is given
++	if (url.empty())
++		return;
++
++	// search the youtube-dl executable in the PATH
++	auto ydl_path = bp::search_path("youtube-dl");
++	if (ydl_path.empty()) {
++		Statusbar::ScopedLock slock;
++		Statusbar::put() << "youtube-dl was not found in PATH";
++		return;
++	}
++
++	{
++		Statusbar::ScopedLock slock;
++		Statusbar::put() << "Calling youtube-dl with '" << url << "' ...";
++		wFooter->refresh();
++	}
++
++	// start youtube-dl in a child process
++	// -j: output as JSON, each playlist item on a separate line
++	// -f bestaudio/best: selects the best available audio-only stream, or
++	//                    alternatively the best audio+video stream
++	bp::ipstream output;
++	bp::child child_process(ydl_path, url, "-j", "-f", "bestaudio/best", bp::std_out > output,
++	                        bp::std_err > bp::null);
++
++	// extract the URL and metadata from a ptree object and add
++	auto add_song = [] (const pt::ptree& ptree) {
++		auto download_url = ptree.get<std::string>("url");
++		auto title = ptree.get_optional<std::string>("title");
++		auto artist = ptree.get_optional<std::string>("creator");
++		if (!artist.has_value()) {
++			artist = ptree.get_optional<std::string>("uploader");
++		}
++		auto album = ptree.get_optional<std::string>("album");
++		auto id = Mpd.AddSong(download_url);
++		if (id == -1) {
++			return;
++		}
++		if (title.has_value()) {
++			Mpd.AddTag(id, MPD_TAG_TITLE, *title);
++		}
++		if (artist.has_value()) {
++			Mpd.AddTag(id, MPD_TAG_ARTIST, *artist);
++		}
++		if (album.has_value()) {
++			Mpd.AddTag(id, MPD_TAG_ALBUM, *album);
++		}
++	};
++
++	std::string line;
++	pt::ptree ptree;
++
++	while (std::getline(output, line)) {
++		try {
++			std::istringstream line_stream(line);
++			pt::read_json(line_stream, ptree);
++			add_song(ptree);
++		} catch (pt::ptree_error &e) {
++			Statusbar::ScopedLock slock;
++			Statusbar::put() << "An error occurred while calling youtube-dl or parsing its output";
++			wFooter->refresh();
++		}
++	}
++
++	if (child_process.running()) {
++		child_process.terminate();
++	}
++}
++
+ }
+ 
+ namespace {
+@@ -2838,6 +2935,7 @@ void populateActions()
+ 	insert_action(new Actions::ShowVisualizer());
+ 	insert_action(new Actions::ShowClock());
+ 	insert_action(new Actions::ShowServerInfo());
++	insert_action(new Actions::AddYoutubeDLItem());
+ 	for (size_t i = 0; i < AvailableActions.size(); ++i)
+ 	{
+ 		if (AvailableActions[i] == nullptr)
+diff --git a/src/actions.h b/src/actions.h
+index c5548e90..650a0542 100644
+--- a/src/actions.h
++++ b/src/actions.h
+@@ -163,6 +163,7 @@ enum class Type
+ 	ShowVisualizer,
+ 	ShowClock,
+ 	ShowServerInfo,
++	AddYoutubeDLItem,
+ 	_numberOfActions // needed to dynamically calculate size of action array
+ };
+ 
+@@ -1411,6 +1412,15 @@ struct ShowServerInfo: BaseAction
+ 	virtual void run() override;
+ };
+ 
++struct AddYoutubeDLItem: BaseAction
++{
++	AddYoutubeDLItem(): BaseAction(Type::AddYoutubeDLItem, "add_youtube-dl_item") { }
++
++private:
++	virtual bool canBeRun() override;
++	virtual void run() override;
++};
++
+ }
+ 
+ #endif // NCMPCPP_ACTIONS_H
+diff --git a/src/bindings.cpp b/src/bindings.cpp
+index 831a2f59..efe85b6b 100644
+--- a/src/bindings.cpp
++++ b/src/bindings.cpp
+@@ -752,6 +752,8 @@ void BindingsConfiguration::generateDefaults()
+ 		bind(k, Actions::Type::SetSelectedItemsPriority);
+ 	if (notBound(k = stringToKey("q")))
+ 		bind(k, Actions::Type::Quit);
++	if (notBound(k = stringToKey("D")))
++		bind(k, Actions::Type::AddYoutubeDLItem);
+ }
+ 
+ const Command *BindingsConfiguration::findCommand(const std::string &name)
+diff --git a/src/mpdpp.cpp b/src/mpdpp.cpp
+index f576e5ff..ab5aae22 100644
+--- a/src/mpdpp.cpp
++++ b/src/mpdpp.cpp
+@@ -563,6 +563,10 @@ int Connection::AddSong(const Song &s, int pos)
+ 	return AddSong((!s.isFromDatabase() ? "file://" : "") + s.getURI(), pos);
+ }
+ 
++void Connection::AddTag(int id, mpd_tag_type tag, const std::string &value) {
++	mpd_run_add_tag_id(m_connection.get(), id, tag, value.c_str());
++}
++
+ void Connection::Add(const std::string &path)
+ {
+ 	prechecks();
+diff --git a/src/mpdpp.h b/src/mpdpp.h
+index abd3666c..4f70abf4 100644
+--- a/src/mpdpp.h
++++ b/src/mpdpp.h
+@@ -546,6 +546,7 @@ struct Connection
+ 	
+ 	int AddSong(const std::string &, int = -1); // returns id of added song
+ 	int AddSong(const Song &, int = -1); // returns id of added song
++	void AddTag(int id, mpd_tag_type, const std::string &);
+ 	bool AddRandomTag(mpd_tag_type, size_t, std::mt19937 &rng);
+ 	bool AddRandomSongs(size_t number, std::string random_exclude_pattern, std::mt19937 &rng);
+ 	void Add(const std::string &path);
+diff --git a/src/screens/help.cpp b/src/screens/help.cpp
+index 7cdca37d..0efd6f07 100644
+--- a/src/screens/help.cpp
++++ b/src/screens/help.cpp
+@@ -256,6 +256,7 @@ void write_bindings(NC::Scrollpad &w)
+ 	key(w, Type::ReversePlaylist, "Reverse range");
+ 	key(w, Type::JumpToPlayingSong, "Jump to current song");
+ 	key(w, Type::TogglePlayingSongCentering, "Toggle playing song centering");
++	key(w, Type::AddYoutubeDLItem, "Add items via youtube-dl");
+ 
+ 	key_section(w, "Browser");
+ 	key(w, Type::EnterDirectory, "Enter directory");

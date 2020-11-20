@@ -1,0 +1,148 @@
+From 27fb0fde9ea097feaaacdd05989476cbf83c5054 Mon Sep 17 00:00:00 2001
+From: strupo <sheeit@users.noreply.github.com>
+Date: Fri, 23 Oct 2020 00:27:26 +0100
+Subject: [PATCH] LyricsWiki is no more
+
+It seems that the site was shut off completely by Fandom[1][2]
+
+[1] https://en.wikipedia.org/wiki/LyricWiki#Edit_lock_and_closure
+[2] https://web.archive.org/web/20200830142257/https://lyrics.fandom.com/wiki/LyricWiki
+---
+ src/configuration.cpp  |  1 -
+ src/lyrics_fetcher.cpp | 64 +-----------------------------------------
+ src/lyrics_fetcher.h   | 14 ---------
+ src/settings.cpp       |  2 +-
+ 4 files changed, 2 insertions(+), 79 deletions(-)
+
+diff --git a/src/configuration.cpp b/src/configuration.cpp
+index 0d861bd8..69b8e4b8 100644
+--- a/src/configuration.cpp
++++ b/src/configuration.cpp
+@@ -156,7 +156,6 @@ bool configure(int argc, char **argv)
+ 		if (vm.count("test-lyrics-fetchers"))
+ 		{
+ 			std::vector<std::tuple<std::string, std::string, std::string>> fetcher_data = {
+-				std::make_tuple("lyricwiki", "rihanna", "umbrella"),
+ 				std::make_tuple("azlyrics", "rihanna", "umbrella"),
+ 				std::make_tuple("genius", "rihanna", "umbrella"),
+ 				std::make_tuple("sing365", "rihanna", "umbrella"),
+diff --git a/src/lyrics_fetcher.cpp b/src/lyrics_fetcher.cpp
+index 67f162b9..76ff5f49 100644
+--- a/src/lyrics_fetcher.cpp
++++ b/src/lyrics_fetcher.cpp
+@@ -38,9 +38,7 @@ std::istream &operator>>(std::istream &is, LyricsFetcher_ &fetcher)
+ {
+ 	std::string s;
+ 	is >> s;
+-	if (s == "lyricwiki")
+-		fetcher = std::make_unique<LyricwikiFetcher>();
+-	else if (s == "azlyrics")
++	if (s == "azlyrics")
+ 		fetcher = std::make_unique<AzLyricsFetcher>();
+ 	else if (s == "genius")
+ 		fetcher = std::make_unique<GeniusFetcher>();
+@@ -146,66 +144,6 @@ void LyricsFetcher::postProcess(std::string &data) const
+ 	boost::trim(data);
+ }
+ 
+-/***********************************************************************/
+-
+-LyricsFetcher::Result LyricwikiFetcher::fetch(const std::string &artist,
+-                                              const std::string &title)
+-{
+-	LyricsFetcher::Result result = LyricsFetcher::fetch(artist, title);
+-	if (result.first == true)
+-	{
+-		result.first = false;
+-		
+-		std::string data;
+-		CURLcode code = Curl::perform(data, result.second, "", true);
+-		
+-		if (code != CURLE_OK)
+-		{
+-			result.second = curl_easy_strerror(code);
+-			return result;
+-		}
+-		
+-		auto lyrics = getContent("<div class='lyricbox'>(.*?)</div>", data);
+-		
+-		if (lyrics.empty())
+-		{
+-			result.second = msgNotFound;
+-			return result;
+-		}
+-		std::transform(lyrics.begin(), lyrics.end(), lyrics.begin(), unescapeHtmlUtf8);
+-		bool license_restriction = std::any_of(lyrics.begin(), lyrics.end(), [](const std::string &s) {
+-			return s.find("Unfortunately, we are not licensed to display the full lyrics for this song at the moment.") != std::string::npos;
+-		});
+-		if (license_restriction)
+-		{
+-			result.second = "Licence restriction";
+-			return result;
+-		}
+-		
+-		data.clear();
+-		for (auto it = lyrics.begin(); it != lyrics.end(); ++it)
+-		{
+-			stripHtmlTags(*it);
+-			boost::trim(*it);
+-			if (!it->empty())
+-			{
+-				data += *it;
+-				if (it != lyrics.end()-1)
+-					data += "\n\n----------\n\n";
+-			}
+-		}
+-		
+-		result.second = data;
+-		result.first = true;
+-	}
+-	return result;
+-}
+-
+-bool LyricwikiFetcher::notLyrics(const std::string &data) const
+-{
+-	return data.find("action=edit") != std::string::npos;
+-}
+-
+ /**********************************************************************/
+ 
+ LyricsFetcher::Result GoogleLyricsFetcher::fetch(const std::string &artist,
+diff --git a/src/lyrics_fetcher.h b/src/lyrics_fetcher.h
+index c7500b99..6a22a32e 100644
+--- a/src/lyrics_fetcher.h
++++ b/src/lyrics_fetcher.h
+@@ -55,20 +55,6 @@ std::istream &operator>>(std::istream &is, LyricsFetcher_ &fetcher);
+ 
+ /**********************************************************************/
+ 
+-struct LyricwikiFetcher : public LyricsFetcher
+-{
+-	virtual const char *name() const override { return "lyricwiki.com"; }
+-	virtual Result fetch(const std::string &artist, const std::string &title) override;
+-	
+-protected:
+-	virtual const char *urlTemplate() const override { return "http://lyrics.wikia.com/api.php?action=lyrics&fmt=xml&func=getSong&artist=%artist%&song=%title%"; }
+-	virtual const char *regex() const override { return "<url>(.*?)</url>"; }
+-	
+-	virtual bool notLyrics(const std::string &data) const override;
+-};
+-
+-/**********************************************************************/
+-
+ struct GoogleLyricsFetcher : public LyricsFetcher
+ {
+ 	virtual Result fetch(const std::string &artist, const std::string &title);
+diff --git a/src/settings.cpp b/src/settings.cpp
+index f531063c..d6924f37 100644
+--- a/src/settings.cpp
++++ b/src/settings.cpp
+@@ -464,7 +464,7 @@ bool Configuration::read(const std::vector<std::string> &config_paths, bool igno
+ 	p.add("cyclic_scrolling", &use_cyclic_scrolling, "no", yes_no);
+ 	p.add("lines_scrolled", &lines_scrolled, "2");
+ 	p.add("lyrics_fetchers", &lyrics_fetchers,
+-	      "lyricwiki, azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet",
++	      "azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet",
+ 	      list_of<LyricsFetcher_>);
+ 	p.add("follow_now_playing_lyrics", &now_playing_lyrics, "no", yes_no);
+ 	p.add("fetch_lyrics_for_current_song_in_background", &fetch_lyrics_in_background,
