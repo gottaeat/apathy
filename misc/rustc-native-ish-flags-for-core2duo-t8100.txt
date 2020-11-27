@@ -1,0 +1,2 @@
+-Ctarget-cpu=core2
+-Ctarget-feature=+x87,+cx16,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3,-avx,-aes,-sse4a,-sse4.2
