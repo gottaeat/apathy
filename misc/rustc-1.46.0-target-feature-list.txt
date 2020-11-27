@@ -1,0 +1,138 @@
+Available features for this target:
+    16bit-mode                  - 16-bit mode (i8086).
+    32bit-mode                  - 32-bit mode (80386).
+    3dnow                       - Enable 3DNow! instructions.
+    3dnowa                      - Enable 3DNow! Athlon instructions.
+    64bit                       - Support 64-bit instructions.
+    64bit-mode                  - 64-bit mode (x86_64).
+    adx                         - Support ADX instructions.
+    aes                         - Enable AES instructions.
+    avx                         - Enable AVX instructions.
+    avx2                        - Enable AVX2 instructions.
+    avx512bf16                  - Support bfloat16 floating point.
+    avx512bitalg                - Enable AVX-512 Bit Algorithms.
+    avx512bw                    - Enable AVX-512 Byte and Word Instructions.
+    avx512cd                    - Enable AVX-512 Conflict Detection Instructions.
+    avx512dq                    - Enable AVX-512 Doubleword and Quadword Instructions.
+    avx512er                    - Enable AVX-512 Exponential and Reciprocal Instructions.
+    avx512f                     - Enable AVX-512 instructions.
+    avx512ifma                  - Enable AVX-512 Integer Fused Multiple-Add.
+    avx512pf                    - Enable AVX-512 PreFetch Instructions.
+    avx512vbmi                  - Enable AVX-512 Vector Byte Manipulation Instructions.
+    avx512vbmi2                 - Enable AVX-512 further Vector Byte Manipulation Instructions.
+    avx512vl                    - Enable AVX-512 Vector Length eXtensions.
+    avx512vnni                  - Enable AVX-512 Vector Neural Network Instructions.
+    avx512vp2intersect          - Enable AVX-512 vp2intersect.
+    avx512vpopcntdq             - Enable AVX-512 Population Count Instructions.
+    bmi                         - Support BMI instructions.
+    bmi2                        - Support BMI2 instructions.
+    branchfusion                - CMP/TEST can be fused with conditional branches.
+    cldemote                    - Enable Cache Demote.
+    clflushopt                  - Flush A Cache Line Optimized.
+    clwb                        - Cache Line Write Back.
+    clzero                      - Enable Cache Line Zero.
+    cmov                        - Enable conditional move instructions.
+    cx16                        - 64-bit with cmpxchg16b.
+    cx8                         - Support CMPXCHG8B instructions.
+    enqcmd                      - Has ENQCMD instructions.
+    ermsb                       - REP MOVS/STOS are fast.
+    f16c                        - Support 16-bit floating point conversion instructions.
+    false-deps-lzcnt-tzcnt      - LZCNT/TZCNT have a false dependency on dest register.
+    false-deps-popcnt           - POPCNT has a false dependency on dest register.
+    fast-11bytenop              - Target can quickly decode up to 11 byte NOPs.
+    fast-15bytenop              - Target can quickly decode up to 15 byte NOPs.
+    fast-bextr                  - Indicates that the BEXTR instruction is implemented as a single uop with good throughput.
+    fast-gather                 - Indicates if gather is reasonably fast.
+    fast-hops                   - Prefer horizontal vector math instructions (haddp, phsub, etc.) over normal vector instructions with shuffles.
+    fast-lzcnt                  - LZCNT instructions are as fast as most simple integer ops.
+    fast-scalar-fsqrt           - Scalar SQRT is fast (disable Newton-Raphson).
+    fast-scalar-shift-masks     - Prefer a left/right scalar logical shift pair over a shift+and pair.
+    fast-shld-rotate            - SHLD can be used as a faster rotate.
+    fast-variable-shuffle       - Shuffles with variable masks are fast.
+    fast-vector-fsqrt           - Vector SQRT is fast (disable Newton-Raphson).
+    fast-vector-shift-masks     - Prefer a left/right vector logical shift pair over a shift+and pair.
+    fma                         - Enable three-operand fused multiple-add.
+    fma4                        - Enable four-operand fused multiple-add.
+    fsgsbase                    - Support FS/GS Base instructions.
+    fxsr                        - Support fxsave/fxrestore instructions.
+    gfni                        - Enable Galois Field Arithmetic Instructions.
+    idivl-to-divb               - Use 8-bit divide for positive values less than 256.
+    idivq-to-divl               - Use 32-bit divide for positive values less than 2^32.
+    invpcid                     - Invalidate Process-Context Identifier.
+    lea-sp                      - Use LEA for adjusting the stack pointer.
+    lea-uses-ag                 - LEA instruction needs inputs at AG stage.
+    lvi-cfi                     - Prevent indirect calls/branches from using a memory operand, and precede all indirect calls/branches from a register with an LFENCE instruction to serialize control flow. Also decompose RET instructions into a POP+LFENCE+JMP sequence..
+    lvi-load-hardening          - Insert LFENCE instructions to prevent data speculatively injected into loads from being used maliciously..
+    lwp                         - Enable LWP instructions.
+    lzcnt                       - Support LZCNT instruction.
+    macrofusion                 - Various instructions can be fused with conditional branches.
+    merge-to-threeway-branch    - Merge branches to a three-way conditional branch.
+    mmx                         - Enable MMX instructions.
+    movbe                       - Support MOVBE instruction.
+    movdir64b                   - Support movdir64b instruction.
+    movdiri                     - Support movdiri instruction.
+    mpx                         - Deprecated. Support MPX instructions.
+    mwaitx                      - Enable MONITORX/MWAITX timer functionality.
+    nopl                        - Enable NOPL instruction.
+    pad-short-functions         - Pad short functions.
+    pclmul                      - Enable packed carry-less multiplication instructions.
+    pconfig                     - platform configuration instruction.
+    pku                         - Enable protection keys.
+    popcnt                      - Support POPCNT instruction.
+    prefer-128-bit              - Prefer 128-bit AVX instructions.
+    prefer-256-bit              - Prefer 256-bit AVX instructions.
+    prefer-mask-registers       - Prefer AVX512 mask registers over PTEST/MOVMSK.
+    prefetchwt1                 - Prefetch with Intent to Write and T1 Hint.
+    prfchw                      - Support PRFCHW instructions.
+    ptwrite                     - Support ptwrite instruction.
+    rdpid                       - Support RDPID instructions.
+    rdrnd                       - Support RDRAND instruction.
+    rdseed                      - Support RDSEED instruction.
+    retpoline                   - Remove speculation of indirect branches from the generated code, either by avoiding them entirely or lowering them with a speculation blocking construct.
+    retpoline-external-thunk    - When lowering an indirect call or branch using a `retpoline`, rely on the specified user provided thunk rather than emitting one ourselves. Only has effect when combined with some other retpoline feature.
+    retpoline-indirect-branches - Remove speculation of indirect branches from the generated code.
+    retpoline-indirect-calls    - Remove speculation of indirect calls from the generated code.
+    rtm                         - Support RTM instructions.
+    sahf                        - Support LAHF and SAHF instructions.
+    sgx                         - Enable Software Guard Extensions.
+    sha                         - Enable SHA instructions.
+    shstk                       - Support CET Shadow-Stack instructions.
+    slow-3ops-lea               - LEA instruction with 3 ops or certain registers is slow.
+    slow-incdec                 - INC and DEC instructions are slower than ADD and SUB.
+    slow-lea                    - LEA instruction with certain arguments is slow.
+    slow-pmaddwd                - PMADDWD is slower than PMULLD.
+    slow-pmulld                 - PMULLD instruction is slow.
+    slow-shld                   - SHLD instruction is slow.
+    slow-two-mem-ops            - Two memory operand instructions are slow.
+    slow-unaligned-mem-16       - Slow unaligned 16-byte memory access.
+    slow-unaligned-mem-32       - Slow unaligned 32-byte memory access.
+    soft-float                  - Use software floating point features.
+    sse                         - Enable SSE instructions.
+    sse-unaligned-mem           - Allow unaligned memory operands with SSE instructions.
+    sse2                        - Enable SSE2 instructions.
+    sse3                        - Enable SSE3 instructions.
+    sse4.1                      - Enable SSE 4.1 instructions.
+    sse4.2                      - Enable SSE 4.2 instructions.
+    sse4a                       - Support SSE 4a instructions.
+    ssse3                       - Enable SSSE3 instructions.
+    tbm                         - Enable TBM instructions.
+    use-aa                      - Use alias analysis during codegen.
+    use-glm-div-sqrt-costs      - Use Goldmont specific floating point div/sqrt costs.
+    vaes                        - Promote selected AES instructions to AVX512/AVX registers.
+    vpclmulqdq                  - Enable vpclmulqdq instructions.
+    vzeroupper                  - Should insert vzeroupper instructions.
+    waitpkg                     - Wait and pause enhancements.
+    wbnoinvd                    - Write Back No Invalidate.
+    x87                         - Enable X87 float instructions.
+    xop                         - Enable XOP instructions.
+    xsave                       - Support xsave instructions.
+    xsavec                      - Support xsavec instructions.
+    xsaveopt                    - Support xsaveopt instructions.
+    xsaves                      - Support xsaves instructions.
+
+Rust-specific features:
+    crt-static                  - Enables libraries with C Run-time Libraries(CRT) to be statically linked.
+
+Use +feature to enable a feature, or -feature to disable it.
+For example, rustc -C -target-cpu=mycpu -C target-feature=+feature1,-feature2
+
