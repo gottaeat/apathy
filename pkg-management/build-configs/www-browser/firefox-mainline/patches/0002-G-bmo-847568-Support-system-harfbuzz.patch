@@ -1,7 +1,7 @@
-From 6a2924f8bb0f975428a179fa944b9a8cc8d2bb38 Mon Sep 17 00:00:00 2001
+From e6201a05c792ad1a8fc047f654fa63d60053f7c8 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:32:39 +0200
-Subject: [PATCH 04/40] bmo#847568: Support system harfbuzz
+Subject: [PATCH 04/38] bmo#847568: Support system harfbuzz
 
 Allow building against system-wide harfbuzz.
 
@@ -21,7 +21,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  10 files changed, 41 insertions(+), 1 deletion(-)
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
-index e32c43ad34..b798324b82 100644
+index 2f38f04a58..0f8110680c 100644
 --- a/config/system-headers.mozbuild
 +++ b/config/system-headers.mozbuild
 @@ -1232,6 +1232,13 @@ if CONFIG['OS_TARGET'] == 'Android':
@@ -39,10 +39,10 @@ index e32c43ad34..b798324b82 100644
      system_headers += [
          'jack/jack.h',
 diff --git a/dom/base/moz.build b/dom/base/moz.build
-index 01862e31a0..a06974c577 100644
+index 04dd4bc8a1..e34fb2484d 100644
 --- a/dom/base/moz.build
 +++ b/dom/base/moz.build
-@@ -548,6 +548,9 @@ if CONFIG['MOZ_BUILD_APP'] in ['browser', 'mobile/android', 'xulrunner']:
+@@ -549,6 +549,9 @@ if CONFIG['MOZ_BUILD_APP'] in ['browser', 'mobile/android', 'xulrunner']:
  if CONFIG['MOZ_X11']:
      CXXFLAGS += CONFIG['TK_CFLAGS']
  
@@ -129,7 +129,7 @@ index b12b3bb4f1..05f5ccfba1 100644
 +
  FINAL_LIBRARY = 'xul'
 diff --git a/netwerk/dns/moz.build b/netwerk/dns/moz.build
-index f24fdf1270..80fe238588 100644
+index ad8eba7df5..3723ea8102 100644
 --- a/netwerk/dns/moz.build
 +++ b/netwerk/dns/moz.build
 @@ -101,6 +101,9 @@ LOCAL_INCLUDES += [
@@ -143,7 +143,7 @@ index f24fdf1270..80fe238588 100644
  
  if CONFIG['CC_TYPE'] in ('clang', 'gcc'):
 diff --git a/toolkit/library/moz.build b/toolkit/library/moz.build
-index 55c2566fb3..5e91273f92 100644
+index 7577e9b0f5..57eadea126 100644
 --- a/toolkit/library/moz.build
 +++ b/toolkit/library/moz.build
 @@ -234,6 +234,9 @@ if CONFIG['MOZ_ANDROID_GOOGLE_VR']:
@@ -157,7 +157,7 @@ index 55c2566fb3..5e91273f92 100644
      OS_LIBS += CONFIG['MOZ_JPEG_LIBS']
  
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index 2c4d8fa244..637c3c319d 100644
+index a3afc77c59..523ab09594 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
 @@ -408,6 +408,16 @@ def freetype2_combined_info(fontconfig_info, freetype2_info):
@@ -178,5 +178,5 @@ index 2c4d8fa244..637c3c319d 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.28.0
+2.29.2
 

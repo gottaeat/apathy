@@ -1,7 +1,7 @@
-From 208fb619dc459968d25655bac531a90b5b9a55c1 Mon Sep 17 00:00:00 2001
+From 894daa6570673c06eee50dddde924c7c65fbf64f Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:09:26 +0200
-Subject: [PATCH 14/40] musl: Only use system heap reporter with glibc
+Subject: [PATCH 14/38] musl: Only use system heap reporter with glibc
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/xpcom/base/nsMemoryReporterManager.cpp b/xpcom/base/nsMemoryReporterManager.cpp
-index 29125136fa..bf9290a091 100644
+index fc91deff3f..184ad36eb6 100644
 --- a/xpcom/base/nsMemoryReporterManager.cpp
 +++ b/xpcom/base/nsMemoryReporterManager.cpp
 @@ -646,6 +646,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
@@ -29,5 +29,5 @@ index 29125136fa..bf9290a091 100644
  struct SegmentKind {
    DWORD mState;
 -- 
-2.28.0
+2.29.2
 
