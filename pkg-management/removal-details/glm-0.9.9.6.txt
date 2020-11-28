@@ -1,0 +1,6 @@
+/usr/include/glm
+
+/usr/lib/cmake/glm
+/usr/lib/pkgconfig/glm.pc
+
+/usr/share/doc

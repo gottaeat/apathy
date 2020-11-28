@@ -1,0 +1,3 @@
+/usr/bin/maim
+
+/usr/share/man

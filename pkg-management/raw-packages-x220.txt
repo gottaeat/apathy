@@ -205,7 +205,6 @@ mpc-0.33
 ncmpcpp-0.9
 maim-5.5.3
 slop-7.4
-glm-0.9.9.6
 glew-2.1.0
 xclip-0.13
 imagemagick-7.0.10.23
