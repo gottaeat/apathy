@@ -1,4 +1,4 @@
-changelog-seen        = 1
+changelog-seen        = 2
 
 [llvm]
 link-shared           = true
@@ -8,14 +8,14 @@ build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
 
-cargo                 = '/opt/rustc-1.48.0/bin/cargo'
-rustc                 = '/opt/rustc-1.48.0/bin/rustc'
+cargo                 = '/opt/rustc-1.47.0/bin/cargo'
+rustc                 = '/opt/rustc-1.47.0/bin/rustc'
 python                = 'python3'
 
 extended              = true
 tools                 = ['cargo']
 
-local-rebuild         = true
+local-rebuild         = false
 low-priority          = false
 full-bootstrap        = false
 print-step-timings    = false
