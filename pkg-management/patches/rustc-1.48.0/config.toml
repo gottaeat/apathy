@@ -1,17 +1,9 @@
 changelog-seen        = 1
-profile               = <none>
 
 [llvm]
 link-shared           = true
 
 [build]
-doc-stage             = 0
-build-stage           = 1
-test-stage            = 1
-dist-stage            = 2
-install-stage         = 2
-bench-stage           = 2
-
 build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
@@ -45,7 +37,6 @@ prefix                = '/opt/rustc-1.48.0'
 channel               = 'nightly'
 
 optimize              = true
-codegen-units         = 16
 codegen-units-std     = 1
 backtrace             = false
 incremental           = false
@@ -65,7 +56,7 @@ jemalloc              = false
 debug                 = false
 debug-assertions      = false
 debug-assertions-std  = false
-debug-logging         = 0
+debug-logging         = false
 debuginfo-level       = 0
 debuginfo-level-rustc = 0
 debuginfo-level-std   = 0
