@@ -1,9 +1,0 @@
-palemoon/base/content/aboutDialog.xul
-palemoon/branding/shared/locales/browserconfig.properties
-palemoon/branding/shared/pref/preferences.inc
-palemoon/branding/shared/pref/uaoverrides.inc
-palemoon/branding/unofficial/branding.nsi
-palemoon/branding/unofficial/configure.sh
-palemoon/branding/unofficial/locales/en-US/brand.dtd
-palemoon/branding/unofficial/locales/en-US/brand.properties
-palemoon/branding/unofficial/pref/palemoon-branding.js
