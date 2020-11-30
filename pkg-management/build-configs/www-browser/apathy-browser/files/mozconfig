@@ -1,71 +1,71 @@
-### directories
+
+# directories
 ac_add_options --prefix=/usr
 ac_add_options --libdir=/usr/lib
 
-### compiler stuff
+# compiler stuff
 ac_add_options --host=x86_64-apathy-linux-musl
 ac_add_options --target=x86_64-apathy-linux-musl
-ac_add_options --enable-optimize="-w -O3 -m64 -m80387 -m96bit-long-double -malign-stringops -mcx16 -mfancy-math-387 -mfp-ret-in-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx -mmusl -mpush-args -mred-zone -msahf -msse -msse2 -msse3 -msse4.1 -mssse3 -mtls-direct-seg-refs -march=core2 -mtune=core2 -fstack-protector-strong -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize -flto=4 -fuse-linker-plugin -fno-fat-lto-objects -I/mss/work/table/gtk/include -L/mss/work/table/gtk/lib"
-ac_add_options --disable-warnings-as-errors
 ac_add_options --enable-gold=no
-ac_add_options --disable-jemalloc
-ac_add_options --with-pthreads
-ac_add_options --disable-elf-hack
-ac_add_options --enable-strip
 ac_add_options --enable-install-strip
+ac_add_options --enable-optimize="-w -O3 -march=native -mtune=native -fstack-protector-strong -fcommon -flto=4 -fuse-linker-plugin -fno-fat-lto-objects -fno-semantic-interposition -fdevirtualize-at-ltrans -fgraphite-identity -floop-nest-optimize -ftree-vectorize -fno-math-errno -fno-trapping-math -I/mss/work/table/gtk/include -L/mss/work/table/gtk/lib"
+ac_add_options --enable-strip
 ac_add_options --disable-debug
 ac_add_options --disable-debug-symbols
+ac_add_options --disable-elf-hack
+ac_add_options --disable-jemalloc
+ac_add_options --disable-warnings-as-errors
+ac_add_options --with-pthreads
 
 mk_add_options AUTOCLOBBER=1
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/pmbuild
 mk_add_options MOZ_MAKE_FLAGS="-j4"
 
-### branding
+# branding
 ac_add_options --enable-application=palemoon
 ac_add_options --with-app-name=apathy-browser
 ac_add_options --with-app-basename="apathy browser"
-ac_add_options --with-branding=palemoon/branding/unofficial
+ac_add_options --with-branding=palemoon/branding/apathy
 
-### features
+# features
 ac_add_options --enable-alsa
-ac_add_options --disable-dbus
-ac_add_options --disable-pulseaudio
-ac_add_options --disable-gconf
-
-### build features
-ac_add_options --disable-profiling
-ac_add_options --disable-system-extension-dirs
-ac_add_options --disable-callgrind
-ac_add_options --disable-vtune
-ac_add_options --disable-crashreporter
-ac_add_options --disable-tests
-ac_add_options --disable-eme
-ac_add_options --disable-parental-controls
+ac_add_options --enable-devtools
+ac_add_options --enable-icf
+ac_add_options --enable-phoenix-extensions
 ac_add_options --disable-accessibility
-ac_add_options --disable-webrtc
-ac_add_options --disable-icf
+ac_add_options --disable-callgrind
+ac_add_options --disable-crashreporter
+ac_add_options --disable-dbus
+ac_add_options --disable-eme
 ac_add_options --disable-gamepad
+ac_add_options --disable-gconf
 ac_add_options --disable-necko-wifi
-ac_add_options --disable-updater
+ac_add_options --disable-parental-controls
+ac_add_options --disable-profiling
+ac_add_options --disable-pulseaudio
 ac_add_options --disable-sync
+ac_add_options --disable-system-extension-dirs
+ac_add_options --disable-tests
+ac_add_options --disable-updater
+ac_add_options --disable-vtune
+ac_add_options --disable-webrtc
+
 ac_add_options --x-libraries=/usr/lib
-ac_add_options --enable-default-toolkit=cairo-gtk3
+ac_add_options --enable-default-toolkit=cairo-gtk2
+mk_add_options MOZ_PKG_SPECIAL=gtk2
 mk_add_options PYTHON=/usr/bin/python2
 
-### (don't) use system libs
-## these bois are allowed but fuck it
-ac_add_options --with-system-ffi
+# system libs, if you can
 ac_add_options --with-system-bz2
-ac_add_options --with-system-zlib
+ac_add_options --with-system-ffi
 ac_add_options --with-system-jpeg
+ac_add_options --with-system-zlib
 ac_add_options --enable-system-pixman
 
-## these bois are disabled by upstream
-#ac_add_options --with-system-icu
-#ac_add_options --with-system-libevent
-#ac_add_options --with-system-libvpx
-#ac_add_options --with-system-nspr
-#ac_add_options --with-system-nss
-#ac_add_options --with-system-png
+# these bois are disabled by upstream, couldn't figure out to revert sqlite.
+# it also crashes randomly if built with system cairo.
 #ac_add_options --enable-system-cairo
 #ac_add_options --enable-system-sqlite
+#ac_add_options --with-system-icu
+#ac_add_options --with-system-nspr
+#ac_add_options --with-system-nss
