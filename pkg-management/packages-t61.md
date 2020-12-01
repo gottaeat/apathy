@@ -334,10 +334,10 @@
 [d] self	> mpc-0.33
 [d] self	> ncmpcpp-0.9
 
-[d] arch	> maim-5.5.3
-[d] alpine	>> slop-7.4
-[d] arch	>>> glm-0.9.9.6
-[d] alpine	>>> glew-2.1.0
+[d] self	> maim-5.5.3
+[d] self	>> slop-7.4
+[r] self	>>> glm-0.9.9.6
+[d] self	>>> glew-2.1.0
 
 [d] alpine	> xclip-0.13
 
