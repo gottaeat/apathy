@@ -1,4 +1,4 @@
-From ba53347b3e841786d98c85ddabe536d4f671c209 Mon Sep 17 00:00:00 2001
+From 99207455e69d290fd107e867e5e7e45da470bdca Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:19:23 -0600
 Subject: [PATCH 13/38] musl: Fix syscall wrappers
@@ -38,5 +38,5 @@ index 1abe0ba5b0..d6087a1674 100644
   * wrapper functions that convert them), we provide our own kernel data
   * structures for use by the system calls.
 -- 
-2.28.0
+2.29.2
 

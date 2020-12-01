@@ -1,7 +1,7 @@
 From 22301d8c9f2d66d8bb1f7f79348455ecf9da7c2f Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 20 Oct 2020 15:19:21 +0200
-Subject: [PATCH 37/37] bmo#1653339: Teach style_derive's map_type_params about
+Subject: [PATCH 37/38] bmo#1653339: Teach style_derive's map_type_params about
  mapping self correctly
 
 Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1643201#c30

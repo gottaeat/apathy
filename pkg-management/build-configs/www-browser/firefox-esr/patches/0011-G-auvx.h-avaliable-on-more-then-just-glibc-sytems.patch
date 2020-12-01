@@ -1,4 +1,4 @@
-From 0052691074da5a7d298cbd5f29998f39047bac84 Mon Sep 17 00:00:00 2001
+From 607cec0aa8d59ee3fbfa5e85514a7e6c82df4931 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:12:09 +0200
 Subject: [PATCH 17/38] musl: sys/auvx.h avaliable on more then just glibc
@@ -44,5 +44,5 @@ index 9c5645068a..05fea37ee0 100644
    architecture = 8;
    if ((hwcap & HWCAP_FP) != 0)
 -- 
-2.28.0
+2.29.2
 

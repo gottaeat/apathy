@@ -1,4 +1,4 @@
-From 5853abbff2bfa89acc32598c8e400008f1287cbd Mon Sep 17 00:00:00 2001
+From 5ddcdfe40a7abdf40a43e29804340c620241b7f8 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:10:03 +0200
 Subject: [PATCH 15/38] musl: Set pthread name for non glibc systems
@@ -25,5 +25,5 @@ index 82467e64bc..fcefe128dd 100644
    MOZ_RELEASE_ASSERT(!rv);
  }
 -- 
-2.28.0
+2.29.2
 

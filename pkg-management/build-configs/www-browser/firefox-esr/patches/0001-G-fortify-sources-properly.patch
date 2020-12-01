@@ -1,4 +1,4 @@
-From ea0f9d1ca4b7d4a99627be02c72c7cdcce65ef44 Mon Sep 17 00:00:00 2001
+From 1518fe3020adb81319b570b6594d90abd867d4d6 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:16:36 +0200
 Subject: [PATCH 02/38] Fortify sources properly
@@ -37,5 +37,5 @@ index 6e4dd8c645..bbfa95f138 100644
  
  #endif /* _SDP_OS_DEFS_H_ */
 -- 
-2.28.0
+2.29.2
 
