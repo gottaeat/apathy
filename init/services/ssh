@@ -17,6 +17,9 @@ case "$1" in
    for pid in $(pgrep sshd); do kill -TERM "$pid"; done
   evalret
  ;;
+ restart)
+  ${0} stop; sleep 1; ${0} start
+ ;;
  *)
   ainitusage "{start|stop|restart}"
   exit 1
