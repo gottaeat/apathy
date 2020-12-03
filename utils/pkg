@@ -85,23 +85,28 @@ stats(){
 }
 
 pver(){
-     tls=$(openssl version | awk '{print tolower($0)}')
-    libc=$(ldd 2>&1 \
-           | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
-                  FNR == 2 {c=$2}              \
-                  END{print a,b,c,d}')
-    trpl=$(gcc -dumpmachine)
-     cca=$(gcc   --version | awk 'FNR == 1 {print}')
-     ccb=$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')
-    carg="$(rustc -V | awk '{print $2}')/$(cargo -V | awk '{print $2}')"
+      tls=$(openssl version | awk '{print tolower($0)}')
+     libc=$(ldd 2>&1 \
+            | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
+                   FNR == 2 {c=$2}              \
+                   END{print a,b,c,d}')
+     trpl=$(gcc -dumpmachine)
+      cca=$(gcc   --version | awk 'FNR == 1 {print}')
+      ccb=$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')
+
+ cargover="$(rustc -V | awk '{print $2}')"
+ rustcver="$(cargo -V | awk '{print $2}')"
+
+ [ "${cargover}" = "${rustcver}" ] \
+  && roost="${rustcver}" || roost="${rustcver}/${cargover}"
 
  aprint_nc
- lsdetail "tls " "$tls "
- lsdetail "libc" "$libc"
- lsdetail "cca " "$cca "
- lsdetail "ccb " "$ccb "
- lsdetail "rust" "$carg"
- lsdetail "trpl" "$trpl"
+ lsdetail "tls " "${tls}  "
+ lsdetail "libc" "${libc} "
+ lsdetail "cca " "${cca}  "
+ lsdetail "ccb " "${ccb}  "
+ lsdetail "rust" "${roost}"
+ lsdetail "trpl" "${trpl} "
  aprint_nc
 }
 
