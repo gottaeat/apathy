@@ -19,7 +19,7 @@ if [ ! -z "${pidboi}" ]
   kill -9 "${pidboi}"
  else
   case "$1" in
-   vsync|-v)  cvsync   ;;
-   novsync|*) cnovsync ;;
+   vsync|-v)  cvsync;   sleep 1; exit;;
+   novsync|*) cnovsync; sleep 1; exit;;
   esac
 fi
