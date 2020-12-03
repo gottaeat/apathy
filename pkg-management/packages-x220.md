@@ -370,7 +370,7 @@
 [r] self	> cwm				--> from github.com/leahneukirchen/cwm
 [r] self	> lemonbar			--> from github.com/krypt-n/bar
 [r] self	> wmctrl-1.07			--> inst from alp, patches from void
-[d] self	> aria2-1.35.0
+[r] self	> aria2-1.35.0
 [d] self	> links-2.20.2
 
 [d] self	> wpa_supplicant-2.9
