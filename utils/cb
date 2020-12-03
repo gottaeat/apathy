@@ -1,0 +1,7 @@
+#!/mss/bin/sh
+exec curl \
+ -L     \
+ -O     \
+ -X GET \
+\
+ "${@}"

@@ -1,0 +1,24 @@
+#!/mss/bin/sh
+. /mss/bin/apathy-funcs
+
+links="/tmp/links-`dn`.tmp"
+
+aprint_nc
+aprint "input the links you want to have downloaded, do C-d once you're done:"
+dd if=/dev/stdin of="${links}" >/dev/null 2>&1
+
+if [ "$(wc -l "${links}" | awk '{print $1}')" -eq 0 ]
+ then
+  aprint_nc
+  aprint_fail "no links are given, exiting."
+  aprint_nc
+  rm -rf "${links}"
+  exit 1
+ else
+  aprint_nc
+  aprint "specified links are: "
+  cat "${links}"
+  aprint_nc
+fi
+
+xargs -n 1 curl -L -O -X GET < "${links}"
