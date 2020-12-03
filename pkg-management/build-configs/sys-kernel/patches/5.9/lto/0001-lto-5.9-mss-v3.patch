@@ -1028,7 +1028,7 @@ diff -uraN a/scripts/Makefile.lto b/scripts/Makefile.lto
 +export KBUILD_MODPOST_LDFLAGS
 +
 +ifdef CONFIG_LTO
-+	LTO_CFLAGS := -flto
++	LTO_CFLAGS := -flto -flto-compression-level=9
 +	LTO_FINAL_CFLAGS := -fuse-linker-plugin
 +
 +	# gcc 8.x doesn't generate debuginfo if we don't
