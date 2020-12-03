@@ -48,7 +48,7 @@ alias     mkdir="mkdir -pv"
 alias     mount="mount -v"
 
 # a7 >> ease of access
-alias        a2="/mss/bin/a2norpc"
+alias        a2="/mss/bin/cb"
 alias       poz="yash --posix"
 alias    onegai="doas --"
 alias  fetchall="(clear; fetch ascii | head -13; pkg pver | head -7; pkg stats)"
