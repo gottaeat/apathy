@@ -258,6 +258,7 @@ pciutils-3.7.0
 thinkfan-1.2.1
 apulse-0f9f8487
 isl-0.22
+fdupes-2.1.2
 acl-2.2.53
 argp-standalone-1.3
 attr-2.4.48

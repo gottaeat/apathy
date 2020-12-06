@@ -428,6 +428,7 @@
 [d] self	> v4l-utils-1.20.0
 [d] self	> apulse-0f9f8487
 [d] self	> isl-0.22
+[d] self	> fdupes-2.1.2
 ```
 ```
 ### base mlfs packages

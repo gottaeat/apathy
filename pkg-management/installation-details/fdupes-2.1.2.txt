@@ -1,0 +1,3 @@
+/usr/bin/fdupes
+
+/usr/share/man

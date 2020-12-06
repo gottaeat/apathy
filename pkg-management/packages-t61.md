@@ -427,6 +427,7 @@
 [d] self	> thinkfan-1.2.1
 [d] self	> apulse-0f9f8487
 [d] self	> isl-0.22
+[d] self	> fdupes-2.1.2
 ```
 ```
 ### base mlfs packages
