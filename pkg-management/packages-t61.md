@@ -121,7 +121,7 @@
 # alias fm='./configure $XORG_CONFIG && make && doas -- make install && \
 #           echo done && cd .. && rm -rf * && ls -lahw1'
 [d] self	> xtrans-1.4.0
-[d] self	> libX11-1.6.12
+[d] self	> libX11-1.7.0
 [d] self	> libXext-1.3.4
 [d] self	> libICE-1.0.10
 [d] self	> libSM-1.2.3
@@ -207,7 +207,7 @@
 
 [d] self	> xkeyboard-config-2.28
 
-[d] self	> xorg-server-1.20.9
+[d] self	> xorg-server-1.20.10
 [r] bmlfs	>> libunwind-1.3.1
 [d] bmlfs	>> libepoxy-1.5.3
 
