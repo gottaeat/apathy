@@ -241,10 +241,10 @@ libunwind-11.0.0
 libcxxabi-11.0.0
 libcxx-11.0.0
 compiler-rt-11.0.0
-rustc-1.48.0
-cbindgen-0.15.0
-nodejs-14.14.0
 firefox-78.5.0esr
+nodejs-14.14.0
+cbindgen-0.15.0
+rustc-1.48.0
 gtk+-3.24.23
 sinit-1.1-apathy
 zstd-1.4.5

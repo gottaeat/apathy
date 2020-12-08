@@ -1,37 +1,28 @@
-### sources used:
-```
-# https://pkgs.alpinelinux.org
-# https://github.com/kisslinux/repo
-# http://linuxfromscratch.org/blfs/view/9.0
-# https://github.com/dslm4515/bmlfs
-# https://github.com/gentoo/libressl
-```
-
 ### basic explanation of the format used here:
 ```
-[ ] text	> package-version
+[ ] text	> package-version		(notes)
  │  │
  │  └─────────────> source of the build recipe.
  │
  ├─> d: done ─────> currently installed to the local system.
+ ├─> b: busybox ──> symlinked to busybox.
  ├─> r: removed ──> simply removed. 
  └─> o: ondemand ─> this package got built and archived. only unarchived
                     when it is needed.
 ```
-
 ```
 [d] self	> opendoas-6.8
 [r] bmlfs	> ca-certificates-20190110
-[d] alp+blfs	> iptables-1.8.4
+[d] self	> iptables-1.8.4
 [d] alpine	> lsof-4.93.2
 
 [d] alpine	> lm_sensors-3.6.0
-		>> which (busybox which)	--> ln -sfv /bin/busybox /bin/which
+[b] self	>> which
 [d] alpine	>> sysfsutils-2.1.0
 
 [d] alpine	> sysstat-12.2.0
 [d] self	> curl-7.73.0
-		> ntp (busybox ntpd -n -q)	--> ln -sfv /bin/busybox /bin/ntpd
+[b] busybox	> ntpd
 
 [d] self	> git-2.29.2
 [d] alpine	>> pcre2-10.34
@@ -45,30 +36,30 @@
 [d] alpine	>> libarchive-3.4.1
 
 [d] alpine	> usbutils-012
-[d] alpine	>> libusb-1.0.23		--> without --disable-udev
+[d] alpine	>> libusb-1.0.23		(without --disable-udev)
 
 [d] arch	> lua-5.2.4
 [d] alpine	> gpm-1.20.7
-[d] alpine	> tree-1.8.0			--> modified makefile for -march=native
+[d] alpine	> tree-1.8.0
 
 [d] alpine	> rsync-3.1.3
 [d] alpine	>> popt-1.16
 
-[d] alpine	> tmux-3.0a			--> with my own patch for corner chars
+[d] alpine	> tmux-3.0a
 [d] self	>> libevent-2.1.11
 
 [d] self	> htop-3.0.2
-[d] alpine	> strace-5.4			--> built on default lts alpine kernel
+[d] alpine	> strace-5.4
 [d] alpine	> libnl-1.1.4
 
 [d] alpine	> iftop-0.17
-[d] alpine	>> libpcap-1.9.1		--> without ipv6
+[d] alpine	>> libpcap-1.9.1		(without ipv6 support)
 
 [d] alpine	> libidn-1.35
 
-[r] blfs	> nss-3.49.1			--> patch was for 3.49, not 3.49.1
+[r] blfs	> nss-3.49.1
 [r] alpine	>> nspr-4.24
-[d] alpine	>> sqlite-3.30.1		--> normally installed after, moved here
+[d] alpine	>> sqlite-3.30.1
 
 [d] self	> python-2.7.17
 
@@ -78,11 +69,11 @@
 [d] alpine	>> libassuan-2.5.3
 [d] alpine	>> libgcrypt-1.8.5
 [d] alpine	>> libksba-1.3.5
-[d] alpine	>> pinentry-1.1.0		--> tty only
+[d] alpine	>> pinentry-1.1.0		(tty only)
 [d] self	>> gnutls-3.6.15
 [d] alpine	>>> libtasn1-4.15
 [d] alpine	>>> libunistring-0.9.10
-[d] alpine	>>> nettle-3.5.1		--> no --disable-openssl
+[d] alpine	>>> nettle-3.5.1		(without --disable-openssl)
 [d] alpine	>>> p11-kit-0.23.18.1
 
 [d] self	> openvpn-2.4.9
@@ -90,12 +81,10 @@
 
 [d] self	> jq-1.6
 [d] devbin	> dnscrypt-proxy-2.0.44
-
-[r] self	> start-stop-daemon		--> github.com/daleobrien/start-stop-daemon
+[r] self	> start-stop-daemon		(from github.com/daleobrien/start-stop-daemon)
 ```
 ```
-### xorg fuckery
-
+### xorg stack
 [d] bmlfs	> util-macros-1.19.2
 [d] bmlfs	> xorgproto-2019.2
 [d] bmlfs	> libxau-1.0.9 
@@ -103,18 +92,16 @@
 [d] bmlfs	> xcb-proto-1.13
 [d] bmlfs	> libxcb-1.13.1
 
-# xml garbage
+# xml
 [r] bmlfs	> libxslt-1.1.33
 [r] bmlfs	>> docbook-xml-4.5
 [r] bmlfs	>>> sgml-common-0.6.3
 [r] bmlfs	>> docbook-xsl-1.79.2
-# xml garbage end
+# xml end
 
 [d] self	> libxml2-2.9.10
 
-# someone fucking shoot me
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
-
 [d] self	> fontconfig-2.13.92
 [d] self	>> freetype-2.10.2
 [d] bmlfs	>>> libpng-1.6.37
@@ -128,8 +115,7 @@
 
 [d] self	> cairo-1.16.0
 [d] bmlfs	>> pixman-0.40.0
-
-# someone fucking shoot me end
+# warn end
 
 # xorg libs
 # alias fm='./configure $XORG_CONFIG && make && doas -- make install && \
@@ -175,7 +161,7 @@
 [d] self	> xcb-util-cursor-0.1.3
 
 [d] self	> mesa-20.2.3
-[d] alp+bmlfs	>> libdrm-2.4.100		--> patch from alpine, rest is bmlfs
+[d] alp+bmlfs	>> libdrm-2.4.100		(patch from alpine, recipe from bmlfs)
 [r] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.1.1
 [d] bmlfs	>>> markupsafe-1.1.1
@@ -234,17 +220,17 @@
 [d] bmlfs	>> libinput-1.15.0
 
 [d] bmlfs	> xf86-input-synaptics-1.9.1
-
 [d] bmlfs	> libva-2.6.0
 [d] bmlfs	> intel-vaapi-driver-2.4.0
-
 [r] self	> xf86-video-intel-846b53
 # xorg drivers end
+
 [d] alpine	> xinit-1.4.1
-### xorg fuckery end
+
+### xorg stack end
 ```
 ```
-### gui fuckery
+### gui
 [d] self	> atk-2.36.0
 [d] bmlfs	> atkmm-2.28.0
 [d] bmlfs	>> glibmm-2.60.0
@@ -256,11 +242,10 @@
 [d] self	> gdk-pixbuf-2.40.0
 [d] self	>> libjpeg-turbo-2.0.5
 [d] bmlfs	>>> nasm-2.14.02
-		>> ?
-[r] bmlfs	>>> libcroco-0.6.13
-[d] self	>>> pango-1.42.4
-[d] bmlfs	>>>> fribidi-1.0.8
-[r] bmlfs	>>> vala-0.46.5
+[r] bmlfs	>> libcroco-0.6.13
+[d] self	>> pango-1.42.4
+[d] bmlfs	>>> fribidi-1.0.8
+[r] bmlfs	>> vala-0.46.5
 [d] bmlfs	>> tiff-4.1.0
 
 [r] self	> gtk+-2.24.32
@@ -270,7 +255,7 @@
 [d] alpine 	>> giflib-5.2.1
 [d] alpine	>>> xmlto-0.0.28 
 [d] alpine	>> libid3tag-0.15.1b
-### gui fuckery end
+### gui end
 ```
 ```
 [d] bmlfs	> autoconf-2.13
@@ -278,7 +263,7 @@
 [d] self	> yasm-1.3.0
 ```
 ```
-### audio libraries and codecs
+### audio libs
 [d] self	> alsa-lib-1.2.3.1
 
 [d] alpine	> libvorbis-1.3.6
@@ -297,22 +282,20 @@
 [d] alpine	> id3lib-3.8.3
 [d] alpine	> libass-0.14.0
 [d] alpine	> libmad-0.15.1b
-
 [d] alpine	> libmpeg2-0.5.1
-
 [d] bmlfs	> libvpx-1.8.2
 [d] bmlfs	> opus-1.3.1
 [d] bmlfs	> taglib-1.11.1
 [d] self	> x264-20191119-2245
 [d] self	> x265-3.4
-### audio libraries and codecs end
+### audio libs end
 ```
 ```
 [d] self	> dmenu-4.9
 [d] self	> xtrlock-2.11
 [d] self	> youtube-dl-2020.11.01.1
 
-[d] self	> compton-5.1 		--> -Dconfig_file=false -Ddbus=false
+[d] self	> compton-5.1			(-Dconfig_file=false -Ddbus=false)
 [d] alpine	>> libev-4.31
 
 [d] self	> ffmpeg-4.3.1
@@ -320,7 +303,6 @@
 [d] alpine	>> openjpeg-2.3.1
 
 [d] alpine	> numlockx-1.2
-
 [d] self	> mpv-0.33.0
 
 [d] self	> mpd-0.21.10
@@ -348,7 +330,7 @@
 [d] alpine	> feh-3.3
 
 [d] self	> mupdf-1.16.1
-[d] alpine	>> jbig2dec-0.17		--> w/o --without-libpng
+[d] alpine	>> jbig2dec-0.17		(without --without-libpng)
 
 [d] alpine	> gpgme-1.13.1
 [r] alpine	> mutt-1.13.3
@@ -360,16 +342,16 @@
 [d] self	> gcompat-1.0.0
 [d] self	>> libucontext-0.11
 
-[d] self	> sfeed-git			--> git.codemadness.org/sfeed
+[d] self	> sfeed-git			(from git.codemadness.org/sfeed)
 [d] self	> vifm-0.10.1
-[d] self	> fim-0.5-rc3			--> w/ --disable-exif
-[d] self	> trackma-git			--> 17 jan 2020 snapshot
+[d] self	> fim-0.5-rc3
+[d] self	> trackma-git			(20200117 snapshot)
 [d] self	> slmenu-0.1
 [d] self	> apathy-st-0.8.4
 [d] alpine	> lz4-1.9.2
-[r] self	> cwm				--> from github.com/leahneukirchen/cwm
-[r] self	> lemonbar			--> from github.com/krypt-n/bar
-[r] self	> wmctrl-1.07			--> inst from alp, patches from void
+[r] self	> cwm				(from github.com/leahneukirchen/cwm)
+[r] self	> lemonbar			(from github.com/krypt-n/bar)
+[r] self	> wmctrl-1.07			(patches from void, recipe from alpine)
 [r] self	> aria2-1.35.0
 [d] self	> links-2.20.2
 
@@ -377,7 +359,7 @@
 [d] alpine	>> libnl3-3.5.0
 
 [d] self	> lilo-24.2
-[d] arch	>> bin86-0.16.21		--> don't remember where the fuck i found the sauce from
+[d] arch	>> bin86-0.16.21
 
 [r] alpine	> i3wm-gaps-4.17.1
 [r] alpine	>> yajl-2.1.0
@@ -394,9 +376,10 @@
 
 [d] self	> mawk-1.3.4-20200120
 [r] self	> star-1.6
-
 [r] self	> go-1.14.1
-
+```
+```
+### llvm
 [d] self	> llvm-11.0.0
 [d] self	> clang-11.0.0
 [d] self	> lld-11.0.0
@@ -405,12 +388,13 @@
 [d] self	> libcxxabi-11.0.0
 [d] self	> libcxx-11.0.0
 [d] self	> compiler-rt-11.0.0
-
-[d] self	> rustc-1.48.0
-[d] self	> cbindgen-0.15.0
-[d] self	> nodejs-14.14.0
-
+### llvm end
+```
+```
 [d] self	> firefox-78.5.0esr
+[d] self	>> nodejs-14.14.0
+[d] self	>> cbindgen-0.15.0
+[d] self	>>> rustc-1.48.0
 [d] self	>> gtk+-3.24.23
 
 [d] self	> sinit-1.1-apathy
@@ -444,7 +428,7 @@
 [d] mlfs	> bzip2-1.0.8
 [d] mlfs	> check-0.12.0
 [d] self	> coreutils-8.32
-[r] bbox	> cpio-2.12		--> /bin/busybox provides /bin/{cpio,mt}
+[b] busybox	> cpio
 [d] self	> diffutils-3.7
 [d] self	> e2fsprogs-1.45.6
 [d] mlfs	> elfutils-0.176
@@ -454,7 +438,7 @@
 [d] self	> findutils-4.7.0
 [d] mlfs	> flex-2.6.4
 [r] mlfs	> gawk-5.0.1
-[d] self	> gcc-10.2.0 
+[d] self	> gcc-10.2.0
 [d] mlfs	> gdbm-1.18.1
 [r] mlfs	> gettext-0.20.1
 [d] self	> gmp-6.2.0
