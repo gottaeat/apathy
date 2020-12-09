@@ -293,7 +293,7 @@
 ```
 [d] self	> dmenu-4.9
 [d] self	> xtrlock-2.11
-[d] self	> youtube-dl-2020.11.01.1
+[d] self	> youtube-dl-2020.12.07
 
 [d] self	> compton-5.1			(-Dconfig_file=false -Ddbus=false)
 [d] alpine	>> libev-4.31
