@@ -311,7 +311,7 @@
 [d] self	>> libmpdclient-2.18
 [d] alpine	>> libupnp-1.8.4
 [d] alpine	>> libshout-2.4.3
-[o] self	>> boost-1.72.0
+[o] self	>> boost-1.75.0
 
 [d] self	> mpc-0.33
 [d] self	> ncmpcpp-0.9
