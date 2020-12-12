@@ -21,7 +21,7 @@
 [d] alpine	>> sysfsutils-2.1.0
 
 [d] alpine	> sysstat-12.2.0
-[d] self	> curl-7.73.0
+[d] self	> curl-7.74.0
 [b] busybox	> ntpd
 
 [d] self	> git-2.29.2
