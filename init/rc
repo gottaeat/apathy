@@ -77,10 +77,6 @@ initboi(){
   find /tmp -xdev -mindepth 1 ! -name lost+found -delete
  evalret
 
- ainitmes "utilizing ${c_lcyan}utmp${c_reset}."
-  > /var/run/utmp && chmod 664 /var/run/utmp && chgrp utmp /var/run/utmp
- evalret
-
  ainitmes "restoring ${c_lcyan}alsa volume states${c_reset}."
   alsactl restore >/dev/null 2>&1
  evalret
