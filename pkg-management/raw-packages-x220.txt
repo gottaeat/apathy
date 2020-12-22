@@ -243,7 +243,7 @@ libcxx-11.0.0
 compiler-rt-11.0.0
 firefox-78.5.0esr
 nodejs-14.14.0
-cbindgen-0.15.0
+cbindgen-0.16.0
 rustc-1.48.0
 gtk+-3.24.23
 sinit-1.1-apathy
