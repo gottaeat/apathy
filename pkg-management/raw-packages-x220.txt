@@ -53,7 +53,7 @@ libxdmcp-1.1.3
 xcb-proto-1.13
 libxcb-1.13.1
 libxml2-2.9.10
-fontconfig-2.13.92
+fontconfig-2.13.93
 freetype-2.10.2
 libpng-1.6.37
 harfbuzz-2.7.2

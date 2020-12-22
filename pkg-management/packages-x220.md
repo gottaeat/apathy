@@ -102,7 +102,7 @@
 [d] self	> libxml2-2.9.10
 
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
-[d] self	> fontconfig-2.13.92
+[d] self	> fontconfig-2.13.93
 [d] self	>> freetype-2.10.2
 [d] bmlfs	>>> libpng-1.6.37
 [d] self	>>> harfbuzz-2.7.2
