@@ -160,7 +160,7 @@
 [d] self	> xcb-util-wm-0.4.1
 [d] self	> xcb-util-cursor-0.1.3
 
-[d] self	> mesa-20.2.3
+[d] self	> mesa-20.2.6
 [d] alp+bmlfs	>> libdrm-2.4.100		(patch from alpine, recipe from bmlfs)
 [r] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.1.1
