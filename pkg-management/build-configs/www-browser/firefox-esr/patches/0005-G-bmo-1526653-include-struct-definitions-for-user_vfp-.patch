@@ -1,0 +1,38 @@
+From 42c7539520205be240a708d155952cba4abb1381 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Mon, 6 Apr 2020 19:57:42 +0200
+Subject: [PATCH 10/38] bmo#1526653: Include struct definitions for user_vfp
+ and user_vfp_exc
+
+Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1526653
+Bug: https://bugs.gentoo.org/681036
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ js/src/wasm/WasmSignalHandlers.cpp | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/js/src/wasm/WasmSignalHandlers.cpp b/js/src/wasm/WasmSignalHandlers.cpp
+index 78d1544084..9965e76814 100644
+--- a/js/src/wasm/WasmSignalHandlers.cpp
++++ b/js/src/wasm/WasmSignalHandlers.cpp
+@@ -249,7 +249,16 @@ using mozilla::DebugOnly;
+ #endif
+ 
+ #ifdef WASM_EMULATE_ARM_UNALIGNED_FP_ACCESS
+-#  include <sys/user.h>
++struct user_vfp {
++  unsigned long long fpregs[32];
++  unsigned long fpscr;
++};
++
++struct user_vfp_exc {
++  unsigned long fpexc;
++  unsigned long fpinst;
++  unsigned long fpinst2;
++};
+ #endif
+ 
+ #if defined(ANDROID)
+-- 
+2.29.2
+

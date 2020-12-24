@@ -1,0 +1,27 @@
+From aa2f139f6266467fb320c8f8ba149342022493ab Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Mon, 6 Apr 2020 19:51:22 +0200
+Subject: [PATCH 09/38] Fix building spellchecker when using GCC and PGO
+
+Bug: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88561
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ extensions/spellcheck/src/moz.build | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/extensions/spellcheck/src/moz.build b/extensions/spellcheck/src/moz.build
+index 1fa03d1c56..ecbcb1672c 100644
+--- a/extensions/spellcheck/src/moz.build
++++ b/extensions/spellcheck/src/moz.build
+@@ -31,3 +31,8 @@ EXPORTS.mozilla += [
+ 
+ if CONFIG['CC_TYPE'] in ('clang', 'gcc'):
+     CXXFLAGS += ['-Wno-error=shadow']
++
++# spell checker triggers bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=88561
++# in gcc 7 and 8. It will be fixed in GCC 7.5 and 8.3
++if CONFIG['CC_TYPE'] in ('gcc'):
++    CXXFLAGS += ['-fno-devirtualize']
+-- 
+2.29.2
+
