@@ -393,7 +393,7 @@
 ```
 [d] self	> firefox-78.5.0esr
 [d] self	>> nodejs-14.14.0
-[d] self	>> cbindgen-0.16.0
+[d] self	>> cbindgen-0.15.0
 [d] self	>>> rustc-1.48.0
 [d] self	>> gtk+-3.24.24
 
