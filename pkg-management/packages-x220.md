@@ -220,7 +220,7 @@
 [d] bmlfs	>> libinput-1.15.0
 
 [d] bmlfs	> xf86-input-synaptics-1.9.1
-[d] bmlfs	> libva-2.6.0
+[d] self	> libva-2.10.0
 [d] bmlfs	> intel-vaapi-driver-2.4.0
 [r] self	> xf86-video-intel-846b53
 # xorg drivers end

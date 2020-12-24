@@ -144,7 +144,7 @@ mtdev-1.1.5
 xf86-input-libinput-0.29.0
 libinput-1.15.0
 xf86-input-synaptics-1.9.1
-libva-2.6.0
+libva-2.10.0
 intel-vaapi-driver-2.4.0
 xinit-1.4.1
 atk-2.36.0
