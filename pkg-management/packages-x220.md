@@ -367,7 +367,7 @@
 [r] alpine	>> startup-notification-0.12
 
 [r] self	> i3blocks-1.4
-[d] alpine	> samurai-1.1
+[d] self	> samurai-1.2
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
 

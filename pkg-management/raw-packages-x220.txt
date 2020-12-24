@@ -229,7 +229,7 @@ wpa_supplicant-2.9
 libnl3-3.5.0
 lilo-24.2
 bin86-0.16.21
-samurai-1.1
+samurai-1.2
 dwm-6.2
 irssi-1.2.2
 mawk-1.3.4-20200120
