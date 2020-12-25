@@ -54,12 +54,12 @@ xcb-proto-1.13
 libxcb-1.13.1
 libxml2-2.9.10
 fontconfig-2.13.93
-freetype-2.10.2
+freetype-2.10.4
 libpng-1.6.37
-harfbuzz-2.7.2
+harfbuzz-2.7.3
 glib-2.64.2
 pcre-8.43
-cairo-1.16.0
+cairo-1.17.2+f93fc72c03e
 pixman-0.40.0
 xtrans-1.4.0
 libX11-1.7.0

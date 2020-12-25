@@ -103,9 +103,9 @@
 
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
 [d] self	> fontconfig-2.13.93
-[d] self	>> freetype-2.10.2
+[d] self	>> freetype-2.10.4
 [d] bmlfs	>>> libpng-1.6.37
-[d] self	>>> harfbuzz-2.7.2
+[d] self	>>> harfbuzz-2.7.3
 [d] self	>>>> glib-2.64.2
 [d] bmlfs	>>>>> pcre-8.43
 [r] bmlfs	>>>> icu-65.1
@@ -113,7 +113,7 @@
 [r] bmlfs	>>>> shared-mime-info-1.12
 [r] bmlfs	>>>> desktop-file-utils-0.24
 
-[d] self	> cairo-1.16.0
+[d] self	> cairo-1.17.2+f93fc72c03e
 [d] bmlfs	>> pixman-0.40.0
 # warn end
 
