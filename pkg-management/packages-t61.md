@@ -102,7 +102,7 @@
 [d] self	> libxml2-2.9.10
 
 # warn: freetype -> harfbuzz -> freetype -> fontconfig -> cairo
-[d] self	> fontconfig-2.13.92
+[d] self	> fontconfig-2.13.93
 [d] self	>> freetype-2.10.2
 [d] bmlfs	>>> libpng-1.6.37
 [d] self	>>> harfbuzz-2.7.2
@@ -160,7 +160,7 @@
 [d] self	> xcb-util-wm-0.4.1
 [d] self	> xcb-util-cursor-0.1.3
 
-[d] self	> mesa-20.2.3
+[d] self	> mesa-20.2.6
 [d] alp+bmlfs	>> libdrm-2.4.100		(patch from alpine, recipe from bmlfs)
 [r] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.1.1
@@ -220,7 +220,7 @@
 [d] bmlfs	>> libinput-1.15.0
 
 [d] bmlfs	> xf86-input-synaptics-1.9.1
-[d] bmlfs	> libva-2.6.0
+[d] bmlfs	> libva-2.10.0
 [d] bmlfs	> intel-vaapi-driver-2.4.0
 [r] self	> xf86-video-intel-846b53
 # xorg drivers end
@@ -367,7 +367,7 @@
 [r] alpine	>> startup-notification-0.12
 
 [r] self	> i3blocks-1.4
-[d] alpine	> samurai-1.1
+[d] alpine	> samurai-1.2
 [d] self	> dwm-6.2
 [d] self	> irssi-1.2.2
 
@@ -395,10 +395,10 @@
 [d] self	>> nodejs-14.14.0
 [d] self	>> cbindgen-0.15.0
 [d] self	>>> rustc-1.48.0
-[d] self	>> gtk+-3.24.23
+[d] self	>> gtk+-3.24.24
 
 [d] self	> sinit-1.1-apathy
-[d] self	> zstd-1.4.5
+[d] self	> zstd-1.4.8
 [r] self	> qemu-4.2.0
 [d] alpine	> cuetools-1.4.1
 [d] alpine	> shntool-3.0.10
@@ -457,7 +457,7 @@
 [d] mlfs	> libcap-2.27
 [d] mlfs	> libffi-3.2.1
 [d] mlfs	> libpipeline-1.5.1
-[d] self	> libressl-3.3.0
+[d] self	> libressl-3.3.1
 [d] mlfs	> libtool-2.4.6
 [d] mlfs	> m4-1.4.18
 [d] alpine	> make-4.3
