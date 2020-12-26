@@ -20,7 +20,7 @@
   confdir="${repodir}/configs"
       rdr="${logdir}/$(date "+%Y%m%d_%H%M%S")-linux-${kerver}.log"
 
- confname="20201216_000931-gcc-tkck1-tkmuqss-nolto-ksm-zstd-o3-native"
+ confname="20201227_001832-llvm-tkck1-tkmuqss-thinlto-ksm-bfq-zstd-o3-native"
   useconf="${confdir}/5.10/5.10-t61-${confname}.config"
  localver="5.10$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                     print}' ${useconf})"
@@ -30,7 +30,7 @@ unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
 
-mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j2 "$@";}
+mymake(){ make LLVM=1 LLVM_IAS=1 -j3 "$@";}
 
 # c1 >> print details
 clear; aprint_nc
@@ -58,9 +58,8 @@ aprint_ret "copying the kernel config stated above."
 evalretkill
 
 # d1 >> apply patches
-aprint_nc
-#+misc +tkg
-for apatch in misc tkg; do
+#+bfq +llvm +misc +tkg
+for apatch in bfq llvm misc tkg; do
  aprint "applying ${cl_grn}${apatch}${c_res} patches."
   for pp in "${patchdir}"/5.10/"${apatch}"/*; do
    aprint_ret "${cb_blu}$(echo $pp | awk '{gsub(/^.*\//,""); print}')${c_res}"
