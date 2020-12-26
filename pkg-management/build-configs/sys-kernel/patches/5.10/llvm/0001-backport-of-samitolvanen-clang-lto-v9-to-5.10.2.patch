@@ -1,0 +1,1700 @@
+From a65670252a47a95a5e155452efb724caacbb53c9 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 26 Dec 2020 22:55:33 +0300
+Subject: [PATCH] backport of samitolvanen clang lto v9 to 5.10.2.
+
+---
+ Makefile                              |  52 +++--
+ arch/Kconfig                          |  90 +++++++++
+ arch/arm64/Kconfig                    |   4 +
+ arch/arm64/kernel/vdso/Makefile       |   3 +-
+ arch/x86/Kconfig                      |   3 +
+ arch/x86/Makefile                     |   5 +
+ arch/x86/entry/vdso/Makefile          |   3 +-
+ arch/x86/power/Makefile               |   4 +
+ drivers/firmware/efi/libstub/Makefile |   2 +
+ drivers/misc/lkdtm/Makefile           |   1 +
+ include/asm-generic/vmlinux.lds.h     |  11 +-
+ include/linux/init.h                  |  79 +++++++-
+ include/linux/pci.h                   |  19 +-
+ init/Kconfig                          |   1 +
+ kernel/trace/Kconfig                  |  29 +++
+ scripts/Makefile.build                |  67 ++++---
+ scripts/Makefile.lib                  |  18 +-
+ scripts/Makefile.modfinal             |  25 ++-
+ scripts/Makefile.modpost              |  25 ++-
+ scripts/generate_initcall_order.pl    | 270 ++++++++++++++++++++++++++
+ scripts/link-vmlinux.sh               |  98 ++++++++--
+ scripts/lto-used-symbols.txt          |   5 +
+ scripts/mod/Makefile                  |   1 +
+ scripts/mod/modpost.c                 |  16 +-
+ scripts/mod/modpost.h                 |   9 +
+ scripts/mod/sumversion.c              |   6 +-
+ scripts/module.lds.S                  |  24 +++
+ tools/objtool/builtin-check.c         |  10 +-
+ tools/objtool/builtin.h               |   2 +-
+ tools/objtool/check.c                 |  97 ++++++++-
+ tools/objtool/check.h                 |   1 +
+ tools/objtool/objtool.c               |   1 +
+ tools/objtool/objtool.h               |   1 +
+ 33 files changed, 886 insertions(+), 96 deletions(-)
+ create mode 100755 scripts/generate_initcall_order.pl
+ create mode 100644 scripts/lto-used-symbols.txt
+
+diff --git a/Makefile b/Makefile
+index 44f4cd2e5..5583a4cf8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -851,12 +851,8 @@ KBUILD_CFLAGS += $(DEBUG_CFLAGS)
+ export DEBUG_CFLAGS
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+-ifdef CONFIG_FTRACE_MCOUNT_RECORD
+-  # gcc 5 supports generating the mcount tables directly
+-  ifeq ($(call cc-option-yn,-mrecord-mcount),y)
+-    CC_FLAGS_FTRACE	+= -mrecord-mcount
+-    export CC_USING_RECORD_MCOUNT := 1
+-  endif
++ifdef CONFIG_FTRACE_MCOUNT_USE_CC
++  CC_FLAGS_FTRACE	+= -mrecord-mcount
+   ifdef CONFIG_HAVE_NOP_MCOUNT
+     ifeq ($(call cc-option-yn, -mnop-mcount),y)
+       CC_FLAGS_FTRACE	+= -mnop-mcount
+@@ -864,6 +860,15 @@ ifdef CONFIG_FTRACE_MCOUNT_RECORD
+     endif
+   endif
+ endif
++ifdef CONFIG_FTRACE_MCOUNT_USE_OBJTOOL
++  CC_FLAGS_USING	+= -DCC_USING_NOP_MCOUNT
++endif
++ifdef CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT
++  ifdef CONFIG_HAVE_C_RECORDMCOUNT
++    BUILD_C_RECORDMCOUNT := y
++    export BUILD_C_RECORDMCOUNT
++  endif
++endif
+ ifdef CONFIG_HAVE_FENTRY
+   ifeq ($(call cc-option-yn, -mfentry),y)
+     CC_FLAGS_FTRACE	+= -mfentry
+@@ -873,12 +878,6 @@ endif
+ export CC_FLAGS_FTRACE
+ KBUILD_CFLAGS	+= $(CC_FLAGS_FTRACE) $(CC_FLAGS_USING)
+ KBUILD_AFLAGS	+= $(CC_FLAGS_USING)
+-ifdef CONFIG_DYNAMIC_FTRACE
+-	ifdef CONFIG_HAVE_C_RECORDMCOUNT
+-		BUILD_C_RECORDMCOUNT := y
+-		export BUILD_C_RECORDMCOUNT
+-	endif
+-endif
+ endif
+ 
+ # We trigger additional mismatches with less inlining
+@@ -897,6 +896,24 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
+ export CC_FLAGS_SCS
+ endif
+ 
++ifdef CONFIG_LTO_CLANG
++ifdef CONFIG_LTO_CLANG_THIN
++CC_FLAGS_LTO	+= -flto=thin -fsplit-lto-unit
++KBUILD_LDFLAGS	+= --thinlto-cache-dir=$(extmod-prefix).thinlto-cache
++else
++CC_FLAGS_LTO	+= -flto
++endif
++CC_FLAGS_LTO	+= -fvisibility=hidden
++
++# Limit inlining across translation units to reduce binary size
++KBUILD_LDFLAGS += -mllvm -import-instr-limit=5
++endif
++
++ifdef CONFIG_LTO
++KBUILD_CFLAGS	+= $(CC_FLAGS_LTO)
++export CC_FLAGS_LTO
++endif
++
+ ifdef CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_32B
+ KBUILD_CFLAGS += -falign-functions=32
+ endif
+@@ -1222,6 +1239,10 @@ uapi-asm-generic:
+ PHONY += prepare-objtool prepare-resolve_btfids
+ prepare-objtool: $(objtool_target)
+ ifeq ($(SKIP_STACK_VALIDATION),1)
++ifdef CONFIG_FTRACE_MCOUNT_USE_OBJTOOL
++	@echo "error: Cannot generate __mcount_loc for CONFIG_DYNAMIC_FTRACE=y, please install libelf-dev, libelf-devel or elfutils-libelf-devel" >&2
++	@false
++endif
+ ifdef CONFIG_UNWINDER_ORC
+ 	@echo "error: Cannot generate ORC metadata for CONFIG_UNWINDER_ORC=y, please install libelf-dev, libelf-devel or elfutils-libelf-devel" >&2
+ 	@false
+@@ -1483,7 +1504,7 @@ MRPROPER_FILES += include/config include/generated          \
+ 		  *.spec
+ 
+ # Directories & files removed with 'make distclean'
+-DISTCLEAN_FILES += tags TAGS cscope* GPATH GTAGS GRTAGS GSYMS
++DISTCLEAN_FILES += tags TAGS cscope* GPATH GTAGS GRTAGS GSYMS .thinlto-cache
+ 
+ # clean - Delete most, but leave enough to build external modules
+ #
+@@ -1729,7 +1750,7 @@ PHONY += compile_commands.json
+ 
+ clean-dirs := $(KBUILD_EXTMOD)
+ clean: rm-files := $(KBUILD_EXTMOD)/Module.symvers $(KBUILD_EXTMOD)/modules.nsdeps \
+-	$(KBUILD_EXTMOD)/compile_commands.json
++	$(KBUILD_EXTMOD)/compile_commands.json $(KBUILD_EXTMOD)/.thinlto-cache
+ 
+ PHONY += help
+ help:
+@@ -1826,7 +1847,8 @@ clean: $(clean-dirs)
+ 		-o -name '.tmp_*.o.*' \
+ 		-o -name '*.c.[012]*.*' \
+ 		-o -name '*.ll' \
+-		-o -name '*.gcno' \) -type f -print | xargs rm -f
++		-o -name '*.gcno' \
++		-o -name '*.*.symversions' \) -type f -print | xargs rm -f
+ 
+ # Generate tags for editors
+ # ---------------------------------------------------------------------------
+diff --git a/arch/Kconfig b/arch/Kconfig
+index ba4e96648..953bf35bc 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -598,6 +598,96 @@ config SHADOW_CALL_STACK
+ 	  reading and writing arbitrary memory may be able to locate them
+ 	  and hijack control flow by modifying the stacks.
+ 
++config LTO
++	bool
++	help
++	  Selected if the kernel will be built using the compiler's LTO feature.
++
++config LTO_CLANG
++	bool
++	select LTO
++	help
++	  Selected if the kernel will be built using Clang's LTO feature.
++
++config ARCH_SUPPORTS_LTO_CLANG
++	bool
++	help
++	  An architecture should select this option if it supports:
++	  - compiling with Clang,
++	  - compiling inline assembly with Clang's integrated assembler,
++	  - and linking with LLD.
++
++config ARCH_SUPPORTS_LTO_CLANG_THIN
++	bool
++	help
++	  An architecture should select this option if it can support Clang's
++	  ThinLTO mode.
++
++config HAS_LTO_CLANG
++	def_bool y
++	# Clang >= 11: https://github.com/ClangBuiltLinux/linux/issues/510
++	depends on CC_IS_CLANG && CLANG_VERSION >= 110000 && LD_IS_LLD
++	depends on $(success,test $(LLVM) -eq 1)
++	depends on $(success,test $(LLVM_IAS) -eq 1)
++	depends on $(success,$(NM) --help | head -n 1 | grep -qi llvm)
++	depends on $(success,$(AR) --help | head -n 1 | grep -qi llvm)
++	depends on ARCH_SUPPORTS_LTO_CLANG
++	depends on !FTRACE_MCOUNT_USE_RECORDMCOUNT
++	depends on !KASAN
++	depends on !GCOV_KERNEL
++	help
++	  The compiler and Kconfig options support building with Clang's
++	  LTO.
++
++choice
++	prompt "Link Time Optimization (LTO)"
++	default LTO_NONE
++	help
++	  This option enables Link Time Optimization (LTO), which allows the
++	  compiler to optimize binaries globally.
++
++	  If unsure, select LTO_NONE. Note that LTO is very resource-intensive
++	  so it's disabled by default.
++
++config LTO_NONE
++	bool "None"
++	help
++	  Build the kernel normally, without Link Time Optimization (LTO).
++
++config LTO_CLANG_FULL
++	bool "Clang Full LTO (EXPERIMENTAL)"
++	depends on HAS_LTO_CLANG
++	depends on !COMPILE_TEST
++	select LTO_CLANG
++	help
++          This option enables Clang's full Link Time Optimization (LTO), which
++          allows the compiler to optimize the kernel globally. If you enable
++          this option, the compiler generates LLVM bitcode instead of ELF
++          object files, and the actual compilation from bitcode happens at
++          the LTO link step, which may take several minutes depending on the
++          kernel configuration. More information can be found from LLVM's
++          documentation:
++
++	    https://llvm.org/docs/LinkTimeOptimization.html
++
++	  During link time, this option can use a large amount of RAM, and
++	  may take much longer than the ThinLTO option.
++
++config LTO_CLANG_THIN
++	bool "Clang ThinLTO (EXPERIMENTAL)"
++	depends on HAS_LTO_CLANG && ARCH_SUPPORTS_LTO_CLANG_THIN
++	select LTO_CLANG
++	help
++	  This option enables Clang's ThinLTO, which allows for parallel
++	  optimization and faster incremental compiles compared to the
++	  CONFIG_LTO_CLANG_FULL option. More information can be found
++	  from Clang's documentation:
++
++	    https://clang.llvm.org/docs/ThinLTO.html
++
++	  If unsure, say Y.
++endchoice
++
+ config HAVE_ARCH_WITHIN_STACK_FRAMES
+ 	bool
+ 	help
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index a6b5b7ef4..59abe4484 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -73,6 +73,8 @@ config ARM64
+ 	select ARCH_USE_SYM_ANNOTATIONS
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ 	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
++	select ARCH_SUPPORTS_LTO_CLANG if CPU_LITTLE_ENDIAN
++	select ARCH_SUPPORTS_LTO_CLANG_THIN
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128 && (GCC_VERSION >= 50000 || CC_IS_CLANG)
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+@@ -159,6 +161,8 @@ config ARM64
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS \
+ 		if $(cc-option,-fpatchable-function-entry=2)
++	select FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY \
++		if DYNAMIC_FTRACE_WITH_REGS
+ 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	select HAVE_FAST_GUP
+ 	select HAVE_FTRACE_MCOUNT_RECORD
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index d65f52264..50fe49fb4 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -30,7 +30,8 @@ ldflags-y := -shared -nostdlib -soname=linux-vdso.so.1 --hash-style=sysv	\
+ ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
+ ccflags-y += -DDISABLE_BRANCH_PROFILING
+ 
+-CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS) $(GCC_PLUGINS_CFLAGS)
++CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) -Os $(CC_FLAGS_SCS) $(GCC_PLUGINS_CFLAGS) \
++				$(CC_FLAGS_LTO)
+ KASAN_SANITIZE			:= n
+ UBSAN_SANITIZE			:= n
+ OBJECT_FILES_NON_STANDARD	:= y
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index fbf26e0f7..33f5b641a 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -92,6 +92,8 @@ config X86
+ 	select ARCH_SUPPORTS_ACPI
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_NUMA_BALANCING	if X86_64
++	select ARCH_SUPPORTS_LTO_CLANG          if X86_64
++	select ARCH_SUPPORTS_LTO_CLANG_THIN     if X86_64
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+@@ -164,6 +166,7 @@ config X86
+ 	select HAVE_CMPXCHG_LOCAL
+ 	select HAVE_CONTEXT_TRACKING		if X86_64
+ 	select HAVE_C_RECORDMCOUNT
++	select HAVE_OBJTOOL_MCOUNT		if STACK_VALIDATION
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DMA_CONTIGUOUS
+ 	select HAVE_DYNAMIC_FTRACE
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 1bf21746f..e97bc097f 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -173,6 +173,11 @@ ifeq ($(ACCUMULATE_OUTGOING_ARGS), 1)
+ 	KBUILD_CFLAGS += $(call cc-option,-maccumulate-outgoing-args,)
+ endif
+ 
++ifdef CONFIG_LTO_CLANG
++KBUILD_LDFLAGS	+= -plugin-opt=-code-model=kernel \
++		   -plugin-opt=-stack-alignment=$(if $(CONFIG_X86_32),4,8)
++endif
++
+ # Workaround for a gcc prelease that unfortunately was shipped in a suse release
+ KBUILD_CFLAGS += -Wno-sign-compare
+ #
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index 212437479..b36f42965 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -90,7 +90,7 @@ ifneq ($(RETPOLINE_VDSO_CFLAGS),)
+ endif
+ endif
+ 
+-$(vobjs): KBUILD_CFLAGS := $(filter-out $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS)) $(CFL)
++$(vobjs): KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO) $(GCC_PLUGINS_CFLAGS) $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS)) $(CFL)
+ 
+ #
+ # vDSO code runs in userspace and -pg doesn't help with profiling anyway.
+@@ -148,6 +148,7 @@ KBUILD_CFLAGS_32 := $(filter-out -fno-pic,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 := $(filter-out -mfentry,$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 := $(filter-out $(GCC_PLUGINS_CFLAGS),$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 := $(filter-out $(RETPOLINE_CFLAGS),$(KBUILD_CFLAGS_32))
++KBUILD_CFLAGS_32 := $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS_32))
+ KBUILD_CFLAGS_32 += -m32 -msoft-float -mregparm=0 -fpic
+ KBUILD_CFLAGS_32 += -fno-stack-protector
+ KBUILD_CFLAGS_32 += $(call cc-option, -foptimize-sibling-calls)
+diff --git a/arch/x86/power/Makefile b/arch/x86/power/Makefile
+index 6907b523e..5f711a441 100644
+--- a/arch/x86/power/Makefile
++++ b/arch/x86/power/Makefile
+@@ -5,5 +5,9 @@ OBJECT_FILES_NON_STANDARD_hibernate_asm_$(BITS).o := y
+ # itself be stack-protected
+ CFLAGS_cpu.o	:= -fno-stack-protector
+ 
++# Clang may incorrectly inline functions with stack protector enabled into
++# __restore_processor_state(): https://bugs.llvm.org/show_bug.cgi?id=47479
++CFLAGS_REMOVE_cpu.o := $(CC_FLAGS_LTO)
++
+ obj-$(CONFIG_PM_SLEEP)		+= cpu.o
+ obj-$(CONFIG_HIBERNATION)	+= hibernate_$(BITS).o hibernate_asm_$(BITS).o hibernate.o
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index 8a94388e3..c23466e05 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -38,6 +38,8 @@ KBUILD_CFLAGS			:= $(cflags-y) -Os -DDISABLE_BRANCH_PROFILING \
+ 
+ # remove SCS flags from all objects in this directory
+ KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_SCS), $(KBUILD_CFLAGS))
++# disable LTO
++KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO), $(KBUILD_CFLAGS))
+ 
+ GCOV_PROFILE			:= n
+ # Sanitizer runtimes are unavailable and cannot be linked here.
+diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
+index c70b38220..dd4c936d4 100644
+--- a/drivers/misc/lkdtm/Makefile
++++ b/drivers/misc/lkdtm/Makefile
+@@ -13,6 +13,7 @@ lkdtm-$(CONFIG_LKDTM)		+= cfi.o
+ 
+ KASAN_SANITIZE_stackleak.o	:= n
+ KCOV_INSTRUMENT_rodata.o	:= n
++CFLAGS_REMOVE_rodata.o		+= $(CC_FLAGS_LTO)
+ 
+ OBJCOPYFLAGS :=
+ OBJCOPYFLAGS_rodata_objcopy.o	:= \
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index b2b3d81b1..8988a2e44 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -90,15 +90,18 @@
+  * .data. We don't want to pull in .data..other sections, which Linux
+  * has defined. Same for text and bss.
+  *
++ * With LTO_CLANG, the linker also splits sections by default, so we need
++ * these macros to combine the sections during the final link.
++ *
+  * RODATA_MAIN is not used because existing code already defines .rodata.x
+  * sections to be brought in with rodata.
+  */
+-#ifdef CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
++#if defined(CONFIG_LD_DEAD_CODE_DATA_ELIMINATION) || defined(CONFIG_LTO_CLANG)
+ #define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
+-#define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..LPBX*
++#define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral*
+ #define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
+-#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]*
+-#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]*
++#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
++#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
+ #define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
+ #else
+ #define TEXT_MAIN .text
+diff --git a/include/linux/init.h b/include/linux/init.h
+index 7b53cb309..27b9478dc 100644
+--- a/include/linux/init.h
++++ b/include/linux/init.h
+@@ -184,19 +184,80 @@ extern bool initcall_debug;
+  * as KEEP() in the linker script.
+  */
+ 
++/* Format: <modname>__<counter>_<line>_<fn> */
++#define __initcall_id(fn)					\
++	__PASTE(__KBUILD_MODNAME,				\
++	__PASTE(__,						\
++	__PASTE(__COUNTER__,					\
++	__PASTE(_,						\
++	__PASTE(__LINE__,					\
++	__PASTE(_, fn))))))
++
++/* Format: __<prefix>__<iid><id> */
++#define __initcall_name(prefix, __iid, id)			\
++	__PASTE(__,						\
++	__PASTE(prefix,						\
++	__PASTE(__,						\
++	__PASTE(__iid, id))))
++
++#ifdef CONFIG_LTO_CLANG
++/*
++ * With LTO, the compiler doesn't necessarily obey link order for
++ * initcalls. In order to preserve the correct order, we add each
++ * variable into its own section and generate a linker script (in
++ * scripts/link-vmlinux.sh) to specify the order of the sections.
++ */
++#define __initcall_section(__sec, __iid)			\
++	#__sec ".init.." #__iid
++
++/*
++ * With LTO, the compiler can rename static functions to avoid
++ * global naming collisions. We use a global stub function for
++ * initcalls to create a stable symbol name whose address can be
++ * taken in inline assembly when PREL32 relocations are used.
++ */
++#define __initcall_stub(fn, __iid, id)				\
++	__initcall_name(initstub, __iid, id)
++
++#define __define_initcall_stub(__stub, fn)			\
++	int __init __stub(void);				\
++	int __init __stub(void)					\
++	{ 							\
++		return fn();					\
++	}							\
++	__ADDRESSABLE(__stub)
++#else
++#define __initcall_section(__sec, __iid)			\
++	#__sec ".init"
++
++#define __initcall_stub(fn, __iid, id)	fn
++
++#define __define_initcall_stub(__stub, fn)			\
++	__ADDRESSABLE(fn)
++#endif
++
+ #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
+-#define ___define_initcall(fn, id, __sec)			\
+-	__ADDRESSABLE(fn)					\
+-	asm(".section	\"" #__sec ".init\", \"a\"	\n"	\
+-	"__initcall_" #fn #id ":			\n"	\
+-	    ".long	" #fn " - .			\n"	\
++#define ____define_initcall(fn, __stub, __name, __sec)		\
++	__define_initcall_stub(__stub, fn)			\
++	asm(".section	\"" __sec "\", \"a\"		\n"	\
++	    __stringify(__name) ":			\n"	\
++	    ".long	" __stringify(__stub) " - .	\n"	\
+ 	    ".previous					\n");
+ #else
+-#define ___define_initcall(fn, id, __sec) \
+-	static initcall_t __initcall_##fn##id __used \
+-		__attribute__((__section__(#__sec ".init"))) = fn;
++#define ____define_initcall(fn, __unused, __name, __sec)	\
++	static initcall_t __name __used 			\
++		__attribute__((__section__(__sec))) = fn;
+ #endif
+ 
++#define __unique_initcall(fn, id, __sec, __iid)			\
++	____define_initcall(fn,					\
++		__initcall_stub(fn, __iid, id),			\
++		__initcall_name(initcall, __iid, id),		\
++		__initcall_section(__sec, __iid))
++
++#define ___define_initcall(fn, id, __sec)			\
++	__unique_initcall(fn, id, __sec, __initcall_id(fn))
++
+ #define __define_initcall(fn, id) ___define_initcall(fn, id, .initcall##id)
+ 
+ /*
+@@ -236,7 +297,7 @@ extern bool initcall_debug;
+ #define __exitcall(fn)						\
+ 	static exitcall_t __exitcall_##fn __exit_call = fn
+ 
+-#define console_initcall(fn)	___define_initcall(fn,, .con_initcall)
++#define console_initcall(fn)	___define_initcall(fn, con, .con_initcall)
+ 
+ struct obs_kernel_param {
+ 	const char *str;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 22207a797..5b8505a5c 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1912,19 +1912,28 @@ enum pci_fixup_pass {
+ };
+ 
+ #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
+-#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
+-				    class_shift, hook)			\
+-	__ADDRESSABLE(hook)						\
++#define ___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				    class_shift, hook, stub)		\
++	void stub(struct pci_dev *dev);					\
++	void stub(struct pci_dev *dev)					\
++	{ 								\
++		hook(dev); 						\
++	}								\
+ 	asm(".section "	#sec ", \"a\"				\n"	\
+ 	    ".balign	16					\n"	\
+ 	    ".short "	#vendor ", " #device "			\n"	\
+ 	    ".long "	#class ", " #class_shift "		\n"	\
+-	    ".long "	#hook " - .				\n"	\
++	    ".long "	#stub " - .				\n"	\
+ 	    ".previous						\n");
++
++#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, hook, stub)		\
++	___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, hook, stub)
+ #define DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
+ 				  class_shift, hook)			\
+ 	__DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
+-				  class_shift, hook)
++				  class_shift, hook, __UNIQUE_ID(hook))
+ #else
+ /* Anonymous variables would be nice... */
+ #define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, class,	\
+diff --git a/init/Kconfig b/init/Kconfig
+index 0872a5a2e..6adf7bde9 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2297,6 +2297,7 @@ config TRIM_UNUSED_KSYMS
+ config UNUSED_KSYMS_WHITELIST
+ 	string "Whitelist of symbols to keep in ksymtab"
+ 	depends on TRIM_UNUSED_KSYMS
++	default "scripts/lto-used-symbols.txt" if LTO_CLANG
+ 	help
+ 	  By default, all unused exported symbols will be un-exported from the
+ 	  build when TRIM_UNUSED_KSYMS is selected.
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index e1bf5228f..9b8c849e1 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -51,6 +51,11 @@ config HAVE_NOP_MCOUNT
+ 	help
+ 	  Arch supports the gcc options -pg with -mrecord-mcount and -nop-mcount
+ 
++config HAVE_OBJTOOL_MCOUNT
++	bool
++	help
++	  Arch supports objtool --mcount
++
+ config HAVE_C_RECORDMCOUNT
+ 	bool
+ 	help
+@@ -595,6 +600,30 @@ config FTRACE_MCOUNT_RECORD
+ 	depends on DYNAMIC_FTRACE
+ 	depends on HAVE_FTRACE_MCOUNT_RECORD
+ 
++config FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
++	bool
++	depends on FTRACE_MCOUNT_RECORD
++
++config FTRACE_MCOUNT_USE_CC
++	def_bool y
++	depends on $(cc-option,-mrecord-mcount)
++	depends on !FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
++	depends on FTRACE_MCOUNT_RECORD
++
++config FTRACE_MCOUNT_USE_OBJTOOL
++	def_bool y
++	depends on HAVE_OBJTOOL_MCOUNT
++	depends on !FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
++	depends on !FTRACE_MCOUNT_USE_CC
++	depends on FTRACE_MCOUNT_RECORD
++
++config FTRACE_MCOUNT_USE_RECORDMCOUNT
++	def_bool y
++	depends on !FTRACE_MCOUNT_USE_PATCHABLE_FUNCTION_ENTRY
++	depends on !FTRACE_MCOUNT_USE_CC
++	depends on !FTRACE_MCOUNT_USE_OBJTOOL
++	depends on FTRACE_MCOUNT_RECORD
++
+ config TRACING_MAP
+ 	bool
+ 	depends on ARCH_HAVE_NMI_SAFE_CMPXCHG
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 4c058f12d..3f6bf0ea7 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -111,7 +111,7 @@ endif
+ # ---------------------------------------------------------------------------
+ 
+ quiet_cmd_cc_s_c = CC $(quiet_modtag)  $@
+-      cmd_cc_s_c = $(CC) $(filter-out $(DEBUG_CFLAGS), $(c_flags)) -fverbose-asm -S -o $@ $<
++      cmd_cc_s_c = $(CC) $(filter-out $(DEBUG_CFLAGS) $(CC_FLAGS_LTO), $(c_flags)) -fverbose-asm -S -o $@ $<
+ 
+ $(obj)/%.s: $(src)/%.c FORCE
+ 	$(call if_changed_dep,cc_s_c)
+@@ -166,6 +166,15 @@ ifdef CONFIG_MODVERSIONS
+ #   the actual value of the checksum generated by genksyms
+ # o remove .tmp_<file>.o to <file>.o
+ 
++ifdef CONFIG_LTO_CLANG
++# Generate .o.symversions files for each .o with exported symbols, and link these
++# to the kernel and/or modules at the end.
++cmd_modversions_c =								\
++	if $(NM) $@ 2>/dev/null | grep -q __ksymtab; then			\
++		$(call cmd_gensymtypes_c,$(KBUILD_SYMTYPES),$(@:.o=.symtypes))	\
++		    > $@.symversions;						\
++	fi;
++else
+ cmd_modversions_c =								\
+ 	if $(OBJDUMP) -h $@ | grep -q __ksymtab; then				\
+ 		$(call cmd_gensymtypes_c,$(KBUILD_SYMTYPES),$(@:.o=.symtypes))	\
+@@ -177,9 +186,9 @@ cmd_modversions_c =								\
+ 		rm -f $(@D)/.tmp_$(@F:.o=.ver);					\
+ 	fi
+ endif
++endif
+ 
+-ifdef CONFIG_FTRACE_MCOUNT_RECORD
+-ifndef CC_USING_RECORD_MCOUNT
++ifdef CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT
+ # compiler will not generate __mcount_loc use recordmcount or recordmcount.pl
+ ifdef BUILD_C_RECORDMCOUNT
+ ifeq ("$(origin RECORDMCOUNT_WARN)", "command line")
+@@ -206,31 +215,14 @@ recordmcount_source := $(srctree)/scripts/recordmcount.pl
+ endif # BUILD_C_RECORDMCOUNT
+ cmd_record_mcount = $(if $(findstring $(strip $(CC_FLAGS_FTRACE)),$(_c_flags)),	\
+ 	$(sub_cmd_record_mcount))
+-endif # CC_USING_RECORD_MCOUNT
+-endif # CONFIG_FTRACE_MCOUNT_RECORD
++endif # CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT
+ 
+ ifdef CONFIG_STACK_VALIDATION
++ifndef CONFIG_LTO_CLANG
+ ifneq ($(SKIP_STACK_VALIDATION),1)
+ 
+ __objtool_obj := $(objtree)/tools/objtool/objtool
+ 
+-objtool_args = $(if $(CONFIG_UNWINDER_ORC),orc generate,check)
+-
+-objtool_args += $(if $(part-of-module), --module,)
+-
+-ifndef CONFIG_FRAME_POINTER
+-objtool_args += --no-fp
+-endif
+-ifdef CONFIG_GCOV_KERNEL
+-objtool_args += --no-unreachable
+-endif
+-ifdef CONFIG_RETPOLINE
+-  objtool_args += --retpoline
+-endif
+-ifdef CONFIG_X86_SMAP
+-  objtool_args += --uaccess
+-endif
+-
+ # 'OBJECT_FILES_NON_STANDARD := y': skip objtool checking for a directory
+ # 'OBJECT_FILES_NON_STANDARD_foo.o := 'y': skip objtool checking for a file
+ # 'OBJECT_FILES_NON_STANDARD_foo.o := 'n': override directory skip for a file
+@@ -242,6 +234,7 @@ objtool_obj = $(if $(patsubst y%,, \
+ 	$(__objtool_obj))
+ 
+ endif # SKIP_STACK_VALIDATION
++endif # CONFIG_LTO_CLANG
+ endif # CONFIG_STACK_VALIDATION
+ 
+ # Rebuild all objects when objtool changes, or is enabled/disabled.
+@@ -388,6 +381,18 @@ $(obj)/%.asn1.c $(obj)/%.asn1.h: $(src)/%.asn1 $(objtree)/scripts/asn1_compiler
+ $(subdir-builtin): $(obj)/%/built-in.a: $(obj)/% ;
+ $(subdir-modorder): $(obj)/%/modules.order: $(obj)/% ;
+ 
++# combine symversions for later processing
++quiet_cmd_update_lto_symversions = SYMVER  $@
++ifeq ($(CONFIG_LTO_CLANG) $(CONFIG_MODVERSIONS),y y)
++      cmd_update_lto_symversions =					\
++	rm -f $@.symversions						\
++	$(foreach n, $(filter-out FORCE,$^),				\
++		$(if $(wildcard $(n).symversions),			\
++			; cat $(n).symversions >> $@.symversions))
++else
++      cmd_update_lto_symversions = echo >/dev/null
++endif
++
+ #
+ # Rule to compile a set of .o files into one .a file (without symbol table)
+ #
+@@ -395,8 +400,11 @@ $(subdir-modorder): $(obj)/%/modules.order: $(obj)/% ;
+ quiet_cmd_ar_builtin = AR      $@
+       cmd_ar_builtin = rm -f $@; $(AR) cDPrST $@ $(real-prereqs)
+ 
++quiet_cmd_ar_and_symver = AR      $@
++      cmd_ar_and_symver = $(cmd_update_lto_symversions); $(cmd_ar_builtin)
++
+ $(obj)/built-in.a: $(real-obj-y) FORCE
+-	$(call if_changed,ar_builtin)
++	$(call if_changed,ar_and_symver)
+ 
+ #
+ # Rule to create modules.order file
+@@ -416,15 +424,26 @@ $(obj)/modules.order: $(obj-m) FORCE
+ #
+ # Rule to compile a set of .o files into one .a file (with symbol table)
+ #
++quiet_cmd_ar_lib = AR      $@
++      cmd_ar_lib = $(cmd_update_lto_symversions); $(cmd_ar)
++
+ $(obj)/lib.a: $(lib-y) FORCE
+-	$(call if_changed,ar)
++	$(call if_changed,ar_lib)
+ 
+ # NOTE:
+ # Do not replace $(filter %.o,^) with $(real-prereqs). When a single object
+ # module is turned into a multi object module, $^ will contain header file
+ # dependencies recorded in the .*.cmd file.
++ifdef CONFIG_LTO_CLANG
++quiet_cmd_link_multi-m = AR [M]  $@
++cmd_link_multi-m =						\
++	$(cmd_update_lto_symversions);				\
++	rm -f $@; 						\
++	$(AR) cDPrsT $@ $(filter %.o,$^)
++else
+ quiet_cmd_link_multi-m = LD [M]  $@
+       cmd_link_multi-m = $(LD) $(ld_flags) -r -o $@ $(filter %.o,$^)
++endif
+ 
+ $(multi-used-m): FORCE
+ 	$(call if_changed,link_multi-m)
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 941337088..579fc8b69 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -117,9 +117,11 @@ target-stem = $(basename $(patsubst $(obj)/%,%,$@))
+ # These flags are needed for modversions and compiling, so we define them here
+ # $(modname_flags) defines KBUILD_MODNAME as the name of the module it will
+ # end up in (or would, if it gets compiled in)
+-name-fix = $(call stringify,$(subst $(comma),_,$(subst -,_,$1)))
++name-fix-token = $(subst $(comma),_,$(subst -,_,$1))
++name-fix = $(call stringify,$(call name-fix-token,$1))
+ basename_flags = -DKBUILD_BASENAME=$(call name-fix,$(basetarget))
+-modname_flags  = -DKBUILD_MODNAME=$(call name-fix,$(modname))
++modname_flags  = -DKBUILD_MODNAME=$(call name-fix,$(modname)) \
++		 -D__KBUILD_MODNAME=kmod_$(call name-fix-token,$(modname))
+ modfile_flags  = -DKBUILD_MODFILE=$(call stringify,$(modfile))
+ 
+ _c_flags       = $(filter-out $(CFLAGS_REMOVE_$(target-stem).o), \
+@@ -216,6 +218,18 @@ dtc_cpp_flags  = -Wp,-MMD,$(depfile).pre.tmp -nostdinc                    \
+ 		 $(addprefix -I,$(DTC_INCLUDE))                          \
+ 		 -undef -D__DTS__
+ 
++# Objtool arguments are also needed for modfinal with LTO, so we define
++# then here to avoid duplication.
++objtool_args =								\
++	$(if $(CONFIG_UNWINDER_ORC),orc generate,check)			\
++	$(if $(part-of-module), --module,)				\
++	$(if $(CONFIG_FRAME_POINTER),, --no-fp)				\
++	$(if $(or $(CONFIG_GCOV_KERNEL),$(CONFIG_LTO_CLANG)), 		\
++		--no-unreachable,)					\
++	$(if $(CONFIG_RETPOLINE), --retpoline,)				\
++	$(if $(CONFIG_X86_SMAP), --uaccess,)				\
++	$(if $(CONFIG_FTRACE_MCOUNT_USE_OBJTOOL), --mcount,)
++
+ # Useful for describing the dependency of composite objects
+ # Usage:
+ #   $(call multi_depend, multi_used_targets, suffix_to_remove, suffix_to_add)
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index ae01baf96..d83ab2cfd 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -8,7 +8,7 @@ __modfinal:
+ 
+ include $(srctree)/scripts/Kbuild.include
+ 
+-# for c_flags
++# for c_flags and objtool_args
+ include $(srctree)/scripts/Makefile.lib
+ 
+ # find all modules listed in modules.order
+@@ -29,14 +29,33 @@ quiet_cmd_cc_o_c = CC [M]  $@
+ 
+ ARCH_POSTLINK := $(wildcard $(srctree)/arch/$(SRCARCH)/Makefile.postlink)
+ 
++ifdef CONFIG_LTO_CLANG
++# With CONFIG_LTO_CLANG, reuse the object file we compiled for modpost to
++# avoid a second slow LTO link
++prelink-ext := .lto
++
++# ELF processing was skipped earlier because we didn't have native code,
++# so let's now process the prelinked binary before we link the module.
++
++ifdef CONFIG_STACK_VALIDATION
++ifneq ($(SKIP_STACK_VALIDATION),1)
++cmd_ld_ko_o +=								\
++	$(objtree)/tools/objtool/objtool $(objtool_args)		\
++		$(@:.ko=$(prelink-ext).o);
++
++endif # SKIP_STACK_VALIDATION
++endif # CONFIG_STACK_VALIDATION
++
++endif # CONFIG_LTO_CLANG
++
+ quiet_cmd_ld_ko_o = LD [M]  $@
+-      cmd_ld_ko_o =                                                     \
++      cmd_ld_ko_o +=							\
+ 	$(LD) -r $(KBUILD_LDFLAGS)					\
+ 		$(KBUILD_LDFLAGS_MODULE) $(LDFLAGS_MODULE)		\
+ 		-T scripts/module.lds -o $@ $(filter %.o, $^);		\
+ 	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+ 
+-$(modules): %.ko: %.o %.mod.o scripts/module.lds FORCE
++$(modules): %.ko: %$(prelink-ext).o %.mod.o scripts/module.lds FORCE
+ 	+$(call if_changed,ld_ko_o)
+ 
+ targets += $(modules) $(modules:.ko=.mod.o)
+diff --git a/scripts/Makefile.modpost b/scripts/Makefile.modpost
+index f54b6ac37..066beffca 100644
+--- a/scripts/Makefile.modpost
++++ b/scripts/Makefile.modpost
+@@ -43,6 +43,9 @@ __modpost:
+ include include/config/auto.conf
+ include scripts/Kbuild.include
+ 
++# for ld_flags
++include scripts/Makefile.lib
++
+ MODPOST = scripts/mod/modpost								\
+ 	$(if $(CONFIG_MODVERSIONS),-m)							\
+ 	$(if $(CONFIG_MODULE_SRCVERSION_ALL),-a)					\
+@@ -102,12 +105,30 @@ $(input-symdump):
+ 	@echo >&2 'WARNING: Symbol version dump "$@" is missing.'
+ 	@echo >&2 '         Modules may not have dependencies or modversions.'
+ 
++ifdef CONFIG_LTO_CLANG
++# With CONFIG_LTO_CLANG, .o files might be LLVM bitcode, so we need to run
++# LTO to compile them into native code before running modpost
++prelink-ext := .lto
++
++quiet_cmd_cc_lto_link_modules = LTO [M] $@
++cmd_cc_lto_link_modules =						\
++	$(LD) $(ld_flags) -r -o $@					\
++		$(shell [ -s $(@:.lto.o=.o.symversions) ] &&		\
++			echo -T $(@:.lto.o=.o.symversions))		\
++		--whole-archive $^
++
++%.lto.o: %.o
++	$(call if_changed,cc_lto_link_modules)
++endif
++
++modules := $(sort $(shell cat $(MODORDER)))
++
+ # Read out modules.order to pass in modpost.
+ # Otherwise, allmodconfig would fail with "Argument list too long".
+ quiet_cmd_modpost = MODPOST $@
+-      cmd_modpost = sed 's/ko$$/o/' $< | $(MODPOST) -T -
++      cmd_modpost = sed 's/\.ko$$/$(prelink-ext)\.o/' $< | $(MODPOST) -T -
+ 
+-$(output-symdump): $(MODORDER) $(input-symdump) FORCE
++$(output-symdump): $(MODORDER) $(input-symdump) $(modules:.ko=$(prelink-ext).o) FORCE
+ 	$(call if_changed,modpost)
+ 
+ targets += $(output-symdump)
+diff --git a/scripts/generate_initcall_order.pl b/scripts/generate_initcall_order.pl
+new file mode 100755
+index 000000000..1a88d3f1b
+--- /dev/null
++++ b/scripts/generate_initcall_order.pl
+@@ -0,0 +1,270 @@
++#!/usr/bin/env perl
++# SPDX-License-Identifier: GPL-2.0
++#
++# Generates a linker script that specifies the correct initcall order.
++#
++# Copyright (C) 2019 Google LLC
++
++use strict;
++use warnings;
++use IO::Handle;
++use IO::Select;
++use POSIX ":sys_wait_h";
++
++my $nm = $ENV{'NM'} || die "$0: ERROR: NM not set?";
++my $objtree = $ENV{'objtree'} || '.';
++
++## currently active child processes
++my $jobs = {};		# child process pid -> file handle
++## results from child processes
++my $results = {};	# object index -> [ { level, secname }, ... ]
++
++## reads _NPROCESSORS_ONLN to determine the maximum number of processes to
++## start
++sub get_online_processors {
++	open(my $fh, "getconf _NPROCESSORS_ONLN 2>/dev/null |")
++		or die "$0: ERROR: failed to execute getconf: $!";
++	my $procs = <$fh>;
++	close($fh);
++
++	if (!($procs =~ /^\d+$/)) {
++		return 1;
++	}
++
++	return int($procs);
++}
++
++## writes results to the parent process
++## format: <file index> <initcall level> <base initcall section name>
++sub write_results {
++	my ($index, $initcalls) = @_;
++
++	# sort by the counter value to ensure the order of initcalls within
++	# each object file is correct
++	foreach my $counter (sort { $a <=> $b } keys(%{$initcalls})) {
++		my $level = $initcalls->{$counter}->{'level'};
++
++		# section name for the initcall function
++		my $secname = $initcalls->{$counter}->{'module'} . '__' .
++			      $counter . '_' .
++			      $initcalls->{$counter}->{'line'} . '_' .
++			      $initcalls->{$counter}->{'function'};
++
++		print "$index $level $secname\n";
++	}
++}
++
++## reads a result line from a child process and adds it to the $results array
++sub read_results{
++	my ($fh) = @_;
++
++	# each child prints out a full line w/ autoflush and exits after the
++	# last line, so even if buffered I/O blocks here, it shouldn't block
++	# very long
++	my $data = <$fh>;
++
++	if (!defined($data)) {
++		return 0;
++	}
++
++	chomp($data);
++
++	my ($index, $level, $secname) = $data =~
++		/^(\d+)\ ([^\ ]+)\ (.*)$/;
++
++	if (!defined($index) ||
++		!defined($level) ||
++		!defined($secname)) {
++		die "$0: ERROR: child process returned invalid data: $data\n";
++	}
++
++	$index = int($index);
++
++	if (!exists($results->{$index})) {
++		$results->{$index} = [];
++	}
++
++	push (@{$results->{$index}}, {
++		'level'   => $level,
++		'secname' => $secname
++	});
++
++	return 1;
++}
++
++## finds initcalls from an object file or all object files in an archive, and
++## writes results back to the parent process
++sub find_initcalls {
++	my ($index, $file) = @_;
++
++	die "$0: ERROR: file $file doesn't exist?" if (! -f $file);
++
++	open(my $fh, "\"$nm\" --defined-only \"$file\" 2>/dev/null |")
++		or die "$0: ERROR: failed to execute \"$nm\": $!";
++
++	my $initcalls = {};
++
++	while (<$fh>) {
++		chomp;
++
++		# check for the start of a new object file (if processing an
++		# archive)
++		my ($path)= $_ =~ /^(.+)\:$/;
++
++		if (defined($path)) {
++			write_results($index, $initcalls);
++			$initcalls = {};
++			next;
++		}
++
++		# look for an initcall
++		my ($module, $counter, $line, $symbol) = $_ =~
++			/[a-z]\s+__initcall__(\S*)__(\d+)_(\d+)_(.*)$/;
++
++		if (!defined($module)) {
++			$module = ''
++		}
++
++		if (!defined($counter) ||
++			!defined($line) ||
++			!defined($symbol)) {
++			next;
++		}
++
++		# parse initcall level
++		my ($function, $level) = $symbol =~
++			/^(.*)((early|rootfs|con|[0-9])s?)$/;
++
++		die "$0: ERROR: invalid initcall name $symbol in $file($path)"
++			if (!defined($function) || !defined($level));
++
++		$initcalls->{$counter} = {
++			'module'   => $module,
++			'line'     => $line,
++			'function' => $function,
++			'level'    => $level,
++		};
++	}
++
++	close($fh);
++	write_results($index, $initcalls);
++}
++
++## waits for any child process to complete, reads the results, and adds them to
++## the $results array for later processing
++sub wait_for_results {
++	my ($select) = @_;
++
++	my $pid = 0;
++	do {
++		# unblock children that may have a full write buffer
++		foreach my $fh ($select->can_read(0)) {
++			read_results($fh);
++		}
++
++		# check for children that have exited, read the remaining data
++		# from them, and clean up
++		$pid = waitpid(-1, WNOHANG);
++		if ($pid > 0) {
++			if (!exists($jobs->{$pid})) {
++				next;
++			}
++
++			my $fh = $jobs->{$pid};
++			$select->remove($fh);
++
++			while (read_results($fh)) {
++				# until eof
++			}
++
++			close($fh);
++			delete($jobs->{$pid});
++		}
++	} while ($pid > 0);
++}
++
++## forks a child to process each file passed in the command line and collects
++## the results
++sub process_files {
++	my $index = 0;
++	my $njobs = $ENV{'PARALLELISM'} || get_online_processors();
++	my $select = IO::Select->new();
++
++	while (my $file = shift(@ARGV)) {
++		# fork a child process and read it's stdout
++		my $pid = open(my $fh, '-|');
++
++		if (!defined($pid)) {
++			die "$0: ERROR: failed to fork: $!";
++		} elsif ($pid) {
++			# save the child process pid and the file handle
++			$select->add($fh);
++			$jobs->{$pid} = $fh;
++		} else {
++			# in the child process
++			STDOUT->autoflush(1);
++			find_initcalls($index, "$objtree/$file");
++			exit;
++		}
++
++		$index++;
++
++		# limit the number of children to $njobs
++		if (scalar(keys(%{$jobs})) >= $njobs) {
++			wait_for_results($select);
++		}
++	}
++
++	# wait for the remaining children to complete
++	while (scalar(keys(%{$jobs})) > 0) {
++		wait_for_results($select);
++	}
++}
++
++sub generate_initcall_lds() {
++	process_files();
++
++	my $sections = {};	# level -> [ secname, ...]
++
++	# sort results to retain link order and split to sections per
++	# initcall level
++	foreach my $index (sort { $a <=> $b } keys(%{$results})) {
++		foreach my $result (@{$results->{$index}}) {
++			my $level = $result->{'level'};
++
++			if (!exists($sections->{$level})) {
++				$sections->{$level} = [];
++			}
++
++			push(@{$sections->{$level}}, $result->{'secname'});
++		}
++	}
++
++	die "$0: ERROR: no initcalls?" if (!keys(%{$sections}));
++
++	# print out a linker script that defines the order of initcalls for
++	# each level
++	print "SECTIONS {\n";
++
++	foreach my $level (sort(keys(%{$sections}))) {
++		my $section;
++
++		if ($level eq 'con') {
++			$section = '.con_initcall.init';
++		} else {
++			$section = ".initcall${level}.init";
++		}
++
++		print "\t${section} : {\n";
++
++		foreach my $secname (@{$sections->{$level}}) {
++			print "\t\t*(${section}..${secname}) ;\n";
++		}
++
++		print "\t}\n";
++	}
++
++	print "}\n";
++}
++
++generate_initcall_lds();
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 6eded325c..3b261b0f7 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -43,11 +43,37 @@ info()
+ 	fi
+ }
+ 
++# Generate a linker script to ensure correct ordering of initcalls.
++gen_initcalls()
++{
++	info GEN .tmp_initcalls.lds
++
++	${PYTHON} ${srctree}/scripts/jobserver-exec		\
++	${PERL} ${srctree}/scripts/generate_initcall_order.pl	\
++		${KBUILD_VMLINUX_OBJS} ${KBUILD_VMLINUX_LIBS}	\
++		> .tmp_initcalls.lds
++}
++
++# If CONFIG_LTO_CLANG is selected, collect generated symbol versions into
++# .tmp_symversions.lds
++gen_symversions()
++{
++	info GEN .tmp_symversions.lds
++	rm -f .tmp_symversions.lds
++
++	for o in ${KBUILD_VMLINUX_OBJS} ${KBUILD_VMLINUX_LIBS}; do
++		if [ -f ${o}.symversions ]; then
++			cat ${o}.symversions >> .tmp_symversions.lds
++		fi
++	done
++}
++
+ # Link of vmlinux.o used for section mismatch analysis
+ # ${1} output file
+ modpost_link()
+ {
+ 	local objects
++	local lds=""
+ 
+ 	objects="--whole-archive				\
+ 		${KBUILD_VMLINUX_OBJS}				\
+@@ -56,19 +82,57 @@ modpost_link()
+ 		${KBUILD_VMLINUX_LIBS}				\
+ 		--end-group"
+ 
+-	${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${objects}
++	if [ -n "${CONFIG_LTO_CLANG}" ]; then
++		gen_initcalls
++		lds="-T .tmp_initcalls.lds"
++
++		if [ -n "${CONFIG_MODVERSIONS}" ]; then
++			gen_symversions
++			lds="${lds} -T .tmp_symversions.lds"
++		fi
++
++		# This might take a while, so indicate that we're doing
++		# an LTO link
++		info LTO ${1}
++	else
++		info LD ${1}
++	fi
++
++	${LD} ${KBUILD_LDFLAGS} -r -o ${1} ${lds} ${objects}
+ }
+ 
+ objtool_link()
+ {
++	local objtoolcmd;
+ 	local objtoolopt;
+ 
++	if [ "${CONFIG_LTO_CLANG} ${CONFIG_STACK_VALIDATION}" = "y y" ]; then
++		# Don't perform vmlinux validation unless explicitly requested,
++		# but run objtool on vmlinux.o now that we have an object file.
++		if [ -n "${CONFIG_UNWINDER_ORC}" ]; then
++			objtoolcmd="orc generate"
++		fi
++
++		objtoolopt="${objtoolopt} --duplicate"
++
++		if [ -n "${CONFIG_FTRACE_MCOUNT_USE_OBJTOOL}" ]; then
++			objtoolopt="${objtoolopt} --mcount"
++		fi
++	fi
++
+ 	if [ -n "${CONFIG_VMLINUX_VALIDATION}" ]; then
+-		objtoolopt="check"
++		objtoolopt="${objtoolopt} --noinstr"
++	fi
++
++	if [ -n "${objtoolopt}" ]; then
++		if [ -z "${objtoolcmd}" ]; then
++			objtoolcmd="check"
++		fi
++		objtoolopt="${objtoolopt} --vmlinux"
+ 		if [ -z "${CONFIG_FRAME_POINTER}" ]; then
+ 			objtoolopt="${objtoolopt} --no-fp"
+ 		fi
+-		if [ -n "${CONFIG_GCOV_KERNEL}" ]; then
++		if [ -n "${CONFIG_GCOV_KERNEL}" ] || [ -n "${CONFIG_LTO_CLANG}" ]; then
+ 			objtoolopt="${objtoolopt} --no-unreachable"
+ 		fi
+ 		if [ -n "${CONFIG_RETPOLINE}" ]; then
+@@ -78,7 +142,7 @@ objtool_link()
+ 			objtoolopt="${objtoolopt} --uaccess"
+ 		fi
+ 		info OBJTOOL ${1}
+-		tools/objtool/objtool ${objtoolopt} ${1}
++		tools/objtool/objtool ${objtoolcmd} ${objtoolopt} ${1}
+ 	fi
+ }
+ 
+@@ -103,13 +167,22 @@ vmlinux_link()
+ 	fi
+ 
+ 	if [ "${SRCARCH}" != "um" ]; then
+-		objects="--whole-archive			\
+-			${KBUILD_VMLINUX_OBJS}			\
+-			--no-whole-archive			\
+-			--start-group				\
+-			${KBUILD_VMLINUX_LIBS}			\
+-			--end-group				\
+-			${@}"
++		if [ -n "${CONFIG_LTO_CLANG}" ]; then
++			# Use vmlinux.o instead of performing the slow LTO
++			# link again.
++			objects="--whole-archive		\
++				vmlinux.o 			\
++				--no-whole-archive		\
++				${@}"
++		else
++			objects="--whole-archive		\
++				${KBUILD_VMLINUX_OBJS}		\
++				--no-whole-archive		\
++				--start-group			\
++				${KBUILD_VMLINUX_LIBS}		\
++				--end-group			\
++				${@}"
++		fi
+ 
+ 		${LD} ${KBUILD_LDFLAGS} ${LDFLAGS_vmlinux}	\
+ 			${strip_debug#-Wl,}			\
+@@ -225,6 +298,8 @@ cleanup()
+ {
+ 	rm -f .btf.*
+ 	rm -f .tmp_System.map
++	rm -f .tmp_initcalls.lds
++	rm -f .tmp_symversions.lds
+ 	rm -f .tmp_vmlinux*
+ 	rm -f System.map
+ 	rm -f vmlinux
+@@ -274,7 +349,6 @@ fi;
+ ${MAKE} -f "${srctree}/scripts/Makefile.build" obj=init need-builtin=1
+ 
+ #link vmlinux.o
+-info LD vmlinux.o
+ modpost_link vmlinux.o
+ objtool_link vmlinux.o
+ 
+diff --git a/scripts/lto-used-symbols.txt b/scripts/lto-used-symbols.txt
+new file mode 100644
+index 000000000..38e7bb9eb
+--- /dev/null
++++ b/scripts/lto-used-symbols.txt
+@@ -0,0 +1,5 @@
++memcpy
++memmove
++memset
++__stack_chk_fail
++__stack_chk_guard
+diff --git a/scripts/mod/Makefile b/scripts/mod/Makefile
+index 78071681d..c9e38ad93 100644
+--- a/scripts/mod/Makefile
++++ b/scripts/mod/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ OBJECT_FILES_NON_STANDARD := y
++CFLAGS_REMOVE_empty.o += $(CC_FLAGS_LTO)
+ 
+ hostprogs-always-y	+= modpost mk_elfconfig
+ always-y		+= empty.o
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index f882ce0d9..ebb15cc3f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -17,7 +17,6 @@
+ #include <ctype.h>
+ #include <string.h>
+ #include <limits.h>
+-#include <stdbool.h>
+ #include <errno.h>
+ #include "modpost.h"
+ #include "../../include/linux/license.h"
+@@ -80,14 +79,6 @@ modpost_log(enum loglevel loglevel, const char *fmt, ...)
+ 		exit(1);
+ }
+ 
+-static inline bool strends(const char *str, const char *postfix)
+-{
+-	if (strlen(str) < strlen(postfix))
+-		return false;
+-
+-	return strcmp(str + strlen(str) - strlen(postfix), postfix) == 0;
+-}
+-
+ void *do_nofail(void *ptr, const char *expr)
+ {
+ 	if (!ptr)
+@@ -1984,6 +1975,10 @@ static char *remove_dot(char *s)
+ 		size_t m = strspn(s + n + 1, "0123456789");
+ 		if (m && (s[n + m] == '.' || s[n + m] == 0))
+ 			s[n] = 0;
++
++		/* strip trailing .lto */
++		if (strends(s, ".lto"))
++			s[strlen(s) - 4] = '\0';
+ 	}
+ 	return s;
+ }
+@@ -2007,6 +2002,9 @@ static void read_symbols(const char *modname)
+ 		/* strip trailing .o */
+ 		tmp = NOFAIL(strdup(modname));
+ 		tmp[strlen(tmp) - 2] = '\0';
++		/* strip trailing .lto */
++		if (strends(tmp, ".lto"))
++			tmp[strlen(tmp) - 4] = '\0';
+ 		mod = new_module(tmp);
+ 		free(tmp);
+ 	}
+diff --git a/scripts/mod/modpost.h b/scripts/mod/modpost.h
+index 3aa052722..fab30d201 100644
+--- a/scripts/mod/modpost.h
++++ b/scripts/mod/modpost.h
+@@ -2,6 +2,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <stdarg.h>
++#include <stdbool.h>
+ #include <string.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -180,6 +181,14 @@ static inline unsigned int get_secindex(const struct elf_info *info,
+ 	return info->symtab_shndx_start[sym - info->symtab_start];
+ }
+ 
++static inline bool strends(const char *str, const char *postfix)
++{
++	if (strlen(str) < strlen(postfix))
++		return false;
++
++	return strcmp(str + strlen(str) - strlen(postfix), postfix) == 0;
++}
++
+ /* file2alias.c */
+ extern unsigned int cross_build;
+ void handle_moddevtable(struct module *mod, struct elf_info *info,
+diff --git a/scripts/mod/sumversion.c b/scripts/mod/sumversion.c
+index d587f40f1..760e6baa7 100644
+--- a/scripts/mod/sumversion.c
++++ b/scripts/mod/sumversion.c
+@@ -391,10 +391,14 @@ void get_src_version(const char *modname, char sum[], unsigned sumlen)
+ 	struct md4_ctx md;
+ 	char *fname;
+ 	char filelist[PATH_MAX + 1];
++	int postfix_len = 1;
++
++	if (strends(modname, ".lto.o"))
++		postfix_len = 5;
+ 
+ 	/* objects for a module are listed in the first line of *.mod file. */
+ 	snprintf(filelist, sizeof(filelist), "%.*smod",
+-		 (int)strlen(modname) - 1, modname);
++		 (int)strlen(modname) - postfix_len, modname);
+ 
+ 	buf = read_text_file(filelist);
+ 
+diff --git a/scripts/module.lds.S b/scripts/module.lds.S
+index 69b9b71a6..18d5b8423 100644
+--- a/scripts/module.lds.S
++++ b/scripts/module.lds.S
+@@ -23,6 +23,30 @@ SECTIONS {
+ 	.init_array		0 : ALIGN(8) { *(SORT(.init_array.*)) *(.init_array) }
+ 
+ 	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
++
++	__patchable_function_entries : { *(__patchable_function_entries) }
++
++	/*
++	 * With CONFIG_LTO_CLANG, LLD always enables -fdata-sections and
++	 * -ffunction-sections, which increases the size of the final module.
++	 * Merge the split sections in the final binary.
++	 */
++	.bss : {
++		*(.bss .bss.[0-9a-zA-Z_]*)
++		*(.bss..L*)
++	}
++
++	.data : {
++		*(.data .data.[0-9a-zA-Z_]*)
++		*(.data..L*)
++	}
++
++	.rodata : {
++		*(.rodata .rodata.[0-9a-zA-Z_]*)
++		*(.rodata..L*)
++	}
++
++	.text : { *(.text .text.[0-9a-zA-Z_]*) }
+ }
+ 
+ /* bring in arch-specific sections */
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index c6d199bfd..b84cdc72b 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -18,7 +18,7 @@
+ #include "builtin.h"
+ #include "objtool.h"
+ 
+-bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux;
++bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux, mcount, noinstr;
+ 
+ static const char * const check_usage[] = {
+ 	"objtool check [<options>] file.o",
+@@ -34,13 +34,15 @@ const struct option check_options[] = {
+ 	OPT_BOOLEAN('a', "uaccess", &uaccess, "enable uaccess checking"),
+ 	OPT_BOOLEAN('s', "stats", &stats, "print statistics"),
+ 	OPT_BOOLEAN('d', "duplicate", &validate_dup, "duplicate validation for vmlinux.o"),
++	OPT_BOOLEAN('n', "noinstr", &noinstr, "noinstr validation for vmlinux.o"),
+ 	OPT_BOOLEAN('l', "vmlinux", &vmlinux, "vmlinux.o validation"),
++	OPT_BOOLEAN('M', "mcount", &mcount, "generate __mcount_loc"),
+ 	OPT_END(),
+ };
+ 
+ int cmd_check(int argc, const char **argv)
+ {
+-	const char *objname, *s;
++	const char *objname;
+ 	struct objtool_file *file;
+ 	int ret;
+ 
+@@ -51,10 +53,6 @@ int cmd_check(int argc, const char **argv)
+ 
+ 	objname = argv[0];
+ 
+-	s = strstr(objname, "vmlinux.o");
+-	if (s && !s[9])
+-		vmlinux = true;
+-
+ 	file = objtool_open_read(objname);
+ 	if (!file)
+ 		return 1;
+diff --git a/tools/objtool/builtin.h b/tools/objtool/builtin.h
+index 85c979caa..2502bb27d 100644
+--- a/tools/objtool/builtin.h
++++ b/tools/objtool/builtin.h
+@@ -8,7 +8,7 @@
+ #include <subcmd/parse-options.h>
+ 
+ extern const struct option check_options[];
+-extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux;
++extern bool no_fp, no_unreachable, retpoline, module, backtrace, uaccess, stats, validate_dup, vmlinux, mcount, noinstr;
+ 
+ extern int cmd_check(int argc, const char **argv);
+ extern int cmd_orc(int argc, const char **argv);
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c6ab44543..ec9ed9b98 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -244,7 +244,7 @@ static void init_insn_state(struct insn_state *state, struct section *sec)
+ 	 * not correctly determine insn->call_dest->sec (external symbols do
+ 	 * not have a section).
+ 	 */
+-	if (vmlinux && sec)
++	if (vmlinux && noinstr && sec)
+ 		state->noinstr = sec->noinstr;
+ }
+ 
+@@ -523,6 +523,78 @@ static int create_static_call_sections(struct objtool_file *file)
+ 	return 0;
+ }
+ 
++static int create_mcount_loc_sections(struct objtool_file *file)
++{
++	struct section *sec, *reloc_sec;
++	struct reloc *reloc;
++	unsigned long *loc;
++	struct instruction *insn;
++	int idx;
++
++	sec = find_section_by_name(file->elf, "__mcount_loc");
++	if (sec) {
++		INIT_LIST_HEAD(&file->mcount_loc_list);
++		WARN("file already has __mcount_loc section, skipping");
++		return 0;
++	}
++
++	if (list_empty(&file->mcount_loc_list))
++		return 0;
++
++	idx = 0;
++	list_for_each_entry(insn, &file->mcount_loc_list, mcount_loc_node)
++		idx++;
++
++	sec = elf_create_section(file->elf, "__mcount_loc", 0, sizeof(unsigned long), idx);
++	if (!sec)
++		return -1;
++
++	reloc_sec = elf_create_reloc_section(file->elf, sec, SHT_RELA);
++	if (!reloc_sec)
++		return -1;
++
++	idx = 0;
++	list_for_each_entry(insn, &file->mcount_loc_list, mcount_loc_node) {
++
++		loc = (unsigned long *)sec->data->d_buf + idx;
++		memset(loc, 0, sizeof(unsigned long));
++
++		reloc = malloc(sizeof(*reloc));
++		if (!reloc) {
++			perror("malloc");
++			return -1;
++		}
++		memset(reloc, 0, sizeof(*reloc));
++
++		if (insn->sec->sym) {
++			reloc->sym = insn->sec->sym;
++			reloc->addend = insn->offset;
++		} else {
++			reloc->sym = find_symbol_containing(insn->sec, insn->offset);
++
++			if (!reloc->sym) {
++				WARN("missing symbol for insn at offset 0x%lx\n",
++				     insn->offset);
++				return -1;
++			}
++
++			reloc->addend = insn->offset - reloc->sym->offset;
++		}
++
++		reloc->type = R_X86_64_64;
++		reloc->offset = idx * sizeof(unsigned long);
++		reloc->sec = reloc_sec;
++		elf_add_reloc(file->elf, reloc);
++
++		idx++;
++	}
++
++	if (elf_rebuild_reloc_section(file->elf, reloc_sec))
++		return -1;
++
++	return 0;
++}
++
+ /*
+  * Warnings shouldn't be reported for ignored functions.
+  */
+@@ -949,6 +1021,22 @@ static int add_call_destinations(struct objtool_file *file)
+ 			insn->type = INSN_NOP;
+ 		}
+ 
++		if (mcount && !strcmp(insn->call_dest->name, "__fentry__")) {
++			if (reloc) {
++				reloc->type = R_NONE;
++				elf_write_reloc(file->elf, reloc);
++			}
++
++			elf_write_insn(file->elf, insn->sec,
++				       insn->offset, insn->len,
++				       arch_nop_insn(insn->len));
++
++			insn->type = INSN_NOP;
++
++			list_add_tail(&insn->mcount_loc_node,
++				      &file->mcount_loc_list);
++		}
++
+ 		/*
+ 		 * Whatever stack impact regular CALLs have, should be undone
+ 		 * by the RETURN of the called function.
+@@ -2920,6 +3008,13 @@ int check(struct objtool_file *file)
+ 		goto out;
+ 	warnings += ret;
+ 
++	if (mcount) {
++		ret = create_mcount_loc_sections(file);
++		if (ret < 0)
++			goto out;
++		warnings += ret;
++	}
++
+ out:
+ 	if (ret < 0) {
+ 		/*
+diff --git a/tools/objtool/check.h b/tools/objtool/check.h
+index 5ec00a4b8..070baec20 100644
+--- a/tools/objtool/check.h
++++ b/tools/objtool/check.h
+@@ -23,6 +23,7 @@ struct instruction {
+ 	struct list_head list;
+ 	struct hlist_node hash;
+ 	struct list_head static_call_node;
++	struct list_head mcount_loc_node;
+ 	struct section *sec;
+ 	unsigned long offset;
+ 	unsigned int len;
+diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
+index 9df0cd86d..c1819a6f2 100644
+--- a/tools/objtool/objtool.c
++++ b/tools/objtool/objtool.c
+@@ -62,6 +62,7 @@ struct objtool_file *objtool_open_read(const char *_objname)
+ 	INIT_LIST_HEAD(&file.insn_list);
+ 	hash_init(file.insn_hash);
+ 	INIT_LIST_HEAD(&file.static_call_list);
++	INIT_LIST_HEAD(&file.mcount_loc_list);
+ 	file.c_file = !vmlinux && find_section_by_name(file.elf, ".comment");
+ 	file.ignore_unreachables = no_unreachable;
+ 	file.hints = false;
+diff --git a/tools/objtool/objtool.h b/tools/objtool/objtool.h
+index 4125d4578..cf004dd60 100644
+--- a/tools/objtool/objtool.h
++++ b/tools/objtool/objtool.h
+@@ -19,6 +19,7 @@ struct objtool_file {
+ 	struct list_head insn_list;
+ 	DECLARE_HASHTABLE(insn_hash, 20);
+ 	struct list_head static_call_list;
++	struct list_head mcount_loc_list;
+ 	bool ignore_unreachables, c_file, hints, rodata;
+ };
+ 
+-- 
+2.29.2
+
