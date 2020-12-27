@@ -58,6 +58,7 @@ aprint_ret "copying the kernel config stated above."
 evalretkill
 
 # d1 >> apply patches
+aprint_nc
 #+bfq +llvm +misc +tkg
 for apatch in bfq llvm misc tkg; do
  aprint "applying ${cl_grn}${apatch}${c_res} patches."
