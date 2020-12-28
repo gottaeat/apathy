@@ -314,7 +314,7 @@
 [o] self	>> boost-1.75.0
 
 [d] self	> mpc-0.33
-[d] self	> ncmpcpp-0.9
+[d] self	> ncmpcpp-0.9.1
 
 [d] self	> maim-5.5.3
 [d] self	>> slop-7.4

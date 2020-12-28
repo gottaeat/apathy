@@ -202,7 +202,7 @@ libmpdclient-2.18
 libupnp-1.8.4
 libshout-2.4.3
 mpc-0.33
-ncmpcpp-0.9
+ncmpcpp-0.9.1
 maim-5.5.3
 slop-7.4
 glew-2.1.0
