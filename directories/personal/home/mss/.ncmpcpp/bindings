@@ -2,3 +2,10 @@ def_key "j"
  scroll_down
 def_key "k"
  scroll_up
+
+def_key "ctrl-d"
+  delete_playlist_items
+def_key "ctrl-d"
+  delete_browser_items
+def_key "ctrl-d"
+  delete_stored_playlist

@@ -11,13 +11,19 @@ mpd_crossfade_time                = 2
 #random_exclude_pattern           = "^(temp|midi_songs).*"
 
 # > music visualizer
-visualizer_fifo_path              = /tmp/mpd.fifo
-visualizer_output_name            = visualizer thingy
-visualizer_in_stereo              = no
-visualizer_sync_interval          = 10
-visualizer_type                   = spectrum
-visualizer_look                   = .-
-visualizer_color                  = cyan
+visualizer_data_source           = /tmp/mpd.fifo
+visualizer_output_name           = visualizer thingy
+visualizer_in_stereo             = yes
+visualizer_type                  = spectrum
+visualizer_fps                   = 60
+visualizer_autoscale             = no
+visualizer_look                  = .|
+visualizer_color                 = cyan
+visualizer_spectrum_smooth_look  = yes
+visualizer_spectrum_dft_size     = 2
+visualizer_spectrum_gain         = 10
+visualizer_spectrum_hz_min       = 20
+visualizer_spectrum_hz_max       = 20000
 
 # > delays
 playlist_disable_highlight_delay  = 5
@@ -92,7 +98,7 @@ header_text_scrolling              = yes
 cyclic_scrolling                   = no
 lines_scrolled                     = 2
 
-lyrics_fetchers                             = lyricwiki, azlyrics, genius, sing365, lyricsmania, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
+lyrics_fetchers                             = azlyrics, genius, musixmatch, sing365, metrolyrics, justsomelyrics, jahlyrics, plyrics, tekstowo, zeneszoveg, internet
 follow_now_playing_lyrics                   = yes
 fetch_lyrics_for_current_song_in_background = no
 store_lyrics_in_song_dir                    = no
