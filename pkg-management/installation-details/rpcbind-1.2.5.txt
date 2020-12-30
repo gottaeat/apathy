@@ -1,0 +1,4 @@
+/sbin/rpcbind
+/sbin/rpcinfo
+
+/usr/share/man

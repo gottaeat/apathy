@@ -414,6 +414,9 @@
 [d] self	> isl-0.22
 [d] self	> fdupes-2.1.2
 [d] self	> ympd-612f8fc0
+[d] self	> nfs-utils-2.5.2
+[d] self	>> libtirpc-1.3.1
+[d] self	>> rpcbind-1.2.5
 ```
 ```
 ### base mlfs packages

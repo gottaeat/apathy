@@ -1,0 +1,13 @@
+/etc/bindresvport.blacklist
+/etc/netconfig
+
+/usr/include/tirpc
+
+/usr/lib/libtirpc.la
+/usr/lib/libtirpc.so
+/usr/lib/libtirpc.so.3
+/usr/lib/libtirpc.so.3.0.0
+
+/usr/lib/pkgconfig/libtirpc.pc
+
+/usr/share/man
