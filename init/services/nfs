@@ -20,7 +20,7 @@ case "$1" in
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: starting rpc.statd."
-     rpc.statd --no-notify
+     rpc.statd -p 31310 -o 31311 --no-notify
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: starting rpc.nfsd."
@@ -28,7 +28,7 @@ case "$1" in
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: starting rpc.mountd."
-     rpc.mountd
+     rpc.mountd -p 31312
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: running exportfs."
@@ -41,7 +41,7 @@ case "$1" in
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: starting rpc.statd."
-     rpc.statd --no-notify
+     rpc.statd -p 31310 -o 31311 --no-notify
     evalret
    ;;
    *)
