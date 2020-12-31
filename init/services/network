@@ -1,7 +1,7 @@
 #!/mss/bin/sh
 . /mss/init/bin/funcs
 
- ip="192.168.1.31"
+   ip="192.168.1.30"
  pref="24"
  gway="192.168.1.1"
 bcast="192.168.1.99"
