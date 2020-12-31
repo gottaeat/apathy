@@ -1,0 +1,34 @@
+### > iptables
+iptables -A INPUT -p tcp --dport 111  -j ACCEPT
+iptables -A INPUT -p tcp --dport 2049 -j ACCEPT
+
+### > /etc/exports
+/mnt/mss/stuff/media *(rw,subtree_check,anonuid=99,anongid=99)
+
+### > client side config
+# start
+rpcbind
+rpc.statd --no-notify
+# stop
+kill -TERM $(pidof rpcbind)
+kill -TERM $(pidof rpc.statd)
+
+### > server side config
+# start
+rpcbind
+rpc.statd --no-notify
+rpc.nfsd -p 2049 8
+rpc.mountd
+exportfs -ra >/dev/null 2>&1
+# stop
+exportfs -au >/dev/null 2>&1
+kill -TERM $(pidof rpcbind)
+kill -TERM $(pidof rpc.statd)
+for nfsdpid in $(ps ax | grep '\[nfsd\]' | grep -v grep | awk '{print $1}'); do kill -HUP $nfsdpid; done
+kill -TERM $(pidof rpc.mountd)
+if [ -f /var/run/rpc.statd.pid ]; then rm -f /var/run/rpc.statd.pid; fi
+# reload
+exportfs -rav
+
+### > action
+mount -t nfs -o rw,relatime,proto=tcp,vers=3 brownbag:/mnt/mss/stuff/media test/
