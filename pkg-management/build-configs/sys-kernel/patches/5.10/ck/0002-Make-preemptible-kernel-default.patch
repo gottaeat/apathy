@@ -1,0 +1,934 @@
+From ea9b4218b46eae24eef6162be269934f4bb5dfb6 Mon Sep 17 00:00:00 2001
+From: Con Kolivas <kernel@kolivas.org>
+Date: Sat, 29 Oct 2016 11:20:37 +1100
+Subject: [PATCH 02/16] Make preemptible kernel default.
+
+Make full preempt default on all arches.
+---
+ arch/arc/configs/tb10x_defconfig      |   2 +-
+ arch/arm/configs/bcm2835_defconfig    |   2 +-
+ arch/arm/configs/imx_v6_v7_defconfig  |   1 +
+ arch/arm/configs/mps2_defconfig       |   2 +-
+ arch/arm/configs/mxs_defconfig        |   9 +-
+ arch/mips/configs/fuloong2e_defconfig |   2 +-
+ arch/mips/configs/gpr_defconfig       |   2 +-
+ arch/mips/configs/ip22_defconfig      |   2 +-
+ arch/mips/configs/ip28_defconfig      |   2 +-
+ arch/mips/configs/jazz_defconfig      |   2 +-
+ arch/mips/configs/mtx1_defconfig      |   2 +-
+ arch/mips/configs/nlm_xlr_defconfig   |   2 +-
+ arch/mips/configs/pic32mzda_defconfig |   2 +-
+ arch/mips/configs/pistachio_defconfig |   2 +-
+ arch/mips/configs/rm200_defconfig     |   2 +-
+ arch/parisc/configs/712_defconfig     | 181 ++++++++++++++++++++++
+ arch/parisc/configs/c3000_defconfig   | 151 +++++++++++++++++++
+ arch/parisc/configs/defconfig         | 206 ++++++++++++++++++++++++++
+ arch/powerpc/configs/ppc6xx_defconfig |   2 +-
+ arch/sh/configs/se7712_defconfig      |   2 +-
+ arch/sh/configs/se7721_defconfig      |   2 +-
+ arch/sh/configs/titan_defconfig       |   2 +-
+ arch/sparc/configs/sparc64_defconfig  |   2 +-
+ arch/x86/configs/i386_defconfig       |   2 +
+ arch/x86/configs/x86_64_defconfig     |   3 +
+ kernel/Kconfig.preempt                |   7 +-
+ 26 files changed, 574 insertions(+), 22 deletions(-)
+ create mode 100644 arch/parisc/configs/712_defconfig
+ create mode 100644 arch/parisc/configs/c3000_defconfig
+ create mode 100644 arch/parisc/configs/defconfig
+
+diff --git a/arch/arc/configs/tb10x_defconfig b/arch/arc/configs/tb10x_defconfig
+index a12656ec0072..b46b6ddc7636 100644
+--- a/arch/arc/configs/tb10x_defconfig
++++ b/arch/arc/configs/tb10x_defconfig
+@@ -29,7 +29,7 @@ CONFIG_ARC_PLAT_TB10X=y
+ CONFIG_ARC_CACHE_LINE_SHIFT=5
+ CONFIG_HZ=250
+ CONFIG_ARC_BUILTIN_DTB_NAME="abilis_tb100_dvk"
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ # CONFIG_COMPACTION is not set
+ CONFIG_NET=y
+ CONFIG_PACKET=y
+diff --git a/arch/arm/configs/bcm2835_defconfig b/arch/arm/configs/bcm2835_defconfig
+index 44ff9cd88d81..9c639c998015 100644
+--- a/arch/arm/configs/bcm2835_defconfig
++++ b/arch/arm/configs/bcm2835_defconfig
+@@ -29,7 +29,7 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_ARCH_MULTI_V6=y
+ CONFIG_ARCH_BCM=y
+ CONFIG_ARCH_BCM2835=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_AEABI=y
+ CONFIG_KSM=y
+ CONFIG_CLEANCACHE=y
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 221f5c340c86..2cb7a9a08a05 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -33,6 +33,7 @@ CONFIG_PCI_MSI=y
+ CONFIG_PCI_IMX6=y
+ CONFIG_SMP=y
+ CONFIG_ARM_PSCI=y
++CONFIG_PREEMPT=y
+ CONFIG_HIGHMEM=y
+ CONFIG_FORCE_MAX_ZONEORDER=14
+ CONFIG_CMDLINE="noinitrd console=ttymxc0,115200"
+diff --git a/arch/arm/configs/mps2_defconfig b/arch/arm/configs/mps2_defconfig
+index 1d923dbb9928..9c1931f1fafd 100644
+--- a/arch/arm/configs/mps2_defconfig
++++ b/arch/arm/configs/mps2_defconfig
+@@ -18,7 +18,7 @@ CONFIG_ARCH_MPS2=y
+ CONFIG_SET_MEM_PARAM=y
+ CONFIG_DRAM_BASE=0x21000000
+ CONFIG_DRAM_SIZE=0x1000000
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ # CONFIG_ATAGS is not set
+ CONFIG_ZBOOT_ROM_TEXT=0x0
+ CONFIG_ZBOOT_ROM_BSS=0x0
+diff --git a/arch/arm/configs/mxs_defconfig b/arch/arm/configs/mxs_defconfig
+index a9c6f32a9b1c..870866aaa39d 100644
+--- a/arch/arm/configs/mxs_defconfig
++++ b/arch/arm/configs/mxs_defconfig
+@@ -1,7 +1,7 @@
+ CONFIG_SYSVIPC=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT_VOLUNTARY=n
+ CONFIG_TASKSTATS=y
+ CONFIG_TASK_DELAY_ACCT=y
+ CONFIG_TASK_XACCT=y
+@@ -25,6 +25,13 @@ CONFIG_MODULE_UNLOAD=y
+ CONFIG_MODULE_FORCE_UNLOAD=y
+ CONFIG_MODVERSIONS=y
+ CONFIG_BLK_DEV_INTEGRITY=y
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++# CONFIG_ARCH_MULTI_V7 is not set
++CONFIG_ARCH_MXS=y
++# CONFIG_ARM_THUMB is not set
++CONFIG_PREEMPT=y
++CONFIG_AEABI=y
+ CONFIG_NET=y
+ CONFIG_PACKET=y
+ CONFIG_UNIX=y
+diff --git a/arch/mips/configs/fuloong2e_defconfig b/arch/mips/configs/fuloong2e_defconfig
+index 023b4e644b1c..013e630b96a6 100644
+--- a/arch/mips/configs/fuloong2e_defconfig
++++ b/arch/mips/configs/fuloong2e_defconfig
+@@ -4,7 +4,7 @@ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+diff --git a/arch/mips/configs/gpr_defconfig b/arch/mips/configs/gpr_defconfig
+index 9085f4d6c698..fb23111d45f6 100644
+--- a/arch/mips/configs/gpr_defconfig
++++ b/arch/mips/configs/gpr_defconfig
+@@ -1,8 +1,8 @@
++CONFIG_PREEMPT=y
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_BSD_PROCESS_ACCT_V3=y
+ CONFIG_RELAY=y
+diff --git a/arch/mips/configs/ip22_defconfig b/arch/mips/configs/ip22_defconfig
+index 21a1168ae301..529a1b1007cf 100644
+--- a/arch/mips/configs/ip22_defconfig
++++ b/arch/mips/configs/ip22_defconfig
+@@ -1,7 +1,7 @@
+ CONFIG_SYSVIPC=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=14
+diff --git a/arch/mips/configs/ip28_defconfig b/arch/mips/configs/ip28_defconfig
+index 0921ef38e9fb..6da05cef46f8 100644
+--- a/arch/mips/configs/ip28_defconfig
++++ b/arch/mips/configs/ip28_defconfig
+@@ -1,5 +1,5 @@
+ CONFIG_SYSVIPC=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=14
+diff --git a/arch/mips/configs/jazz_defconfig b/arch/mips/configs/jazz_defconfig
+index 8c223035921f..a3bf87450343 100644
+--- a/arch/mips/configs/jazz_defconfig
++++ b/arch/mips/configs/jazz_defconfig
+@@ -1,8 +1,8 @@
++CONFIG_PREEMPT=y
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_LOG_BUF_SHIFT=14
+ CONFIG_RELAY=y
+diff --git a/arch/mips/configs/mtx1_defconfig b/arch/mips/configs/mtx1_defconfig
+index 914af125a7fa..76a64290373f 100644
+--- a/arch/mips/configs/mtx1_defconfig
++++ b/arch/mips/configs/mtx1_defconfig
+@@ -1,8 +1,8 @@
++CONFIG_PREEMPT=y
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_AUDIT=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_BSD_PROCESS_ACCT_V3=y
+ CONFIG_RELAY=y
+diff --git a/arch/mips/configs/nlm_xlr_defconfig b/arch/mips/configs/nlm_xlr_defconfig
+index 4ecb157e56d4..ea7309283b01 100644
+--- a/arch/mips/configs/nlm_xlr_defconfig
++++ b/arch/mips/configs/nlm_xlr_defconfig
+@@ -1,10 +1,10 @@
++CONFIG_PREEMPT=y
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+ CONFIG_AUDIT=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_BSD_PROCESS_ACCT_V3=y
+ CONFIG_TASKSTATS=y
+diff --git a/arch/mips/configs/pic32mzda_defconfig b/arch/mips/configs/pic32mzda_defconfig
+index 63fe2da1b37f..7f08ee237345 100644
+--- a/arch/mips/configs/pic32mzda_defconfig
++++ b/arch/mips/configs/pic32mzda_defconfig
+@@ -1,7 +1,7 @@
++CONFIG_PREEMPT=y
+ CONFIG_SYSVIPC=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=14
+diff --git a/arch/mips/configs/pistachio_defconfig b/arch/mips/configs/pistachio_defconfig
+index b9adf15ebbec..0025b56dc300 100644
+--- a/arch/mips/configs/pistachio_defconfig
++++ b/arch/mips/configs/pistachio_defconfig
+@@ -1,9 +1,9 @@
++CONFIG_PREEMPT=y
+ # CONFIG_LOCALVERSION_AUTO is not set
+ CONFIG_DEFAULT_HOSTNAME="localhost"
+ CONFIG_SYSVIPC=y
+ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_IKCONFIG=m
+ CONFIG_IKCONFIG_PROC=y
+ CONFIG_LOG_BUF_SHIFT=18
+diff --git a/arch/mips/configs/rm200_defconfig b/arch/mips/configs/rm200_defconfig
+index 30d7c3db884e..9e68acfa0d0e 100644
+--- a/arch/mips/configs/rm200_defconfig
++++ b/arch/mips/configs/rm200_defconfig
+@@ -1,6 +1,6 @@
++CONFIG_PREEMPT=y
+ CONFIG_SYSVIPC=y
+ CONFIG_POSIX_MQUEUE=y
+-CONFIG_PREEMPT_VOLUNTARY=y
+ CONFIG_BSD_PROCESS_ACCT=y
+ CONFIG_IKCONFIG=y
+ CONFIG_IKCONFIG_PROC=y
+diff --git a/arch/parisc/configs/712_defconfig b/arch/parisc/configs/712_defconfig
+new file mode 100644
+index 000000000000..578524f80cc4
+--- /dev/null
++++ b/arch/parisc/configs/712_defconfig
+@@ -0,0 +1,181 @@
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_SLAB=y
++CONFIG_PROFILING=y
++CONFIG_OPROFILE=m
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_PA7100LC=y
++CONFIG_PREEMPT=y
++CONFIG_GSC_LASI=y
++# CONFIG_PDC_CHASSIS is not set
++CONFIG_BINFMT_MISC=m
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=m
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_DIAG=m
++# CONFIG_IPV6 is not set
++CONFIG_NETFILTER=y
++CONFIG_LLC2=m
++CONFIG_NET_PKTGEN=m
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_PARPORT=y
++CONFIG_PARPORT_PC=m
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_SIZE=6144
++CONFIG_ATA_OVER_ETH=m
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_ST=y
++CONFIG_BLK_DEV_SR=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_SCSI_ISCSI_ATTRS=m
++CONFIG_SCSI_LASI700=y
++CONFIG_SCSI_DEBUG=m
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=m
++CONFIG_MD_LINEAR=m
++CONFIG_MD_RAID0=m
++CONFIG_MD_RAID1=m
++CONFIG_NETDEVICES=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_TUN=m
++CONFIG_LASI_82596=y
++CONFIG_PPP=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPP_MPPE=m
++CONFIG_PPPOE=m
++CONFIG_PPP_ASYNC=m
++CONFIG_PPP_SYNC_TTY=m
++# CONFIG_KEYBOARD_HIL_OLD is not set
++CONFIG_MOUSE_SERIAL=m
++CONFIG_LEGACY_PTY_COUNT=64
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_NR_UARTS=17
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++# CONFIG_SERIAL_MUX is not set
++CONFIG_PDC_CONSOLE=y
++CONFIG_PRINTER=m
++CONFIG_PPDEV=m
++# CONFIG_HW_RANDOM is not set
++CONFIG_RAW_DRIVER=y
++# CONFIG_HWMON is not set
++CONFIG_FB=y
++CONFIG_FB_MODE_HELPERS=y
++CONFIG_FB_TILEBLITTING=y
++CONFIG_DUMMY_CONSOLE_COLUMNS=128
++CONFIG_DUMMY_CONSOLE_ROWS=48
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_LOGO=y
++# CONFIG_LOGO_LINUX_MONO is not set
++# CONFIG_LOGO_LINUX_VGA16 is not set
++# CONFIG_LOGO_LINUX_CLUT224 is not set
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SEQUENCER=y
++CONFIG_SND_HARMONY=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++CONFIG_JFS_FS=m
++CONFIG_XFS_FS=m
++CONFIG_AUTOFS4_FS=y
++CONFIG_ISO9660_FS=y
++CONFIG_JOLIET=y
++CONFIG_UDF_FS=m
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_UFS_FS=m
++CONFIG_NFS_FS=y
++CONFIG_NFS_V4=y
++CONFIG_ROOT_NFS=y
++CONFIG_NFSD=m
++CONFIG_NFSD_V4=y
++CONFIG_CIFS=m
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_CODEPAGE_737=m
++CONFIG_NLS_CODEPAGE_775=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_CODEPAGE_852=m
++CONFIG_NLS_CODEPAGE_855=m
++CONFIG_NLS_CODEPAGE_857=m
++CONFIG_NLS_CODEPAGE_860=m
++CONFIG_NLS_CODEPAGE_861=m
++CONFIG_NLS_CODEPAGE_862=m
++CONFIG_NLS_CODEPAGE_863=m
++CONFIG_NLS_CODEPAGE_864=m
++CONFIG_NLS_CODEPAGE_865=m
++CONFIG_NLS_CODEPAGE_866=m
++CONFIG_NLS_CODEPAGE_869=m
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++CONFIG_NLS_CODEPAGE_874=m
++CONFIG_NLS_ISO8859_8=m
++CONFIG_NLS_CODEPAGE_1250=m
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_NLS_ISO8859_2=m
++CONFIG_NLS_ISO8859_3=m
++CONFIG_NLS_ISO8859_4=m
++CONFIG_NLS_ISO8859_5=m
++CONFIG_NLS_ISO8859_6=m
++CONFIG_NLS_ISO8859_7=m
++CONFIG_NLS_ISO8859_9=m
++CONFIG_NLS_ISO8859_13=m
++CONFIG_NLS_ISO8859_14=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++CONFIG_NLS_UTF8=m
++CONFIG_DEBUG_FS=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_DEBUG_KERNEL=y
++CONFIG_DEBUG_MUTEXES=y
++CONFIG_CRYPTO_TEST=m
++CONFIG_CRYPTO_HMAC=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_DEFLATE=m
++# CONFIG_CRYPTO_HW is not set
++CONFIG_FONTS=y
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
+diff --git a/arch/parisc/configs/c3000_defconfig b/arch/parisc/configs/c3000_defconfig
+new file mode 100644
+index 000000000000..d1bdfad94048
+--- /dev/null
++++ b/arch/parisc/configs/c3000_defconfig
+@@ -0,0 +1,151 @@
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_EXPERT=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_SLAB=y
++CONFIG_PROFILING=y
++CONFIG_OPROFILE=m
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_PA8X00=y
++CONFIG_PREEMPT=y
++# CONFIG_GSC is not set
++CONFIG_PCI=y
++CONFIG_PCI_LBA=y
++# CONFIG_PDC_CHASSIS is not set
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=m
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_BOOTP=y
++# CONFIG_INET_DIAG is not set
++CONFIG_INET6_IPCOMP=m
++CONFIG_IPV6_TUNNEL=m
++CONFIG_NETFILTER=y
++CONFIG_NET_PKTGEN=m
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_BLK_DEV_UMEM=m
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_IDE=y
++CONFIG_BLK_DEV_IDECD=y
++CONFIG_BLK_DEV_NS87415=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_ST=y
++CONFIG_BLK_DEV_SR=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_SCSI_ISCSI_ATTRS=m
++CONFIG_SCSI_SYM53C8XX_2=y
++CONFIG_SCSI_SYM53C8XX_DMA_ADDRESSING_MODE=0
++CONFIG_SCSI_DEBUG=m
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=y
++CONFIG_MD_LINEAR=y
++CONFIG_MD_RAID0=y
++CONFIG_MD_RAID1=y
++CONFIG_BLK_DEV_DM=m
++CONFIG_DM_CRYPT=m
++CONFIG_DM_SNAPSHOT=m
++CONFIG_DM_MIRROR=m
++CONFIG_DM_ZERO=m
++CONFIG_DM_MULTIPATH=m
++CONFIG_FUSION=y
++CONFIG_FUSION_SPI=m
++CONFIG_FUSION_CTL=m
++CONFIG_NETDEVICES=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_TUN=m
++CONFIG_ACENIC=m
++CONFIG_TIGON3=m
++CONFIG_NET_TULIP=y
++CONFIG_DE2104X=m
++CONFIG_TULIP=y
++CONFIG_TULIP_MMIO=y
++CONFIG_E100=m
++CONFIG_E1000=m
++CONFIG_PPP=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPPOE=m
++CONFIG_PPP_ASYNC=m
++CONFIG_PPP_SYNC_TTY=m
++# CONFIG_KEYBOARD_ATKBD is not set
++# CONFIG_MOUSE_PS2 is not set
++CONFIG_SERIO=m
++CONFIG_SERIO_LIBPS2=m
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_NR_UARTS=13
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++# CONFIG_HW_RANDOM is not set
++CONFIG_RAW_DRIVER=y
++# CONFIG_HWMON is not set
++CONFIG_FB=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_LOGO=y
++# CONFIG_LOGO_LINUX_MONO is not set
++# CONFIG_LOGO_LINUX_VGA16 is not set
++# CONFIG_LOGO_LINUX_CLUT224 is not set
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_SEQUENCER=y
++CONFIG_SND_AD1889=y
++CONFIG_USB_HIDDEV=y
++CONFIG_USB=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_PRINTER=m
++CONFIG_USB_STORAGE=m
++CONFIG_USB_STORAGE_USBAT=m
++CONFIG_USB_STORAGE_SDDR09=m
++CONFIG_USB_STORAGE_SDDR55=m
++CONFIG_USB_STORAGE_JUMPSHOT=m
++CONFIG_USB_MDC800=m
++CONFIG_USB_MICROTEK=m
++CONFIG_USB_LEGOTOWER=m
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++CONFIG_XFS_FS=m
++CONFIG_AUTOFS4_FS=y
++CONFIG_ISO9660_FS=y
++CONFIG_JOLIET=y
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V3=y
++CONFIG_NLS_CODEPAGE_437=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_UTF8=m
++CONFIG_DEBUG_FS=y
++CONFIG_HEADERS_INSTALL=y
++CONFIG_HEADERS_CHECK=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_DEBUG_MUTEXES=y
++# CONFIG_DEBUG_BUGVERBOSE is not set
++CONFIG_CRYPTO_TEST=m
++CONFIG_CRYPTO_MD5=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_DES=m
++# CONFIG_CRYPTO_HW is not set
+diff --git a/arch/parisc/configs/defconfig b/arch/parisc/configs/defconfig
+new file mode 100644
+index 000000000000..0d976614934c
+--- /dev/null
++++ b/arch/parisc/configs/defconfig
+@@ -0,0 +1,206 @@
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SYSVIPC=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=16
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_KALLSYMS_ALL=y
++CONFIG_SLAB=y
++CONFIG_PROFILING=y
++CONFIG_OPROFILE=m
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++# CONFIG_BLK_DEV_BSG is not set
++CONFIG_PA7100LC=y
++CONFIG_PREEMPT=y
++CONFIG_IOMMU_CCIO=y
++CONFIG_GSC_LASI=y
++CONFIG_GSC_WAX=y
++CONFIG_EISA=y
++CONFIG_PCI=y
++CONFIG_GSC_DINO=y
++CONFIG_PCI_LBA=y
++CONFIG_PCCARD=y
++CONFIG_YENTA=y
++CONFIG_PD6729=y
++CONFIG_I82092=y
++CONFIG_BINFMT_MISC=m
++CONFIG_NET=y
++CONFIG_PACKET=y
++CONFIG_UNIX=y
++CONFIG_XFRM_USER=m
++CONFIG_NET_KEY=m
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_PNP=y
++CONFIG_IP_PNP_DHCP=y
++CONFIG_IP_PNP_BOOTP=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_DIAG=m
++CONFIG_INET6_AH=y
++CONFIG_INET6_ESP=y
++CONFIG_INET6_IPCOMP=y
++CONFIG_LLC2=m
++CONFIG_DEVTMPFS=y
++CONFIG_DEVTMPFS_MOUNT=y
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_PARPORT=y
++CONFIG_PARPORT_PC=m
++CONFIG_PARPORT_PC_PCMCIA=m
++CONFIG_PARPORT_1284=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=y
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_SIZE=6144
++CONFIG_IDE=y
++CONFIG_BLK_DEV_IDECS=y
++CONFIG_BLK_DEV_IDECD=y
++CONFIG_BLK_DEV_GENERIC=y
++CONFIG_BLK_DEV_NS87415=y
++CONFIG_SCSI=y
++CONFIG_BLK_DEV_SD=y
++CONFIG_CHR_DEV_ST=y
++CONFIG_BLK_DEV_SR=y
++CONFIG_CHR_DEV_SG=y
++CONFIG_SCSI_LASI700=y
++CONFIG_SCSI_SYM53C8XX_2=y
++CONFIG_SCSI_ZALON=y
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=y
++CONFIG_MD_LINEAR=y
++CONFIG_MD_RAID0=y
++CONFIG_MD_RAID1=y
++CONFIG_MD_RAID10=y
++CONFIG_BLK_DEV_DM=y
++CONFIG_NETDEVICES=y
++CONFIG_BONDING=m
++CONFIG_DUMMY=m
++CONFIG_TUN=m
++CONFIG_ACENIC=y
++CONFIG_TIGON3=y
++CONFIG_NET_TULIP=y
++CONFIG_TULIP=y
++CONFIG_LASI_82596=y
++CONFIG_PPP=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPPOE=m
++CONFIG_PPP_ASYNC=m
++CONFIG_PPP_SYNC_TTY=m
++# CONFIG_KEYBOARD_HIL_OLD is not set
++CONFIG_MOUSE_SERIAL=y
++CONFIG_LEGACY_PTY_COUNT=64
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++CONFIG_SERIAL_8250_CS=y
++CONFIG_SERIAL_8250_NR_UARTS=17
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++CONFIG_PRINTER=m
++CONFIG_PPDEV=m
++# CONFIG_HW_RANDOM is not set
++# CONFIG_HWMON is not set
++CONFIG_FB=y
++CONFIG_FB_MODE_HELPERS=y
++CONFIG_FB_TILEBLITTING=y
++CONFIG_DUMMY_CONSOLE_COLUMNS=128
++CONFIG_DUMMY_CONSOLE_ROWS=48
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_LOGO=y
++# CONFIG_LOGO_LINUX_MONO is not set
++# CONFIG_LOGO_LINUX_VGA16 is not set
++# CONFIG_LOGO_LINUX_CLUT224 is not set
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_DYNAMIC_MINORS=y
++CONFIG_SND_SEQUENCER=y
++CONFIG_SND_AD1889=y
++CONFIG_SND_HARMONY=y
++CONFIG_HID_GYRATION=y
++CONFIG_HID_NTRIG=y
++CONFIG_HID_PANTHERLORD=y
++CONFIG_HID_PETALYNX=y
++CONFIG_HID_SAMSUNG=y
++CONFIG_HID_SUNPLUS=y
++CONFIG_HID_TOPSEED=y
++CONFIG_USB=y
++CONFIG_USB_MON=y
++CONFIG_USB_OHCI_HCD=y
++CONFIG_USB_UHCI_HCD=y
++CONFIG_EXT2_FS=y
++CONFIG_EXT3_FS=y
++CONFIG_ISO9660_FS=y
++CONFIG_JOLIET=y
++CONFIG_VFAT_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_TMPFS=y
++CONFIG_NFS_FS=y
++CONFIG_ROOT_NFS=y
++CONFIG_NFSD=y
++CONFIG_NFSD_V4=y
++CONFIG_CIFS=m
++CONFIG_NLS_CODEPAGE_437=y
++CONFIG_NLS_CODEPAGE_737=m
++CONFIG_NLS_CODEPAGE_775=m
++CONFIG_NLS_CODEPAGE_850=m
++CONFIG_NLS_CODEPAGE_852=m
++CONFIG_NLS_CODEPAGE_855=m
++CONFIG_NLS_CODEPAGE_857=m
++CONFIG_NLS_CODEPAGE_860=m
++CONFIG_NLS_CODEPAGE_861=m
++CONFIG_NLS_CODEPAGE_862=m
++CONFIG_NLS_CODEPAGE_863=m
++CONFIG_NLS_CODEPAGE_864=m
++CONFIG_NLS_CODEPAGE_865=m
++CONFIG_NLS_CODEPAGE_866=m
++CONFIG_NLS_CODEPAGE_869=m
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++CONFIG_NLS_CODEPAGE_874=m
++CONFIG_NLS_ISO8859_8=m
++CONFIG_NLS_CODEPAGE_1250=y
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++CONFIG_NLS_ISO8859_1=y
++CONFIG_NLS_ISO8859_2=m
++CONFIG_NLS_ISO8859_3=m
++CONFIG_NLS_ISO8859_4=m
++CONFIG_NLS_ISO8859_5=m
++CONFIG_NLS_ISO8859_6=m
++CONFIG_NLS_ISO8859_7=m
++CONFIG_NLS_ISO8859_9=m
++CONFIG_NLS_ISO8859_13=m
++CONFIG_NLS_ISO8859_14=m
++CONFIG_NLS_ISO8859_15=m
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++CONFIG_NLS_UTF8=y
++CONFIG_DEBUG_FS=y
++CONFIG_HEADERS_INSTALL=y
++CONFIG_HEADERS_CHECK=y
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_DEBUG_KERNEL=y
++CONFIG_DEBUG_MUTEXES=y
++CONFIG_KEYS=y
++CONFIG_CRYPTO_TEST=m
++CONFIG_CRYPTO_MICHAEL_MIC=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_BLOWFISH=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_KHAZAD=m
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++# CONFIG_CRYPTO_HW is not set
++CONFIG_LIBCRC32C=m
++CONFIG_FONTS=y
+diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+index 66e9a0fd64ff..c8531232efb7 100644
+--- a/arch/powerpc/configs/ppc6xx_defconfig
++++ b/arch/powerpc/configs/ppc6xx_defconfig
+@@ -73,7 +73,7 @@ CONFIG_QE_GPIO=y
+ CONFIG_MCU_MPC8349EMITX=y
+ CONFIG_HIGHMEM=y
+ CONFIG_HZ_1000=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_BINFMT_MISC=y
+ CONFIG_HIBERNATION=y
+ CONFIG_PM_DEBUG=y
+diff --git a/arch/sh/configs/se7712_defconfig b/arch/sh/configs/se7712_defconfig
+index ee6d28ae08de..827e4693c5b2 100644
+--- a/arch/sh/configs/se7712_defconfig
++++ b/arch/sh/configs/se7712_defconfig
+@@ -21,7 +21,7 @@ CONFIG_FLATMEM_MANUAL=y
+ CONFIG_SH_SOLUTION_ENGINE=y
+ CONFIG_SH_PCLK_FREQ=66666666
+ CONFIG_HEARTBEAT=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_CMDLINE_OVERWRITE=y
+ CONFIG_CMDLINE="console=ttySC0,115200 root=/dev/sda1"
+ CONFIG_NET=y
+diff --git a/arch/sh/configs/se7721_defconfig b/arch/sh/configs/se7721_defconfig
+index bad921bc10f8..e8f42bc0d370 100644
+--- a/arch/sh/configs/se7721_defconfig
++++ b/arch/sh/configs/se7721_defconfig
+@@ -21,7 +21,7 @@ CONFIG_FLATMEM_MANUAL=y
+ CONFIG_SH_7721_SOLUTION_ENGINE=y
+ CONFIG_SH_PCLK_FREQ=33333333
+ CONFIG_HEARTBEAT=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_CMDLINE_OVERWRITE=y
+ CONFIG_CMDLINE="console=ttySC0,115200 root=/dev/sda2"
+ CONFIG_NET=y
+diff --git a/arch/sh/configs/titan_defconfig b/arch/sh/configs/titan_defconfig
+index ba887f1351be..4434e93b70bc 100644
+--- a/arch/sh/configs/titan_defconfig
++++ b/arch/sh/configs/titan_defconfig
+@@ -19,7 +19,7 @@ CONFIG_SH_TITAN=y
+ CONFIG_SH_PCLK_FREQ=30000000
+ CONFIG_SH_DMA=y
+ CONFIG_SH_DMA_API=y
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_CMDLINE_OVERWRITE=y
+ CONFIG_CMDLINE="console=ttySC1,38400N81 root=/dev/nfs ip=:::::eth1:autoconf rw"
+ CONFIG_PCI=y
+diff --git a/arch/sparc/configs/sparc64_defconfig b/arch/sparc/configs/sparc64_defconfig
+index bde4d21a8ac8..c054ec82d91b 100644
+--- a/arch/sparc/configs/sparc64_defconfig
++++ b/arch/sparc/configs/sparc64_defconfig
+@@ -22,7 +22,7 @@ CONFIG_NO_HZ=y
+ CONFIG_HIGH_RES_TIMERS=y
+ CONFIG_NUMA=y
+ CONFIG_DEFAULT_MMAP_MIN_ADDR=8192
+-CONFIG_PREEMPT_VOLUNTARY=y
++CONFIG_PREEMPT=y
+ CONFIG_SUN_LDOMS=y
+ CONFIG_PCI=y
+ CONFIG_PCI_MSI=y
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index 78210793d357..0c4415b23002 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -23,6 +23,8 @@ CONFIG_PROFILING=y
+ CONFIG_SMP=y
+ CONFIG_X86_GENERIC=y
+ CONFIG_HPET_TIMER=y
++CONFIG_SCHED_SMT=y
++CONFIG_PREEMPT=y
+ CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
+ CONFIG_X86_REBOOTFIXUPS=y
+ CONFIG_MICROCODE_AMD=y
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+index 9936528e1939..328c7d0a38a1 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -20,6 +20,9 @@ CONFIG_BLK_DEV_INITRD=y
+ # CONFIG_COMPAT_BRK is not set
+ CONFIG_PROFILING=y
+ CONFIG_SMP=y
++CONFIG_NR_CPUS=64
++CONFIG_SCHED_SMT=y
++CONFIG_PREEMPT=y
+ CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
+ CONFIG_MICROCODE_AMD=y
+ CONFIG_X86_MSR=y
+diff --git a/kernel/Kconfig.preempt b/kernel/Kconfig.preempt
+index bf82259cff96..d9438eb6f91c 100644
+--- a/kernel/Kconfig.preempt
++++ b/kernel/Kconfig.preempt
+@@ -2,7 +2,7 @@
+ 
+ choice
+ 	prompt "Preemption Model"
+-	default PREEMPT_NONE
++	default PREEMPT
+ 
+ config PREEMPT_NONE
+ 	bool "No Forced Preemption (Server)"
+@@ -18,7 +18,7 @@ config PREEMPT_NONE
+ 	  latencies.
+ 
+ config PREEMPT_VOLUNTARY
+-	bool "Voluntary Kernel Preemption (Desktop)"
++	bool "Voluntary Kernel Preemption (Nothing)"
+ 	depends on !ARCH_NO_PREEMPT
+ 	help
+ 	  This option reduces the latency of the kernel by adding more
+@@ -33,7 +33,8 @@ config PREEMPT_VOLUNTARY
+ 	  applications to run more 'smoothly' even when the system is
+ 	  under load.
+ 
+-	  Select this if you are building a kernel for a desktop system.
++	  Select this for no system in particular (choose Preemptible
++	  instead on a desktop if you know what's good for you).
+ 
+ config PREEMPT
+ 	bool "Preemptible Kernel (Low-Latency Desktop)"
+-- 
+2.25.1
+
