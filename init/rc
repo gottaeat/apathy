@@ -86,7 +86,7 @@ initboi(){
  evalret
 
  ainitmes "starting the ${c_lcyan}log daemons${c_reset}."
-  syslogd -m 0 && klogd
+  syslogd && klogd
  evalret
 
  ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
