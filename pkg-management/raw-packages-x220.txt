@@ -272,7 +272,7 @@ automake-1.16.1
 bc-2.4.0
 binutils-2.35.1
 bison-3.7.4
-busybox-1.32.0
+busybox-1.33.0
 bzip2-1.0.8
 check-0.12.0
 coreutils-8.32
