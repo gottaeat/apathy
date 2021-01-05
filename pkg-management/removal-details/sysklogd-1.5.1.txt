@@ -1,0 +1,4 @@
+/sbin/klogd
+/sbin/syslogd
+
+/usr/share/man
