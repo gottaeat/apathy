@@ -1,0 +1,3 @@
+/usr/bin/wpa_cli
+/usr/bin/wpa_passphrase
+/usr/bin/wpa_supplicant

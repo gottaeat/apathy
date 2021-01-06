@@ -17,77 +17,79 @@ for file in $aaaa; do
 done 2>&1 | tee /tmp/linked.txt
 
 # > 3
-mumble
-rustc
-xorg-server
-libarchive
-irssi
-links
-mupdf-gl
-openssh
-transmission
-wpa_supplicant
-ympd
-curl
-libevent
-libshout
-libssh2
-python2
-python3
-git
-openvpn
-	/home/mss/execs/mumble
-	/home/mss/execs/murmurd
+/opt/rustc-1.48.0/bin/cargo
 
-	/opt/rustc-1.48.0/bin/cargo
+/usr/bin/Xnest
+/usr/bin/Xvfb
+/usr/libexec/Xorg
 
-	/usr/bin/Xnest
-	/usr/bin/Xvfb
-	/usr/libexec/Xorg
+/usr/bin/bsdcat
+/usr/bin/bsdcpio
+/usr/bin/bsdtar
+/usr/lib/libarchive.so.13.4.1
 
-	/usr/bin/bsdcat
-	/usr/bin/bsdcpio
-	/usr/bin/bsdtar
-	/usr/lib/libarchive.so.13.4.1
+/usr/bin/irssi
+/usr/bin/links
+/usr/bin/mupdf-gl
 
-	/usr/bin/irssi
-	/usr/bin/links
-	/usr/bin/mupdf-gl
+/usr/bin/scp
+/usr/bin/sftp
+/usr/bin/ssh
+/usr/bin/ssh-add
+/usr/bin/ssh-agent
+/usr/bin/ssh-keygen
+/usr/bin/ssh-keyscan
+/usr/bin/sshd
+/usr/lib/ssh/sftp-server
+/usr/lib/ssh/ssh-keysign
+/usr/lib/ssh/ssh-pkcs11-helper
+/usr/lib/ssh/ssh-sk-helper
 
-	/usr/bin/scp
-	/usr/bin/sftp
-	/usr/bin/ssh
-	/usr/bin/ssh-add
-	/usr/bin/ssh-agent
-	/usr/bin/ssh-keygen
-	/usr/bin/ssh-keyscan
-	/usr/bin/sshd
-	/usr/lib/ssh/sftp-server
-	/usr/lib/ssh/ssh-keysign
-	/usr/lib/ssh/ssh-pkcs11-helper
-	/usr/lib/ssh/ssh-sk-helper
+/usr/bin/transmission-cli
+/usr/bin/transmission-create
+/usr/bin/transmission-daemon
+/usr/bin/transmission-edit
+/usr/bin/transmission-remote
+/usr/bin/transmission-show
 
-	/usr/bin/transmission-cli
-	/usr/bin/transmission-create
-	/usr/bin/transmission-daemon
-	/usr/bin/transmission-edit
-	/usr/bin/transmission-remote
-	/usr/bin/transmission-show
+/usr/bin/wpa_passphrase
+/usr/bin/wpa_supplicant
 
-	/usr/bin/wpa_passphrase
-	/usr/bin/wpa_supplicant
+/usr/bin/ympd
 
-	/usr/bin/ympd
+/usr/lib/libcurl.so.4.7.0
+/usr/lib/libevent_openssl-2.1.so.7.0.0
+/usr/lib/libshout.so.3.2.0
+/usr/lib/libssh2.so.1.0.1
 
-	/usr/lib/libcurl.so.4.7.0
-	/usr/lib/libevent_openssl-2.1.so.7.0.0
-	/usr/lib/libshout.so.3.2.0
-	/usr/lib/libssh2.so.1.0.1
+/usr/lib/python2.7/lib-dynload/_hashlib.so
+/usr/lib/python2.7/lib-dynload/_ssl.so
+/usr/lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so
+/usr/lib/python3.8/lib-dynload/_ssl.cpython-38-x86_64-linux-gnu.so
 
-	/usr/lib/python2.7/lib-dynload/_hashlib.so
-	/usr/lib/python2.7/lib-dynload/_ssl.so
-	/usr/lib/python3.8/lib-dynload/_hashlib.cpython-38-x86_64-linux-gnu.so
-	/usr/lib/python3.8/lib-dynload/_ssl.cpython-38-x86_64-linux-gnu.so
+/usr/libexec/git-core/git-imap-send
+/usr/sbin/openvpn
 
-	/usr/libexec/git-core/git-imap-send
-	/usr/sbin/openvpn
+# > 4
+rmv     libressl-3.3.1
+blt     openssl-1.1.1i
+
+rblt    xorg-server-1.20.10
+rblt    irssi-1.2.2
+rblt    openssh-8.4_p1
+rblt    libssh2-1.9.0
+rblt    curl-7.74.0
+rblt    git-2.29.0
+rblt    ympd-612f8fc0
+rblt    libevent-2.1.11
+rblt    openvpn-2.4.9
+rblt    libarchive-3.4.1
+rblt    links-2.20.2
+rblt    transmission-3.0
+rblt    wpa_supplicant-2.9
+rblt    libshout-2.4.3
+rblt    mupdf-1.16.1
+rblt    python-2.7.17
+rblt    python-3.8.2
+
+rblt	rustc-1.48.0
