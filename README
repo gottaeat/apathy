@@ -7,7 +7,7 @@
 
 apathy is a linux """distribution""" built on top of a heavily modified version
 of apathy-mlfs, which can be found at https://github.com/mssx86/apathy-mlfs,
-for the sake of having something to do. it uses musl libc, libressl, partially
+for the sake of having something to do. it uses musl libc, openssl, partially
 busybox and a home-brewed init structure written in posix shell.
 
 because it is intended for my use only, this repository does not contain an
@@ -43,7 +43,7 @@ simplified list of major components
    - yash 2.50
 
  > tls
-   - libressl 3.3.0   - gnutls 3.6.15
+   - openssl 1.1.1i   - gnutls 3.6.15
 
 
 simplified repository tree
