@@ -380,14 +380,14 @@
 ```
 ```
 ### llvm
-[d] self	> llvm-11.0.0
-[d] self	> clang-11.0.0
-[d] self	> lld-11.0.0
-[d] self	> polly-11.0.0
-[d] self	> libunwind-11.0.0
-[d] self	> libcxxabi-11.0.0
-[d] self	> libcxx-11.0.0
-[d] self	> compiler-rt-11.0.0
+[d] self	> llvm-11.0.1
+[d] self	> clang-11.0.1
+[d] self	> lld-11.0.1
+[d] self	> polly-11.0.1
+[d] self	> libunwind-11.0.1
+[d] self	> libcxxabi-11.0.1
+[d] self	> libcxx-11.0.1
+[d] self	> compiler-rt-11.0.1
 ### llvm end
 ```
 ```

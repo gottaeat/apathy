@@ -64,7 +64,7 @@ debuginfo-level-tools = 0
 debuginfo-level-tests = 0
 
 [target.x86_64-apathy-linux-musl]
-llvm-config           = '/opt/llvm-11.0.0/bin/llvm-config'
+llvm-config           = '/opt/llvm-11.0.1/bin/llvm-config'
 crt-static            = false
 
 cc                    = 'clang'
