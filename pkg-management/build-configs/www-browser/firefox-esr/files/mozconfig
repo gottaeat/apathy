@@ -5,8 +5,8 @@ ac_add_options --libdir=/usr/lib
 # 2 >> compily bits
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --with-libclang-path="/opt/llvm-11.0.0/lib"
-ac_add_options --with-clang-path="/opt/llvm-11.0.0/bin/clang"
+ac_add_options --with-libclang-path="/opt/llvm-11.0.1/lib"
+ac_add_options --with-clang-path="/opt/llvm-11.0.1/bin/clang"
 ac_add_options --enable-hardening
 ac_add_options --enable-install-strip
 ac_add_options --enable-release
@@ -25,7 +25,7 @@ ac_add_options --enable-lto="cross"
 
 # 3 >> set build dir and makeflags
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
-mk_add_options MOZ_MAKE_FLAGS="-j4"
+mk_add_options MOZ_MAKE_FLAGS="-j5"
 
 # 4 >> branding
 ac_add_options --enable-application=browser
