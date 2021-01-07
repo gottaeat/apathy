@@ -17,12 +17,10 @@
 [d] alpine	> lsof-4.93.2
 
 [d] alpine	> lm_sensors-3.6.0
-[b] self	>> which
 [d] alpine	>> sysfsutils-2.1.0
 
 [d] alpine	> sysstat-12.2.0
 [d] self	> curl-7.74.0
-[b] busybox	> ntpd
 
 [d] self	> git-2.29.2
 [d] alpine	>> pcre2-10.34
@@ -422,6 +420,43 @@
 [d] self	> openssl-1.1.1i
 ```
 ```
+### busybox
+[d] self	> busybox-1.33.0
+[b] busybox	>> acpid
+[b] busybox	>> ash
+[b] busybox	>> bash
+[b] busybox	>> bootchartd
+[b] busybox	>> cpio
+[b] busybox	>> crond
+[b] busybox	>> crontab
+[b] busybox	>> cttyhack
+[b] busybox	>> dos2unix
+[b] busybox	>> dpkg
+[b] busybox	>> dpkg-deb
+[b] busybox	>> fbsplash
+[b] busybox	>> hdparm
+[b] busybox	>> httpd
+[b] busybox	>> klogd
+[b] busybox	>> man
+[b] busybox	>> mkdosfs
+[b] busybox	>> mkfs.vfat
+[b] busybox	>> mt
+[b] busybox	>> ntpd
+[b] busybox	>> rpm
+[b] busybox	>> rpm2cpio
+[b] busybox	>> sh
+[b] busybox	>> syslogd
+[b] busybox	>> time
+[b] busybox	>> uname
+[b] busybox	>> unix2dos
+[b] busybox	>> unzip
+[b] busybox	>> uudecode
+[b] busybox	>> uuencode
+[b] busybox	>> vi
+[b] busybox	>> wget
+[b] busybox	>> which
+```
+```
 ### base mlfs packages
 [d] mlfs	> acl-2.2.53
 [d] mlfs	> argp-standalone-1.3
@@ -431,11 +466,9 @@
 [d] mlfs	> bc-2.4.0
 [d] self	> binutils-2.35.1
 [d] self	> bison-3.7.4
-[d] self	> busybox-1.33.0
 [d] mlfs	> bzip2-1.0.8
 [d] mlfs	> check-0.12.0
 [d] self	> coreutils-8.32
-[b] busybox	> cpio
 [d] self	> diffutils-3.7
 [d] self	> e2fsprogs-1.45.6
 [d] mlfs	> elfutils-0.176
@@ -486,8 +519,6 @@
 [d] alpine	> sed-4.8
 [d] mlfs	> shadow-4.7
 [r] mlfs	> sysklogd-1.5.1
-[b] busybox	> syslogd
-[b] busybox	> klogd
 [r] mlfs	> sysvinit-2.96
 [d] mlfs	> tar-1.32
 [r] mlfs	> texinfo-6.6
