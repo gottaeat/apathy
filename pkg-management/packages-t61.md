@@ -33,7 +33,7 @@
 
 [d] self	> cmake-3.17.1
 [d] alpine	>> libuv-1.34.1
-[d] alpine	>> libarchive-3.4.1
+[d] self	>> libarchive-3.4.1
 
 [d] alpine	> usbutils-012
 [d] alpine	>> libusb-1.0.23		(without --disable-udev)
@@ -310,7 +310,7 @@
 [d] alpine	>> mpg123-1.25.13
 [d] self	>> libmpdclient-2.18
 [d] alpine	>> libupnp-1.8.4
-[d] alpine	>> libshout-2.4.3
+[d] self	>> libshout-2.4.3
 [o] self	>> boost-1.75.0
 
 [d] self	> mpc-0.33
