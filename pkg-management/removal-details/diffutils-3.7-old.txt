@@ -1,8 +1,0 @@
-/usr/bin/cmp
-/usr/bin/diff
-/usr/bin/diff3
-/usr/bin/sdiff
-
-/usr/share/info
-/usr/share/locale
-/usr/share/man
