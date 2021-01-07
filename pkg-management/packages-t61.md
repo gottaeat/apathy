@@ -417,6 +417,8 @@
 [d] self	> nfs-utils-2.5.2
 [d] self	>> libtirpc-1.3.1
 [d] self	>> rpcbind-1.2.5
+
+[d] self	> openssl-1.1.1i
 ```
 ```
 ### base mlfs packages
@@ -461,7 +463,7 @@
 [d] mlfs	> libcap-2.27
 [d] mlfs	> libffi-3.2.1
 [d] mlfs	> libpipeline-1.5.1
-[d] self	> libressl-3.3.1
+[r] self	> libressl-3.3.1
 [d] mlfs	> libtool-2.4.6
 [d] mlfs	> m4-1.4.18
 [d] alpine	> make-4.3
