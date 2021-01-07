@@ -85,7 +85,7 @@ stats(){
 }
 
 pver(){
-      tls=$(openssl version | awk '{print tolower($0)}')
+      tls=$(openssl version | awk '{print tolower($1),$2}')
      libc=$(ldd 2>&1 \
             | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
                    FNR == 2 {c=$2}              \
