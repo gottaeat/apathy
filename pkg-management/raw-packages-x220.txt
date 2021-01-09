@@ -241,7 +241,7 @@ libunwind-11.0.1
 libcxxabi-11.0.1
 libcxx-11.0.1
 compiler-rt-11.0.1
-firefox-78.6.1esr
+firefox-84.0.2
 nodejs-15.5.1
 cbindgen-0.15.0
 rustc-1.48.0
