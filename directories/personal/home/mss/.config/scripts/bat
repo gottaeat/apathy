@@ -1,0 +1,11 @@
+#!/mss/bin/sh
+if [ -f /sys/class/power_supply/BAT0/status ]
+ then
+  read bat0perc < /sys/class/power_supply/BAT0/capacity
+  [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging" ] \
+   && bat0stat="d" || bat0stat="c"
+
+  echo "${bat0perc}%${bat0stat}"
+ else
+  echo "no battery"
+fi

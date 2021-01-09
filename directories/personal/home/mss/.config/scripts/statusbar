@@ -15,14 +15,14 @@ esac ;}
 gettitle(){
  mpc -f "[%file%]" current \
   | awk '{gsub(/^.*\/|\.[^.]*$/,"");      \
-          if (length($0) > 35)            \
-           print substr($0, 1, 32) "..."; \
+          if (length($0) > 30)            \
+           print substr($0, 1, 27) "..."; \
           else print }' ;}
 
 getartist(){
  echo "$artist_pre"                       \
-  | awk '{if (length($0) > 15)            \
-           print substr($1, 1, 12) "..."; \
+  | awk '{if (length($0) > 20)            \
+           print substr($0, 1, 17) "..."; \
           else print }' ;}
 
 getsong(){
@@ -82,7 +82,7 @@ while :; do
          esac
       
      [ ! -z "$(echo "${mpc_status}" | awk '/\[paused\]/')" ] \
-      && _mpd="[p] ${title}" || _mpd="${title} $(calcdur)"
+      && _mpd="[paused] ${title}" || _mpd="[$(calcdur)] ${title}"
    fi
  fi
 
@@ -91,9 +91,8 @@ while :; do
  _mem="$(awk '/Avail/ {print int($2/1024)"m"}' /proc/meminfo)"
 
  # temps
- temp0=$(cut -b1-2 /sys/devices/platform/coretemp.0/hwmon/hwmon*/temp2_input)
- temp1=$(cut -b1-2 /sys/devices/platform/coretemp.0/hwmon/hwmon*/temp3_input)
- tempf="${temp0}/${temp0}"
+ temp="$(cut -b1-2 /sys/devices/platform/coretemp.0/hwmon/hwmon*/temp1_input)c"
+  fan="$(awk 'FNR == 2 {print $2"rpm"}' /proc/acpi/ibm/fan)"
 
  # battery
  if [ -f /sys/class/power_supply/BAT0/status ]
@@ -102,15 +101,17 @@ while :; do
    [ "$(cat /sys/class/power_supply/BAT0/status)" = "Discharging" ] \
     && bat0stat="d" || bat0stat="c"
 
-   bat0="${bat0perc}%${bat0stat}"
+   bat0="${bat0perc}% ${bat0stat}"
   else
    bat0="nb"
  fi
 
-
+ # governor
+ gov="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor \
+        | awk '{print substr($1, 1, 4);}')"
 
  # date
  dat="$(date '+%a %d %H:%M:%S')"
 
- whattodo "${bwfinal} | ${_mpd} | ${dat} | ${lavg} ${tempf}c ${bat0} ${_mem}"
+ whattodo " ${bwfinal} / ${lavg} ${temp} ${fan} ${_mem} / ${bat0} ${gov} / ${_mpd} / ${dat} "
 done

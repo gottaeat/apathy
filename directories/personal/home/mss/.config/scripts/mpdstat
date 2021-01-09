@@ -2,15 +2,15 @@
 gettitle(){
  mpc -f "[%file%]" current \
   | awk '{gsub(/^.*\/|\.[^.]*$/,"");      \
-          if (length($0) > 35)            \
-           print substr($0, 1, 32) "..."; \
+          if (length($0) > 30)            \
+           print substr($0, 1, 27) "..."; \
           else print }'
 }
 
 getartist(){
  echo "$artist_pre"                       \
-  | awk '{if (length($0) > 15)            \
-           print substr($1, 1, 12) "..."; \
+  | awk '{if (length($0) > 20)            \
+           print substr($0, 1, 17) "..."; \
           else print }'
 }
 
@@ -57,6 +57,6 @@ if [ -z "$(pidof mpd)" ];
         esac
      
     [ ! -z "$(echo "${mpc_status}" | awk '/\[paused\]/')" ] \
-     && echo "[p] ${title}" || echo "${title} $(calcdur)"
+     && echo "[paused] ${title}" || echo "[$(calcdur)] ${title}"
   fi
 fi
