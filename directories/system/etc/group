@@ -11,7 +11,6 @@ lp:x:9:
 dialout:x:10:
 audio:x:11:mss,mpd
 video:x:12:mss
-utmp:x:13:
 usb:x:14:mss
 cdrom:x:15:mss
 adm:x:16:

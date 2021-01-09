@@ -1,9 +1,13 @@
-#[sda5][ext4][apathy-musl]
+# [sda5][ext4][apathy-musl]
 /dev/sda5  /                  ext4  defaults                  0  1
-#[sda6][swap][apathy swap]
+# [sda6][swap][apathy swap]
 /dev/sda6  swap               swap  pri=100                   0  0
-#[sda7][ext4][stuff storage]
+# [sda7][ext4][stuff storage]
 /dev/sda7  /mnt/mss/stuff     ext4  rw,relatime,data=ordered  0  1
 
-#mount home, since i need it and all
+# home
 /mnt/mss/stuff/techy-bits/local-backup  /home/mss  auto  defaults,nofail,nobootwait,bind  0  0
+
+# nfs
+#brownbag:/mnt/mss/externalstuff /mnt/mss/nfs/externalstuff  nfs  rw,relatime,_netdev,proto=tcp,vers=3 0 0
+#brownbag:/mnt/mss/stuff/media   /mnt/mss/nfs/media          nfs  rw,relatime,_netdev,proto=tcp,vers=3 0 0
