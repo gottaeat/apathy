@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimcrop")
+dat=$(date "+%Y%m%d_%H%M%S_maimcrop")
 loc="/home/mss/screenshots/grabs/${dat}.png"
 
 if [ -z "$1" ]

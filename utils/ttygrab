@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
-dat=$(date "+%Y-%m-%d_%I-%M-%S%P_ttygrab")
+dat=$(date "+%Y%m%d_%H%M%S_ttygrab")
 loc="/home/mss/screenshots/tty/$dat.png"
 
 grab_tty(){ fbcat > /tmp/tty.ppm ;}

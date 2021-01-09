@@ -1,7 +1,7 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
-       dat=$(date "+%Y-%m-%d_%I-%M-%S%P_maimscrot")
+       dat=$(date "+%Y%m%d_%H%M%S_maimscrot")
        loc="/home/mss/screenshots/entire/${dat}.png"
 primaryres="$(xrandr | awk '/primary/{print $4}')"
 
