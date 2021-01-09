@@ -1,7 +1,7 @@
-From fbf4f30f1d3a06afb4cd355c9294bd302b2cf3a4 Mon Sep 17 00:00:00 2001
+From 0309a9bccc5f638b419746025f2d6665766cb2de Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:10:47 +0200
-Subject: [PATCH 16/38] musl: getcontext is only avaliable on glibc systems
+Subject: [PATCH 16/36] musl: getcontext is only avaliable on glibc systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---

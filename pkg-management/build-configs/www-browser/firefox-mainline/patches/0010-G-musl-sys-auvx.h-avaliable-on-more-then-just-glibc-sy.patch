@@ -1,7 +1,7 @@
-From df4b8e458f437061b4e93224fd8637afec263f8f Mon Sep 17 00:00:00 2001
+From b1ce1722590e1bf20f8607918df352f39527f376 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:12:09 +0200
-Subject: [PATCH 17/38] musl: sys/auvx.h avaliable on more then just glibc
+Subject: [PATCH 17/36] musl: sys/auvx.h avaliable on more then just glibc
  systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>

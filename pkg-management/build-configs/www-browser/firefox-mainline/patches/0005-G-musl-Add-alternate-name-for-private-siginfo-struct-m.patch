@@ -1,7 +1,7 @@
-From 616de09369fa1ad97481646fa7390815112e3850 Mon Sep 17 00:00:00 2001
+From cd0383b328c281151d9fa15ac36e4e8acce6d513 Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:16:38 -0600
-Subject: [PATCH 12/38] musl: Add alternate name for private siginfo struct
+Subject: [PATCH 12/36] musl: Add alternate name for private siginfo struct
  member
 
 musl does not provide a macro for detecting its presence. For now,

@@ -1,7 +1,7 @@
-From ce18095d134afe754572391ba9513b61a735632b Mon Sep 17 00:00:00 2001
+From 64dbb4f74ddd8d6f9765ff3941d569ef3f871cf8 Mon Sep 17 00:00:00 2001
 From: Rasmus Thomsen <oss@cogitri.dev>
 Date: Wed, 28 Oct 2020 17:50:24 +0100
-Subject: [PATCH 19/38] musl: include net/if.h before linux/if.h to avoid
+Subject: [PATCH 19/36] musl: include net/if.h before linux/if.h to avoid
  redefinition
 
 Bug: https://bugs.gentoo.org/751469

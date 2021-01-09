@@ -1,7 +1,7 @@
-From 192f233aaea2b6bbfddfe690053ca5743e08dbd0 Mon Sep 17 00:00:00 2001
+From 534eb042dbc51106ae0b68ad2be9c950beceabd1 Mon Sep 17 00:00:00 2001
 From: Johannes <johannes.brechtmann@gmail.com>
 Date: Fri, 1 May 2020 17:20:29 +0200
-Subject: [PATCH 18/38] musl: make SYS_fork non-fatal, musl uses it for fork(2)
+Subject: [PATCH 18/36] musl: make SYS_fork non-fatal, musl uses it for fork(2)
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 4 insertions(+)
 
 diff --git a/security/sandbox/linux/SandboxFilter.cpp b/security/sandbox/linux/SandboxFilter.cpp
-index b337a51379..746cedbfb3 100644
+index dbba20d04b..cf9214ed41 100644
 --- a/security/sandbox/linux/SandboxFilter.cpp
 +++ b/security/sandbox/linux/SandboxFilter.cpp
-@@ -1420,6 +1420,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
+@@ -1436,6 +1436,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
          // usually do something reasonable on error.
        case __NR_clone:
          return ClonePolicy(Error(EPERM));

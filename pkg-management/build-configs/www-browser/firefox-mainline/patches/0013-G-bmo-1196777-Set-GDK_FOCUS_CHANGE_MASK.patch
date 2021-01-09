@@ -1,7 +1,7 @@
-From 4d622d8f193981801197a9e1b196eff3fcdd9fbb Mon Sep 17 00:00:00 2001
+From 2f91b1cf653c87274779e3a0d278b17996323c45 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 20:47:13 +0200
-Subject: [PATCH 23/38] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK
+Subject: [PATCH 23/36] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK
 
 Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1196777
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -10,7 +10,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
-index 2b634bfdb9..55d664a809 100644
+index 7d0115d433..37d3866452 100644
 --- a/widget/gtk/nsWindow.cpp
 +++ b/widget/gtk/nsWindow.cpp
 @@ -158,7 +158,8 @@ const gint kEvents =

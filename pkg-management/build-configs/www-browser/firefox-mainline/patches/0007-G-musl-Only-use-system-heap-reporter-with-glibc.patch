@@ -1,7 +1,7 @@
-From 894daa6570673c06eee50dddde924c7c65fbf64f Mon Sep 17 00:00:00 2001
+From 1ba5cfb684123a044a95f8559ff64db85254bf64 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:09:26 +0200
-Subject: [PATCH 14/38] musl: Only use system heap reporter with glibc
+Subject: [PATCH 14/36] musl: Only use system heap reporter with glibc
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---

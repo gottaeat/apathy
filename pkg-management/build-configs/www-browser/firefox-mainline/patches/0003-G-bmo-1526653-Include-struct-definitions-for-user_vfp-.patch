@@ -1,7 +1,7 @@
-From 2003ecd18bf42b9444cac9f0b9c73613284f1d9c Mon Sep 17 00:00:00 2001
+From 26a985569ff4c01085f018ce2cbc32dc5a95be4b Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:57:42 +0200
-Subject: [PATCH 10/38] bmo#1526653: Include struct definitions for user_vfp
+Subject: [PATCH 10/36] bmo#1526653: Include struct definitions for user_vfp
  and user_vfp_exc
 
 Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1526653
@@ -12,7 +12,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/js/src/wasm/WasmSignalHandlers.cpp b/js/src/wasm/WasmSignalHandlers.cpp
-index 639cde5866..9566aa5186 100644
+index a74ce62e25..272c39fb3c 100644
 --- a/js/src/wasm/WasmSignalHandlers.cpp
 +++ b/js/src/wasm/WasmSignalHandlers.cpp
 @@ -253,7 +253,16 @@ using mozilla::DebugOnly;
