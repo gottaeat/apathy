@@ -1,0 +1,95 @@
+# 1 > sshd config.
+AcceptEnv                  no
+AddressFamily              inet
+AllowAgentForwarding       no
+AllowGroups                mss
+AllowStreamLocalForwarding yes
+AllowTcpForwarding         yes
+AllowUsers                 mss
+AuthenticationMethods      publickey
+AuthorizedKeysFile         .ssh/authorized_keys
+Banner                     /etc/ssh/banner
+ExposeAuthInfo             no
+FingerprintHash            sha256
+HostKey                    /etc/ssh/ssh_host_rsa_key
+ListenAddress              0.0.0.0
+LoginGraceTime             60
+LogLevel                   ERROR
+MaxAuthTries               3
+MaxSessions                4
+MaxStartups                4
+PasswordAuthentication     no
+PermitEmptyPasswords       no
+PermitRootLogin            no
+PermitTunnel               yes
+Port                       3131
+PrintLastLog               yes
+PrintMotd                  no
+PubkeyAuthentication       yes
+StrictModes                yes
+SyslogFacility             AUTH
+X11Forwarding              no
+
+# 2 > unused options.
+#AuthorizedKeysCommand
+#AuthorizedKeysCommandUser
+#AuthorizedPrincipalsCommand
+#AuthorizedPrincipalsCommandUser
+#AuthorizedPrincipalsFile
+#CASignatureAlgorithms
+#ChallengeResponseAuthentication
+#ChrootDirectory
+#Ciphers
+#ClientAliveCountMax
+#ClientAliveInterval
+#Compression
+#DenyGroups
+#DenyUsers
+#DisableForwarding
+#ForceCommand
+#GatewayPorts
+#GSSAPIAuthentication
+#GSSAPICleanupCredentials
+#GSSAPIStrictAcceptorCheck
+#HostbasedAcceptedKeyTypes
+#HostbasedAuthentication
+#HostbasedUsesNameFromPacketOnly
+#HostCertificate
+#HostKeyAgent
+#HostKeyAlgorithms
+#IgnoreRhosts
+#IgnoreUserKnownHosts
+#Include
+#IPQoS
+#KbdInteractiveAuthentication
+#KerberosAuthentication
+#KerberosGetAFSToken
+#KerberosOrLocalPasswd
+#KerberosTicketCleanup
+#KexAlgorithms
+#MACs
+#Match
+#PermitListen
+#PermitOpen
+#PermitTTY
+#PermitUserEnvironment
+#PermitUserRC
+#PidFile
+#PubkeyAcceptedKeyTypes
+#PubkeyAuthOptions
+#RekeyLimit
+#RevokedKeys
+#RDomain
+#SecurityKeyProvider
+#SetEnv
+#StreamLocalBindMask
+#StreamLocalBindUnlink
+#Subsystem
+#TCPKeepAlive
+#TrustedUserCAKeys
+#UseDNS
+#UsePAM
+#VersionAddendum
+#X11DisplayOffset
+#X11UseLocalhost
+#XAuthLocation
