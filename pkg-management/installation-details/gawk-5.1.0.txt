@@ -1,0 +1,14 @@
+/etc/profile.d
+
+/usr/bin/awk
+/usr/bin/gawk
+/usr/bin/gawk-5.1.0
+
+/usr/include/gawkapi.h
+
+/usr/lib/gawk
+/usr/libexec/awk
+/usr/share/awk
+
+/usr/share/info
+/usr/share/man

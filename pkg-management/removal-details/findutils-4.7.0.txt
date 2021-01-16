@@ -1,0 +1,10 @@
+/bin/find
+/usr/bin/locate
+/usr/bin/updatedb
+/usr/bin/xargs
+
+/usr/libexec/frcode
+
+/usr/share/info
+/usr/share/man
+/usr/var

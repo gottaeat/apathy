@@ -1,5 +1,4 @@
 /bin/find
-
 /usr/bin/locate
 /usr/bin/updatedb
 /usr/bin/xargs
@@ -8,3 +7,4 @@
 
 /usr/share/info
 /usr/share/man
+/usr/var
