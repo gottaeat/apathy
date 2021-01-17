@@ -1,0 +1,43 @@
+From 84f572fb2d64304e0ac4cc15d833ddc867fb5a5c Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sun, 17 Jan 2021 02:19:35 +0300
+Subject: [PATCH 1/2] add x86_64-apathy-linux-musl target.
+
+---
+ compiler/rustc_target/src/spec/mod.rs                 |  1 +
+ .../rustc_target/src/spec/x86_64_apathy_linux_musl.rs | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
+
+diff --git a/compiler/rustc_target/src/spec/mod.rs b/compiler/rustc_target/src/spec/mod.rs
+index f949bf95a..d5925c50d 100644
+--- a/compiler/rustc_target/src/spec/mod.rs
++++ b/compiler/rustc_target/src/spec/mod.rs
+@@ -476,6 +476,7 @@ macro_rules! supported_targets {
+ }
+ 
+ supported_targets! {
++    ("x86_64-apathy-linux-musl", x86_64_apathy_linux_musl),
+     ("x86_64-unknown-linux-gnu", x86_64_unknown_linux_gnu),
+     ("x86_64-unknown-linux-gnux32", x86_64_unknown_linux_gnux32),
+     ("i686-unknown-linux-gnu", i686_unknown_linux_gnu),
+diff --git a/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs b/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
+new file mode 100644
+index 000000000..19101adfd
+--- /dev/null
++++ b/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
+@@ -0,0 +1,11 @@
++use crate::spec::Target;
++
++pub fn target() -> Target {
++    let mut base = super::x86_64_unknown_linux_musl::target();
++
++    base.llvm_target = "x86_64-apathy-linux-musl".to_string();
++    base.options.vendor = "apathy".to_string();
++    base.options.crt_static_default = false;
++
++    base
++}
+-- 
+2.29.2
+

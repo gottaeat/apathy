@@ -1,0 +1,47 @@
+From 7e2491677f3f32098c9e6edcd68561e17963e302 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sun, 17 Jan 2021 02:24:29 +0300
+Subject: [PATCH 2/2] use libunwind instead of libgcc_s.
+
+---
+ library/unwind/build.rs   | 9 ---------
+ library/unwind/src/lib.rs | 3 +--
+ 2 files changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/library/unwind/build.rs b/library/unwind/build.rs
+index 24bcd40c3..24e5c9d4a 100644
+--- a/library/unwind/build.rs
++++ b/library/unwind/build.rs
+@@ -143,15 +143,6 @@ mod llvm_libunwind {
+             cfg.file(root.join("src").join(src));
+         }
+ 
+-        if target_env == "musl" {
+-            // use the same C compiler command to compile C++ code so we do not need to setup the
+-            // C++ compiler env variables on the builders
+-            cfg.cpp(false);
+-            // linking for musl is handled in lib.rs
+-            cfg.cargo_metadata(false);
+-            println!("cargo:rustc-link-search=native={}", env::var("OUT_DIR").unwrap());
+-        }
+-
+         cfg.compile("unwind");
+     }
+ }
+diff --git a/library/unwind/src/lib.rs b/library/unwind/src/lib.rs
+index dbdefa471..c0451f5bc 100644
+--- a/library/unwind/src/lib.rs
++++ b/library/unwind/src/lib.rs
+@@ -38,8 +38,7 @@ cfg_if::cfg_if! {
+ }
+ 
+ #[cfg(target_env = "musl")]
+-#[link(name = "unwind", kind = "static", cfg(target_feature = "crt-static"))]
+-#[link(name = "gcc_s", cfg(not(target_feature = "crt-static")))]
++#[link(name = "unwind")]
+ extern "C" {}
+ 
+ // When building with crt-static, we get `gcc_eh` from the `libc` crate, since
+-- 
+2.29.2
+
