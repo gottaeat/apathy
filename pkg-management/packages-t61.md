@@ -391,8 +391,8 @@
 ```
 [d] self	> firefox-78.6.1esr
 [d] self	>> nodejs-15.5.1
-[d] self	>> cbindgen-0.15.0
-[d] self	>>> rustc-1.48.0
+[d] self	>> cbindgen-0.16.0
+[d] self	>>> rustc-1.49.0
 [d] self	>> gtk+-3.24.24
 
 [d] self	> sinit-1.1-apathy
