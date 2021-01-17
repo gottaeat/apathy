@@ -1,0 +1,42 @@
+diff --git a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c b/media/transport/webrtc/third_party/nICEr/src/stun/addrs-netlink.c
+index ddecc34..b3a2400 100644
+--- a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
++++ b/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
+@@ -72,7 +72,7 @@ static const int kMaxReadSize = 4096;
+ 
+ static void set_ifname(nr_local_addr *addr, struct ifaddrmsg* msg) {
+   assert(sizeof(addr->addr.ifname) > IF_NAMESIZE);
+-  if_indextoname(msg->ifa_index, addr->addr.ifname);
++  //if_indextoname(msg->ifa_index, addr->addr.ifname);
+ }
+ 
+ static int get_siocgifflags(nr_local_addr *addr) {
+diff --git a/netwerk/sctp/src/netinet/sctp_userspace.c b/netwerk/sctp/src/netinet/sctp_userspace.c
+index 1dd6365..a5ebef8 100755
+--- a/netwerk/sctp/src/netinet/sctp_userspace.c
++++ b/netwerk/sctp/src/netinet/sctp_userspace.c
+@@ -114,23 +114,7 @@ sctp_userspace_set_threadname(const char *name)
+ int
+ sctp_userspace_get_mtu_from_ifn(uint32_t if_index, int af)
+ {
+-	struct ifreq ifr;
+-	int fd;
+-
+-	memset(&ifr, 0, sizeof(struct ifreq));
+-	if (if_indextoname(if_index, ifr.ifr_name) != NULL) {
+-		/* TODO can I use the raw socket here and not have to open a new one with each query? */
+-		if ((fd = socket(af, SOCK_DGRAM, 0)) < 0)
+-			return (0);
+-		if (ioctl(fd, SIOCGIFMTU, &ifr) < 0) {
+-			close(fd);
+-			return (0);
+-		}
+-		close(fd);
+-		return ifr.ifr_mtu;
+-	} else {
+-		return (0);
+-	}
++    return 1280;
+ }
+ #endif
+ 
