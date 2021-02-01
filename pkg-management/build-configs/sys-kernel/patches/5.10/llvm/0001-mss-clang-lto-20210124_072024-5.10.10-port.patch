@@ -1,7 +1,8 @@
-From a65670252a47a95a5e155452efb724caacbb53c9 Mon Sep 17 00:00:00 2001
+From 9d49fd2bb82b36eea2e2da89c6ae1dc5014700f3 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 26 Dec 2020 22:55:33 +0300
-Subject: [PATCH] backport of samitolvanen clang lto v9 to 5.10.2.
+Date: Sun, 24 Jan 2021 07:20:24 +0300
+Subject: [PATCH 1/2] samitolvanen clang-lto 20210124_072024 -> 5.10.10 port
+ (mss).
 
 ---
  Makefile                              |  52 +++--
@@ -11,12 +12,13 @@ Subject: [PATCH] backport of samitolvanen clang lto v9 to 5.10.2.
  arch/x86/Kconfig                      |   3 +
  arch/x86/Makefile                     |   5 +
  arch/x86/entry/vdso/Makefile          |   3 +-
+ arch/x86/platform/efi/efi_64.c        |   4 +-
  arch/x86/power/Makefile               |   4 +
  drivers/firmware/efi/libstub/Makefile |   2 +
  drivers/misc/lkdtm/Makefile           |   1 +
  include/asm-generic/vmlinux.lds.h     |  11 +-
  include/linux/init.h                  |  79 +++++++-
- include/linux/pci.h                   |  19 +-
+ include/linux/pci.h                   |  27 ++-
  init/Kconfig                          |   1 +
  kernel/trace/Kconfig                  |  29 +++
  scripts/Makefile.build                |  67 ++++---
@@ -25,7 +27,7 @@ Subject: [PATCH] backport of samitolvanen clang lto v9 to 5.10.2.
  scripts/Makefile.modpost              |  25 ++-
  scripts/generate_initcall_order.pl    | 270 ++++++++++++++++++++++++++
  scripts/link-vmlinux.sh               |  98 ++++++++--
- scripts/lto-used-symbols.txt          |   5 +
+ scripts/lto-used-symbollist.txt       |   5 +
  scripts/mod/Makefile                  |   1 +
  scripts/mod/modpost.c                 |  16 +-
  scripts/mod/modpost.h                 |   9 +
@@ -37,12 +39,12 @@ Subject: [PATCH] backport of samitolvanen clang lto v9 to 5.10.2.
  tools/objtool/check.h                 |   1 +
  tools/objtool/objtool.c               |   1 +
  tools/objtool/objtool.h               |   1 +
- 33 files changed, 886 insertions(+), 96 deletions(-)
+ 34 files changed, 899 insertions(+), 95 deletions(-)
  create mode 100755 scripts/generate_initcall_order.pl
- create mode 100644 scripts/lto-used-symbols.txt
+ create mode 100644 scripts/lto-used-symbollist.txt
 
 diff --git a/Makefile b/Makefile
-index 44f4cd2e5..5583a4cf8 100644
+index 7d86ad6ad..1a5f90a74 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -851,12 +851,8 @@ KBUILD_CFLAGS += $(DEBUG_CFLAGS)
@@ -95,10 +97,10 @@ index 44f4cd2e5..5583a4cf8 100644
  
 +ifdef CONFIG_LTO_CLANG
 +ifdef CONFIG_LTO_CLANG_THIN
-+CC_FLAGS_LTO	+= -flto=thin -fsplit-lto-unit
++CC_FLAGS_LTO	:= -flto=thin -fsplit-lto-unit
 +KBUILD_LDFLAGS	+= --thinlto-cache-dir=$(extmod-prefix).thinlto-cache
 +else
-+CC_FLAGS_LTO	+= -flto
++CC_FLAGS_LTO	:= -flto
 +endif
 +CC_FLAGS_LTO	+= -fvisibility=hidden
 +
@@ -154,10 +156,10 @@ index 44f4cd2e5..5583a4cf8 100644
  # Generate tags for editors
  # ---------------------------------------------------------------------------
 diff --git a/arch/Kconfig b/arch/Kconfig
-index ba4e96648..953bf35bc 100644
+index 69fe7133c..9d08ca9e2 100644
 --- a/arch/Kconfig
 +++ b/arch/Kconfig
-@@ -598,6 +598,96 @@ config SHADOW_CALL_STACK
+@@ -614,6 +614,96 @@ config SHADOW_CALL_STACK
  	  reading and writing arbitrary memory may be able to locate them
  	  and hijack control flow by modifying the stacks.
  
@@ -291,19 +293,19 @@ index d65f52264..50fe49fb4 100644
  UBSAN_SANITIZE			:= n
  OBJECT_FILES_NON_STANDARD	:= y
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fbf26e0f7..33f5b641a 100644
+index 3a5ecb103..da856278b 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -92,6 +92,8 @@ config X86
+@@ -93,6 +93,8 @@ config X86
  	select ARCH_SUPPORTS_ACPI
  	select ARCH_SUPPORTS_ATOMIC_RMW
  	select ARCH_SUPPORTS_NUMA_BALANCING	if X86_64
-+	select ARCH_SUPPORTS_LTO_CLANG          if X86_64
-+	select ARCH_SUPPORTS_LTO_CLANG_THIN     if X86_64
++	select ARCH_SUPPORTS_LTO_CLANG		if X86_64
++	select ARCH_SUPPORTS_LTO_CLANG_THIN	if X86_64
  	select ARCH_USE_BUILTIN_BSWAP
  	select ARCH_USE_QUEUED_RWLOCKS
  	select ARCH_USE_QUEUED_SPINLOCKS
-@@ -164,6 +166,7 @@ config X86
+@@ -165,6 +167,7 @@ config X86
  	select HAVE_CMPXCHG_LOCAL
  	select HAVE_CONTEXT_TRACKING		if X86_64
  	select HAVE_C_RECORDMCOUNT
@@ -348,6 +350,21 @@ index 212437479..b36f42965 100644
  KBUILD_CFLAGS_32 += -m32 -msoft-float -mregparm=0 -fpic
  KBUILD_CFLAGS_32 += -fno-stack-protector
  KBUILD_CFLAGS_32 += $(call cc-option, -foptimize-sibling-calls)
+diff --git a/arch/x86/platform/efi/efi_64.c b/arch/x86/platform/efi/efi_64.c
+index e1e8d4e3a..62bb1616b 100644
+--- a/arch/x86/platform/efi/efi_64.c
++++ b/arch/x86/platform/efi/efi_64.c
+@@ -137,8 +137,8 @@ void efi_sync_low_kernel_mappings(void)
+ 	 * As with PGDs, we share all P4D entries apart from the one entry
+ 	 * that covers the EFI runtime mapping space.
+ 	 */
+-	BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
+-	BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
++	MAYBE_BUILD_BUG_ON(p4d_index(EFI_VA_END) != p4d_index(MODULES_END));
++	MAYBE_BUILD_BUG_ON((EFI_VA_START & P4D_MASK) != (EFI_VA_END & P4D_MASK));
+ 
+ 	pgd_efi = efi_pgd + pgd_index(EFI_VA_END);
+ 	pgd_k = pgd_offset_k(EFI_VA_END);
 diff --git a/arch/x86/power/Makefile b/arch/x86/power/Makefile
 index 6907b523e..5f711a441 100644
 --- a/arch/x86/power/Makefile
@@ -517,35 +534,45 @@ index 7b53cb309..27b9478dc 100644
  struct obs_kernel_param {
  	const char *str;
 diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 22207a797..5b8505a5c 100644
+index 22207a797..b77ee54a3 100644
 --- a/include/linux/pci.h
 +++ b/include/linux/pci.h
-@@ -1912,19 +1912,28 @@ enum pci_fixup_pass {
+@@ -1912,7 +1912,7 @@ enum pci_fixup_pass {
  };
  
  #ifdef CONFIG_HAVE_ARCH_PREL32_RELOCATIONS
 -#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
--				    class_shift, hook)			\
--	__ADDRESSABLE(hook)						\
 +#define ___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-+				    class_shift, hook, stub)		\
+ 				    class_shift, hook)			\
+ 	__ADDRESSABLE(hook)						\
+ 	asm(".section "	#sec ", \"a\"				\n"	\
+@@ -1921,10 +1921,33 @@ enum pci_fixup_pass {
+ 	    ".long "	#class ", " #class_shift "		\n"	\
+ 	    ".long "	#hook " - .				\n"	\
+ 	    ".previous						\n");
++
++/*
++ * Clang's LTO may rename static functions in C, but has no way to
++ * handle such renamings when referenced from inline asm. To work
++ * around this, create global C stubs for these cases.
++ */
++#ifdef CONFIG_LTO_CLANG
++#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, hook, stub)		\
 +	void stub(struct pci_dev *dev);					\
 +	void stub(struct pci_dev *dev)					\
 +	{ 								\
 +		hook(dev); 						\
 +	}								\
- 	asm(".section "	#sec ", \"a\"				\n"	\
- 	    ".balign	16					\n"	\
- 	    ".short "	#vendor ", " #device "			\n"	\
- 	    ".long "	#class ", " #class_shift "		\n"	\
--	    ".long "	#hook " - .				\n"	\
-+	    ".long "	#stub " - .				\n"	\
- 	    ".previous						\n");
-+
++	___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
++				  class_shift, stub)
++#else
 +#define __DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
 +				  class_shift, hook, stub)		\
 +	___DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
-+				  class_shift, hook, stub)
++				  class_shift, hook)
++#endif
++
  #define DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
  				  class_shift, hook)			\
  	__DECLARE_PCI_FIXUP_SECTION(sec, name, vendor, device, class,	\
@@ -555,19 +582,19 @@ index 22207a797..5b8505a5c 100644
  /* Anonymous variables would be nice... */
  #define DECLARE_PCI_FIXUP_SECTION(section, name, vendor, device, class,	\
 diff --git a/init/Kconfig b/init/Kconfig
-index 0872a5a2e..6adf7bde9 100644
+index 0872a5a2e..6414fd917 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
 @@ -2297,6 +2297,7 @@ config TRIM_UNUSED_KSYMS
  config UNUSED_KSYMS_WHITELIST
  	string "Whitelist of symbols to keep in ksymtab"
  	depends on TRIM_UNUSED_KSYMS
-+	default "scripts/lto-used-symbols.txt" if LTO_CLANG
++	default "scripts/lto-used-symbollist.txt" if LTO_CLANG
  	help
  	  By default, all unused exported symbols will be un-exported from the
  	  build when TRIM_UNUSED_KSYMS is selected.
 diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index e1bf5228f..9b8c849e1 100644
+index 29db703f6..261b0f1c0 100644
 --- a/kernel/trace/Kconfig
 +++ b/kernel/trace/Kconfig
 @@ -51,6 +51,11 @@ config HAVE_NOP_MCOUNT
@@ -1324,11 +1351,11 @@ index 6eded325c..3b261b0f7 100755
  modpost_link vmlinux.o
  objtool_link vmlinux.o
  
-diff --git a/scripts/lto-used-symbols.txt b/scripts/lto-used-symbols.txt
+diff --git a/scripts/lto-used-symbollist.txt b/scripts/lto-used-symbollist.txt
 new file mode 100644
 index 000000000..38e7bb9eb
 --- /dev/null
-+++ b/scripts/lto-used-symbols.txt
++++ b/scripts/lto-used-symbollist.txt
 @@ -0,0 +1,5 @@
 +memcpy
 +memmove
