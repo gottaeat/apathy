@@ -45,13 +45,17 @@ ainit_mount(){
 }
 
 banner(){
- datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
- datefmt="${c_green}${datefmt}${c_reset}"
-
+   datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
+    kerver="$(uname -r)"
+    kerdat="$(uname -v | awk '{print tolower($4)$5,$6}')"
+   datefmt="${c_green}${datefmt}${c_reset}"
+ kerdatfmt="${c_blue}(${c_reset}${c_red}${kerdat}${c_blue})${c_reset}"
+ kerverfmt="${c_green}k${c_blue}:${c_reset} ${kerver}"
  clear
 
  ainit_nc; ainit_nc
  ainitmes "${c_blue}apathy ${c_red}musl ${c_lcyan}1.2 - ${datefmt}"; ainit_nc
+ ainitmes "${kerverfmt} ${kerdatfmt}";                               ainit_nc
  ainit_nc; ainit_nc
 }
 
