@@ -389,7 +389,7 @@
 ### llvm end
 ```
 ```
-[d] self	> firefox-84.0.2
+[d] self	> firefox-78.7.0esr
 [d] self	>> nodejs-15.5.1
 [d] self	>> cbindgen-0.16.0
 [d] self	>>> rustc-1.49.0
