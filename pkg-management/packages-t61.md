@@ -372,7 +372,7 @@
 [r] arch-aur	> zathura-ypb-0.0.8.2
 [r] alpine	>> poppler-0.82.0
 
-[r] self	> mawk-1.3.4-20200120
+[d] self	> mawk-1.3.4-20200120
 [r] self	> star-1.6
 [r] self	> go-1.14.1
 ```
@@ -476,7 +476,7 @@
 [d] mlfs	> file-5.37
 [d] self	> findutils-4.8.0
 [d] mlfs	> flex-2.6.4
-[d] self	> gawk-5.1.0
+[r] self	> gawk-5.1.0
 [d] self	> gcc-10.2.1-20210116
 [d] mlfs	> gdbm-1.18.1
 [r] mlfs	> gettext-0.20.1
