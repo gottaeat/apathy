@@ -1,7 +1,7 @@
-From d8839d27cf29cc6efee33df49f09424924199687 Mon Sep 17 00:00:00 2001
+From 65400ace0ec3014c65911976bc89f84f59c5b299 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Tue, 28 Jul 2020 04:24:49 +0300
-Subject: [PATCH 4/4] disable discovery stream.
+Date: Thu, 28 Jan 2021 23:16:28 +0300
+Subject: [PATCH 5/5] nuke discoverystream.
 
 ---
  .../newtab/lib/AboutPreferences.jsm           |  19 +--
@@ -370,5 +370,5 @@ index d19cab7427..86b294761f 100644
      },
      shouldHidePref: false,
 -- 
-2.26.2
+2.29.2
 
