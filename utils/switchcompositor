@@ -3,13 +3,17 @@ cvsync(){
  compton \
  --backend glx --unredir-if-possible --glx-no-stencil \
  --glx-no-rebind-pixmap --glx-swap-method buffer-age  \
- --vsync opengl-swc
+ --vsync opengl-swc &
+
+ exit 0
 }
 
 cnovsync(){
  compton \
  --backend glx --unredir-if-possible --glx-no-stencil \
- --glx-no-rebind-pixmap --glx-swap-method buffer-age 
+ --glx-no-rebind-pixmap --glx-swap-method buffer-age &
+
+ exit 0
 }
 
 pidboi="$(pidof compton)"
@@ -19,7 +23,7 @@ if [ ! -z "${pidboi}" ]
   kill -9 "${pidboi}"
  else
   case "$1" in
-   vsync|-v)  cvsync;   sleep 1; exit;;
-   novsync|*) cnovsync; sleep 1; exit;;
+   vsync|-v)  cvsync   ;;
+   novsync|*) cnovsync ;;
   esac
 fi
