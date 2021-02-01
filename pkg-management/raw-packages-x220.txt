@@ -271,7 +271,7 @@ attr-2.4.48
 autoconf-2.70
 automake-1.16.3
 bc-2.4.0
-binutils-2.35.1
+binutils-2.36
 bison-3.7.4
 bzip2-1.0.8
 check-0.12.0
