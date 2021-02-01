@@ -150,7 +150,7 @@ goingdown(){
  evalret
 
  ainitmes "unmounting all ${c_lcyan}mounted devices${c_reset}."
-  umount -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
+  umount -f -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
  evalret
 }
 
