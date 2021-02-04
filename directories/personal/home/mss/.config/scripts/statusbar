@@ -54,12 +54,8 @@ while :; do
  read rx2 < "/sys/class/net/wlan0/statistics/rx_bytes"
  read tx2 < "/sys/class/net/wlan0/statistics/tx_bytes"
 
- kb_rx="$(echo "(${rx2} - ${rx1}) / 1024" | bc)"
- kb_tx="$(echo "(${tx2} - ${tx1}) / 1024" | bc)"
-
- t_rx="$(echo "${rx2} / 1048576" | bc)"
- t_tx="$(echo "${tx2} / 1048576" | bc)"
-
+   kb_rx="$(((${rx2} - ${rx1}) / 1024))" t_rx="$((${rx2} / 1048576))"
+   kb_tx="$(((${tx2} - ${tx1}) / 1024))" t_tx="$((${tx2} / 1048576))"
  bwfinal="${kb_rx}↓↑${kb_tx} [${t_rx}+${t_tx}]"
 
  # mpd state
@@ -111,10 +107,7 @@ while :; do
         | awk '{print substr($1, 1, 3);}')"
 
  # date
- dat="$(date '+%a%d %H:%M:%S')"
+ dat="$(date '+%a %d %H:%M:%S')"
 
- # weather
- read weat < /tmp/weather.tmp
-
- whattodo " ${bwfinal} ¦ ${lavg} ${temp} ${_mem} ${gov} ¦ ${_mpd} ¦ ${dat} ${bat0} "
+ whattodo " ${bwfinal} ¦ ${lavg} ${_mem} ${temp} ${bat0} ¦ ${_mpd} ¦ ${dat} "
 done
