@@ -6,78 +6,43 @@
       /                  (/
 
 apathy is a linux """distribution""" built on top of a heavily modified version
-of apathy-mlfs, which can be found at https://github.com/mssx86/apathy-mlfs,
-for the sake of having something to do. it uses musl libc, openssl, partially
+of apathy-mlfs, which can be found at https://github.com/mssx86/apathy-mlfs, for
+the sake of having something to do. it uses musl libc, openssl, partially
 busybox and a home-brewed init structure written in posix shell.
 
 because it is intended for my use only, this repository does not contain an
 image to boot from or a stage3 tarball to unpack. you wouldn't want to use it
 anyway.
 
-
-simplified list of major components
-===================================
- > toolchain
-   - gcc 10.2.1-20210116  - binutils 2.36       - argp-standalone 1.3
-   - mpfr 4.1.0           - gmp 6.2.1           - mpc 1.2.1
-   - isl 0.22
-
-   - musl 1.2.2           - musl-fts 1.2.7      - musl-obstack 1.1
-   - gcompat 1.0.0        - libucontext 0.11
-
-   - llvm-11.0.1          - clang-11.0.1        - lld-11.0.1
-   - polly-11.0.1         - libunwind-11.0.1    - libcxxabi-11.0.1
-   - libcxx-11.0.1        - compiler-rt-11.0.1
-
-   - rustc 1.49.0         - cbindgen 0.16.0
-
-   - python 2.7.1         - python 3.8.2        - lua 5.2.4
-   - perl 5.30.1          - node.js 15.5.1
-
- > toolchain (ondemand)
-   - boost 1.75.0         - ruby 2.7.1
-
- > core userland
-   - util-linux 2.35      - coreutils 8.32      - busybox 1.33.0
-   - sysklogd 1.5.1       - sinit 1.1           - eudev 3.2.9
-   - yash 2.50
-
- > tls
-   - openssl 1.1.1i       - gnutls 3.6.15
-
-
 simplified repository tree
 ==========================
  .
- ├─ init ───────────────────────> home brewed init system written in posix
- │                                shell, using sinit with static bins from
- │                                ubase and sbase.
- ├─ utils ──────────────────────> many small utilities used in apathy, written
- │                                in posix shell.
- ├─ directories
- │  ├─ personal ────────────────> personal configuration files.
- │  └─ system ──────────────────> base system configuration files that goes
- │                                under /etc and /usr. 
- ├── misc
- │   ├─ ainit-sysv
- │   │  ├─ ainit-sysv-mk-i ─────> a posixified version of lfs-bootscripts,
- │   │  │                         used when the system was called mssLinux.
- │   │  └─ ainit-sysv-mk-ii ────> first from-scratch init system, using gnu
- │   │                            coreutils and sysvinit.
- │   └─ g3258-memorial ─────────> notes and details saved from my old system
- │                                where i built almost everything on.
- └─── pkg-management
-      ├─ packages.md ───────────> a formatted list of all installed, removed 
-      │                           and ondemand packages with extra notes about
-      │                           the installation/removal process.
-      ├─ raw-packages.txt ──────> list of all installed programs in plain
-      │                           unformatted text.
-      ├─ installation-details ──> directory listings of installed programs.
-      ├─ removal-details ───────> directory listings of removed programs.
-      ├─ build-configs ─────────> custom home-brewed build recipes for a
-      │  │                        variety of software.
-      │  └─ www-browser
-      │     └─ apathy-browser ──> unmaintained pale moon "fork" with custom
-      │                           branding and uaoverrides/prefs.js.
-      └─ patches ───────────────> patches to be used with recipes under
-                                  build-configs/.
+ ├─ init/ ─────────────────────> home brewed init system written in posix shell,
+ │                               using sinit with static bins from ubase and
+ │                               sbase.
+ ├─ utils/ ────────────────────> many small utilities used in apathy, written in
+ │                               posix shell.
+ ├─ directories/
+ │  ├─ personal/ ──────────────> personal configuration files.
+ │  └─ system/ ────────────────> base system configuration files that goes under
+ │                               /etc, /usr and /opt. 
+ ├─ misc/ ─────────────────────> notes in plain text and miscellaneous files.
+ │  ├─ ainit-sysv/
+ │  │  ├─ ainit-sysv-mk-i/ ────> a posixified version of lfs-bootscripts, used
+ │  │  │                         when the system was called mssLinux.
+ │  │  └─ ainit-sysv-mk-ii/ ───> first from-scratch init system, using coreutils
+ │  │                            and sysvinit.
+ │  └─ g3258-memorial/ ────────> notes and details saved from my old system
+ │                               where i built almost everything on.
+ └─ pkg-management/
+    ├─ packages-*.md ─────────> a formatted list of all installed, removed and
+    │                           ondemand packages with extra notes about the
+    │                           installation/removal process.
+    ├─ raw-packages-*.txt ────> list of all installed programs in plain
+    │                           unformatted text.
+    ├─ installation-details/ ─> directory listings of installed programs.
+    ├─ removal-details/ ──────> directory listings of removed programs.
+    ├─ build-configs/ ────────> custom home-brewed build recipes for a variety
+    │                           of software.
+    └─ patches/ ──────────────> patches to be used with certain recipes under
+                                build-configs/.
