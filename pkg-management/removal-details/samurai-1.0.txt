@@ -1,4 +1,0 @@
-/usr/bin/ninja
-/usr/bin/samu
-
-/usr/share/man
