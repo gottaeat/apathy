@@ -20,9 +20,9 @@
 [d] alpine	>> sysfsutils-2.1.0
 
 [d] alpine	> sysstat-12.2.0
-[d] self	> curl-7.74.0
+[d] self	> curl-7.75.0
 
-[d] self	> git-2.29.2
+[d] self	> git-2.30.1
 [d] alpine	>> pcre2-10.34
 [d] alpine	>>> libedit-20191231.3.1
 
@@ -158,7 +158,7 @@
 [d] self	> xcb-util-wm-0.4.1
 [d] self	> xcb-util-cursor-0.1.3
 
-[d] self	> mesa-20.2.6
+[d] self	> mesa-20.3.4
 [d] alp+bmlfs	>> libdrm-2.4.100		(patch from alpine, recipe from bmlfs)
 [r] bmlfs	>> libvdpau-1.2
 [d] bmlfs	>> mako-1.1.1
@@ -464,7 +464,7 @@
 [d] self	> autoconf-2.70
 [d] self	> automake-1.16.3
 [d] mlfs	> bc-2.4.0
-[d] self	> binutils-2.36
+[d] self	> binutils-2.36.1
 [d] self	> bison-3.7.4
 [d] mlfs	> bzip2-1.0.8
 [d] mlfs	> check-0.12.0
