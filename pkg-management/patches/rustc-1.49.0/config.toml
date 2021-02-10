@@ -8,8 +8,8 @@ build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
 
-cargo                 = '/opt/rustc-1.48.0/bin/cargo'
-rustc                 = '/opt/rustc-1.48.0/bin/rustc'
+cargo                 = '/opt/rustc-1.49.0/bin/cargo'
+rustc                 = '/opt/rustc-1.49.0/bin/rustc'
 python                = 'python3'
 
 extended              = true
@@ -34,7 +34,7 @@ cargo-native-static   = false
 prefix                = '/opt/rustc-1.49.0'
 
 [rust]
-channel               = 'nightly'
+channel               = 'stable'
 
 optimize              = true
 codegen-units         = 1

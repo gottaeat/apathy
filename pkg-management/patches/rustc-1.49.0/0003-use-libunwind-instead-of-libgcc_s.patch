@@ -1,7 +1,7 @@
-From 7e2491677f3f32098c9e6edcd68561e17963e302 Mon Sep 17 00:00:00 2001
+From 7292b109b523bdb3fc29dbbd7f96e1839424c679 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 17 Jan 2021 02:24:29 +0300
-Subject: [PATCH 2/2] use libunwind instead of libgcc_s.
+Date: Wed, 10 Feb 2021 06:11:15 +0300
+Subject: [PATCH 3/4] use libunwind instead of libgcc_s.
 
 ---
  library/unwind/build.rs   | 9 ---------
