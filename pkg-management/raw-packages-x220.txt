@@ -284,7 +284,7 @@ expat-2.2.9
 file-5.37
 findutils-4.8.0
 flex-2.6.4
-gcc-10.2.1-20210116
+gcc-10.2.1-20210210
 gdbm-1.18.1
 gmp-6.2.1
 gperf-3.1
