@@ -1,0 +1,30 @@
+From 7e8fd0503ffad7ca61bf101264022acf90a34f47 Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Mon, 1 Feb 2021 15:27:21 +0100
+Subject: [PATCH 39/40] bmo#1684365: Add a null pointer check so that Firefox
+ won't crash when it can't initialize mRemoteServer
+
+Bug: https://bugs.gentoo.org/762035
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ toolkit/components/remote/nsRemoteService.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/toolkit/components/remote/nsRemoteService.cpp b/toolkit/components/remote/nsRemoteService.cpp
+index 6a4b8f0491..6b5ba9e6f3 100644
+--- a/toolkit/components/remote/nsRemoteService.cpp
++++ b/toolkit/components/remote/nsRemoteService.cpp
+@@ -169,6 +169,10 @@ void nsRemoteService::StartupServer() {
+   return;
+ #endif
+ 
++  if (!mRemoteServer) {
++    return;
++  }
++
+   nsresult rv = mRemoteServer->Startup(mProgram.get(), mProfile.get());
+ 
+   if (NS_FAILED(rv)) {
+-- 
+2.30.0
+

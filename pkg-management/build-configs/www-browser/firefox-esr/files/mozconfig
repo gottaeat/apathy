@@ -24,7 +24,7 @@ ac_add_options --disable-profiling
 ac_add_options --disable-tests
 
 # > 4
-ac_add_options --enable-optimize="-w -O2 -mtune=native -march=native -fstack-protector-strong -flto=thin -flto-jobs=5 -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
+ac_add_options --enable-optimize="-w -pipe -O2 -mtune=native -march=native -fcommon -flto=thin -flto-jobs=5 -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
 ac_add_options --enable-linker="lld"
 ac_add_options --enable-lto="cross"
 
