@@ -36,25 +36,25 @@ prog_clang(){
 
 ## flags
 # > base
-           cflags_base="-w -pipe -O3 -mtune=native -march=native -fstack-protector-strong"
-          ldflags_base="-Wl,--as-needed -Wl,--gc-sections -Wl,-O2"
+           cflags_base="-w -pipe -O2 -mtune=native -march=native -fcommon"
+          ldflags_base="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
 
 # > gcc
-       gcc_cflags_base="${cflags_base} -fcommon -fgraphite-identity -floop-nest-optimize -ftree-vectorize"  
+       gcc_cflags_base="${cflags_base}"  
       gcc_ldflags_base="${ldflags_base}"
 
         gcc_lto_cflags="${gcc_cflags_base} -flto -fuse-linker-plugin -fno-fat-lto-objects"
        gcc_lto_ldflags="${gcc_ldflags_base}"
 
 # > clang
-     clang_cflags_base="${cflags_base} -mllvm -polly -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
+     clang_cflags_base="${cflags_base} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
     clang_ldflags_base="${ldflags_base} -Wl,--icf=all"
 
- clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=4"
+ clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=$(nproc)"
 clang_ldflags_lto_full="${clang_ldflags_base} -Wl,--lto-O3"
 
- clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=4"
-clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3 -Wl,--thinlto-jobs=4 -Wl,--thinlto-cache-dir=/mss/work/thinltocache"
+ clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=$(nproc)"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3,--thinlto-jobs=$(nproc),--thinlto-cache-dir=/mss/work/thinltocache"
 
 
 ## profiles
