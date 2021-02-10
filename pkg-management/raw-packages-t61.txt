@@ -257,7 +257,6 @@ mkvtoolnix-48.0.0
 pciutils-3.7.0
 thinkfan-1.2.1
 apulse-0f9f8487
-isl-0.22
 fdupes-2.1.2
 ympd-612f8fc0
 nfs-utils-2.5.2
