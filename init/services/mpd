@@ -16,15 +16,24 @@ case "$1" in
   evalret
 
   ainitmes "${c_lcyan}(mpd)${c_reset}: starting ympd."
-   ympd >/dev/null 2>&1 &
+   doas -u mpd ympd >/dev/null 2>&1 &
+  evalret
+
+  ainitmes "${c_lcyan}(mpd)${c_reset}: starting mpdas."
+   doas -u mss mpdas >/dev/null 2>&1 &
   evalret
  ;;
  stop)
-  ainitmes "${c_lcyan}(mpd)${c_reset}: stopping mpd."
-   kill -TERM "$(cat /run/mpd.pid)"
-  evalret
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping ympd."
    kill -TERM "$(pidof ympd)"
+  evalret
+
+  ainitmes "${c_lcyan}(mpd)${c_reset}: stopping mpdas."
+   kill -TERM "$(pidof mpdas)"
+  evalret
+
+  ainitmes "${c_lcyan}(mpd)${c_reset}: stopping mpd."
+   kill -TERM "$(cat /var/run/mpd.pid)"
   evalret
  ;;
  restart)
