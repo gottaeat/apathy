@@ -126,6 +126,7 @@ goingdown(){
  $sdir/thinkfan		stop
  $sdir/ssh		stop
  $sdir/nfs		stop client
+ $sdir/dnscrypt-proxy	stop
  $sdir/network		stop wlan0
  $sdir/ntp		stop
 
