@@ -1,0 +1,8 @@
+host     = /var/lib/mpd/socket
+
+runas    = mpd
+debug    = 0
+
+service  = lastfm
+username =
+password =
