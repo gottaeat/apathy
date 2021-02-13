@@ -31,7 +31,7 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.49.0'
+prefix                = '/opt/rustc-1.50.0'
 
 [rust]
 channel               = 'stable'
