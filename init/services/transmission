@@ -22,7 +22,7 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(transmission)${c_reset}: stopping."
-  ainit_kill "/run/transmission.pid"
+  ainit_kill transmission-daemon
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

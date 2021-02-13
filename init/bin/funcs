@@ -61,15 +61,21 @@ banner(){
 
 ainit_kill(){
  servpid="$$"
- pidlist="$(pgrep -x ${1} || pgrep -f ${1})"
- kpid="$(echo "${pidlist}" | sed "s/${servpid}//")"
-
+ pidlist="$(pgrep -x ${1})"
+ kpid="$(printf "${pidlist}" | sed "/${servpid}/d" 2>/dev/null)"
  if [ -z "${kpid}" ]
   then
    failprompt
    ainitmes "${c_red}no proccess found to kill${c_reset}."
    armprompt
-  else kill -15 ${kpid} || kill -9 ${kpid} || kill -HUP ${kpid}; evalret
+   ainitmes "${c_red}servpid${c_reset} : ${servpid}";         armprompt
+   ainitmes "${c_red}pidlist${c_reset} : $(echo ${pidlist})"; armprompt
+   ainitmes "${c_red}kpid   ${c_reset} : $(echo ${kpid})"   ; armprompt
+  else
+      kill -15  ${kpid} >/dev/null 2>&1 \
+   || kill -9   ${kpid} >/dev/null 2>&1 \
+   || kill -HUP ${kpid} >/dev/null 2>&1
+   evalret
  fi
 }
 
