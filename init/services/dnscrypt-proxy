@@ -5,7 +5,6 @@ case "$1" in
  start)
   ainitmes "${c_lcyan}(dnscrypt-proxy)${c_reset}: starting."
    cat > /etc/resolv.conf << "EOF"
-# dnscrypt
 nameserver 127.0.0.1
 options edns0
 EOF
@@ -15,12 +14,10 @@ EOF
  stop)
   ainitmes "${c_lcyan}(dnscrypt-proxy)${c_reset}: stopping."
    cat > /etc/resolv.conf << "EOF"
-# cloudflare
 nameserver 1.1.1.1
 nameserver 1.0.0.1
 EOF
-   kill -TERM $(pidof dnscrypt-proxy)
-  evalret
+   ainit_kill dnscrypt-proxy
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

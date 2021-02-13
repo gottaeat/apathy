@@ -9,9 +9,7 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(thinkfan)${c_reset}: stopping."
-   thinkpid="$(pidof thinkfan)"
-   [ ! -z "${thinkpid}" ] && kill -TERM "${thinkpid}"
-  evalret
+  ainit_kill thinkfan
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

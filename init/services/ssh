@@ -9,13 +9,7 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(ssh)${c_reset}: stopping."
-   read sshdpgid < /run/sshd.pid
-   kill -TERM ${sshdpgid}
-  evalret
-
-  ainitmes "${c_lcyan}(ssh)${c_reset}: terminating existing sessions."
-   for pid in $(pgrep sshd); do kill -TERM "$pid"; done
-  evalret
+  ainit_kill sshd
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

@@ -57,7 +57,8 @@ case "${1}" in
   fi
  
   if [ "${iface}" = "wlan0" ]; then
-   kill -TERM $(pidof wpa_supplicant) >/dev/null 2>&1
+   ainitmes "${c_lcyan}(network)${c_reset}: stopping wpa_supplicant."
+   ainit_kill wpa_supplicant
   fi
 
   ainitmes "${c_lcyan}(network)${c_reset}: removing ${ip} from ${iface}."

@@ -58,30 +58,25 @@ case "$1" in
     evalret
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping rpcbind."
-     kill -TERM $(pidof rpcbind)
-    evalret
+    ainit_kill rpcbind
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping rpc.statd."
-     kill -TERM $(pidof rpc.statd) &&
-     if [ -f /var/run/rpc.statd.pid ]; then rm -f /var/run/rpc.statd.pid; fi
-    evalret
+    ainit_kill rpc.statd
+    if [ -f /var/run/rpc.statd.pid ]; then rm -f /var/run/rpc.statd.pid; fi
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping kernel nfsd instances."
-     nfsdpidlist="$(ps ax | grep '\[nfsd\]' | grep -v grep | awk '{print $1}')"
-     for nfsdpid in $nfsdpidlist; do kill -HUP $nfsdpid; done
-    evalret
+    ainit_kill nfsd
 
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping rpc.mountd."
-     kill -TERM $(pidof rpc.mountd)
-    evalret
+    ainit_kill rpc.mountd
    ;;
    client)
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping rpcbind."
-     kill -TERM $(pidof rpcbind)
-    evalret
+    ainit_kill rpcbind
+
     ainitmes "${c_lcyan}(nfs)${c_reset}: stopping rpc.statd."
-     kill -TERM $(pidof rpc.statd)
-    evalret
+    ainit_kill rpc.statd
+    if [ -f /var/run/rpc.statd.pid ]; then rm -f /var/run/rpc.statd.pid; fi
    ;;
    *)
    ainitmes "specify either client or server as \$2."; failprompt
@@ -90,7 +85,7 @@ case "$1" in
   esac
  ;;
  reload)
-  if [ "$(ps ax | grep '\[nfsd\]' | grep -v grep | wc -l)" -eq 0 ]
+  if [ -z "$(pgrep nfsd)" ]
    then
     ainitmes "no nfsd kernel threads found."; failprompt
     exit 1

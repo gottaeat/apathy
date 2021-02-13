@@ -9,8 +9,7 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(gpm)${c_reset}: stopping."
-   kill -TERM "$(pidof gpm)"
-   evalret
+  ainit_kill gpm
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start

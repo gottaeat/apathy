@@ -4,7 +4,7 @@
 case "$1" in
  start)
   ainitmes "${c_lcyan}(mpd)${c_reset}: starting mpd."
-   echo > /var/lib/mpd/log
+   printf '' > /var/lib/mpd/log
    doas -u mpd /usr/bin/mpd /etc/mpd.conf >/dev/null 2>&1
   evalret
 
@@ -25,16 +25,13 @@ case "$1" in
  ;;
  stop)
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping ympd."
-   kill -TERM "$(pidof ympd)"
-  evalret
+  ainit_kill ympd
 
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping mpdas."
-   kill -TERM "$(pidof mpdas)"
-  evalret
+  ainit_kill mpdas
 
   ainitmes "${c_lcyan}(mpd)${c_reset}: stopping mpd."
-   kill -TERM "$(cat /var/run/mpd.pid)"
-  evalret
+  ainit_kill mpd
  ;;
  restart)
   ${0} stop; sleep 1; ${0} start
