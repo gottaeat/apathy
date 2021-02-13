@@ -392,7 +392,7 @@
 [d] self	> firefox-78.7.1esr
 [d] self	>> node.js-15.8.0
 [d] self	>> cbindgen-0.17.0
-[d] self	>>> rustc-1.49.0
+[d] self	>>> rustc-1.50.0
 [d] self	>> gtk+-3.24.24
 
 [d] self	> sinit-1.1-apathy
