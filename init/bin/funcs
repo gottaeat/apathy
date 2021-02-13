@@ -34,7 +34,7 @@ evalret(){
    failprompt
    ainitmes "${c_red}service exited with ${c_green}${exitval}${c_reset}."
    armprompt
-   sleep 2
+   sleep 0.5
  fi
 }
 
@@ -57,6 +57,20 @@ banner(){
  ainitmes "${c_blue}apathy ${c_red}musl ${c_lcyan}1.2 - ${datefmt}"; ainit_nc
  ainitmes "${kerverfmt} ${kerdatfmt}";                               ainit_nc
  ainit_nc; ainit_nc
+}
+
+ainit_kill(){
+ servpid="$$"
+ pidlist="$(pgrep -x ${1} || pgrep -f ${1})"
+ kpid="$(echo "${pidlist}" | sed "s/${servpid}//")"
+
+ if [ -z "${kpid}" ]
+  then
+   failprompt
+   ainitmes "${c_red}no proccess found to kill${c_reset}."
+   armprompt
+  else kill -15 ${kpid} || kill -9 ${kpid} || kill -HUP ${kpid}; evalret
+ fi
 }
 
 if [ "$(id -u)" -ne 0 ]; then
