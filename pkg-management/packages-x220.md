@@ -78,7 +78,7 @@
 [d] alpine	>> lzo-2.10
 
 [d] self	> jq-1.6
-[d] devbin	> dnscrypt-proxy-2.0.44
+[d] devbin	> dnscrypt-proxy-2.0.45
 [r] self	> start-stop-daemon		(from github.com/daleobrien/start-stop-daemon)
 ```
 ```
