@@ -45,4 +45,3 @@
 /usr/lib/pkgconfig/libswscale.pc
 
 /usr/share/ffmpeg
-/usr/share/man

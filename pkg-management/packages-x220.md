@@ -296,7 +296,7 @@
 [d] self	> compton-5.1			(-Dconfig_file=false -Ddbus=false)
 [d] alpine	>> libev-4.31
 
-[d] self	> ffmpeg-4.3.1
+[d] self	> ffmpeg-4.3.2
 [d] alpine	>> lame-3.100
 [d] alpine	>> openjpeg-2.3.1
 
