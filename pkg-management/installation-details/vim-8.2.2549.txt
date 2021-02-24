@@ -1,0 +1,9 @@
+/usr/bin/ex
+/usr/bin/rview
+/usr/bin/rvim
+/usr/bin/view
+/usr/bin/vim
+/usr/bin/vimdiff
+/usr/bin/xxd
+
+/usr/share/vim
