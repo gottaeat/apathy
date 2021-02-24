@@ -1,0 +1,10 @@
+/usr/bin/ip6tables-apply
+/usr/bin/iptables
+/usr/bin/iptables-apply
+/usr/bin/iptables-legacy
+/usr/bin/iptables-legacy-restore
+/usr/bin/iptables-legacy-save
+/usr/bin/iptables-restore
+/usr/bin/iptables-save
+/usr/bin/iptables-xml
+/usr/bin/xtables-legacy-multi

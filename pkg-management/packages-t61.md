@@ -13,7 +13,7 @@
 ```
 [d] self	> opendoas-6.8.1
 [r] bmlfs	> ca-certificates-20190110
-[d] self	> iptables-1.8.4
+[d] self	> iptables-1.8.7
 [d] alpine	> lsof-4.93.2
 
 [d] alpine	> lm_sensors-3.6.0
