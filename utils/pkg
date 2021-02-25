@@ -25,32 +25,12 @@ info(){
    aprint_fail "specify the package name in \$1."
    exit 1
   else
-   fulldetails="$(grep -w "${1}" "${localdb}")"
-   if [ -z "${fulldetails}" ]
-    then aprint_fail "(local) package ${1} not found in ${localdb}."
-    else
-     pkgstate="$(printf "%s\n" "${fulldetails}" | awk '{print $1}')"
-      pkgfrom="$(printf "%s\n" "${fulldetails}" | awk '{print $2}')"
-      pkgvers="$(printf "%s\n" "${fulldetails}" | awk '{print $5}')"
-
-     case "${pkgstate}" in
-      i) pkgstat="installed";;
-      r) pkgstat="removed"  ;;
-      o) pkgstat="ondemand" ;;
-      b) pkgstat="busybox"  ;;
-     esac
-
-    if [ -z "${pkgstat}" ] || [ -z "${pkgvers}" ] || [ -z "${pkgfrom}" ]; then
-     aprint_fail "one of the required fields for ${1} is missing."
-     exit 1
-    fi
-
-    aprint_nc
-     lsdetail "state        " "${pkgstat}"
-     lsdetail "version      " "${pkgvers}"
-     lsdetail "recipe source" "${pkgfrom}"
-    aprint_nc
-   fi
+   awk '/'$1'/ { gsub(/^b/,"busybox:   ");   \
+                 gsub(/^i/,"installed: ");   \
+                 gsub(/^o/,"ondemand:  ");   \
+                 gsub(/^r/,"removed:   ");   \
+                 print $1,"("$2")\t",$4,$5}' \
+                 "${localdb}"
  fi
 }
 
