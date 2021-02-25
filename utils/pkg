@@ -1,87 +1,57 @@
 #!/mss/bin/sh
 . /mss/bin/apathy-funcs
 
- mydevice="$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)"
+   host="$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)"
+repodir="/mss/repo"
+localdb="/mss/packages.txt"
 
-localraw="/mss/raw-packages.txt"
- localmd="/mss/packages.md"
-
-case "${mydevice}" in
- X220)
-  reporaw="/mss/repo/pkg-management/raw-packages-x220.txt"
-   repomd="/mss/repo/pkg-management/packages-x220.md"
- ;;
- T61)
-  reporaw="/mss/repo/pkg-management/raw-packages-t61.txt"
-   repomd="/mss/repo/pkg-management/packages-t61.md"
- ;;
- *)
-  aprint_fail "(repo) no device specific package details have found."
-  exit 1
- ;;
+case "${host}" in
+ X220) repodb="${repodir}/pkg-management/packages-x220.txt" ;;
+ T61)  repodb="${repodir}/pkg-management/packages-t61.txt"  ;;
+ *)    aprint_fail "${host} not supported"; exit 1          ;;
 esac
 
-[ ! -f ${localraw} ] && aprint_fail "(local) ${cl_grn}raw-packages.txt${c_res} is not found." && exit 1
-[ ! -f ${localmd}  ] && aprint_fail "(local) ${cl_grn}packages.md${c_res} is not found."      && exit 1
-[ ! -f ${reporaw}  ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found for your device: ${cb_blu}${mydevice}${c_res}" && exit 1
-[ ! -f ${repomd}   ] && aprint_fail "(repo) ${cl_grn}raw-packages.txt${c_res} is not found for your device: ${cb_blu}${mydevice}${c_res}" && exit 1
-
-from(){
-if [ -z "$1" ]
- then aprint_fail "specify a package name in ${cl_grn}\$1${c_res}."; exit 1
- else awk '/'$1'/{print $4,"->",$2}' "${localmd}"
+if   [ ! -f "${localdb}" ]; then
+ aprint_fail "(local) database file does not exist, exiting."
+ exit 1
+elif [ ! -f "${repodb}"  ]; then
+ aprint_fail "(repo)  database file for ${host} does not exist, exiting."
+ exit 1
 fi
-}
 
-print_removed(){   awk '/^\[r\]/ {print $4}' "${localmd}";}
-print_installed(){ awk '/^\[d\]/ {print $4}' "${localmd}";}
-print_ondemand(){  awk '/^\[o\]/ {print $4}' "${localmd}";}
-print_help(){      aprint_usage "{from|pver|sync|stats|convert}{d|o|r}."; exit 1;}
+info(){
+ if [ -z "${1}" ]
+  then
+   aprint_fail "specify the package name in \$1."
+   exit 1
+  else
+   fulldetails="$(grep -w "${1}" "${localdb}")"
+   if [ -z "${fulldetails}" ]
+    then aprint_fail "(local) package ${1} not found in ${localdb}."
+    else
+     pkgstate="$(printf "%s\n" "${fulldetails}" | awk '{print $1}')"
+      pkgfrom="$(printf "%s\n" "${fulldetails}" | awk '{print $2}')"
+      pkgvers="$(printf "%s\n" "${fulldetails}" | awk '{print $5}')"
 
-sync(){ 
- aprint_ret "(repo -> local) syncing raw-packages.txt"
-  cp "${reporaw}" "${localraw}"
- evalret
- aprint_ret "(repo -> local) syncing packages.md"
-  cp "${repomd}" "${localmd}"
- evalret
-}
+     case "${pkgstate}" in
+      i) pkgstat="installed";;
+      r) pkgstat="removed"  ;;
+      o) pkgstat="ondemand" ;;
+      b) pkgstat="busybox"  ;;
+     esac
 
-convert_lists(){
- aprint_ret "(repo -> repo) generating raw-packages.txt for ${cb_blu}all devices${c_res}."
-  for mdlist in /mss/repo/pkg-management/packages-*; do
-   cnvtxt="$(echo "${mdlist}" | sed 's/packages/raw-packages/;s/\.md$/\.txt/')"
-   grep -v -e \# -e \` -e \! "${mdlist}" | awk '/\[d\]/ {print $4}' > "${cnvtxt}"
-  done
- evalret   
-}
+    if [ -z "${pkgstat}" ] || [ -z "${pkgvers}" ] || [ -z "${pkgfrom}" ]; then
+     aprint_fail "one of the required fields for ${1} is missing."
+     exit 1
+    fi
 
-stats(){
- gitdf_pre=$(diff -u "${localraw}" "${reporaw}"                      \
-             | awk '/^---/   {print "- local"" --->",$3"\t"$4};      \
-                    /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4"\n"}; \
-                    /^\+[a-z,0-9]/;                                  \
-                    /^-[a-z,0-9]/')
-
- [ -z "$gitdf_pre" ] \
-  && gitdf="none" || gitdf="\n\n$gitdf_pre\n"
-
- [ -z "$(cd /mss/repo && git status -s)" ] \
-  && gitstat="clean" || gitstat="dirty"
-
- 
-    partsize="$(df / | awk 'NR==2 {print $3/1024"mib"}')"
- c_installed="$(print_installed | wc -l)"
-   c_removed="$(print_removed   | wc -l)"
-  c_ondemand="$(print_ondemand  | wc -l)"
-
- aprint_nc
- aprint "${cb_red}total partition size\t${cb_blu}:${c_res} ${partsize}"
- aprint "${cb_red}local package count\t${cb_blu}:${c_res} ${c_installed} (+${c_ondemand})"
- aprint "${cb_red}removed packages\t${cb_blu}:${c_res} ${c_removed}"
- aprint "${cb_red}local and git diff\t${cb_blu}:${c_res} ${gitdf}"
- aprint "${cb_red}git repo status\t${cb_blu}:${c_res} ${gitstat}"
- aprint_nc
+    aprint_nc
+     lsdetail "state        " "${pkgstat}"
+     lsdetail "version      " "${pkgvers}"
+     lsdetail "recipe source" "${pkgfrom}"
+    aprint_nc
+   fi
+ fi
 }
 
 pver(){
@@ -101,23 +71,58 @@ pver(){
   && roost="${rustcver}" || roost="${rustcver}/${cargover}"
 
  aprint_nc
- lsdetail "tls " "${tls}  "
- lsdetail "libc" "${libc} "
- lsdetail "cca " "${cca}  "
- lsdetail "ccb " "${ccb}  "
- lsdetail "rust" "${roost}"
- lsdetail "trpl" "${trpl} "
+  lsdetail "tls " "${tls}  "
+  lsdetail "libc" "${libc} "
+  lsdetail "cca " "${cca}  "
+  lsdetail "ccb " "${ccb}  "
+  lsdetail "rust" "${roost}"
+  lsdetail "trpl" "${trpl} "
  aprint_nc
 }
 
+stats(){
+ gitdf_pre=$(diff -u "${localdb}" "${repodb}"                  \
+             | awk '/^---/   {print "- local"" --->",$3"\t"$4};  \
+                    /^\+\+\+/ {print "+ git"" ----->",$3"\t"$4}; \
+                    /^\+[a-z,0-9]/;                              \
+                    /^-[a-z,0-9]/')
+
+ [ -z "${gitdf_pre}" ] \
+  && gitdf="none" || gitdf="\n\n${gitdf_pre}"
+
+ [ -z "$(cd /mss/repo && git status -s)" ] \
+  && gitstat="clean" || gitstat="dirty"
+ 
+    partsize="$(df / | awk 'NR==2 {print $3/1024"/"$2/1024"M"}')"
+      c_inst="$(grep ^i "${localdb}" | wc -l)"
+      c_rmvd="$(grep ^r "${localdb}" | wc -l)"
+      c_ondm="$(grep ^o "${localdb}" | wc -l)"
+
+ aprint_nc
+  lsdetail "rootfs size   " "${partsize}"
+  lsdetail "package count " "${c_inst} (+${c_ondm})"
+  lsdetail "repo status   " "${gitstat}"
+  lsdetail "local-git diff" "${gitdf}"
+ aprint_nc
+}
+
+sync(){
+ aprint_nc
+  aprint_ret "(repo -> local) syncing packages database for ${host}."
+   cp "${repodb}" "${localdb}"
+  evalret
+ aprint_nc
+}
+
+print_help(){
+ aprint_usage "{info|pver|stats|sync}."
+ exit 1
+}
+
 case "$1" in
-    from) from "$2"       ;;
+    info) info "$2"       ;;
     pver) pver            ;;
-    sync) sync            ;;
    stats) stats           ;;
- convert) convert_lists   ;;
-       d) print_installed ;;
-       o) print_ondemand  ;;
-       r) print_removed   ;;
+    sync) sync            ;;
        *) print_help      ;;
 esac

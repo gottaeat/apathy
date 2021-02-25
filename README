@@ -35,14 +35,11 @@ simplified repository tree
  │  └─ g3258-memorial/ ────────> notes and details saved from my old system
  │                               where i built almost everything on.
  └─ pkg-management/
-    ├─ packages-*.md ─────────> a formatted list of all installed, removed and
-    │                           ondemand packages with extra notes about the
-    │                           installation/removal process.
-    ├─ raw-packages-*.txt ────> list of all installed programs in plain
-    │                           unformatted text.
-    ├─ installation-details/ ─> directory listings of installed programs.
-    ├─ removal-details/ ──────> directory listings of removed programs.
-    ├─ build-configs/ ────────> custom home-brewed build recipes for a variety
-    │                           of software.
-    └─ patches/ ──────────────> patches to be used with certain recipes under
-                                build-configs/.
+    ├─ packages-*.txt ─────────> a parsable list containing packages, versions,
+    │                            sources of the build recipes and their status.
+    ├─ installation-details/ ──> directory listings of installed programs.
+    ├─ removal-details/ ───────> directory listings of removed programs.
+    ├─ build-configs/ ─────────> custom home-brewed build recipes for a variety
+    │                            of software.
+    └─ patches/ ───────────────> patches to be used with certain recipes under
+                                 build-configs/.
