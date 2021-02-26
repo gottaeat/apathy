@@ -79,10 +79,10 @@ stats(){
       c_ondm="$(grep ^o "${localdb}" | wc -l)"
 
  aprint_nc
-  lsdetail "rootfs size   " "${partsize}"
-  lsdetail "package count " "${c_inst} (+${c_ondm})"
-  lsdetail "repo status   " "${gitstat}"
-  lsdetail "local-git diff" "${gitdf}"
+  aprint "${cb_red}rootfs size    ${cb_blu}:${c_res} ${partsize}"
+  aprint "${cb_red}package count  ${cb_blu}:${c_res} ${c_inst} (+${c_ondm})"
+  aprint "${cb_red}repo status    ${cb_blu}:${c_res} ${gitstat}"
+  aprint "${cb_red}local/git diff ${cb_blu}:${c_res} ${gitdf}"
  aprint_nc
 }
 
