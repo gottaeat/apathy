@@ -1,73 +1,117 @@
-server_names          = ['ffmuc.net', 'opennic-R4SAS', 'ibksturm', 'skyfighter-dns', 'dnscrypt.eu-dk', 'scaleway-ams']
-disabled_server_names = ['google', 'yandex', 'cloudflare']
-listen_addresses      = ['127.0.0.1:53']
-max_clients           = 250
-ipv4_servers          = true
-ipv6_servers          = false
-dnscrypt_servers      = true
-doh_servers           = false
-require_dnssec        = true
-require_nolog         = true
-require_nofilter      = true
+# server_names                = ['scaleway-fr', 'google', 'yandex', 'cloudflare']
+listen_addresses              = ['127.0.0.1:53']
+max_clients                   = 250
+ipv4_servers                  = true
+ipv6_servers                  = false
+dnscrypt_servers              = true
+require_dnssec                = true
+require_nolog                 = true
+require_nofilter              = true
+disabled_server_names         = []
+force_tcp                     = false
+doh_servers                   = false
+timeout                       = 5000
+keepalive                     = 30
+blocked_query_response        = 'refused'
+log_level                     = 2
+log_file                      = '/var/log/dnscrypt-proxy.log'
+log_file_latest               = true
+use_syslog                    = false
+cert_refresh_delay            = 240
+tls_cipher_suite              = [52393, 49199]
+fallback_resolvers            = ['114.114.114.114:53']
+ignore_system_dns             = true
+netprobe_timeout              = 15
+netprobe_address              = '8.8.8.8:53'
+offline_mode                  = false
+log_files_max_size            = 1
+log_files_max_age             = 1
+log_files_max_backups         = 1
+block_ipv6                    = true
+block_unqualified             = true
+block_undelegated             = true
+reject_ttl                    = 600
+cache                         = false
+cache_size                    = 4096
+cache_min_ttl                 = 2400
+cache_max_ttl                 = 86400
+cache_neg_min_ttl             = 60
+cache_neg_max_ttl             = 600
+# forwarding_rules            = 'forwarding-rules.txt'
+# cloaking_rules              = 'cloaking-rules.txt'
+# cloak_ttl                   = 600
+# edns_client_subnet          = ["0.0.0.0/0", "2001:db8::/32"]
+# http_proxy                  = 'http://127.0.0.1:8888'
+# lb_strategy                 = 'p2'
+# lb_estimator                = true
+# dnscrypt_ephemeral_keys     = false
+# tls_disable_session_tickets = false
+# query_meta                  = ['key1:value1', 'key2:value2', 'token:MySecretToken']
 
-force_tcp             = false
-timeout               = 5000
-keepalive             = 30
+[local_doh]
+listen_addresses              = ['127.0.0.1:3000']
+path                          = '/dns-query'
+cert_file                     = 'localhost.pem'
+cert_key_file                 = 'localhost.pem'
 
-log_level             = 2
-log_file              = '/tmp/dnscrypt-proxy.log'
-use_syslog            = false
-log_files_max_size    = 10
-log_files_max_age     = 7
-log_files_max_backups = 1
+[captive_portals]
+# map_file                    = 'example-captive-portals.txt'
 
-cert_refresh_delay    = 240
+[query_log]
+# file                        = 'query.log'
+# format                      = 'tsv'
+# ignored_qtypes              = ['DNSKEY', 'NS']
 
-fallback_resolvers    = ['9.9.9.9:53', '8.8.8.8:53']
-ignore_system_dns     = true
+[nx_log]
+# file                        = 'nx.log'
+# format                      = 'tsv'
 
-netprobe_timeout      = 60
-netprobe_address      = '9.9.9.9:53'
+[blocked_names]
+# blocked_names_file          = 'blocked-names.txt'
+# log_file                    = 'blocked-names.log'
+# log_format                  = 'tsv'
 
-block_ipv6            = true
-block_unqualified     = true
-block_undelegated     = true
-reject_ttl            = 600
-cache                 = true
-cache_size            = 4096
-cache_min_ttl         = 2400
-cache_max_ttl         = 86400
-cache_neg_min_ttl     = 60
-cache_neg_max_ttl     = 600
+[blocked_ips]
+# blocked_ips_file            = 'blocked-ips.txt'
+# log_file                    = 'blocked-ips.log'
+# log_format                  = 'tsv'
 
-# >> sources
-[sources]
+[allowed_names]
+# allowed_names_file          = 'allowed-names.txt'
+# log_file                    = 'allowed-names.log'
+# log_format                  = 'tsv'
+
+[allowed_ips]
+# allowed_ips_file            = 'allowed-ips.txt'
+# log_file                    = 'allowed-ips.log'
+# log_format                  = 'tsv'
+
+[schedules]
 [sources.'public-resolvers']
-urls          = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
-cache_file    = 'public-resolvers.md'
-minisign_key  = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
-prefix        = ''
+urls                          = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/public-resolvers.md', 'https://download.dnscrypt.net/resolvers-list/v3/public-resolvers.md']
+cache_file                    = 'public-resolvers.md'
+minisign_key                  = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+refresh_delay                 = 72
+prefix                        = ''
 
 [sources.'relays']
-urls          = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/relays.md', 'https://download.dnscrypt.info/resolvers-list/v2/relays.md']
-cache_file    = 'relays.md'
-minisign_key  = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
-refresh_delay = 72
-prefix        = ''
+urls                          = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/relays.md', 'https://download.dnscrypt.net/resolvers-list/v3/relays.md']
+cache_file                    = 'relays.md'
+minisign_key                  = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+refresh_delay                 = 72
+prefix                        = ''
 
 [broken_implementations]
-fragments_blocked = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'quad9-dnscrypt-ip4-filter-alt', 'quad9-dnscrypt-ip4-filter-pri', 'quad9-dnscrypt-ip4-nofilter-alt', 'quad9-dnscrypt-ip4-nofilter-pri', 'quad9-dnscrypt-ip6-filter-alt', 'quad9-dnscrypt-ip6-filter-pri', 'quad9-dnscrypt-ip6-nofilter-alt', 'quad9-dnscrypt-ip6-nofilter-pri', 'cleanbrowsing-adult', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-security']
+fragments_blocked             = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'cleanbrowsing-adult', 'cleanbrowsing-adult-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-security', 'cleanbrowsing-security-ipv6']
+
+[doh_client_x509_auth]
 
 [anonymized_dns]
-skip_incompatible = false
+skip_incompatible             = false
+# direct_cert_fallback        = false
 
-# >> heh
-[local_doh]
-[query_log]
-[nx_log]
-[blacklist]
-[ip_blacklist]
-[whitelist]
-[schedules]
-[tls_client_auth]
+[dns64]
+# prefix                      = ['64:ff9b::/96']
+# resolver                    = ['[2606:4700:4700::64]:53', '[2001:4860:4860::64]:53']
+
 [static]
