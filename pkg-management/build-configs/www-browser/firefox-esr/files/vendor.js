@@ -1,4 +1,3 @@
-// personal:
 pref("accessibility.force_disabled", 1);
 pref("browser.aboutConfig.showWarning", false);
 pref("browser.cache.disk.enable", true);
@@ -33,3 +32,8 @@ pref("startup.homepage_welcome_url", "about:newtab");
 pref("toolkit.cosmeticAnimations.enabled", false);
 pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 pref("ui.systemUsesDarkTheme", true);
+
+pref("network.trr.custom_uri", "https://127.0.0.1:3000/dns-query");
+pref("network.trr.uri", "https://127.0.0.1:3000/dns-query");
+pref("network.trr.mode", 2);
+pref("network.security.esni.enabled", true);
