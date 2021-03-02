@@ -1,0 +1,47 @@
+#!/mss/bin/sh
+. /mss/init/bin/funcs
+export broadcast dns domain interface ip mask metric router subnet
+
+deconfig(){ ip -4 addr flush dev $interface;}
+routes(){
+ ainitmes "${c_red}routes${c_blue}()${c_reset}"; ainit_nc
+ [ -f "/sys/class/net/${interface}/ifindex" ]              \
+  && _ifindex="$(cat /sys/class/net/${interface}/ifindex)" \
+  || _ifindex="$(ip -4 link show dev ${interface}          \
+                  | awk 'NR==1 {sub(/:/,""); print $1}')"
+ [ -d "/sys/class/net/${interface}/phy80211" ] \
+  && _metric="$((${_ifindex} + 300))"          \
+  || _metric="$((${_ifindex} + 200))"
+
+ ip -4 route del default via dev "${interface}" >/dev/null 2>&1 
+
+ [ "${subnet}" = "255.255.255.255" ] \
+  && ip -4 route add "${router}" dev "${interface}"
+
+ ip -4 route add 0.0.0.0/0 via "${router}" dev "${interface}" metric "${_metric}"
+}
+
+bound(){
+ ainitmes "${c_red}bound${c_blue}()${c_reset}"; ainit_nc
+ ip -4 addr add "${ip}/${mask}" broadcast "${broadcast}" dev "${interface}"
+ ip -4 link set dev "${interface}" up
+ routes
+}
+
+renew() {
+ ainitmes "${c_red}renew${c_blue}()${c_reset}"; ainit_nc
+ [ "$(ip -4 addr show dev ${interface} | grep ${ip}/${mask})" ] \
+  && deconfig                                                   \
+  && ip -4 addr add "${ip}/${mask}" broadcast "${broadcast}" dev "${interface}"
+ [ "$(ip -4 route show | grep ^default | grep ${router})" ] || routes
+}
+
+case "$1" in
+ deconfig)  deconfig ;;
+ renew)     renew    ;;
+ bound)     bound    ;;
+ leasefail) ainitmes "udhcpc failed to get a dhcp lease."; failprompt                ;;
+ nak)       ainitmes "udhcpc received dhcp nak."; failprompt                         ;;
+ *)         ainitmes "This script should be called from udhcpc."; failprompt; exit 1 ;;
+esac
+exit 0
