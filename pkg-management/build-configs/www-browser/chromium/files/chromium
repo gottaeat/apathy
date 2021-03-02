@@ -1,0 +1,4 @@
+#!/mss/bin/sh
+CHROME_FLAGS="--enable-gpu-rasterization ${CHROME_FLAGS}"
+export CHROME_WRAPPER=/usr/lib/chromium/chromium
+exec /usr/lib/chromium/chromium $CHROME_FLAGS "${@}"
