@@ -99,8 +99,8 @@ initboi(){
  $sdir/thinkfan		start
  $sdir/gpm		start
  $sdir/iptables		start
- $sdir/network		start wlan0 solitude
- $sdir/nfs		start client
+ $sdir/network		start wlan0 static vauxhall
+#$sdir/nfs		start client
  $sdir/mpd		start
  $sdir/dnscrypt-proxy	start
  $sdir/ntp		start
@@ -125,7 +125,7 @@ goingdown(){
 
  $sdir/thinkfan		stop
  $sdir/ssh		stop
- $sdir/nfs		stop client
+#$sdir/nfs		stop client
  $sdir/dnscrypt-proxy	stop
  $sdir/network		stop wlan0
  $sdir/ntp		stop

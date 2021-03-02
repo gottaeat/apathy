@@ -1,73 +1,122 @@
 #!/mss/bin/sh
 . /mss/init/bin/funcs
 
-   ip="192.168.1.30"
- pref="24"
- gway="192.168.1.1"
-bcast="192.168.1.99"
-
 case "${1}" in
  start)
   if [ -z "${2}" ]
-   then ainitmes "specify iface as \$2."; failprompt; exit 1
-   else iface="${2}"
+   then ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
+   else _iface="${2}"
   fi
 
-  if ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
-   ainitmes "ip already assigned to ${iface}, try disconnecting."; failprompt
-   exit 1
+  if [ "$(ip addr | grep ${_iface} | grep inet)" ]; then
+   ainitmes "${_iface} has an ip assinged, exiting"; failprompt; exit 1
   fi
- 
-  if [ "${iface}" = "wlan0" ]; then
-   if [ -z "${3}" ]
-    then ainitmes "specify wpaconf as \$3."; failprompt; exit 1
-    else 
-     wpaconf="/etc/wpa_supplicant/${3}.conf"
-   
-     if [ ! -f "${wpaconf}" ]; then
-      ainitmes "wpaconf not found.";failprompt; exit 1
+
+  case "${_iface}" in
+   wlan0)
+    if [ -z "${4}" ]
+     then
+      ainitmes "specify a wpaconf with \$4, exiting."; failprompt; exit 1
+     else
+      wpaconf="/etc/wpa_supplicant/${4}.conf"
+
+     if [ -f "${wpaconf}" ]
+      then
+       ainitmes "${c_lcyan}(network)${c_reset}: invoking wpa_supplicant."
+        wpa_supplicant -B -i "${_iface}" -c "${wpaconf}" >/dev/null 2>&1
+       evalret
+      else
+       ainitmes "wpaconf file not found, exiting."; failprompt; exit 1
      fi
-  
-     ainitmes "${c_lcyan}(network)${c_reset}: invoking wpa_supplicant."
-      wpa_supplicant -B -i "${iface}" -c "${wpaconf}" >/dev/null 2>&1
-     evalret
     fi
+   ;;
+   eth0)
+    ainitmes "${c_lcyan}(network)${c_reset}: selected eth0."
+   ;;
+   *)
+    ainitmes "interface ${_iface} is not understood, exiting."; failprompt
+    exit 1
+   ;;
+  esac
+
+  if [ -z "${3}" ]
+   then
+    ainitmes "specify an ip setting with \$3, exiting."; failprompt; exit 1
+   else
+    case "${3}" in
+     static)
+      case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
+       X220) sip="192.168.1.30" pref="24" gway="192.168.1.1" bcast="192.168.1.99" ;;
+       T61)  sip="192.168.1.30" pref="24" gway="192.168.1.1" bcast="192.168.1.99" ;;
+       *)
+        ainitmes "no static ip is specified for the device."; failprompt
+        exit 1
+      ;;
+      esac
+
+      ainitmes "${c_lcyan}(network)${c_reset}: adding ${sip} to ${_iface}."
+       ip addr add "${sip}/${pref}" broadcast "${bcast}" dev "${_iface}"
+      evalret
+
+      ainitmes "${c_lcyan}(network)${c_reset}: bringing ${_iface} up."
+       ip link set "${_iface}" up
+      evalret
+
+      ainitmes "${c_lcyan}(network)${c_reset}: setting up the default gateway."
+       ip route add default via "${gway}" dev "${_iface}"
+      evalret
+     ;;
+     dhcp)
+      ainitmes "${c_lcyan}(network)${c_reset}: invoking udhcpc."
+       udhcpc \
+        -i "${_iface}" \
+        -s "/mss/init/config/udhcpc.script" \
+        -p "/run/udhcpc.pid"                \
+        -B                                  \
+        -t 10 -T 3                          \
+        -n                                  \
+        -R                                  \
+        -a                                  \
+        -S >/dev/null 2>&1 &
+       evalret
+     ;;
+     *)
+      ainitmes "${3} is not understood, exiting."; failprompt; exit 1 
+     esac
   fi
- 
-  ainitmes "${c_lcyan}(network)${c_reset}: adding ${ip} to ${iface}."
-   ip addr add "${ip}/${pref}" broadcast "${bcast}" dev "${iface}"
-  evalret
- 
-  ainitmes "${c_lcyan}(network)${c_reset}: bringing ${iface} up."
-   ip link set ${iface} up
-  evalret
- 
-  ainitmes "${c_lcyan}(network)${c_reset}: setting up the default gateway."
-   ip route add default via ${gway} dev ${iface}
-  evalret
  ;;
  stop)
   if [ -z "${2}" ]
-   then ainitmes "specify iface as \$2."; failprompt; exit 1
-   else iface="${2}"
-  fi
+   then
+    ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
+   else
+    _iface="${2}"
 
-  if ! ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
-   ainitmes "no ip is assigned to ${iface}."; failprompt; exit 1
-  fi
- 
-  if [ "${iface}" = "wlan0" ]; then
-   ainitmes "${c_lcyan}(network)${c_reset}: stopping wpa_supplicant."
-   ainit_kill wpa_supplicant
-  fi
+   if [ "$(ip addr | grep ${_iface} | grep inet)" ]; 
+    then
+      ainitmes "${c_lcyan}(network)${c_reset}: flushing ${_iface}."
+       ip -4 addr flush dev "${_iface}"
+      evalret
+      ainitmes "${c_lcyan}(network)${c_reset}: bringing down ${_iface}."
+       ip link set "${_iface}" down
+      evalret
+     else
+      ainitmes "no ip is assigned to ${_iface}, exiting."; failprompt; exit 1
+    fi
 
-  ainitmes "${c_lcyan}(network)${c_reset}: removing ${ip} from ${iface}."
-   ip addr del "${ip}/${pref}" broadcast "${bcast}" dev "${iface}"
-  evalret
- 
-  ainitmes "${c_lcyan}(network)${c_reset}: bringing ${iface} down."
-   ip link set ${iface} down
-  evalret
+     wspid="$(pidof wpa_supplicant 2>/dev/null)"
+    dhcpid="$(pidof udhcpc         2>/dev/null)"
+
+    if [ ! -z "${dhcpid}" ]; then
+     ainitmes "${c_lcyan}(network)${c_reset}: killing udhcpc."
+     kill -USR2 "${dhcpid}"; sleep 1; ainit_kill udhcpc
+    fi
+
+    if [ ! -z "${wspid}" ]; then
+     ainitmes "${c_lcyan}(network)${c_reset}: killing wpa_supplicant."
+     ainit_kill wpa_supplicant
+    fi
+  fi
  ;;
  *)
   ainitusage "{start|stop}"
