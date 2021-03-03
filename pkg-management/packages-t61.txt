@@ -400,6 +400,7 @@ b  bbox    .. rpm2cpio                 1.33.0
 b  bbox    .. sh                       1.33.0
 b  bbox    .. syslogd                  1.33.0
 b  bbox    .. time                     1.33.0
+b  bbox    .. udhcpc                   1.33.0
 b  bbox    .. uname                    1.33.0
 b  bbox    .. unix2dos                 1.33.0
 b  bbox    .. unzip                    1.33.0
