@@ -119,7 +119,7 @@ i  alpine  ... p11-kit                 0.23.18.1
 i  apathy  . openvpn                   2.4.9
 i  alpine  .. lzo                      2.10
 i  apathy  . jq                        1.6
-i  devbin  . dnscrypt-proxy            2.0.45
+i  apathy  . dnscrypt-proxy            2.0.45
 r  apathy  . start-stop-daemon         daleobrien
 i  bmlfs   . util-macros               1.19.2
 i  bmlfs   . xorgproto                 2019.2
