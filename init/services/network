@@ -31,7 +31,7 @@ case "${1}" in
     fi
    ;;
    eth0)
-    ainitmes "${c_lcyan}(network)${c_reset}: selected eth0."
+    ainitmes "${c_lcyan}(network)${c_reset}: selected eth0."; succprompt
    ;;
    *)
     ainitmes "interface ${_iface} is not understood, exiting."; failprompt
@@ -47,7 +47,7 @@ case "${1}" in
      static)
       case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
        X220) sip="192.168.1.30" pref="24" gway="192.168.1.1" bcast="192.168.1.99" ;;
-       T61)  sip="192.168.1.30" pref="24" gway="192.168.1.1" bcast="192.168.1.99" ;;
+       T61)  sip="192.168.1.31" pref="24" gway="192.168.1.1" bcast="192.168.1.99" ;;
        *)
         ainitmes "no static ip is specified for the device."; failprompt
         exit 1
