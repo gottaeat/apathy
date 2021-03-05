@@ -354,7 +354,7 @@ i  apathy  .. node.js                  15.9.0
 i  apathy  .. cbindgen                 0.17.0
 i  apathy  ... rustc                   1.50.0
 i  apathy  .. gtk+                     3.24.24
-i  apathy  . zstd                      1.4.8
+i  apathy  . zstd                      1.4.9
 r  apathy  . qemu                      4.2.0
 i  alpine  . cuetools                  1.4.1
 i  alpine  . shntool                   3.0.10
