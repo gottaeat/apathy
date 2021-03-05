@@ -63,7 +63,7 @@ r  mlfs    . sysvinit                  2.96
 i  apathy  . tar                       1.33
 r  mlfs    . texinfo                   6.6
 i  mlfs    . tzdb                      2019c
-i  apathy  . util-linux                2.35
+i  apathy  . util-linux                2.36.2
 i  apathy  . vim                       8.2.2549
 i  mlfs    . xml-parser                2.44
 i  mlfs    . xz                        5.2.4
