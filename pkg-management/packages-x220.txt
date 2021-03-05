@@ -80,7 +80,7 @@ i  apathy  . curl                      7.75.0
 i  apathy  . git                       2.30.1
 i  alpine  .. pcre2                    10.34
 i  alpine  ... libedit                 20191231.3.1
-i  apathy  . openssh                   8.4_p1
+i  apathy  . openssh                   8.5_p1
 i  apathy  . libssh2                   1.9.0
 i  apathy  . cmake                     3.17.1
 i  alpine  .. libuv                    1.34.1

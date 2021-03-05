@@ -1,7 +1,3 @@
-/etc/ssh/moduli
-/etc/ssh/ssh_config
-/etc/ssh/sshd_config
-
 /usr/bin/scp
 /usr/bin/sftp
 /usr/bin/ssh
