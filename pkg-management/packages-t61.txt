@@ -18,7 +18,7 @@ i  mlfs    . file                      5.37
 i  apathy  . findutils                 4.8.0
 i  mlfs    . flex                      2.6.4
 r  apathy  . gawk                      5.1.0
-i  apathy  . gcc                       10.2.1-20210210
+i  apathy  . gcc                       10.2.1-20210306
 i  mlfs    . gdbm                      1.18.1
 r  mlfs    . gettext                   0.20.1
 i  apathy  . gmp                       6.2.1
