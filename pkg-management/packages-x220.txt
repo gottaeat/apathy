@@ -275,7 +275,7 @@ i  apathy  . x264                      20191119-2245
 i  apathy  . x265                      3.4
 i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
-i  apathy  . youtube-dl                2021.01.24.1
+i  apathy  . youtube-dl                2021.03.03
 i  apathy  . compton                   5.1
 i  alpine  .. libev                    4.31
 i  apathy  . ffmpeg                    4.3.2

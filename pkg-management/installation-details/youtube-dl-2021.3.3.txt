@@ -1,0 +1,4 @@
+/usr/bin/youtube-dl
+
+/usr/lib/python3.8/site-packages/youtube_dl
+/usr/lib/python3.8/site-packages/youtube_dl-2021.3.3-py3.8.egg-info
