@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 
 case "$1" in
  s|shorten)

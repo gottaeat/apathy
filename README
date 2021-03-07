@@ -17,29 +17,29 @@ anyway.
 simplified repository tree
 ==========================
  .
- ├─ init/ ─────────────────────> home brewed init system written in posix shell,
+ ├─ init/ ─────────────────────→ home brewed init system written in posix shell,
  │                               using sinit with static bins from ubase and
  │                               sbase.
- ├─ utils/ ────────────────────> many small utilities used in apathy, written in
+ ├─ utils/ ────────────────────→ many small utilities used in apathy, written in
  │                               posix shell.
  ├─ directories/
- │  ├─ personal/ ──────────────> personal configuration files.
- │  └─ system/ ────────────────> base system configuration files that goes under
+ │  ├─ personal/ ──────────────→ personal configuration files.
+ │  └─ system/ ────────────────→ base system configuration files that goes under
  │                               /etc, /usr and /opt. 
- ├─ misc/ ─────────────────────> notes in plain text and miscellaneous files.
+ ├─ misc/ ─────────────────────→ notes in plain text and miscellaneous files.
  │  ├─ ainit-sysv/
- │  │  ├─ ainit-sysv-mk-i/ ────> a posixified version of lfs-bootscripts, used
+ │  │  ├─ ainit-sysv-mk-i/ ────→ a posixified version of lfs-bootscripts, used
  │  │  │                         when the system was called mssLinux.
- │  │  └─ ainit-sysv-mk-ii/ ───> first from-scratch init system, using coreutils
+ │  │  └─ ainit-sysv-mk-ii/ ───→ first from-scratch init system, using coreutils
  │  │                            and sysvinit.
- │  └─ g3258-memorial/ ────────> notes and details saved from my old system
+ │  └─ g3258-memorial/ ────────→ notes and details saved from my old system
  │                               where i built almost everything on.
  └─ pkg-management/
-    ├─ packages-*.txt ─────────> a parsable list containing packages, versions,
+    ├─ packages-*.txt ─────────→ a parsable list containing packages, versions,
     │                            sources of the build recipes and their status.
-    ├─ installation-details/ ──> directory listings of installed programs.
-    ├─ removal-details/ ───────> directory listings of removed programs.
-    ├─ build-configs/ ─────────> custom home-brewed build recipes for a variety
+    ├─ installation-details/ ──→ directory listings of installed programs.
+    ├─ removal-details/ ───────→ directory listings of removed programs.
+    ├─ build-configs/ ─────────→ custom home-brewed build recipes for a variety
     │                            of software.
-    └─ patches/ ───────────────> patches to be used with certain recipes under
+    └─ patches/ ───────────────→ patches to be used with certain recipes under
                                  build-configs/.

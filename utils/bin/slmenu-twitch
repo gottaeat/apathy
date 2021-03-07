@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 
 livelist=$(curl -s -H 'Accept: application/vnd.twitchtv.v5+json'                   \
                    -H 'Client-ID: '                                                \

@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 rootcheck
 
 if   [ ! -f $PWD/arch/x86/boot/bzImage ]; then aprint_fail "${cl_grn}bzImage${c_res} doesn't exist."; exit 1

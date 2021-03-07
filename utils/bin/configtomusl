@@ -1,40 +1,41 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 
 case $1 in y|Y|yes) answerreplace=y;; esac
 
-muslcfgdir="/mss/bin/muslcfg"
+muslcguess="/mss/files/musl-config.guess"
+  muslcsub="/mss/files/musl-config.sub"
 
 cguess="$(find . -type f -name config\.guess)"
   csub="$(find . -type f -name config\.sub)"
 
 aprint_nc
 aprint "found these ${cl_grn}config.guess${c_res} files: "
-for guess in $cguess; do aprint_nm "$guess"; done
+for guess in ${cguess}; do aprint_nm "${guess}"; done
 
 aprint_nc
 aprint "found these ${cl_grn}config.sub${c_res} files: "
-for sub in $csub; do aprint_nm "$sub"; done
+for sub in ${csub}; do aprint_nm "${sub}"; done
 
 aprint_nc
-if [ -z "$anwerreplace" ]; then
+if [ -z "${anwerreplace}" ]; then
  aprint_ask "shall we replace? (y/n): "
  read answerreplace
 fi
 
-case $answerreplace in
+case "${answerreplace}" in
  y|Y|yes)
   aprint_nc
 
-  for guess in $cguess; do
-   aprint_ret "replacing ${cl_grn}$guess${c_res}."
-    cp "${muslcfgdir}"/config.guess-musl "$guess"
+  for guess in ${cguess}; do
+   aprint_ret "replacing ${cl_grn}${guess}${c_res}."
+    cp "${muslcguess}" "${guess}"
    evalret
   done
 
-  for sub in $csub; do
+  for sub in ${csub}; do
    aprint_ret "replacing ${cl_grn}$sub${c_res}."
-    cp "${muslcfgdir}"/config.sub-musl "$sub"
+    cp "${muslcfgdir}"/config.sub-musl "${sub}"
    evalret
   done
 

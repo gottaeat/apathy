@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 dat=$(date "+%Y%m%d_%H%M%S_ttygrab")
 loc="/home/mss/screenshots/tty/$dat.png"
 

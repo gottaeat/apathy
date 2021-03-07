@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 rootcheck
 
 [ -z "$1" ] && aprint_fail "no mount point selected, exiting." && exit 1

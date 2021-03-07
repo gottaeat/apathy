@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 monstat="$(xrandr | grep VGA-1 -A1 | tail -1 | grep \*)"
 
 if [ ! -z "${monstat}" ]

@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 
 [ -z "$1" ] && aprint_fail "no dir or file to pkgup selected in \$1, exiting." && exit 1
 [ -z "$2" ] && aprint_fail "no archive name in \$2 specified, exiting."        && exit 1

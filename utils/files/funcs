@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/sourceme
+. /mss/files/sourceme
 
 # 2 >> define prompts
     sbefore="   "
@@ -10,7 +10,7 @@
     s_warn="${cb_blu}w${c_res}"
     s_succ="${cb_grn}s${c_res}"
 
-memearrow="${pbefore}${cb_whi}>${c_res} "
+memearrow="${pbefore}${cb_whi}→${c_res} "
      askq="${pbefore}${cb_blu}?${c_res} "
 
 # 3 >> printing functions

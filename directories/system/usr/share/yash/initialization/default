@@ -1,6 +1,6 @@
-. /mss/bin/sourceme
-. /mss/bin/sourceme-aliases
-. /mss/bin/sourceme-build
+. /mss/files/sourceme
+. /mss/files/sourceme-aliases
+. /mss/files/sourceme-build
 
 ## a >> yash settings
 # a1 >> history 

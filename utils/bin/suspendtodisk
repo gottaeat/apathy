@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/bin/apathy-funcs
+. /mss/files/funcs
 rootcheck
 
 case "${@}" in y|Y|yes) answersusp="yes";; esac
