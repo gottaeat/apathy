@@ -1,2 +1,0 @@
-check github.com/mssx86/apathy-suckless/tree/master/init for the binary
-components of the init.

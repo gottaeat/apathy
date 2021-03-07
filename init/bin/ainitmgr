@@ -1,0 +1,45 @@
+#!/mss/bin/sh
+. /mss/init/files/funcs
+
+svcsfile="/mss/init/files/services"
+svcnames="$(awk '/svc_/ {gsub(/\(|\)|\{|svc_/,""); print}' "${svcsfile}")"
+
+. "${svcsfile}"
+
+helpthing(){ ainitusage "{list|start|stop|status}"; exit 1; }
+
+[ -z "${1}" ] && helpthing
+
+case "${1}" in
+ list)
+  ainitmes "services present in the services file are:"; infoprompt
+  for i in ${svcnames}; do ainitmes "$i"; armprompt; done
+ ;;
+ reload|restart|start|stop|status)
+  if [ -z "${2}" ]
+   then
+    ainitmes "set a service name as \$2, exiting."; failprompt
+    exit 1
+   else
+   svctoact="${2}"
+   if [ "$(printf "${svcnames}\n" | grep "${svctoact}")" ]
+    then
+     case "${1}" in
+      restart|reload)
+       svc_${svctoact} stop; sleep 1; svc_${svctoact} start
+      ;;
+      *)
+       meargs=$(echo "${@}" | awk '{t=$1; $1=$2; $2=t; print;}')
+       svc_$meargs
+      ;;
+     esac
+    else
+     ainitmes "service ${2} does not exist."; failprompt
+     exit 1
+   fi
+  fi
+ ;;
+ *)
+  helpthing
+ ;;
+esac

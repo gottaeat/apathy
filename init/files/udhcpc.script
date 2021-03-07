@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/init/bin/funcs
+. /mss/init/files/funcs
 export broadcast dns domain interface ip mask metric router subnet
 
 deconfig(){ ip -4 addr flush dev $interface;}

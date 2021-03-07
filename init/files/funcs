@@ -1,0 +1,85 @@
+#!/mss/bin/sh
+# 1 > prerequisites
+umask 022
+export PATH="/mss/init/bin:/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
+
+# 2 > colors
+ c_res="\033[0;39m"
+cl_blk="\033[0;30m" cb_blk="\033[1;30m"
+cl_red="\033[0;31m" cb_red="\033[1;31m"
+cl_grn="\033[0;32m" cb_grn="\033[1;32m"
+cl_yel="\033[0;33m" cb_yel="\033[1;33m"
+cl_blu="\033[0;34m" cb_blu="\033[1;34m"
+cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
+cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
+cl_whi="\033[0;37m" cb_whi="\033[1;37m"
+
+# 3 > prompts
+ sbefore="    "
+ pbefore="  "
+cur_zero="\\033[0G"
+  s_fail="${cb_red}f${c_res}"
+  s_info="${cb_blu}i${c_res}"
+  s_succ="${cb_grn}s${c_res}"
+   s_arm="${cb_cyn}└${c_res}"
+
+ainit_nc()  { printf "\n";}
+ainitmes()  { printf "${sbefore}${@}";}
+ainitusage(){ printf "${sbefore}usage: ${@}.\n";}
+ainitsvc()  { printf "${sbefore}${cb_blu}${1}${c_res} ${2}.";}
+failprompt(){ printf "${cur_zero}${pbefore}${s_fail}\n";}
+infoprompt(){ printf "${cur_zero}${pbefore}${s_info}\n";}
+succprompt(){ printf "${cur_zero}${pbefore}${s_succ}\n";}
+armprompt() { printf "${cur_zero}${pbefore}${s_arm}\n";}
+
+# 4 > funcs
+evalret(){
+ local exitval="${?}"
+
+ if [ ${exitval} -eq 0 ]
+  then succprompt
+  else
+   failprompt
+   ainitmes "${cb_red}service exited with ${cb_grn}${exitval}${c_res}."; armprompt
+ fi
+}
+
+ainit_mount(){
+ mountpoint $4 >/dev/null 2>&1 \
+  && mount -o "remount,$1" -t "$2" "$3" "$4" \
+  || mount -o         "$1" -t "$2" "$3" "$4"
+}
+
+banner(){
+   datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
+    kerver="$(uname -r)"
+    kerdat="$(uname -v | awk '{print tolower($4)$5,$6}')"
+   datefmt="${cb_grn}${datefmt}${c_res}"
+ kerdatfmt="${cb_blu}(${c_res}${cb_red}${kerdat}${cb_blu})${c_res}"
+ kerverfmt="${cb_grn}k${cb_blu}:${c_res} ${kerver}"
+ clear
+
+ ainit_nc; ainit_nc
+ ainitmes "${cb_blu}apathy ${cb_red}musl ${cb_cyn}1.2 - ${datefmt}"; ainit_nc
+ ainitmes "${kerverfmt} ${kerdatfmt}";                               ainit_nc
+ ainit_nc
+}
+
+ainit_kill(){
+ pidlist="$(pgrep -x ${1})"
+ if [ -z "${pidlist}" ]
+  then
+   failprompt
+   ainitmes "${cb_red}no proccess found to kill${c_res}."; armprompt
+  else
+   case "${2}" in
+    kernel) kill -HUP ${pidlist} >/dev/null 2>&1; evalret ;;
+    *)      kill -15  ${pidlist} >/dev/null 2>&1; evalret ;;
+   esac
+ fi
+}
+
+if [ "$(id -u)" -ne 0 ]; then
+ ainitmes "this script must be run as uid 0, exiting."; failprompt
+ exit 1
+fi

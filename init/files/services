@@ -1,0 +1,433 @@
+# 0 > include device specific vars
+. /mss/init/files/device.conf
+
+# 1 > service specific functions
+# 1.1 > nfs
+stopnfsbase(){
+ ainitsvc "nfs" "stopping rpcbind"
+ ainit_kill rpcbind
+
+ ainitsvc "nfs" "stopping rpc.statd"
+ ainit_kill rpc.statd
+ if [ -f /var/run/rpc.statd.pid ]; then rm -f /var/run/rpc.statd.pid; fi
+}
+
+startnfsbase(){
+ ainitsvc "nfs" "starting rpcbind"
+  rpcbind
+ evalret
+
+ ainitsvc "nfs" "starting rpc.statd"
+  rpc.statd -p 31310 -o 31311 --no-notify
+ evalret
+}
+
+# 2 > services themselves
+# 2.1 > dnscrypt-proxy
+svc_dnscrypt(){
+ case "$1" in
+  start)
+   ainitsvc "dnscrypt" "starting"
+    cat > /etc/resolv.conf << "EOF"
+nameserver 127.0.0.1
+options edns0
+EOF
+    /opt/dnscrypt-proxy/dnscrypt-proxy &
+   evalret
+  ;;
+  stop)
+   ainitsvc "dnscrypt" "stopping"
+    cat > /etc/resolv.conf << "EOF"
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+EOF
+    ainit_kill dnscrypt-proxy
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.2 > gpm
+svc_gpm(){
+case "$1" in
+ start)
+  ainitsvc "gpm" "starting"
+   gpm -m /dev/input/mice -t imps2 >/dev/null 2>&1
+  evalret
+ ;;
+ stop)
+  ainitsvc "gpm" "stopping"
+  ainit_kill gpm
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac
+}
+
+# 2.3 > iptables
+svc_iptables(){
+ case "$1" in
+  start)
+   ainitsvc "iptables" "starting"
+    . /mss/init/files/iptables.script
+   evalret
+  ;;
+  stop)
+   ainitsvc "iptables" "clearing"
+    iptables --policy INPUT   ACCEPT  &&
+    iptables --policy OUTPUT  ACCEPT  &&
+    iptables --policy FORWARD ACCEPT  &&
+    iptables --flush                  &&
+    iptables -t mangle --flush        &&
+    iptables --delete-chain           &&
+    iptables -t mangle --delete-chain
+   evalret
+  ;;
+  status)
+   iptables --numeric --list
+   iptables -t mangle --numeric --list
+  ;;
+  *)
+   ainitusage "{start|stop|status}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.4 > mpd
+svc_mpd(){
+ case "$1" in
+  start)
+   ainitsvc "mpd" "starting mpd"
+    printf '' > /var/lib/mpd/log
+    doas -u mpd /usr/bin/mpd /etc/mpd.conf >/dev/null 2>&1
+   evalret
+ 
+   ainitsvc "mpd" "setting up"
+    mpc repeat  on  >/dev/null 2>&1 &&
+    mpc random  off >/dev/null 2>&1 &&
+    mpc single  off >/dev/null 2>&1 &&
+    mpc consume off >/dev/null 2>&1
+   evalret
+ 
+   ainitsvc "mpd" "starting ympd"
+    doas -u mpd ympd >/dev/null 2>&1 &
+   evalret
+ 
+   ainitsvc "mpd" "starting mpdas"
+    doas -u mss mpdas >/dev/null 2>&1 &
+   evalret
+  ;;
+  stop)
+   ainitsvc "mpd" "stopping ympd"
+   ainit_kill ympd
+ 
+   ainitsvc "mpd" "stopping mpdas"
+   ainit_kill mpdas
+ 
+   ainitsvc "mpd" "stopping mpd"
+   ainit_kill mpd
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.5 > network
+svc_network(){
+ case "${1}" in
+  start)
+   if [ -z "${2}" ]
+    then
+     ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
+    else _iface="${2}"
+   fi
+ 
+   if [ "$(ip addr | grep ${_iface} | grep inet)" ]; then
+    ainitmes "${_iface} has an ip assinged, exiting"; failprompt; exit 1
+   fi
+ 
+   case "${_iface}" in
+    wlan0)
+     if [ -z "${4}" ]
+      then
+       ainitmes "specify a wpaconf with \$4, exiting."; failprompt; exit 1
+      else
+       wpaconf="/etc/wpa_supplicant/${4}.conf"
+ 
+      if [ -f "${wpaconf}" ]
+       then
+        ainitsvc "network" "invoking wpa_supplicant"
+         wpa_supplicant -B -i "${_iface}" -c "${wpaconf}" >/dev/null 2>&1
+        evalret
+       else
+        ainitmes "wpaconf file not found, exiting."; failprompt; exit 1
+      fi
+     fi
+    ;;
+    eth0)
+     ainitsvc "network" "selected eth0"; succprompt
+    ;;
+    *)
+     ainitmes "interface ${_iface} is not understood, exiting."; failprompt
+     exit 1
+    ;;
+   esac
+ 
+   if [ -z "${3}" ]
+    then
+     ainitmes "specify an ip setting with \$3, exiting."; failprompt; exit 1
+    else
+     case "${3}" in
+      static)
+       ainitsvc "network" "adding ${dev_sip} to ${_iface}"
+        ip addr add "${dev_sip}/${dev_pref}" broadcast "${dev_bcast}" dev "${_iface}"
+       evalret
+ 
+       ainitsvc "network" "bringing ${_iface} up"
+        ip link set "${_iface}" up
+       evalret
+ 
+       ainitsvc "network" "setting up the default gateway"
+        ip route add default via "${dev_gway}" dev "${_iface}"
+       evalret
+      ;;
+      dhcp)
+       ainitsvc "network" "invoking udhcpc"
+        udhcpc \
+         -i "${_iface}" \
+         -s "/mss/init/config/udhcpc.script" \
+         -p "/run/udhcpc.pid"                \
+         -B                                  \
+         -t 10 -T 3                          \
+         -n                                  \
+         -R                                  \
+         -a                                  \
+         -S >/dev/null 2>&1 &
+        evalret
+      ;;
+      *)
+       ainitmes "${3} is not understood, exiting."; failprompt; exit 1 
+      esac
+   fi
+  ;;
+  stop)
+   if [ -z "${2}" ]
+    then
+     ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
+    else
+     _iface="${2}"
+ 
+    if [ "$(ip addr | grep ${_iface} | grep inet)" ]; 
+     then
+       ainitsvc "network" "flushing ${_iface}"
+        ip -4 addr flush dev "${_iface}"
+       evalret
+       ainitsvc "network" "bringing down ${_iface}"
+        ip link set "${_iface}" down
+       evalret
+      else
+       ainitmes "no ip is assigned to ${_iface}, exiting."; failprompt; exit 1
+     fi
+ 
+      wspid="$(pidof wpa_supplicant 2>/dev/null)"
+     dhcpid="$(pidof udhcpc         2>/dev/null)"
+ 
+     if [ ! -z "${dhcpid}" ]; then
+      ainitsvc "network" "killing udhcpc"
+      kill -USR2 "${dhcpid}"; sleep 1; ainit_kill udhcpc
+     fi
+ 
+     if [ ! -z "${wspid}" ]; then
+      ainitsvc "network" "killing wpa_supplicant"
+      ainit_kill wpa_supplicant
+     fi
+   fi
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.6 > nfs
+svc_nfs(){
+ case "$1" in
+  start)
+   case "${2}" in
+    server)
+     if [ ! -f /etc/exports ]
+      then
+       ainitmes "/etc/exports does not exist."; failprompt
+       exit 1
+     elif [ "$(cat /etc/exports | wc -l)" -eq 0 ]
+      then
+       ainitmes "/etc/exports is empty."; failprompt
+       exit 1
+     fi
+
+     startnfsbase 
+ 
+     ainitsvc "nfs" "starting rpc.nfsd"
+      rpc.nfsd -p 2049 8
+     evalret
+ 
+     ainitsvc "nfs" "starting rpc.mountd"
+      rpc.mountd -p 31312
+     evalret
+ 
+     ainitsvc "nfs" "running exportfs"
+      exportfs -ra >/dev/null 2>&1
+     evalret
+    ;;
+    client)
+     startnfsbase
+    ;;
+    *)
+     ainitmes "specify either client or server as \$2."; failprompt
+     exit 1
+    ;;
+   esac
+  ;;
+  stop)
+   case "${2}" in
+    server)
+     ainitsvc "nfs" "clearing exportfs"
+      exportfs -au >/dev/null 2>&1
+     evalret
+
+     stopnfsbase     
+ 
+     ainitsvc "nfs" "stopping kernel nfsd instances"
+     ainit_kill nfsd kernel
+ 
+     ainitsvc "nfs" "stopping rpc.mountd"
+     ainit_kill rpc.mountd
+    ;;
+    client)
+     stopnfsbase
+    ;;
+    *)
+    ainitmes "specify either client or server as \$2."; failprompt
+    exit 1
+    ;;
+   esac
+  ;;
+  reload)
+   if [ -z "$(pgrep nfsd)" ]
+    then
+     ainitmes "no nfsd kernel threads found."; failprompt
+     exit 1
+    else
+     ainitsvc "nfs" "reloading exportfs"
+      exportfs -ra >/dev/null 2>&1
+     evalret
+   fi
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.7 > ntpd
+svc_ntpd(){
+ case "$1" in
+  start)
+   ainitsvc "ntpd" "setting the time"
+    ntpd -n -q >/dev/null 2>&1 &
+   evalret
+   ainitsvc "ntpd" "sys -> hwclock"
+    hwclock --systohc
+   evalret
+  ;;
+  stop)
+   ainitsvc "ntpd" "sys -> hwclock"
+    hwclock --systohc
+   evalret
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.8 > sshd
+svc_sshd(){
+ case "$1" in
+  start)
+   ainitsvc "sshd" "starting"
+    /usr/bin/sshd >/dev/null 2>&1
+   evalret
+  ;;
+  stop)
+   ainitsvc "sshd" "stopping"
+   ainit_kill sshd
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.9 > thinkfan
+svc_thinkfan(){
+ case "$1" in
+  start)
+   ainitsvc "thinkfan" "starting"
+    thinkfan -s 5 -n -q >/dev/null 2>&1 &
+   evalret
+  ;;
+  stop)
+   ainitsvc "thinkfan" "stopping"
+   ainit_kill thinkfan
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.10 > transmision
+svc_transmission(){
+ case "$1" in
+  start)
+   ainitsvc "transmission" "starting"
+    doas -u mss \
+     transmission-daemon \
+     -g /home/mss/.config/transmission-daemon \
+     --allowed "127.0.0.1,192.168.*.*"        \
+     --port    "9091"                         \
+     --no-auth                                \
+     --no-watch-dir                           \
+     --no-incomplete-dir                      \
+     --dht                                    \
+     --utp                                    \
+     --paused                                 \
+     --portmap                                \
+     --global-seedratio 0                     \
+     --pid-file "/run/transmission.pid"
+   evalret
+  ;;
+  stop)
+   ainitsvc "transmission" "stopping"
+   ainit_kill transmission-daemon
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}

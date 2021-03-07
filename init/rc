@@ -1,19 +1,15 @@
 #!/mss/bin/sh
-# a1 >> set vars
-bitsdir="/mss/init"
-   sdir="${bitsdir}/services"
+. /mss/init/files/funcs
+. /mss/init/files/device.conf
 
-# a2 >> source the funcs
-. "${bitsdir}"/bin/funcs
-
-# a2 >> shut dmesg up for the love of god
+# 1 > silence dmesg
 dmesg --console-off
 
-# b1 >> funcs
+# 2 > funcs
 initboi(){
  ctrlaltdel -s; banner
 
- ainitmes "mounting ${c_lcyan}pseudo${c_reset} filesystems."
+ ainitmes "mounting ${cb_cyn}pseudo${c_res} filesystems."
   ainit_mount nosuid,noexec,nodev    proc     proc /proc &&
   ainit_mount nosuid,noexec,nodev    sysfs    sys  /sys  &&
   ainit_mount defaults               tmpfs    run  /run  &&
@@ -26,96 +22,82 @@ initboi(){
   ainit_mount gid=5,mode=620 devpts devpts /dev/pts
  evalret
 
- ainitmes "setting ${c_lcyan}standard streams${c_reset}."
+ ainitmes "setting ${cb_cyn}standard streams${c_res}."
   ln -s /proc/self/fd /dev/fd     &&
   ln -s fd/0          /dev/stdin  &&
   ln -s fd/1          /dev/stdout &&
   ln -s fd/2          /dev/stderr
  evalret
 
- ainitmes "starting ${c_lcyan}udev${c_reset}."
+ ainitmes "starting ${cb_cyn}udev${c_res}."
   udevd   -d                           &&
   udevadm trigger -c add -t subsystems &&
   udevadm trigger -c add -t devices    &&
   udevadm settle
  evalret
 
- ainitmes "remounting ${c_lcyan}rootfs${c_reset} (ro)."
-  mount -o remount,ro / >/dev/null 2>&1
+ ainitmes "remounting ${cb_cyn}rootfs${c_res} (ro)."
+  mount -o remount,ro /     >/dev/null 2>&1
  evalret
 
- ainitmes "running ${c_lcyan}fsck${c_reset}."
+ ainitmes "running ${cb_cyn}fsck${c_res}."
   fsck -ATat noopts=_netdev >/dev/null 2>&1
  evalret
 
- ainitmes "remounting ${c_lcyan}rootfs${c_reset} (rw)."
+ ainitmes "remounting ${cb_cyn}rootfs${c_res} (rw)."
   mount -o remount,rw /     >/dev/null 2>&1
  evalret
 
- ainitmes "mounting the entries in ${c_lcyan}fstab${c_reset}."
+ ainitmes "mounting the entries in ${cb_cyn}fstab${c_res}."
   mount -a                  >/dev/null 2>&1
  evalret
 
- ainitmes "activating ${c_lcyan}swap${c_reset}."
+ ainitmes "activating ${cb_cyn}swap${c_res}."
   swapon -a                 >/dev/null 2>&1
  evalret
 
- ainitmes "seeding ${c_lcyan}random${c_reset}."
+ ainitmes "seeding ${cb_cyn}random${c_res}."
   [ -f /var/tmp/random-seed ] && cat /var/tmp/random-seed > /dev/urandom &&
   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
  evalret
 
- ainitmes "bringing up the ${c_lcyan}loopback interface${c_reset}."
+ ainitmes "bringing up the ${cb_cyn}loopback interface${c_res}."
   ip link set up dev lo
  evalret
 
- ainitmes "setting the ${c_lcyan}hostname${c_reset}."
-  read hname < /etc/hostname && echo "$hname" > /proc/sys/kernel/hostname
+ ainitmes "setting the ${cb_cyn}hostname${c_res}."
+  cat /etc/hostname > /proc/sys/kernel/hostname
  evalret
 
- ainitmes "cleaning ${c_lcyan}/tmp${c_reset}."
+ ainitmes "cleaning ${cb_cyn}/tmp${c_res}."
   find /tmp -xdev -mindepth 1 ! -name lost+found -delete
  evalret
 
- ainitmes "restoring ${c_lcyan}alsa volume states${c_reset}."
+ ainitmes "restoring ${cb_cyn}alsa volume states${c_res}."
   alsactl restore >/dev/null 2>&1
  evalret
 
- ainitmes "setting up the ${c_lcyan}console${c_reset}."
-  setfont  ter-v14n -m 8859-1 && loadkeys us >/dev/null 2>&1
+ ainitmes "setting up the ${cb_cyn}console${c_res}."
+  setfont "${dev_font}" -m 8859-1 && loadkeys us >/dev/null 2>&1
  evalret
 
- ainitmes "starting the ${c_lcyan}log daemons${c_reset}."
+ ainitmes "starting the ${cb_cyn}log daemons${c_res}."
   syslogd && klogd
  evalret
 
- ainitmes "starting ${c_lcyan}earlyoom${c_reset}."
+ ainitmes "starting ${cb_cyn}earlyoom${c_res}."
   earlyoom -p -r 0 -M 102400,5120 -S 512000,256000 >/dev/null 2>&1 &
  evalret
 
  ainit_nc
- ainitmes "${c_blue}services${c_reset}:"; ainit_nc
+ ainitmes "${cb_red}services${c_res}:"; ainit_nc
 
- $sdir/thinkfan		start
- $sdir/gpm		start
- $sdir/iptables		start
- $sdir/network		start wlan0 static vauxhall
-#$sdir/nfs		start client
- $sdir/mpd		start
- $sdir/dnscrypt-proxy	start
- $sdir/ntp		start
-#$sdir/transmission	start
- $sdir/ssh		start
+ startsvcs
 
- /mss/bin/sh -c '/mss/init/bin/respawn \
-                 /mss/init/bin/getty   \
-                 /dev/tty1 linux' &>/dev/null &
- /mss/bin/sh -c '/mss/init/bin/respawn \
-                 /mss/init/bin/getty   \
-                 /dev/tty2 linux' &>/dev/null &
- /mss/bin/sh -c '/mss/init/bin/respawn \
-                 /mss/init/bin/getty   \
-                 /dev/tty3 linux' &>/dev/null &
+ for n in 1 2 3; do
+  /mss/bin/sh -c "/mss/init/bin/respawn \
+                   /mss/init/bin/getty /dev/tty${n} linux" &>/dev/null &
+ done
 
  ainit_nc
 }
@@ -123,34 +105,29 @@ initboi(){
 goingdown(){
  stty onlcr; banner
 
- $sdir/thinkfan		stop
- $sdir/ssh		stop
-#$sdir/nfs		stop client
- $sdir/dnscrypt-proxy	stop
- $sdir/network		stop wlan0
- $sdir/ntp		stop
+ stopsvcs
 
- ainitmes "bringing down the ${c_lcyan}loopback interface${c_lcyan}."
+ ainitmes "bringing down the ${cb_cyn}loopback interface${cb_cyn}."
   ip link set lo down >/dev/null 2>&1
  evalret
 
- ainitmes "saving ${c_lcyan}alsa volume states${c_reset}."
+ ainitmes "saving ${cb_cyn}alsa volume states${c_res}."
   alsactl store   >/dev/null 2>&1
  evalret
 
- ainitmes "saving the ${c_lcyan}random seed${c_reset}."
+ ainitmes "saving the ${cb_cyn}random seed${c_res}."
   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
  evalret
 
- ainitmes "terminating ${c_lcyan}remaining processes${c_reset}."
+ ainitmes "terminating ${cb_cyn}remaining processes${c_res}."
   killall5 -s TERM && sleep 3 && killall5 -s KILL
  evalret
 
- ainitmes "deactivating ${c_lcyan}swap${c_reset}."
+ ainitmes "deactivating ${cb_cyn}swap${c_res}."
   swapoff -a >/dev/null 2>&1
  evalret
 
- ainitmes "unmounting all ${c_lcyan}mounted devices${c_reset}."
+ ainitmes "unmounting all ${cb_cyn}mounted devices${c_res}."
   umount -f -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
  evalret
 }
