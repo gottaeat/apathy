@@ -25,7 +25,7 @@ case "${1}" in
    if [ "$(printf "${svcnames}\n" | grep "${svctoact}")" ]
     then
      case "${1}" in
-      restart|reload)
+      restart)
        svc_${svctoact} stop; sleep 1; svc_${svctoact} start
       ;;
       *)
