@@ -3,7 +3,7 @@
 
    host="$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)"
 repodir="/mss/repo"
-localdb="/mss/packages.txt"
+localdb="/mss/files/packages.txt"
 
 case "${host}" in
  X220) repodb="${repodir}/pkg-management/packages-x220.txt" ;;
