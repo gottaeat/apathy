@@ -1,0 +1,12 @@
+/usr/bin/dnsdomainname
+/usr/bin/ftp
+/usr/bin/hostname
+/usr/bin/ifconfig
+/usr/bin/ping
+/usr/bin/ping6
+/usr/bin/telnet
+/usr/bin/tftp
+/usr/bin/traceroute
+
+/usr/share/info
+/usr/share/man
