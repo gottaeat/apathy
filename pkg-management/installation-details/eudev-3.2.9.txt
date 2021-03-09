@@ -1,21 +1,17 @@
 /etc/udev
 
-/lib/libudev.so.1
-/lib/libudev.so.1.6.3
-
-/lib/udev
-
-/sbin/udevadm
-/sbin/udevd
+/usr/bin/udevadm
+/usr/bin/udevd
 
 /usr/include/libudev.h
 /usr/include/udev.h
 
 /usr/lib/libudev.la
 /usr/lib/libudev.so
+/usr/lib/libudev.so.1
+/usr/lib/libudev.so.1.6.3
+
+/usr/lib/udev
 
 /usr/lib/pkgconfig/libudev.pc
 /usr/share/pkgconfig/udev.pc
-
-/usr/share/doc
-/usr/share/man
