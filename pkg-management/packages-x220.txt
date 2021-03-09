@@ -85,7 +85,7 @@ i  apathy  . libssh2                   1.9.0
 i  apathy  . cmake                     3.17.1
 i  alpine  .. libuv                    1.34.1
 i  apathy  .. libarchive               3.4.1
-i  alpine  . usbutils                  012
+i  apathy  . usbutils                  013
 i  alpine  .. libusb                   1.0.23
 i  arch    . lua                       5.2.4
 i  alpine  . gpm                       1.20.7
