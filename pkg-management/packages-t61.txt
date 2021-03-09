@@ -32,7 +32,7 @@ r  mlfs    . inetutils                 1.9.4
 r  mlfs    . intltool                  0.51.0
 i  mlfs    . iproute2                  5.4.0
 i  mlfs    . kbd                       2.2.0
-i  mlfs    . kmod                      26
+r  mlfs    . kmod                      26
 i  apathy  . less                      563
 i  mlfs    . libcap                    2.27
 i  mlfs    . libffi                    3.2.1
