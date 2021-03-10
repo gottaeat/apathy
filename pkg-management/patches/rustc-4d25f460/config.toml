@@ -1,0 +1,76 @@
+changelog-seen        = 2
+
+[llvm]
+link-shared           = true
+
+[build]
+build                 = 'x86_64-apathy-linux-musl'
+host                  = ['x86_64-apathy-linux-musl']
+target                = ['x86_64-apathy-linux-musl']
+
+cargo                 = '/opt/rustc-1.50.0/bin/cargo'
+rustc                 = '/opt/rustc-1.50.0/bin/rustc'
+rustfmt               = '/opt/rustc-1.50.0/bin/rustfmt'
+python                = 'python3'
+
+extended              = true
+tools                 = ['cargo','rustfmt']
+
+local-rebuild         = false
+low-priority          = false
+full-bootstrap        = false
+print-step-timings    = false
+verbose               = 0
+
+docs                  = false
+compiler-docs         = false
+submodules            = false
+locked-deps           = true
+vendor                = true
+sanitizers            = false
+profiler              = false
+cargo-native-static   = false
+
+[install]
+prefix                = '/opt/rustc-4d25f460'
+
+[rust]
+channel               = 'stable'
+
+optimize              = true
+codegen-units         = 1
+codegen-units-std     = 1
+backtrace             = false
+incremental           = false
+parallel-compiler     = false
+
+default-linker        = 'clang'
+llvm-libunwind        = 'system'
+llvm-tools            = true
+lld                   = false
+use-lld               = false
+
+rpath                 = false
+codegen-tests         = false
+deny-warnings         = true
+jemalloc              = false
+
+debug                 = false
+debug-assertions      = false
+debug-assertions-std  = false
+debug-logging         = false
+debuginfo-level       = 0
+debuginfo-level-rustc = 0
+debuginfo-level-std   = 0
+debuginfo-level-tools = 0
+debuginfo-level-tests = 0
+
+[target.x86_64-apathy-linux-musl]
+llvm-config           = '/opt/llvm-11.1.0/bin/llvm-config'
+crt-static            = false
+
+cc                    = 'clang'
+cxx                   = 'clang++'
+ar                    = 'llvm-ar'
+ranlib                = 'llvm-ranlib'
+linker                = 'clang'
