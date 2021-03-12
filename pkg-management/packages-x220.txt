@@ -373,9 +373,9 @@ i  apathy  .. libtirpc                 1.3.1
 i  apathy  .. rpcbind                  1.2.5
 i  apathy  . openssl                   1.1.1j
 i  apathy  . mpdas                     c81c480
-i  apathy  . chromium                  88.0.4324.190
-i  apathy  .. nss                      3.61
-i  apathy  ... nspr                    4.29
+r  apathy  . chromium                  88.0.4324.190
+r  apathy  .. nss                      3.61
+r  apathy  ... nspr                    4.29
 i  apathy  . busybox                   1.33.0
 b  bbox    .. ash                      1.33.0
 b  bbox    .. bash                     1.33.0
