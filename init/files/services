@@ -23,34 +23,7 @@ startnfsbase(){
 }
 
 # 2 > services themselves
-# 2.1 > dnscrypt-proxy
-svc_dnscrypt(){
- case "$1" in
-  start)
-   ainitsvc "dnscrypt" "starting"
-    cat > /etc/resolv.conf << "EOF"
-nameserver 127.0.0.1
-options edns0
-EOF
-    /opt/dnscrypt-proxy/dnscrypt-proxy &
-   evalret
-  ;;
-  stop)
-   ainitsvc "dnscrypt" "stopping"
-    cat > /etc/resolv.conf << "EOF"
-nameserver 1.1.1.1
-nameserver 1.0.0.1
-EOF
-    ainit_kill dnscrypt-proxy
-  ;;
-  *)
-   ainitusage "{start|stop}"
-   exit 1
-  ;;
- esac
-}
-
-# 2.2 > gpm
+# 2.1 > gpm
 svc_gpm(){
 case "$1" in
  start)
@@ -69,7 +42,7 @@ case "$1" in
 esac
 }
 
-# 2.3 > iptables
+# 2.2 > iptables
 svc_iptables(){
  case "$1" in
   start)
@@ -99,7 +72,7 @@ svc_iptables(){
  esac
 }
 
-# 2.4 > mpd
+# 2.3 > mpd
 svc_mpd(){
  case "$1" in
   start)
@@ -140,7 +113,7 @@ svc_mpd(){
  esac
 }
 
-# 2.5 > network
+# 2.4 > network
 svc_network(){
  case "${1}" in
   start)
@@ -258,7 +231,7 @@ svc_network(){
  esac
 }
 
-# 2.6 > nfs
+# 2.5 > nfs
 svc_nfs(){
  case "$1" in
   start)
@@ -339,7 +312,7 @@ svc_nfs(){
  esac
 }
 
-# 2.7 > ntpd
+# 2.6 > ntpd
 svc_ntpd(){
  case "$1" in
   start)
@@ -362,7 +335,7 @@ svc_ntpd(){
  esac
 }
 
-# 2.8 > sshd
+# 2.7 > sshd
 svc_sshd(){
  case "$1" in
   start)
@@ -381,7 +354,7 @@ svc_sshd(){
  esac
 }
 
-# 2.9 > thinkfan
+# 2.8 > thinkfan
 svc_thinkfan(){
  case "$1" in
   start)
@@ -400,7 +373,7 @@ svc_thinkfan(){
  esac
 }
 
-# 2.10 > transmision
+# 2.9 > transmision
 svc_transmission(){
  case "$1" in
   start)
