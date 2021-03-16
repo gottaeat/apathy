@@ -1,0 +1,10 @@
+/usr/include/pipeline.h
+
+/usr/lib/libpipeline.la
+/usr/lib/libpipeline.so
+/usr/lib/libpipeline.so.1
+/usr/lib/libpipeline.so.1.5.1
+
+/usr/lib/pkgconfig/libpipeline.pc
+
+/usr/share/man
