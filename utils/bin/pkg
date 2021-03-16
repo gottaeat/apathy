@@ -28,7 +28,6 @@ info(){
    awk '/'$1'/ { gsub(/^b/,"busybox:   ");   \
                  gsub(/^i/,"installed: ");   \
                  gsub(/^o/,"ondemand:  ");   \
-                 gsub(/^r/,"removed:   ");   \
                  print $1,"("$2")\t",$4,$5}' \
                  "${localdb}"
  fi
@@ -75,7 +74,6 @@ stats(){
  
     partsize="$(df / | awk 'NR==2 {print $3/1024"/"$2/1024"M"}')"
       c_inst="$(grep ^i "${localdb}" | wc -l)"
-      c_rmvd="$(grep ^r "${localdb}" | wc -l)"
       c_ondm="$(grep ^o "${localdb}" | wc -l)"
 
  aprint_nc
