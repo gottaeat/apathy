@@ -1,0 +1,32 @@
+packages           things that depend on them
+--------           --------------------------
+gnutls		-> ffmpeg, gnupg
+libtasn1	-> p11-kit, gnutls
+libunistring	-> gnutls
+nettle		-> libarchive, gnutls
+p11-kit		-> gnutls
+
+# save installation details
+d build   p11-kit
+d build   nettle
+d build   libunistring
+d build   libtasn1d
+d build   gnutls
+d build   gnupg
+
+# act the purge
+d remove  p11-kit
+d remove  nettle
+d remove  libunistring
+d remove  libtasn1
+d remove  gnutls
+d remove  gnupg
+d remove  ffmpeg
+
+# rebuilding
+d rebuild ffmpeg
+d rebuild gnupg		-> w/ new recipe
+
+# final result
+removed: p11-kit nettle libunistring libtasn1 gnutls
+rebuilt: gnupg ffmpeg
