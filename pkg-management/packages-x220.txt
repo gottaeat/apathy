@@ -277,10 +277,10 @@ i  alpine  . lzip                      1.21
 i  alpine  .. zip                      30
 i  apathy  . gcompat                   1.0.0
 i  apathy  .. libucontext              0.11
-i  apathy  . sfeed                     git
+i  apathy  . sfeed                     git-892ec48a
 i  apathy  . vifm                      0.10.1
 i  apathy  . fim                       0.5-rc3
-i  apathy  . trackma                   git-20200117
+i  apathy  . trackma                   git-0a5170cc
 i  apathy  . slmenu                    0.1
 i  apathy  . st                        0.8.4
 i  alpine  . lz4                       1.9.2
