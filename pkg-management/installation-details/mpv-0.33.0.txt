@@ -3,6 +3,7 @@
 /usr/bin/mpv
 
 /usr/share/applications
+/usr/share/bash-completion
 /usr/share/doc
-/usr/share/icons
+/usr/share/icons/hicolor
 /usr/share/zsh
