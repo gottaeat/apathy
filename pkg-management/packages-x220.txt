@@ -77,9 +77,6 @@ i  alpine  . tmux                      3.0a
 i  apathy  .. libevent                 2.1.11
 i  apathy  . htop                      3.0.2
 i  alpine  . strace                    5.4
-i  alpine  . libnl                     1.1.4
-i  alpine  . iftop                     0.17
-i  alpine  .. libpcap                  1.9.1
 i  alpine  . sqlite                    3.30.1
 i  apathy  . python                    2.7.17
 i  apathy  . gnupg                     2.2.27
