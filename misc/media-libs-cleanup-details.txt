@@ -1,0 +1,33 @@
+packages          things that depend on them
+--------          --------------------------
+mpg123         -> mpd
+libarchive     -> mpv
+libshout       -> mpd
+libupnp        -> mpd
+audiofile      -> mpd
+libsamplerate  -> mpd, alsa-lib, alsa-utils
+
+# save installation details
+d build   mpg123
+d build   libarchive
+d build   libshout
+d build   libupnp
+d build   audiofile
+d build   libsamplerate
+d build   alsa-lib
+d build   alsa-plugins
+d build   alsa-utils
+
+# act the purge
+d remove  libarchive
+d rebuild mpv
+
+d remove  mpg123
+d remove  libshout
+d remove  libupnp
+d remove  audiofile
+d remove  libsamplerate
+
+d rebuild alsa-lib
+d rebuild alsa-utils
+d rebuild mpd

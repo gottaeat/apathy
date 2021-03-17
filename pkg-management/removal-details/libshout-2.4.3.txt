@@ -9,7 +9,6 @@
 /usr/lib/libshout.so.3.2.0
 
 /usr/lib/pkgconfig/shout.pc
-
 /usr/share/aclocal/shout.m4
 
 /usr/share/doc

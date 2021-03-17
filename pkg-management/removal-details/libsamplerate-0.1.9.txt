@@ -1,0 +1,13 @@
+/usr/bin/sndfile-resample
+
+/usr/include/samplerate.h
+
+/usr/lib/libsamplerate.a
+/usr/lib/libsamplerate.la
+/usr/lib/libsamplerate.so
+/usr/lib/libsamplerate.so.0
+/usr/lib/libsamplerate.so.0.1.8
+
+/usr/lib/pkgconfig/samplerate.pc
+
+/usr/share/doc
