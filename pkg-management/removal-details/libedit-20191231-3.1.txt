@@ -1,0 +1,12 @@
+/usr/include/editline
+/usr/include/histedit.h
+
+/usr/lib/libedit.a
+/usr/lib/libedit.la
+/usr/lib/libedit.so
+/usr/lib/libedit.so.0
+/usr/lib/libedit.so.0.0.63
+
+/usr/lib/pkgconfig/libedit.pc
+
+/usr/share/man

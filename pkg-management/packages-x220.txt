@@ -60,8 +60,6 @@ i  alpine  . lsof                      4.93.2
 i  alpine  . lm_sensors                3.6.0
 i  apathy  . curl                      7.75.0
 i  apathy  . git                       2.31-rc2
-i  alpine  .. pcre2                    10.34
-i  alpine  ... libedit                 20191231.3.1
 i  apathy  . openssh                   8.5_p1
 i  apathy  . libssh2                   1.9.0
 i  apathy  . cmake                     3.17.1
