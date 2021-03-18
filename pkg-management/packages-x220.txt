@@ -209,7 +209,7 @@ i  alpine  . libvorbis                 1.3.6
 i  alpine  .. libogg                   1.3.4
 i  apathy  . alsa-plugins              1.2.2
 i  apathy  . alsa-utils                1.2.3
-i  bmlfs   . flac                     1.3.3
+i  bmlfs   . flac                      1.3.3
 i  alpine  . faad2                     2.9.1
 i  alpine  . libass                    0.14.0
 i  alpine  . libmad                    0.15.1b
