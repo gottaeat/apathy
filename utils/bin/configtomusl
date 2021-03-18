@@ -35,7 +35,7 @@ case "${answerreplace}" in
 
   for sub in ${csub}; do
    aprint_ret "replacing ${cl_grn}$sub${c_res}."
-    cp "${muslcfgdir}"/config.sub-musl "${sub}"
+    cp "${muslcsub}"   "${sub}"
    evalret
   done
 
