@@ -1,4 +1,4 @@
-/bin/tar
+/usr/bin/tar
 
 /usr/libexec/rmt
 

@@ -1,0 +1,4 @@
+/usr/bin/rsync
+/usr/bin/rsync-ssl
+
+/usr/share/man

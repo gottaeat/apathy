@@ -1,0 +1,48 @@
+# > 1
+find \
+ /bin /lib /lib64 /mss/bin/ /mss/init/bin/ /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+# > 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -x $file 2>/dev/null \
+         | grep \
+            -e libacl \
+            -e libattr)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked.txt
+
+# > 2
+	/bin/sed
+	/usr/bin/coreutils
+	/usr/bin/patch
+	/usr/bin/rsync
+	/usr/bin/tar
+
+# > 2
+d bld coreutils
+d bld sed
+d bld tar
+d bld patch
+d bld rsync
+
+d rmv attr
+d rmv acl
+
+d rmv coreutils
+d rmv sed
+d rmv tar
+d rmv patch
+d rmv rsync
+
+d rbl coreutils
+d rbl sed
+d rbl tar
+d rbl patch
+
+# > 3
+d bld popt
+d rmv popt
+d rbl rsync

@@ -1,0 +1,10 @@
+/lib/libpopt.la
+/lib/libpopt.so
+/lib/libpopt.so.0
+/lib/libpopt.so.0.0.0
+
+/usr/include/popt.h
+
+/usr/lib/pkgconfig/popt.pc
+
+/usr/share/man
