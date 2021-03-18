@@ -1,6 +1,6 @@
 /usr/bin/tar
 
-/usr/lib/rmt
+/usr/libexec/rmt
 
 /usr/share/info
 /usr/share/man

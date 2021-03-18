@@ -99,7 +99,7 @@
 /usr/bin/whoami
 /usr/bin/yes
 
-/usr/lib/coreutils
+/usr/libexec/coreutils
 
 /usr/share/info
 /usr/share/man
