@@ -15,7 +15,6 @@ i  mlfs    . file                      5.37
 i  apathy  . findutils                 4.8.0
 i  mlfs    . flex                      2.6.4
 i  apathy  . gcc                       10.2.1-20210306
-i  mlfs    . gdbm                      1.18.1
 i  apathy  . gmp                       6.2.1
 i  mlfs    . gperf                     3.1
 i  apathy  . grep                      3.6
@@ -30,7 +29,7 @@ i  mlfs    . libffi                    3.2.1
 i  mlfs    . libtool                   2.4.6
 i  mlfs    . m4                        1.4.18
 i  alpine  . make                      4.3
-i  mlfs    . meson                     0.54.1
+i  apathy  . meson                     0.57.1
 i  apathy  . mpc                       1.2.1
 i  apathy  . mpfr                      4.1.0
 i  apathy  . musl                      1.2.2
@@ -38,10 +37,10 @@ i  mlfs    . musl-fts                  1.2.7
 i  mlfs    . musl-obstack              1.1
 i  apathy  . ncurses                   6.2
 i  apathy  . patch                     2.7.6
-i  mlfs    . perl                      5.30.1
+i  apathy  . perl                      5.32.1
 i  mlfs    . pkg-config                0.29.2
 i  mlfs    . procps-ng                 3.3.15
-i  apathy  . python                    3.8.2
+i  apathy  . python                    3.9.2
 i  apathy  . readline                  8.1
 i  apathy  . sed                       4.8
 i  mlfs    . shadow                    4.7
@@ -72,7 +71,6 @@ i  apathy  .. libevent                 2.1.11
 i  apathy  . htop                      3.0.2
 i  alpine  . strace                    5.4
 i  alpine  . sqlite                    3.30.1
-i  apathy  . python                    2.7.17
 i  apathy  . gnupg                     2.2.27
 i  alpine  .. npth                     1.6
 i  alpine  .. libgpg-error             1.36
@@ -137,8 +135,6 @@ i  apathy  . xcb-util-wm               0.4.1
 i  apathy  . xcb-util-cursor           0.1.3
 i  apathy  . mesa                      21.0.0
 i  bmlfs   .. libdrm                   2.4.100
-i  bmlfs   .. mako                     1.1.1
-i  bmlfs   ... markupsafe              1.1.1
 i  apathy  . xbitmaps                  1.1.2
 i  apathy  . iceauth                   1.0.8
 i  apathy  . luit                      1.1.1
@@ -220,7 +216,7 @@ i  apathy  . x264                      20191119-2245
 i  apathy  . x265                      3.4
 i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
-i  apathy  . youtube-dl                2021.03.03
+i  apathy  . youtube-dl                2021.03.14
 i  apathy  . compton                   5.1
 i  alpine  .. libev                    4.31
 i  apathy  . ffmpeg                    4.3.2

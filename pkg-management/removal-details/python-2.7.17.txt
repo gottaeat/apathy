@@ -6,7 +6,6 @@
 /usr/bin/smtpd.py
 
 /usr/include/python2.7
-/usr/lib/python2.7
 
 /usr/lib/libpython2.7.so
 /usr/lib/libpython2.7.so.1.0
@@ -14,5 +13,7 @@
 /usr/lib/pkgconfig/python-2.7.pc
 /usr/lib/pkgconfig/python.pc
 /usr/lib/pkgconfig/python2.pc
+
+/usr/lib/python2.7
 
 /usr/share/man
