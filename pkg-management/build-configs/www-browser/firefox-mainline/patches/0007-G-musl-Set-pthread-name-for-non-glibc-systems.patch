@@ -1,7 +1,7 @@
-From 1e60c8e747563b9be61f1b7e2e6ca8fa44ee437f Mon Sep 17 00:00:00 2001
+From 7893f292c83a679bcf4287ce725bb8740f9cf620 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:10:03 +0200
-Subject: [PATCH 15/36] musl: Set pthread name for non glibc systems
+Subject: [PATCH 15/32] musl: Set pthread name for non glibc systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -25,5 +25,5 @@ index fb8088ba84..9f7854baaa 100644
    MOZ_RELEASE_ASSERT(!rv);
  }
 -- 
-2.29.2
+2.30.1
 

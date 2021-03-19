@@ -1,7 +1,7 @@
-From 6899c8b30c11835163206a4379c5784093df6c81 Mon Sep 17 00:00:00 2001
+From 0ffe770507e85a525fb83dc50a369c106bacbe6a Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:32:39 +0200
-Subject: [PATCH 04/36] bmo#847568: Support system harfbuzz
+Subject: [PATCH 04/32] bmo#847568: Support system harfbuzz
 
 Allow building against system-wide harfbuzz.
 
@@ -39,10 +39,10 @@ index 5f7b5bb23e..449328ffaa 100644
      system_headers += [
          'jack/jack.h',
 diff --git a/dom/base/moz.build b/dom/base/moz.build
-index b00e233967..fa5f4ab306 100644
+index 6d6605ea4d..d1ba80a174 100644
 --- a/dom/base/moz.build
 +++ b/dom/base/moz.build
-@@ -549,6 +549,9 @@ if CONFIG["MOZ_BUILD_APP"] in ["browser", "mobile/android", "xulrunner"]:
+@@ -550,6 +550,9 @@ if CONFIG["MOZ_BUILD_APP"] in ["browser", "mobile/android", "xulrunner"]:
  if CONFIG["MOZ_X11"]:
      CXXFLAGS += CONFIG["TK_CFLAGS"]
  
@@ -129,10 +129,10 @@ index 993daf7ded..25a1e60074 100644
 +
  FINAL_LIBRARY = "xul"
 diff --git a/netwerk/dns/moz.build b/netwerk/dns/moz.build
-index 2005b340a4..e5c28ce282 100644
+index bc5ff1e58c..3c9fc2643a 100644
 --- a/netwerk/dns/moz.build
 +++ b/netwerk/dns/moz.build
-@@ -100,6 +100,9 @@ LOCAL_INCLUDES += [
+@@ -101,6 +101,9 @@ LOCAL_INCLUDES += [
      "/netwerk/protocol/http",
  ]
  
@@ -143,7 +143,7 @@ index 2005b340a4..e5c28ce282 100644
  
  if CONFIG["CC_TYPE"] in ("clang", "gcc"):
 diff --git a/toolkit/library/moz.build b/toolkit/library/moz.build
-index 5667347767..32b6a603cf 100644
+index 27d458f9f3..09f47deb44 100644
 --- a/toolkit/library/moz.build
 +++ b/toolkit/library/moz.build
 @@ -238,6 +238,9 @@ if CONFIG["MOZ_ANDROID_GOOGLE_VR"]:
@@ -157,7 +157,7 @@ index 5667347767..32b6a603cf 100644
      OS_LIBS += CONFIG["MOZ_JPEG_LIBS"]
  
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index 42b0c878ab..df002a54c2 100644
+index c27a99db3b..d288711cc6 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
 @@ -475,6 +475,15 @@ add_old_configure_assignment(
@@ -177,5 +177,5 @@ index 42b0c878ab..df002a54c2 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.29.2
+2.30.1
 

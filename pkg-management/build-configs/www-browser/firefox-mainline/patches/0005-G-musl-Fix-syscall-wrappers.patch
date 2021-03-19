@@ -1,7 +1,7 @@
-From 01c9bc0587a5b19e9e97e70fa2e4ce5bed0ee47c Mon Sep 17 00:00:00 2001
+From 8ce193f832d203825e175d9932ec76c540da3b80 Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:19:23 -0600
-Subject: [PATCH 13/36] musl: Fix syscall wrappers
+Subject: [PATCH 13/32] musl: Fix syscall wrappers
 
 musl defines p{read,write}64 to their non-suffixed equivalents to avoid
 duplication in its syscall wrappers. This breaks macro expansion here,
@@ -38,5 +38,5 @@ index 1abe0ba5b0..d6087a1674 100644
   * wrapper functions that convert them), we provide our own kernel data
   * structures for use by the system calls.
 -- 
-2.29.2
+2.30.1
 

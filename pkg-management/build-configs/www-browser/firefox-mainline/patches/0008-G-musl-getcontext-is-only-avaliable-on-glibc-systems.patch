@@ -1,7 +1,7 @@
-From 0309a9bccc5f638b419746025f2d6665766cb2de Mon Sep 17 00:00:00 2001
+From aecb3e4ea281bb9cf41acb16bc54eb0d1031552a Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:10:47 +0200
-Subject: [PATCH 16/36] musl: getcontext is only avaliable on glibc systems
+Subject: [PATCH 16/32] musl: getcontext is only avaliable on glibc systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/tools/profiler/core/platform-linux-android.cpp b/tools/profiler/core/platform-linux-android.cpp
-index a7e68bc15f..3ee96f4082 100644
+index 28561932af..03ca5631af 100644
 --- a/tools/profiler/core/platform-linux-android.cpp
 +++ b/tools/profiler/core/platform-linux-android.cpp
-@@ -546,8 +546,10 @@ static void PlatformInit(PSLockRef aLock) {}
+@@ -602,8 +602,10 @@ static void PlatformInit(PSLockRef aLock) {}
  ucontext_t sSyncUContext;
  
  void Registers::SyncPopulate() {
@@ -24,5 +24,5 @@ index a7e68bc15f..3ee96f4082 100644
  }
  #endif
 -- 
-2.29.2
+2.30.1
 

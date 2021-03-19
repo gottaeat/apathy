@@ -1,7 +1,7 @@
-From 063cef3981ac2df7f74e8932a70e6f311fe1425c Mon Sep 17 00:00:00 2001
+From cd065510ca37a5315052377a6dd726a954a1dc53 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:16:36 +0200
-Subject: [PATCH 02/36] Fortify sources properly
+Subject: [PATCH 02/32] Fortify sources properly
 
 Ensure we fortify properly, features.h is pulled in via fortification.
 
@@ -37,5 +37,5 @@ index 16c9b33329..df38d9336c 100644
  
  #endif /* _SDP_OS_DEFS_H_ */
 -- 
-2.29.2
+2.30.1
 

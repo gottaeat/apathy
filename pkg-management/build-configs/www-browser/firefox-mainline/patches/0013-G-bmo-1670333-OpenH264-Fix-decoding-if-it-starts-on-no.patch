@@ -1,7 +1,7 @@
-From e3695792e6a622533ebbc88390d52f2d23bd6d04 Mon Sep 17 00:00:00 2001
+From 6342898e2263fe16606f5f1fdcb431255fc73733 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Fri, 11 Dec 2020 15:37:38 +0100
-Subject: [PATCH 34/36] bmo#1670333: OpenH264: Fix decoding if it starts on non
+Subject: [PATCH 29/32] bmo#1670333: OpenH264: Fix decoding if it starts on non
  IDR I-frame
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -38,10 +38,10 @@ index 59bba16577..0304e3e89f 100644
              NS_WARNING(nsPrintfCString("Frame incorrectly marked as %skeyframe "
                                         "@ pts:%" PRId64 " dur:%" PRId64
 diff --git a/dom/media/platforms/PDMFactory.cpp b/dom/media/platforms/PDMFactory.cpp
-index cf2a54fa87..6546cfa291 100644
+index 9b66f7f12b..c73245aa26 100644
 --- a/dom/media/platforms/PDMFactory.cpp
 +++ b/dom/media/platforms/PDMFactory.cpp
-@@ -52,6 +52,8 @@
+@@ -59,6 +59,8 @@
  
  #include <functional>
  
@@ -49,8 +49,8 @@ index cf2a54fa87..6546cfa291 100644
 +
  namespace mozilla {
  
- // Set on the main thread, in content processes before any PDMFactory will ever
-@@ -522,9 +524,11 @@ void PDMFactory::CreateContentPDMs() {
+ extern already_AddRefed<PlatformDecoderModule> CreateNullDecoderModule();
+@@ -491,9 +493,11 @@ void PDMFactory::CreateContentPDMs() {
    }
  #endif
  #ifdef MOZ_FFMPEG
@@ -65,7 +65,7 @@ index cf2a54fa87..6546cfa291 100644
    }
  #endif
  #ifdef MOZ_WIDGET_ANDROID
-@@ -536,8 +540,9 @@ void PDMFactory::CreateContentPDMs() {
+@@ -505,8 +509,9 @@ void PDMFactory::CreateContentPDMs() {
  
    CreateAndStartupPDM<AgnosticDecoderModule>();
  
@@ -77,10 +77,10 @@ index cf2a54fa87..6546cfa291 100644
    }
  }
 diff --git a/dom/media/platforms/PDMFactory.h b/dom/media/platforms/PDMFactory.h
-index 7a72351cc5..500cd3f40c 100644
+index 3194e28d8d..71c21759e0 100644
 --- a/dom/media/platforms/PDMFactory.h
 +++ b/dom/media/platforms/PDMFactory.h
-@@ -116,6 +116,8 @@ class PDMFactory final {
+@@ -125,6 +125,8 @@ class PDMFactory final {
  
    DecoderDoctorDiagnostics::FlagsSet mFailureFlags;
  
@@ -90,5 +90,5 @@ index 7a72351cc5..500cd3f40c 100644
    static void EnsureInit();
    template <class T>
 -- 
-2.29.2
+2.30.1
 

@@ -1,7 +1,7 @@
-From 1ba5cfb684123a044a95f8559ff64db85254bf64 Mon Sep 17 00:00:00 2001
+From e644e1819e7b90a9677baa868afd3f522c3b9f63 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:09:26 +0200
-Subject: [PATCH 14/36] musl: Only use system heap reporter with glibc
+Subject: [PATCH 14/32] musl: Only use system heap reporter with glibc
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/xpcom/base/nsMemoryReporterManager.cpp b/xpcom/base/nsMemoryReporterManager.cpp
-index fc91deff3f..184ad36eb6 100644
+index c8322db99b..cc991fa31b 100644
 --- a/xpcom/base/nsMemoryReporterManager.cpp
 +++ b/xpcom/base/nsMemoryReporterManager.cpp
-@@ -646,6 +646,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
+@@ -647,6 +647,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
    return NS_OK;
  }
  
@@ -20,7 +20,7 @@ index fc91deff3f..184ad36eb6 100644
  #  define HAVE_SYSTEM_HEAP_REPORTER 1
  // Windows can have multiple separate heaps, but we should not touch non-default
  // heaps because they may be destroyed at anytime while we hold a handle.  So we
-@@ -678,6 +679,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
+@@ -679,6 +680,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
    *aSizeOut = heapSize;
    return NS_OK;
  }
@@ -29,5 +29,5 @@ index fc91deff3f..184ad36eb6 100644
  struct SegmentKind {
    DWORD mState;
 -- 
-2.29.2
+2.30.1
 
