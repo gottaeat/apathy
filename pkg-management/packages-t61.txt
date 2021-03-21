@@ -1,4 +1,3 @@
-i  mlfs    . argp-standalone           1.3
 i  apathy  . autoconf                  2.70
 i  apathy  . automake                  1.16.3
 i  mlfs    . bc                        2.4.0
@@ -20,9 +19,7 @@ i  mlfs    . gperf                     3.1
 i  apathy  . grep                      3.6
 i  mlfs    . groff                     1.22.4
 i  mlfs    . gzip                      1.10
-i  mlfs    . iana-etc                  2.30
 i  mlfs    . iproute2                  5.4.0
-i  mlfs    . kbd                       2.2.0
 i  apathy  . less                      563
 i  mlfs    . libcap                    2.27
 i  mlfs    . libffi                    3.2.1
@@ -33,8 +30,6 @@ i  apathy  . meson                     0.57.1
 i  apathy  . mpc                       1.2.1
 i  apathy  . mpfr                      4.1.0
 i  apathy  . musl                      1.2.2
-i  mlfs    . musl-fts                  1.2.7
-i  mlfs    . musl-obstack              1.1
 i  apathy  . ncurses                   6.2
 i  apathy  . patch                     2.7.6
 i  apathy  . perl                      5.32.1
@@ -45,7 +40,6 @@ i  apathy  . readline                  8.1
 i  apathy  . sed                       4.8
 i  mlfs    . shadow                    4.7
 i  apathy  . tar                       1.33
-i  mlfs    . tzdb                      2019c
 i  apathy  . util-linux                2.36.2
 i  apathy  . vim                       8.2.2549
 i  mlfs    . xz                        5.2.4
@@ -64,7 +58,6 @@ i  apathy  . usbutils                  013
 i  alpine  .. libusb                   1.0.23
 i  arch    . lua                       5.2.4
 i  alpine  . gpm                       1.20.7
-i  alpine  . tree                      1.8.0
 i  apathy  . rsync                     3.2.3
 i  alpine  . tmux                      3.0a
 i  apathy  .. libevent                 2.1.11
@@ -171,12 +164,8 @@ i  apathy  . encodings                 1.0.5
 i  apathy  . xkeyboard-config          2.28
 i  apathy  . xorg-server               1.20.10
 i  bmlfs   .. libepoxy                 1.5.3
-i  bmlfs   . xf86-input-evdev          2.10.6
-i  bmlfs   .. libevdev                 1.8.0
-i  bmlfs   .. mtdev                    1.1.5
-i  bmlfs   . xf86-input-libinput       0.29.0
-i  bmlfs   .. libinput                 1.15.0
-i  bmlfs   . xf86-input-synaptics      1.9.1
+i  apathy  . xf86-input-libinput       0.30.0
+i  apathy  .. libinput                 1.17.0
 i  apathy  . libva                     2.10.0
 i  bmlfs   . intel-vaapi-driver        2.4.0
 i  alpine  . xinit                     1.4.1
@@ -192,7 +181,6 @@ i  bmlfs   ... nasm                    2.14.02
 i  apathy  .. pango                    1.42.4
 i  bmlfs   ... fribidi                 1.0.8
 i  bmlfs   .. tiff                     4.1.0
-i  bmlfs   . libxkbcommon              0.8.4
 i  bmlfs   . imlib2                    1.6.1
 i  alpine  .. giflib                   5.2.1
 i  alpine  ... xmlto                   0.0.28
@@ -206,9 +194,7 @@ i  alpine  .. libogg                   1.3.4
 i  apathy  . alsa-plugins              1.2.2
 i  apathy  . alsa-utils                1.2.3
 i  bmlfs   . flac                      1.3.3
-i  alpine  . faad2                     2.9.1
 i  alpine  . libass                    0.14.0
-i  alpine  . libmad                    0.15.1b
 i  bmlfs   . libvpx                    1.8.2
 i  bmlfs   . opus                      1.3.1
 i  bmlfs   . taglib                    1.11.1
@@ -218,7 +204,6 @@ i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
 i  apathy  . youtube-dl                2021.03.14
 i  apathy  . compton                   5.1
-i  alpine  .. libev                    4.31
 i  apathy  . ffmpeg                    4.3.2
 i  alpine  .. lame                     3.100
 i  alpine  .. openjpeg                 2.3.1
@@ -252,7 +237,6 @@ i  apathy  . links                     2.20.2
 i  apathy  . wpa_supplicant            2.9
 i  alpine  .. libnl3                   3.5.0
 i  apathy  . lilo                      24.2
-i  arch    .. bin86                    0.16.21
 i  apathy  . samurai                   1.2
 i  apathy  . dwm                       6.2
 i  apathy  . irssi                     1.2.2
@@ -271,7 +255,6 @@ i  apathy  ... rustc                   1.50.0
 i  apathy  .. gtk+                     3.24.24
 i  apathy  . zstd                      1.4.9
 i  apathy  . earlyoom                  1.6.1-apathy
-i  alpine  . xdelta3                   3.1.0
 i  apathy  . transmission              3.0
 o  apathy  . ruby                      2.7.1
 i  apathy  . mkvtoolnix                48.0.0

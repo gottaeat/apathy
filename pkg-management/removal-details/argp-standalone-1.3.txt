@@ -1,0 +1,2 @@
+/usr/include/argp.h
+/usr/lib/libargp.a

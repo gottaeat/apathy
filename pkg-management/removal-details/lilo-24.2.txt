@@ -1,0 +1,5 @@
+/sbin/lilo
+/usr/bin/keytab-lilo.pl
+/usr/bin/lilo-uuid-diskid
+/usr/bin/liloconfig
+/usr/bin/mkrescue

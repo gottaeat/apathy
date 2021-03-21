@@ -1,0 +1,10 @@
+/usr/include/xorg/evdev-properties.h
+
+/usr/lib/pkgconfig/xorg-evdev.pc
+
+/usr/lib/xorg/modules/input/evdev_drv.la
+/usr/lib/xorg/modules/input/evdev_drv.so
+
+/usr/share/X11/xorg.conf.d/10-evdev.conf
+
+/usr/share/man
