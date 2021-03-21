@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Busybox version: 1.33.0
-# Mon Mar  8 22:37:07 2021
+# Sun Mar 21 02:43:24 2021
 #
 CONFIG_HAVE_DOT_CONFIG=y
 
@@ -354,12 +354,16 @@ CONFIG_FEATURE_VERBOSE=y
 # CONFIG_DUMPKMAP is not set
 # CONFIG_FGCONSOLE is not set
 # CONFIG_KBD_MODE is not set
-# CONFIG_LOADFONT is not set
+CONFIG_LOADFONT=y
 # CONFIG_SETFONT is not set
 # CONFIG_FEATURE_SETFONT_TEXTUAL_MAP is not set
 CONFIG_DEFAULT_SETFONT_DIR=""
-# CONFIG_FEATURE_LOADFONT_PSF2 is not set
-# CONFIG_FEATURE_LOADFONT_RAW is not set
+
+#
+# Common options for loadfont and setfont
+#
+CONFIG_FEATURE_LOADFONT_PSF2=y
+CONFIG_FEATURE_LOADFONT_RAW=y
 # CONFIG_LOADKMAP is not set
 # CONFIG_OPENVT is not set
 # CONFIG_RESET is not set
