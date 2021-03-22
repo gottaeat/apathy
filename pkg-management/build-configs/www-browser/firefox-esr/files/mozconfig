@@ -63,8 +63,8 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-pixman
 ac_add_options --with-system-png
-ac_add_options --with-system-webp
 ac_add_options --with-system-zlib
 ac_add_options --without-system-icu
 ac_add_options --without-system-nspr
 ac_add_options --without-system-nss
+ac_add_options --without-system-webp
