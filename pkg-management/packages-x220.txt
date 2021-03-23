@@ -80,13 +80,12 @@ i  bmlfs   . libxau                    1.0.9
 i  bmlfs   . libxdmcp                  1.1.3
 i  bmlfs   . xcb-proto                 1.13
 i  bmlfs   . libxcb                    1.13.1
-i  apathy  . libxml2                   2.9.10
 i  apathy  . fontconfig                2.13.93
 i  apathy  .. freetype                 2.10.4
 i  bmlfs   ... libpng                  1.6.37
 i  apathy  ... harfbuzz                2.7.3
 i  apathy  .... glib                   2.64.2
-i  bmlfs   ..... pcre                  8.43
+i  apathy  ..... pcre                  8.44
 i  apathy  . cairo                     1.17.2+f93fc72c03e
 i  bmlfs   .. pixman                   0.40.0
 i  apathy  . xtrans                    1.4.0
@@ -181,12 +180,10 @@ i  bmlfs   ... nasm                    2.14.02
 i  apathy  .. pango                    1.42.4
 i  bmlfs   ... fribidi                 1.0.8
 i  bmlfs   .. tiff                     4.1.0
-i  bmlfs   . imlib2                    1.6.1
+i  apathy  . imlib2                    1.6.1
 i  alpine  .. giflib                   5.2.1
-i  alpine  ... xmlto                   0.0.28
 i  alpine  .. libid3tag                0.15.1b
 i  bmlfs   . autoconf                  2.13
-i  bmlfs   . libwebp                   1.0.3
 i  apathy  . yasm                      1.3.0
 i  apathy  . alsa-lib                  1.2.3.1
 i  alpine  . libvorbis                 1.3.6
@@ -235,7 +232,6 @@ i  apathy  . st                        0.8.4
 i  alpine  . lz4                       1.9.2
 i  apathy  . links                     2.20.2
 i  apathy  . wpa_supplicant            2.9
-i  alpine  .. libnl3                   3.5.0
 i  apathy  . lilo                      24.2
 i  apathy  . samurai                   1.2
 i  apathy  . dwm                       6.2
