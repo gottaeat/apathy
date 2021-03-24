@@ -83,10 +83,10 @@ i  bmlfs   . libxcb                    1.13.1
 i  apathy  . fontconfig                2.13.93
 i  apathy  .. freetype                 2.10.4
 i  bmlfs   ... libpng                  1.6.37
-i  apathy  ... harfbuzz                2.7.3
-i  apathy  .... glib                   2.64.2
+i  apathy  ... harfbuzz                2.8.0
+i  apathy  .... glib                   2.68.0
 i  apathy  ..... pcre                  8.44
-i  apathy  . cairo                     1.17.2+f93fc72c03e
+i  apathy  . cairo                     1.16.0
 i  bmlfs   .. pixman                   0.40.0
 i  apathy  . xtrans                    1.4.0
 i  apathy  . libX11                    1.7.0
@@ -172,11 +172,11 @@ i  bmlfs   .. glibmm                   2.60.0
 i  bmlfs   ... libsigc++               2.10.2
 i  bmlfs   . freeglut                  3.2.1
 i  bmlfs   .. glu                      9.0.1
-i  apathy  . gdk-pixbuf                2.40.0
+i  apathy  . gdk-pixbuf                2.42.4
 i  apathy  .. libjpeg-turbo            2.0.5
 i  bmlfs   ... nasm                    2.14.02
-i  apathy  .. pango                    1.42.4
-i  bmlfs   ... fribidi                 1.0.8
+i  apathy  .. pango                    1.43.0
+i  apathy  ... fribidi                 1.0.10
 i  bmlfs   .. tiff                     4.1.0
 i  apathy  . imlib2                    1.6.1
 i  alpine  .. giflib                   5.2.1
@@ -246,7 +246,7 @@ i  apathy  . firefox                   78.8.0esr
 i  apathy  .. node.js                  15.9.0
 i  apathy  .. cbindgen                 0.17.0
 i  apathy  ... rustc                   1.50.0
-i  apathy  .. gtk+                     3.24.24
+i  apathy  .. gtk+                     3.24.27
 i  apathy  . zstd                      1.4.9
 i  apathy  . earlyoom                  1.6.1-apathy
 i  apathy  . transmission              3.0

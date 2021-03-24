@@ -13,6 +13,7 @@
 /usr/bin/hb-ot-shape-closure
 /usr/bin/hb-shape
 /usr/bin/hb-subset
+/usr/bin/hb-view
 
 /usr/include/cairo/cairo-deprecated.h
 /usr/include/cairo/cairo-features.h
@@ -40,6 +41,9 @@
 /usr/include/freetype2/freetype/config/ftmodule.h
 /usr/include/freetype2/freetype/config/ftoption.h
 /usr/include/freetype2/freetype/config/ftstdlib.h
+/usr/include/freetype2/freetype/config/integer-types.h
+/usr/include/freetype2/freetype/config/mac-support.h
+/usr/include/freetype2/freetype/config/public-macros.h
 /usr/include/freetype2/freetype/freetype.h
 /usr/include/freetype2/freetype/ftadvanc.h
 /usr/include/freetype2/freetype/ftbbox.h
@@ -136,19 +140,16 @@
 /usr/lib/libfontconfig.so
 /usr/lib/libfontconfig.so.1
 /usr/lib/libfontconfig.so.1.12.0
-/usr/lib/libfreetype.a
 /usr/lib/libfreetype.la
 /usr/lib/libfreetype.so
 /usr/lib/libfreetype.so.6
-/usr/lib/libfreetype.so.6.17.2
-/usr/lib/libharfbuzz-subset.la
+/usr/lib/libfreetype.so.6.17.4
 /usr/lib/libharfbuzz-subset.so
 /usr/lib/libharfbuzz-subset.so.0
-/usr/lib/libharfbuzz-subset.so.0.20702.0
-/usr/lib/libharfbuzz.la
+/usr/lib/libharfbuzz-subset.so.0.20800.0
 /usr/lib/libharfbuzz.so
 /usr/lib/libharfbuzz.so.0
-/usr/lib/libharfbuzz.so.0.20702.0
+/usr/lib/libharfbuzz.so.0.20800.0
 
 /usr/lib/pkgconfig/cairo-egl.pc
 /usr/lib/pkgconfig/cairo-fc.pc
