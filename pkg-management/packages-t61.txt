@@ -242,7 +242,7 @@ i  apathy  . libunwind                 11.1.0
 i  apathy  . libcxxabi                 11.1.0
 i  apathy  . libcxx                    11.1.0
 i  apathy  . compiler-rt               11.1.0
-i  apathy  . firefox                   78.8.0esr
+i  apathy  . firefox                   78.9.0esr
 i  apathy  .. node.js                  15.9.0
 i  apathy  .. cbindgen                 0.17.0
 i  apathy  ... rustc                   1.50.0
