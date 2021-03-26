@@ -247,7 +247,7 @@ i  apathy  . compiler-rt               11.1.0
 i  apathy  . firefox                   78.9.0esr
 i  apathy  .. node.js                  15.9.0
 i  apathy  .. cbindgen                 0.17.0
-i  apathy  ... rustc                   1.50.0
+i  apathy  ... rustc                   1.51.0
 i  apathy  .. gtk+                     3.24.27
 i  apathy  . zstd                      1.4.9
 i  apathy  . earlyoom                  1.6.1-apathy
