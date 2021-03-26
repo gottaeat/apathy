@@ -10,10 +10,11 @@ target                = ['x86_64-apathy-linux-musl']
 
 cargo                 = '/opt/rustc-1.50.0/bin/cargo'
 rustc                 = '/opt/rustc-1.50.0/bin/rustc'
+rustfmt               = '/opt/rustc-1.50.0/bin/rustfmt'
 python                = 'python3'
 
 extended              = true
-tools                 = ['cargo','rustfmt']
+tools                 = ['cargo']
 
 local-rebuild         = false
 low-priority          = false
@@ -31,7 +32,7 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.50.0'
+prefix                = '/opt/rustc-1.51.0'
 
 [rust]
 channel               = 'stable'
