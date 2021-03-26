@@ -15,6 +15,6 @@ export OBJDUMP="objdump"
 export OBJSIZE="size"
 export READELF="readelf"
 
-export   CFLAGS="-w -pipe -O2 -mtune=native -march=native -fcommon"
+export   CFLAGS="-w -pipe -O2 -mtune=native -march=native -fcommon -flto -fuse-linker-plugin -fno-fat-lto-objects"
 export CXXFLAGS="${CFLAGS}"
 export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
