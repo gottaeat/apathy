@@ -176,7 +176,7 @@ svc_network(){
        ainitsvc "network" "invoking udhcpc"
         udhcpc \
          -i "${_iface}" \
-         -s "/mss/init/config/udhcpc.script" \
+         -s "/mss/init/files/udhcpc.script"  \
          -p "/run/udhcpc.pid"                \
          -B                                  \
          -t 10 -T 3                          \
