@@ -1,0 +1,17 @@
+/usr/bin/sdl2-config
+
+/usr/include/SDL2
+
+/usr/lib/cmake/SDL2
+
+/usr/lib/libSDL2-2.0.so.0
+/usr/lib/libSDL2-2.0.so.0.14.0
+/usr/lib/libSDL2.la
+/usr/lib/libSDL2.so
+/usr/lib/libSDL2_test.a
+/usr/lib/libSDL2_test.la
+/usr/lib/libSDL2main.a
+/usr/lib/libSDL2main.la
+
+/usr/lib/pkgconfig/sdl2.pc
+/usr/share/aclocal/sdl2.m4
