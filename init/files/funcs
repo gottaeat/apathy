@@ -23,16 +23,20 @@ cur_zero="\\033[0G"
   s_succ="${cb_grn}s${c_res}"
    s_arm="${cb_cyn}└${c_res}"
 
+# 4 > funcs
 ainit_nc()  { printf "\n";}
 ainitmes()  { printf "${sbefore}${@}";}
-ainitusage(){ printf "${sbefore}usage: ${@}.\n";}
 ainitsvc()  { printf "${sbefore}${cb_blu}${1}${c_res} ${2}.";}
 failprompt(){ printf "${cur_zero}${pbefore}${s_fail}\n";}
 infoprompt(){ printf "${cur_zero}${pbefore}${s_info}\n";}
 succprompt(){ printf "${cur_zero}${pbefore}${s_succ}\n";}
 armprompt() { printf "${cur_zero}${pbefore}${s_arm}\n";}
 
-# 4 > funcs
+ainitusage(){
+ printf "${sbefore}${cb_grn}usage${c_blu}:${c_res} ${@}."
+ infoprompt
+}
+
 evalret(){
  local exitval="${?}"
 
