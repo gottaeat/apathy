@@ -6,7 +6,10 @@ svcnames="$(awk '/svc_/ {gsub(/\(|\)|\{|svc_/,""); print}' "${svcsfile}")"
 
 . "${svcsfile}"
 
-helpthing(){ ainitusage "{list|start|stop|status}"; exit 1; }
+helpthing(){
+ ainitusage "$(basename $0) list|start|stop|status svcname args"
+ exit 1
+}
 
 [ -z "${1}" ] && helpthing
 
