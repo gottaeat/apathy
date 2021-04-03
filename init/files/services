@@ -396,7 +396,7 @@ svc_transmission(){
   ;;
   stop)
    ainitsvc "transmission" "stopping"
-   ainit_kill transmission-daemon
+   ainit_kill transmission-da
   ;;
   *)
    ainitusage "{start|stop}"
