@@ -4,34 +4,36 @@
 ## programs
 # > gcc
 prog_gcc(){
- export      CC="${CHOST}-gcc"
- export     CXX="${CHOST}-g++"
- export      LD="ld.bfd"
- export      AR="${CHOST}-gcc-ar"
- export      AS="as"
- export      NM="${CHOST}-gcc-nm"
- export   STRIP="strip"
- export  RANLIB="${CHOST}-gcc-ranlib"
- export OBJCOPY="objcopy"
- export OBJDUMP="objdump"
- export OBJSIZE="size"
- export READELF="readelf"
+ export        CC="$(which ${CHOST}-gcc)"
+ export       CXX="$(which ${CHOST}-g++)"
+ export        LD="$(which ld.bfd)"
+ export        AR="$(which ${CHOST}-gcc-ar)"
+ export        AS="$(which as)"
+ export        NM="$(which ${CHOST}-gcc-nm)"
+ export     STRIP="$(which strip)"
+ export    RANLIB="$(which ${CHOST}-gcc-ranlib)"
+ export   OBJCOPY="$(which objcopy)"
+ export   OBJDUMP="$(which objdump)"
+ export   OBJSIZE="$(which size)"
+ export   READELF="$(which readelf)"
+ export ADDR2LINE="$(which addr2line)"
 }
 
 # > clang
 prog_clang(){
- export      CC="clang"
- export     CXX="clang++"
- export      LD="ld.lld"
- export      AR="llvm-ar"
- export      AS="llvm-as"
- export      NM="llvm-nm"
- export   STRIP="llvm-strip"
- export  RANLIB="llvm-ranlib"
- export OBJCOPY="llvm-objcopy"
- export OBJDUMP="llvm-objdump"
- export OBJSIZE="llvm-size"
- export READELF="llvm-readelf"
+ export        CC="$(which clang)"
+ export       CXX="$(which clang++)"
+ export        LD="$(which ld.lld)"
+ export        AR="$(which llvm-ar)"
+ export        AS="$(which llvm-as)"
+ export        NM="$(which llvm-nm)"
+ export     STRIP="$(which llvm-strip)"
+ export    RANLIB="$(which llvm-ranlib)"
+ export   OBJCOPY="$(which llvm-objcopy)"
+ export   OBJDUMP="$(which llvm-objdump)"
+ export   OBJSIZE="$(which llvm-size)"
+ export   READELF="$(which llvm-readelf)"
+ export ADDR2LINE="$(which llvm-addr2line)"
 }
 
 ## flags
@@ -50,11 +52,11 @@ prog_clang(){
      clang_cflags_base="${cflags_base} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
     clang_ldflags_base="${ldflags_base} -Wl,--icf=all"
 
- clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=$(nproc)"
+ clang_cflags_lto_full="${clang_cflags_base} -flto=full -flto-jobs=$(($(nproc) + 1))"
 clang_ldflags_lto_full="${clang_ldflags_base} -Wl,--lto-O3"
 
- clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=$(nproc)"
-clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3,--thinlto-jobs=$(nproc),--thinlto-cache-dir=/mss/work/thinltocache"
+ clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=$(($(nproc) + 1))"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3,--thinlto-jobs=$(($(nproc) + 1)),--thinlto-cache-dir=/mss/work/thinltocache"
 
 
 ## profiles
@@ -112,24 +114,25 @@ printvarthingies(){
  aprint "${profname}"
 
  aprint_nc
- printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
-  "export      CC=\"${CC}\""     \
-  "export     CXX=\"${CXX}\""     \
-  "export      LD=\"${LD}\""      \
-  "export      AR=\"${AR}\""      \
-  "export      AS=\"${AS}\""      \
-  "export      NM=\"${NM}\""      \
-  "export   STRIP=\"${STRIP}\""   \
-  "export  RANLIB=\"${RANLIB}\""  \
-  "export OBJCOPY=\"${OBJCOPY}\"" \
-  "export OBJDUMP=\"${OBJDUMP}\"" \
-  "export OBJSIZE=\"${OBJSIZE}\"" \
-  "export READELF=\"${READELF}\""
+ printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+  "export        CC=\"${CC}\""       \
+  "export       CXX=\"${CXX}\""      \
+  "export        LD=\"${LD}\""       \
+  "export        AR=\"${AR}\""       \
+  "export        AS=\"${AS}\""       \
+  "export        NM=\"${NM}\""       \
+  "export     STRIP=\"${STRIP}\""    \
+  "export    RANLIB=\"${RANLIB}\""   \
+  "export   OBJCOPY=\"${OBJCOPY}\""  \
+  "export   OBJDUMP=\"${OBJDUMP}\""  \
+  "export   OBJSIZE=\"${OBJSIZE}\""  \
+  "export   READELF=\"${READELF}\""  \
+  "export ADDR2LINE=\"${ADDR2LINE}\""
  aprint_nc
  printf "%s\n%s\n%s\n" \
-  "export   CFLAGS=\"${CFLAGS}\""   \
-  "export CXXFLAGS=\"${CXXFLAGS}\"" \
-  "export  LDFLAGS=\"${LDFLAGS}\""
+  "export    CFLAGS=\"${CFLAGS}\""   \
+  "export  CXXFLAGS=\"${CXXFLAGS}\"" \
+  "export   LDFLAGS=\"${LDFLAGS}\""
  aprint_nc
 }
 
