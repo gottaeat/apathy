@@ -1,0 +1,16 @@
+/usr/bin/pkg-config
+/usr/bin/pkgconf
+
+/usr/include/pkgconf
+
+/usr/lib/libpkgconf.la
+/usr/lib/libpkgconf.so
+/usr/lib/libpkgconf.so.3
+/usr/lib/libpkgconf.so.3.0.0
+
+/usr/lib/pkgconfig/libpkgconf.pc
+
+/usr/share/aclocal/pkg.m4
+
+/usr/share/doc
+/usr/share/man

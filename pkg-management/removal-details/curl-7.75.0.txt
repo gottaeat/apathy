@@ -9,7 +9,6 @@
 /usr/lib/libcurl.so.4.7.0
 
 /usr/lib/pkgconfig/libcurl.pc
-
 /usr/share/aclocal/libcurl.m4
 
 /usr/share/man

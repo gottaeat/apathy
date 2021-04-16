@@ -5,6 +5,6 @@
 
 /usr/lib/libx265.a
 /usr/lib/libx265.so
-/usr/lib/libx265.so.179
+/usr/lib/libx265.so.199
 
 /usr/lib/pkgconfig/x265.pc

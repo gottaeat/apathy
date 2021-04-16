@@ -13,7 +13,7 @@ i  alpine  . expat                     2.2.9
 i  mlfs    . file                      5.37
 i  apathy  . findutils                 4.8.0
 i  mlfs    . flex                      2.6.4
-i  apathy  . gcc                       10.2.1-20210325
+i  apathy  . gcc                       10.3.0
 i  apathy  . gmp                       6.2.1
 i  mlfs    . gperf                     3.1
 i  apathy  . grep                      3.6
@@ -33,7 +33,6 @@ i  apathy  . musl                      1.2.2
 i  apathy  . ncurses                   6.2
 i  apathy  . patch                     2.7.6
 i  apathy  . perl                      5.32.1
-i  mlfs    . pkg-config                0.29.2
 i  mlfs    . procps-ng                 3.3.15
 i  apathy  . python                    3.9.2
 i  apathy  . readline                  8.1
@@ -49,11 +48,11 @@ i  apathy  . opendoas                  6.8.1
 i  apathy  . iptables                  1.8.7
 i  alpine  . lsof                      4.93.2
 i  alpine  . lm_sensors                3.6.0
-i  apathy  . curl                      7.75.0
-i  apathy  . git                       2.31-rc2
+i  apathy  . curl                      7.76.0
+i  apathy  . git                       2.31.1
 i  apathy  . openssh                   8.5_p1
 i  apathy  . libssh2                   1.9.0
-i  apathy  . cmake                     3.17.1
+i  apathy  . cmake                     3.20.0
 i  apathy  . usbutils                  013
 i  alpine  .. libusb                   1.0.23
 i  arch    . lua                       5.2.4
@@ -125,7 +124,7 @@ i  apathy  . xcb-util-keysyms          0.4.0
 i  apathy  . xcb-util-renderutil       0.3.9
 i  apathy  . xcb-util-wm               0.4.1
 i  apathy  . xcb-util-cursor           0.1.3
-i  apathy  . mesa                      21.0.0
+i  apathy  . mesa                      21.0.1
 i  bmlfs   .. libdrm                   2.4.100
 i  apathy  . xbitmaps                  1.1.2
 i  apathy  . iceauth                   1.0.8
@@ -165,7 +164,7 @@ i  apathy  . xorg-server               1.20.10
 i  bmlfs   .. libepoxy                 1.5.3
 i  apathy  . xf86-input-libinput       0.30.0
 i  apathy  .. libinput                 1.17.0
-i  apathy  . libva                     2.10.0
+i  apathy  . libva                     2.11.0
 i  bmlfs   . intel-vaapi-driver        2.4.0
 i  alpine  . xinit                     1.4.1
 i  apathy  . atk                       2.36.0
@@ -192,15 +191,15 @@ i  apathy  . alsa-plugins              1.2.2
 i  apathy  . alsa-utils                1.2.3
 i  bmlfs   . flac                      1.3.3
 i  alpine  . libass                    0.14.0
-i  bmlfs   . libvpx                    1.8.2
+i  apathy  . libvpx                    1.10.0
 i  bmlfs   . opus                      1.3.1
 i  bmlfs   . taglib                    1.11.1
 i  apathy  . x264                      20191119-2245
-i  apathy  . x265                      3.4
+i  apathy  . x265                      3.5
 i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
-i  apathy  . youtube-dl                2021.03.14
-i  apathy  . compton                   5.1
+i  apathy  . youtube-dl                2021.04.07
+i  apathy  . compton                   5.1 
 i  apathy  . ffmpeg                    4.3.2
 i  alpine  .. lame                     3.100
 i  alpine  .. openjpeg                 2.3.1
@@ -224,7 +223,6 @@ i  alpine  .. jbig2dec                 0.17
 i  alpine  . lzip                      1.21
 i  alpine  .. zip                      30
 i  apathy  . gcompat                   1.0.0
-i  apathy  .. libucontext              0.11
 i  apathy  . vifm                      0.10.1
 i  apathy  . fim                       0.5-rc3
 i  apathy  . slmenu                    0.1
@@ -245,7 +243,7 @@ i  apathy  . libcxxabi                 11.1.0
 i  apathy  . libcxx                    11.1.0
 i  apathy  . compiler-rt               11.1.0
 i  apathy  . firefox                   78.9.0esr
-i  apathy  .. node.js                  15.9.0
+i  apathy  .. node.js                  15.13.0
 i  apathy  .. cbindgen                 0.18.0
 i  apathy  ... rustc                   1.51.0
 i  apathy  .. gtk+                     3.24.27
@@ -267,6 +265,7 @@ i  apathy  . openssl                   1.1.1k
 i  apathy  . mpdas                     c81c480
 i  apathy  . ioquake3                  05180e32
 i  apathy  .. sdl2                     2.0.14
+i  apathy  . pkgconf                   1.7.4
 i  apathy  . busybox                   1.33.0
 b  bbox    .. ash                      1.33.0
 b  bbox    .. bash                     1.33.0

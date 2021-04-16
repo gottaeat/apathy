@@ -1,4 +1,3 @@
-/usr/bin/git
 /usr/bin/git-cvsserver
 /usr/bin/git-receive-pack
 /usr/bin/git-shell
@@ -6,4 +5,5 @@
 /usr/bin/git-upload-pack
 
 /usr/libexec/git-core
+
 /usr/share/git-core
