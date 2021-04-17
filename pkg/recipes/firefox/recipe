@@ -7,10 +7,9 @@ unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
 
-t61cf="-m128bit-long-double -m64 -m80387 -malign-stringops -mcx16 -mfancy-math-387"
-t61cf="${t61cf} -mfp-ret-in-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx"
-t61cf="${t61cf} -mmusl -mpush-args -mred-zone -msahf -msse -msse2 -msse3 -msse4.1"
-t61cf="${t61cf} -mssse3 -mstv -mtls-direct-seg-refs -mvzeroupper"
+t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
+t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
+t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
 t61cf="${t61cf} -march=core2 -mtune=core2"
 
 t61rf="-Ctarget-cpu=core2"
