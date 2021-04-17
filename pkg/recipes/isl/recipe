@@ -1,0 +1,10 @@
+# 1
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix=/usr          \
+ --enable-shared        \
+ --disable-static       \
+ --with-gcc-arch=native \
+ --with-int=gmp         \
+ --with-gmp=system

@@ -1,0 +1,30 @@
+# 1
+pdir="/mss/repo/pkg/recipes/git/patches"
+patch -p1 < "${pdir}"/0001-git-tiny.patch
+
+export   CFLAGS="${CFLAGS}   -fPIC"
+export CXXFLAGS="${CXXFLAGS} -fPIC"
+export  LDFLAGS="${LDFLAGS}  -fPIC"
+
+make configure
+
+cat > config.mak <<EOF
+NO_GETTEXT=YesPlease
+NO_SVN_TESTS=YesPlease
+NO_TCLTK=YesPlease
+NO_EXPAT=YesPlease
+NO_NSEC=YesPlease
+NO_PYTHON=YesPlease
+NO_PERL=YesPlease
+NO_SVN_TESTS=YesPlease
+NO_SYS_POLL_H=1
+NO_CROSS_DIRECTORY_HARDLINKS=1
+NO_INSTALL_HARDLINKS=1
+EOF
+
+./configure \
+ --build=$CBUILD                 \
+ --host=$CHOST                   \
+ --prefix=/usr                   \
+ ac_cv_snprintf_returns_bogus=no \
+ ac_cv_fread_reads_directories=yes

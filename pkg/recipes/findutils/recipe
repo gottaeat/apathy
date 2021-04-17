@@ -1,0 +1,11 @@
+# 1
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-nls
+
+make
+
+# 2
+doas -- mv /usr/bin/find /bin/find

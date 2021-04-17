@@ -1,0 +1,49 @@
+# 1
+pdir="/mss/repo/pkg/recipes/pciutils/patches"
+patch -p1 < "${pdir}"/pread.patch
+
+make \
+ OPT="${LDFLAGS} -fPIC -DPIC" \
+ CC="${CC}"                   \
+ AR="${AR}"                   \
+ RANLIB="${RANLIB}"           \
+\
+ ZLIB=no                      \
+ SHARED=no                    \
+ PREFIX=/usr                  \
+ SHAREDIR=/usr/share/hwdata   \
+ MANDIR=/usr/share/man        \
+ SBINDIR=/usr/bin             \
+\
+ all
+
+# 2
+make \
+ OPT="${LDFLAGS} -fPIC -DPIC" \
+ CC="${CC}"                   \
+ AR="${AR}"                   \
+ RANLIB="${RANLIB}"           \
+\
+ ZLIB=no                      \
+ SHARED=no                    \
+ PREFIX=/usr                  \
+ SHAREDIR=/usr/share/hwdata   \
+ MANDIR=/usr/share/man        \
+ SBINDIR=/usr/bin             \
+\
+ DESTDIR="$PWD/KEK" install
+
+doas -- make \
+ OPT="${LDFLAGS} -fPIC -DPIC" \
+ CC="${CC}"                   \
+ AR="${AR}"                   \
+ RANLIB="${RANLIB}"           \
+\
+ ZLIB=no                      \
+ SHARED=no                    \
+ PREFIX=/usr                  \
+ SHAREDIR=/usr/share/hwdata   \
+ MANDIR=/usr/share/man        \
+ SBINDIR=/usr/bin             \
+\
+ install

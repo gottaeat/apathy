@@ -1,5 +1,0 @@
-/usr/bin/fim
-/usr/bin/fimgs
-
-/usr/share/doc
-/usr/share/man

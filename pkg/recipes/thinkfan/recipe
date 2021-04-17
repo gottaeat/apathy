@@ -1,0 +1,70 @@
+# 1
+cdt1
+penis="/mss/work/table/KEK"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
+
+gcd1 https://github.com/jbeder/yaml-cpp.git
+cd   yaml-cpp/
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR="${penis}/lib"  \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DYAML_BUILD_SHARED_LIBS=OFF           \
+..
+
+samu
+samu install
+
+cd ../..
+rm -rf yaml-cpp/
+
+# 2
+gcd1 https://github.com/vmatare/thinkfan.git
+cd   thinkfan/
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="/usr"                    \
+ -DCMAKE_C_FLAGS="$CFLAGS"                        \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"                    \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"              \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"           \
+ -DCMAKE_AR="$AR"                                 \
+ -DCMAKE_NM="$NM"                                 \
+ -DCMAKE_STRIP="$STRIP"                           \
+ -DCMAKE_RANLIB="$RANLIB"                         \
+ -DCMAKE_LINKER="$LD"                             \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                       \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                       \
+ -DCMAKE_READELF="$READELF"                       \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"                   \
+ -DCMAKE_C_COMPILER="$CC"                         \
+ -DCMAKE_CXX_COMPILER="$CXX"                      \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"               \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"             \
+\
+ -DUSE_ATASMART:BOOL=OFF                          \
+..

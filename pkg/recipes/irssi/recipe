@@ -1,0 +1,41 @@
+# 1
+penis="/mss/work/table"
+export           CFLAGS="$CFLAGS   -I${penis}/include -L${penis}/lib"
+export         CXXFLAGS="$CXXFLAGS -I${penis}/include -L${penis}/lib"
+export          LDFLAGS="$LDFLAGS  -I${penis}/include -L${penis}/lib"
+
+export     LIBRARY_PATH="${penis}/lib"
+export PKG_BUILD_CONFIG="${penis}/lib/pkgconfig"
+
+tar xf /mss/work/sauces/libotr-4.1.1.tar.gz
+cd     libotr-4.1.1/
+
+configtomusl
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static
+
+make
+make install
+
+# 2
+tar xf /mss/work/sauces/irssi-1.2.2.tar.xz
+cd     irssi-1.2.2/
+
+pdir="/mss/repo/pkg/recipes/irssi/patches"
+patch -p1 < "${pdir}"/glib-2-63.patch
+
+./configure \
+ --build=$CBUILD         \
+ --host=$CHOST           \
+ --prefix=/usr           \
+ --sysconfdir=/etc       \
+ --mandir=/usr/share/man \
+ --without-perl          \
+ --with-proxy            \
+ --with-otr=static       \
+ --enable-true-color

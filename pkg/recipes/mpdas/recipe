@@ -1,0 +1,14 @@
+# 1
+gcd1 https://github.com/hrkfdn/mpdas
+cd mpdas/
+
+make PREFIX=/usr CONFIG=/etc
+make PREFIX=/usr CONFIG=/etc DESTDIR=$PWD/KEK install
+
+strip --strip-all -v KEK/usr/bin/mpdas
+
+# 2
+doas  -s
+cp    -vf       KEK/usr/bin/mpdas         /usr/bin
+cp    -vf       /mss/repo/dir/etc/mpdasrc /etc
+chown root:root /etc/mpdasrc              /usr/bin/mpdas

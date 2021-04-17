@@ -1,0 +1,132 @@
+# 1
+t61cf="-m128bit-long-double -m64 -m80387 -malign-stringops -mcx16 -mfancy-math-387"
+t61cf="${t61cf} -mfp-ret-in-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx"
+t61cf="${t61cf} -mmusl -mpush-args -mred-zone -msahf -msse -msse2 -msse3 -msse4.1"
+t61cf="${t61cf} -mssse3 -mstv -mtls-direct-seg-refs -mvzeroupper"
+t61cf="${t61cf} -march=core2 -mtune=core2"
+
+export        CC="/usr/bin/x86_64-apathy-linux-musl-gcc"
+export       CXX="/usr/bin/x86_64-apathy-linux-musl-g++"
+export        LD="/usr/bin/ld.bfd"
+export        AR="/usr/bin/x86_64-apathy-linux-musl-gcc-ar"
+export        AS="/usr/bin/as"
+export        NM="/usr/bin/x86_64-apathy-linux-musl-gcc-nm"
+export     STRIP="/usr/bin/strip"
+export    RANLIB="/usr/bin/x86_64-apathy-linux-musl-gcc-ranlib"
+export   OBJCOPY="/usr/bin/objcopy"
+export   OBJDUMP="/usr/bin/objdump"
+export   OBJSIZE="/usr/bin/size"
+export   READELF="/usr/bin/readelf"
+export ADDR2LINE="/usr/bin/addr2line"
+
+export    CFLAGS="-DNDEBUG -O2 -w -pipe ${t61cf}"
+export  CXXFLAGS="${CFLAGS} -fpermissive"
+export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2,--no-keep-memory,-z,stack-size=2097152"
+
+# 2
+tar xf /mss/work/sauces/llvmorg-11.1.0.tar.gz
+cd     llvm-project-llvmorg-11.1.0/
+
+# 3
+mkdir build
+cd    build
+
+# 4
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm-11.1.0"            \
+ -DCMAKE_C_FLAGS="$CFLAGS"                            \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"                        \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                  \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"               \
+ -DCMAKE_AR="$AR"                                     \
+ -DCMAKE_NM="$NM"                                     \
+ -DCMAKE_STRIP="$STRIP"                               \
+ -DCMAKE_RANLIB="$RANLIB"                             \
+ -DCMAKE_LINKER="$LD"                                 \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                           \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                           \
+ -DCMAKE_READELF="$READELF"                           \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"                       \
+ -DCMAKE_C_COMPILER="$CC"                             \
+ -DCMAKE_CXX_COMPILER="$CXX"                          \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"                 \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"                   \
+\
+ -DLLVM_ENABLE_PROJECTS="llvm;clang"                  \
+ -DLLVM_TARGETS_TO_BUILD="host"                       \
+ -DLLVM_HOST_TRIPLE="$CHOST"                          \
+ -DLLVM_DEFAULT_TARGET_TRIPLE="$CHOST"                \
+\
+ -DBUILD_SHARED_LIBS=OFF                              \
+ -DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND               \
+ -DHAVE_LIBXAR=OFF                                    \
+ -DLLVM_APPEND_VC_REV=OFF                             \
+ -DLLVM_BUILD_LLVM_DYLIB=ON                           \
+ -DLLVM_ENABLE_ASSERTIONS=OFF                         \
+ -DLLVM_ENABLE_EH=ON                                  \
+ -DLLVM_ENABLE_FFI=ON                                 \
+ -DLLVM_ENABLE_LIBEDIT=OFF                            \
+ -DLLVM_ENABLE_LIBPFM=OFF                             \
+ -DLLVM_ENABLE_LIBXML2=OFF                            \
+ -DLLVM_ENABLE_PIC=ON                                 \
+ -DLLVM_ENABLE_RTTI=ON                                \
+ -DLLVM_ENABLE_TERMINFO=OFF                           \
+ -DLLVM_ENABLE_Z3_SOLVER=OFF                          \
+ -DLLVM_ENABLE_ZLIB=ON                                \
+ -DLLVM_INSTALL_UTILS=ON                              \
+ -DLLVM_LINK_LLVM_DYLIB=ON                            \
+ -DLLVM_OPTIMIZED_TABLEGEN=OFF                        \
+ -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF              \
+ -DLLVM_TOOL_LLVM_GO_BUILD=OFF                        \
+ -DLLVM_TOOL_LLVM_ITANIUM_DEMANGLE_FUZZER_BUILD=OFF   \
+ -DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=OFF        \
+ -DLLVM_TOOL_LLVM_MC_DISASSEMBLE_FUZZER_BUILD=OFF     \
+ -DLLVM_TOOL_LLVM_MICROSOFT_DEMANGLE_FUZZER_BUILD=OFF \
+ -DLLVM_TOOL_LLVM_OPT_FUZZER_BUILD=OFF                \
+ -DOCAMLFIND=NO                                       \
+ -DPython3_EXECUTABLE=/usr/bin/python3                \
+\
+ -DCLANG_DEFAULT_CXX_STDLIB="libstdc++"               \
+ -DCLANG_DEFAULT_LINKER="bfd"                         \
+ -DCLANG_DEFAULT_RTLIB="libgcc"                       \
+ -DCLANG_DEFAULT_UNWINDLIB="libgcc"                   \
+ -DCLANG_ENABLE_ARCMT=OFF                             \
+ -DCLANG_ENABLE_STATIC_ANALYZER=OFF                   \
+ -DCLANG_LINK_CLANG_DYLIB=ON                          \
+ -DCLANG_VENDOR="apathy"                              \
+ -DCLANG_VENDOR_UTI="org.apathy"                      \
+\
+ -DCLANG_INCLUDE_DOCS=OFF                             \
+ -DCLANG_INCLUDE_TESTS=OFF                            \
+ -DLLVM_BUILD_DOCS=OFF                                \
+ -DLLVM_BUILD_EXAMPLES=OFF                            \
+ -DLLVM_BUILD_TESTS=OFF                               \
+ -DLLVM_ENABLE_DOXYGEN=OFF                            \
+ -DLLVM_ENABLE_OCAMLDOC=OFF                           \
+ -DLLVM_ENABLE_SPHINX=OFF                             \
+ -DLLVM_INCLUDE_BENCHMARKS=OFF                        \
+ -DLLVM_INCLUDE_DOCS=OFF                              \
+ -DLLVM_INCLUDE_EXAMPLES=OFF                          \
+ -DLLVM_INCLUDE_GO_TESTS=OFF                          \
+ -DLLVM_INCLUDE_TESTS=OFF                             \
+ ../llvm
+
+# 5
+time samu -v -j5
+
+# 6
+instdir="$PWD/KEK"
+DESTDIR="${instdir}" samu install
+
+rm -rfv \
+ "${instdir}"/opt/llvm-11.1.0/share/man \
+ "${instdir}"/opt/llvm-11.1.0/share/clang/bash-autocomplete.sh
+
+find "${instdir}"/opt/llvm-11.1.0/bin \
+ -type f              -exec strip --strip-all      -v {} ';'
+
+find "${instdir}"/opt/llvm-11.1.0/lib \
+ -type f -name \*.a   -exec strip --strip-debug    -v {} ';'
+
+find "${instdir}"/opt/llvm-11.1.0/lib \
+ -type f -name \*.so* -exec strip --strip-unneeded -v {} ';'

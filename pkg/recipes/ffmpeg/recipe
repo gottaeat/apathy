@@ -1,0 +1,57 @@
+# 1
+mkdir build
+cd    build
+
+../configure \
+ --prefix=/usr                   \
+ --enable-gpl                    \
+ --enable-nonfree                \
+ --enable-shared                 \
+ --disable-debug                 \
+ --disable-static                \
+ --disable-doc                   \
+ --disable-htmlpages             \
+ --disable-manpages              \
+ --disable-podpages              \
+ --disable-txtpages              \
+\
+ --nm="${NM}"                    \
+ --ar="${AR}"                    \
+ --as="${CC}"                    \
+ --strip="${STRIP}"              \
+ --cc="${CC}"                    \
+ --cxx="${CXX}"                  \
+ --objcc="${CC}"                 \
+ --dep-cc="${CC}"                \
+ --ld="${CC}"                    \
+ --ranlib="${RANLIB}"            \
+ --extra-cflags="${CFLAGS}"      \
+ --extra-cxxflags="${CXXFLAGS}"  \
+ --extra-objcflags="${CFLAGS}"   \
+ --extra-ldflags="${LDFLAGS}"    \
+ --extra-ldexeflags="${LDFLAGS}" \
+ --extra-ldsoflags="${LDFLAGS}"  \
+ --enable-pic                    \
+ --enable-lto                    \
+\
+ --enable-libass                 \
+ --enable-libdrm                 \
+ --enable-libfontconfig          \
+ --enable-libfreetype            \
+ --enable-libfribidi             \
+ --enable-libmp3lame             \
+ --enable-libopenjpeg            \
+ --enable-libopus                \
+ --enable-libvpx                 \
+ --enable-libx264                \
+ --enable-libx265                \
+ --enable-opengl                 \
+ --enable-openssl                \
+ --disable-libcaca               \
+ --disable-librsvg               \
+ --disable-outdev=oss            \
+ --disable-indev=oss             \
+\
+ --enable-avx                    \
+ --enable-libv4l2                \
+ --enable-v4l2-m2m

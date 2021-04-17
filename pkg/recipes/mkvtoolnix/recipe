@@ -1,0 +1,90 @@
+# 1
+cdt1
+pushd /opt
+doas -- tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/t61-ruby-2.7.1.tar.zst
+doas -- tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+popd
+
+penis="/mss/work/table/KEK"
+export   CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -fPIC"
+export CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -fPIC"
+export  LDFLAGS="${LDFLAGS}  -I${penis}/include -L${penis}/lib -fPIC"
+
+export            PATH="$PATH:/opt/ruby-2.7.1/bin:${penis}/bin"
+export LD_LIBRARY_PATH="/opt/ruby-2.7.1/lib:$LD_LIBRARY_PATH"
+export    LIBRARY_PATH="$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+
+# 2
+tar xf /mss/work/sauces/docbook-xsl-nons-1.79.2.tar.bz2
+cd     docbook-xsl-nons-1.79.2/
+
+pdir="/mss/repo/pkg/recipes/mkvtoolnix/patches"
+patch -p1 < "${pdir}"/docbook-xsl-nons-1.79.2-stack_fix-1.patch
+
+install -v -m755 -d "${penis}"/docbook
+cp -v -R \
+ VERSION assembly common eclipse epub epub3 extensions fo        \
+ highlighting html htmlhelp images javahelp lib manpages params  \
+ profiling roundtrip slides template tests tools webhelp website \
+ xhtml xhtml-1_1 xhtml5                                          \
+\
+ "${penis}"/docbook
+
+ln -s VERSION "${penis}"/docbook/VERSION.xsl
+
+cd ..
+rm -rf docbook-xsl-nons-1.79.2/
+
+# 3
+tar xf /mss/work/sauces/libxml2-2.9.10.tar.gz
+cd libxml2-2.9.10/
+
+./configure \
+  --build=$CBUILD     \
+  --host=$CHOST       \
+  --prefix="${penis}" \
+  --with-threads      \
+  --with-history      \
+  --without-python    \
+  --without-icu       \
+  --disable-shared    \
+  --enable-static
+
+make
+make install
+cd ..
+rm -rf libxml2-2.9.10/
+
+# 4
+tar xf /mss/work/sauces/libxslt-1.1.34.tar.gz
+cd     libxslt-1.1.34/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static
+
+make
+make install
+cd ..
+rm -rf libxslt-1.1.34/
+
+# 5
+tar xf /mss/work/sauces/mkvtoolnix-48.0.0.tar.xz
+cd mkvtoolnix-48.0.0/
+
+./configure \
+ --build=$CBUILD    \
+ --host=$CHOST      \
+ --prefix=/usr      \
+ --without-gettext  \
+ --with-boost="/opt/boost-1.75.0" \
+ --with-docbook-xsl-root="${penis}/docbook"
+
+rake V=1 --jobs=5
+rake DESTDIR="$PWD/KEK" install

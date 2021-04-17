@@ -1,0 +1,24 @@
+# 1
+./configure \
+ --build="${CBUILD}" \
+ --host="${CHOST}"   \
+ --prefix=/usr       \
+ --sysconfdir=/etc   \
+ --sbindir=/usr/bin  \
+\
+ --enable-programs   \
+ --enable-blkid      \
+ --disable-selinux   \
+ --disable-manpages  \
+ --disable-kmod      \
+ --disable-hwdb      \
+ --disable-static    \
+ --disable-introspection
+
+make
+
+# 2
+doas -- make install
+doas -- cp -rv \
+ /mss/repo/dir/etc/udev/rules.d/* \
+ /etc/udev/rules.d/

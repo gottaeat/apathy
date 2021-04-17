@@ -2,7 +2,7 @@ apathy
 ======
 apathy is a linux "distribution" (lol) built from scratch using apathy-mlfs as
 its base (https://github.com/mssx86/apathy-mlfs) for the sake of having
-something to do, though it barely resembles it in its current stage.
+something to do, though it's more like a linux of thesus at this point.
 
 like all the meme distributions, it utilizes musl as the libc. rest of the
 system is composed of whatever i felt like putting in there, with the gaps
@@ -17,28 +17,15 @@ not want to use it anyway.
 
 basic repository tree
 =====================
-├ init/                    -> home brewed init system written in posix shell,
-│                             using sinit with static bins from ubase and sbase.
-├ utils/                   -> many small utilities used in apathy, written in
-│                             posix shell.
-├ directories/
-│ ├ personal/              -> personal configuration files.
-│ └ system/                -> base system configuration files that goes under
-│                             /etc, /usr and /opt. 
-├ misc/                    -> notes in plain text and miscellaneous files.
-│ ├ ainit-sysv/
-│ │ ├ ainit-sysv-mk-i/     -> a posixified version of lfs-bootscripts, used when
-│ │ │                         the system was called mssLinux.
-│ │ └ ainit-sysv-mk-ii/    -> first from-scratch init system, using coreutils
-│ │                           and sysvinit.
-│ └ g3258-memorial/        -> notes and details saved from my old system where i
-│                             built almost everything on.
-└ pkg-management/
-  ├ packages-*.txt         -> a parsable list containing packages, versions,
-  │                           sources of the build recipes and their status.
-  ├ installation-details/  -> directory listings of installed programs.
-  ├ removal-details/       -> directory listings of removed programs.
-  ├ build-configs/         -> custom home-brewed build recipes for a variety of
-  │                           software.
-  └ patches/               -> patches to be used with certain recipes under
-                              build-configs/.
+├ dir/               -> base system configuration files.
+├ init/              -> in-house init system written in posix shell, using sinit
+│                       with some ubase and sbase programs.
+├ misc/              -> miscellaneous notes and images.
+├ pkg/
+│ ├ recipes/         -> in-house build recipes for a variety of software.
+│ └ trees/           -> directory listings for installed and removed programs.
+└ utils/
+  ├ bin/             -> utilities used in apathy, written in posix shell.
+  └ files/           -> files complementing the utilities and shells.
+    └ packages-*.txt -> a parsable list of programs installed in each machine
+                        running apathy.

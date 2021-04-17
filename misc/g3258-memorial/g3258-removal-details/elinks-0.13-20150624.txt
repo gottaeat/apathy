@@ -1,4 +1,0 @@
-/usr/bin/elinks
-
-/usr/share/locale
-/usr/share/man

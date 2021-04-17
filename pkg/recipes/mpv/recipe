@@ -1,0 +1,12 @@
+# 1
+./bootstrap.py
+
+./waf configure     \
+ --prefix=/usr      \
+ --confdir=/etc/mpv \
+ --disable-libmpv-shared
+
+./waf build
+
+# 2
+./waf install --destdir=$PWD/KEK

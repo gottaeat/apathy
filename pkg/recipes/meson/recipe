@@ -1,0 +1,7 @@
+# 1
+python setup.py build
+python setup.py install --root=dest --optimize=1 --skip-build
+
+# 2
+rm -rfv dest/usr/share
+doas -- cp -rv dest/* /

@@ -1,0 +1,17 @@
+# 1
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --mandir=/usr/share/man
+
+make
+
+# 2
+doas -s
+cp -vf ./mawk   /usr/bin/mawk
+chown root:root /usr/bin/mawk
+ln -sfv         /usr/bin/mawk /bin/awk
+ln -sfv         /usr/bin/mawk /usr/bin/gawk

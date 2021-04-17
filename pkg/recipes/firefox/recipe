@@ -1,0 +1,80 @@
+# 1 > extraction
+tar xf /mss/work/sauces/firefox-78.9.0esr.source.tar.xz
+cd     firefox-78.9.0/
+
+# 2 > build vars
+unset \
+ CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
+ OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
+
+t61cf="-m128bit-long-double -m64 -m80387 -malign-stringops -mcx16 -mfancy-math-387"
+t61cf="${t61cf} -mfp-ret-in-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx"
+t61cf="${t61cf} -mmusl -mpush-args -mred-zone -msahf -msse -msse2 -msse3 -msse4.1"
+t61cf="${t61cf} -mssse3 -mstv -mtls-direct-seg-refs -mvzeroupper"
+t61cf="${t61cf} -march=core2 -mtune=core2"
+
+t61rf="-Ctarget-cpu=core2"
+t61rf="${t61rf} -Ctarget-feature=+x87"  t61rf="${t61rf} -Ctarget-feature=+sse3"
+t61rf="${t61rf} -Ctarget-feature=+cx16" t61rf="${t61rf} -Ctarget-feature=+sse4.1"
+t61rf="${t61rf} -Ctarget-feature=+fxsr" t61rf="${t61rf} -Ctarget-feature=+ssse3"
+t61rf="${t61rf} -Ctarget-feature=+mmx"  t61rf="${t61rf} -Ctarget-feature=-avx"
+t61rf="${t61rf} -Ctarget-feature=+sahf" t61rf="${t61rf} -Ctarget-feature=-aes"
+t61rf="${t61rf} -Ctarget-feature=+sse"  t61rf="${t61rf} -Ctarget-feature=-sse4a"
+t61rf="${t61rf} -Ctarget-feature=+sse2" t61rf="${t61rf} -Ctarget-feature=-sse4.2"
+
+export                     CC="clang"
+export                    CXX="clang++"
+export                     AR="llvm-ar"
+export                     AS="${CC}"
+export                     NM="llvm-nm"
+export                 RANLIB="llvm-ranlib"
+
+export              CXXSTDLIB="c++"
+
+export                 CFLAGS="-w -pipe -O2 ${t61cf} -flto=5"
+export               CXXFLAGS="${CFLAGS}"
+                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/usr/lib/firefox,--enable-new-dtags"
+
+export         BINDGEN_CFLAGS="${CFLAGS}"
+
+export              RUSTFLAGS="-Cdebuginfo=0 ${t61rf}"
+export            RUST_TARGET="x86_64-apathy-linux-musl"
+
+export             MOZ_NOSPAM=1
+export        MOZ_DEBUG_FLAGS="-g0"
+export MACH_USE_SYSTEM_PYTHON=1
+
+# 3 > apply patches
+pdir="/mss/repo/pkg/recipes/firefox/patches"
+for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
+
+# 4 > nuke addons and pocket
+rm -rf \
+ browser/{components/pocket,extensions/{webcompat,doh-rollout,screenshots,report-site-issue}}
+
+# 5 > clear sums
+for sum in audio_thread_priority target-lexicon-0.9.0 packed_simd; do
+ sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
+done
+
+# 6 > clear the default bookmarks
+fdir="/mss/repo/pkg/recipes/firefox/files"
+cp -vf "${fdir}"/bookmarks.html.in  browser/locales/generic/profile/bookmarks.html.in
+
+# 7 > add header from alpine
+cp -vf "${fdir}"/stab.h             toolkit/crashreporter/google-breakpad/src/
+
+# 8 > remove prebuilt binaries
+find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
+
+# 9 > start the build
+cp -v "${fdir}"/mozconfig .
+./mach build
+
+# 10 > install
+instdir="$PWD/KEK"
+DESTDIR="${instdir}" ./mach install
+
+install -v -Dm644 "${fdir}"/vendor.js     "${instdir}"/usr/lib/firefox/browser/defaults/preferences/vendor.js
+install -v -Dm644 "${fdir}"/policies.json "${instdir}"/usr/lib/firefox/distribution/policies.json

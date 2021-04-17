@@ -1,0 +1,6 @@
+# 1
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-nls

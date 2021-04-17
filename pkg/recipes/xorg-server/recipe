@@ -1,0 +1,23 @@
+# 1
+./configure \
+ --build=$CBUILD                \
+ --host=$CHOST                  \
+ --prefix=/usr                  \
+ --sysconfdir=/etc              \
+ --localstatedir=/var           \
+ --with-xkb-output=/var/lib/xkb \
+\
+ --with-sha1=libcrypto          \
+ --enable-install-setuid        \
+ --enable-suid-wrapper          \
+ --enable-glx                   \
+ --enable-dri                   \
+ --enable-dri2                  \
+ --enable-dri3                  \
+ --enable-glamor                \
+ --enable-xorg                  \
+ --with-systemd-daemon=off      \
+ --disable-xwayland             \
+ --disable-unit-tests           \
+ --disable-static               \
+ --disable-systemd-logind

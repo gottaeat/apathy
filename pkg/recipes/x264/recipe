@@ -1,0 +1,12 @@
+# 1
+pdir="/mss/repo/pkg/recipes/x264/patches"
+patch -p1 < "${pdir}"/x264-no-bash.patch
+
+configtomusl
+
+./configure \
+ --prefix=/usr     \
+ --disable-swscale \
+ --enable-pic      \
+ --enable-shared   \
+ --enable-lto

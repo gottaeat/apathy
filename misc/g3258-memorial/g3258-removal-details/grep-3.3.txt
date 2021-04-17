@@ -1,7 +1,0 @@
-/bin/egrep
-/bin/fgrep
-/bin/grep
-
-/usr/share/info
-/usr/share/locale
-/usr/share/man

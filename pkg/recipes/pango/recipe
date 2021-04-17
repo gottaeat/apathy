@@ -1,0 +1,13 @@
+# 1
+sed -i "/subdir('tests')/d"    meson.build
+sed -i "/subdir('examples')/d" meson.build
+
+mkdir build
+cd    build
+
+# 2
+meson --buildtype=plain \
+ --prefix=/usr          \
+ -Dgir=false            \
+ -Denable_docs=false    \
+..

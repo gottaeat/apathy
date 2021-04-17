@@ -1,0 +1,49 @@
+# 1
+sed -i 's/ATK_PACKAGES="atk atk-bridge-2.0"/ATK_PACKAGES="atk"/' configure
+sed -i '/<atk-bridge.h>/d;/atk_bridge_adaptor_init/d'            gtk/a11y/gtkaccessibility.c
+sed -i 's/demos tests testsuite examples//'                      Makefile.am Makefile.in
+sed -i 's/docs m4macros/m4macros/'                               Makefile.am Makefile.in
+
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --sysconfdir=/etc         \
+ --localstatedir=/var      \
+ --enable-colord=no        \
+ --enable-gtk-doc-html=no  \
+ --enable-introspection=no \
+ --enable-x11-backend      \
+ --enable-xcomposite       \
+ --enable-xdamage          \
+ --enable-xfixes           \
+ --enable-xinerama         \
+ --enable-xkb              \
+ --enable-xrandr           \
+ --disable-cloudprint      \
+ --disable-cups            \
+ --disable-glibtest        \
+ --disable-installed-tests \
+ --disable-nls             \
+ --disable-papi            \
+ --disable-schemas-compile
+
+cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained.css
+
+make
+
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+glib-compile-schemas \
+ --targetdir="${instdir}"/usr/share/glib-2.0/schemas/ \
+             "${instdir}"/usr/share/glib-2.0/schemas/
+
+# 2
+doas -s
+make install
+glib-compile-schemas /usr/share/glib-2.0/schemas/
+
+rm -rfv \
+ /usr/share/themes \
+ /usr/share/gettext

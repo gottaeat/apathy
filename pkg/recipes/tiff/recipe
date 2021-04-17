@@ -1,0 +1,8 @@
+# 1
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-static

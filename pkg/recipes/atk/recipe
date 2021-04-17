@@ -1,0 +1,12 @@
+# 1
+sed -i "/subdir('tests')/d" meson.build
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr          \
+ --sysconfdir=/etc      \
+ -Ddocs=false           \
+ -Dintrospection=false  \
+..

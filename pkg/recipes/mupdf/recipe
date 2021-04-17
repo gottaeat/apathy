@@ -1,0 +1,62 @@
+# 1
+pdir="/mss/repo/pkg/recipes/mupdf/patches"
+patch -p1 < "${pdir}"/mupdf-1.15-openssl-x11.patch
+
+rm -rf thirdparty/{freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib,curl,lcms2}
+
+sed -i \
+ -e "1iOS = Linux"   \
+ -e "1iCC = ${CC}"   \
+ -e "1iCXX = ${CXX}" \
+ -e "1iLD = ${LD}"   \
+ -e "1iAR = ${AR}"   \
+ -i Makerules
+
+export   CFLAGS="${CFLAGS}   -fPIC -DFZ_ENABLE_JS=0"
+export CXXFLAGS="${CXXFLAGS} -fPIC -DFZ_ENABLE_JS=0"
+export  LDFLAGS="${LDFLAGS}  -fPIC -DFZ_ENABLE_JS=0 -Wl,-z,noexecstack"
+export  XCFLAGS="${CFLAGS}"
+export    XLIBS="${LDFLAGS}"
+
+export USE_SYSTEM_FREETYPE=yes
+export USE_SYSTEM_GUMBO=no
+export USE_SYSTEM_HARFBUZZ=yes
+export USE_SYSTEM_JBIG2DEC=yes
+export USE_SYSTEM_JPEGXR=no
+export USE_SYSTEM_LCMS2=yes
+export USE_SYSTEM_LIBJPEG=yes
+export USE_SYSTEM_MUJS=no
+export USE_SYSTEM_OPENJPEG=yes
+export USE_SYSTEM_ZLIB=yes
+export USE_SYSTEM_GLUT=yes
+export USE_SYSTEM_CURL=yes
+export USE_SYSTEM_LEPTONICA=yes
+export USE_SYSTEM_TESSERACT=yes
+export USE_SYSTEM_CURL=yes
+export HAVE_PTHREAD=yes
+export HAVE_WIN32=no
+export HAVE_OBJCOPY=no
+export HAVE_GLUT=yes
+export HAVE_WIN32=no
+export HAVE_X11=no
+export HAVE_CURL=no
+export HAVE_LIBDL=no
+export HAVE_LEPTONICA=no
+export HAVE_TESSERACT=no
+export HAVE_SYS_CURL=yes
+export HAVE_LIBCRYPTO=no
+export HAVE_JPEGXR=no
+export HAVE_LURATECH=no
+export HAVE_AVX=yes
+export HAVE_AVX2=no
+export HAVE_FMA=no
+export HAVE_SSE4_1=yes
+export HAVE_NEON=no
+
+make build=release apps
+make build=release prefix=$PWD/KEK/usr install
+
+# 2
+doas -s
+mv KEK/usr/bin/mupdf-gl /usr/bin
+chown root:root /usr/bin/mupdf-gl

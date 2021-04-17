@@ -1,0 +1,59 @@
+# 1
+cdt1
+git clone --depth=1 https://github.com/mssx86/mpd
+cd mpd
+
+# 2
+pushd /opt
+doas -- tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+popd
+
+# 3
+mkdir mybuild
+cd    mybuild
+
+export       CFLAGS="${CFLAGS}   -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
+export     CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
+export      LDFLAGS="${LDFLAGS}  -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
+export   BOOST_ROOT="/opt/boost-1.75.0"
+export LIBRARY_PATH="/opt/boost-1.75.0/lib"
+
+meson --buildtype=plain \
+ --prefix=/usr          \
+\
+ -Ddebug=false          \
+ -Dipv6=disabled        \
+ -Dtest=false           \
+ -Ddocumentation=false  \
+\
+ -Dcue=true             \
+ -Ddsd=true             \
+ -Dtcp=true             \
+ -Dfifo=true            \
+ -Dpipe=true            \
+ -Dhttpd=true           \
+ -Dcurl=enabled         \
+ -Ddatabase=true        \
+ -Dffmpeg=enabled       \
+ -Did3tag=enabled       \
+ -Dwebdav=enabled       \
+ -Dlibmpdclient=enabled \
+..
+
+time samu -v -j5
+DESTDIR=$PWD/KEK samu install
+cd KEK/usr/bin/
+strip --strip-all -v mpd
+
+# 4
+groupadd mpd
+useradd -c "mpd thingy" -d /var/lib/mpd -u 45 -g mpd -s /bin/nologin mpd
+gpasswd -a mpd audio
+
+mkdir /var/lib/mpd
+touch /var/lib/mpd/db
+doas -- chown -R mpd:mpd /var/lib/mpd
+
+cp /mss/repo/dir/etc/mpd.conf /etc
+doas -u mpd mpd /etc/mpd.conf

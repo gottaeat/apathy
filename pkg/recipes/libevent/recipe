@@ -1,0 +1,11 @@
+# 1
+sed -i -e "s/@VERSION@/2.1.11/" *.pc.in
+
+./configure \
+ --build=$CBUILD              \
+ --host=$CHOST                \
+ --prefix=/usr                \
+ --sysconfdir=/etc            \
+ --disable-malloc-replacement \
+ --disable-samples            \
+ --disable-static

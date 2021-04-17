@@ -1,0 +1,20 @@
+# 1
+./configure \
+ --build=$CBUILD         \
+ --host=$CHOST           \
+ --prefix=/usr           \
+ --with-pic              \
+ --with-ca-fallback      \
+ --enable-unix-sockets   \
+ --enable-hidden-symbols \
+ --with-libssh2          \
+ --disable-manual        \
+ --disable-static        \
+ --disable-ipv6          \
+ --disable-ldap          \
+ --disable-ares          \
+ --without-libidn        \
+ --without-libidn2       \
+ --without-librtmp       \
+ --without-icu           \
+ --without-libpsl

@@ -1,0 +1,38 @@
+# 1
+case $CFLAGS in
+ *-flto*)
+  export   CFLAGS="$(echo "$CFLAGS"   | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
+  export CXXFLAGS="$(echo "$CXXFLAGS" | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
+  export  LDFLAGS="$(echo "$LDFLAGS"  | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
+ ;;
+esac
+
+mkdir build
+cd    build
+
+../configure \
+ --prefix=/usr                  \
+ --as=yasm                      \
+ --extra-cflags="${CFLAGS}"     \
+ --extra-cxxflags="${CXXFLAGS}" \
+\
+ --enable-experimental          \
+ --enable-multithread           \
+ --enable-pic                   \
+ --enable-postproc              \
+ --enable-runtime-cpu-detect    \
+ --enable-shared                \
+ --enable-vp8                   \
+ --enable-vp9                   \
+ --enable-vp9-highbitdepth      \
+ --disable-docs                 \
+ --disable-examples             \
+ --disable-install-bins         \
+ --disable-install-docs         \
+ --disable-install-srcs         \
+ --disable-static               \
+ --disable-tools                \
+ --disable-unit-tests
+
+make verbose=yes GEN_EXAMPLES=
+doas -- make verbose=yes GEN_EXAMPLES= install

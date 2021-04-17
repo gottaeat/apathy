@@ -1,0 +1,34 @@
+# 1
+cdt1
+tar xf /mss/work/sauces/Mako-1.1.3.tar.gz
+cd Mako-1.1.3/
+
+python3 setup.py build
+python3 setup.py install --prefix=/usr --root="${PWD}/KEK"
+
+cd "${PWD}"/KEK/usr/lib/python*/site-packages
+export PYTHONPATH="${PWD}":$(python -c "import sys; print(':'.join(sys.path))")
+cdt1
+
+# 2
+export   CFLAGS="${CFLAGS}   -DGLX_X86_READONLY_TEXT"
+export CXXFLAGS="${CXXFLAGS} -DGLX_X86_READONLY_TEXT"
+export  LDFLAGS="${LDFLAGS}  -DGLX_X86_READONLY_TEXT"  
+
+sed -i "/pre_args += '-DUSE_ELF_TLS'/d" meson.build
+python3 bin/git_sha1_gen.py --output include/git_sha1.h
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr          \
+\
+ -Ddri3=enabled         \
+ -Dzstd=true            \
+ -Dllvm=false           \
+ -Dplatforms=x11        \
+ -Dvulkan-drivers=      \
+ -Dgallium-drivers=     \
+ -Ddri-drivers=i965     \
+..

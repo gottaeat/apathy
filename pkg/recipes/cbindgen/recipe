@@ -1,0 +1,5 @@
+# 1
+export RUSTFLAGS="-Cdebuginfo=0 -Ctarget-cpu=native"
+
+cargo fetch --locked
+cargo build --release --frozen

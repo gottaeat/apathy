@@ -1,0 +1,66 @@
+# 1
+cdt1
+pushd /opt
+doas -- tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+popd
+
+penis="/mss/work/table/KEK"
+export          CFLAGS="$CFLAGS   -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
+export        CXXFLAGS="$CXXFLAGS -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
+export         LDFLAGS="$LDFLAGS  -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
+
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/boost-1.75.0/lib:${penis}/lib"
+export    LIBRARY_PATH="$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:${penis}/lib/pkgconfig"
+
+# 2
+tar xf /mss/work/sauces/fftw-3.3.8.tar.gz
+cd     fftw-3.3.8/
+
+sed -e 's,AM_CONFIG_HEADER,AC_CONFIG_HEADERS,g' -i configure.ac
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+\
+ --disable-shared    \
+ --enable-static     \
+ --enable-threads    \
+ --enable-openmp
+
+make
+make install
+
+cd ..
+rm -rf fftw-3.3.8/
+
+# 3
+tar xfv /mss/work/sauces/ncmpcpp-0.9.1.tar.gz
+cd      ncmpcpp-0.9.1/
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD       \
+ --host=$CHOST         \
+ --prefix=/usr         \
+\
+ --enable-clock        \
+ --with-fftw           \
+ --with-taglib         \
+ --enable-outputs      \
+ --enable-visualizer   \
+ --enable-static-boost \
+\
+ --with-boost=/opt/boost-1.75.0
+
+time make
+strip --strip-all -v src/ncmpcpp
+
+# 4
+doas -s
+mv src/ncmpcpp  /usr/bin/
+chown root:root /usr/bin/ncmpcpp

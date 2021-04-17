@@ -1,0 +1,56 @@
+# 1
+export        CC="/usr/bin/x86_64-apathy-linux-musl-gcc"
+export       CXX="/usr/bin/x86_64-apathy-linux-musl-g++"
+export        LD="/usr/bin/ld.bfd"
+export        AR="/usr/bin/x86_64-apathy-linux-musl-gcc-ar"
+export        AS="/usr/bin/as"
+export        NM="/usr/bin/x86_64-apathy-linux-musl-gcc-nm"
+export     STRIP="/usr/bin/strip"
+export    RANLIB="/usr/bin/x86_64-apathy-linux-musl-gcc-ranlib"
+export   OBJCOPY="/usr/bin/objcopy"
+export   OBJDUMP="/usr/bin/objdump"
+export   OBJSIZE="/usr/bin/size"
+export   READELF="/usr/bin/readelf"
+export ADDR2LINE="/usr/bin/addr2line"
+
+export    CFLAGS="-w -pipe -O2 -mtune=native -march=native"
+export  CXXFLAGS="${CFLAGS}"
+export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+tar xf /mss/work/sauces/musl-1.2.2.tar.gz
+cd     musl-1.2.2/
+
+pdir="/mss/repo/pkg/recipes/musl/patches"
+patch -p1 < "${pdir}"/0001-handle-aux-at_base.patch
+
+./configure \
+  CFLAGS="${CFLAGS}"  \
+ LDFLAGS="${LDFLAGS}" \
+ --prefix=/usr        \
+ --disable-gcc-wrapper
+
+make
+
+# 2
+doas -s
+ln -sfv /lib/ld-musl-x86_64.so.1 /bin/ldd
+
+cat > /etc/ld-musl-x86_64.path << "EOF"
+/lib
+/usr/lib
+EOF
+
+fdir="/mss/repo/pkg/recipes/musl/files"
+${CC} "${fdir}"/getconf.c -o getconf ${LDFLAGS}
+${CC} "${fdir}"/getent.c  -o getent  ${LDFLAGS}
+${CC} "${fdir}"/iconv.c   -o iconv   ${LDFLAGS}
+
+for i in getconf getent iconv; do
+ strip --strip-all -v $i
+ cp -v $i /usr/bin
+ chown root:root /usr/bin/$i
+done
+
+cp -v "${fdir}"/cdefs.h /usr/include/sys
+cp -v "${fdir}"/queue.h /usr/include/sys
+cp -v "${fdir}"/tree.h  /usr/include/sys

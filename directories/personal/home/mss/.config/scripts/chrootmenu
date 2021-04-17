@@ -1,7 +1,0 @@
-#!/mss/bin/sh
-sel=$(printf "arch (glibc)\nalpine (musl)" | dmenu -b -p "chroot to ")
-
-case "$sel" in
- *arch*)  st -e yash -c "doas -- /mss/bin/chr /mnt/mss/stuff/chroots/arch mss"    & ;;
- *alpine) st -e yash -c "doas -- /mss/bin/chr /mnt/mss/stuff/chroots/alpine root" & ;;
-esac

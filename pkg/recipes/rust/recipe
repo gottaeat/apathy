@@ -1,0 +1,72 @@
+# 1
+tar xf /mss/work/sauces/rustc-1.51.0-src.tar.xz
+cd     rustc-1.51.0-src/
+
+pdir="/mss/repo/pkg/recipes/rust/patches"
+patch -p1 < "${pdir}"/0001-use-lib-instead-of-libexec.patch
+patch -p1 < "${pdir}"/0002-use-libunwind-instead-of-libgcc_s.patch
+patch -p1 < "${pdir}"/0003-add-x86_64-apathy-triples.patch
+
+sed -i 's/crt_static_default = true/crt_static_default = false/' \
+ ./compiler/rustc_target/src/spec/linux_musl_base.rs        \
+ ./vendor/rustc-ap-rustc_target/src/spec/linux_musl_base.rs
+
+for i in rustc-ap-rustc_target libc; do
+ sed -i 's/\("files":{\)[^}]*/\1/' vendor/${i}/.cargo-checksum.json
+done
+
+t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
+t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
+t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
+
+t61rf="-Ctarget-cpu=core2"
+t61rf="${t61rf} -Ctarget-feature=+x87,+cx16,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3"
+t61rf="${t61rf} -Ctarget-feature=-avx,-aes,-sse4a,-sse4.2"
+
+export        CC="clang"
+export       CXX="clang++"
+export        LD="$CC"
+export        AR="llvm-ar"
+export        AS="llvm-as"
+export        NM="llvm-nm"
+export     STRIP="llvm-strip"
+export    RANLIB="llvm-ranlib"
+export   OBJCOPY="llvm-objcopy"
+export   OBJDUMP="llvm-objdump"
+export   OBJSIZE="llvm-size"
+export   READELF="llvm-readelf"
+
+export    CFLAGS="-w -O2 ${t61cf}"
+export  CXXFLAGS="${CFLAGS}"
+export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2,--icf=all"
+export RUSTFLAGS="-Clinker=$CC ${t61rf}"
+
+fdir="/mss/repo/pkg/recipes/rust/files"
+cp -rv "${fdir}"/config.toml .
+
+export PKG_CONFIG_ALLOW_CROSS=1
+time python3 ./x.py build -j 5
+
+# 2
+instdir="${PWD}"/KEK
+DESTDIR="${instdir}" python3 ./x.py install
+
+rm -rfv \
+ "${instdir}"/etc                                                 \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/components             \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/etc                    \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/install.log            \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/manifest-*             \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/rust-installer-version \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/uninstall.sh           \
+ "${instdir}"/opt/rustc-1.51.0/share
+
+strip --strip-all -v \
+ "${instdir}"/opt/rustc-1.51.0/bin/*                              \
+ "${instdir}"/opt/rustc-1.51.0/lib/cargo-credential-1password     \
+ "${instdir}"/opt/rustc-1.51.0/lib/rustlib/x86_64-apathy-linux-musl/bin/*
+
+find "${instdir}"/opt/rustc-1.51.0/lib -name \*.so   \
+ -exec strip --strip-unneeded -v {} ';'
+find "${instdir}"/opt/rustc-1.51.0/lib -name \*.rlib \
+ -exec strip --strip-debug    -v {} ';'

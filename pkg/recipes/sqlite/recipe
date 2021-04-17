@@ -1,0 +1,15 @@
+# 1
+export   CFLAGS="${CFLAGS}   -DSQLITE_ENABLE_COLUMN_METADATA=1"
+export CXXFLAGS="${CXXFLAGS} -DSQLITE_ENABLE_COLUMN_METADATA=1"
+export  LDFLAGS="${LDFLAGS}  -DSQLITE_ENABLE_COLUMN_METADATA=1"
+
+sed -i 's/ -ltinfo//g' configure
+
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix=/usr               \
+ --enable-threadsafe         \
+ --enable-dynamic-extensions \
+ --enable-fts5               \
+ --disable-static

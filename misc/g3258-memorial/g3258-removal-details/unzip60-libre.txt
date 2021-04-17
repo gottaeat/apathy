@@ -1,7 +1,0 @@
-/usr/bin/funzip
-/usr/bin/unzip
-/usr/bin/unzipsfx
-/usr/bin/zipgrep
-/usr/bin/zipinfo
-
-/usr/share/man

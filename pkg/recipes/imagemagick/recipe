@@ -1,0 +1,25 @@
+# 1
+./configure \
+ --build=$CBUILD   \
+ --host=$CHOST     \
+ --prefix=/usr     \
+\
+ --sysconfdir=/etc \
+ --disable-shared  \
+ --disable-nls     \
+ --disable-docs    \
+ --without-modules \
+ --without-perl    \
+ --without-magick-plus-plus
+
+make
+
+# 2
+doas -s
+make install-binPROGRAMS install-exec-local 
+
+rm -rfv \
+ /usr/lib/libMagickCore-7.Q16HDRI.a  \
+ /usr/lib/libMagickWand-7.Q16HDRI.a  \
+ /usr/lib/libMagickCore-7.Q16HDRI.la \
+ /usr/lib/libMagickWand-7.Q16HDRI.la

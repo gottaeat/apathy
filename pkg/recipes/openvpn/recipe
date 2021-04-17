@@ -1,0 +1,10 @@
+# 1
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --mandir=/usr/share/man   \
+ --sysconfdir=/etc/openvpn \
+ --enable-crypto           \
+ --enable-iproute2         \
+ --disable-plugin-auth-pam

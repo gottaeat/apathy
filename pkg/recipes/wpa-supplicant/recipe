@@ -1,0 +1,48 @@
+# 1
+penis="/mss/work/table/usr"
+export   CFLAGS="${CFLAGS} -fPIC -I${penis}/include/libnl3 -L${penis}/lib"
+export  LDFLAGS="${CFLAGS} -fPIC -I${penis}/include/libnl3 -L${penis}/lib"
+export CXXFLAGS="${CFLAGS} -fPIC -I${penis}/include/libnl3 -L${penis}/lib"
+
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+
+tar xf /mss/work/sauces/libnl-3.5.0.tar.gz
+cd     libnl-3.5.0/
+
+pdir="/mss/repo/pkg/recipes/wpa-supplicant/patches"
+patch -p1 < "${pdir}"/libnl3-musl.patch
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static
+
+make
+make install
+cd ..
+rm -rf libnl-3.5.0/
+
+# 2
+tar xf /mss/work/sauces/wpa_supplicant-2.9.tar.gz
+cd wpa_supplicant-2.9/
+
+patch -p1 < "${pdir}"/CVE-2019-16275.patch
+patch -p1 < "${pdir}"/eloop.patch
+
+fdir="/mss/repo/pkg/recipes/wpa-supplicant/files"
+cp -vf "${pdir}"/config wpa_supplicant/.config
+cd wpa_supplicant/
+
+make BINDIR=/usr/bin LIBDIR=/usr/lib
+
+# 3
+doas -s
+for i in wpa_cli wpa_passphrase wpa_supplicant
+ strip --strip-all -v $i
+ cp -v $i /usr/bin
+ chown root:root /usr/bin/$i
+done

@@ -1,0 +1,34 @@
+# 1
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX=/usr            \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+..
+
+samu
+
+# 2
+doas -s
+samu install
+
+fdir="/mss/repo/pkg/recipes/apulse/files"
+cp -rv \
+ "${fdir}"/libpulse-mainloop-glib.pc \
+ "${fdir}"/libpulse-simple.pc        \
+ "${fdir}"/libpulse.pc               \
+ /mss/files/pkgconfig/

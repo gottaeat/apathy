@@ -1,0 +1,78 @@
+# 1
+tar xf /mss/work/sauces/Python-3.9.2.tar.xz
+cd Python-3.9.2/
+
+pdir="/mss/repo/pkg/recipes/python/patches"
+patch -p1 < "${pdir}"/python3-always-pip.patch
+
+cat >> Modules/Setup <<EOF
+*disabled*
+_uuid nis ossaudiodev
+EOF
+
+rm -rfv Modules/expat
+rm -rfv Modules/_ctypes/libffi*
+rm -rfv Modules/zlib
+
+export   CFLAGS="$CFLAGS   -fno-semantic-interposition"
+export CXXFLAGS="$CXXFLAGS -fno-semantic-interposition"
+export  LDFLAGS="$LDFLAGS  -fno-semantic-interposition"
+
+ax_cv_c_float_words_bigendian=no \
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+\
+ --enable-shared      \
+ --with-system-expat  \
+ --with-system-ffi    \
+ --with-ensurepip=yes \
+ --disable-ipv6       \
+ --without-doc-strings
+
+make
+
+# 2
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+ln -sfv python3 "${instdir}"/usr/bin/python
+ln -sfv pip3    "${instdir}"/usr/bin/pip
+
+rm -rfv \
+ "${instdir}"/usr/lib/python3.9/test      \
+ "${instdir}"/usr/lib/python3.9/*/test    \
+ "${instdir}"/usr/lib/python3.9/*/tests   \
+ "${instdir}"/usr/lib/python3.9/pydoc*    \
+ "${instdir}"/usr/lib/python3.9/idlelib   \
+ "${instdir}"/usr/lib/python3.9/turtle*   \
+ "${instdir}"/usr/lib/python3.9/config-*  \
+ "${instdir}"/usr/lib/python3.9/ensurepip \
+ "${instdir}"/usr/bin/pydoc*              \
+ "${instdir}"/usr/bin/idle*
+
+find "${instdir}" -type f -name \*.exe -exec rm -rfv {} ';'
+
+# 3
+doas -s
+make install
+
+ln -sfv python3 /usr/bin/python
+ln -sfv pip3    /usr/bin/pip
+
+rm -rfv \
+ /usr/lib/python3.9/test      \
+ /usr/lib/python3.9/*/test    \
+ /usr/lib/python3.9/*/tests   \
+ /usr/lib/python3.9/pydoc*    \
+ /usr/lib/python3.9/idlelib   \
+ /usr/lib/python3.9/turtle*   \
+ /usr/lib/python3.9/config-*  \
+ /usr/lib/python3.9/ensurepip \
+ /usr/bin/pydoc*              \
+ /usr/bin/idle*
+
+find /usr/lib/python3.9 -type f -name \*.exe -exec rm -rfv {} ';'
+
+rm -rfv /usr/share/man

@@ -1,0 +1,52 @@
+# 1
+cdt1
+mkdir -pv KEK/{src,build/{slop,maim},include}
+
+tar xf   /mss/work/sauces/slop-7.4.tar.gz
+tar xf   /mss/work/sauces/maim-5.5.3.tar.gz
+unzip -q /mss/work/sauces/glm-0.9.9.6.zip
+
+mv maim-5.5.3/src/ KEK/src/maim
+mv slop-7.4/src/   KEK/src/slop
+mv glm/glm/        KEK/include/
+
+# 2
+cd KEK
+ln -sfv ../slop/slop.hpp src/maim/slop.hpp
+
+export CXXFLAGS="${CXXFLAGS} -std=c++11 -g0 -s -I./include"
+export  LDFLAGS="${LDFLAGS}  -std=c++11 -g0 -s -I./include"
+
+# 3
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/xshaperectangle.cpp -o build/slop/xshaperectangle.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/rectangle.cpp       -o build/slop/rectangle.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/slop.cpp            -o build/slop/slop.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/resource.cpp        -o build/slop/resource.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/slopstates.cpp      -o build/slop/slopstates.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/x.cpp               -o build/slop/x.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/keyboard.cpp        -o build/slop/keyboard.o
+${CXX} -DSLOP_VERSION=\"v7.4\"   ${CXXFLAGS} -Isrc/slop -c src/slop/mouse.cpp           -o build/slop/mouse.o
+
+${AR} qc     build/slop/libslopy.a \
+ build/slop/mouse.o      build/slop/keyboard.o build/slop/x.o    \
+ build/slop/slopstates.o build/slop/resource.o build/slop/slop.o \
+ build/slop/rectangle.o  build/slop/xshaperectangle.o
+
+${RANLIB}    build/slop/libslopy.a
+
+# 4
+${CXX} -DMAIM_VERSION=\"v5.5.3\" ${CXXFLAGS} -Isrc/maim -c src/maim/main.cpp            -o build/maim/main.o
+${CXX} -DMAIM_VERSION=\"v5.5.3\" ${CXXFLAGS} -Isrc/maim -c src/maim/image.cpp           -o build/maim/image.o
+${CXX} -DMAIM_VERSION=\"v5.5.3\" ${CXXFLAGS} -Isrc/maim -c src/maim/x.cpp               -o build/maim/x.o
+
+${CXX} ${LDFLAGS} -o maim \
+ build/maim/main.o build/maim/image.o build/maim/x.o build/slop/libslopy.a \
+ -lGL -lICE -lSM -lX11 -lXcomposite -lXext -lXfixes -lXrandr -lXrender -ljpeg -lpng -lz
+
+# 5
+doas -s
+for i in maim; do
+ strip --strip-all -v $i
+ chown root:root      $i
+ mv $i /usr/bin/
+done
