@@ -1,0 +1,25 @@
+# 1# 1
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr                 \
+ -Dlibkms=true                 \
+ -Dintel=true                  \
+ -Dradeon=false                \
+ -Damdgpu=false                \
+ -Dnouveau=false               \
+ -Dvmwgfx=false                \
+ -Domap=false                  \
+ -Dexynos=false                \
+ -Dfreedreno=false             \
+ -Dtegra=false                 \
+ -Dvc4=false                   \
+ -Detnaviv=false               \
+ -Dcairo-tests=false           \
+ -Dman-pages=false             \
+ -Dvalgrind=false              \
+ -Dfreedreno-kgsl=false        \
+ -Dinstall-test-programs=false \
+ -Dudev=true                   \
+..
