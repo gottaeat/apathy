@@ -6,14 +6,6 @@ cd    build
  --prefix=/usr                   \
  --enable-gpl                    \
  --enable-nonfree                \
- --enable-shared                 \
- --disable-debug                 \
- --disable-static                \
- --disable-doc                   \
- --disable-htmlpages             \
- --disable-manpages              \
- --disable-podpages              \
- --disable-txtpages              \
 \
  --nm="${NM}"                    \
  --ar="${AR}"                    \
@@ -31,27 +23,26 @@ cd    build
  --extra-ldflags="${LDFLAGS}"    \
  --extra-ldexeflags="${LDFLAGS}" \
  --extra-ldsoflags="${LDFLAGS}"  \
+ --optflags="${LDFLAGS}"         \
  --enable-pic                    \
  --enable-lto                    \
+ --enable-shared                 \
+ --disable-debug                 \
+ --disable-static                \
 \
- --enable-libass                 \
- --enable-libdrm                 \
- --enable-libfontconfig          \
- --enable-libfreetype            \
- --enable-libfribidi             \
- --enable-libmp3lame             \
- --enable-libopenjpeg            \
- --enable-libopus                \
- --enable-libvpx                 \
- --enable-libx264                \
- --enable-libx265                \
- --enable-opengl                 \
+ --enable-ffmpeg                 \
+ --disable-ffplay                \
+ --disable-ffprobe               \
+\
  --enable-openssl                \
- --disable-libcaca               \
- --disable-librsvg               \
  --disable-outdev=oss            \
  --disable-indev=oss             \
+ --disable-runtime-cpudetect     \
 \
- --enable-avx                    \
- --enable-libv4l2                \
- --enable-v4l2-m2m
+ --disable-doc                   \
+ --disable-htmlpages             \
+ --disable-manpages              \
+ --disable-podpages              \
+ --disable-txtpages
+
+time make V=1
