@@ -1,4 +1,0 @@
-/usr/bin/youtube-dl
-
-/usr/lib/python3.9/site-packages/youtube_dl
-/usr/lib/python3.9/site-packages/youtube_dl-2021.3.14-py3.9.egg-info

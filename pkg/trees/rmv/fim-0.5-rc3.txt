@@ -1,0 +1,2 @@
+/usr/bin/fim
+/usr/bin/fimgs
