@@ -21,24 +21,26 @@ t61rf="${t61rf} -Ctarget-feature=+sahf" t61rf="${t61rf} -Ctarget-feature=-aes"
 t61rf="${t61rf} -Ctarget-feature=+sse"  t61rf="${t61rf} -Ctarget-feature=-sse4a"
 t61rf="${t61rf} -Ctarget-feature=+sse2" t61rf="${t61rf} -Ctarget-feature=-sse4.2"
 
-export                     CC="clang"
-export                    CXX="clang++"
-export                     AR="llvm-ar"
+export                     CC="/opt/llvm-11.1.0/bin/clang"
+export                    CXX="/opt/llvm-11.1.0/bin/clang++"
+export                     LD="${CC}"
+export                     AR="/opt/llvm-11.1.0/bin/llvm-ar"
 export                     AS="${CC}"
-export                     NM="llvm-nm"
-export                 RANLIB="llvm-ranlib"
+export                     NM="/opt/llvm-11.1.0/bin/llvm-nm"
+export                 RANLIB="/opt/llvm-11.1.0/bin/llvm-ranlib"
 
-export              CXXSTDLIB="c++"
-
-export                 CFLAGS="-w -pipe -O2 ${t61cf} -flto=5"
+                       CFLAGS="-w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=5"
+export                 CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
 export               CXXFLAGS="${CFLAGS}"
                       LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+                      LDFLAGS="${LDFLAGS} -Wl,--icf=all,--lto-O3,--thinlto-jobs=5"
 export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/usr/lib/firefox,--enable-new-dtags"
 
 export         BINDGEN_CFLAGS="${CFLAGS}"
-
 export              RUSTFLAGS="-Cdebuginfo=0 ${t61rf}"
 export            RUST_TARGET="x86_64-apathy-linux-musl"
+
+export              CXXSTDLIB="c++"
 
 export             MOZ_NOSPAM=1
 export        MOZ_DEBUG_FLAGS="-g0"
