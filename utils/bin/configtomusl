@@ -1,48 +1,22 @@
 #!/mss/bin/sh
 . /mss/files/funcs
 
-case $1 in y|Y|yes) answerreplace=y;; esac
-
-muslcguess="/mss/files/musl-config.guess"
-  muslcsub="/mss/files/musl-config.sub"
+muslcguess="/usr/share/autoconf/build-aux/config.guess"
+  muslcsub="/usr/share/autoconf/build-aux/config.sub"
 
 cguess="$(find . -type f -name config\.guess)"
   csub="$(find . -type f -name config\.sub)"
 
 aprint_nc
-aprint "found these ${cl_grn}config.guess${c_res} files: "
-for guess in ${cguess}; do aprint_nm "${guess}"; done
+for guess in ${cguess}; do
+ aprint_ret "replacing: ${cl_grn}${guess}${c_res}"
+  cp "${muslcguess}" "${guess}"
+ evalret
+done
 
+for sub in ${csub}; do
+ aprint_ret "replacing: ${cl_grn}$sub${c_res}"
+  cp "${muslcsub}"   "${sub}"
+ evalret
+done
 aprint_nc
-aprint "found these ${cl_grn}config.sub${c_res} files: "
-for sub in ${csub}; do aprint_nm "${sub}"; done
-
-aprint_nc
-if [ -z "${anwerreplace}" ]; then
- aprint_ask "shall we replace? (y/n): "
- read answerreplace
-fi
-
-case "${answerreplace}" in
- y|Y|yes)
-  aprint_nc
-
-  for guess in ${cguess}; do
-   aprint_ret "replacing ${cl_grn}${guess}${c_res}."
-    cp "${muslcguess}" "${guess}"
-   evalret
-  done
-
-  for sub in ${csub}; do
-   aprint_ret "replacing ${cl_grn}$sub${c_res}."
-    cp "${muslcsub}"   "${sub}"
-   evalret
-  done
-
-  aprint_nc
- ;;
- n|N|no)
-  aprint "not replacing config files, exiting."
-  exit 1
- ;;
-esac 
