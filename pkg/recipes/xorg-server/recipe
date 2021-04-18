@@ -1,23 +1,49 @@
 # 1
+case $LDFLAGS in
+ *,-z,now*)
+  export  LDFLAGS="$(echo "$LDFLAGS"  | sed 's/,-z,now//')"
+ ;;
+esac
+
 ./configure \
- --build=$CBUILD                \
- --host=$CHOST                  \
- --prefix=/usr                  \
- --sysconfdir=/etc              \
- --localstatedir=/var           \
- --with-xkb-output=/var/lib/xkb \
+ --build=$CBUILD                     \
+ --host=$CHOST                       \
+ --prefix=/usr                       \
+ --sysconfdir=/etc                   \
+ --localstatedir=/var                \
+ --with-xkb-output=/var/lib/xkb      \
+ --with-fontrootdir=/usr/share/fonts \
+ --with-sha1=libcrypto               \
+ --with-os-vendor=apathy             \
 \
- --with-sha1=libcrypto          \
- --enable-install-setuid        \
- --enable-suid-wrapper          \
- --enable-glx                   \
- --enable-dri                   \
- --enable-dri2                  \
- --enable-dri3                  \
- --enable-glamor                \
- --enable-xorg                  \
- --with-systemd-daemon=off      \
- --disable-xwayland             \
- --disable-unit-tests           \
- --disable-static               \
- --disable-systemd-logind
+ --enable-config-udev                \
+ --enable-dri                        \
+ --enable-dri2                       \
+ --enable-dri3                       \
+ --enable-glamor                     \
+ --enable-glx                        \
+ --enable-install-setuid             \
+ --enable-libdrm                     \
+ --enable-shared                     \
+ --enable-xorg                       \
+ --disable-config-hal                \
+ --disable-debug                     \
+ --disable-dmx                       \
+ --disable-ipv6                      \
+ --disable-kdrive                    \
+ --disable-libunwind                 \
+ --disable-linux-acpi                \
+ --disable-record                    \
+ --disable-static                    \
+ --disable-suid-wrapper              \
+ --disable-systemd-logind            \
+ --disable-unit-tests                \
+ --disable-xcsecurity                \
+ --disable-xephyr                    \
+ --disable-xfree86-utils             \
+ --disable-xnest                     \
+ --disable-xvfb                      \
+ --disable-xwayland                  \
+ --without-dtrace                    \
+ --without-fop
+
