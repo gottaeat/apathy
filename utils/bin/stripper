@@ -2,82 +2,60 @@
 . /mss/files/funcs
 rootcheck
 
-case "${@}" in y|Y|yes) answerstrip="yes";; esac
-
-if [ -z "$answerstrip" ]; then
- aprint_nc
- aprint_ask "this script will strip bins and libs, which can be harmful."; aprint_nc
- aprint_ask "are you sure you want to procceed? (y/n): "
-
- read answerstrip
-fi
+aprint_nc
+aprint_ask "commence the strippening? (y|Y|yes/n|N|no): "
+read strippening
 
 aprint_nc
-case "$answerstrip" in
+
+case "${strippening}" in
  y|Y|yes)
-  aprint "stripping:"
-  aprint_ret "${cl_grn}*.a${c_res}            under  ${cb_grn}/usr/lib${c_res}      with  ${cl_grn}--strip-debug${c_res}"
-   find /usr/lib -type f      \
-    -name \*.a                \
-    -exec strip --strip-debug \
-    {} ';' > /dev/null 2>&1
-  evalretkill
+  aprint_ret "stripping static libraries."
+   find /lib /lib64 /usr/lib -type f -name \*.a -exec \
+    strip \
+     --strip-debug                   \
+     --remove-section=.comment       \
+     --remove-section=.note          \
+     --enable-deterministic-archives \
+     -R .gnu.lto_*                   \
+     -R .gnu.debuglto_*              \
+     -N __gnu_lto_slim               \
+     -N __gnu_lto_v1                 \
+   {} ';' >/dev/null 2>&1
+  evalret
 
-  aprint_ret "${cl_grn}*.so (!*.dbg)${c_res}  under  ${cb_grn}/lib${c_res}          with  ${cl_grn}--strip-unneeded${c_res}"
-   find /lib -type f                    \
-    \( -name \*.so* -a ! -name \*dbg \) \
-    -exec strip --strip-unneeded        \
-    {} ';' > /dev/null 2>&1
-  evalretkill
+  aprint_ret "running ranlib on static libraries just in case."
+   find /lib /lib64 /usr/lib -type f -name \*.a -exec \
+    /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib \
+   {} ';' >/dev/null 2>&1
+  evalret
 
-  aprint_ret "${cl_grn}*.so (!*.dbg)${c_res}  under  ${cb_grn}/usr/lib${c_res}      with  ${cl_grn}--strip-unneeded${c_res}"
-   find /usr/lib -type f                \
-    \( -name \*.so* -a ! -name \*dbg \) \
-    -exec strip --strip-unneeded        \
-    {} ';' > /dev/null 2>&1
-  evalretkill
+  aprint_ret "stripping binaries."
+   find /usr/sbin /usr/bin /usr/libexec /sbin /bin /mss/bin \
+    -type f -exec \
+    strip \
+     --strip-all               \
+     --remove-section=.comment \
+     --remove-section=.note    \
+   {} ';' >/dev/null 2>&1
+  evalret
 
-  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/bin${c_res}          with  ${cl_grn}--strip-all${c_res}"
-   find /bin -type f        \
-    -exec strip --strip-all \
-    {} ';' > /dev/null 2>&1
-  evalretkill
- 
-  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/sbin${c_res}         with  ${cl_grn}--strip-all${c_res}"
-   find /sbin -type f       \
-    -exec strip --strip-all \
-    {} ';' > /dev/null 2>&1
-  evalretkill
+  aprint_ret "stripping shared libraries"
+   find /lib /lib64 /usr/lib -type f -name \*.so\* -exec \
+    strip \
+     --strip-unneeded          \
+     --remove-section=.comment \
+     --remove-section=.note    \
+   {} ';' >/dev/null 2>&1
+  evalret
 
-  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/bin${c_res}      with  ${cl_grn}--strip-all${c_res}"
-   find /usr/bin -type f    \
-    -exec strip --strip-all \
-    {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/sbin${c_res}     with  ${cl_grn}--strip-all${c_res}"
-   find /usr/sbin -type f   \
-    -exec strip --strip-all \
-    {} ';' > /dev/null 2>&1
-  evalretkill
-
-  aprint_ret "${cl_grn}all${c_res}            under  ${cb_grn}/usr/libexec${c_res}  with  ${cl_grn}--strip-all${c_res}"
-   find /usr/libexec -type f \
-    -exec strip --strip-all  \
-    {} ';' > /dev/null 2>&1
-  evalretkill
-  aprint "stripping complete."
   aprint_nc
  ;;
  n|N|no)
-  aprint "${cl_grn}not${c_res} stripping."
-  aprint_nc
-  exit 1
+  aprint "exiting."; aprint_nc; exit 1
  ;;
  *)
-  aprint_fail "input either ${cl_grn}y|Y|yes${c_res} or ${cl_grn}n|N|no${c_res}, exiting."
-  aprint_nc
+  aprint_usage "input either y|Y|yes or n|N|no."
   exit 1
  ;;
 esac
-  
