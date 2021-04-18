@@ -23,9 +23,9 @@ basic repository tree
 ├ misc/              -> miscellaneous notes and images.
 ├ pkg/
 │ ├ recipes/         -> in-house build recipes for a variety of software.
-│ └ trees/           -> directory listings for installed and removed programs.
+│ ├ trees/           -> directory listings for installed and removed programs.
+│ └ packages-*.txt   -> parsable lists of "packages" installed in each machine 
+│                       running apathy.
 └ utils/
   ├ bin/             -> utilities used in apathy, written in posix shell.
   └ files/           -> files complementing the utilities and shells.
-    └ packages-*.txt -> a parsable list of programs installed in each machine
-                        running apathy.
