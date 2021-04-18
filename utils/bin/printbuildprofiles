@@ -56,7 +56,7 @@ prog_clang(){
 clang_ldflags_lto_full="${clang_ldflags_base} -Wl,--lto-O3"
 
  clang_cflags_lto_thin="${clang_cflags_base} -flto=thin -flto-jobs=$(($(nproc) + 1))"
-clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3,--thinlto-jobs=$(($(nproc) + 1)),--thinlto-cache-dir=/mss/work/thinltocache"
+clang_ldflags_lto_thin="${clang_ldflags_base} -Wl,--lto-O3,--thinlto-jobs=$(($(nproc) + 1)),--thinlto-cache-dir=/mss/work/ltocache"
 
 
 ## profiles
