@@ -199,9 +199,7 @@
 /usr/libexec/Xorg.wrap
 
 /usr/share/X11/xorg.conf.d/10-quirks.conf
-
 /usr/share/aclocal/xorg-server.m4
+/var/lib/xkb
 
 /usr/share/man
-
-/var/lib/xkb
