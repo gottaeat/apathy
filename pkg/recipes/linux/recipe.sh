@@ -17,7 +17,7 @@ esac
 
 # 2 > set script vars
   blddate="$(date "+%Y%m%d_%H%M%S")"
- storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel"
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel/${confname}"
   repodir="/mss/repo/pkg/recipes/linux"
  saucedir="/mss/work/sauces"
   workdir="/mss/work/table"
