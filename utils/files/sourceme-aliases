@@ -9,7 +9,7 @@ alias      grep="grep       --color=auto"
 # a2 >> cd
 alias       cda="cd /mnt/mss/stuff/media/anime"
 alias       cde="cd /mnt/mss/externalstuff"
-alias       cdg="cd /mnt/mss/stuff/techy-bits/git-repositories"
+alias       cdg="cd /mnt/mss/stuff/techy-bits/git"
 alias       cdl="cd /mnt/mss/stuff/media/lewd"
 alias       cdm="cd /mnt/mss/stuff/media/music"
 alias       cdr="cd /mss/repo"
