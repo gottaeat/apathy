@@ -23,7 +23,6 @@ PermitEmptyPasswords       no
 PermitRootLogin            no
 PermitTunnel               yes
 Port                       3131
-PrintLastLog               yes
 PrintMotd                  no
 PubkeyAuthentication       yes
 StrictModes                yes
