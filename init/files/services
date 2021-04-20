@@ -1,5 +1,5 @@
 # 0 > include device specific vars
-. /mss/init/files/device.conf
+. /mss/files/init.conf
 
 # 1 > service specific functions
 # 1.1 > nfs
