@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 . /mss/init/files/funcs
-. /mss/init/files/device.conf
+. /mss/files/init.conf
 
 # 1 > silence dmesg
 dmesg --console-off
