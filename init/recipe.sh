@@ -5,9 +5,7 @@
 repodir="/mss/repo"
 initdir="/mss/init"
 
-
 buildboi(){
-      oldcflags="${CFLAGS}"
          CFLAGS="${CFLAGS} -g0 -std=c99 -D_FILE_OFFSET_BITS=64"
  export  CFLAGS="${CFLAGS} -D_XOPEN_SOURCE=700 -D_GNU_SOURCE"
  export LDFLAGS="${LDFLAGS} -s"
@@ -18,8 +16,8 @@ buildboi(){
  ubasesrc="ctrlaltdel getty halt killall5 login respawn"
 
  aprint_nc
-
  aprint "${cb_grn}building${c_res}"
+
  aprint_ret "[1/6] ${cb_red}creating ${cb_blu}: ${cb_whi}build/ + out/${c_res}"
   mkdir -p build/libutil out/
  evalretkill
@@ -53,6 +51,7 @@ buildboi(){
    ${CC} ${LDFLAGS} -o out/$i build/${i}.o
   done
  evalretkill
+
  aprint_nc
 }
 
@@ -102,6 +101,7 @@ installboi(){
    cp -f ${i} /mss/init/bin
   evalret
  done
+
  aprint_nc
 }
 
@@ -113,6 +113,7 @@ cleanboi(){
     rm -rf "${i}"
    evalretkill
   done
+
  aprint_nc
 }
 
