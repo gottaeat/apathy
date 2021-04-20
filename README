@@ -19,7 +19,7 @@ basic repository tree
 =====================
 ├ dir/               -> base system configuration files.
 ├ init/              -> in-house init system written in posix shell, using sinit
-│                       with some ubase and sbase programs.
+│                       with some ubase programs with {b,u,w}tmp disabled.
 ├ misc/              -> miscellaneous notes and images.
 ├ pkg/
 │ ├ recipes/         -> in-house build recipes for a variety of software.
