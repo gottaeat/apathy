@@ -1,4 +1,7 @@
 # 1
+pdir="/mss/repo/pkg/recipes/pango/patches"
+patch -p1 < "${pdir}"/fix-pc.patch
+
 sed -i "/subdir('tests')/d"    meson.build
 sed -i "/subdir('examples')/d" meson.build
 
