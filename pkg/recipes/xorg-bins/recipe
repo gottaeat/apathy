@@ -1,0 +1,7 @@
+# 1
+./configure \
+ --build=$CBUILD   \
+ --host=$CHOST     \
+ --prefix=/usr     \
+ --sysconfdir=/etc \
+ --localstatedir=/var
