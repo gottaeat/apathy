@@ -1,0 +1,59 @@
+# 1
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin /opt /sbin /usr \
+ -type f > /tmp/all-files.txt
+
+# 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null | grep libexpat)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked-objdump.txt
+
+for file in $aaaa; do
+ meme="$(ldd $file 2>&1 | grep libexpat)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | tee /tmp/linked-ldd.txt
+
+cat /tmp/linked-objdump.txt /tmp/linked-ldd.txt \
+ | sort -su > /tmp/linked-final.txt
+
+# 3
+d upd expat       2.2.9  -> 2.3.0
+d upd sqlite      3.30.1 -> 3.35.5
+
+d rbl dmenu       4.9
+d rbl st          0.8.4
+d rbl dwm         6.2
+
+d rbl python      3.9.2
+d rbl meson       0.57.1
+d rbl youtube-dl  2021.04.17
+d rbl cmake       3.20.0
+
+d rbl fontconfig  2.13.93
+d rbl harfbuzz    2.8.0
+d rbl cairo       1.16.0
+
+d rbl libXft      2.3.3
+d upd mesa        21.0.2 -> 21.0.3
+d rbl xdriinfo    1.0.6
+d rbl xorg-server 1.20.11
+d rbl libva       2.11.0
+d rbl freeglut    3.2.1 (apathy)
+d rbl glu         9.0.1 (apathy)
+d rbl pango       1.43.0
+d rbl gtk3        3.24.27
+d rbl tiff        4.1.0 (apathy)
+d upd libass      0.14.0 -> 0.15.0
+
+d rbl compton     5.1
+d rbl ffmpeg      4.4
+d rbl mpv         0.33.1
+d rbl mpd         0.21.10
+d rbl imagemagick 7.0.10.23
+d rbl mupdf       1.16.1
+d rbl firefox     78.10.0esr
+d rbl sdl2        2.0.14
+d rbl ioquake3    05180e32

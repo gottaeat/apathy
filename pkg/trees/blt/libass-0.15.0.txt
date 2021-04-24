@@ -1,0 +1,8 @@
+/usr/include/ass
+
+/usr/lib/libass.la
+/usr/lib/libass.so
+/usr/lib/libass.so.9
+/usr/lib/libass.so.9.1.1
+
+/usr/lib/pkgconfig/libass.pc

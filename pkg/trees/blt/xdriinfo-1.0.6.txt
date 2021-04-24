@@ -1,0 +1,3 @@
+/usr/bin/xdriinfo
+
+/usr/share/man

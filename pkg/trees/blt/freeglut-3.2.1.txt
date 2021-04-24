@@ -1,0 +1,13 @@
+/usr/include/GL/freeglut.h
+/usr/include/GL/freeglut_ext.h
+/usr/include/GL/freeglut_std.h
+/usr/include/GL/freeglut_ucall.h
+/usr/include/GL/glut.h
+
+/usr/lib/cmake/FreeGLUT
+
+/usr/lib/libglut.so
+/usr/lib/libglut.so.3
+/usr/lib/libglut.so.3.11.0
+
+/usr/lib/pkgconfig/glut.pc
