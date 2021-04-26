@@ -2,8 +2,6 @@
 rsync \
 \
  --links          \
- --copy-dirlinks  \
- --hard-links     \
  --perms          \
  --executability  \
  --owner          \
