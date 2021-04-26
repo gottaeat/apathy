@@ -1,10 +1,12 @@
 /bin/ldd
+
+/etc/ld-musl-x86_64.path
+
 /lib/ld-musl-x86_64.so.1
 
 /usr/bin/getconf
 /usr/bin/getent
 /usr/bin/iconv
-/usr/bin/ldconfig
 
 /usr/include/aio.h
 /usr/include/alloca.h
@@ -17,7 +19,7 @@
 /usr/include/arpa/tftp.h
 /usr/include/assert.h
 /usr/include/bits/alltypes.h
-/usr/include/bits/endian.h
+/usr/include/bits/dirent.h
 /usr/include/bits/errno.h
 /usr/include/bits/fcntl.h
 /usr/include/bits/fenv.h
