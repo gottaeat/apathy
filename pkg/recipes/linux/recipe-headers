@@ -1,0 +1,25 @@
+# 1
+pdir="/mss/repo/pkg/recipes/linux/patches"
+patch -p1 < "${pdir}"/0001-fix-__always_inline.patch
+
+make mrproper
+
+# 2
+make headers
+
+find usr/include -name '.*' -delete
+
+instdir="${PWD}/KEK"
+mkdir -pv "${instdir}"/usr/include
+cp -rv usr/include/* "${instdir}"/usr/include
+rm -v                "${instdir}"/usr/include/Makefile
+
+cd "${instdir}"
+ldir /tmp/headertree
+cat /tmp/headertree | sed '/\.h$/!d' \
+ | sort -su > /mss/repo/pkg/trees/blt/linux-headers-5.12.0.txt
+cd ..
+
+# 3
+clear; doas -- cp -rv "${instdir}"/* / 2>&1 \
+         | tee ../header-install.log
