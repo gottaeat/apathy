@@ -33,12 +33,10 @@ make
 
 # 2
 doas -s
-ln -sfv /lib/ld-musl-x86_64.so.1 /bin/ldd
+make install
 
-cat > /etc/ld-musl-x86_64.path << "EOF"
-/lib
-/usr/lib
-EOF
+ln -sfv /lib/ld-musl-x86_64.so.1 /bin/ldd
+cp -v /mss/repo/dir/etc/ld-musl-x86_64.path /etc
 
 fdir="/mss/repo/pkg/recipes/musl/files"
 ${CC} "${fdir}"/getconf.c -o getconf ${LDFLAGS}
@@ -47,10 +45,12 @@ ${CC} "${fdir}"/iconv.c   -o iconv   ${LDFLAGS}
 
 for i in getconf getent iconv; do
  strip --strip-all -v $i
- cp -v $i /usr/bin
+ mv -v $i /usr/bin
  chown root:root /usr/bin/$i
 done
 
-cp -v "${fdir}"/cdefs.h /usr/include/sys
-cp -v "${fdir}"/queue.h /usr/include/sys
-cp -v "${fdir}"/tree.h  /usr/include/sys
+cp -v \
+ "${fdir}"/tree.h  \
+ "${fdir}"/cdefs.h \
+ "${fdir}"/queue.h \
+ /usr/include/sys
