@@ -265,7 +265,6 @@ i  apathy  .. sdl2                     2.0.14
 i  apathy  . pkgconf                   1.7.4
 i  apathy  . busybox                   1.33.0
 b  bbox    .. ash                      1.33.0
-b  bbox    .. bash                     1.33.0
 b  bbox    .. cpio                     1.33.0
 b  bbox    .. crond                    1.33.0
 b  bbox    .. crontab                  1.33.0
@@ -273,6 +272,7 @@ b  bbox    .. dos2unix                 1.33.0
 b  bbox    .. hostname                 1.33.0
 b  bbox    .. klogd                    1.33.0
 b  bbox    .. loadfont                 1.33.0
+b  bbox    .. lsmod                    1.33.0
 b  bbox    .. man                      1.33.0
 b  bbox    .. mkdosfs                  1.33.0
 b  bbox    .. mkfs.vfat                1.33.0

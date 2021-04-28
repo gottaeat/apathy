@@ -1,5 +1,4 @@
 /bin/ash
-/bin/bash
 /bin/busybox
 /bin/cpio
 /bin/hostname
@@ -9,6 +8,7 @@
 /bin/uname
 
 /sbin/klogd
+/sbin/lsmod
 /sbin/mkdosfs
 /sbin/mkfs.vfat
 /sbin/syslogd

@@ -26,4 +26,5 @@
 /usr/bin/which
 
 /usr/sbin/crond
+/usr/sbin/loadfont
 /usr/sbin/ntpd
