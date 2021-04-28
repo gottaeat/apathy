@@ -2,7 +2,7 @@ apathy
 ======
 apathy is a linux "distribution" (lol) built from scratch using apathy-mlfs as
 its base (https://github.com/mssx86/apathy-mlfs) for the sake of having
-something to do, though it's more like a linux of thesus at this point.
+something to do, though it's more like a system of theseus at this point.
 
 like all the meme distributions, it utilizes musl as the libc. rest of the
 system is composed of whatever i felt like putting in there, with the gaps
@@ -17,15 +17,15 @@ not want to use it anyway.
 
 basic repository tree
 =====================
-├ dir/               -> base system configuration files.
-├ init/              -> in-house init system written in posix shell, using sinit
-│                       with some ubase programs with {b,u,w}tmp disabled.
-├ misc/              -> miscellaneous notes and images.
+├ dir/             -> base system configuration files.
+├ init/            -> in-house init system written in posix shell, using sinit
+│                     with some ubase programs with {b,u,w}tmp disabled.
+├ misc/            -> miscellaneous notes and images.
 ├ pkg/
-│ ├ recipes/         -> in-house build recipes for a variety of software.
-│ ├ trees/           -> directory listings for installed and removed programs.
-│ └ packages-*.txt   -> parsable lists of "packages" installed in each machine 
-│                       running apathy.
+│ ├ recipes/       -> in-house build recipes for a variety of software.
+│ ├ trees/         -> directory listings for installed and removed programs.
+│ └ packages-*.txt -> parsable lists of "packages" installed in each machine 
+│                     running apathy.
 └ utils/
-  ├ bin/             -> utilities used in apathy, written in posix shell.
-  └ files/           -> files complementing the utilities and shells.
+  ├ bin/           -> utilities used in apathy, written in posix shell.
+  └ files/         -> files complementing the utilities and shells.
