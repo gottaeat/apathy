@@ -1,4 +1,7 @@
+/lib/cpp
+
 /usr/bin/c++
+/usr/bin/cc
 /usr/bin/cpp
 /usr/bin/g++
 /usr/bin/gcc
@@ -13,15 +16,17 @@
 /usr/bin/x86_64-apathy-linux-musl-c++
 /usr/bin/x86_64-apathy-linux-musl-g++
 /usr/bin/x86_64-apathy-linux-musl-gcc
-/usr/bin/x86_64-apathy-linux-musl-gcc-10.2.1
+/usr/bin/x86_64-apathy-linux-musl-gcc-10.3.0
 /usr/bin/x86_64-apathy-linux-musl-gcc-ar
 /usr/bin/x86_64-apathy-linux-musl-gcc-nm
 /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib
 
-/usr/include/c++/10.2.1
-/usr/lib/gcc/x86_64-apathy-linux-musl/10.2.1
-/usr/libexec/gcc/x86_64-apathy-linux-musl/10.2.1
-/usr/share/gcc-10.2.1
+/usr/include/c++/10.3.0
+/usr/lib/gcc/x86_64-apathy-linux-musl/10.3.0
+/usr/libexec/gcc/x86_64-apathy-linux-musl/10.3.0
+/usr/share/gcc-10.3.0
+
+/usr/lib/bfd-plugins/liblto_plugin.so
 
 /usr/lib/libatomic.la
 /usr/lib/libatomic.so

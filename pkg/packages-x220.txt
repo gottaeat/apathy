@@ -13,7 +13,7 @@ i  apathy  . expat                     2.3.0
 i  mlfs    . file                      5.37
 i  apathy  . findutils                 4.8.0
 i  mlfs    . flex                      2.6.4
-i  apathy  . gcc                       10.3.0
+i  apathy  . gcc                       11.1.0
 i  apathy  . gmp                       6.2.1
 i  mlfs    . gperf                     3.1
 i  apathy  . grep                      3.6
