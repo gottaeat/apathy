@@ -2,14 +2,20 @@
 . /mss/files/funcs
 rootcheck
 
-aprint_nc
-aprint_ask "commence the strippening? (y|Y|yes/n|N|no): "
-read strippening
-
-aprint_nc
+case $1 in
+ y|Y|yes)
+  strippening="yes"
+ ;;
+ *)
+  aprint_nc
+  aprint_ask "commence the strippening? (y|Y|yes/n|N|no): "
+  read strippening
+ ;;
+esac
 
 case "${strippening}" in
  y|Y|yes)
+  aprint_nc
   aprint_ret "stripping static libraries."
    find /lib /lib64 /usr/lib -type f -name \*.a -exec \
     strip \
