@@ -202,7 +202,7 @@ i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
 i  apathy  . youtube-dl                2021.04.17
 i  apathy  . compton                   5.1 
-i  apathy  . ffmpeg                    4.4
+i  apathy  . ffmpeg                    4.4 
 i  alpine  .. lame                     3.100
 i  alpine  .. openjpeg                 2.3.1
 i  alpine  . numlockx                  1.2
