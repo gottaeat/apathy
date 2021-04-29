@@ -1,4 +1,9 @@
 # 1
+case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
+ X220) penis="enable"  penislist="oss,sndio"      ;;
+ T61)  penis="disable" penislist="oss,sndio,v4l2" ;;
+esac
+
 mkdir build
 cd    build
 
@@ -6,6 +11,7 @@ cd    build
  --prefix=/usr                   \
  --enable-gpl                    \
  --enable-nonfree                \
+ --disable-logging               \
 \
  --nm="${NM}"                    \
  --ar="${AR}"                    \
@@ -24,20 +30,90 @@ cd    build
  --extra-ldexeflags="${LDFLAGS}" \
  --extra-ldsoflags="${LDFLAGS}"  \
  --optflags="${LDFLAGS}"         \
- --enable-pic                    \
+\
+ --cpu=host                      \
  --enable-lto                    \
+ --enable-pic                    \
  --enable-shared                 \
  --disable-debug                 \
+ --disable-optimizations         \
+ --disable-runtime-cpudetect     \
  --disable-static                \
+ --disable-symver                \
+\
+ --"${penis}"-aesni              \
+ --"${penis}"-avx                \
+ --"${penis}"-sse42              \
+ --"${penis}"-xop                \
+ --"${penis}"-fma3               \
+ --"${penis}"-fma4               \
+ --"${penis}"-mmxext             \
+ --enable-asm                    \
+ --enable-fast-unaligned         \
+ --enable-mmx                    \
+ --enable-inline-asm             \
+ --enable-sse                    \
+ --enable-sse2                   \
+ --enable-sse3                   \
+ --enable-sse4                   \
+ --enable-ssse3                  \
+ --enable-x86asm                 \
+ --disable-altivec               \
+ --disable-vsx                   \
+ --disable-power8                \
+ --disable-amd3dnow              \
+ --disable-amd3dnowext           \
+ --disable-avx2                  \
+ --disable-avx512                \
+ --disable-armv5te               \
+ --disable-armv6                 \
+ --disable-armv6t2               \
+ --disable-vfp                   \
+ --disable-neon                  \
+ --disable-mipsdsp               \
+ --disable-mipsdspr2             \
+ --disable-msa                   \
+ --disable-msa2                  \
+ --disable-mipsfpu               \
+ --disable-mmi                   \
 \
  --enable-ffmpeg                 \
  --disable-ffplay                \
  --disable-ffprobe               \
 \
+ --"${penis}"-libv4l2            \
+ --"${penis}"-sdl2               \
+ --"${penis}"-v4l2-m2m           \
+ --"${penis}"-vaapi              \
+ --enable-alsa                   \
+ --enable-bzlib                  \
+ --enable-libass                 \
+ --enable-libdrm                 \
+ --enable-libfontconfig          \
+ --enable-libfreetype            \
+ --enable-libfribidi             \
+ --enable-libmp3lame             \
+ --enable-libopenjpeg            \
+ --enable-libopus                \
+ --enable-libvorbis              \
+ --enable-libvpx                 \
+ --enable-libx264                \
+ --enable-libx265                \
+ --enable-libxcb                 \
+ --enable-libxcb-shape           \
+ --enable-libxcb-shm             \
+ --enable-libxcb-xfixes          \
+ --enable-lzma                   \
+ --enable-lzo                    \
+ --enable-network                \
+ --enable-opengl                 \
  --enable-openssl                \
- --disable-outdev=oss            \
- --disable-indev=oss             \
- --disable-runtime-cpudetect     \
+ --enable-pthreads               \
+ --enable-xlib                   \
+ --enable-zlib                   \
+\
+ --disable-indev="${penislist}"  \
+ --disable-outdev="${penislist}" \
 \
  --disable-doc                   \
  --disable-htmlpages             \
