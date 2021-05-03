@@ -1,0 +1,73 @@
+# users
+mss     1000:1000  -> 101:101
+sshd      50:50    -> 102:102
+mpd       45:1001  -> 103:103
+
+# groups
+tape       4    6
+daemon     6    7
+floppy     7    8
+disk       8    9
+lp         9    10
+dialout    10   11
+audio      11   12
+video      12   13
+adm        16   14
+input      24   22
+mail       34   17
+sshd       50   102
+kvm        61   21
+wheel      97   4
+users      999  100
+mss        1000 101
+mpd        1001 103
+
+optical    --   16 (was adm)
+storage    --   18 (was messagebus)
+scanner    --   19 (no one had this)
+network    --   20 (no one had this)
+
+# action
+find "${mntdir}" -group 4    -exec chgrp -h 401 {} ';'
+find "${mntdir}" -group 6    -exec chgrp -h 402 {} ';'
+find "${mntdir}" -group 7    -exec chgrp -h 403 {} ';'
+find "${mntdir}" -group 8    -exec chgrp -h 404 {} ';'
+find "${mntdir}" -group 9    -exec chgrp -h 405 {} ';'
+find "${mntdir}" -group 10   -exec chgrp -h 406 {} ';'
+find "${mntdir}" -group 11   -exec chgrp -h 407 {} ';'
+find "${mntdir}" -group 12   -exec chgrp -h 408 {} ';'
+find "${mntdir}" -group 16   -exec chgrp -h 409 {} ';'
+find "${mntdir}" -group 24   -exec chgrp -h 410 {} ';'
+find "${mntdir}" -group 34   -exec chgrp -h 411 {} ';'
+find "${mntdir}" -group 50   -exec chgrp -h 412 {} ';'
+find "${mntdir}" -group 61   -exec chgrp -h 413 {} ';'
+find "${mntdir}" -group 97   -exec chgrp -h 414 {} ';'
+find "${mntdir}" -group 999  -exec chgrp -h 415 {} ';'
+find "${mntdir}" -group 1000 -exec chgrp -h 416 {} ';'
+find "${mntdir}" -group 1001 -exec chgrp -h 417 {} ';'
+
+find "${mntdir}" -user  1000 -exec chown -h 501 {} ';'
+find "${mntdir}" -user  50   -exec chown -h 502 {} ';'
+find "${mntdir}" -user  45   -exec chown -h 503 {} ';'
+
+find "${mntdir}" -group 401  -exec chgrp -h 6   {} ';'
+find "${mntdir}" -group 402  -exec chgrp -h 7   {} ';'
+find "${mntdir}" -group 403  -exec chgrp -h 8   {} ';'
+find "${mntdir}" -group 404  -exec chgrp -h 9   {} ';'
+find "${mntdir}" -group 405  -exec chgrp -h 10  {} ';'
+find "${mntdir}" -group 406  -exec chgrp -h 11  {} ';'
+find "${mntdir}" -group 407  -exec chgrp -h 12  {} ';'
+find "${mntdir}" -group 408  -exec chgrp -h 13  {} ';'
+find "${mntdir}" -group 409  -exec chgrp -h 14  {} ';'
+find "${mntdir}" -group 410  -exec chgrp -h 22  {} ';'
+find "${mntdir}" -group 411  -exec chgrp -h 17  {} ';'
+find "${mntdir}" -group 412  -exec chgrp -h 102 {} ';'
+find "${mntdir}" -group 413  -exec chgrp -h 21  {} ';'
+find "${mntdir}" -group 414  -exec chgrp -h 4   {} ';'
+find "${mntdir}" -group 415  -exec chgrp -h 100 {} ';'
+find "${mntdir}" -group 416  -exec chgrp -h 101 {} ';'
+find "${mntdir}" -group 417  -exec chgrp -h 103 {} ';'
+
+find "${mntdir}" -user  501  -exec chown -h 101 {} ';'
+find "${mntdir}" -user  502  -exec chown -h 102 {} ';'
+find "${mntdir}" -user  503  -exec chown -h 103 {} ';'
