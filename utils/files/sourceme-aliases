@@ -1,10 +1,9 @@
 # a >> aliases
-# a1 >> colored ls and grep
-alias         l="ls -Askh   --color=auto"
-alias        ll="ls -Askhw1 --color=auto"
-alias       lll="ls -Alh    --color=auto"
-alias        ls="ls         --color=auto"
-alias      grep="grep       --color=auto"
+# a1 >> ls and grep
+alias         l="ls --group-directories-first --color=auto -FHs"
+alias        ll="ls --group-directories-first --color=auto -AFHas"
+alias       lll="ls --group-directories-first --color=auto -AFHal"
+alias      grep="grep --color=auto"
 
 # a2 >> cd
 alias       cda="cd /mnt/mss/stuff/media/anime"
