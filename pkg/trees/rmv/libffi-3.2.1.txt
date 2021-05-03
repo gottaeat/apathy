@@ -1,0 +1,12 @@
+/usr/include/ffi.h
+/usr/include/ffitarget.h
+
+/usr/lib/libffi.la
+/usr/lib/libffi.so
+/usr/lib/libffi.so.6
+/usr/lib/libffi.so.6.0.4
+
+/usr/lib/pkgconfig/libffi.pc
+
+/usr/share/info
+/usr/share/man

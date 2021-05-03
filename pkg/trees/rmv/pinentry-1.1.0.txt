@@ -1,0 +1,4 @@
+/usr/bin/pinentry
+/usr/bin/pinentry-tty
+
+/usr/share/info

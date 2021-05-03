@@ -1,0 +1,4 @@
+/usr/bin/bc
+/usr/bin/dc
+
+/usr/share/man

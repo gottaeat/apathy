@@ -1,0 +1,2 @@
+/usr/bin/bc
+/usr/bin/dc

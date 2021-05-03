@@ -1,0 +1,12 @@
+/usr/include/elfutils
+
+/usr/include/gelf.h
+/usr/include/libelf.h
+/usr/include/nlist.h
+
+/usr/lib/libelf-0.176.so
+/usr/lib/libelf.a
+/usr/lib/libelf.so
+/usr/lib/libelf.so.1
+
+/usr/lib/pkgconfig/libelf.pc

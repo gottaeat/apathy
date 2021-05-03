@@ -1,0 +1,15 @@
+/lib/libcap.so.2
+/lib/libcap.so.2.27
+
+/usr/include/sys/capability.h
+
+/usr/lib/libcap.so
+
+/usr/lib/pkgconfig/libcap.pc
+
+/usr/sbin/capsh
+/usr/sbin/getcap
+/usr/sbin/getpcaps
+/usr/sbin/setcap
+
+/usr/share/man

@@ -1,0 +1,5 @@
+/usr/bin/gunzip
+/usr/bin/gzip
+/usr/bin/pigz
+/usr/bin/unpigz
+/usr/bin/zcat
