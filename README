@@ -1,18 +1,18 @@
 apathy
 ======
-apathy is a linux "distribution" (lol) built from scratch using apathy-mlfs as
-its base (https://github.com/mssx86/apathy-mlfs) for the sake of having
-something to do, though it's more like a system of theseus at this point.
+apathy is a linux "distribution" (lol) built from scratch for the sake of having
+something to do. it initially got started off of github.com/mssx86/apathy-mlfs
+but a lot have changed gradually and none of the recipes from mlfs are used
+anymore.
 
-like all the meme distributions, it utilizes musl as the libc. rest of the
-system is composed of whatever i felt like putting in there, with the gaps
-filled with busybox applets where possible, without creating a scenario of
-cripplement for the sake of muh minimalism. behind, there also is an (almost)
-intelligent in-house init system written in posix shell.
+like all the meme distributions, apathy utilizes musl as the libc and the rest
+of the system is composed of whatever i felt like putting in with the gaps
+filled with busybox applets where possible, though without creating a scenario
+where the user experience is crippled for the sake of muh minimalism. there also
+is an in-house init system written in posix shell.
 
-because it is intended for my use only, apathy does not have an image to boot
-from or a stage{1..4} tarball to unpack. i take weekly backups with literally
-clonezilla so if they're gone, apathy is gone. objectively speaking, you would
+because apathy is intended for my use only, this repo does not contain an image
+to boot from or a stage{1..4} tarball to unpack. objectively speaking, you would
 not want to use it anyway.
 
 basic repository tree
