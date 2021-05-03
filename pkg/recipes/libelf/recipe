@@ -1,0 +1,32 @@
+# 1
+fdir="/mss/repo/pkg/recipes/libelf/files"
+cp -vf "${fdir}"/error.h ./lib/
+
+sed -i \
+ -e 's/as_fn_error.*argp/: "/g'    \
+ -e 's/as_fn_error.*fts/: "/g'     \
+ -e 's/as_fn_error.*obstack/: "/g' \
+  configure
+
+sed -i 's/color.*printversion../#/g' lib/Makefile.in
+
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix=/usr               \
+ --disable-symbol-versioning \
+ --disable-debuginfod        \
+ --disable-nls
+
+make -C lib
+make -C libelf
+
+# 2
+instdir="${PWD}/KEK"
+make -C libelf DESTDIR="${instdir}" install
+mkdir -pv                  "${instdir}"/usr/lib/pkgconfig
+cp    -vf config/libelf.pc "${instdir}"/usr/lib/pkgconfig/libelf.pc
+
+doas -s
+make -C libelf install
+cp  -vf config/libelf.pc /usr/lib/pkgconfig/libelf.pc

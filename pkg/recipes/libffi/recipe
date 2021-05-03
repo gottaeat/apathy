@@ -1,0 +1,18 @@
+# 1
+./configure \
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --disable-static \
+ --with-pic
+
+make
+
+# 2
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+ln -sfv libffi.so.7 "${instdir}"/usr/lib/libffi.so.6
+
+doas -s
+make install
+ln -sfv libffi.so.7 /usr/lib/libffi.so.6

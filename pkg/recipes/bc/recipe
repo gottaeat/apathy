@@ -1,0 +1,5 @@
+# 1
+./configure \
+ --prefix=/usr \
+ --disable-nls \
+ --disable-man-pages

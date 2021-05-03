@@ -9,16 +9,21 @@ export CC="x86_64-apathy-linux-musl-gcc"
 export AR="x86_64-apathy-linux-musl-gcc-ar"
 export NM="x86_64-apathy-linux-musl-gcc-nm"
 
-fdir="/mss/repo/pkg/recipes/busybox/files"
 pdir="/mss/repo/pkg/recipes/busybox/patches"
 patch -p1 < "${pdir}"/0001-fix-traceroute-option-parsing.patch
+patch -p1 < "${pdir}"/0002-unzip-usage-no-error.patch
+patch -p1 < "${pdir}"/0003-print-unicode.patch
+patch -p1 < "${pdir}"/0004-install-fix-chown.patch
+
+fdir="/mss/repo/pkg/recipes/busybox/files"
 cp    -v    "${fdir}"/config ./.config
 
-# 2
 mymake(){ make CC="${CC}" AR="${AR}" NM="${NM}" V=1 ${@};}
 
 mymake clean
 mymake
+
+# 2
 mymake CONFIG_PREFIX=$PWD/KEK  install
 mymake CONFIG_PREFIX=/ install
 

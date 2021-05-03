@@ -1,0 +1,16 @@
+# 1
+export   CFLAGS="${CFLAGS}   -fPIC"
+export CXXFLAGS="${CXXFLAGS} -fPIC"
+export  LDFLAGS="${LDFLAGS}  -fPIC"
+
+./configure \
+ --prefix=/usr     \
+ --libdir=/usr/lib \
+ --shared
+
+make
+
+# 2
+doas -s
+make install
+rm -rf /usr/lib/libz.a

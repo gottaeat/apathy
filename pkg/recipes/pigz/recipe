@@ -1,0 +1,19 @@
+# 1
+make CC="${CC} ${LDFLAGS}"
+
+# 2
+instdir="${PWD}"/KEK
+mkdir -pv "${instdir}"/usr/bin
+
+cp -vf  pigz    "${instdir}"/usr/bin/pigz
+cp -vf  unpigz  "${instdir}"/usr/bin/unpigz
+ln -sfv pigz    "${instdir}"/usr/bin/gzip
+ln -sfv pigz    "${instdir}"/usr/bin/zcat
+ln -sfv unpigz  "${instdir}"/usr/bin/gunzip
+
+doas -s
+cp -vf  pigz    /usr/bin/pigz
+cp -vf  unpigz  /usr/bin/unpigz
+ln -sfv pigz    /usr/bin/gzip
+ln -sfv pigz    /usr/bin/zcat
+ln -sfv unpigz  /usr/bin/gunzip

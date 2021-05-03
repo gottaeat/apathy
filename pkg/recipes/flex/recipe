@@ -1,0 +1,15 @@
+# 1
+./configure \
+ --build=$CBUILD                 \
+ --host=$CHOST                   \
+ --prefix=/usr                   \
+ --disable-static                \
+ ac_cv_func_malloc_0_nonnull=yes \
+ ac_cv_func_realloc_0_nonnull=yes
+
+make
+
+# 2
+doas -s
+make install
+ln -sfv flex /usr/bin/lex

@@ -1,0 +1,32 @@
+# 1
+make CC="${CC} ${LDFLAGS} -fPIC" -f Makefile-libbz2_so
+make CC="${CC} ${LDFLAGS} -fPIC"    bzip2recover
+
+# 2
+instdir="${PWD}/KEK"
+mkdir -pv "${instdir}"/usr/{bin,lib,include}
+
+cp -vf  bzip2-shared                      "${instdir}"/usr/bin/bzip2
+cp -vf  bzdiff bzgrep bzip2recover bzmore "${instdir}"/usr/bin/
+ln -sfv bzip2                             "${instdir}"/usr/bin/bunzip2
+ln -sfv bzip2                             "${instdir}"/usr/bin/bzcat
+
+cp -vf bzlib.h                            "${instdir}"/usr/include/bzlib.h
+cp -vf libbz2.so.1.0.8                    "${instdir}"/usr/lib/libbz2.so.1.0.8
+for i in libbz2.so libbz2.so.1 libbz2.so.1.0; do
+ ln -sfv libbz2.so.1.0.8                  "${instdir}"/usr/lib/"${i}"
+done
+
+# 3
+doas -s
+
+cp -vf  bzip2-shared                      /usr/bin/bzip2
+cp -vf  bzdiff bzgrep bzip2recover bzmore /usr/bin/
+ln -sfv bzip2                             /usr/bin/bunzip2
+ln -sfv bzip2                             /usr/bin/bzcat
+
+cp -vf bzlib.h                            /usr/include/bzlib.h
+cp -vf libbz2.so.1.0.8                    /usr/lib/libbz2.so.1.0.8
+for i in libbz2.so libbz2.so.1 libbz2.so.1.0; do
+ ln -sfv libbz2.so.1.0.8                  /usr/lib/"${i}"
+done

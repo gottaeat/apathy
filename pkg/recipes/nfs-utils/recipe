@@ -6,6 +6,7 @@
  --host=$CHOST       \
  --prefix=/usr       \
  --sysconfdir=/etc   \
+ --disable-caps      \
  --disable-nfsv4     \
  --disable-nfsv41    \
  --disable-ipv6      \
