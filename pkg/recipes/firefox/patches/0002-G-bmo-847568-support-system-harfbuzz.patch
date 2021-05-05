@@ -1,7 +1,7 @@
-From af3fb9eaefe7aeeebc24ab744ad2fd1957a8027a Mon Sep 17 00:00:00 2001
+From cbe9e3de7f25fc7b128c08de3dab87bdea2aac34 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:32:39 +0200
-Subject: [PATCH 04/38] bmo#847568: Support system harfbuzz
+Subject: [PATCH 04/42] bmo#847568: Support system harfbuzz
 
 Allow building against system-wide harfbuzz.
 
@@ -178,5 +178,5 @@ index ebc4dbdb2d..827d1de352 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.29.2
+2.31.1
 

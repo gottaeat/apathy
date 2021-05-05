@@ -1,7 +1,7 @@
-From ac76654b2690ba1f7415a54e4c8abde507c13890 Mon Sep 17 00:00:00 2001
+From 592ee2ecd7ecd7168df477492c2d3b7a2cf9f584 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 24 Nov 2020 18:56:40 +0100
-Subject: [PATCH 38/38] bmo#1667736: Update packed_simd to compile on Rust 1.48
+Subject: [PATCH 38/42] bmo#1667736: Update packed_simd to compile on Rust 1.48
 
 Bug: https://bugs.gentoo.org/756334
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -87,7 +87,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  create mode 100644 third_party/rust/packed_simd/src/api/bitmask.rs
 
 diff --git a/.cargo/config.in b/.cargo/config.in
-index f014783896..0ee86efe40 100644
+index b1a1b35f77..1accd1ef72 100644
 --- a/.cargo/config.in
 +++ b/.cargo/config.in
 @@ -50,7 +50,7 @@ tag = "v0.3.0"
@@ -100,7 +100,7 @@ index f014783896..0ee86efe40 100644
  [source."https://github.com/djg/cubeb-pulse-rs"]
  git = "https://github.com/djg/cubeb-pulse-rs"
 diff --git a/Cargo.lock b/Cargo.lock
-index 24c9e1a577..fccd18ace1 100644
+index 4f3668699b..42a245ce80 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -3425,8 +3425,8 @@ dependencies = [
@@ -115,7 +115,7 @@ index 24c9e1a577..fccd18ace1 100644
   "cfg-if",
  ]
 diff --git a/Cargo.toml b/Cargo.toml
-index 6f6199ab26..2c162e6567 100644
+index b723c1da2d..3173ef840c 100644
 --- a/Cargo.toml
 +++ b/Cargo.toml
 @@ -66,7 +66,7 @@ panic = "abort"
@@ -125,8 +125,8 @@ index 6f6199ab26..2c162e6567 100644
 -packed_simd = { git = "https://github.com/hsivonen/packed_simd", rev="3541e3818fdc7c2a24f87e3459151a4ce955a67a" }
 +packed_simd = { git = "https://github.com/hsivonen/packed_simd", rev="0917fe780032a6bbb23d71be545f9c1834128d75" }
  rlbox_lucet_sandbox = { git = "https://github.com/PLSysSec/rlbox_lucet_sandbox/", rev="d510da5999a744c563b0acd18056069d1698273f" }
- nix = { git = "https://github.com/shravanrn/nix/", branch = "r0.13.1", rev="4af6c367603869a30fddb5ffb0aba2b9477ba92e" }
- spirv_cross = { git = "https://github.com/kvark/spirv_cross", branch = "wgpu3", rev = "20191ad2f370afd6d247edcb9ff9da32d3bedb9c" }
+ nix = { git = "https://github.com/shravanrn/nix/", rev="4af6c367603869a30fddb5ffb0aba2b9477ba92e" }
+ spirv_cross = { git = "https://github.com/kvark/spirv_cross", branch = "wgpu3" }
 diff --git a/third_party/rust/packed_simd/.cargo-checksum.json b/third_party/rust/packed_simd/.cargo-checksum.json
 index 01afcc1efd..1512803e57 100644
 --- a/third_party/rust/packed_simd/.cargo-checksum.json
@@ -3209,5 +3209,5 @@ index 1e6b4f3543..31fb7073af 100644
          0, 1, 2, 3, 4, 5, 6, 7,
          8, 9, 10, 11, 12, 13, 14, 15,
 -- 
-2.29.2
+2.31.1
 

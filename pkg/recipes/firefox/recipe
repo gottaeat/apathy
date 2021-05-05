@@ -1,6 +1,6 @@
 # 1 > extraction
-tar xf /mss/work/sauces/firefox-78.10.0esr.source.tar.xz
-cd     firefox-78.10.0/
+tar xf /mss/work/sauces/firefox-78.10.1esr.source.tar.xz
+cd     firefox-78.10.1/
 
 # 2 > build vars
 unset \
@@ -21,13 +21,13 @@ t61rf="${t61rf} -Ctarget-feature=+sahf" t61rf="${t61rf} -Ctarget-feature=-aes"
 t61rf="${t61rf} -Ctarget-feature=+sse"  t61rf="${t61rf} -Ctarget-feature=-sse4a"
 t61rf="${t61rf} -Ctarget-feature=+sse2" t61rf="${t61rf} -Ctarget-feature=-sse4.2"
 
-export                     CC="/opt/llvm-11.1.0/bin/clang"
-export                    CXX="/opt/llvm-11.1.0/bin/clang++"
+export                     CC="/opt/llvm-12.0.0/bin/clang"
+export                    CXX="/opt/llvm-12.0.0/bin/clang++"
 export                     LD="${CC}"
-export                     AR="/opt/llvm-11.1.0/bin/llvm-ar"
+export                     AR="/opt/llvm-12.0.0/bin/llvm-ar"
 export                     AS="${CC}"
-export                     NM="/opt/llvm-11.1.0/bin/llvm-nm"
-export                 RANLIB="/opt/llvm-11.1.0/bin/llvm-ranlib"
+export                     NM="/opt/llvm-12.0.0/bin/llvm-nm"
+export                 RANLIB="/opt/llvm-12.0.0/bin/llvm-ranlib"
 
                        CFLAGS="-w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=5"
 export                 CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"

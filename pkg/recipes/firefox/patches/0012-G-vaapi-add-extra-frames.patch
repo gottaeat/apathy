@@ -1,7 +1,7 @@
-From 9b74448e5e764e3d8b4dab5ad8278c9d5f145fb6 Mon Sep 17 00:00:00 2001
+From 60d1c55087a9efbfa83f88f345c38376986f454a Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Wed, 3 Jun 2020 22:06:28 +0200
-Subject: [PATCH 24/38] VAAPI: Add extra frames
+Subject: [PATCH 24/42] VAAPI: Add extra frames
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -22,5 +22,5 @@ index 6c97636505..76d6c93548 100644
  typedef mozilla::layers::Image Image;
  typedef mozilla::layers::PlanarYCbCrImage PlanarYCbCrImage;
 -- 
-2.29.2
+2.31.1
 
