@@ -82,7 +82,6 @@ cd    build
  --disable-ffprobe               \
 \
  --"${penis}"-libv4l2            \
- --"${penis}"-sdl2               \
  --"${penis}"-v4l2-m2m           \
  --"${penis}"-vaapi              \
  --enable-alsa                   \
