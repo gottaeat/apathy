@@ -1,0 +1,119 @@
+# 1
+unset \
+ CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
+ OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
+
+export       CC="x86_64-apathy-linux-musl-gcc"
+export      CXX="x86_64-apathy-linux-musl-g++"
+export       AR="x86_64-apathy-linux-musl-gcc-ar"
+export       NM="x86_64-apathy-linux-musl-gcc-nm"
+export   RANLIB="x86_64-apathy-linux-musl-gcc-ranlib"
+
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -mtune=native -march=native -fPIC -fPIE"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+myconfigure(){
+ ./configure \
+  --build=$CBUILD \
+  --host=$CHOST   \
+  --prefix=$penis \
+  --enable-static \
+  --disable-shared
+}
+
+mymake(){
+ make \
+  GOLANG=no                       \
+  exec_prefix=${penis}/bin        \
+  lib_prefix=${penis}/lib         \
+  inc_prefix=${penis}/            \
+  man_prefix=${penis}/man         \
+  PKGCONFIGDIR=${penis}/pkgconfig \
+  RAISE_SETFCAP=no                \
+  DYNAMIC=no                      \
+  INDENT=" "                      \
+  "$@"
+}
+
+# 2
+cdt1
+tar xf /mss/work/sauces/libcap-2.49.tar.xz
+cd     libcap-2.49/
+
+mymake
+mymake install
+
+cd ../; rm -rf libcap-2.49/
+
+# 3
+tar xf /mss/work/sauces/libmnl-1.0.4.tar.bz2
+cd     libmnl-1.0.4/
+
+pdir="/mss/repo/pkg/recipes/nfqws/patches"
+patch -p1 < "${pdir}"/libmnl-fix-includes.patch
+
+myconfigure
+make
+make install
+
+cd ../; rm -rf libmnl-1.0.4/
+
+# 4
+tar xf /mss/work/sauces/libnfnetlink-1.0.1.tar.bz2
+cd     libnfnetlink-1.0.1/
+
+patch -p1 < "${pdir}"/libnfnetlink-fix-includes.patch
+
+configtomusl
+myconfigure
+make
+make install
+
+cd ../; rm -rf libnfnetlink-1.0.1/
+
+# 5
+tar xf /mss/work/sauces/libnetfilter_queue-1.0.5.tar.bz2
+cd     libnetfilter_queue-1.0.5/
+
+configtomusl
+myconfigure
+make
+make install
+
+cd ../; rm -rf libnetfilter_queue-1.0.5/
+
+# 6
+find "${penis}" -type f -name \*.a -exec \
+ strip -v \
+  --strip-debug                   \
+  --remove-section=.comment       \
+  --remove-section=.note          \
+  --enable-deterministic-archives \
+  -R .gnu.lto_*                   \
+  -R .gnu.debuglto_*              \
+  -N __gnu_lto_slim               \
+  -N __gnu_lto_v1                 \
+{} ';'
+
+find "${penis}" -type f -name \*.a -exec ${RANLIB} {} ';'
+
+# 7
+gcd1 --recursive https://github.com/bol-van/zapret
+cd zapret/nfq/
+make clean
+
+for i in libcap.a libnfnetlink.a libnetfilter_queue.a libmnl.a; do
+ cp -r "${penis}"/lib/$i ./
+done
+
+${CC} ${LDFLAGS} -std=gnu99 -o nfqws *.c -lz libcap.a libmnl.a libnetfilter_queue.a libnfnetlink.a
+strip --strip-all -v nfqws
+doas -- mv nfqws /usr/sbin
+doas -- chown root:root /usr/sbin/nfqws
