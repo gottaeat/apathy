@@ -1,4 +1,4 @@
-i  apathy  . linux                     5.12.1
+i  apathy  . linux                     5.12.2
 i  apathy  . linux-headers             5.12.0
 i  apathy  . autoconf                  2.70
 i  apathy  . automake                  1.16.3
@@ -197,7 +197,7 @@ i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
 i  apathy  . youtube-dl                2021.04.17
 i  apathy  . compton                   5.1 
-i  apathy  . ffmpeg                    4.4 
+i  apathy  . ffmpeg                    4.4
 i  alpine  .. lame                     3.100
 i  alpine  .. openjpeg                 2.3.1
 i  alpine  . numlockx                  1.2
@@ -257,7 +257,6 @@ i  apathy  .. libtirpc                 1.3.1
 i  apathy  .. rpcbind                  1.2.5
 i  apathy  . openssl                   1.1.1k
 i  apathy  . mpdas                     c81c480
-i  apathy  . ioquake3                  05180e32
-i  apathy  .. sdl2                     2.0.14
 i  apathy  . pkgconf                   1.7.4
+i  apathy  . nfqws                     86241cb5
 i  apathy  . busybox                   1.33.0
