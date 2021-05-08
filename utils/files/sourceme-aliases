@@ -1,8 +1,8 @@
 # a >> aliases
 # a1 >> ls and grep
-alias         l="ls --group-directories-first --color=auto -FHs"
-alias        ll="ls --group-directories-first --color=auto -AFHas"
-alias       lll="ls --group-directories-first --color=auto -AFHal"
+alias         l="ls --group-directories-first --color=auto -FH"
+alias        ll="ls --group-directories-first --color=auto -AFHhasw1"
+alias       lll="ls --group-directories-first --color=auto -AFHhal"
 alias      grep="grep --color=auto"
 
 # a2 >> cd
