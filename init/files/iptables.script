@@ -52,10 +52,14 @@
  iptables -A INPUT -p tcp --dport 31310  -j ACCEPT			# rpc.statd  -p
  iptables -A INPUT -p tcp --dport 31311  -j ACCEPT			# rpc.statd  -o
  iptables -A INPUT -p tcp --dport 31312  -j ACCEPT			# rpc.mountd -p
- 
- # print log to dmesg
-#iptables -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 4
- 
+
+ # zapret
+ iptables -t mangle -I POSTROUTING                                               \
+  -p tcp -m multiport --dports 80,443                                            \
+  -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:4 \
+  -m mark ! --mark 0x40000000/0x40000000                                         \
+  -j NFQUEUE --queue-num 200 --queue-bypass
+
  # deny unless explicitly allowed
  iptables -A INPUT -j REJECT
  iptables -A FORWARD -j REJECT

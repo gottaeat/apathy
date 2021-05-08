@@ -46,12 +46,23 @@ esac
 svc_iptables(){
  case "$1" in
   start)
-   ainitsvc "iptables" "starting"
+   ainitsvc "iptables" "setting the rules"
     . /mss/init/files/iptables.script
+   evalret
+
+   ainitsvc "iptables" "starting nfqws"
+    nfqws --uid=0:0 \
+     --qnum=200 --dpi-desync-fwmark=0x40000000 --wssize=1:6 \
+     --hostcase --hostspell=hoST --hostnospace --domcase    \
+     --dpi-desync=fake           \
+     --dpi-desync-fooling=md5sig \
+     --dpi-desync-retrans=1      \
+     --dpi-desync-skip-nosni=0   \
+     --dpi-desync-ttl=6 >/dev/null 2>&1 &
    evalret
   ;;
   stop)
-   ainitsvc "iptables" "clearing"
+   ainitsvc "iptables" "clearing the rules"
     iptables --policy INPUT   ACCEPT  &&
     iptables --policy OUTPUT  ACCEPT  &&
     iptables --policy FORWARD ACCEPT  &&
@@ -60,6 +71,9 @@ svc_iptables(){
     iptables --delete-chain           &&
     iptables -t mangle --delete-chain
    evalret
+
+   ainitsvc "iptables" "stopping nfqws"
+   ainit_kill nfqws
   ;;
   status)
    iptables --numeric --list
