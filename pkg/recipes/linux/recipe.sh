@@ -44,14 +44,15 @@ unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
 
-mymake(){ make CC=x86_64-apathy-linux-musl-gcc -j$(($(nproc)+1)) "$@";}
+mymake(){ make CC=x86_64-apathy-linux-musl-gcc "$@";}
 
 # 5 > print details
 clear; aprint_nc
-lsdetail "release " "${kerver}  "
-lsdetail "machine " "${confname}"
-lsdetail "localver" "${localver}"
-lsdetail "details " "${bldsalt} "
+lsdetail "release  " "${kerver}   "
+lsdetail "machine  " "${confname} "
+lsdetail "localver " "${localver} "
+lsdetail "details  " "${bldsalt}  "
+lsdetail "makeflags" "${MAKEFLAGS}"
 
 # 6 > unpack the kernel
 if [ ! -f "${saucedir}/${1}" ]
