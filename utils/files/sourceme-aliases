@@ -1,8 +1,10 @@
 # a >> aliases
 # a1 >> ls and grep
-alias         l="ls --group-directories-first --color=auto -FH"
-alias        ll="ls --group-directories-first --color=auto -AFHhasw1"
-alias       lll="ls --group-directories-first --color=auto -AFHhal"
+myls(){ /bin/ls --group-directories-first --color=auto -AFHhp ${@} ;}
+alias        ls="myls"
+alias         l="myls"
+alias        ll="myls -w1"
+alias       lll="myls -l"
 alias      grep="grep --color=auto"
 
 # a2 >> cd
@@ -30,7 +32,7 @@ alias        tl="tmux ls"
 # a4 >> git
 alias        gs="git status -s"
 alias        gl="git log --oneline"
-alias      gcd1="git clone --depth=1"
+alias      gcd1="git clone --depth=1 --recursive"
 
 # a5 >> media
 alias       ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
