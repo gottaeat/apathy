@@ -1,6 +1,6 @@
 # > 1
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build-dir
-mk_add_options MOZ_MAKE_FLAGS="-j5"
+mk_add_options MOZ_MAKE_FLAGS="-j3"
 
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
@@ -37,6 +37,7 @@ ac_add_options --with-distribution-id=io.github.mssx86
 # > 6
 ac_add_options --enable-alsa
 ac_add_options --enable-ffmpeg
+ac_add_options --enable-webspeech
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
@@ -51,7 +52,6 @@ ac_add_options --disable-system-extension-dirs
 ac_add_options --disable-updater
 ac_add_options --disable-vtune
 ac_add_options --disable-webrtc
-ac_add_options --disable-webspeech
 
 # > 7
 ac_add_options --enable-system-ffi
