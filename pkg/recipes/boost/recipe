@@ -6,7 +6,7 @@
  --prefix="$PWD/KEK/opt/boost-1.75.0"
 
 mybee2(){
-time ./b2 "$@" -j 2                      \
+time ./b2 "$@" -j "${ajobcount}"         \
  --prefix="$PWD/KEK/opt/boost-1.75.0"    \
  --layout=system                         \
 \

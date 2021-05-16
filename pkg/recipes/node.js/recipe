@@ -43,7 +43,7 @@ cd node-v14.17.0/
  --without-npm              \
  --without-report           \
 
-time ninja -v -j5 -C out/Release
+time samu -C out/Release
 
 # 2
 tools/install.py install $PWD/KEK /opt/node.js-14.17.0

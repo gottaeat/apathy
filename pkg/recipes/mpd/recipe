@@ -41,19 +41,18 @@ meson --buildtype=plain \
  -Dlibmpdclient=enabled \
 ..
 
-time samu -v -j5
+time samu
 DESTDIR=$PWD/KEK samu install
 cd KEK/usr/bin/
 strip --strip-all -v mpd
 
 # 4
-groupadd mpd
-useradd -c "mpd thingy" -d /var/lib/mpd -u 45 -g mpd -s /bin/nologin mpd
-gpasswd -a mpd audio
+doas -s
+addgroup -g 103 mpd
+adduser -c "mpd daemon" -h /var/lib/mpd -u 103 -G mpd -s /bin/nologin mpd
 
 mkdir /var/lib/mpd
 touch /var/lib/mpd/db
-doas -- chown -R mpd:mpd /var/lib/mpd
+chown -R mpd:mpd /var/lib/mpd
 
 cp /mss/repo/dir/etc/mpd.conf /etc
-doas -u mpd mpd /etc/mpd.conf

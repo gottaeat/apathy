@@ -135,7 +135,7 @@ cmake -Wno-dev -GNinja \
  ../llvm
 
 # 5
-time samu -v -j5
+time samu
 
 # 6
 instdir="$PWD/KEK"

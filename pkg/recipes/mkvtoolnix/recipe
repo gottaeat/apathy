@@ -86,5 +86,5 @@ cd mkvtoolnix-48.0.0/
  --with-boost="/opt/boost-1.75.0" \
  --with-docbook-xsl-root="${penis}/docbook"
 
-rake V=1 --jobs=5
+rake V=1 --jobs="${ajobcount}"
 rake DESTDIR="$PWD/KEK" install
