@@ -20,15 +20,13 @@ export   READELF="/usr/bin/readelf"
 export ADDR2LINE="/usr/bin/addr2line"
 
 export    CFLAGS="-w -pipe -O2 ${t61cf} -flto -fuse-linker-plugin -fno-fat-lto-objects"
-export  CXXFLAGS="${CFLAGS}aaaaaAAA"
+export  CXXFLAGS="${CFLAGS}"
 export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2,--no-keep-memory"
 
 export    TMPDIR="/mss/work/ltocache"
 
-tar xf /mss/work/sauces/node-v15.13.0.tar.xz
-cd node-v15.13.0/
-
-sed -i 's|(3, 8)|(3, 9), (3, 8)|g' configure
+tar xf /mss/work/sauces/node-v14.17.0.tar.xz
+cd node-v14.17.0/
 
 ./configure \
  --ninja                    \
@@ -36,21 +34,22 @@ sed -i 's|(3, 8)|(3, 9), (3, 8)|g' configure
  --openssl-use-def-ca-store \
  --shared-openssl           \
  --shared-zlib              \
+ --with-intl=none           \
  --without-dtrace           \
- --without-npm              \
  --without-etw              \
- --without-intl             \
- --without-report           \
+ --without-inspector        \
+ --without-node-code-cache  \
  --without-node-snapshot    \
- --without-node-code-cache
+ --without-npm              \
+ --without-report           \
 
-time ninja -j5 -C out/Release
+time ninja -v -j5 -C out/Release
 
 # 2
-tools/install.py install $PWD/KEK /opt/node.js-15.13.0
+tools/install.py install $PWD/KEK /opt/node.js-14.17.0
 
 rm -rfv \
- $PWD/KEK/opt/node.js-15.13.0/share \
- $PWD/KEK/opt/node.js-15.13.0/include
+ $PWD/KEK/opt/node.js-14.17.0/share \
+ $PWD/KEK/opt/node.js-14.17.0/include
 
-strip --strip-all -v $PWD/KEK/opt/node.js-15.13.0/bin/node
+strip --strip-all -v $PWD/KEK/opt/node.js-14.17.0/bin/node
