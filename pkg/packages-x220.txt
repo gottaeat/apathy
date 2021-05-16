@@ -237,7 +237,7 @@ i  apathy  . libcxxabi                 12.0.0
 i  apathy  . libcxx                    12.0.0
 i  apathy  . compiler-rt               12.0.0
 i  apathy  . firefox                   78.10.1esr
-i  apathy  .. node.js                  14.17.0
+i  apathy  .. node.js                  14.17.0 
 i  apathy  .. cbindgen                 0.19.0
 i  apathy  ... rust                    1.52.1
 i  apathy  .. gtk3                     3.24.27
