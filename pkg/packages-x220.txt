@@ -18,7 +18,7 @@ i  apathy  . bison                     3.7.4
 i  apathy  . flex                      2.6.4
 i  apathy  . grep                      3.6
 i  apathy  . yash                      2.50 
-i  apathy  . busybox                   1.33.0
+i  apathy  . busybox                   1.33.1
 i  apathy  . libtool                   2.4.6
 i  apathy  . gperf                     3.1
 i  apathy  . expat                     2.3.0
@@ -52,7 +52,7 @@ i  alpine  . lsof                      4.93.2
 i  alpine  . lm-sensors                3.6.0
 i  apathy  . curl                      7.76.1
 i  apathy  . git                       2.31.1
-i  apathy  . openssh                   8.5p1
+i  apathy  . openssh                   8.6p1
 i  apathy  . libssh2                   1.9.0
 i  apathy  . cmake                     3.20.0
 i  apathy  . usbutils                  013
@@ -126,7 +126,7 @@ i  apathy  . xcb-util-keysyms          0.4.0
 i  apathy  . xcb-util-renderutil       0.3.9
 i  apathy  . xcb-util-wm               0.4.1
 i  apathy  . xcb-util-cursor           0.1.3
-i  apathy  . mesa                      21.0.3
+i  apathy  . mesa                      21.1.0
 i  apathy  .. libdrm                   2.4.105
 i  apathy  . xbitmaps                  1.1.2
 i  apathy  . iceauth                   1.0.8
@@ -164,7 +164,7 @@ i  apathy  . encodings                 1.0.5
 i  apathy  . xkeyboard-config          2.28
 i  apathy  . xorg-server               1.20.11
 i  bmlfs   .. libepoxy                 1.5.3
-i  apathy  . xf86-input-libinput       0.30.0
+i  apathy  . xf86-input-libinput       1.0.1
 i  apathy  . libva                     2.11.0
 i  bmlfs   . intel-vaapi-driver        2.4.0
 i  apathy  .. libinput                 1.17.0
@@ -200,7 +200,7 @@ i  apathy  . x264                      20191119-2245
 i  apathy  . x265                      3.5
 i  apathy  . dmenu                     4.9
 i  apathy  . xtrlock                   2.11
-i  apathy  . youtube-dl                2021.04.17
+i  apathy  . youtube-dl                2021.05.16
 i  apathy  . compton                   5.1 
 i  apathy  . ffmpeg                    4.4
 i  alpine  .. lame                     3.100
@@ -244,7 +244,7 @@ i  apathy  .. node.js                  14.17.0
 i  apathy  .. cbindgen                 0.19.0
 i  apathy  ... rust                    1.52.1
 i  apathy  .. gtk3                     3.24.27
-i  apathy  . zstd                      1.4.9
+i  apathy  . zstd                      1.5.0
 i  apathy  . earlyoom                  1.6.1-apathy
 i  apathy  . transmission              3.0
 o  apathy  . ruby                      2.7.1

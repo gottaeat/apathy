@@ -12,7 +12,7 @@
 /usr/lib/libzstd.a
 /usr/lib/libzstd.so
 /usr/lib/libzstd.so.1
-/usr/lib/libzstd.so.1.4.8
+/usr/lib/libzstd.so.1.5.0
 
 /usr/lib/pkgconfig/libzstd.pc
 
