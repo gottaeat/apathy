@@ -1,20 +1,35 @@
 # 1
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+# 2
+tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
+cd     SDL2-2.0.14/
+
 pdir="/mss/repo/pkg/recipes/sdl2/patches"
 patch -p1 < "${pdir}"/libsdl2-2.0.14-static-libs.patch
 patch -p1 < "${pdir}"/replace-echo-en-with-printf.patch
 
 autoreconf -fvi
 
-export   CFLAGS="${CFLAGS}   -D__LINUX__"
-export CXXFLAGS="${CXXFLAGS} -D__LINUX__"
-export  LDFLAGS="${LDFLAGS}  -D__LINUX__"
-
+  CFLAGS="${CFLAGS}   -D__LINUX__" \
+CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
+ LDFLAGS="${LDFLAGS}  -D__LINUX__" \
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \
- --prefix=/usr                 \
- --enable-shared               \
- --disable-static              \
+ --prefix="${penis}"           \
+ --enable-static               \
+ --disable-shared              \
 \
  --enable-alsa                 \
  --enable-assembly             \
@@ -47,7 +62,6 @@ export  LDFLAGS="${LDFLAGS}  -D__LINUX__"
  --enable-video-x11-xrandr     \
  --enable-video-x11-xshape     \
  --disable-3dnow               \
- --disable-alsa-shared         \
  --disable-altivec             \
  --disable-arts                \
  --disable-dbus                \
@@ -57,40 +71,24 @@ export  LDFLAGS="${LDFLAGS}  -D__LINUX__"
  --disable-esd                 \
  --disable-fcitx               \
  --disable-fusionsound         \
- --disable-fusionsound-shared  \
  --disable-haptic              \
  --disable-jack                \
- --disable-jack-shared         \
  --disable-joystick            \
- --disable-kmsdrm-shared       \
  --disable-libsamplerate       \
  --disable-nas                 \
- --disable-nas-shared          \
  --disable-oss                 \
  --disable-pulseaudio          \
- --disable-pulseaudio-shared   \
  --disable-render-d3d          \
  --disable-rpath               \
  --disable-sndio               \
- --disable-sndio-shared        \
  --disable-video-cocoa         \
  --disable-video-directfb      \
  --disable-video-dummy         \
  --disable-video-opengles1     \
  --disable-video-rpi           \
  --disable-video-vulkan        \
- --disable-video-x11-scrnsaver \
- --disable-wayland-shared      \
- --disable-x11-shared
+ --disable-video-x11-scrnsaver
 
 make
-
-# 2
-doas -s
 make install
-rm -rfv \
- /usr/lib/libSDL2.la      \
- /usr/lib/libSDL2_test.a  \
- /usr/lib/libSDL2_test.la \
- /usr/lib/libSDL2main.a   \
- /usr/lib/libSDL2main.la
+cd ../; rm -rf SDL2-2.0.14
