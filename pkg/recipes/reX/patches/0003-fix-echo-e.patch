@@ -1,0 +1,21 @@
+diff --git a/printHash.sh b/printHash.sh
+index e7d6f018..2d641031 100755
+--- a/printHash.sh
++++ b/printHash.sh
+@@ -1,12 +1,12 @@
+-#!/usr/bin/env bash
++#!/bin/sh
+ 
+ > $1
+ 
+-echo -n "#define GIT_SHA1 \"" > $1
++printf "#define GIT_SHA1 \"" > $1
+ 
+ if (command -v "git" >/dev/null) then
+ git rev-parse --short HEAD | tr -d '\n' >> $1
+ fi
+ 
+ echo "\"" >> $1
+-echo "const char* g_GIT_SHA1 = GIT_SHA1;" >> $1
+\ No newline at end of file
++echo "const char* g_GIT_SHA1 = GIT_SHA1;" >> $1
