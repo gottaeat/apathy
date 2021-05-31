@@ -45,7 +45,7 @@ i  apathy  . vim                       8.2.2549
 i  apathy  . util-linux                2.36.2
 i  apathy  . e2fsprogs                 1.45.6
 i  apathy  . eudev                     3.2.9
-i  apathy  . linux                     5.12.4
+i  apathy  . linux                     5.12.8
 i  apathy  . opendoas                  6.8.1
 i  apathy  . iptables                  1.8.7
 i  alpine  . lsof                      4.93.2
