@@ -1,7 +1,7 @@
-From d0432251e6a6230abe6da538639b6dc1415329df Mon Sep 17 00:00:00 2001
+From faa9874460dd481f05015f077029545bdee921b0 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:59:48 +0200
-Subject: [PATCH 11/42] musl: Support custom vendor strings
+Subject: [PATCH 11/44] musl: Support custom vendor strings
 
 Add support for custom vendors, as in "x86_64-gentoo-linux-musl".
 

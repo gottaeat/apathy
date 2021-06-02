@@ -1,7 +1,7 @@
-From 7d641bf5848722babdc7b0e1a9259b7327afffce Mon Sep 17 00:00:00 2001
+From fe0d561715b22bc55f3b550f54e84ef482edc1b7 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:16:36 +0200
-Subject: [PATCH 02/42] Fortify sources properly
+Subject: [PATCH 02/44] Fortify sources properly
 
 Ensure we fortify properly, features.h is pulled in via fortification.
 

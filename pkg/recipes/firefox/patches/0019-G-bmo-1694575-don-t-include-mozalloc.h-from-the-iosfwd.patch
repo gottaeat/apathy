@@ -1,7 +1,7 @@
-From e564b27e94a3ada462e9d4ed298bd63166acbb37 Mon Sep 17 00:00:00 2001
+From bbf48f5c0a9d868c8c89b8eb3e527e2e9bb80df6 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 26 Apr 2021 01:14:04 +0200
-Subject: [PATCH 42/42] bmo#1694575: Don't include mozalloc.h from the iosfwd
+Subject: [PATCH 40/44] bmo#1694575: Don't include mozalloc.h from the iosfwd
  wrapper
 
 Bug: https://bugs.gentoo.org/785622

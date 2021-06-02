@@ -1,7 +1,7 @@
-From 592ee2ecd7ecd7168df477492c2d3b7a2cf9f584 Mon Sep 17 00:00:00 2001
+From 0a2cb5c07fe7822eb9458c5ec39450df4c1ccc70 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 24 Nov 2020 18:56:40 +0100
-Subject: [PATCH 38/42] bmo#1667736: Update packed_simd to compile on Rust 1.48
+Subject: [PATCH 38/44] bmo#1667736: Update packed_simd to compile on Rust 1.48
 
 Bug: https://bugs.gentoo.org/756334
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>

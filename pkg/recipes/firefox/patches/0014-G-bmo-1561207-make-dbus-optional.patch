@@ -1,7 +1,7 @@
-From e0cd39fc779130e6720fdf9693c660c538d282cb Mon Sep 17 00:00:00 2001
+From d20f0103e85f04bc80d0358f83fe96a048b68f04 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Wed, 30 Sep 2020 02:56:14 +0200
-Subject: [PATCH 35/42] bmo#1561207: Make dbus optional
+Subject: [PATCH 35/44] bmo#1561207: Make dbus optional
 
 Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1561207#c24
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>

@@ -1,7 +1,7 @@
-From 5a85db525de3b88bd4b3950b22122496906a823d Mon Sep 17 00:00:00 2001
+From a76e1216251025e0f819f142ab602cea6be134f2 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 1 Feb 2021 15:27:21 +0100
-Subject: [PATCH 39/42] bmo#1684365: Add a null pointer check so that Firefox
+Subject: [PATCH 39/44] bmo#1684365: Add a null pointer check so that Firefox
  won't crash when it can't initialize mRemoteServer
 
 Bug: https://bugs.gentoo.org/762035
