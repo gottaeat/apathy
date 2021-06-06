@@ -1,24 +1,32 @@
 # 1
+export    CFLAGS="${CFLAGS}   -fPIC -std=c++14"
+export  CXXFLAGS="${CXXFLAGS} -fPIC -std=c++14"
+export   LDFLAGS="${LDFLAGS}  -fPIC -std=c++14"
+
 ./bootstrap.sh \
  --with-toolset=gcc  \
  --without-icu       \
  --with-python="/usr/bin/python3" \
- --prefix="$PWD/KEK/opt/boost-1.75.0"
+ --prefix="$PWD/KEK/opt/boost-1.76.0"
 
 mybee2(){
-time ./b2 "$@" -j "${ajobcount}"         \
- --prefix="$PWD/KEK/opt/boost-1.75.0"    \
- --layout=system                         \
+time ./b2 "$@" -j "${ajobcount}"      \
+ --prefix="$PWD/KEK/opt/boost-1.76.0" \
+ --layout=system                      \
+ --without-stacktrace                 \
+ -d+2                                 \
+ -q                                   \
 \
-   cflags="${CFLAGS}   -fPIC"            \
- cxxflags="${CXXFLAGS} -fPIC -std=c++14" \
+        cflags="${CFLAGS}"            \
+      cxxflags="${CXXFLAGS}"          \
+     linkflags="${LDFLAGS}"           \
 \
-       toolset=gcc                       \
-        python=3.8                       \
-       variant=release                   \
- debug-symbols=off                       \
-     threading=multi                     \
-  runtime-link=static                    \
+       toolset=gcc                    \
+        python=3.9                    \
+       variant=release                \
+ debug-symbols=off                    \
+     threading=multi                  \
+  runtime-link=static                 \
           link=static
 }
 
@@ -26,5 +34,18 @@ mybee2 stage
 mybee2 install
 
 # 2
-find KEK/opt/boost-1.75.0/lib \
- -type f -name \*.a   -exec strip --strip-debug    -v {} ';'
+find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
+ -exec strip -v \
+  --strip-debug                   \
+  --remove-section=.comment       \
+  --remove-section=.note          \
+  --enable-deterministic-archives \
+  -R .gnu.lto_*                   \
+  -R .gnu.debuglto_*              \
+  -N __gnu_lto_slim               \
+  -N __gnu_lto_v1                 \
+{} ';'
+
+find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
+ -exec /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib \
+{} ';'
