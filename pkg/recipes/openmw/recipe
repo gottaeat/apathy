@@ -1,9 +1,9 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native"
+         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native -std=c++14"
          CFLAGS="${CFLAGS} -flto=3 -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
          CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
-export   CFLAGS="${CFLAGS} -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
+export   CFLAGS="${CFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
 export CXXFLAGS="${CFLAGS}"
 export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
 
@@ -17,7 +17,7 @@ export          TMPDIR="/mss/work/ltocache"
 # 2 > boost
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.76.0-static-only-nolto.tar.zst
 popd
 
 # 3 > openal
@@ -163,7 +163,6 @@ cd     mygui-MyGUI3.2.2/
 pdir="/mss/repo/pkg/recipes/openmw/patches"
 patch -p1 < "${pdir}"/0001-mygui-FHS.patch
 patch -p1 < "${pdir}"/0002-mygui-build.patch
-patch -p1 < "${pdir}"/0003-mygui-c++17.patch
 
 mkdir builderoo
 cd    builderoo
@@ -255,54 +254,57 @@ samu install
 cd ../../; rm -rf bullet3-3.17/
 
 # 8 > openscenegraph
-tar xf /mss/work/sauces/OpenSceneGraph-3.6.5.tar.gz
-cd     OpenSceneGraph-OpenSceneGraph-3.6.5/
+tar xf /mss/work/sauces/openmw-osg-3.4-8b07809f.tar.zst
+cd     openmw-osg-3.4-8b07809f/
 
-patch -p1 < "${pdir}"/0004-openscenegraph-cmake.patch
-patch -p1 < "${pdir}"/0005-openscenegraph-docdir.patch
-patch -p1 < "${pdir}"/0006-openscenegraph-musl-fixes.patch
+patch -p1 < "${pdir}"/0003-openscenegraph-cmake.patch
+patch -p1 < "${pdir}"/0004-openscenegraph-docdir.patch
+patch -p1 < "${pdir}"/0005-openscenegraph-musl-fixes.patch
 
 mkdir builderoo
 cd    builderoo
 
 _xfl="-D__STDC_CONSTANT_MACROS -Wno-narrowing"
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"            \
- -DCMAKE_INSTALL_LIBDIR=lib                   \
- -DCMAKE_C_FLAGS="$CFLAGS ${_xfl}"            \
- -DCMAKE_CXX_FLAGS="$CXXFLAGS ${_xfl}"        \
- -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS ${_xfl}"  \
- -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"       \
- -DCMAKE_AR="$AR"                             \
- -DCMAKE_NM="$NM"                             \
- -DCMAKE_STRIP="$STRIP"                       \
- -DCMAKE_RANLIB="$RANLIB"                     \
- -DCMAKE_LINKER="$LD"                         \
- -DCMAKE_OBJCOPY="$OBJCOPY"                   \
- -DCMAKE_OBJDUMP="$OBJDUMP"                   \
- -DCMAKE_READELF="$READELF"                   \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"               \
- -DCMAKE_C_COMPILER="$CC"                     \
- -DCMAKE_CXX_COMPILER="$CXX"                  \
- -DCMAKE_C_COMPILER_TARGET="$CHOST"           \
- -DCMAKE_CXX_COMPILER_TARGET="$CHOST"         \
+ -DCMAKE_INSTALL_PREFIX="${penis}"              \
+ -DCMAKE_INSTALL_LIBDIR=lib                     \
+ -DINSTALL_LIBDIR=lib                           \
+ -DLIB_POSTFIX=""                               \
+ -DCMAKE_C_FLAGS="$CFLAGS ${_xfl}"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS ${_xfl}"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS ${_xfl}"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS ${_xfl}" \
+ -DCMAKE_AR="$AR"                               \
+ -DCMAKE_NM="$NM"                               \
+ -DCMAKE_STRIP="$STRIP"                         \
+ -DCMAKE_RANLIB="$RANLIB"                       \
+ -DCMAKE_LINKER="$LD"                           \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                     \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                     \
+ -DCMAKE_READELF="$READELF"                     \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"                 \
+ -DCMAKE_C_COMPILER="$CC"                       \
+ -DCMAKE_CXX_COMPILER="$CXX"                    \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"             \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"           \
 \
- -DDYNAMIC_OPENSCENEGRAPH=OFF                 \
- -DDYNAMIC_OPENTHREADS=OFF                    \
- -DOPENGL_PROFILE=GL2                         \
- -DOSG_PROVIDE_READFILE=ON                    \
- -DOSG_USE_LOCAL_LUA_SOURCE=OFF               \
- -DBUILD_DOCUMENTATION=OFF                    \
- -DBUILD_OSG_APPLICATIONS=OFF                 \
- -DBUILD_OSG_EXAMPLES=OFF                     \
- -DOSGVIEWER_USE_XRANDR=ON                    \
- -DLUA_INCLUDE_DIR="/usr/include/lua5.2/"     \
- -DLUA_LIBRARY="/usr/lib/liblua5.2.so.5.2.4"  \
+ -DDYNAMIC_OPENSCENEGRAPH=OFF                   \
+ -DDYNAMIC_OPENTHREADS=OFF                      \
+ -DOPENGL_PROFILE=GL1                           \
+ -DOSG_PROVIDE_READFILE=ON                      \
+ -DOSG_USE_LOCAL_LUA_SOURCE=OFF                 \
+ -DBUILD_DOCUMENTATION=OFF                      \
+ -DBUILD_OSG_APPLICATIONS=OFF                   \
+ -DBUILD_OSG_EXAMPLES=OFF                       \
+ -DOSGVIEWER_USE_XRANDR=ON                      \
+ -DOSG_USE_QT=OFF                               \
+ -DLUA_INCLUDE_DIR="/usr/include/lua5.2/"       \
+ -DLUA_LIBRARY="/usr/lib/liblua5.2.so.5.2.4"    \
 ..
 
 time samu
 samu install
-cd ../../; rm -rf OpenSceneGraph-OpenSceneGraph-3.6.5/
+cd ../../; rm -rf openmw-osg-3.4-8b07809f/
 
 # 9 > openmw
 gcd1 --recursive https://github.com/mssx86/openmw
@@ -312,10 +314,10 @@ mkdir builderoo
 cd    builderoo
 
 gamedir="/mnt/mss/stuff/media/games/openmw"
-
 cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_PREFIX="${gamedir}"                             \
  -DCMAKE_INSTALL_LIBDIR=lib                                      \
+ -DCMAKE_BUILD_TYPE=Release                                      \
  -DCMAKE_C_FLAGS="$CFLAGS"                                       \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                                   \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                             \
@@ -379,7 +381,7 @@ cmake -Wno-dev -GNinja \
  -DOSGFX_INCLUDE_DIR="${penis}"/include                          \
  -DOSGGA_INCLUDE_DIR="${penis}"/include                          \
  -DOSGPARTICLE_INCLUDE_DIR="${penis}"/include                    \
- -DOSGPlugins_LIB_DIR="${penis}"/lib/osgPlugins-3.6.5            \
+ -DOSGPlugins_LIB_DIR="${penis}"/lib/osgPlugins-3.4.2            \
  -DOSGSHADOW_INCLUDE_DIR="${penis}"/include                      \
  -DOSGTEXT_INCLUDE_DIR="${penis}"/include                        \
  -DOSGUTIL_INCLUDE_DIR="${penis}"/include                        \
@@ -391,8 +393,8 @@ cmake -Wno-dev -GNinja \
  -DBULLET_INCLUDE_DIR="${penis}"/include/bullet                  \
  -DBULLET_MATH_LIBRARY="${penis}"/lib/libLinearMath.a            \
  -DBULLET_SOFTBODY_LIBRARY="${penis}"/lib/libBulletSoftBody.a    \
- -DBoost_INCLUDE_DIR=/opt/boost-1.75.0/include                   \
- -DBoost_LIBRARY_DIR=/opt/boost-1.75.0/lib                       \
+ -DBoost_INCLUDE_DIR=/opt/boost-1.76.0/include                   \
+ -DBoost_LIBRARY_DIR=/opt/boost-1.76.0/lib                       \
  -DMyGUI_INCLUDE_DIR="${penis}"/include/MYGUI                    \
  -DMyGUI_LIBRARY="${penis}"/lib/libMyGUIEngineStatic.a           \
  -DOPENAL_INCLUDE_DIR="${penis}"/include/AL                      \
