@@ -1,8 +1,8 @@
 # 1
-penis="/mss/work/table"
-export           CFLAGS="$CFLAGS   -I${penis}/include -L${penis}/lib"
-export         CXXFLAGS="$CXXFLAGS -I${penis}/include -L${penis}/lib"
-export          LDFLAGS="$LDFLAGS  -I${penis}/include -L${penis}/lib"
+penis="/mss/work/table/KEK"
+export           CFLAGS="$CFLAGS   -I${penis}/include -L${penis}/lib -fPIC"
+export         CXXFLAGS="$CXXFLAGS -I${penis}/include -L${penis}/lib -fPIC"
+export          LDFLAGS="$LDFLAGS  -I${penis}/include -L${penis}/lib -fPIC"
 
 export     LIBRARY_PATH="${penis}/lib"
 export PKG_BUILD_CONFIG="${penis}/lib/pkgconfig"
@@ -21,13 +21,11 @@ configtomusl
 
 make
 make install
+cd ../; rm -rf libotr-4.1.1/
 
 # 2
-tar xf /mss/work/sauces/irssi-1.2.2.tar.xz
-cd     irssi-1.2.2/
-
-pdir="/mss/repo/pkg/recipes/irssi/patches"
-patch -p1 < "${pdir}"/glib-2-63.patch
+tar xf /mss/work/sauces/irssi-1.2.3.tar.xz
+cd     irssi-1.2.3/
 
 ./configure \
  --build=$CBUILD         \
@@ -39,3 +37,20 @@ patch -p1 < "${pdir}"/glib-2-63.patch
  --with-proxy            \
  --with-otr=static       \
  --enable-true-color
+
+make
+
+# 3
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+rm -rfv \
+ "${instdir}"/usr/share/doc \
+ "${instdir}"/usr/share/man \
+ "${instdir}"/usr/include/irssi
+ 
+doas -s
+make install
+rm -rfv \
+ /usr/share/doc \
+ /usr/share/man \
+ /usr/include/irssi

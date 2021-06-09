@@ -3,18 +3,19 @@
  --build=$CBUILD         \
  --host=$CHOST           \
  --prefix=/usr           \
- --with-pic              \
  --with-ca-fallback      \
- --enable-unix-sockets   \
- --enable-hidden-symbols \
  --with-libssh2          \
- --disable-manual        \
- --disable-static        \
- --disable-ipv6          \
- --disable-ldap          \
- --disable-ares          \
+ --with-openssl          \
+ --with-pic              \
+ --enable-hidden-symbols \
+ --enable-unix-sockets   \
+ --without-icu           \
  --without-libidn        \
  --without-libidn2       \
+ --without-libpsl        \
  --without-librtmp       \
- --without-icu           \
- --without-libpsl
+ --disable-ares          \
+ --disable-ipv6          \
+ --disable-ldap          \
+ --disable-manual        \
+ --disable-static

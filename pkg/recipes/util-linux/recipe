@@ -1,4 +1,5 @@
 # 1
+ac_cv_func_reboot=no   \
 ./configure \
  ADJTIME_PATH=/var/lib/hwclock/adjtime \
  --build="${CBUILD}"                   \

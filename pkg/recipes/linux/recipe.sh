@@ -44,6 +44,14 @@ unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
 
+if [ -z "${MAKEFLAGS}" ];
+ then MAKEFLAGS="-j$(nproc) V=0"
+ else
+  case "${MAKEFLAGS}" in
+   *V=1*) export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1/V=0/g')" ;
+  esac
+fi
+
 mymake(){ make CC=x86_64-apathy-linux-musl-gcc "$@";}
 
 # 5 > print details
