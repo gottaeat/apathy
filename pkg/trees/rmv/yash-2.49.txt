@@ -1,5 +1,0 @@
-/bin/yash
-
-/usr/share/locale
-/usr/share/man
-/usr/share/yash
