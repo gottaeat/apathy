@@ -2,7 +2,7 @@
 pdir="/mss/repo/pkg/recipes/mupdf/patches"
 patch -p1 < "${pdir}"/mupdf-1.15-openssl-x11.patch
 
-rm -rf thirdparty/{freeglut,freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib,curl,lcms2}
+rm -rf thirdparty/{freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib,curl,lcms2}
 
 sed -i \
  -e "1iOS = Linux"   \
@@ -28,7 +28,7 @@ export USE_SYSTEM_LIBJPEG=yes
 export USE_SYSTEM_MUJS=no
 export USE_SYSTEM_OPENJPEG=yes
 export USE_SYSTEM_ZLIB=yes
-export USE_SYSTEM_GLUT=yes
+export USE_SYSTEM_GLUT=no
 export USE_SYSTEM_CURL=yes
 export USE_SYSTEM_LEPTONICA=yes
 export USE_SYSTEM_TESSERACT=yes

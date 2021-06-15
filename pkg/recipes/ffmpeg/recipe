@@ -1,8 +1,40 @@
 # 1
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+# 2 > libXv
+tar xf /mss/work/sauces/xorg-libs/libXv-1.0.11.tar.bz2
+cd     libXv-1.0.11/
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix="${penis}"  \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --enable-static      \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf libXv-1.0.11/
+
+# 3 > ffmpeg
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
  X220) penis="enable"  penislist="oss,sndio"      ;;
  T61)  penis="disable" penislist="oss,sndio,v4l2" ;;
 esac
+
+tar xf /mss/work/sauces/ffmpeg-4.4.tar.xz
+cd ffmpeg-4.4/
 
 mkdir build
 cd    build

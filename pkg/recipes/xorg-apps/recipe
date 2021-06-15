@@ -1,0 +1,188 @@
+# 1
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+myappsconfig(){
+ configtomusl
+
+ ./configure \
+  --build=$CBUILD      \
+  --host=$CHOST        \
+  --prefix=/usr        \
+  --sysconfdir=/etc    \
+  --localstatedir=/var \
+  --without-xsltproc   \
+  --disable-docs       \
+  --disable-ipv6       \
+  --disable-nls        \
+  --disable-rpath
+
+  printf "\n\n > ${cb_blu}ya boi exited with${cb_red}: ${cb_grn}$?${c_res}\n\n"
+}
+
+# 1 > setxkbmap
+tar xf /mss/work/sauces/xorg-apps/setxkbmap-1.3.2.tar.bz2
+cd     setxkbmap-1.3.2/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf setxkbmap-1.3.2/
+
+# 2 > xauth
+tar xf /mss/work/sauces/xorg-apps/xauth-1.1.tar.bz2
+cd     xauth-1.1/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xauth-1.1/
+
+# 3 > xev
+tar xf /mss/work/sauces/xorg-apps/xev-1.2.4.tar.bz2
+cd     xev-1.2.4/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xev-1.2.4/
+
+# 4 > xhost
+tar xf /mss/work/sauces/xorg-apps/xhost-1.0.8.tar.bz2
+cd     xhost-1.0.8/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xhost-1.0.8/
+
+# 5 > xinput
+tar xf /mss/work/sauces/xorg-apps/xinput-1.6.3.tar.bz2
+cd     xinput-1.6.3/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xinput-1.6.3/
+
+# 6 > xkill
+tar xf /mss/work/sauces/xorg-apps/xkill-1.0.5.tar.bz2
+cd     xkill-1.0.5/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xkill-1.0.5/
+
+# 7 > xprop
+tar xf /mss/work/sauces/xorg-apps/xprop-1.2.5.tar.bz2
+cd     xprop-1.2.5/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xprop-1.2.5/
+
+# 8 > xrandr
+tar xf /mss/work/sauces/xorg-apps/xrandr-1.5.1.tar.xz
+cd     xrandr-1.5.1/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xrandr-1.5.1/
+
+# 9 > xrdb
+tar xf /mss/work/sauces/xorg-apps/xrdb-1.2.0.tar.bz2
+cd     xrdb-1.2.0/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xrdb-1.2.0/
+
+# 10 > xset
+tar xf /mss/work/sauces/xorg-apps/xset-1.2.4.tar.bz2
+cd     xset-1.2.4/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xset-1.2.4/
+
+# 11 > xbitmaps
+tar xf /mss/work/sauces/xorg-apps/xbitmaps-1.1.2.tar.bz2
+cd     xbitmaps-1.1.2/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xbitmaps-1.1.2/
+
+# 12 > xsetroot
+tar xf /mss/work/sauces/xorg-apps/xsetroot-1.1.2.tar.bz2
+cd     xsetroot-1.1.2/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xsetroot-1.1.2/
+
+# 13 > xkbcomp
+tar xf /mss/work/sauces/xorg-apps/xkbcomp-1.4.5.tar.bz2
+cd     xkbcomp-1.4.5/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xkbcomp-1.4.5/
+
+# 14 > xkeyboard-config
+tar xf /mss/work/sauces/xorg-apps/xkeyboard-config-2.33.tar.bz2
+cd     xkeyboard-config-2.33/
+
+myappsconfig
+make
+make DESTDIR=/mss/work/XORG-apps install
+doas -- make install
+
+cd ../; rm -rf xkeyboard-config-2.33/
+
+# 15 > cleanup
+doas -- rm -rfv \
+ /usr/share/man

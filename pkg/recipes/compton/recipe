@@ -1,4 +1,59 @@
 # 1
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+mylibsconfig(){
+ configtomusl
+
+ ./configure \
+  --build=$CBUILD      \
+  --host=$CHOST        \
+  --prefix="${penis}"  \
+  --sysconfdir=/etc    \
+  --localstatedir=/var \
+  --enable-static      \
+  --disable-shared
+}
+
+# 2 > xcb-util
+tar xf /mss/work/sauces/xorg-libs/xcb-util-0.4.0.tar.bz2
+cd     xcb-util-0.4.0/
+
+mylibsconfig
+make
+make install
+
+cd ../; rm -rf xcb-util-0.4.0/
+
+# 3 > xcb-util-image
+tar xf /mss/work/sauces/xorg-libs/xcb-util-image-0.4.0.tar.bz2
+cd     xcb-util-image-0.4.0/
+
+mylibsconfig
+make
+make install
+
+cd ../; rm -rf xcb-util-image-0.4.0/
+
+# 4 > xcb-util-renderutil
+tar xf /mss/work/sauces/xorg-libs/xcb-util-renderutil-0.3.9.tar.bz2
+cd     xcb-util-renderutil-0.3.9/
+
+mylibsconfig
+make
+make install
+
+cd ../; rm -rf xcb-util-renderutil-0.3.9/
+
+# 5
 tar xf /mss/work/sauces/libev-4.31.tar.gz
 cd     libev-4.31/
 
@@ -11,28 +66,13 @@ autoheader
 autoconf
 automake --add-missing
 
-./configure \
- --build=$CBUILD              \
- --host=$CHOST                \
- --prefix=/mss/work/table/KEK \
- --disable-shared             \
- --enable-static 
-
+mylibsconfig
 make
 make install
 
-cd ..
+cd ../; rm -rf libev-4.31/
 
-penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib"
-export CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib"
-export  LDFLAGS="${LDFLAGS}  -I${penis}/include -L${penis}/lib"
-
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig" 
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export LIBRARY_PATH="${LD_LIBRARY_PATH}"
-
-# 2
+# 6
 tar xf /mss/work/sauces/compton-5.1.tar.gz
 cd     picom-5.1/
 
@@ -44,6 +84,8 @@ meson --buildtype=plain \
  -Dconfig_file=false    \
  -Ddbus=false           \
  ..
+
+samu
 
 DESTDIR=$PWD/KEK samu install
 strip --strip-all KEK/usr/bin/compton -v

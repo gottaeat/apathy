@@ -1,4 +1,37 @@
 # 1
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
+
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+# 2 > libXScrnSaver
+tar xf /mss/work/sauces/xorg-libs/libXScrnSaver-1.2.3.tar.bz2
+cd     libXScrnSaver-1.2.3/
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix="${penis}"  \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --enable-static      \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf libXScrnSaver-1.2.3/
+
+# 3 > mpv
+tar xf /mss/work/sauces/mpv-0.33.1.tar.gz
+cd      mpv-0.33.1/
+
 ./bootstrap.py
 
 ./waf configure     \
@@ -10,3 +43,12 @@
 
 # 2
 ./waf install --destdir=$PWD/KEK
+
+doas -s
+./waf install
+rm -rfv \
+ /usr/share/applications    \
+ /usr/share/bash-completion \
+ /usr/share/doc             \
+ /usr/share/icons/hicolor   \
+ /usr/share/zsh

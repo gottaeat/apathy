@@ -1,5 +1,5 @@
 # 1
-cdt1
+curpwd="${PWD}"
 tar xf /mss/work/sauces/Mako-1.1.4.tar.gz
 cd Mako-1.1.4/
 
@@ -8,12 +8,16 @@ python3 setup.py install --prefix=/usr --root="${PWD}/KEK"
 
 cd "${PWD}"/KEK/usr/lib/python*/site-packages
 export PYTHONPATH="${PWD}":$(python -c "import sys; print(':'.join(sys.path))")
-cdt1
+cd "${curpwd}"
+unset curpwd
 
 # 2
 export   CFLAGS="${CFLAGS}   -DGLX_X86_READONLY_TEXT"
 export CXXFLAGS="${CXXFLAGS} -DGLX_X86_READONLY_TEXT"
 export  LDFLAGS="${LDFLAGS}  -DGLX_X86_READONLY_TEXT"  
+
+tar xf /mss/work/sauces/mesa-21.1.2.tar.xz
+cd     mesa-21.1.2/
 
 sed -i "/pre_args += '-DUSE_ELF_TLS'/d" meson.build
 python3 bin/git_sha1_gen.py --output include/git_sha1.h
@@ -22,13 +26,27 @@ mkdir build
 cd    build
 
 meson --buildtype=plain \
- --prefix=/usr          \
+ --prefix=/usr                \
 \
- -Ddri3=enabled         \
- -Dzstd=true            \
- -Dllvm=false           \
- -Dplatforms=x11        \
- -Dvulkan-drivers=      \
- -Dgallium-drivers=     \
- -Ddri-drivers=i965     \
+ -Dplatforms=x11              \
+ -Ddri3=enabled               \
+ -Dshader-cache=enabled       \
+ -Dshader-cache-max-size=256M \
+ -Dshared-glapi=enabled       \
+\
+ -Dopengl=true                \
+ -Dgbm=enabled                \
+ -Dglx=dri                    \
+ -Degl=enabled                \
+\
+ -Ddri-drivers=i965           \
+ -Dgallium-drivers=           \
+ -Dvulkan-drivers=            \
+\
+ -Dgles1=disabled             \
+ -Dgles2=disabled             \
+ -Dllvm=disabled              \
+ -Dvalgrind=disabled          \
+ -Dlibunwind=disabled         \
+ -Dlmsensors=disabled         \
 ..

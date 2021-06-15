@@ -1,8 +1,276 @@
 # 1
-./configure \
- --build=$CBUILD      \
- --host=$CHOST        \
- --prefix=/usr        \
- --sysconfdir=/etc    \
- --localstatedir=/var \
- --disable-static
+penis="/mss/work/table/KEK"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+mylibsconfig(){
+ case "${2}" in
+  y) sh=disable st=enable  ;;
+  *) sh=enable  st=disable ;;
+ esac
+
+ configtomusl
+
+ ./configure \
+  --build=$CBUILD                   \
+  --host=$CHOST                     \
+\
+  --prefix="${1}"                   \
+  --${sh}-shared                    \
+  --${st}-static                    \
+\
+  --sysconfdir=/etc                 \
+  --localstatedir=/var              \
+  --with-shared-memory-dir=/dev/shm \
+  --enable-malloc0returnsnull       \
+  --without-asciidoc                \
+  --without-doxygen                 \
+  --without-fop                     \
+  --without-glib                    \
+  --without-lint                    \
+  --without-perl                    \
+  --without-xmlto                   \
+  --without-xsltproc                \
+  --disable-devel-docs              \
+  --disable-docs                    \
+  --disable-ipv6                    \
+  --disable-loadable-i18n           \
+  --disable-nls                     \
+  --disable-specs                   \
+  --disable-unit-tests              \
+  --disable-xf86bigfont
+
+  printf "\n\n > ${cb_blu}ya boi exited with${cb_red}: ${cb_grn}$?${c_res}\n\n"
+}
+
+# 2 > xtrans
+tar xf /mss/work/sauces/xorg-libs/xtrans-1.4.0.tar.bz2
+cd     xtrans-1.4.0/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf xtrans-1.4.0/
+
+# 3 > libX11
+tar xf /mss/work/sauces/xorg-libs/libX11-1.7.2.tar.bz2
+cd     libX11-1.7.2/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libX11-1.7.2/
+
+# 4 > libXext
+tar xf /mss/work/sauces/xorg-libs/libXext-1.3.4.tar.bz2
+cd     libXext-1.3.4/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXext-1.3.4/
+
+# 5 > libICE
+tar xf /mss/work/sauces/xorg-libs/libICE-1.0.10.tar.bz2
+cd     libICE-1.0.10/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libICE-1.0.10/
+
+# 6 > libSM
+tar xf /mss/work/sauces/xorg-libs/libSM-1.2.3.tar.bz2
+cd     libSM-1.2.3/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libSM-1.2.3/
+
+# 7 > static libXt
+tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
+cd     libXt-1.2.1/
+
+mylibsconfig $penis y
+make
+make install
+
+cd ../; rm -rf libXt-1.2.1/
+
+# 8 > libXmu
+tar xf /mss/work/sauces/xorg-libs/libXmu-1.1.3.tar.bz2
+cd     libXmu-1.1.3/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXmu-1.1.3/
+
+# 9 > libXfixes
+tar xf /mss/work/sauces/xorg-libs/libXfixes-5.0.3.tar.gz
+cd     libXfixes-5.0.3/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXfixes-5.0.3/
+
+# 10 > libXcomposite
+tar xf /mss/work/sauces/xorg-libs/libXcomposite-0.4.5.tar.bz2
+cd     libXcomposite-0.4.5/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXcomposite-0.4.5/
+
+# 11 > libXrender
+tar xf /mss/work/sauces/xorg-libs/libXrender-0.9.10.tar.bz2
+cd     libXrender-0.9.10/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXrender-0.9.10/
+
+# 12 > libXcursor
+tar xf /mss/work/sauces/xorg-libs/libXcursor-1.2.0.tar.bz2
+cd     libXcursor-1.2.0/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXcursor-1.2.0/
+
+# 13 > libXdamage
+tar xf /mss/work/sauces/xorg-libs/libXdamage-1.1.5.tar.bz2
+cd     libXdamage-1.1.5/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXdamage-1.1.5/
+
+# 14 > libXft
+tar xf /mss/work/sauces/xorg-libs/libXft-2.3.3.tar.bz2
+cd     libXft-2.3.3/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXft-2.3.3/
+
+# 15 > libXi
+tar xf /mss/work/sauces/xorg-libs/libXi-1.7.10.tar.bz2
+cd     libXi-1.7.10/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXi-1.7.10/
+
+# 16 > libXinerama
+tar xf /mss/work/sauces/xorg-libs/libXinerama-1.1.4.tar.bz2
+cd     libXinerama-1.1.4/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXinerama-1.1.4/
+
+# 17 > libXrandr
+tar xf /mss/work/sauces/xorg-libs/libXrandr-1.5.2.tar.bz2
+cd     libXrandr-1.5.2/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXrandr-1.5.2/
+
+# 18 > libXxf86vm
+tar xf /mss/work/sauces/xorg-libs/libXxf86vm-1.1.4.tar.bz2
+cd     libXxf86vm-1.1.4/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libXxf86vm-1.1.4/
+
+# 19 > libpciaccess
+tar xf /mss/work/sauces/xorg-libs/libpciaccess-0.16.tar.bz2
+cd     libpciaccess-0.16/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libpciaccess-0.16/
+
+# 20 > libxkbfile
+tar xf /mss/work/sauces/xorg-libs/libxkbfile-1.1.0.tar.bz2
+cd     libxkbfile-1.1.0/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libxkbfile-1.1.0/
+
+# 21 > libxshmfence
+tar xf /mss/work/sauces/xorg-libs/libxshmfence-1.3.tar.bz2
+cd     libxshmfence-1.3/
+
+mylibsconfig /usr n
+make
+make DESTDIR=/mss/work/XORG-libs install
+doas -- make install
+
+cd ../; rm -rf libxshmfence-1.3/
+
+# 22 > cleanup
+doas -- rm -rfv \
+ /usr/share/doc \
+ /usr/share/man
