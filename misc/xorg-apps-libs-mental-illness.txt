@@ -1,0 +1,167 @@
+# 1 > 20200116 configs, possibly
+# 1.1 > libs other
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --disable-static
+
+make
+make DESTDIR=$PWD/KEK install
+cd KEK; ldir asd
+mv asd /mss/work/table3/libs/
+
+# 1.2 > libX11
+./configure  \
+ --build=$CBUILD         \
+ --host=$CHOST           \
+ --prefix=/usr           \
+ --sysconfdir=/etc       \
+ --mandir=/usr/share/man \
+ --localstatedir=/var    \
+ --without-xmlto         \
+ --disable-specs         \
+ --disable-static
+
+make
+make DESTDIR=$PWD/KEK install
+cd KEK; ldir asd
+mv asd /mss/work/table3/libs/
+
+# 1.3 > apps
+configtomusl
+./configure \
+ --build=$CBUILD   \
+ --host=$CHOST     \
+ --prefix=/usr     \
+ --sysconfdir=/etc \
+ --localstatedir=/var
+
+make
+make DESTDIR=$PWD/KEK install
+cd KEK; ldir asd
+mv asd /mss/work/table3/apps/
+
+# 2 > finderoo
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep -e )"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 3 > the plan
+# 3.1 > essential libs
+> xtrans              -> no elf
+> libX11              -> libX11-xcb.so libX11.so
+> libXext             -> libXext.so
+> libXfixes           -> libXfixes.so
+> libICE              -> libICE.so
+> libSM               -> libSM.so
+> libXmu              -> libXmu.so libXmuu.so
+> libXcomposite       -> libXcomposite.so
+> libXrender          -> libXrender.so
+> libXcursor          -> libXcursor.so
+> libXdamage          -> libXdamage.so
+> libXft              -> libXft.so
+> libXi               -> libXi.so
+> libXinerama         -> libXinerama.so
+> libXrandr           -> libXrandr.so
+> libXxf86vm          -> libXxf86vm.so
+> libpciaccess        -> libpciaccess.so
+> libxkbfile          -> libxkbfile.so
+> libxshmfence        -> libxshmfence.so
+
+# 3.2 > useless libs
+> libXaw              -> libXaw6.so libXaw7.so
+> libXres             -> libXRes.so
+> libXvMC             -> libXvMC.so libXvMCW.so
+> libXpm              -> libXpm.so (cxpm sxpm)
+> libXxf86dga         -> libXxf86dga.so
+> libdmx              -> libdmx.so
+> libXtst             -> libXtst.so (nuke numlockx)
+> libXv               -> libXv.so (not essential, mpv+ffmpeg rebuild)
+> xcb-util-keysyms    -> libxcb-keysyms.so
+> xcb-util-wm         -> libxcb-ewmh.so libxcb-icccm.so
+> xcb-util-cursor     -> libxcb-cursor.so
+
+# 3.3 > libXmu
+> libXt               -> libXt.so (build static for libXmu)
+
+# 3.4 > xorg-server
+> libfontenc          -> libfontenc.so (build static for libXfont2)
+> libXfont2           -> libXfont2.so (build static for xorg-server)
+
+# 3.5 > mpv
+static libXScrnSaver -> mpv
+> libXScrnSaver       -> libXss.so (not essential, statically build for mpv)
+
+# 3.6 > xcb
+(static xcb-util -> xcb-util-image -> xcb-util-renderutil) -> compton
+> xcb-util            -> libxcb-util.so
+> xcb-util-image      -> libxcb-image.so
+> xcb-util-renderutil -> libxcb-render-util.so
+
+# 3.7 > wanted apps and their deps
+> setxkbmap
+> xauth
+> xev
+> xhost
+> xinput
+> xkill
+> xprop
+> xrandr
+> xrdb
+> xset
+> xbitmaps
+> xsetroot
+> xkbcomp
+> xkeyboard-config
+
+# 3.8 > unnecessary apps
+> iceauth
+> luit
+> mkfontscale
+> sessreg
+> xbacklight
+> xcmsdb
+> xdpyinfo
+> xdriinfo
+> xkbevd
+> xkbutils
+> xmessage
+> xmodmap
+> xpr
+> xrefresh
+> xvinfo
+> xwd
+> xwininfo
+> xwud
+> font-util
+> encodings
+
+# 4 > order
+rmv xorg-libs
+rmv xorg-apps
+rmv xorg-server
+rmv ffmpeg
+rmv mpv
+rmv compton
+rmv numlockx
+
+bld xorg-libs
+bld xorg-apps
+bld xorg-server
+bld ffmpeg
+bld mpv
+bld compton
