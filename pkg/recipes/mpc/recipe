@@ -1,6 +1,15 @@
 # 1
-./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix=/usr   \
- --disable-static
+mkdir build
+cd    build
+
+meson --buildtype=plain   \
+ --prefix=/usr            \
+\
+ -Dtest=false             \
+ -Ddocumentation=disabled \
+..
+
+# 2
+doas -s
+samu install
+rm -rfv /usr/share/doc

@@ -8,7 +8,7 @@ i  apathy  . bc                        4.0.1
 i  apathy  . binutils                  2.36.1
 i  apathy  . gmp                       6.2.1
 i  apathy  . mpfr                      4.1.0
-i  apathy  . mpc                       1.2.1
+i  apathy  . libmpc                    1.2.1
 i  apathy  . gcc                       11.1.0
 i  apathy  . bzip2                     1.0.8
 i  apathy  . pkgconf                   1.7.4
@@ -160,7 +160,7 @@ i  bmlfs   . taglib                    1.11.1
 i  apathy  . x264                      20191119-2245
 i  apathy  . x265                      3.5
 i  apathy  . dmenu                     4.9
-i  apathy  . xtrlock                   2.11
+i  apathy  . xtrlock                   2.12
 i  apathy  . youtube-dl                2021.06.06
 i  apathy  . compton                   5.1
 i  apathy  . ffmpeg                    4.4 

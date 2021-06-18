@@ -1,0 +1,10 @@
+# 1
+make -f Makefile.noimake \
+ CFLAGS="${CFLAGS} -DSHADOW_PWD" \
+ LDLIBS="-lX11 -lcrypt"          \
+ xtrlock
+
+# 2
+doas -s
+mv xtrlock /usr/bin/
+chown root:root /usr/bin/xtrlock
