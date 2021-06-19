@@ -1,0 +1,17 @@
+# 1
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+\
+ --disable-nls   \
+ --disable-rpath
+
+make
+
+# 2
+doas -s
+make install
+rm -rfv \
+ /usr/share/info \
+ /usr/share/man

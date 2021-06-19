@@ -1,0 +1,13 @@
+# 1
+pdir="/mss/repo/pkg/recipes/libusb/patches"
+patch -p1 < "${pdir}"/0001-f6d2cb56.patch
+patch -p1 < "${pdir}"/0002-f38f09da.patch
+
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-udev  \
+ --disable-static

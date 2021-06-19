@@ -1,0 +1,10 @@
+# 1
+pdir="/mss/repo/pkg/recipes/libpng/patches"
+patch -p1 < "${pdir}"/apng.patch
+
+LIBS=-lpthread \
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-static

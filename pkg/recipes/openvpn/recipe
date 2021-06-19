@@ -5,6 +5,8 @@
  --prefix=/usr             \
  --mandir=/usr/share/man   \
  --sysconfdir=/etc/openvpn \
+\
  --enable-crypto           \
  --enable-iproute2         \
+ --disable-lzo             \
  --disable-plugin-auth-pam

@@ -1,0 +1,28 @@
+# 1
+pdir="/mss/repo/pkg/recipes/gpm/patches"
+patch -p1 < "${pdir}"/0001-error-format.patch
+patch -p1 < "${pdir}"/0002-fix-highly-illegal-return-of-in-as-char.patch
+patch -p1 < "${pdir}"/0003-fix-signedness-issue.patch
+patch -p1 < "${pdir}"/0004-musl-fixes.patch
+patch -p1 < "${pdir}"/0005-constify-format-strings.patch
+patch -p1 < "${pdir}"/0006-gpm-include-sysmacros.patch
+patch -p1 < "${pdir}"/0007-gcc-10.patch
+
+export   CFLAGS="${CFLAGS}   -I$PWD/src/headers"
+export CXXFLAGS="${CXXFLAGS} -I$PWD/src/headers"
+export  LDFLAGS="${LDFLAGS}  -I$PWD/src/headers"
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --enable-static \
+ --disable-shared
+
+make -j1
+
+# 2
+doas -s
+mv src/gpm /usr/bin/gpm
+chown root:root /usr/bin/gpm

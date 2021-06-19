@@ -1,0 +1,182 @@
+# 1.1
+penis="/mss/work/table/KEK"
+export   CFLAGS="${CFLAGS}   -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CXXFLAGS} -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
+export  LDFLAGS="${LDFLAGS}  -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
+
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+# 1.2
+case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
+ X220) peen="enable"  ;;
+ T61)  peen="disable" ;;
+esac
+
+# 2 > shared libgpg-error
+tar xf /mss/work/sauces/libgpg-error-1.42.tar.bz2
+cd     libgpg-error-1.42/
+
+aclocal
+automake
+
+./configure \
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --disable-static \
+ --disable-rpath  \
+ --disable-doc    \
+ --disable-tests  \
+ --disable-nls    \ 
+ --disable-languages
+
+make
+make DESTDIR=/mss/work/gpgFUCK install-strip
+doas -- make install-strip
+
+cd ../; rm -rf libgpg-error-1.42/
+
+# 3 > shared libassuan
+tar xf /mss/work/sauces/libassuan-2.5.5.tar.bz2
+cd     libassuan-2.5.5/
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-doc   \
+ --disable-static
+
+make
+make DESTDIR=/mss/work/gpgFUCK install-strip
+doas -- make install-strip
+
+cd ../; rm -rf libassuan-2.5.5/
+
+# 4 > shared libgcrypt
+tar xf /mss/work/sauces/libgcrypt-1.9.3.tar.bz2
+cd     libgcrypt-1.9.3/
+
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --enable-noexecstack      \
+ --disable-static          \
+ --disable-doc             \
+\
+ --${peen}-aesni-support   \
+ --${peen}-avx-support     \
+ --disable-O-flag-munging  \
+ --disable-avx2-support    \
+ --disable-neon-support    \
+ --disable-padlock-support \
+ --disable-shaext-support  \
+ --enable-sse41-support
+
+make
+make DESTDIR=/mss/work/gpgFUCK install-strip
+doas -- make install-strip
+
+cd ../; rm -rf libgcrypt-1.9.3/
+
+# 5 > static libksba
+tar xf /mss/work/sauces/libksba-1.6.0.tar.bz2
+cd     libksba-1.6.0/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf libksba-1.6.0/
+
+# 6 > static npth
+tar xf /mss/work/sauces/npth-1.6.tar.bz2
+cd     npth-1.6/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf npth-1.6/
+
+# 6 > gnupg
+tar xf /mss/work/sauces/gnupg-2.2.28.tar.bz2
+cd     gnupg-2.2.28/
+
+pdir="/mss/repo/pkg/recipes/gnupg-and-friends/patches"
+patch -p1 < "${pdir}"/0001-Include-sys-select.h-for-FD_SETSIZE.patch
+patch -p1 < "${pdir}"/0002-fix-i18n.patch
+
+./configure \
+ --build=$CBUILD              \
+ --host=$CHOST                \
+ --prefix=/usr                \
+ --sbindir=/usr/bin           \
+\
+ --disable-all-tests          \
+ --disable-ccid-driver        \
+ --disable-dirmngr            \
+ --disable-dirmngr-auto-start \
+ --disable-doc                \
+ --disable-gnutls             \
+ --disable-gpgtar             \
+ --disable-ldap               \
+ --disable-nls                \
+ --disable-ntbtls             \
+ --disable-photo-viewers      \
+ --disable-scdaemon           \
+ --disable-tofu               \
+ --disable-wks-tools          \
+ --enable-bzip2               \
+ --enable-gpg                 \
+ --enable-gpgsm               \
+ --enable-readline            \
+ --enable-symcryptrun
+
+make
+make DESTDIR=/mss/work/gpgFUCK install-strip
+doas -- make install-strip
+
+cd ../; rm -rf gnupg-2.2.28/
+
+# 7 > pinentry
+tar xf /mss/work/sauces/pinentry-1.1.1.tar.bz2
+cd     pinentry-1.1.1/
+
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --enable-pinentry-tty     \
+ --disable-pinentry-gtk2   \
+ --disable-pinentry-gnome3 \
+ --disable-pinentry-qt     \
+ --disable-pinentry-curses \
+ --disable-libsecret
+
+make
+make DESTDIR=/mss/work/gpgFUCK install-strip
+doas -- make install-strip
+
+cd ../; rm -rf pinentry-1.1.1/
+
+# 8 > cleanup
+doas -- rm -rfv \
+ /usr/share/doc \
+ /usr/share/info

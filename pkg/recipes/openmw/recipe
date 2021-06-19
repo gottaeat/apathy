@@ -255,7 +255,7 @@ cd ../../; rm -rf bullet3-3.17/
 
 # 8 > openscenegraph
 tar xf /mss/work/sauces/openmw-osg-3.4-8b07809f.tar.zst
-cd     openmw-osg-3.4-8b07809f/
+cd     osg/
 
 patch -p1 < "${pdir}"/0003-openscenegraph-cmake.patch
 patch -p1 < "${pdir}"/0004-openscenegraph-docdir.patch
@@ -292,14 +292,12 @@ cmake -Wno-dev -GNinja \
  -DDYNAMIC_OPENTHREADS=OFF                      \
  -DOPENGL_PROFILE=GL1                           \
  -DOSG_PROVIDE_READFILE=ON                      \
- -DOSG_USE_LOCAL_LUA_SOURCE=OFF                 \
+ -DOSG_USE_LOCAL_LUA_SOURCE=ON                  \
  -DBUILD_DOCUMENTATION=OFF                      \
  -DBUILD_OSG_APPLICATIONS=OFF                   \
  -DBUILD_OSG_EXAMPLES=OFF                       \
  -DOSGVIEWER_USE_XRANDR=ON                      \
  -DOSG_USE_QT=OFF                               \
- -DLUA_INCLUDE_DIR="/usr/include/lua5.2/"       \
- -DLUA_LIBRARY="/usr/lib/liblua5.2.so.5.2.4"    \
 ..
 
 time samu

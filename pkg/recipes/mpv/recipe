@@ -2,13 +2,16 @@
 penis="/mss/work/table/KEK"
          CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
          CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
-export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2"
 export CXXFLAGS="${CFLAGS}"
 export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
 
+export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
 export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1//g;s/V=0//g')"
 
 # 2 > libXScrnSaver
 tar xf /mss/work/sauces/xorg-libs/libXScrnSaver-1.2.3.tar.bz2
@@ -28,7 +31,32 @@ make install
 
 cd ../; rm -rf libXScrnSaver-1.2.3/
 
-# 3 > mpv
+# 3 > liblua52
+tar xf /mss/work/sauces/lua-5.2.4.tar.gz
+cd     lua-5.2.4/
+
+sed -i -r \
+ -e '/^LUA_(SO|A|T)=/ s/lua/lua5.2/' \
+ -e '/^LUAC_T=/ s/luac/luac5.2/'     \
+ src/Makefile
+
+make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS -fPIC" linux
+
+make \
+ TO_BIN='lua5.2 luac5.2' \
+ TO_LIB="liblua5.2.a"                  \
+ INSTALL_DATA='cp -d'                  \
+ INSTALL_TOP="${penis}"/               \
+ INSTALL_INC="${penis}"/include/lua5.2 \
+ INSTALL_MAN="${penis}"/share/man/man1 \
+ install
+
+fdir="/mss/repo/pkg/recipes/mpv/files"
+install -Dm644 "${fdir}"/lua.pc  "${penis}"/lib/pkgconfig/lua52.pc
+
+cd ../; rm -rf lua-5.2.4/
+
+# 4 > mpv
 tar xf /mss/work/sauces/mpv-0.33.1.tar.gz
 cd      mpv-0.33.1/
 
@@ -41,7 +69,7 @@ cd      mpv-0.33.1/
 
 ./waf build
 
-# 2
+# 5
 ./waf install --destdir=$PWD/KEK
 
 doas -s
