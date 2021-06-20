@@ -1,0 +1,5 @@
+/usr/bin/strace
+/usr/bin/strace-graph
+/usr/bin/strace-log-merge
+
+/usr/share/man
