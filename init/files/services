@@ -147,7 +147,7 @@ svc_network(){
       then
        ainitmes "specify a wpaconf with \$4, exiting."; failprompt; exit 1
       else
-       wpaconf="/etc/wpa_supplicant/${4}.conf"
+       wpaconf="/mss/files/networks/${4}.conf"
  
       if [ -f "${wpaconf}" ]
        then
