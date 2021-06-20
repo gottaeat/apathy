@@ -1,0 +1,49 @@
+bbbb="libxcb-present
+libxcb-xv
+libxcb-screensaver
+libxcb-xfixes
+libxcb-glx
+libxcb-randr
+libxcb-xvmc
+libxcb-res
+libxcb-damage
+libxcb-composite
+libxcb-xkb
+libxcb-sync
+libxcb-xf86dri
+libxcb-xtest
+libxcb-dpms
+libxcb-shape
+libxcb-render
+libxcb-xinerama
+libxcb-xinput
+libxcb-dri3
+libxcb-shm
+libxcb-dri2
+libxcb-record
+libxcb"
+
+for i in $bbbb; do
+ echo "> $i"
+
+ for file in $aaaa; do
+  meme="$(objdump -p $file 2>/dev/null \
+  | grep -e $i\\.so)"
+  [ ! -z "${meme}" ] && printf "$file\n"
+ done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+ printf "\n" 
+
+done | tee /tmp/xcbery.txt
+
+# totally unnecessary:
+libxcb-xv
+libxcb-screensaver
+libxcb-xvmc
+libxcb-res
+libxcb-xkb
+libxcb-xf86dri
+libxcb-xtest
+libxcb-dpms
+libxcb-xinput
+libxcb-record
