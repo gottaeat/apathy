@@ -1,5 +1,3 @@
-export FREETYPE_PROPERTIES="truetype:interpreter-version=38"
-
 ## a >> vars
 # a1 >> set before export
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"

@@ -1,10 +1,9 @@
 # a >> aliases
 # a1 >> ls and grep
-myls(){ /bin/ls --group-directories-first --color=auto -AFHhp ${@} ;}
-alias        ls="myls"
-alias         l="myls"
-alias        ll="myls -w1"
-alias       lll="myls -l"
+alias        ls="ls --group-directories-first --color=auto -AFHhp"
+alias         l="ls --group-directories-first --color=auto -AFHhp"
+alias        ll="ls --group-directories-first --color=auto -AFHhp -w1"
+alias       lll="ls --group-directories-first --color=auto -AFHhp -l"
 alias      grep="grep --color=auto"
 
 # a2 >> cd

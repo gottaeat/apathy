@@ -1,6 +1,6 @@
 # flags for make and samu
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- X220) ajobcount="3"        ;;
+ X220) ajobcount="2"        ;;
  T61)  ajobcount="2"        ;;
  *)    ajobcount="$(nproc)" ;;
 esac
