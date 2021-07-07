@@ -1,0 +1,200 @@
+# 1
+  penis="/mss/work/table/KEK"
+gamedir="/mnt/mss/stuff/media/games/yamagi-quake2"
+
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
+         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
+         CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
+export   CFLAGS="${CFLAGS} -Wl,-rpath=$gamedir/lib,--enable-new-dtags"
+export CXXFLAGS="${CFLAGS}"
+export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
+# 2
+tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
+cd     SDL2-2.0.14/
+
+pdir="/mss/repo/pkg/recipes/sdl2/patches"
+patch -p1 < "${pdir}"/libsdl2-2.0.14-static-libs.patch
+patch -p1 < "${pdir}"/replace-echo-en-with-printf.patch
+
+autoreconf -fvi
+
+  CFLAGS="${CFLAGS}   -D__LINUX__" \
+CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
+ LDFLAGS="${LDFLAGS}  -D__LINUX__" \
+./configure \
+ --build=$CBUILD               \
+ --host=$CHOST                 \
+ --prefix="${penis}"           \
+ --enable-static               \
+ --disable-shared              \
+\
+ --enable-alsa                 \
+ --enable-assembly             \
+ --enable-atomic               \
+ --enable-audio                \
+ --enable-cpuinfo              \
+ --enable-events               \
+ --enable-file                 \
+ --enable-filesystem           \
+ --enable-ibus                 \
+ --enable-libudev              \
+ --enable-loadso               \
+ --enable-mmx                  \
+ --enable-power                \
+ --enable-render               \
+ --enable-sse                  \
+ --enable-sse2                 \
+ --enable-ssemath              \
+ --enable-threads              \
+ --enable-timers               \
+ --enable-video-kmsdrm         \
+ --enable-video-opengl         \
+ --enable-video-opengles2      \
+ --enable-video-x11            \
+ --enable-video-x11-vm         \
+ --enable-video-x11-xcursor    \
+ --enable-video-x11-xdbe       \
+ --enable-video-x11-xinerama   \
+ --enable-video-x11-xinput     \
+ --enable-video-x11-xrandr     \
+ --enable-video-x11-xshape     \
+ --disable-3dnow               \
+ --disable-altivec             \
+ --disable-arts                \
+ --disable-dbus                \
+ --disable-directx             \
+ --disable-diskaudio           \
+ --disable-dummyaudio          \
+ --disable-esd                 \
+ --disable-fcitx               \
+ --disable-fusionsound         \
+ --disable-haptic              \
+ --disable-jack                \
+ --disable-joystick            \
+ --disable-libsamplerate       \
+ --disable-nas                 \
+ --disable-oss                 \
+ --disable-pulseaudio          \
+ --disable-render-d3d          \
+ --disable-rpath               \
+ --disable-sndio               \
+ --disable-video-cocoa         \
+ --disable-video-directfb      \
+ --disable-video-dummy         \
+ --disable-video-opengles1     \
+ --disable-video-rpi           \
+ --disable-video-vulkan        \
+ --disable-video-x11-scrnsaver
+
+make
+make install
+cd ../; rm -rf SDL2-2.0.14
+
+# 3
+tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
+cd openal-soft-1.21.1/
+
+mkdir builderoo
+cd    builderoo
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DLIBTYPE=SHARED                       \
+ -DALSOFT_EXAMPLES=OFF                  \
+ -DALSOFT_UTILS=OFF                     \
+ -DALSOFT_TESTS=OFF                     \
+\
+ ../
+
+samu
+samu install
+cd ../../; rm -rf openal-soft-1.21.1/
+
+# 4
+tar xf /mss/work/sauces/quake-ii-baseq2-ctf-rogue-xatrix-music-gog.tar.zst
+mv gamedata/ yamagi-quake2/
+
+tar xf /mss/work/sauces/quake2-8.00.tar.xz
+cd     quake2-8.00/
+
+pdir="/mss/repo/pkg/recipes/yamagi-quake2/patches"
+patch -p1 < "${pdir}"/0001-musl-no-execinfo.patch 
+
+make cleanall
+
+time make \
+ WITH_OPENAL=yes             \
+ WITH_SYSTEMWIDE=yes         \
+ WITH_SYSTEMDIR="${gamedir}" \
+ WITH_RPATH=no               \
+ VERBOSE=yes                 \
+ client server game ref_gl3
+
+mv release/q2ded      \
+   release/quake2     \
+   release/ref_gl3.so \
+ ../yamagi-quake2/
+
+mv release/baseq2/game.so ../yamagi-quake2/baseq2/
+
+mkdir \
+ ../yamagi-quake2/rogue/maps  \
+ ../yamagi-quake2/xatrix/maps \
+ ../yamagi-quake2/lib
+
+cp stuff/mapfixes/baseq2/*            ../yamagi-quake2/baseq2/maps
+cp "${penis}"/lib/libopenal.so.1.21.1 ../yamagi-quake2/lib/libopenal.so.1
+cd ../; rm -rf quake2-8.00/
+
+# 5 > ctf
+tar xf /mss/work/sauces/quake2-ctf-1.08.tar.xz
+cd     quake2-ctf-1.08/
+
+make VERBOSE=yes
+mv release/game.so ../yamagi-quake2/ctf/
+cd ../; rm -rf quake2-ctf-1.08/
+
+# 6 > rogue
+tar xf /mss/work/sauces/quake2-rogue-2.08.tar.xz
+cd     quake2-rogue-2.08/
+
+make VERBOSE=yes
+mv release/game.so  ../yamagi-quake2/rogue/
+cp stuff/mapfixes/* ../yamagi-quake2/rogue/maps/
+
+cd ../; rm -rf quake2-rogue-2.08/
+
+# 7 > xatrix
+tar xf /mss/work/sauces/quake2-xatrix-2.09.tar.xz
+cd     quake2-xatrix-2.09/
+
+make VERBOSE=yes
+mv release/game.so  ../yamagi-quake2/xatrix/
+cp stuff/mapfixes/* ../yamagi-quake2/xatrix/maps/
+
+cd ../; rm -rf quake2-xatrix-2.09/

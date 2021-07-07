@@ -1,0 +1,13 @@
+diff --git a/Makefile b/Makefile
+index 9a7920f..83cb8b9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -302,7 +302,7 @@ ifneq ($(call bin_path, $(PKG_CONFIG)),)
+   CURL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags libcurl)
+   CURL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs libcurl)
+   OPENAL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags openal)
+-  OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal)
++  OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal) -lstdc++
+   SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl2|sed 's/-Dmain=SDL_main//')
+   SDL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs sdl2)
+ else

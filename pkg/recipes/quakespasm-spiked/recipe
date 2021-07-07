@@ -1,6 +1,6 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native"
+         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
          CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
 export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
 export CXXFLAGS="${CFLAGS}"
@@ -94,8 +94,16 @@ make install
 cd ../; rm -rf SDL2-2.0.14
 
 # 3
-gcd1 https://github.com/mssx86/quake3e-mss
-cd   quake3e-mss/
+gcd1 https://github.com/Shpoike/Quakespasm
+cd   Quakespasm/quakespasm/Quake
 
-make
-make install
+make \
+ DEBUG=0            \
+ DO_USERDIRS=1      \
+ USE_SDL2=1         \
+ USE_ZLIB=1         \
+ USE_CODEC_WAVE=0   \
+ USE_CODEC_FLAC=0   \
+ USE_CODEC_MP3=0    \
+ USE_CODEC_VORBIS=1 \
+ USE_CODEC_OPUS=0
