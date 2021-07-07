@@ -1,5 +1,3 @@
-/etc/alsa
-
 /usr/bin/aconnect
 /usr/bin/alsaloop
 /usr/bin/alsamixer
@@ -22,8 +20,6 @@
 /usr/include/asoundlib.h
 /usr/include/sys/asoundlib.h
 
-/usr/lib/alsa-lib
-
 /usr/lib/libasound.la
 /usr/lib/libasound.so
 /usr/lib/libasound.so.2
@@ -44,6 +40,7 @@
 /usr/share/aclocal/alsa.m4
 
 /usr/share/alsa
-/usr/share/man
 /usr/share/sounds
 /var/lib/alsa
+
+/usr/share/man

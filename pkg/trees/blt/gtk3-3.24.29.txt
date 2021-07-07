@@ -19,11 +19,11 @@
 /usr/lib/libgdk-3.la
 /usr/lib/libgdk-3.so
 /usr/lib/libgdk-3.so.0
-/usr/lib/libgdk-3.so.0.2404.20
+/usr/lib/libgdk-3.so.0.2404.25
 /usr/lib/libgtk-3.la
 /usr/lib/libgtk-3.so
 /usr/lib/libgtk-3.so.0
-/usr/lib/libgtk-3.so.0.2404.20
+/usr/lib/libgtk-3.so.0.2404.25
 
 /usr/lib/pkgconfig/gail-3.0.pc
 /usr/lib/pkgconfig/gdk-3.0.pc
