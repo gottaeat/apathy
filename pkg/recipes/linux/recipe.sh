@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.12 kernels, version 1, for thinkpad x220 and t61.
+# build script for 5.13 kernels, version 1, for thinkpad x220 and t61.
 
 . /mss/files/funcs
 
@@ -29,7 +29,7 @@ esac
       rdr="${logdir}/${blddate}-linux-${kerver}.log"
 
   useconf="${repodir}/files/${confname}.config"
- localver="5.12$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+ localver="5.13$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                       print}' ${useconf})"
   bldsalt="$(awk     '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
                       print}' ${useconf})"

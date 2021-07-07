@@ -1,11 +1,6 @@
 # 1 > alsa-libs
-tar xf /mss/work/sauces/alsa-lib-1.2.5.tar.bz2
-cd     alsa-lib-1.2.5/
-
-pdir="/mss/repo/pkg/recipes/alsa/patches"
-patch -p1 < "${pdir}"/0001-alsa-lib-fix-load_for_all_cards.patch
-patch -p1 < "${pdir}"/0002-alsa-lib-add-_alibpref.patch
-patch -p1 < "${pdir}"/0003-alsa-lib-ucm-fix-_alibpref.patch
+tar xf /mss/work/sauces/alsa-lib-1.2.5.1.tar.bz2
+cd     alsa-lib-1.2.5.1/
 
 sed -i '/<dirent.h>/a #include <limits.h>' src/ucm/ucm_exec.c
 
@@ -23,15 +18,13 @@ sed -i '/<dirent.h>/a #include <limits.h>' src/ucm/ucm_exec.c
 
 make V=0
 
-make DESTDIR=/mss/work/FUCK install
+make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-lib-1.2.5/
+cd ../; rm -rf alsa-lib-1.2.5.1/
 
 # 2 > alsa-utils
-tar xf /mss/work/sauces/alsa-utils-1.2.5.tar.bz2
-cd     alsa-utils-1.2.5/
-
-patch -p1 < "${pdir}"/0004-alsa-utils-alsactl-fix-nested-iteration.patch
+tar xf /mss/work/sauces/alsa-utils-1.2.5.1.tar.bz2
+cd     alsa-utils-1.2.5.1/
 
 sed -i '/<syslog.h>/a #include <limits.h>' alsactl/utils.c
 
@@ -47,6 +40,8 @@ sed -i '/<syslog.h>/a #include <limits.h>' alsactl/utils.c
 
 make V=0
 
-make DESTDIR=/mss/work/FUCK install
+make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-utils-1.2.5/
+cd ../; rm -rf alsa-utils-1.2.5.1/
+
+doas -- rm -rf /usr/share/man

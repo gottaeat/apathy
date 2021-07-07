@@ -1,0 +1,277 @@
+# 1 > env vars
+penis="/mss/work/table/KEK"
+export            PATH="$PATH:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
+export   CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
+export CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
+export  LDFLAGS="${LDFLAGS}  -I${penis}/include -L/${penis}/lib ${ft_int}"
+
+# 2 > system libpng
+tar xf /mss/work/sauces/libpng-1.6.37.tar.xz
+cd     libpng-1.6.37/
+
+pdir="/mss/repo/pkg/recipes/xorg-libs-part2/patches"
+patch -p1 < "${pdir}"/0001-libpng-apng.patch
+
+LIBS=-lpthread \
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-static
+
+make
+make DESTDIR=/mss/work/XorgLIBS2 install
+doas -- make install
+
+cd ../; rm -rf libpng-1.6.37/
+
+# 3 > system pcre
+tar xf /mss/work/sauces/pcre-8.44.tar.gz
+cd     pcre-8.44/
+
+./configure \
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --disable-static \
+ --enable-shared  \
+ --enable-utf8    \
+ --enable-unicode-properties
+
+make
+make DESTDIR=/mss/work/XorgLIBS2 install
+doas -- make install
+
+cd ../; rm -rf pcre-8.44/
+
+# 4 > system glib
+tar xf /mss/work/sauces/glib-2.68.3.tar.xz
+cd     glib-2.68.3/
+
+find . -type f -name meson.build -exec \
+ sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr           \
+ -Dfam=false             \
+ -Dgtk_doc=false         \
+ -Dinstalled_tests=false \
+ -Dinternal_pcre=false   \
+ -Dlibmount=enabled      \
+ -Dman=false             \
+ -Dnls=disabled          \
+ -Dtests=false           \
+ -Dxattr=false           \
+..
+
+samu
+DESTDIR=/mss/work/XorgLIBS2 samu install
+doas -- samu install
+
+cd ../../; rm -rf glib-2.68.3/
+
+# 5 > penis freetype (w/o harfbuzz)
+tar xf /mss/work/sauces/freetype-2.10.4.tar.xz
+cd     freetype-2.10.4/
+
+patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
+
+./configure               \
+ --build=$CBUILD          \
+ --host=$CHOST            \
+ --prefix="${penis}"      \
+ --enable-freetype-config \
+ --with-harfbuzz=no       \
+ --disable-static
+
+make
+make install
+cd ../; rm -rf freetype-2.10.4/
+
+# 6 > penis harfbuzz
+tar xf /mss/work/sauces/harfbuzz-2.8.1.tar.gz
+cd     harfbuzz-2.8.1/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"      \
+ -Dcairo=disabled         \
+ -Dfontconfig=disabled    \
+ -Dglib=enabled           \
+ -Dgobject=disabled       \
+ -Dicu=disabled           \
+ -Dgraphite=disabled      \
+ -Dfreetype=enabled       \
+ -Dtests=disabled         \
+ -Dintrospection=disabled \
+ -Ddocs=disabled          \
+ -Dbenchmark=disabled     \
+ -Dicu_builtin=false      \
+ -Dexperimental_api=false \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf harfbuzz-2.8.1/
+
+# 7 > system freetype (w/ harfbuzz)
+tar xf /mss/work/sauces/freetype-2.10.4.tar.xz
+cd     freetype-2.10.4/
+
+patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
+
+./configure               \
+ --build=$CBUILD          \
+ --host=$CHOST            \
+ --prefix=/usr            \
+ --enable-freetype-config \
+ --with-harfbuzz=yes      \
+ --disable-static
+
+make
+make DESTDIR=/mss/work/XorgLIBS2 install
+doas -- make install
+
+cd ../ && rm -rf freetype-2.10.4/
+
+# 8 > system fontconfig
+tar xf /mss/work/sauces/fontconfig-2.13.94.tar.xz
+cd     fontconfig-2.13.94/
+
+./configure           \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --localstatedir=/var \
+ --sysconfdir=/etc    \
+ --disable-docs       \
+ --disable-nls        \
+ --with-xmldir=/etc/fonts
+
+make
+make DESTDIR=/mss/work/XorgLIBS2 install
+doas -- make install
+
+cd ../; rm -rf fontconfig-2.13.94/
+
+# 9 > system pixman
+tar xf /mss/work/sauces/pixman-0.40.0.tar.gz
+cd     pixman-0.40.0/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr            \
+ -Dloongson-mmi=disabled  \
+ -Dmmx=enabled            \
+ -Dsse2=enabled           \
+ -Dssse3=enabled          \
+ -Dvmx=disabled           \
+ -Darm-simd=disabled      \
+ -Dneon=disabled          \
+ -Diwmmxt=disabled        \
+ -Diwmmxt2=false          \
+ -Dmips-dspr2=disabled    \
+ -Dgnu-inline-asm=enabled \
+ -Dopenmp=enabled         \
+ -Dtimers=false           \
+ -Dgnuplot=false          \
+ -Dgtk=disabled           \
+ -Dlibpng=enabled         \
+..
+
+samu
+DESTDIR=/mss/work/XorgLIBS2 samu install
+doas -- samu install
+
+cd ../../; rm -rf pixman-0.40.0/
+
+# 10 > system cairo
+tar xf /mss/work/sauces/cairo-1.16.0.tar.xz
+cd     cairo-1.16.0/
+
+sed -i "s/BUILD_SPHINX_TRUE=/BUILD_SPHINX_TRUE='#'/"   configure
+sed -i "s/BUILD_SPHINX_FALSE='#'/BUILD_SPHINX_FALSE=/" configure
+sed -i 's/test perf//g' Makefile.in
+
+ax_cv_c_float_words_bigendian=no \
+./configure            \
+ --build=$CBUILD       \
+ --host=$CHOST         \
+ --prefix=/usr         \
+ --disable-static      \
+ --enable-tee          \
+ --enable-gl           \
+ --enable-egl          \
+ --enable-xlib-xcb     \
+ --enable-xcb          \
+ --enable-xlib-xrender \
+ --enable-xlib         \
+ --disable-trace       \
+ --disable-valgrind    \
+ --disable-gtk-doc-html
+
+make
+make DESTDIR=/mss/work/XorgLIBS2 install
+doas -- make install
+
+cd ../; rm -rf cairo-1.16.0/
+
+# 11 > system harfbuzz
+tar xf /mss/work/sauces/harfbuzz-2.8.1.tar.gz
+cd     harfbuzz-2.8.1/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="/usr"          \
+ -Dcairo=enabled          \
+ -Dfontconfig=enabled     \
+ -Dglib=enabled           \
+ -Dgobject=disabled       \
+ -Dicu=disabled           \
+ -Dgraphite=disabled      \
+ -Dfreetype=enabled       \
+ -Dtests=disabled         \
+ -Dintrospection=disabled \
+ -Ddocs=disabled          \
+ -Dbenchmark=disabled     \
+ -Dicu_builtin=false      \
+ -Dexperimental_api=false \
+..
+
+samu
+DESTDIR=/mss/work/XorgLIBS2 samu install
+doas -- samu install
+
+cd ../../; rm -rf harfbuzz-2.8.1/
+
+# 12 > cleanup
+doas -- rm -rfv \
+ /etc/fonts                 \
+ /usr/share/bash-completion \
+ /usr/share/doc             \
+ /usr/share/fontconfig      \
+ /usr/share/gdb             \
+ /usr/share/gettext         \
+ /usr/share/gtk-doc         \
+ /usr/share/man             \
+ /var/cache/fontconfig
+
+doas -- cleanup
+
+# 13 > copy the clean fontconfig config
+doas -- cp -rv \
+ /mss/repo/dir/etc/fonts /etc/fonts

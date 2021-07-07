@@ -1,11 +1,9 @@
-# 1 > extraction
-tar xf /mss/work/sauces/firefox-78.11.0esr.source.tar.xz
-cd     firefox-78.11.0/
-
-# 2 > build vars
+# 1 > env vars
 unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
+
+penis="/mss/work/table/KEK"
 
 t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
 t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
@@ -29,11 +27,12 @@ export                     AS="${CC}"
 export                     NM="/opt/llvm-12.0.0/bin/llvm-nm"
 export                 RANLIB="/opt/llvm-12.0.0/bin/llvm-ranlib"
 
-                       CFLAGS="-w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=5"
-export                 CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
+                       CFLAGS="-w -pipe -O3 ${t61cf} -flto=thin -flto-jobs=2"
+                       CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
+export                 CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CFLAGS}"
-                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
-                      LDFLAGS="${LDFLAGS} -Wl,--icf=all,--lto-O3,--thinlto-jobs=5"
+                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3"
+                      LDFLAGS="${LDFLAGS} -Wl,--icf=all,--lto-O3,--thinlto-jobs=2"
 export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/usr/lib/firefox,--enable-new-dtags"
 
 export         BINDGEN_CFLAGS="${CFLAGS}"
@@ -42,38 +41,74 @@ export            RUST_TARGET="x86_64-apathy-linux-musl"
 
 export              CXXSTDLIB="c++"
 
+export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
+
 export             MOZ_NOSPAM=1
 export        MOZ_DEBUG_FLAGS="-g0"
 export MACH_USE_SYSTEM_PYTHON=1
 
-# 3 > apply patches
+# 2 > static libXt?
+# doesn't link against it but still wants it for build for some reason
+
+tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
+cd     libXt-1.2.1/
+
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix="${penis}"         \
+ --enable-static             \
+ --disable-shared            \
+ --sysconfdir=/etc           \
+ --localstatedir=/var        \
+ --enable-malloc0returnsnull \
+ --without-fop               \
+ --without-glib              \
+ --without-perl              \
+ --without-xmlto             \
+ --without-xsltproc          \
+ --disable-specs             \
+ --disable-unit-tests
+
+make
+make install
+
+cd ../; rm -rf libXt-1.2.1/
+
+# 3 > extraction
+tar xf /mss/work/sauces/firefox-78.11.0esr.source.tar.xz
+cd     firefox-78.11.0/
+
+# 4 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 4 > nuke addons and pocket
+# 5 > nuke addons and pocket
 rm -rf \
  browser/{components/pocket,extensions/{webcompat,doh-rollout,screenshots,report-site-issue}}
 
-# 5 > clear sums
+# 6 > clear sums
 for sum in audio_thread_priority target-lexicon-0.9.0 packed_simd; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
-# 6 > clear the default bookmarks
+# 7 > clear the default bookmarks
 fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/bookmarks.html.in  browser/locales/generic/profile/bookmarks.html.in
 
-# 7 > add header from alpine
+# 8 > add header from alpine
 cp -vf "${fdir}"/stab.h             toolkit/crashreporter/google-breakpad/src/
 
-# 8 > remove prebuilt binaries
+# 9 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 9 > start the build
+# 10 > start the build
 cp -v "${fdir}"/mozconfig .
-./mach build
+time ./mach build
 
-# 10 > install
+# 11 > install
 instdir="$PWD/KEK"
 DESTDIR="${instdir}" ./mach install
 

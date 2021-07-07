@@ -1,7 +1,18 @@
-diff -u -r rustc-1.50.0-src/src/bootstrap/dist.rs rustc-1.50.0-src-nolibexec/src/bootstrap/dist.rs
---- rustc-1.50.0-src/src/bootstrap/dist.rs	2021-02-10 17:36:44.000000000 +0000
-+++ rustc-1.50.0-src-nolibexec/src/bootstrap/dist.rs	2021-02-11 18:23:36.312495419 +0000
-@@ -980,7 +980,7 @@
+From b378e8ea8f3b0b227769112aa350ac0538da8ee6 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 2 Jul 2021 18:53:04 +0300
+Subject: [PATCH 1/4] use lib instead of libexec.
+
+---
+ src/bootstrap/dist.rs                          | 2 +-
+ src/tools/cargo/src/cargo/ops/registry/auth.rs | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
+index 8224eac82..d0e0f14b2 100644
+--- a/src/bootstrap/dist.rs
++++ b/src/bootstrap/dist.rs
+@@ -988,7 +988,7 @@ impl Step for Cargo {
          for dirent in fs::read_dir(cargo.parent().unwrap()).expect("read_dir") {
              let dirent = dirent.expect("read dir entry");
              if dirent.file_name().to_str().expect("utf8").starts_with("cargo-credential-") {
@@ -10,10 +21,11 @@ diff -u -r rustc-1.50.0-src/src/bootstrap/dist.rs rustc-1.50.0-src-nolibexec/src
              }
          }
  
-diff -u -r rustc-1.50.0-src/src/tools/cargo/src/cargo/ops/registry/auth.rs rustc-1.50.0-src-nolibexec/src/tools/cargo/src/cargo/ops/registry/auth.rs
---- rustc-1.50.0-src/src/tools/cargo/src/cargo/ops/registry/auth.rs	2021-02-10 17:37:00.000000000 +0000
-+++ rustc-1.50.0-src-nolibexec/src/tools/cargo/src/cargo/ops/registry/auth.rs	2021-02-11 18:24:14.944321464 +0000
-@@ -223,7 +223,7 @@
+diff --git a/src/tools/cargo/src/cargo/ops/registry/auth.rs b/src/tools/cargo/src/cargo/ops/registry/auth.rs
+index d10b1988e..b58e05857 100644
+--- a/src/tools/cargo/src/cargo/ops/registry/auth.rs
++++ b/src/tools/cargo/src/cargo/ops/registry/auth.rs
+@@ -223,7 +223,7 @@ fn sysroot_credential(
          .parent()
          .and_then(|p| p.parent())
          .ok_or_else(|| format_err!("expected cargo path {}", cargo.display()))?;
@@ -22,3 +34,6 @@ diff -u -r rustc-1.50.0-src/src/tools/cargo/src/cargo/ops/registry/auth.rs rustc
          "cargo-credential-{}{}",
          cred_name,
          std::env::consts::EXE_SUFFIX
+-- 
+2.32.0
+

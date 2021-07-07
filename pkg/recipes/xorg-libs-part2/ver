@@ -1,0 +1,8 @@
+cairo      1.16.0
+fontconfig 2.13.94
+freetype   2.10.4
+glib       2.68.3
+harfbuzz   2.8.1
+libpng     1.6.37
+pcre       8.44
+pixman     0.40.0
