@@ -1,5 +1,5 @@
-## a >> vars
-# a1 >> set before export
+# 1 > vars
+# 1.1 > set before export
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"
 mypath="$mypath:/mss/bin:/home/mss/execs"
 mypath="$mypath:/opt/llvm-12.0.0/bin"
@@ -11,7 +11,7 @@ mylibpath="/opt/llvm-12.0.0/lib"
 mylibpath="$mylibpath:/opt/rustc-1.53.0/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
-# a2 >> essentials
+# 1.2 > essentials
 export            PATH="$mypath"
 export    LIBRARY_PATH="$mylibpath"
 export LD_LIBRARY_PATH="$mylibpath"
@@ -28,10 +28,13 @@ export        INPUTRC="/etc/inputrc"
 export        MANPATH="/usr/share/man"
 export       INFOPATH="/usr/share/info"
 
-# a3 >> mpd socket
+# 1.3 > unset
+unset mypath mylibpath mypkgconfigpath
+
+# 1.4 > mpd socket
 export MPD_HOST="/var/lib/mpd/socket"
 
-# a4 >> colors
+# 1.5 > colors
  c_res="\033[0;39m"
 cl_blk="\033[0;30m" cb_blk="\033[1;30m"
 cl_red="\033[0;31m" cb_red="\033[1;31m"
@@ -42,6 +45,6 @@ cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
 cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
 cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 
-## b >> functions 
+# 2 > functions
 cdo()  { cd - >/dev/null 2>&1;}
 tarup(){ tar cfp "${1}".tar "${1}";}

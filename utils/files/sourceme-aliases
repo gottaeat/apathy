@@ -1,12 +1,12 @@
-# a >> aliases
-# a1 >> ls and grep
+# 1 > aliases
+# 1.1 > ls and grep
 alias        ls="ls --group-directories-first --color=auto -AFHhp"
 alias         l="ls --group-directories-first --color=auto -AFHhp"
 alias        ll="ls --group-directories-first --color=auto -AFHhp -w1"
 alias       lll="ls --group-directories-first --color=auto -AFHhp -l"
 alias      grep="grep --color=auto"
 
-# a2 >> cd
+# 1.2 > cd
 alias       cda="cd /mnt/mss/stuff/media/anime"
 alias       cde="cd /mnt/mss/externalstuff"
 alias       cdg="cd /mnt/mss/stuff/techy-bits/git"
@@ -21,37 +21,35 @@ alias      cdt3="cd /mss/work/table3"
 alias      cdt4="cd /mss/work/table4"
 alias      cdt5="cd /mss/work/table5"
 
-# a3 >> tmux
+# 1.3 > tmux
 alias      tmux="tmux -2"
 alias        ta="tmux attach"
 alias        td="tmux detach"
 alias        tk="tmux kill-session -t"
 alias        tl="tmux ls"
 
-# a4 >> git
+# 1.4 > git
 alias        gs="git status -s"
 alias        gl="git log --oneline"
 alias      gcd1="git clone --depth=1 --recursive"
 
-# a5 >> media
+# 1.5 > media
 alias       ytm="youtube-dl -f bestaudio -x --audio-format mp3 --audio-quality 0"
 alias      atog="amixer set Master toggle"
 alias      mtog="mpc toggle"
 alias       feh="feh -d --scale-down --auto-zoom"
 alias        nc="ncmpcpp"
 
-# a6 >> verbosity
+# 1.6 > verbosity
 alias        cp="cp -v"
 alias        ln="ln -v"
 alias        mv="mv -v"
 alias     mkdir="mkdir -pv"
 alias     mount="mount -v"
 
-# a7 >> ease of access
+# 1.6 > ease of access
 alias        a2="/mss/bin/cb"
 alias       poz="yash --posix"
-alias    onegai="doas --"
-alias  fetchall="(clear; fetch ascii | head -13; pkg pver | head -7; pkg stats)"
-alias      fuck="printenv | sort -su | less"
+alias  fetchall="(clear; fetch ascii | head -13; pkg pver | head -8; pkg stats)"
 alias    reboot="doas -- kill -INT 1"
 alias  poweroff="doas -- kill -USR1 1"
