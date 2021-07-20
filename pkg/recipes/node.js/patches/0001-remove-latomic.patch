@@ -1,0 +1,13 @@
+diff -uraN a/node.gyp b/node.gyp
+--- a/node.gyp	2021-07-05 16:47:47.000000000 +0300
++++ b/node.gyp	2021-07-20 02:47:34.468670470 +0300
+@@ -326,9 +326,6 @@
+           '-Wl,-bnoerrmsg',
+         ],
+       }],
+-      ['OS == "linux" and llvm_version != "0.0"', {
+-        'libraries': ['-latomic'],
+-      }],
+     ],
+   },
+ 

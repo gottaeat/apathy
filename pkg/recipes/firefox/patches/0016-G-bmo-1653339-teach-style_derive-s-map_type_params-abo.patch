@@ -1,7 +1,7 @@
-From c133ee334d3a2a06bbc2bee017daf7d2855ac287 Mon Sep 17 00:00:00 2001
+From 98402f345385d03c80e9b903cba717c16f0c68da Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 20 Oct 2020 15:19:21 +0200
-Subject: [PATCH 37/44] bmo#1653339: Teach style_derive's map_type_params about
+Subject: [PATCH 37/46] bmo#1653339: Teach style_derive's map_type_params about
  mapping self correctly
 
 Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1643201#c30
@@ -23,5 +23,5 @@ index f6bfeb1177..5e994230cf 100644
          }),
          ref ty => panic!("type {:?} cannot be mapped yet", ty),
 -- 
-2.31.1
+2.32.0
 

@@ -1,7 +1,7 @@
-From d20f0103e85f04bc80d0358f83fe96a048b68f04 Mon Sep 17 00:00:00 2001
+From f0a381a8c60aaeabf55baa3a57fe7534a4e560fe Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Wed, 30 Sep 2020 02:56:14 +0200
-Subject: [PATCH 35/44] bmo#1561207: Make dbus optional
+Subject: [PATCH 35/46] bmo#1561207: Make dbus optional
 
 Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1561207#c24
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -24,7 +24,7 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  15 files changed, 124 insertions(+), 36 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index c41d9fcc3e..4f3668699b 100644
+index eee2f32fe1..42a245ce80 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
 @@ -113,9 +113,9 @@ dependencies = [
@@ -461,5 +461,5 @@ index 5fdb0eb2c0..e7ce4f3c35 100644
  [lib]
  path = "lib.rs"
 -- 
-2.31.1
+2.32.0
 

@@ -4,152 +4,290 @@ t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
 t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
 t61cf="${t61cf} -march=core2 -mtune=core2"
 
-export        CC="/opt/llvm-12.0.0/bin/clang"
-export       CXX="/opt/llvm-12.0.0/bin/clang++"
-export        LD="/opt/llvm-12.0.0/bin/ld.lld"
-export        AR="/opt/llvm-12.0.0/bin/llvm-ar"
-export        AS="/opt/llvm-12.0.0/bin/llvm-as"
-export        NM="/opt/llvm-12.0.0/bin/llvm-nm"
-export     STRIP="/opt/llvm-12.0.0/bin/llvm-strip"
-export    RANLIB="/opt/llvm-12.0.0/bin/llvm-ranlib"
-export   OBJCOPY="/opt/llvm-12.0.0/bin/llvm-objcopy"
-export   OBJDUMP="/opt/llvm-12.0.0/bin/llvm-objdump"
-export   OBJSIZE="/opt/llvm-12.0.0/bin/llvm-size"
-export   READELF="/opt/llvm-12.0.0/bin/llvm-readelf"
-export ADDR2LINE="/opt/llvm-12.0.0/bin/llvm-addr2line"
+export        CC="/opt/llvm-12.0.1/bin/clang"
+export       CXX="/opt/llvm-12.0.1/bin/clang++"
+export        LD="/opt/llvm-12.0.1/bin/ld.lld"
+export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
+export        AS="/opt/llvm-12.0.1/bin/llvm-as"
+export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
+export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
+export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
+export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
+export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
+export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
+export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
+export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
 
-          CFLAGS="-DNDEBUG -w -O2 -pipe ${t61cf}"
+          CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=2"
 export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
 export  CXXFLAGS="${CFLAGS} -fpermissive"
-export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all,-z,stack-size=2097152"
+         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
+export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2,-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-12.0.0.tar.gz
-cd     llvm-project-llvmorg-12.0.0/
-
-sed -i 's/set(COMPILER_RT_HAS_SANITIZER_COMMON TRUE)/set(COMPILER_RT_HAS_SANITIZER_COMMON FALSE)/' compiler-rt/cmake/config-ix.cmake
+tar xf /mss/work/sauces/llvmorg-12.0.1.tar.gz
+cd     llvm-project-llvmorg-12.0.1/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
-patch -p1 < "${pdir}"/libcxx-musl_compat.patch
+patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
+patch -p1 < "${pdir}"/0002-libcxx-force-link-against-compiler-rt-builtins.patch
+patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_impl.patch
+patch -p1 < "${pdir}"/0004-libcxxabi-force-link-against-compiler-rt-builtins.patch
+patch -p1 < "${pdir}"/0005-compiler-rt-adjust-musl-syscalls.patch
+patch -p1 < "${pdir}"/0006-samu-llvm-locstats-fix.patch
 
-# 3
-mkdir -v build
-cd       build
+cleancmake
 
-myproj="libunwind;libcxxabi;libcxx;compiler-rt;llvm;lld;clang"
+mkdir build
+cd    build
 
-cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="/opt/llvm-12.0.0"            \
- -DCMAKE_C_FLAGS="$CFLAGS"                            \
- -DCMAKE_CXX_FLAGS="$CXXFLAGS"                        \
- -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                  \
- -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"               \
- -DCMAKE_AR="$AR"                                     \
- -DCMAKE_NM="$NM"                                     \
- -DCMAKE_STRIP="$STRIP"                               \
- -DCMAKE_RANLIB="$RANLIB"                             \
- -DCMAKE_LINKER="$LD"                                 \
- -DCMAKE_OBJCOPY="$OBJCOPY"                           \
- -DCMAKE_OBJDUMP="$OBJDUMP"                           \
- -DCMAKE_READELF="$READELF"                           \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"                       \
- -DCMAKE_C_COMPILER="$CC"                             \
- -DCMAKE_CXX_COMPILER="$CXX"                          \
- -DCMAKE_CXX_COMPILER_TARGET="$CHOST"                 \
- -DCMAKE_C_COMPILER_TARGET="$CHOST"                   \
+myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp"
+cmake -Wno-dev -GNinja\
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm-12.0.1"           \
+ -DCMAKE_C_FLAGS="$CFLAGS"                           \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"                       \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                 \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"              \
+ -DCMAKE_AR="$AR"                                    \
+ -DCMAKE_NM="$NM"                                    \
+ -DCMAKE_STRIP="$STRIP"                              \
+ -DCMAKE_RANLIB="$RANLIB"                            \
+ -DCMAKE_LINKER="$LD"                                \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                          \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                          \
+ -DCMAKE_READELF="$READELF"                          \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"                      \
+ -DCMAKE_C_COMPILER="$CC"                            \
+ -DCMAKE_CXX_COMPILER="$CXX"                         \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"                \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"                  \
 \
- -DLLVM_ENABLE_PROJECTS="${myproj}"                   \
- -DLLVM_TARGETS_TO_BUILD="host"                       \
- -DLLVM_HOST_TRIPLE="$CHOST"                          \
- -DLLVM_DEFAULT_TARGET_TRIPLE="$CHOST"                \
+ -DLLVM_DEFAULT_TARGET_TRIPLE="$CHOST"               \
+ -DLLVM_ENABLE_PROJECTS="${myproj}"                  \
+ -DLLVM_HOST_TRIPLE="$CHOST"                         \
+ -DLLVM_TARGETS_TO_BUILD="host"                      \
+ -DLLVM_TARGET_ARCH="host"                           \
 \
- -DBUILD_SHARED_LIBS=OFF                              \
- -DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND               \
- -DHAVE_LIBXAR=OFF                                    \
- -DLLVM_APPEND_VC_REV=OFF                             \
- -DLLVM_BUILD_LLVM_DYLIB=ON                           \
- -DLLVM_ENABLE_ASSERTIONS=OFF                         \
- -DLLVM_ENABLE_EH=ON                                  \
- -DLLVM_ENABLE_FFI=ON                                 \
- -DLLVM_ENABLE_LIBCXX=ON                              \
- -DLLVM_ENABLE_LIBEDIT=OFF                            \
- -DLLVM_ENABLE_LIBPFM=OFF                             \
- -DLLVM_ENABLE_LIBXML2=OFF                            \
- -DLLVM_ENABLE_LLD=ON                                 \
- -DLLVM_ENABLE_LTO=OFF                                \
- -DLLVM_ENABLE_PIC=ON                                 \
- -DLLVM_ENABLE_RTTI=ON                                \
- -DLLVM_ENABLE_TERMINFO=OFF                           \
- -DLLVM_ENABLE_Z3_SOLVER=OFF                          \
- -DLLVM_ENABLE_ZLIB=ON                                \
- -DLLVM_INSTALL_UTILS=ON                              \
- -DLLVM_LINK_LLVM_DYLIB=ON                            \
- -DLLVM_OPTIMIZED_TABLEGEN=OFF                        \
- -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF              \
- -DLLVM_TOOL_LLVM_GO_BUILD=OFF                        \
- -DLLVM_TOOL_LLVM_ITANIUM_DEMANGLE_FUZZER_BUILD=OFF   \
- -DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=OFF        \
- -DLLVM_TOOL_LLVM_MC_DISASSEMBLE_FUZZER_BUILD=OFF     \
- -DLLVM_TOOL_LLVM_MICROSOFT_DEMANGLE_FUZZER_BUILD=OFF \
- -DLLVM_TOOL_LLVM_OPT_FUZZER_BUILD=OFF                \
- -DOCAMLFIND=NO                                       \
- -DPython3_EXECUTABLE=/usr/bin/python3                \
+ -DLLVM_ENABLE_LTO=Thin                              \
+ -DLLVM_PARALLEL_LINK_JOBS=2                         \
 \
- -DCLANG_DEFAULT_CXX_STDLIB="libc++"                  \
- -DCLANG_DEFAULT_LINKER="lld"                         \
- -DCLANG_DEFAULT_RTLIB="compiler-rt"                  \
- -DCLANG_DEFAULT_UNWINDLIB="libunwind"                \
- -DCLANG_ENABLE_ARCMT=OFF                             \
- -DCLANG_ENABLE_STATIC_ANALYZER=OFF                   \
- -DCLANG_LINK_CLANG_DYLIB=ON                          \
- -DCLANG_VENDOR="apathy"                              \
- -DCLANG_VENDOR_UTI="org.apathy"                      \
+ -DLLVM_BUILD_LLVM_DYLIB=ON                          \
+ -DLLVM_BUILD_STATIC=OFF                             \
+ -DLLVM_BUILD_UTILS=OFF                              \
+ -DLLVM_ENABLE_LLD=ON                                \
+ -DLLVM_INSTALL_UTILS=ON                             \
+ -DLLVM_LINK_LLVM_DYLIB=ON                           \
 \
- -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                 \
- -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF             \
- -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON                \
+ -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE         \
+ -DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND              \
+ -DHAVE_LIBXAR=OFF                                   \
+ -DLLVM_APPEND_VC_REV=OFF                            \
+ -DLLVM_ENABLE_ASSERTIONS=OFF                        \
+ -DLLVM_ENABLE_BACKTRACES=OFF                        \
+ -DLLVM_ENABLE_EH=ON                                 \
+ -DLLVM_ENABLE_FFI=ON                                \
+ -DLLVM_ENABLE_LIBCXX=ON                             \
+ -DLLVM_ENABLE_LIBEDIT=OFF                           \
+ -DLLVM_ENABLE_LIBPFM=OFF                            \
+ -DLLVM_ENABLE_LIBXML2=OFF                           \
+ -DLLVM_ENABLE_PIC=ON                                \
+ -DLLVM_ENABLE_RTTI=ON                               \
+ -DLLVM_ENABLE_TERMINFO=OFF                          \
+ -DLLVM_ENABLE_WARNINGS=OFF                          \
+ -DLLVM_ENABLE_Z3_SOLVER=OFF                         \
+ -DLLVM_ENABLE_ZLIB=ON                               \
+ -DLLVM_OPTIMIZED_TABLEGEN=ON                        \
+ -DLLVM_USE_FOLDERS=OFF                              \
+ -DLLVM_USE_NEWPM=ON                                 \
+ -DOCAMLFIND=NO                                      \
+ -DPython3_EXECUTABLE=/usr/bin/python3               \
 \
- -DLIBCXXABI_ENABLE_ASSERTIONS=OFF                    \
- -DLIBCXXABI_USE_COMPILER_RT=ON                       \
- -DLIBCXXABI_USE_LLVM_UNWINDER=ON                     \
- -DLIBCXX_CXX_ABI="libcxxabi"                         \
- -DLIBCXX_ENABLE_FILESYSTEM=ON                        \
- -DLIBCXX_HAS_MUSL_LIBC=ON                            \
- -DLIBCXX_USE_COMPILER_RT=ON                          \
- -DLIBUNWIND_USE_COMPILER_RT=ON                       \
+ -DLLVM_TOOL_BUGPOINT_BUILD=OFF                      \
+ -DLLVM_TOOL_BUGPOINT_PASSES_BUILD=OFF               \
+ -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF             \
+ -DLLVM_TOOL_DSYMUTIL_BUILD=OFF                      \
+ -DLLVM_TOOL_GOLD_BUILD=OFF                          \
+ -DLLVM_TOOL_LLVM_AS_FUZZER_BUILD=OFF                \
+ -DLLVM_TOOL_LLVM_BCANALYZER_BUILD=OFF               \
+ -DLLVM_TOOL_LLVM_CAT_BUILD=OFF                      \
+ -DLLVM_TOOL_LLVM_CFI_VERIFY_BUILD=OFF               \
+ -DLLVM_TOOL_LLVM_CVTRES_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_CXXDUMP_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_CXXMAP_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_C_TEST_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_DIFF_BUILD=OFF                     \
+ -DLLVM_TOOL_LLVM_DIS_BUILD=OFF                      \
+ -DLLVM_TOOL_LLVM_DWARFDUMP_BUILD=OFF                \
+ -DLLVM_TOOL_LLVM_DWP_BUILD=ON                       \
+ -DLLVM_TOOL_LLVM_ELFABI_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_EXEGESIS_BUILD=OFF                 \
+ -DLLVM_TOOL_LLVM_EXTRACT_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_GO_BUILD=OFF                       \
+ -DLLVM_TOOL_LLVM_GSYMUTIL_BUILD=OFF                 \
+ -DLLVM_TOOL_LLVM_IFS_BUILD=OFF                      \
+ -DLLVM_TOOL_LLVM_ISEL_FUZZER_BUILD=OFF              \
+ -DLLVM_TOOL_LLVM_ITANIUM_DEMANGLE_FUZZER_BUILD=OFF  \
+ -DLLVM_TOOL_LLVM_JITLINK_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_JITLISTENER_BUILD=OFF              \
+ -DLLVM_TOOL_LLVM_LIBTOOL_DARWIN_BUILD=OFF           \
+ -DLLVM_TOOL_LLVM_LINK_BUILD=OFF                     \
+ -DLLVM_TOOL_LLVM_LIPO_BUILD=OFF                     \
+ -DLLVM_TOOL_LLVM_MCA_BUILD=OFF                      \
+ -DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=OFF       \
+ -DLLVM_TOOL_LLVM_MC_BUILD=OFF                       \
+ -DLLVM_TOOL_LLVM_MC_DISASSEMBLE_FUZZER_BUILD=OFF    \
+ -DLLVM_TOOL_LLVM_MICROSOFT_DEMANGLE_FUZZER_BUILD=OFF\
+ -DLLVM_TOOL_LLVM_ML_BUILD=OFF                       \
+ -DLLVM_TOOL_LLVM_MODEXTRACT_BUILD=OFF               \
+ -DLLVM_TOOL_LLVM_MT_BUILD=OFF                       \
+ -DLLVM_TOOL_LLVM_OPT_FUZZER_BUILD=OFF               \
+ -DLLVM_TOOL_LLVM_OPT_REPORT_BUILD=OFF               \
+ -DLLVM_TOOL_LLVM_PDBUTIL_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_PROFDATA_BUILD=OFF                 \
+ -DLLVM_TOOL_LLVM_PROFGEN_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_RC_BUILD=OFF                       \
+ -DLLVM_TOOL_LLVM_REDUCE_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_RTDYLD_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_SHLIB_BUILD=ON                     \
+ -DLLVM_TOOL_LLVM_SPECIAL_CASE_LIST_FUZZER_BUILD=OFF \
+ -DLLVM_TOOL_LLVM_SPLIT_BUILD=OFF                    \
+ -DLLVM_TOOL_LLVM_STRESS_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_UNDNAME_BUILD=OFF                  \
+ -DLLVM_TOOL_LLVM_XRAY_BUILD=OFF                     \
+ -DLLVM_TOOL_LLVM_YAML_NUMERIC_PARSER_FUZZER_BUILD=OFF\
+ -DLLVM_TOOL_LLVM_YAML_PARSER_FUZZER_BUILD=OFF       \
+ -DLLVM_TOOL_OBJ2YAML_BUILD=OFF                      \
+ -DLLVM_TOOL_OPT_BUILD=OFF                           \
+ -DLLVM_TOOL_OPT_VIEWER_BUILD=OFF                    \
+ -DLLVM_TOOL_REMARKS_SHLIB_BUILD=ON                  \
+ -DLLVM_TOOL_SANCOV_BUILD=OFF                        \
+ -DLLVM_TOOL_SANSTATS_BUILD=OFF                      \
+ -DLLVM_TOOL_SPLIT_FILE_BUILD=OFF                    \
+ -DLLVM_TOOL_VERIFY_USELISTORDER_BUILD=OFF           \
+ -DLLVM_TOOL_VFABI_DEMANGLE_FUZZER_BUILD=OFF         \
+ -DLLVM_TOOL_XCODE_TOOLCHAIN_BUILD=OFF               \
+ -DLLVM_TOOL_YAML2OBJ_BUILD=OFF                      \
 \
- -DCLANG_INCLUDE_DOCS=OFF                             \
- -DCLANG_INCLUDE_TESTS=OFF                            \
- -DCOMPILER_RT_INCLUDE_TESTS=OFF                      \
- -DLLVM_BUILD_DOCS=OFF                                \
- -DLLVM_BUILD_EXAMPLES=OFF                            \
- -DLLVM_BUILD_TESTS=OFF                               \
- -DLLVM_ENABLE_DOXYGEN=OFF                            \
- -DLLVM_ENABLE_OCAMLDOC=OFF                           \
- -DLLVM_ENABLE_SPHINX=OFF                             \
- -DLLVM_INCLUDE_BENCHMARKS=OFF                        \
- -DLLVM_INCLUDE_DOCS=OFF                              \
- -DLLVM_INCLUDE_EXAMPLES=OFF                          \
- -DLLVM_INCLUDE_GO_TESTS=OFF                          \
- -DLLVM_INCLUDE_TESTS=OFF                             \
+ -DCLANG_DEFAULT_CXX_STDLIB="libc++"                 \
+ -DCLANG_DEFAULT_LINKER="lld"                        \
+ -DCLANG_DEFAULT_OBJCOPY="llvm-objcopy"              \
+ -DCLANG_DEFAULT_OPENMP_RUNTIME="libomp"             \
+ -DCLANG_DEFAULT_RTLIB="compiler-rt"                 \
+ -DCLANG_DEFAULT_UNWINDLIB="libunwind"               \
+ -DCLANG_ENABLE_ARCMT=OFF                            \
+ -DCLANG_ENABLE_STATIC_ANALYZER=OFF                  \
+ -DCLANG_LINK_CLANG_DYLIB=ON                         \
+ -DCLANG_PLUGIN_SUPPORT=ON                           \
+ -DCLANG_TOOL_APINOTES_TEST_BUILD=OFF                \
+ -DCLANG_TOOL_ARCMT_TEST_BUILD=OFF                   \
+ -DCLANG_TOOL_CLANG_CHECK_BUILD=OFF                  \
+ -DCLANG_TOOL_CLANG_DIFF_BUILD=OFF                   \
+ -DCLANG_TOOL_CLANG_EXTDEF_MAPPING_BUILD=OFF         \
+ -DCLANG_TOOL_CLANG_FORMAT_BUILD=OFF                 \
+ -DCLANG_TOOL_CLANG_FORMAT_VS_BUILD=OFF              \
+ -DCLANG_TOOL_CLANG_FUZZER_BUILD=OFF                 \
+ -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=OFF            \
+ -DCLANG_TOOL_CLANG_OFFLOAD_BUNDLER_BUILD=OFF        \
+ -DCLANG_TOOL_CLANG_OFFLOAD_WRAPPER_BUILD=OFF        \
+ -DCLANG_TOOL_CLANG_REFACTOR_BUILD=OFF               \
+ -DCLANG_TOOL_CLANG_RENAME_BUILD=OFF                 \
+ -DCLANG_TOOL_CLANG_SCAN_DEPS_BUILD=OFF              \
+ -DCLANG_TOOL_CLANG_SHLIB_BUILD=ON                   \
+ -DCLANG_TOOL_C_ARCMT_TEST_BUILD=OFF                 \
+ -DCLANG_TOOL_C_INDEX_TEST_BUILD=OFF                 \
+ -DCLANG_TOOL_DIAGTOOL_BUILD=OFF                     \
+ -DCLANG_TOOL_SCAN_BUILD_BUILD=OFF                   \
+ -DCLANG_TOOL_SCAN_VIEW_BUILD=OFF                    \
+ -DCLANG_VENDOR="apathy"                             \
+ -DCLANG_VENDOR_UTI="org.apathy"                     \
+ -DENABLE_LINKER_BUILD_ID=OFF                        \
+ -DLIBCLANG_BUILD_STATIC=OFF                         \
+ -DLLD_VENDOR="apathy"                               \
+\
+ -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                   \
+ -DCOMPILER_RT_BUILD_MEMPROF=OFF                     \
+ -DCOMPILER_RT_BUILD_PROFILE=OFF                     \
+ -DCOMPILER_RT_BUILD_SANITIZERS=OFF                  \
+ -DCOMPILER_RT_BUILD_XRAY=OFF                        \
+ -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                \
+ -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF            \
+ -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON               \
+\
+ -DLIBCXXABI_ENABLE_ASSERTIONS=OFF                   \
+ -DLIBCXXABI_ENABLE_SHARED=ON                        \
+ -DLIBCXXABI_ENABLE_STATIC=OFF                       \
+ -DLIBCXXABI_ENABLE_STATIC_UNWINDER=OFF              \
+ -DLIBCXXABI_INSTALL_SHARED_LIBRARY=ON               \
+ -DLIBCXXABI_INSTALL_STATIC_LIBRARY=OFF              \
+ -DLIBCXXABI_USE_COMPILER_RT=ON                      \
+ -DLIBCXXABI_USE_LLVM_UNWINDER=ON                    \
+ -DLIBCXX_CXX_ABI="libcxxabi"                        \
+ -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=OFF            \
+ -DLIBCXX_ENABLE_FILESYSTEM=ON                       \
+ -DLIBCXX_ENABLE_PEDANTIC=ON                         \
+ -DLIBCXX_ENABLE_SHARED=ON                           \
+ -DLIBCXX_ENABLE_STATIC=OFF                          \
+ -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF              \
+ -DLIBCXX_HAS_MUSL_LIBC=ON                           \
+ -DLIBCXX_HAS_GCC_S_LIB=OFF                          \
+ -DLIBCXX_HAS_ATOMIC_LIB=OFF                         \
+ -DLIBCXX_INCLUDE_BENCHMARKS=OFF                     \
+ -DLIBCXX_INSTALL_SHARED_LIBRARY=ON                  \
+ -DLIBCXX_INSTALL_STATIC_LIBRARY=OFF                 \
+ -DLIBCXX_USE_COMPILER_RT=ON                         \
+\
+ -DLIBUNWIND_ENABLE_ASSERTIONS=OFF                   \
+ -DLIBUNWIND_ENABLE_SHARED=ON                        \
+ -DLIBUNWIND_ENABLE_STATIC=OFF                       \
+ -DLIBUNWIND_INSTALL_SHARED_LIBRARY=ON               \
+ -DLIBUNWIND_INSTALL_STATIC_LIBRARY=OFF              \
+ -DLIBUNWIND_USE_COMPILER_RT=ON                      \
+\
+ -DCMAKE_DISABLE_FIND_PACKAGE_CUDA=ON                \
+ -DLIBOMP_COPY_EXPORTS=OFF                           \
+ -DLIBOMP_INSTALL_ALIASES=OFF                        \
+ -DLIBOMP_LIBRARY_KIND=SHARED                        \
+ -DLIBOMP_OMPT_SUPPORT=OFF                           \
+ -DLIBOMP_USE_HWLOC=OFF                              \
+ -DOPENMP_ENABLE_LIBOMPTARGET=OFF                    \
+ -DOPENMP_ENABLE_OMPT_TOOLS=OFF                      \
+\
+ -DCLANG_BUILD_EXAMPLES=OFF                          \
+ -DCLANG_INCLUDE_DOCS=OFF                            \
+ -DCLANG_INCLUDE_TESTS=OFF                           \
+ -DCOMPILER_RT_INCLUDE_TESTS=OFF                     \
+ -DLLVM_BUILD_DOCS=OFF                               \
+ -DLLVM_BUILD_EXAMPLES=OFF                           \
+ -DLLVM_BUILD_TESTS=OFF                              \
+ -DLLVM_ENABLE_DOXYGEN=OFF                           \
+ -DLLVM_ENABLE_OCAMLDOC=OFF                          \
+ -DLLVM_ENABLE_SPHINX=OFF                            \
+ -DLLVM_INCLUDE_BENCHMARKS=OFF                       \
+ -DLLVM_INCLUDE_DOCS=OFF                             \
+ -DLLVM_INCLUDE_EXAMPLES=OFF                         \
+ -DLLVM_INCLUDE_GO_TESTS=OFF                         \
+ -DLLVM_INCLUDE_TESTS=OFF                            \
  ../llvm
 
-# 5
 time samu
 
-# 6
+# 3
 instdir="$PWD/KEK"
 DESTDIR="${instdir}" samu install
 
-rm -rfv \
- "${instdir}"/opt/llvm-12.0.0/share/man \
- "${instdir}"/opt/llvm-12.0.0/share/clang/bash-autocomplete.sh
+find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
+ -exec rm -rfv {} ';'
 
-find "${instdir}"/opt/llvm-12.0.0/bin \
+rm -rfv "${instdir}"/opt/llvm-12.0.1/share
+
+find "${instdir}"/opt/llvm-12.0.1/bin \
  -type f              -exec strip --strip-all      -v {} ';'
 
-find "${instdir}"/opt/llvm-12.0.0/lib \
+find "${instdir}"/opt/llvm-12.0.1/lib \
  -type f -name \*.a   -exec strip --strip-debug    -v {} ';'
 
-find "${instdir}"/opt/llvm-12.0.0/lib \
+find "${instdir}"/opt/llvm-12.0.1/lib \
+ -type f -name \*.a   -exec "${RANLIB}" {} ';'
+
+find "${instdir}"/opt/llvm-12.0.1/lib \
  -type f -name \*.so* -exec strip --strip-unneeded -v {} ';'

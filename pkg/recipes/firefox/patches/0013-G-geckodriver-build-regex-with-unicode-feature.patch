@@ -1,7 +1,7 @@
-From e29325fc5656a6f64a52c549b006831eb0de40f3 Mon Sep 17 00:00:00 2001
+From 681c0ace5bcc45a0f82abe111212a0df9bf2cf04 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Tue, 14 Jul 2020 20:50:55 +0200
-Subject: [PATCH 32/44] geckodriver: Build regex with unicode feature
+Subject: [PATCH 32/46] geckodriver: Build regex with unicode feature
 
 Link: https://github.com/mozilla/geckodriver/issues/1743
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -23,5 +23,5 @@ index 40599f8156..43df1fb866 100644
  serde_derive = "1.0"
  serde_json = "1.0"
 -- 
-2.31.1
+2.32.0
 

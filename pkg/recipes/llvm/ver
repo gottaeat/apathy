@@ -1,7 +1,8 @@
-llvm        11.1.0
-clang       11.1.0
-lld         11.1.0
-libunwind   11.1.0
-libcxxabi   11.1.0
-libcxx      11.1.0
-compiler-rt 11.1.0
+clang       12.0.1
+compiler-rt 12.0.1
+libcxx      12.0.1
+libcxxabi   12.0.1
+libunwind   12.0.1
+lld         12.0.1
+llvm        12.0.1
+openmp      12.0.1

@@ -1,7 +1,7 @@
-From c81eb951c92bc7d71de1fdecbe6fd43da379725d Mon Sep 17 00:00:00 2001
+From 5d85b2bf9729f0fd6095a5f12a168db4b94c253e Mon Sep 17 00:00:00 2001
 From: Johannes <johannes.brechtmann@gmail.com>
 Date: Fri, 1 May 2020 17:20:29 +0200
-Subject: [PATCH 18/44] musl: make SYS_fork non-fatal, musl uses it for fork(2)
+Subject: [PATCH 18/46] musl: make SYS_fork non-fatal, musl uses it for fork(2)
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -24,5 +24,5 @@ index b60902e841..98a17f40f8 100644
  #  ifdef __NR_fadvise64
        case __NR_fadvise64:
 -- 
-2.31.1
+2.32.0
 

@@ -19,24 +19,31 @@ t61rf="${t61rf} -Ctarget-feature=+sahf" t61rf="${t61rf} -Ctarget-feature=-aes"
 t61rf="${t61rf} -Ctarget-feature=+sse"  t61rf="${t61rf} -Ctarget-feature=-sse4a"
 t61rf="${t61rf} -Ctarget-feature=+sse2" t61rf="${t61rf} -Ctarget-feature=-sse4.2"
 
-export                     CC="/opt/llvm-12.0.0/bin/clang"
-export                    CXX="/opt/llvm-12.0.0/bin/clang++"
+export                     CC="/opt/llvm-12.0.1/bin/clang"
+export                    CXX="/opt/llvm-12.0.1/bin/clang++"
 export                     LD="${CC}"
-export                     AR="/opt/llvm-12.0.0/bin/llvm-ar"
+export                     AR="/opt/llvm-12.0.1/bin/llvm-ar"
 export                     AS="${CC}"
-export                     NM="/opt/llvm-12.0.0/bin/llvm-nm"
-export                 RANLIB="/opt/llvm-12.0.0/bin/llvm-ranlib"
+export                     NM="/opt/llvm-12.0.1/bin/llvm-nm"
+export                  STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
+export                 RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
+export                OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
+export                OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
+export                OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
+export                READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
+export              ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
 
-                       CFLAGS="-w -pipe -O3 ${t61cf} -flto=thin -flto-jobs=2"
+                       CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=2"
                        CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
 export                 CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CFLAGS}"
-                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3"
-                      LDFLAGS="${LDFLAGS} -Wl,--icf=all,--lto-O3,--thinlto-jobs=2"
-export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/usr/lib/firefox,--enable-new-dtags"
+                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
+export                LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2,-rpath=/opt/firefox-78.12.0esr,--enable-new-dtags"
 
+                    RUSTFLAGS="-Clinker=${CC} ${t61rf}"
+                    RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
+export              RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
 export         BINDGEN_CFLAGS="${CFLAGS}"
-export              RUSTFLAGS="-Cdebuginfo=0 ${t61rf}"
 export            RUST_TARGET="x86_64-apathy-linux-musl"
 
 export              CXXSTDLIB="c++"
@@ -51,7 +58,6 @@ export MACH_USE_SYSTEM_PYTHON=1
 
 # 2 > static libXt?
 # doesn't link against it but still wants it for build for some reason
-
 tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
 cd     libXt-1.2.1/
 
@@ -78,8 +84,8 @@ make install
 cd ../; rm -rf libXt-1.2.1/
 
 # 3 > extraction
-tar xf /mss/work/sauces/firefox-78.11.0esr.source.tar.xz
-cd     firefox-78.11.0/
+tar xf /mss/work/sauces/firefox-78.12.0esr.source.tar.xz
+cd     firefox-78.12.0/
 
 # 4 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"

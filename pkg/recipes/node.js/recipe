@@ -1,30 +1,34 @@
 # 1
-t61cf="-m128bit-long-double -m64 -m80387 -malign-stringops -mcx16 -mfancy-math-387"
-t61cf="${t61cf} -mfp-ret-in-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx"
-t61cf="${t61cf} -mmusl -mpush-args -mred-zone -msahf -msse -msse2 -msse3 -msse4.1"
-t61cf="${t61cf} -mssse3 -mstv -mtls-direct-seg-refs -mvzeroupper"
+t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
+t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
+t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
 t61cf="${t61cf} -march=core2 -mtune=core2"
 
-export        CC="/usr/bin/x86_64-apathy-linux-musl-gcc"
-export       CXX="/usr/bin/x86_64-apathy-linux-musl-g++"
-export        LD="/usr/bin/ld.bfd"
-export        AR="/usr/bin/x86_64-apathy-linux-musl-gcc-ar"
-export        AS="/usr/bin/as"
-export        NM="/usr/bin/x86_64-apathy-linux-musl-gcc-nm"
-export     STRIP="/usr/bin/strip"
-export    RANLIB="/usr/bin/x86_64-apathy-linux-musl-gcc-ranlib"
-export   OBJCOPY="/usr/bin/objcopy"
-export   OBJDUMP="/usr/bin/objdump"
-export   OBJSIZE="/usr/bin/size"
-export   READELF="/usr/bin/readelf"
-export ADDR2LINE="/usr/bin/addr2line"
+export        CC="/opt/llvm-12.0.1/bin/clang"
+export       CXX="/opt/llvm-12.0.1/bin/clang++"
+export        LD="/opt/llvm-12.0.1/bin/ld.lld"
+export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
+export        AS="/opt/llvm-12.0.1/bin/llvm-as"
+export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
+export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
+export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
+export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
+export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
+export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
+export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
+export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
 
-export    CFLAGS="-w -pipe -O2 ${t61cf}"
+          CFLAGS="-DNDEBUG -w -pipe -Os ${t61cf} -flto=thin -flto-jobs=2"
+export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
 export  CXXFLAGS="${CFLAGS}"
-export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2,--no-keep-memory"
+         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
+export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2"
 
-tar xf /mss/work/sauces/node-v14.17.2.tar.xz
-cd node-v14.17.2/
+tar xf /mss/work/sauces/node-v14.17.3.tar.xz
+cd node-v14.17.3/
+
+pdir="/mss/repo/pkg/recipes/node.js/patches"
+patch -p1 < "${pdir}"/0001-remove-latomic.patch
 
 ./configure \
  --ninja                    \
@@ -38,15 +42,15 @@ cd node-v14.17.2/
  --without-node-code-cache  \
  --without-node-snapshot    \
  --without-npm              \
- --without-report           \
+ --without-report
 
 time samu -C out/Release
 
 # 2
-tools/install.py install $PWD/KEK /opt/node.js-14.17.2
+tools/install.py install $PWD/KEK /opt/node.js-14.17.3
 
 rm -rfv \
- $PWD/KEK/opt/node.js-14.17.2/share \
- $PWD/KEK/opt/node.js-14.17.2/include
+ $PWD/KEK/opt/node.js-14.17.3/share \
+ $PWD/KEK/opt/node.js-14.17.3/include
 
-strip --strip-all -v $PWD/KEK/opt/node.js-14.17.2/bin/node
+strip --strip-all -v $PWD/KEK/opt/node.js-14.17.3/bin/node

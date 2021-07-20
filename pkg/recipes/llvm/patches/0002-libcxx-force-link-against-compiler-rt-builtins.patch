@@ -1,0 +1,31 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 2001c09..ecd7904 100644
+--- a/libcxx/src/CMakeLists.txt
++++ b/libcxx/src/CMakeLists.txt
+@@ -165,6 +165,11 @@ if (LIBCXX_ENABLE_SHARED)
+   endif()
+   target_link_libraries(cxx_shared PUBLIC cxx-headers
+                                    PRIVATE ${LIBCXX_LIBRARIES})
++
++  if (LIBCXX_USE_COMPILER_RT)
++    target_link_libraries(cxx_shared PRIVATE ${LIBCXX_BUILTINS_LIBRARY})
++  endif()
++
+   set_target_properties(cxx_shared
+     PROPERTIES
+       COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
+@@ -247,6 +252,11 @@ if (LIBCXX_ENABLE_STATIC)
+   add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
+   target_link_libraries(cxx_static PUBLIC cxx-headers
+                                    PRIVATE ${LIBCXX_LIBRARIES})
++
++  if (LIBCXX_USE_COMPILER_RT)
++    target_link_libraries(cxx_static PRIVATE ${LIBCXX_BUILTINS_LIBRARY})
++  endif()
++
+   set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
+   set_target_properties(cxx_static
+     PROPERTIES
+-- 
+2.29.2
+

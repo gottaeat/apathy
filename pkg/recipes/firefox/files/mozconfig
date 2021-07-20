@@ -7,8 +7,8 @@ ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
 ac_add_options --prefix=/usr
 ac_add_options --libdir=/usr/lib
-ac_add_options --with-libclang-path="/opt/llvm-12.0.0/lib"
-ac_add_options --with-clang-path="/opt/llvm-12.0.0/bin/clang"
+ac_add_options --with-libclang-path="/opt/llvm-12.0.1/lib"
+ac_add_options --with-clang-path="/opt/llvm-12.0.1/bin/clang"
 
 # > 3
 ac_add_options --enable-hardening
@@ -24,7 +24,7 @@ ac_add_options --disable-profiling
 ac_add_options --disable-tests
 
 # > 4
-ac_add_options --enable-optimize="-w -pipe -O3 -m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3 -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper -march=core2 -mtune=core2 -flto=thin -flto-jobs=2 -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind -L/mss/work/table/KEK/lib -I/mss/work/table/KEK/include"
+ac_add_options --enable-optimize="-DNDEBUG -g0 -s -w -pipe -O2 -m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3 -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper -march=core2 -mtune=core2 -flto=thin -flto-jobs=2 -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind -L/mss/work/table/KEK/lib -I/mss/work/table/KEK/include"
 ac_add_options --enable-linker="lld"
 ac_add_options --enable-lto="cross"
 

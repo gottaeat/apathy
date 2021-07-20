@@ -1,0 +1,11 @@
+diff -uraN a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
+--- a/llvm/CMakeLists.txt	2021-06-28 19:23:38.000000000 +0300
++++ b/llvm/CMakeLists.txt	2021-07-13 03:49:37.939438084 +0300
+@@ -1123,7 +1123,3 @@
+   add_subdirectory(utils/benchmark)
+   add_subdirectory(benchmarks)
+ endif()
+-
+-if (LLVM_INCLUDE_UTILS AND LLVM_INCLUDE_TOOLS)
+-  add_subdirectory(utils/llvm-locstats)
+-endif()

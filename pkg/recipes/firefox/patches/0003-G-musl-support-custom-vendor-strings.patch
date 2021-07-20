@@ -1,7 +1,7 @@
-From faa9874460dd481f05015f077029545bdee921b0 Mon Sep 17 00:00:00 2001
+From 521d0fdd268b28fada244998b0b1f65a8985db20 Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:59:48 +0200
-Subject: [PATCH 11/44] musl: Support custom vendor strings
+Subject: [PATCH 11/46] musl: Support custom vendor strings
 
 Add support for custom vendors, as in "x86_64-gentoo-linux-musl".
 
@@ -335,5 +335,5 @@ index 36dcd9aa00..1abda2672f 100644
              Triple::from_str("unknown-unknown-foo"),
              Err(ParseError::UnrecognizedOperatingSystem("foo".to_owned()))
 -- 
-2.31.1
+2.32.0
 

@@ -1,7 +1,7 @@
-From 377b10c8999739d0210cef1bbd8bdd96adf2137c Mon Sep 17 00:00:00 2001
+From 7f4ba7871a971cc70194ae3012bd0c111f6b85c2 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 20:47:13 +0200
-Subject: [PATCH 22/44] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK
+Subject: [PATCH 22/46] bmo#1196777: Set GDK_FOCUS_CHANGE_MASK
 
 Bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1196777
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -24,5 +24,5 @@ index 508dd49826..349b734593 100644
  #if !GTK_CHECK_VERSION(3, 22, 0)
  typedef enum {
 -- 
-2.31.1
+2.32.0
 

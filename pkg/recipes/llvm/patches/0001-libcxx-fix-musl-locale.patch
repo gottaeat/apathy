@@ -1,6 +1,8 @@
+diff --git a/include/locale b/include/locale
+index 3fe4430..e0f5526 100644
 --- a/libcxx/include/locale
 +++ b/libcxx/include/locale
-@@ -10,7 +10,6 @@
+@@ -9,7 +9,6 @@
  
  #ifndef _LIBCPP_LOCALE
  #define _LIBCPP_LOCALE
@@ -8,7 +10,7 @@
  /*
      locale synopsis
  
-@@ -871,7 +870,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
+@@ -736,7 +735,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -17,7 +19,7 @@
          typename remove_reference<decltype(errno)>::type __current_errno = errno;
          if (__current_errno == 0)
              errno = __save_errno;
-@@ -911,7 +910,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
+@@ -776,7 +775,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -26,3 +28,6 @@
          typename remove_reference<decltype(errno)>::type __current_errno = errno;
          if (__current_errno == 0)
              errno = __save_errno;
+-- 
+2.29.2
+

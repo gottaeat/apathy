@@ -1,7 +1,7 @@
-From 03a634ff2733f86fd9f70c06123bf789779d130f Mon Sep 17 00:00:00 2001
+From f424f4a842ecdac0c1ca8482f285f908f6bae2b1 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Fri, 21 May 2021 17:21:59 +0200
-Subject: [PATCH 43/44] bmo#1661027: Update `cc` crate to v1.0.59
+Subject: [PATCH 42/46] bmo#1661027: Update `cc` crate to v1.0.59
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -1579,5 +1579,5 @@ index def11f0259..3c9b4dc498 100644
      test.gcc().opt_level(0).file("foo.c").compile("foo");
  
 -- 
-2.31.1
+2.32.0
 

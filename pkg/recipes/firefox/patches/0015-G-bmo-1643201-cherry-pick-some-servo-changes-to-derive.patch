@@ -1,7 +1,7 @@
-From 0ff5cbfc2de5bde8e6e3cc57653901398d821baf Mon Sep 17 00:00:00 2001
+From b100174044d1acfe14d8a0df8ab3cff77de24055 Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Sat, 10 Oct 2020 16:07:49 +0200
-Subject: [PATCH 36/44] bmo#1643201: Cherry-pick some servo changes to
+Subject: [PATCH 36/46] bmo#1643201: Cherry-pick some servo changes to
  derive_common
 
 Link: https://bugzilla.mozilla.org/show_bug.cgi?id=1663715#c7
@@ -26,5 +26,5 @@ index 8abfd87149..f6bfeb1177 100644
      }
  }
 -- 
-2.31.1
+2.32.0
 
