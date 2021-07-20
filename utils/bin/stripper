@@ -2,7 +2,7 @@
 . /mss/files/funcs
 rootcheck
 
-case $1 in
+case "${1}" in
  y|Y|yes)
   strippening="yes"
  ;;
@@ -46,7 +46,7 @@ case "${strippening}" in
    {} ';' >/dev/null 2>&1
   evalret
 
-  aprint_ret "stripping shared libraries"
+  aprint_ret "stripping shared libraries."
    find /lib /lib64 /usr/lib -type f -name \*.so\* -exec \
     strip \
      --strip-unneeded          \
@@ -54,14 +54,18 @@ case "${strippening}" in
      --remove-section=.note    \
    {} ';' >/dev/null 2>&1
   evalret
-
   aprint_nc
  ;;
  n|N|no)
-  aprint "exiting."; aprint_nc; exit 1
+  aprint_nc
+  aprint "exiting."
+  aprint_nc
+  exit 1
  ;;
  *)
-  aprint_usage "input either y|Y|yes or n|N|no."
+  aprint_nc
+  aprint_usage "{y|Y|yes}{n|N|no}"
+  aprint_nc
   exit 1
  ;;
 esac

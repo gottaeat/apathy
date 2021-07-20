@@ -2,33 +2,56 @@
 . /mss/files/funcs
 rootcheck
 
-if   [ ! -f $PWD/arch/x86/boot/bzImage ]; then aprint_fail "${cl_grn}bzImage${c_res} doesn't exist."; exit 1
-elif [ ! -f $PWD/System.map ];            then aprint_fail "${cl_grn}System.map doesn't exist.";        exit 1
-elif [ ! -f $PWD/.config ];               then aprint_fail "kernel ${cl_grn}.config doesn't exist.";    exit 1
+if   [ ! -f ./arch/x86/boot/bzImage ]; then
+ aprint_nc
+ aprint_fail "bzImage doesn't exist."
+ aprint_nc
+ exit 1
+elif [ ! -f ./System.map ]; then
+ aprint_nc
+ aprint_fail "System.map doesn't exist."
+ aprint_nc
+ exit 1
+elif [ ! -f ./.config ]; then
+ aprint_nc
+ aprint_fail ".config doesn't exist."
+ aprint_nc
+ exit 1
 fi
 
-
 aprint_nc
-aprint     "this action will replace the existing kernel."
-aprint_ask "shall we proceed? (y/n): "
-
+aprint_ask "replace the kernel? (y/Y/yes|n/N/no): "
 read answer
 
-if [ "$answer" != "${answer#[Yy]}" ]
- then
+case "${answer}" in
+ y|Y|yes)
+  aprint_nc
   aprint_ret "copying ${cl_grn}bzImage${c_res} to ${cl_grn}/boot/vmlinuz${c_res}."
-  cp arch/x86/boot/bzImage /boot/vmlinuz
+   cp arch/x86/boot/bzImage /boot/vmlinuz
   evalretkill
 
   aprint_ret "copying ${cl_grn}System.map${c_res} to ${cl_grn}/boot/System.map${c_res}."
-  cp System.map /boot/System.map
+   cp System.map /boot/System.map
   evalretkill
 
   aprint_ret "copying kernel ${cl_grn}config${c_res} to ${cl_grn}/boot/config${c_res}."
-  cp .config /boot/config
+   cp .config /boot/config
+  evalretkill
+
+  aprint_ret "running ${cl_grn}lilo${c_res}."
+   lilo >/dev/null 2>&1
   evalretkill
   aprint_nc
- else
-  aprint "aborting"
+ ;;
+ n|N|no)
+  aprint_nc
+  aprint "aborting."
+  aprint_nc
   exit 1
-fi
+ ;;
+ *)
+  aprint_nc
+  aprint_usage "{y|Y|yes}{n|N|no}"
+  aprint_nc
+  exit 1
+esac

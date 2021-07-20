@@ -2,11 +2,12 @@
 . /mss/files/funcs
 rootcheck
 
+aprint_nc
 for log in /var/log/*; do
   if [ -f "${log}" ]
    then
     aprint_ret "cleaning ${cl_grn}${log}${c_res}." 
-     printf '' > "${log}"
+     > "${log}"
     evalret
    else
     aprint_fail "${cl_grn}${log}${c_res} is a directory."
@@ -14,10 +15,11 @@ for log in /var/log/*; do
  done
 
 aprint_ret "cleaning ${cl_grn}/var/lib/mpd/log${c_res}."
- printf '' > /var/lib/mpd/log
+ > /var/lib/mpd/log
 evalret
 
 aprint_ret "nuking ${cl_grn}.la${c_res} files."
  find /lib /lib64 /usr/lib /opt -type f -name \*.la \
   -exec rm -rf {} ';'
 evalret
+aprint_nc

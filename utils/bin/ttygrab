@@ -1,23 +1,23 @@
 #!/mss/bin/sh
 . /mss/files/funcs
-dat=$(date "+%Y%m%d_%H%M%S_ttygrab")
-loc="/home/mss/screenshots/tty/$dat.png"
+
+loc="/home/mss/screenshots/tty/$(date "+%Y%m%d_%H%M%S_ttygrab").png"
 
 grab_tty(){ fbcat > /tmp/tty.ppm ;}
 
-if [ -z "$1" ]
+if [ -z "${1}" ]
  then
   savloc="${loc}"
   grab_tty
   convert /tmp/tty.ppm "${loc}"
  else
-  savloc="$1"
+  savloc="${1}"
   grab_tty
   convert /tmp/tty.ppm "${1}"
 fi
 
-rm -rf /tmp/tty.ppm
+rm -f /tmp/tty.ppm
 
 aprint_nc
-aprint "tty grabbed to ${cb_grn}${savloc}${c_res}."
+lsdetail "saved to" "${savloc}"
 aprint_nc

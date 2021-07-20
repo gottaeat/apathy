@@ -111,8 +111,6 @@ bwprof_five(){
 }
 
 printvarthingies(){
- aprint "${profname}"
-
  aprint_nc
  printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
   "export        CC=\"${CC}\""       \
@@ -136,7 +134,7 @@ printvarthingies(){
  aprint_nc
 }
 
-case "$1" in
+case "${1}" in
  1) bwprof_one  ; printvarthingies ;;
  2) bwprof_two  ; printvarthingies ;;
  3) bwprof_three; printvarthingies ;;

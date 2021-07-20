@@ -1,9 +1,9 @@
 #!/mss/bin/sh
 . /mss/files/funcs
-dat=$(date "+%Y%m%d_%H%M%S_maimcrop")
+dat="$(date "+%Y%m%d_%H%M%S_maimcrop")"
 loc="/home/mss/screenshots/grabs/${dat}.png"
 
-if [ -z "$1" ]
+if [ -z "${1}" ]
  then
   savloc="${loc}"
   maim -s -u > "${loc}"
@@ -15,7 +15,7 @@ if [ -z "$1" ]
   fi
 
  else
-  savloc="$1"
+  savloc="${1}"
   maim -s -u > "${1}"
 
   local error_value="${?}"
@@ -26,5 +26,5 @@ if [ -z "$1" ]
 fi
 
 aprint_nc
-aprint "grab saved to ${cb_grn}${savloc}${c_res}."
+ lsdetail "saved to" "${savloc}"
 aprint_nc

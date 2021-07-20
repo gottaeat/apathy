@@ -1,0 +1,14 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+
+listslist="$(find . -type f -name CMakeLists.txt)"
+
+aprint_nc
+for i in ${listslist}; do
+ aprint_ret "cleaning: ${cl_grn}${i}${c_res}"
+  sed -i -e \
+   '/^[[:space:]]*set[[:space:]]*([[:space:]]*CMAKE_BUILD_TYPE\([[:space:]].*)\|)\)/I{s/^/#_cmake_modify_IGNORE /g}' \
+  "${i}"
+ evalret
+done
+aprint_nc

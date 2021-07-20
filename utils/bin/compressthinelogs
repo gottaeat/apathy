@@ -3,8 +3,8 @@
 
 aprint_nc
 for file in *.log; do
- aprint_ret "compressing ${cl_grn}$file${c_res}."
-  zstd --rm -v -19 "$file" -o "$file".zst > /dev/null 2>&1
+ aprint_ret "compressing ${cl_grn}${file}${c_res}."
+  zstd --rm -v -19 "${file}" -o "${file}".zst > /dev/null 2>&1
  evalret
 done
 aprint_nc

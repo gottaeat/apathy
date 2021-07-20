@@ -1,20 +1,23 @@
 #!/mss/bin/sh
 . /mss/files/funcs
 
-case "$1" in
- s|shorten)
-  if [ -z "$2" ]
-   then aprint_fail "specify a link to shorten in \$2."; exit 1
+case "${1}" in
+ s)
+  if [ -z "${2}" ]
+   then aprint_fail "specify a link to shorten in \$2, exiting."; exit 1
    else curl -F"shorten=${2}" "https://0x0.st"
   fi
  ;;
- u|up)
-  if [ -z "$2" ]
-   then aprint_fail "specify a file to upload in \$2."; exit 1
+ u)
+  if [ -z "${2}" ]
+   then aprint_fail "specify a file to upload in \$2, exiting."; exit 1
    else curl -F"file=@${2}"   "https://0x0.st"
   fi
  ;;
  *)
-  aprint_usage "{u|up}{s|shorten}."
+  aprint_nc
+  aprint_usage "{u|up}"
+  aprint_nc
+  exit 1
  ;;
 esac

@@ -12,17 +12,23 @@ case "${host}" in
 esac
 
 if   [ ! -f "${localdb}" ]; then
+ aprint_nc
  aprint_fail "(local) database file does not exist, exiting."
+ aprint_nc
  exit 1
 elif [ ! -f "${repodb}"  ]; then
+ aprint_nc
  aprint_fail "(repo)  database file for ${host} does not exist, exiting."
+ aprint_nc
  exit 1
 fi
 
 info(){
  if [ -z "${1}" ]
   then
+   aprint_nc
    aprint_fail "specify the package name in \$1."
+   aprint_nc
    exit 1
   else
    awk '/'$1'/ { gsub(/^b/,"busybox:   ");   \
@@ -34,28 +40,64 @@ info(){
 }
 
 pver(){
-      tls=$(openssl version | awk '{print tolower($1),$2}')
-     libc=$(ldd 2>&1 \
-            | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
-                   FNR == 2 {c=$2}              \
-                   END{print a,b,c,d}')
-     trpl=$(gcc -dumpmachine)
-      cca=$(gcc   --version | awk 'FNR == 1 {print}')
-      ccb=$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')
+ # tls
+ if openssl version >/dev/null 2>&1
+  then tls="$(openssl version | awk '{print tolower($1),$2}')"
+  else tls="not found"
+ fi
 
- cargover="$(rustc -V | awk '{print $2}')"
- rustcver="$(cargo -V | awk '{print $2}')"
+ # libc
+ libc="$(ldd 2>&1 | awk 'FNR == 1 {a=$1; b=$2; d=$3}; \
+                         FNR == 2 {c=$2}              \
+                         END{print a,b,c,d}')"
 
- [ "${cargover}" = "${rustcver}" ] \
-  && roost="${rustcver}" || roost="${rustcver}/${cargover}"
+ # host triplet
+ trpl="$(cc -dumpmachine || gcc -dumpmachine || clang -dumpmachine)"
+ if [ -z "${trpl}" ]; then trpl="cannot determine."; fi
+
+ # gcc
+ if gcc --version >/dev/null 2>&1
+  then gccver="$(gcc   --version | awk 'FNR == 1 {print}')"
+  else gccver="not found"
+ fi
+
+ # clang
+ if clang --version >/dev/null 2>&1
+  then clangver="$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')"
+  else clangver="not found"
+ fi
+
+ # binutils
+ if ld.bfd --version >/dev/null 2>&1
+  then binutver="$(ld.bfd --version | awk 'NR==1{sub(/\)/,""); \
+                                           print tolower($4),$5}')"
+  else binutver="not found"
+ fi
+
+ # rust and cargo
+ if rustc -V >/dev/null 2>&1
+  then rustver="$(rustc -V | awk '{print $2}')"
+  else rustver="not found"
+ fi 
+
+ if cargo -V >/dev/null 2>&1
+  then cargver="$(cargo -V | awk '{print $2}')"
+  else cargver="not found"
+ fi
+
+ if [ "${cargver}" = "${rustver}" ]
+  then rustfin="${rustver}"
+  else rustfin="${rustver}/${cargver}"
+ fi
 
  aprint_nc
-  lsdetail "tls " "${tls}  "
-  lsdetail "libc" "${libc} "
-  lsdetail "cca " "${cca}  "
-  lsdetail "ccb " "${ccb}  "
-  lsdetail "rust" "${roost}"
-  lsdetail "trpl" "${trpl} "
+ lsdetail "ssl/tls       " "${tls}"
+ lsdetail "libc          " "${libc}"
+ lsdetail "gcc           " "${gccver}"
+ lsdetail "binutils      " "${binutver}"
+ lsdetail "clang         " "${clangver}"
+ lsdetail "rust/cargo    " "${rustfin}"
+ lsdetail "host triplet  " "${trpl}"
  aprint_nc
 }
 
@@ -77,30 +119,32 @@ stats(){
       c_ondm="$(grep ^o "${localdb}" | wc -l)"
 
  aprint_nc
-  aprint "${cb_red}rootfs size    ${cb_blu}:${c_res} ${partsize}"
-  aprint "${cb_red}package count  ${cb_blu}:${c_res} ${c_inst} (+${c_ondm})"
-  aprint "${cb_red}repo status    ${cb_blu}:${c_res} ${gitstat}"
-  aprint "${cb_red}local/git diff ${cb_blu}:${c_res} ${gitdf}"
+ lsdetail "rootfs size   " "${partsize}"
+ lsdetail "package count " "${c_inst} (+${c_ondm})"
+ lsdetail "repo status   " "${gitstat}"
+ lsdetail "local/git diff" "${gitdf}"
  aprint_nc
 }
 
 sync(){
  aprint_nc
-  aprint_ret "(repo -> local) syncing packages database for ${host}."
-   cp "${repodb}" "${localdb}"
-  evalret
+ aprint_ret "(repo -> local) syncing packages database for ${host}."
+  cp "${repodb}" "${localdb}"
+ evalret
  aprint_nc
 }
 
 print_help(){
- aprint_usage "{info|pver|stats|sync}."
+ aprint_nc
+ aprint_usage "{info|pver|stats|sync}"
+ aprint_nc
  exit 1
 }
 
-case "$1" in
-    info) info "$2"       ;;
-    pver) pver            ;;
-   stats) stats           ;;
-    sync) sync            ;;
-       *) print_help      ;;
+case "${1}" in
+  info) info "${2}" ;;
+  pver) pver        ;;
+ stats) stats       ;;
+  sync) sync        ;;
+     *) print_help  ;;
 esac

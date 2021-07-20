@@ -1,7 +1,0 @@
-#!/mss/bin/sh
-clear
-
-myurl="https://tools.keycdn.com/geo.json"
-[ ! -z "$1" ] && myurl="${myurl}?host=$1"
-
-curl -s "${myurl}" | jq '.data | .geo'

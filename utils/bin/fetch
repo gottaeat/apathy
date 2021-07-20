@@ -1,60 +1,61 @@
 #!/mss/bin/sh
 . /mss/files/funcs
 
+# system info
+     dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
+     kern="$(uname -r)"
+    model="$(awk '{print tolower($0)}' /sys/devices/virtual/dmi/id/product_family)"
+      cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
+                 familya=tolower($5); familyb=tolower($6); model=tolower($8)};\
+                 /MHz/{hz=int($4)};                                           \
+                 END{print familya, familyb, model, hz"mhz"}' /proc/cpuinfo)"
+      mem="$(awk '/Avail/    {avail=int($2/1024)};     \
+                  /MemTotal/ {total=int($2/1024)};     \
+                  END{print (total-avail)"/"total"m"}' \
+                  /proc/meminfo)"
+# shell
+ intshell=$(basename $(grep ${LOGNAME} /etc/passwd | cut -d: -f7))
+    binsh="(/bin/sh: $(realpath /bin/sh | awk 'sub(/\/bin\//,"")'))"
+    shell="${intshell} $(${intshell} --version \
+                         | awk 'NR==1 {ver=$5}; END{print ver}')"
+
+# uptime
+upt_pre="$(awk '{print int($1)}' /proc/uptime)"
+   [ "${upt_pre}" -lt 3600  ]                   \
+&& upt="$(printf "%02d:%02.0f\n"                \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")"         \
+|| [ "${upt_pre}" -lt 86400 ]                   \
+&& upt="$(printf "%02d:%02d:%02.0f\n"           \
+                 "$(((${upt_pre}%86400)/3600))" \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")"         \
+|| upt="$(printf "%dd + %02d:%02d:%02.0f\n"     \
+                 "$((${upt_pre}/86400))"        \
+                 "$(((${upt_pre}%86400)/3600))" \
+                 "$(((${upt_pre}%3600)/60))"    \
+                 "$((${upt_pre}%60))")"
+
+# logo
 printlogo(){
-aprint_ret "${cb_red}
+ aprint_ret "${cb_red}
   __,  ,_   __,  -/- /_
  (_/(__/_)_(_/(__/__/ (__(_/_
       /                  _/_
      /                  (/${c_res}\n"
 }
 
-dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
- cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
-            familya=tolower($5); familyb=tolower($6); model=tolower($8)}; \
-            /MHz/{hz=int($4)};                                            \
-            END{print familya, familyb, model, hz"mhz"}' /proc/cpuinfo)"
+[ "${1}" = "ascii" ] && printlogo
 
-model="$(awk '{print tolower($0)}' /sys/devices/virtual/dmi/id/product_family)"
+# hostname
 read _host < /etc/hostname
 
- kern=$(uname -r)
-
-usershell=$(basename $(grep $LOGNAME /etc/passwd | cut -d: -f7))
-    binsh="(/bin/sh: $(realpath /bin/sh | awk 'sub(/\/bin\//,"")'))"
-    shell="$usershell $($usershell --version \
-                         | awk 'NR==1 {ver=$5}; END{print ver}')"
-
-mem=$(awk '/Avail/    {avail=int($2/1024)};     \
-           /MemTotal/ {total=int($2/1024)};     \
-           END{print (total-avail)"/"total"m"}' \
-           /proc/meminfo)
-
-upt_pre=$(awk '{print int($1)}' /proc/uptime)
-
-   [ "${upt_pre}" -lt 3600  ]                   \
-&& upt=$(printf "%02d:%02.0f\n"                 \
-                 "$(((${upt_pre}%3600)/60))"    \
-                 "$((${upt_pre}%60))")          \
-|| [ "${upt_pre}" -lt 86400 ]                   \
-&& upt=$(printf "%02d:%02d:%02.0f\n"            \
-                 "$(((${upt_pre}%86400)/3600))" \
-                 "$(((${upt_pre}%3600)/60))"    \
-                 "$((${upt_pre}%60))")          \
-|| upt=$(printf "%dd + %02d:%02d:%02.0f\n"      \
-                 "$((${upt_pre}/86400))"        \
-                 "$(((${upt_pre}%86400)/3600))" \
-                 "$(((${upt_pre}%3600)/60))"    \
-                 "$((${upt_pre}%60))")
-
-[ "$1" = "ascii" ] && printlogo
-
 aprint_nc
-lsdetail "os"   "${dist}"
+lsdetail "os  " "${dist}"
 lsdetail "kern" "${kern}"
 lsdetail "host" "${cl_grn}${_host}${c_res} on ${cb_blu}${model}${c_res}"
-lsdetail "sh"   "${shell} ${binsh}"
-lsdetail "cpu"  "${cpu}"
-lsdetail "mem"  "${mem}"
-lsdetail "upt"  "${upt} ($upt_pre)"
+lsdetail "sh  " "${shell} ${binsh}"
+lsdetail "cpu " "${cpu}"
+lsdetail "mem " "${mem}"
+lsdetail "upt " "${upt} ($upt_pre)"
 aprint_nc

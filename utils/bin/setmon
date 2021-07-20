@@ -1,12 +1,51 @@
 #!/mss/bin/sh
 . /mss/files/funcs
-monstat="$(xrandr | grep VGA-1 -A1 | tail -1 | grep \*)"
 
-if [ ! -z "${monstat}" ]
- then
-  xrandr --output VGA-1 --off
- else
-  xrandr --output VGA-1 --auto
-  xrandr --auto --output VGA-1  --right-of LVDS-1
-  ~/.fehbg
+if [ -z "${1}" ]; then
+ aprint_nc
+ aprint_fail "specify an input with \$1, exiting."
+ aprint_nc
+ exit 1
+elif [ -z "${2}" ]; then
+ aprint_nc
+ aprint_fail "specify either on or off with \$2, exiting."
+ aprint_nc
+ exit 1
+else
+    input="${1}"
+   action="${2}"
+  monlist="$(xrandr | awk '/\ connected/{print $1}')"
+
+ if echo "${monlist}" | grep "${input}" >/dev/null 2>&1
+  then
+   case "${action}" in
+    on)
+     case "${input}" in
+      VGA-1)
+       xrandr --output "${input}" --auto --right-of LVDS-1
+      ;;
+      LVDS-1)
+       xrandr --output "${input}" --auto --left-of VGA-1
+      ;;
+      *)
+       xrandr --output "${input}" --auto
+      ;;
+     esac
+     [ -f "${HOME}"/.fehbg ] &&  "${HOME}"/.fehbg
+    ;;
+    off)
+     xrandr --output "${input}" --off
+    ;;
+   *)
+    aprint_nc
+    aprint_usage "{on|off}"
+    aprint_nc
+    exit 1
+   esac
+  else
+   aprint_nc
+   aprint_fail "specified input does not exist, exiting."
+   aprint_nc
+   exit 1
+ fi
 fi

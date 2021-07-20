@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-rsync \
+exec rsync \
 \
  --links          \
  --perms          \

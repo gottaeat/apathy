@@ -2,36 +2,43 @@
 . /mss/files/funcs
 rootcheck
 
-[ -z "$1" ] && aprint_fail "no mount point selected, exiting." && exit 1
-[ -z "$2" ] && aprint_fail "no user selected, exiting."        && exit 1
+if [ -z "${1}" ]
+ then aprint_fail "no mount point selected, exiting."; exit 1
+ else chrpnt="${1}"
+fi
+
+if [ -z "${2}" ]
+ then aprint_fail "no user selected, exiting."; exit 1
+ else chrusr="${2}"
+fi
 
 aprint_nc
-aprint_ret "mounting."
- mount --bind "$1" "$1"                    &&
- mount -t proc /proc "$1"/proc             &&
- mount --make-rslave --rbind /sys "$1"/sys &&
- mount --make-rslave --rbind /dev "$1"/dev &&
- mount --make-rslave --rbind /run "$1"/run
+aprint_ret "mounting ${chrpnt} to itself."
+ mount -B "${chrpnt}" "${chrpnt}"
 evalretkill
 
-aprint "chrooting to ${cl_grn}$1${c_res} as user ${cl_grn}$2${c_res}."
-aprint_nc
- chroot "$1"         \
-  /usr/bin/env -i    \
-   HOME=/home/mss    \
-   TERM="$TERM"      \
-   PS1='[chroot]:  ' \
-   DISPLAY=:0        \
-   PATH=/bin:/usr/bin:/sbin:/usr/sbin \
-    /bin/su - $2
+for i in dev sys run proc; do
+ aprint_ret "mounting ${i} to ${chrpnt}/${i}"
+  mount -R /${i} ${chrpnt}/${i}
+ evalretkill
+done
+
+lsdetail "chrooting to" "${cl_grn}${chrpnt}${c_res}"
+lsdetail "as user     " "${cl_grn}${chrusr}${c_res}"
 
 aprint_nc
-aprint_ret "exited chroot, unmounting."
- umount -l "$1"/proc &&
- umount -l "$1"/sys  &&
- umount -l "$1"/dev  &&
- umount -l "$1"/run  &&
- umount -l "$1" 
+chroot "${chrpnt}" /usr/bin/env -i /bin/su - "${chrusr}"
+
+aprint_nc
+aprint "exited the chroot."
+
+for i in dev sys run proc; do
+ aprint_ret "unmounting ${i}."
+  umount -l "${chrpnt}"/"${i}"
+ evalretkill
+done
+
+aprint_ret "unmounting chrpoint from itself."
+ umount -l "${chrpnt}"
 evalretkill
-
 aprint_nc
