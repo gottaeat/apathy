@@ -1,0 +1,13 @@
+/usr/bin/taglib-config
+
+/usr/include/taglib
+
+/usr/lib/libtag.so
+/usr/lib/libtag.so.1
+/usr/lib/libtag.so.1.17.0
+/usr/lib/libtag_c.so
+/usr/lib/libtag_c.so.0
+/usr/lib/libtag_c.so.0.0.0
+
+/usr/lib/pkgconfig/taglib.pc
+/usr/lib/pkgconfig/taglib_c.pc

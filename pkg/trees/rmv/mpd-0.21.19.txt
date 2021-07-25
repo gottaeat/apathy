@@ -1,4 +1,4 @@
 /usr/bin/mpd
 
 /usr/share/doc
-/usr/share/icons
+/usr/share/icons/hicolor

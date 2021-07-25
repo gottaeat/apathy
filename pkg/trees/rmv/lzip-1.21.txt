@@ -1,0 +1,4 @@
+/usr/bin/lzip
+
+/usr/share/info
+/usr/share/man

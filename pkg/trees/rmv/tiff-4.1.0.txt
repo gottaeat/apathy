@@ -24,12 +24,10 @@
 /usr/include/tiffio.hxx
 /usr/include/tiffvers.h
 
-/usr/lib/libtiff.a
 /usr/lib/libtiff.la
 /usr/lib/libtiff.so
 /usr/lib/libtiff.so.5
 /usr/lib/libtiff.so.5.5.0
-/usr/lib/libtiffxx.a
 /usr/lib/libtiffxx.la
 /usr/lib/libtiffxx.so
 /usr/lib/libtiffxx.so.5

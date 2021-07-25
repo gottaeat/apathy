@@ -5,11 +5,6 @@ i  apathy  . file                      5.40
 i  apathy  . readline                  8.1
 i  apathy  . m4                        1.4.18
 i  apathy  . bc                        4.0.1
-i  apathy  . binutils                  2.36.1
-i  apathy  . gmp                       6.2.1
-i  apathy  . mpfr                      4.1.0
-i  apathy  . libmpc                    1.2.1
-i  apathy  . gcc                       11.1.0
 i  apathy  . bzip2                     1.0.8
 i  apathy  . pkgconf                   1.7.4
 i  apathy  . ncurses                   6.2
@@ -45,7 +40,7 @@ i  apathy  . vim                       8.2.2549
 i  apathy  . util-linux                2.37.0
 i  apathy  . e2fsprogs                 1.45.6
 i  apathy  . eudev                     3.2.9
-i  apathy  . linux                     5.13.1
+i  apathy  . linux                     5.13.4
 i  apathy  . opendoas                  6.8.1
 i  apathy  . iptables                  1.8.7
 i  apathy  . curl                      7.77.0
@@ -123,9 +118,6 @@ i  apathy  . xf86-input-libinput       1.1.0
 i  apathy  .. libinput                 1.18.0
 i  alpine  . xinit                     1.4.1
 i  apathy  . atk                       2.36.0
-i  bmlfs   . atkmm                     2.28.0
-i  bmlfs   .. glibmm                   2.60.0
-i  bmlfs   ... libsigc++               2.10.2
 i  apathy  . freeglut                  3.2.1
 i  apathy  .. glu                      9.0.1
 i  apathy  . gdk-pixbuf                2.42.4
@@ -143,11 +135,10 @@ i  apathy  . alsa-lib                  1.2.5.1
 i  alpine  . libvorbis                 1.3.6
 i  alpine  .. libogg                   1.3.4
 i  apathy  . alsa-utils                1.2.5.1
-i  bmlfs   . flac                      1.3.3
+i  apathy  . flac                      1.3.3
 i  apathy  . libass                    0.15.0
 i  apathy  . libvpx                    1.10.0
 i  bmlfs   . opus                      1.3.1
-i  bmlfs   . taglib                    1.11.1
 i  apathy  . x264                      20191119-2245
 i  apathy  . x265                      3.5
 i  apathy  . dmenu                     4.9
@@ -163,7 +154,7 @@ i  alpine  .. libcue                   2.2.1
 i  apathy  .. libmpdclient             2.18
 o  apathy  .. boost                    1.76.0
 i  apathy  . mpc                       0.33
-i  apathy  . ncmpcpp                   0.9.1
+i  apathy  . ncmpcpp                   0.9.2
 i  apathy  . maim                      5.5.3
 i  alpine  . xclip                     0.13
 i  apathy  . imagemagick               7.0.10.23
@@ -171,8 +162,7 @@ i  alpine  .. lcms2                    2.9
 i  alpine  . feh                       3.3
 i  apathy  . mupdf                     1.16.1 
 i  alpine  .. jbig2dec                 0.17
-i  alpine  . lzip                      1.21
-i  alpine  .. zip                      30
+i  alpine  . zip                       30
 i  apathy  . gcompat                   1.0.0
 i  alpine  . vifm                      0.10.1
 i  apathy  . slmenu                    0.1
@@ -202,7 +192,7 @@ i  apathy  . transmission              3.0
 o  apathy  . ruby                      2.7.1
 i  apathy  . mkvtoolnix                48.0.0
 i  apathy  . pciutils                  3.7.0
-i  apathy  . thinkfan                  1.2.1
+i  apathy  . thinkfan                  0c29363
 i  apathy  . apulse                    0f9f8487
 i  apathy  . fdupes                    2.1.2
 i  apathy  . ympd                      612f8fc0
@@ -211,3 +201,7 @@ i  apathy  .. libtirpc                 1.3.1
 i  apathy  .. rpcbind                  1.2.5
 i  apathy  . mpdas                     c81c480
 i  apathy  . nfqws                     86241cb5
+i  apathy  . android-tools             31.0.2
+i  apathy  . smartmontools             7.2
+i  apathy  . unrar                     6.0.7
+i  apathy  . innoextract               660546ad
