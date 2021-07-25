@@ -1,0 +1,128 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+. /mss/files/device.conf
+
+# 1 > functions
+# 1.1 > llvm
+prog_llvm(){
+ export        CC="$(which clang)"
+ export       CXX="$(which clang++)"
+ export        LD="$(which ld.lld)"
+ export        AR="$(which llvm-ar)"
+ export        AS="$(which llvm-as)"
+ export        NM="$(which llvm-nm)"
+ export     STRIP="$(which llvm-strip)"
+ export    RANLIB="$(which llvm-ranlib)"
+ export   OBJCOPY="$(which llvm-objcopy)"
+ export   OBJDUMP="$(which llvm-objdump)"
+ export   OBJSIZE="$(which llvm-size)"
+ export   READELF="$(which llvm-readelf)"
+ export ADDR2LINE="$(which llvm-addr2line)"
+}
+
+# 1.2 > gcc compat
+prog_gcc(){
+ export        CC="$(which gcc)"
+ export       CXX="$(which g++)"
+ export        LD="$(which ld)"
+ export        AR="$(which ar)"
+ export        AS="$(which as)"
+ export        NM="$(which nm)"
+ export     STRIP="$(which strip)"
+ export    RANLIB="$(which ranlib)"
+ export   OBJCOPY="$(which objcopy)"
+ export   OBJDUMP="$(which objdump)"
+ export   OBJSIZE="$(which size)"
+ export   READELF="$(which readelf)"
+ export ADDR2LINE="$(which addr2line)"
+}
+
+# 1.3 > profiles
+# 1.3.1 > clang gnu compat
+_profa(){
+ prog_gcc
+ export   CFLAGS="${cfbase}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="${ldfbase}"
+}
+
+# 1.3.2 > clang plain
+_profb(){
+ prog_llvm
+ export   CFLAGS="${cfbase}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="${ldfbase}"
+}
+
+# 1.3.3 > clang full lto
+_profc(){
+ prog_llvm
+ export   CFLAGS="${cflto_full}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="${ldflto_full}"
+}
+
+# 1.3.4  > clang thin lto
+_profd(){
+ prog_llvm
+ export   CFLAGS="${cflto_thin}"
+ export CXXFLAGS="\${CFLAGS}"
+ export  LDFLAGS="${ldflto_thin}"
+}
+
+# 1.4 > final print
+_printfin(){
+aprint_nc
+printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
+ "export        CC=\"${CC}\""       \
+ "export       CXX=\"${CXX}\""      \
+ "export        LD=\"${LD}\""       \
+ "export        AR=\"${AR}\""       \
+ "export        AS=\"${AS}\""       \
+ "export        NM=\"${NM}\""       \
+ "export     STRIP=\"${STRIP}\""    \
+ "export    RANLIB=\"${RANLIB}\""   \
+ "export   OBJCOPY=\"${OBJCOPY}\""  \
+ "export   OBJDUMP=\"${OBJDUMP}\""  \
+ "export   OBJSIZE=\"${OBJSIZE}\""  \
+ "export   READELF=\"${READELF}\""  \
+ "export ADDR2LINE=\"${ADDR2LINE}\""
+aprint_nc
+printf "%s\n%s\n%s\n" \
+ "export    CFLAGS=\"${CFLAGS}\""   \
+ "export  CXXFLAGS=\"${CXXFLAGS}\"" \
+ "export   LDFLAGS=\"${LDFLAGS}\""
+aprint_nc
+}
+
+# 2 > flags
+# 2.1 > base
+     cfbase="-DNDEBUG -g0 -s -w -pipe -O2 -mtune=native -march=native -fcommon"
+    ldfbase="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
+
+# 2.2 > lto
+# 2.2.1 > base
+ cfbase_lto="${cfbase} -flto-jobs=\${ajobcount}"
+ldfbase_lto="${ldfbase} -Wl,--lto-O3"
+
+# 2.2.2 > full
+ cflto_full="${cfbase_lto} -flto=full"
+ldflto_full="${ldfbase_lto}"
+
+# 2.2.3 > thin
+ cflto_thin="${cfbase_lto} -flto=thin"
+ldflto_thin="${ldfbase_lto} -Wl,--thinlto-jobs=\${ajobcount},--thinlto-cache-dir=/mss/work/ltocache"
+
+# 3 > action
+case "${1}" in
+ 1|gnu)     _profa; _printfin ;;
+ 2|vanilla) _profb; _printfin ;;
+ 3|ltofull) _profc; _printfin ;;
+ 4|ltothin) _profd; _printfin ;;
+ env)               _printfin ;;
+ *)
+ aprint_nc
+ aprint_usage "{1|gnu}{2|vanilla}{3|ltofull}{4|ltothin}{env}"
+ aprint_nc
+ exit 1
+esac

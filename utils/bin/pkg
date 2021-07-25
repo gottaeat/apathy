@@ -55,23 +55,10 @@ pver(){
  trpl="$(cc -dumpmachine || gcc -dumpmachine || clang -dumpmachine)"
  if [ -z "${trpl}" ]; then trpl="cannot determine."; fi
 
- # gcc
- if gcc --version >/dev/null 2>&1
-  then gccver="$(gcc   --version | awk 'FNR == 1 {print}')"
-  else gccver="not found"
- fi
-
  # clang
  if clang --version >/dev/null 2>&1
   then clangver="$(clang --version | awk 'FNR == 1 {print $1,$2,$4}')"
   else clangver="not found"
- fi
-
- # binutils
- if ld.bfd --version >/dev/null 2>&1
-  then binutver="$(ld.bfd --version | awk 'NR==1{sub(/\)/,""); \
-                                           print tolower($4),$5}')"
-  else binutver="not found"
  fi
 
  # rust and cargo
@@ -93,9 +80,7 @@ pver(){
  aprint_nc
  lsdetail "ssl/tls       " "${tls}"
  lsdetail "libc          " "${libc}"
- lsdetail "gcc           " "${gccver}"
- lsdetail "binutils      " "${binutver}"
- lsdetail "clang         " "${clangver}"
+ lsdetail "cca           " "${clangver}"
  lsdetail "rust/cargo    " "${rustfin}"
  lsdetail "host triplet  " "${trpl}"
  aprint_nc
