@@ -1,0 +1,57 @@
+# 1
+cat \
+  ./blt/gcc-11.1.0.txt      \
+  ./rmv/gcc-10.3.0.txt      \
+  ./blt/binutils-2.36.1.txt \
+  ./rmv/binutils-2.36.txt   \
+ | sort | uniq | awk '/^\/usr\/bin/{gsub(/\/usr\/bin\//,""); print}'
+
+# 2
+addr2line  -> llvm-symbolizer -> llvm-symbolizer
+ar         -> llvm-ar         -> llvm-ar
+as         -> llvm-as         -> llvm-as
+c++        -> clang++         -> clang-12
+c++filt    -> llvm-cxxfilt    -> llvm-cxxfilt
+cc         -> clang           -> clang-12
+cpp        -> clang-cpp       -> clang-12
+elfedit    -> -
+g++        -> clang++         -> clang-12
+gcc        -> clang           -> clang-12
+gcov       -> llvm-cov        -> llvm-cov
+gcov-dump  -> -
+gcov-tool  -> -
+ld         -> ld.lld          -> lld
+ld.bfd     -> -
+lto-dump   -> -
+nm         -> llvm-nm         -> llvm-nm
+objcopy    -> llvm-objcopy    -> llvm-objcopy
+objdump    -> llvm-objdump    -> llvm-objdump
+ranlib     -> llvm-ar         -> llvm-ar
+readelf    -> llvm-readobj    -> llvm-readobj
+size       -> llvm-size       -> llvm-size
+strings    -> llvm-strings    -> llvm-strings
+strip      -> llvm-objcopy    -> llvm-objcopy
+
+# 3
+mkdir compat
+cd    compat
+
+ln -sfv ../bin/llvm-symbolizer addr2line
+ln -sfv ../bin/llvm-ar         ar
+ln -sfv ../bin/llvm-as         as
+ln -sfv ../bin/clang-12        c++
+ln -sfv ../bin/llvm-cxxfilt    c++filt
+ln -sfv ../bin/clang-12        cc
+ln -sfv ../bin/clang-12        cpp
+ln -sfv ../bin/clang-12        g++
+ln -sfv ../bin/clang-12        gcc
+ln -sfv ../bin/llvm-cov        gcov
+ln -sfv ../bin/lld             ld
+ln -sfv ../bin/llvm-nm         nm
+ln -sfv ../bin/llvm-objcopy    objcopy
+ln -sfv ../bin/llvm-objdump    objdump
+ln -sfv ../bin/llvm-ar         ranlib
+ln -sfv ../bin/llvm-readobj    readelf
+ln -sfv ../bin/llvm-size       size
+ln -sfv ../bin/llvm-strings    strings
+ln -sfv ../bin/llvm-objcopy    strip
