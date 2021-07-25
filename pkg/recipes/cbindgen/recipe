@@ -29,5 +29,5 @@ cargo build --release --frozen
 
 # 2
 mkdir cbindgen-0.19.0/bin
-strip --strip-all -v target/release/cbindgen
+strip --strip-all target/release/cbindgen
 mv target/release/cbindgen cbindgen-0.19.0/bin/

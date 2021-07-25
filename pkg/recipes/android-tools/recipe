@@ -1,0 +1,159 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/protobuf-3.15.7.tar.gz
+cd     protobuf-3.15.7/
+
+pdir="/mss/repo/pkg/recipes/android-tools/patches"
+patch -p1 < "${pdir}"/0001-protobuf-musl-fix.patch
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf protobuf-3.15.7/
+
+# 3
+tar xf /mss/work/sauces/gtest-1.11.0.tar.gz
+cd     googletest-release-1.11.0/
+
+sed -E "s|(GOOGLETEST_VERSION) [0-9\\.]+|\\1 1.11.0|" -i CMakeLists.txt
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DPYTHON_EXECUTABLE=python3            \
+ -Dgtest_build_tests=OFF                \
+ -DBUILD_GMOCK=OFF                      \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf googletest-release-1.11.0/
+
+# 4
+tar xf /mss/work/sauces/brotli-1.0.9.tar.gz
+cd     brotli-1.0.9/
+
+./bootstrap
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf brotli-1.0.9/
+
+# 5
+tar xf /mss/work/sauces/pcre2-10.36.tar.gz
+cd     pcre2-10.36/
+
+./configure \
+ --build=$CBUILD               \
+ --host=$CHOST                 \
+ --prefix="${penis}"           \
+ --enable-jit                  \
+ --enable-static               \
+ --enable-pcre2-16             \
+ --enable-pcre2-32             \
+ --with-match-limit-depth=8192 \
+ --disable-shared
+
+make
+make install
+
+cd ..
+rm -rf pcre2-10.36/
+
+# 6
+tar xf /mss/work/sauces/go-1.15.2-alpine.tar.zst
+mv     go-1.15.2-alpine/ KEK/lib/go
+
+ln -sfv "${penis}"/lib/go/bin/go    "${penis}"/bin/go
+ln -sfv "${penis}"/lib/go/bin/gofmt "${penis}"/bin/gofmt
+
+# 7
+tar xf /mss/work/sauces/android-tools-31.0.2.tar.xz
+cd     android-tools-31.0.2/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX=/usr                       \
+ -DCMAKE_C_FLAGS="$CFLAGS"                         \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"                     \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"               \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"            \
+ -DCMAKE_AR="$AR"                                  \
+ -DCMAKE_NM="$NM"                                  \
+ -DCMAKE_STRIP="$STRIP"                            \
+ -DCMAKE_RANLIB="$RANLIB"                          \
+ -DCMAKE_LINKER="$LD"                              \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                        \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                        \
+ -DCMAKE_READELF="$READELF"                        \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"                    \
+ -DCMAKE_C_COMPILER="$CC"                          \
+ -DCMAKE_CXX_COMPILER="$CXX"                       \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"                \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"              \
+\
+ -DProtobuf_LIBRARIES="${penis}"/lib/libprotobuf.a \
+ -DProtobuf_INCLUDE_DIR="${penis}"/include         \
+ ..
+
+samu fastboot adb
+
+# 8
+doas -s
+for i in vendor/adb vendor/fastboot; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

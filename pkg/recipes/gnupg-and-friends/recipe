@@ -1,13 +1,9 @@
 # 1.1
 penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
-export CXXFLAGS="${CXXFLAGS} -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
-export  LDFLAGS="${LDFLAGS}  -g0 -s -fPIC -L${penis}/lib -I${penis}/include"
-
-export            PATH="${PATH}:${penis}/bin"
+export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 1.2
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
@@ -120,8 +116,8 @@ tar xf /mss/work/sauces/gnupg-2.2.28.tar.bz2
 cd     gnupg-2.2.28/
 
 pdir="/mss/repo/pkg/recipes/gnupg-and-friends/patches"
-patch -p1 < "${pdir}"/0001-Include-sys-select.h-for-FD_SETSIZE.patch
-patch -p1 < "${pdir}"/0002-fix-i18n.patch
+patch -p1 < "${pdir}"/0001-gnupg-Include-sys-select.h-for-FD_SETSIZE.patch
+patch -p1 < "${pdir}"/0002-gnupg-fix-i18n.patch
 
 ./configure \
  --build=$CBUILD              \

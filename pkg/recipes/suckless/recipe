@@ -2,7 +2,7 @@
 cd /mnt/mss/stuff/techy-bits/git/apathy-suckless
 
 for i in dmenu/ dwm/ slmenu/ st/; do
- cd $i
+ cd "${i}"
  make clean
  make
  doas -- make install

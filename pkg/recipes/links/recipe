@@ -1,6 +1,4 @@
 # 1
-sed -i "/ac_cpp=/s/\$CPPFLAGS/\$CPPFLAGS -O2/" configure
-
 ./configure \
  --build=$CBUILD      \
  --host=$CHOST        \

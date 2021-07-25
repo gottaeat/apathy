@@ -1,6 +1,6 @@
 # 1
 pdir="/mss/repo/pkg/recipes/libssh2/patches"
-patch -p1 < "${pdir}"/CVE-2019-17498.patch
+patch -p1 < "${pdir}"/0001-CVE-2019-17498.patch
 
 ./configure \
  --build=$CBUILD         \

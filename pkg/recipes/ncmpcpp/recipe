@@ -1,45 +1,113 @@
 # 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export    LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib:${penis}/lib"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+
+# 2
 cdt1
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
 popd
 
-penis="/mss/work/table/KEK"
-export          CFLAGS="$CFLAGS   -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
-export        CXXFLAGS="$CXXFLAGS -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
-export         LDFLAGS="$LDFLAGS  -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include -L${penis}/lib -I${penis}/include"
-
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/boost-1.75.0/lib:${penis}/lib"
-export    LIBRARY_PATH="$LD_LIBRARY_PATH"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:${penis}/lib/pkgconfig"
-
-# 2
+# 3
 tar xf /mss/work/sauces/fftw-3.3.8.tar.gz
 cd     fftw-3.3.8/
 
-sed -e 's,AM_CONFIG_HEADER,AC_CONFIG_HEADERS,g' -i configure.ac
-autoreconf -fvi
+cleancmake
 
-./configure \
- --build=$CBUILD     \
- --host=$CHOST       \
- --prefix="${penis}" \
+mkdir mybuild
+cd    mybuild
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
- --disable-shared    \
- --enable-static     \
- --enable-threads    \
- --enable-openmp
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DBUILD_TESTS=OFF                      \
+ -DDISABLE_FORTRAN=ON                   \
+ -DENABLE_AVX=OFF                       \
+ -DENABLE_AVX2=OFF                      \
+ -DENABLE_FLOAT=OFF                     \
+ -DENABLE_LONG_DOUBLE=OFF               \
+ -DENABLE_OPENMP=OFF                    \
+ -DENABLE_QUAD_PRECISION=OFF            \
+ -DENABLE_SSE=ON                        \
+ -DENABLE_SSE2=ON                       \
+ -DENABLE_THREADS=OFF                   \
+ ..
 
-make
-make install
+samu
+samu install
 
-cd ..
+cd ../../
 rm -rf fftw-3.3.8/
 
+mv "${penis}"/lib/pkgconfig/{fftw.pc,fftw3.pc}
+
 # 3
-tar xfv /mss/work/sauces/ncmpcpp-0.9.1.tar.gz
-cd      ncmpcpp-0.9.1/
+tar xf /mss/work/sauces/taglib-1.11.1.tar.gz
+cd     taglib-1.11.1/
+
+cleancmake
+
+mkdir mybuild
+cd    mybuild
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ ..
+
+samu
+samu install
+
+cd ../../
+rm -rf taglib-1.11.1/
+
+sed -i -e 's/-ltag/-ltag -lz/' "${penis}"/bin/taglib-config
+
+# 4
+tar xf /mss/work/sauces/ncmpcpp-0.9.2.tar.gz
+cd     ncmpcpp-0.9.2/
 
 ./autogen.sh
 
@@ -55,12 +123,14 @@ cd      ncmpcpp-0.9.1/
  --enable-visualizer   \
  --enable-static-boost \
 \
- --with-boost=/opt/boost-1.75.0
+ --with-boost=/opt/boost-1.76.0
 
 time make
-strip --strip-all -v src/ncmpcpp
 
-# 4
+# 5
 doas -s
-mv src/ncmpcpp  /usr/bin/
-chown root:root /usr/bin/ncmpcpp
+for i in src/ncmpcpp; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

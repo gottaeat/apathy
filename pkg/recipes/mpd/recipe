@@ -6,18 +6,17 @@ cd mpd
 # 2
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.75.0-gcc-10.2.0-static-only.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
 popd
 
 # 3
 mkdir mybuild
 cd    mybuild
 
-export       CFLAGS="${CFLAGS}   -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
-export     CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
-export      LDFLAGS="${LDFLAGS}  -L/opt/boost-1.75.0/lib -I/opt/boost-1.75.0/include"
-export   BOOST_ROOT="/opt/boost-1.75.0"
-export LIBRARY_PATH="/opt/boost-1.75.0/lib"
+export       CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
+export     CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
+export   BOOST_ROOT="/opt/boost-1.76.0"
+export LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib"
 
 meson --buildtype=plain \
  --prefix=/usr          \
@@ -42,11 +41,17 @@ meson --buildtype=plain \
 ..
 
 time samu
-DESTDIR=$PWD/KEK samu install
-cd KEK/usr/bin/
-strip --strip-all -v mpd
+DESTDIR="${PWD/KEK}" samu install
 
 # 4
+doas -s
+for i in KEK/usr/bin/mpd; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+# 5
 doas -s
 addgroup -g 103 mpd
 adduser -c "mpd daemon" -h /var/lib/mpd -u 103 -G mpd -s /bin/nologin mpd

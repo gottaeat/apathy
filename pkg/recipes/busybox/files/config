@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
-# Busybox version: 1.33.0
-# Mon May  3 23:14:20 2021
+# Busybox version: 1.33.1
+# Sun Jul 25 04:59:57 2021
 #
 CONFIG_HAVE_DOT_CONFIG=y
 
@@ -40,8 +40,8 @@ CONFIG_FEATURE_SYSLOG=y
 #
 # Build Options
 #
-CONFIG_STATIC=y
-# CONFIG_PIE is not set
+# CONFIG_STATIC is not set
+CONFIG_PIE=y
 # CONFIG_NOMMU is not set
 # CONFIG_BUILD_LIBBUSYBOX is not set
 # CONFIG_FEATURE_LIBBUSYBOX_STATIC is not set
@@ -49,12 +49,12 @@ CONFIG_STATIC=y
 # CONFIG_FEATURE_SHARED_BUSYBOX is not set
 CONFIG_CROSS_COMPILER_PREFIX=""
 CONFIG_SYSROOT=""
-CONFIG_EXTRA_CFLAGS="-w -pipe -O2 -mtune=native -march=native -fcommon"
-CONFIG_EXTRA_LDFLAGS="-w -pipe -O2 -mtune=native -march=native -fcommon -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+CONFIG_EXTRA_CFLAGS=""
+CONFIG_EXTRA_LDFLAGS=""
 CONFIG_EXTRA_LDLIBS=""
 CONFIG_USE_PORTABLE_CODE=y
 # CONFIG_STACK_OPTIMIZATION_386 is not set
-CONFIG_STATIC_LIBGCC=y
+# CONFIG_STATIC_LIBGCC is not set
 
 #
 # Installation Options ("make install" behavior)

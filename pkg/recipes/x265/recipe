@@ -1,4 +1,6 @@
 # 1
+cleancmake
+
 mkdir builderoo
 cd    builderoo
 
@@ -27,5 +29,6 @@ cmake -Wno-dev -GNinja \
 samu
 
 # 2
-doas -- samu install
-doas -- rm -rfv /usr/lib/libx265.a
+doas -s
+samu install
+rm -rfv /usr/lib/libx265.a

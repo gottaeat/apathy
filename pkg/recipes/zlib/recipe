@@ -1,7 +1,6 @@
 # 1
 export   CFLAGS="${CFLAGS}   -fPIC"
 export CXXFLAGS="${CXXFLAGS} -fPIC"
-export  LDFLAGS="${LDFLAGS}  -fPIC"
 
 ./configure \
  --prefix=/usr     \

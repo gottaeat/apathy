@@ -1,22 +1,18 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native -fPIC"
-export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
-export CXXFLAGS="${CFLAGS}"
-export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
-
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 2 > libXv
 tar xf /mss/work/sauces/xorg-libs/libXv-1.0.11.tar.bz2
 cd     libXv-1.0.11/
 
-./configure \
+./configure  \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${penis}"  \
+ --prefix="${schtik}" \
  --sysconfdir=/etc    \
  --localstatedir=/var \
  --enable-static      \
@@ -29,8 +25,8 @@ cd ../; rm -rf libXv-1.0.11/
 
 # 3 > ffmpeg
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- X220) penis="enable"  penislist="oss,sndio"      ;;
- T61)  penis="disable" penislist="oss,sndio,v4l2" ;;
+ X220) schtik="enable"  schtiklist="oss,sndio"      ;;
+ T61)  schtik="disable" schtiklist="oss,sndio,v4l2" ;;
 esac
 
 tar xf /mss/work/sauces/ffmpeg-4.4.tar.xz
@@ -39,117 +35,117 @@ cd ffmpeg-4.4/
 mkdir build
 cd    build
 
-../configure \
- --prefix=/usr                   \
- --enable-gpl                    \
- --enable-nonfree                \
- --disable-logging               \
+../configure  \
+ --prefix=/usr                    \
+ --enable-gpl                     \
+ --enable-nonfree                 \
+ --disable-logging                \
 \
- --nm="${NM}"                    \
- --ar="${AR}"                    \
- --as="${CC}"                    \
- --strip="${STRIP}"              \
- --cc="${CC}"                    \
- --cxx="${CXX}"                  \
- --objcc="${CC}"                 \
- --dep-cc="${CC}"                \
- --ld="${CC}"                    \
- --ranlib="${RANLIB}"            \
- --extra-cflags="${CFLAGS}"      \
- --extra-cxxflags="${CXXFLAGS}"  \
- --extra-objcflags="${CFLAGS}"   \
- --extra-ldflags="${LDFLAGS}"    \
- --extra-ldexeflags="${LDFLAGS}" \
- --extra-ldsoflags="${LDFLAGS}"  \
- --optflags="${LDFLAGS}"         \
+ --nm="${NM}"                     \
+ --ar="${AR}"                     \
+ --as="${CC}"                     \
+ --strip="${STRIP}"               \
+ --cc="${CC}"                     \
+ --cxx="${CXX}"                   \
+ --objcc="${CC}"                  \
+ --dep-cc="${CC}"                 \
+ --ld="${CC}"                     \
+ --ranlib="${RANLIB}"             \
+ --extra-cflags="${CFLAGS}"       \
+ --extra-cxxflags="${CXXFLAGS}"   \
+ --extra-objcflags="${CFLAGS}"    \
+ --extra-ldflags="${LDFLAGS}"     \
+ --extra-ldexeflags="${LDFLAGS}"  \
+ --extra-ldsoflags="${LDFLAGS}"   \
+ --optflags="${LDFLAGS}"          \
 \
- --cpu=host                      \
- --enable-lto                    \
- --enable-pic                    \
- --enable-shared                 \
- --disable-debug                 \
- --disable-optimizations         \
- --disable-runtime-cpudetect     \
- --disable-static                \
- --disable-symver                \
+ --cpu=host                       \
+ --enable-lto                     \
+ --enable-pic                     \
+ --enable-shared                  \
+ --disable-debug                  \
+ --disable-optimizations          \
+ --disable-runtime-cpudetect      \
+ --disable-static                 \
+ --disable-symver                 \
 \
- --"${penis}"-aesni              \
- --"${penis}"-avx                \
- --"${penis}"-sse42              \
- --"${penis}"-xop                \
- --"${penis}"-fma3               \
- --"${penis}"-fma4               \
- --"${penis}"-mmxext             \
- --enable-asm                    \
- --enable-fast-unaligned         \
- --enable-mmx                    \
- --enable-inline-asm             \
- --enable-sse                    \
- --enable-sse2                   \
- --enable-sse3                   \
- --enable-sse4                   \
- --enable-ssse3                  \
- --enable-x86asm                 \
- --disable-altivec               \
- --disable-vsx                   \
- --disable-power8                \
- --disable-amd3dnow              \
- --disable-amd3dnowext           \
- --disable-avx2                  \
- --disable-avx512                \
- --disable-armv5te               \
- --disable-armv6                 \
- --disable-armv6t2               \
- --disable-vfp                   \
- --disable-neon                  \
- --disable-mipsdsp               \
- --disable-mipsdspr2             \
- --disable-msa                   \
- --disable-msa2                  \
- --disable-mipsfpu               \
- --disable-mmi                   \
+ --"${schtik}"-aesni              \
+ --"${schtik}"-avx                \
+ --"${schtik}"-sse42              \
+ --"${schtik}"-xop                \
+ --"${schtik}"-fma3               \
+ --"${schtik}"-fma4               \
+ --enable-mmxext                  \
+ --enable-asm                     \
+ --enable-fast-unaligned          \
+ --enable-mmx                     \
+ --enable-inline-asm              \
+ --enable-sse                     \
+ --enable-sse2                    \
+ --enable-sse3                    \
+ --enable-sse4                    \
+ --enable-ssse3                   \
+ --enable-x86asm                  \
+ --disable-altivec                \
+ --disable-vsx                    \
+ --disable-power8                 \
+ --disable-amd3dnow               \
+ --disable-amd3dnowext            \
+ --disable-avx2                   \
+ --disable-avx512                 \
+ --disable-armv5te                \
+ --disable-armv6                  \
+ --disable-armv6t2                \
+ --disable-vfp                    \
+ --disable-neon                   \
+ --disable-mipsdsp                \
+ --disable-mipsdspr2              \
+ --disable-msa                    \
+ --disable-msa2                   \
+ --disable-mipsfpu                \
+ --disable-mmi                    \
 \
- --enable-ffmpeg                 \
- --disable-ffplay                \
- --disable-ffprobe               \
+ --enable-ffmpeg                  \
+ --disable-ffplay                 \
+ --disable-ffprobe                \
 \
- --"${penis}"-libv4l2            \
- --"${penis}"-v4l2-m2m           \
- --"${penis}"-vaapi              \
- --enable-alsa                   \
- --enable-bzlib                  \
- --enable-libass                 \
- --enable-libdrm                 \
- --enable-libfontconfig          \
- --enable-libfreetype            \
- --enable-libfribidi             \
- --enable-libmp3lame             \
- --enable-libopenjpeg            \
- --enable-libopus                \
- --enable-libvorbis              \
- --enable-libvpx                 \
- --enable-libx264                \
- --enable-libx265                \
- --enable-libxcb                 \
- --enable-libxcb-shape           \
- --enable-libxcb-shm             \
- --enable-libxcb-xfixes          \
- --enable-lzma                   \
- --enable-lzo                    \
- --enable-network                \
- --enable-opengl                 \
- --enable-openssl                \
- --enable-pthreads               \
- --enable-xlib                   \
- --enable-zlib                   \
+ --"${schtik}"-libv4l2            \
+ --"${schtik}"-v4l2-m2m           \
+ --"${schtik}"-vaapi              \
+ --enable-alsa                    \
+ --enable-bzlib                   \
+ --enable-libass                  \
+ --enable-libdrm                  \
+ --enable-libfontconfig           \
+ --enable-libfreetype             \
+ --enable-libfribidi              \
+ --enable-libmp3lame              \
+ --enable-libopenjpeg             \
+ --enable-libopus                 \
+ --enable-libvorbis               \
+ --enable-libvpx                  \
+ --enable-libx264                 \
+ --enable-libx265                 \
+ --enable-libxcb                  \
+ --enable-libxcb-shape            \
+ --enable-libxcb-shm              \
+ --enable-libxcb-xfixes           \
+ --enable-lzma                    \
+ --enable-lzo                     \
+ --enable-network                 \
+ --enable-opengl                  \
+ --enable-openssl                 \
+ --enable-pthreads                \
+ --enable-xlib                    \
+ --enable-zlib                    \
 \
- --disable-indev="${penislist}"  \
- --disable-outdev="${penislist}" \
+ --disable-indev="${schtiklist}"  \
+ --disable-outdev="${schtiklist}" \
 \
- --disable-doc                   \
- --disable-htmlpages             \
- --disable-manpages              \
- --disable-podpages              \
+ --disable-doc                    \
+ --disable-htmlpages              \
+ --disable-manpages               \
+ --disable-podpages               \
  --disable-txtpages
 
-time make V=1
+time make

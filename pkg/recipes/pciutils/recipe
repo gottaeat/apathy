@@ -1,9 +1,9 @@
 # 1
 pdir="/mss/repo/pkg/recipes/pciutils/patches"
-patch -p1 < "${pdir}"/pread.patch
+patch -p1 < "${pdir}"/0001-pread.patch
 
 make \
- OPT="${LDFLAGS} -fPIC -DPIC" \
+ OPT="${CFLAGS} ${LDFLAGS} -fPIC -DPIC" \
  CC="${CC}"                   \
  AR="${AR}"                   \
  RANLIB="${RANLIB}"           \
@@ -19,7 +19,7 @@ make \
 
 # 2
 make \
- OPT="${LDFLAGS} -fPIC -DPIC" \
+ OPT="${CFLAGS} ${LDFLAGS} -fPIC -DPIC" \
  CC="${CC}"                   \
  AR="${AR}"                   \
  RANLIB="${RANLIB}"           \
@@ -31,10 +31,10 @@ make \
  MANDIR=/usr/share/man        \
  SBINDIR=/usr/bin             \
 \
- DESTDIR="$PWD/KEK" install
+ DESTDIR="${PWD}/KEK" install
 
 doas -- make \
- OPT="${LDFLAGS} -fPIC -DPIC" \
+ OPT="${CFLAGS} ${LDFLAGS} -fPIC -DPIC" \
  CC="${CC}"                   \
  AR="${AR}"                   \
  RANLIB="${RANLIB}"           \

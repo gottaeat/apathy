@@ -1,8 +1,14 @@
 # 1
+export   CFLAGS="${CFLAGS}   -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+
 autoreconf -fvi
 
 ./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix=/usr   \
- --disable-static
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --enable-shared  \
+ --disable-static \
+ --disable-rpath  \
+ --disable-cxx

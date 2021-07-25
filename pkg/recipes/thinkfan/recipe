@@ -1,10 +1,15 @@
 # 1
 cdt1
 penis="/mss/work/table/KEK"
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/share/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 gcd1 https://github.com/jbeder/yaml-cpp.git
 cd   yaml-cpp/
+
+cleancmake
 
 mkdir build
 cd    build
@@ -31,17 +36,26 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
  -DYAML_BUILD_SHARED_LIBS=OFF           \
+ -DYAML_CPP_BUILD_TOOLS=OFF             \
+ -DBUILD_GMOCK=OFF                      \
+ -DBUILD_MOCK=OFF                       \
+ -DBUILD_TESTING=OFF                    \
+ -DINSTALL_GTEST=OFF                    \
 ..
 
 samu
 samu install
 
-cd ../..
-rm -rf yaml-cpp/
+cd ../../; rm -rf yaml-cpp/
 
 # 2
 gcd1 https://github.com/vmatare/thinkfan.git
 cd   thinkfan/
+
+pdir="/mss/repo/pkg/recipes/thinkfan/patches"
+patch -p1 < "${pdir}"/0001-fix-build-with-llvm-libc++.patch
+
+cleancmake
 
 mkdir build
 cd    build
@@ -66,5 +80,19 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"               \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"             \
 \
- -DUSE_ATASMART:BOOL=OFF                          \
-..
+ -DUSE_ATASMART=OFF                               \
+ -DUSE_NVML=OFF                                   \
+ -DDISABLE_BUGGER=OFF                             \
+ -DDISABLE_SYSLOG=OFF                             \
+ -DDISABLE_EXCEPTION_CATCHING=OFF                 \
+../
+
+samu
+
+# 3
+doas -s
+for i in thinkfan; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

@@ -1,0 +1,24 @@
+# 1
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix=/usr               \
+\
+ --enable-shared             \
+ --disable-static            \
+\
+ --enable-sse                \
+ --enable-ogg                \
+ --disable-altivec           \
+ --disable-vsx               \
+ --disable-avx               \
+ --disable-thorough-tests    \
+ --disable-exhaustive-tests  \
+ --disable-valgrind-testing  \
+ --disable-doxygen-docs      \
+ --disable-local-xmms-plugin \
+ --disable-xmms-plugin       \
+ --disable-cpplibs           \
+ --disable-oggtest           \
+ --disable-examples          \
+ --disable-rpath

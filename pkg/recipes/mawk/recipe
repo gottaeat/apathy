@@ -11,7 +11,11 @@ make
 
 # 2
 doas -s
-cp -vf ./mawk   /usr/bin/mawk
-chown root:root /usr/bin/mawk
-ln -sfv         /usr/bin/mawk /bin/awk
-ln -sfv         /usr/bin/mawk /usr/bin/gawk
+for i in mawk; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+ln -sfv /usr/bin/mawk /bin/awk
+ln -sfv /usr/bin/mawk /usr/bin/gawk

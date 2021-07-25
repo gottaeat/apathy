@@ -21,13 +21,13 @@ perl ./Configure linux-x86_64 \
  no-seed                    \
  no-weak-ssl-ciphers        \
 \
- $LDFLAGS -Wa,--noexecstack
+ ${CFLAGS} ${LDFLAGS} -Wa,--noexecstack
 
 make
 
 # 2
 instdir="${PWD}/KEK"
-make DESTDIR=$PWD/KEK install_sw install_ssldirs
+make DESTDIR="${instdir}" install_sw install_ssldirs
 
 rm -rfv \
  "${instdir}"/etc/ssl/misc                 \

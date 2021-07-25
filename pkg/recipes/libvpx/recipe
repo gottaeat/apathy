@@ -1,12 +1,4 @@
 # 1
-case $CFLAGS in
- *-flto*)
-  export   CFLAGS="$(echo "$CFLAGS"   | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
-  export CXXFLAGS="$(echo "$CXXFLAGS" | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
-  export  LDFLAGS="$(echo "$LDFLAGS"  | sed 's/fno-fat-lto-objects/ffat-lto-objects/')"
- ;;
-esac
-
 mkdir build
 cd    build
 

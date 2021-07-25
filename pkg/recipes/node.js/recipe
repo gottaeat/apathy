@@ -47,10 +47,11 @@ patch -p1 < "${pdir}"/0001-remove-latomic.patch
 time samu -C out/Release
 
 # 2
-tools/install.py install $PWD/KEK /opt/node.js-14.17.3
+instdir="${PWD}/KEK"
+tools/install.py install "${instdir}" /opt/node.js-14.17.3
 
 rm -rfv \
- $PWD/KEK/opt/node.js-14.17.3/share \
- $PWD/KEK/opt/node.js-14.17.3/include
+ "${instdir}"/opt/node.js-14.17.3/share \
+ "${instdir}"/opt/node.js-14.17.3/include
 
-strip --strip-all -v $PWD/KEK/opt/node.js-14.17.3/bin/node
+strip --strip-all "${instdir}"/opt/node.js-14.17.3/bin/node

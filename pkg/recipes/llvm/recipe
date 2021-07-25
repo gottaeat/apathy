@@ -272,7 +272,7 @@ cmake -Wno-dev -GNinja\
 time samu
 
 # 3
-instdir="$PWD/KEK"
+instdir="${PWD}/KEK"
 DESTDIR="${instdir}" samu install
 
 find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
@@ -281,13 +281,39 @@ find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
 rm -rfv "${instdir}"/opt/llvm-12.0.1/share
 
 find "${instdir}"/opt/llvm-12.0.1/bin \
- -type f              -exec strip --strip-all      -v {} ';'
+ -type f              -exec strip --strip-all      {} ';'
 
 find "${instdir}"/opt/llvm-12.0.1/lib \
- -type f -name \*.a   -exec strip --strip-debug    -v {} ';'
+ -type f -name \*.a   -exec strip --strip-debug    {} ';'
 
 find "${instdir}"/opt/llvm-12.0.1/lib \
  -type f -name \*.a   -exec "${RANLIB}" {} ';'
 
 find "${instdir}"/opt/llvm-12.0.1/lib \
- -type f -name \*.so* -exec strip --strip-unneeded -v {} ';'
+ -type f -name \*.so* -exec strip --strip-unneeded {} ';'
+
+# 4
+mkdir "${instdir}"/opt/llvm-12.0.1/compat
+pushd "${instdir}"/opt/llvm-12.0.1/compat
+
+ln -sfv ../bin/llvm-symbolizer addr2line
+ln -sfv ../bin/llvm-ar         ar
+ln -sfv ../bin/llvm-as         as
+ln -sfv ../bin/clang-12        c++
+ln -sfv ../bin/llvm-cxxfilt    c++filt
+ln -sfv ../bin/clang-12        cc
+ln -sfv ../bin/clang-12        cpp
+ln -sfv ../bin/clang-12        g++
+ln -sfv ../bin/clang-12        gcc
+ln -sfv ../bin/llvm-cov        gcov
+ln -sfv ../bin/lld             ld
+ln -sfv ../bin/llvm-nm         nm
+ln -sfv ../bin/llvm-objcopy    objcopy
+ln -sfv ../bin/llvm-objdump    objdump
+ln -sfv ../bin/llvm-ar         ranlib
+ln -sfv ../bin/llvm-readobj    readelf
+ln -sfv ../bin/llvm-size       size
+ln -sfv ../bin/llvm-strings    strings
+ln -sfv ../bin/llvm-objcopy    strip
+
+popd

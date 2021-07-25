@@ -1,15 +1,9 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native"
-         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
-export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2"
-export CXXFLAGS="${CFLAGS}"
-export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,--gc-sections,-O2"
-
-export            PATH="${PATH}:${penis}/bin"
+export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC"
+export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1//g;s/V=0//g')"
 
@@ -40,7 +34,7 @@ sed -i -r \
  -e '/^LUAC_T=/ s/luac/luac5.2/'     \
  src/Makefile
 
-make MYCFLAGS="$CFLAGS -fPIC" MYLDFLAGS="$LDFLAGS -fPIC" linux
+make MYCFLAGS="${CFLAGS} -fPIC" MYLDFLAGS="${LDFLAGS}" linux
 
 make \
  TO_BIN='lua5.2 luac5.2' \
@@ -70,7 +64,7 @@ cd      mpv-0.33.1/
 ./waf build
 
 # 5
-./waf install --destdir=$PWD/KEK
+./waf install --destdir="${PWD}/KEK"
 
 doas -s
 ./waf install

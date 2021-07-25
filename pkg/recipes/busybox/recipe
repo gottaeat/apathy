@@ -1,14 +1,5 @@
 # 1
 doas -s
-
-unset \
- CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
- OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
-
-export CC="x86_64-apathy-linux-musl-gcc"
-export AR="x86_64-apathy-linux-musl-gcc-ar"
-export NM="x86_64-apathy-linux-musl-gcc-nm"
-
 pdir="/mss/repo/pkg/recipes/busybox/patches"
 patch -p1 < "${pdir}"/0001-unzip-usage-no-error.patch
 patch -p1 < "${pdir}"/0002-print-unicode.patch
@@ -17,13 +8,28 @@ patch -p1 < "${pdir}"/0003-install-fix-chown.patch
 fdir="/mss/repo/pkg/recipes/busybox/files"
 cp    -v    "${fdir}"/config ./.config
 
-mymake(){ make CC="${CC}" AR="${AR}" NM="${NM}" V=1 ${@};}
+mymake(){
+ make \
+       AS="${AS}"      \
+       CC="${CC}"      \
+       LD="${LD}"      \
+      CPP="${CC} -E"   \
+       AR="${AR}"      \
+       NM="${NM}"      \
+    STRIP="${STRIP}"   \
+  OBJCOPY="${OBJCOPY}" \
+  OBJDUMP="${OBJDUMP}" \
+\
+   CFLAGS="${CFLAGS}"  \
+  LDFLAGS="${LDFLAGS}" \
+ "${@}"
+}
 
 mymake clean
 mymake
 
 # 2
-mymake CONFIG_PREFIX=$PWD/KEK  install
-mymake CONFIG_PREFIX=/ install
+mymake CONFIG_PREFIX="${PWD}/KEK"  install
+mymake CONFIG_PREFIX=/             install
 
 chmod u+s /bin/busybox

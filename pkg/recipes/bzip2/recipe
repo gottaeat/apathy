@@ -1,6 +1,6 @@
 # 1
-make CC="${CC} ${LDFLAGS} -fPIC" -f Makefile-libbz2_so
-make CC="${CC} ${LDFLAGS} -fPIC"    bzip2recover
+make CC="${CC} ${CFLAGS} ${LDFLAGS} -fPIC" -f Makefile-libbz2_so
+make CC="${CC} ${CFLAGS} ${LDFLAGS} -fPIC"    bzip2recover
 
 # 2
 instdir="${PWD}/KEK"

@@ -7,7 +7,7 @@ index 9a7920f..83cb8b9 100644
    CURL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs libcurl)
    OPENAL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags openal)
 -  OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal)
-+  OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal) -lstdc++
++  OPENAL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs openal) -lc++
    SDL_CFLAGS ?= $(shell $(PKG_CONFIG) --silence-errors --cflags sdl2|sed 's/-Dmain=SDL_main//')
    SDL_LIBS ?= $(shell $(PKG_CONFIG) --silence-errors --libs sdl2)
  else

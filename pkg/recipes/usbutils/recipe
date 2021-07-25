@@ -1,6 +1,6 @@
 # 1
 pdir="/mss/repo/pkg/recipes/usbutils/patches"
-patch -p1 < "${pdir}"/hwdata.patch
+patch -p1 < "${pdir}"/0001-hwdata.patch
 
 ./autogen.sh
 

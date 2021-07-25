@@ -1,6 +1,6 @@
 # 1
 pdir="/mss/repo/pkg/recipes/readline/patches"
-patch -p1 < "${pdir}"/fix-ncurses-underlinking.patch
+patch -p1 < "${pdir}"/0001-fix-ncurses-underlinking.patch
 
 ./configure \
  --build=$CBUILD           \

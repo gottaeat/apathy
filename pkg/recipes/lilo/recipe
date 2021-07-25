@@ -3,7 +3,7 @@ tar xf /mss/work/sauces/bin86-0.16.21.tar.gz
 cd     bin86-0.16.21/
 
 pdir="/mss/repo/pkg/recipes/lilo/patches"
-patch -p1 < "${pdir}"/bin86-0.16.17-x86_64-1.patch
+patch -p1 < "${pdir}"/0001-bin86-x86_64.patch
 
 make PREFIX="${PWD}"/KEK
 
@@ -17,10 +17,10 @@ cd ..
 tar xf /mss/work/sauces/lilo-24.2.tar.gz
 cd     lilo-24.2/
 
-patch -p1 < "${pdir}"/0001-novga.patch
-patch -p1 < "${pdir}"/0002-remove-O_ACCMODE.patch
-patch -p1 < "${pdir}"/0003-remove__GLIBC__.patch
-patch -p1 < "${pdir}"/0004-fix-gcc-10.patch
+patch -p1 < "${pdir}"/0002-lilo-novga.patch
+patch -p1 < "${pdir}"/0003-lilo-remove-O_ACCMODE.patch
+patch -p1 < "${pdir}"/0004-lilo-remove__GLIBC__.patch
+patch -p1 < "${pdir}"/0005-lilo-fix-gcc-10.patch
 
 sed -i Makefile src/Makefile \
  -e '/strip/d;s|^	make|	$(MAKE)|g' \

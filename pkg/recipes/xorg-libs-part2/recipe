@@ -1,13 +1,11 @@
 # 1 > env vars
 penis="/mss/work/table/KEK"
-export            PATH="$PATH:${penis}/bin"
+ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
+export          CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
+export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
+export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
-
-ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
-export   CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
-export CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
-export  LDFLAGS="${LDFLAGS}  -I${penis}/include -L/${penis}/lib ${ft_int}"
 
 # 2 > system libpng
 tar xf /mss/work/sauces/libpng-1.6.37.tar.xz
@@ -167,6 +165,8 @@ cd ../; rm -rf fontconfig-2.13.94/
 # 9 > system pixman
 tar xf /mss/work/sauces/pixman-0.40.0.tar.gz
 cd     pixman-0.40.0/
+
+patch -p1 < "${pdir}"/0003-pixman-fix-clang-lto.patch
 
 mkdir build
 cd    build

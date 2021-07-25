@@ -1,4 +1,9 @@
 # 1
+cleancmake
+
+mkdir build
+cd    build
+
 cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_PREFIX=/usr            \
  -DCMAKE_C_FLAGS="$CFLAGS"              \

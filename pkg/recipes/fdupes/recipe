@@ -1,20 +1,17 @@
 # 1
 penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
-export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export  LDFLAGS="${LDFLAGS}  -L${penis}/lib -I${penis}/include"
-
-export            PATH="${penis}/bin:$PATH"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 tar xf /mss/work/sauces/pcre2-10.36.tar.gz
 cd     pcre2-10.36/
 
 ./configure \
- CFLAGS="$CFLAGS -O3"          \
  --build=$CBUILD               \
  --host=$CHOST                 \
- --prefix=/usr                 \
+ --prefix="${penis}"           \
  --enable-jit                  \
  --enable-static               \
  --enable-pcre2-16             \
@@ -25,8 +22,7 @@ cd     pcre2-10.36/
 make
 make install
 
-cd ..
-rm -rf pcre2-10.36/
+cd ../; rm -rf pcre2-10.36/
 
 # 2
 tar xf /mss/work/sauces/fdupes-2.1.2.tar.gz

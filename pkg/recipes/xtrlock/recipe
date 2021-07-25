@@ -6,5 +6,8 @@ make -f Makefile.noimake \
 
 # 2
 doas -s
-mv xtrlock /usr/bin/
-chown root:root /usr/bin/xtrlock
+for i in xtrlock; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

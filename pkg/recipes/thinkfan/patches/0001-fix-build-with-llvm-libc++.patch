@@ -1,0 +1,66 @@
+From a7041c67a8ca6f85d6758887eea2541142164909 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 24 Jul 2021 01:52:48 +0300
+Subject: [PATCH] fix build with llvm libc++.
+
+---
+ src/error.cpp | 6 ++++--
+ src/error.h   | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/src/error.cpp b/src/error.cpp
+index ad2c1e1..1230b14 100644
+--- a/src/error.cpp
++++ b/src/error.cpp
+@@ -35,6 +35,8 @@
+ #include <cxxabi.h>
+ #endif
+ 
++#include <array>
++
+ namespace thinkfan {
+ 
+ 
+@@ -100,7 +102,7 @@ const string &Error::backtrace() const
+ { return backtrace_; }
+ 
+ 
+-const char* Error::what() const _GLIBCXX_USE_NOEXCEPT
++const char* Error::what() const noexcept
+ { return msg_.c_str(); }
+ 
+ 
+@@ -166,7 +168,7 @@ ConfigError::ConfigError(const string &reason)
+ void ConfigError::set_filename(const string &filename)
+ { msg_ = filename + ":\n" + msg_; }
+ 
+-const char* ConfigError::what() const _GLIBCXX_USE_NOEXCEPT
++const char* ConfigError::what() const noexcept
+ { return msg_.c_str(); }
+ 
+ 
+diff --git a/src/error.h b/src/error.h
+index 4250bc6..5eea783 100644
+--- a/src/error.h
++++ b/src/error.h
+@@ -55,7 +55,7 @@ protected:
+ public:
+ 	Error(const string &message = "");
+ 
+-	virtual const char* what() const _GLIBCXX_USE_NOEXCEPT override;
++	virtual const char* what() const noexcept override;
+ 	const string &backtrace() const;
+ };
+ 
+@@ -113,7 +113,7 @@ class ConfigError : public ExpectedError {
+ public:
+ 	ConfigError(const string &reason);
+ 	void set_filename(const string &filename);
+-	virtual const char* what() const _GLIBCXX_USE_NOEXCEPT override;
++	virtual const char* what() const noexcept override;
+ #ifdef USE_YAML
+ 	ConfigError(const string &filename, const YAML::Mark &mark, const string &input, const string &msg);
+ #endif
+-- 
+2.32.0
+

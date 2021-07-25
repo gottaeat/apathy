@@ -1,12 +1,9 @@
 # 1
 penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -fPIC -I${penis}/include -L${penis}/lib"
-export CXXFLAGS="${CXXFLAGS} -fPIC -I${penis}/include -L${penis}/lib"
-export  LDFLAGS="${LDFLAGS}  -fPIC -I${penis}/include -L${penis}/lib"
-
+export          CFLAGS="${CFLAGS}   -fPIC -I${penis}/include -L${penis}/lib -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -fPIC -I${penis}/include -L${penis}/lib -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 2
 tar xf /mss/work/sauces/mtdev-1.1.6.tar.bz2

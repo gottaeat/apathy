@@ -1,33 +1,31 @@
 # 1
-export    CFLAGS="${CFLAGS}   -fPIC -std=c++14"
+export    CFLAGS="${CFLAGS}   -fPIC"
 export  CXXFLAGS="${CXXFLAGS} -fPIC -std=c++14"
-export   LDFLAGS="${LDFLAGS}  -fPIC -std=c++14"
 
 ./bootstrap.sh \
- --with-toolset=gcc  \
- --without-icu       \
- --with-python="/usr/bin/python3" \
- --prefix="$PWD/KEK/opt/boost-1.76.0"
+ --prefix="${PWD}/KEK/opt/boost-1.76.0" \
+ --with-toolset=clang                   \
+ --with-python="/usr/bin/python3"
 
 mybee2(){
-time ./b2 "$@" -j "${ajobcount}"      \
- --prefix="$PWD/KEK/opt/boost-1.76.0" \
- --layout=system                      \
- --without-stacktrace                 \
- -d+2                                 \
- -q                                   \
+time ./b2 "$@" -j "${ajobcount}"        \
+ --prefix="${PWD}/KEK/opt/boost-1.76.0" \
+ --layout=system                        \
+ --without-stacktrace                   \
+ --without-mpi                          \
+ -d+2                                   \
+ -q                                     \
 \
-        cflags="${CFLAGS}"            \
-      cxxflags="${CXXFLAGS}"          \
-     linkflags="${LDFLAGS}"           \
+        cflags="${CFLAGS}"              \
+      cxxflags="${CXXFLAGS}"            \
+     linkflags="${LDFLAGS}"             \
 \
-       toolset=gcc                    \
-        python=3.9                    \
-       variant=release                \
- debug-symbols=off                    \
-     threading=multi                  \
-  runtime-link=static                 \
-          link=static
+          toolset=clang                 \
+           python=3.9                   \
+          variant=release               \
+    debug-symbols=off                   \
+        threading=multi                 \
+             link=static
 }
 
 mybee2 stage
@@ -35,7 +33,7 @@ mybee2 install
 
 # 2
 find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
- -exec strip -v \
+ -exec strip \
   --strip-debug                   \
   --remove-section=.comment       \
   --remove-section=.note          \
@@ -47,5 +45,5 @@ find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
 {} ';'
 
 find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
- -exec /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib \
+ -exec ${RANLIB} \
 {} ';'

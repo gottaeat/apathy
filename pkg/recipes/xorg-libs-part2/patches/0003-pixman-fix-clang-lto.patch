@@ -1,0 +1,16 @@
+diff -uraN a/meson.build b/meson.build
+--- a/meson.build	2020-04-20 00:52:22.000000000 +0300
++++ b/meson.build	2021-07-22 00:02:47.270706496 +0300
+@@ -492,12 +492,6 @@
+   config.set('TOOLCHAIN_SUPPORTS_ATTRIBUTE_CONSTRUCTOR', 1)
+ endif
+ 
+-if cc.links(
+-    ' __float128 a = 1.0Q, b = 2.0Q; int main (void) { return a + b; }',
+-    name : 'Has float128 support')
+-  config.set('HAVE_FLOAT128', 1)
+-endif
+-
+ if cc.has_function('clz')
+   config.set('HAVE_BUILTIN_CLZ', 1)
+ endif

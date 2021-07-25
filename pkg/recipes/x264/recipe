@@ -1,6 +1,6 @@
 # 1
 pdir="/mss/repo/pkg/recipes/x264/patches"
-patch -p1 < "${pdir}"/x264-no-bash.patch
+patch -p1 < "${pdir}"/0001-no-bash.patch
 
 configtomusl
 

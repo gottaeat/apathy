@@ -14,7 +14,7 @@ make            \
  HAVE_LZMA=1    \
  HAVE_LZ4=1     \
 \
- DESTDIR=$PWD/KEK install
+ DESTDIR="${PWD}/KEK" install
 
 doas -- make    \
  PREFIX=/usr    \

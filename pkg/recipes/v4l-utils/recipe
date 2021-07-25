@@ -1,16 +1,16 @@
 # 1
 penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -D__off_t=off_t"
-export CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -D__off_t=off_t"
-export  LDFLAGS="${LDFLAGS}  -I${penis}/include -L${penis}/lib -D__off_t=off_t -largp"
+export       CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -D__off_t=off_t -fPIC"
+export     CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -D__off_t=off_t -fPIC"
+export      LDFLAGS="${LDFLAGS}  -largp"
 export LIBRARY_PATH="${penis}/lib"
 
 tar xf /mss/work/sauces/argp-standalone-1.3.tar.gz
 cd     argp-standalone-1.3/
 
 pdir="/mss/repo/pkg/recipes/v4l-utils/patches"
-patch -p1 < "${pdir}"/001-throw-in-funcdef.patch
-patch -p1 < "${pdir}"/gnu89-inline.patch
+patch -p1 < "${pdir}"/0001-argp-standalone-throw-in-funcdef.patch
+patch -p1 < "${pdir}"/0002-argp-standalone-gnu89-inline.patch
 
 autoreconf -vfi
 
@@ -32,8 +32,8 @@ rm -rf argp-standalone-1.3/
 tar xf /mss/work/sauces/v4l-utils-1.20.0.tar.bz2
 cd     v4l-utils-1.20.0/
 
-patch -p1 < "${pdir}"/getsubopt.patch
-patch -p1 < "${pdir}"/types.patch
+patch -p1 < "${pdir}"/0003-v4l-utils-getsubopt.patch
+patch -p1 < "${pdir}"/0004-v4l-utils-types.patch
 
 ./configure \
  --build=$CBUILD                  \

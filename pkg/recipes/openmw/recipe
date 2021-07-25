@@ -1,28 +1,23 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native -std=c++14"
-         CFLAGS="${CFLAGS} -flto=3 -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
-         CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
-export   CFLAGS="${CFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
-export CXXFLAGS="${CFLAGS}"
-export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
-
+export          CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
+export        CXXFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC -std=c++11"
 export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
-
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 export          TMPDIR="/mss/work/ltocache"
 
 # 2 > boost
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.76.0-static-only-nolto.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
 popd
 
 # 3 > openal
 tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
 cd     openal-soft-1.21.1/
+
+cleancmake
 
 mkdir builderoo
 cd    builderoo
@@ -64,14 +59,13 @@ tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
 cd     SDL2-2.0.14/
 
 pdir="/mss/repo/pkg/recipes/sdl2/patches"
-patch -p1 < "${pdir}"/libsdl2-2.0.14-static-libs.patch
-patch -p1 < "${pdir}"/replace-echo-en-with-printf.patch
+patch -p1 < "${pdir}"/0001-fix-static-libs.patch
+patch -p1 < "${pdir}"/0002-replace-echo-en-with-printf.patch
 
 autoreconf -fvi
 
   CFLAGS="${CFLAGS}   -D__LINUX__" \
 CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
- LDFLAGS="${LDFLAGS}  -D__LINUX__" \
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \
@@ -157,12 +151,10 @@ make install
 cd ../; rm -rf SDL2_image-2.0.5/
 
 # 6 > mygui
-tar xf /mss/work/sauces/MyGUI3.2.2.tar.gz
-cd     mygui-MyGUI3.2.2/
+tar xf /mss/work/sauces/MyGUI3.4.1.tar.gz
+cd     mygui-MyGUI3.4.1/
 
-pdir="/mss/repo/pkg/recipes/openmw/patches"
-patch -p1 < "${pdir}"/0001-mygui-FHS.patch
-patch -p1 < "${pdir}"/0002-mygui-build.patch
+cleancmake
 
 mkdir builderoo
 cd    builderoo
@@ -194,7 +186,7 @@ cmake -Wno-dev -GNinja \
  -DMYGUI_INSTALL_MEDIA=FALSE            \
  -DMYGUI_BUILD_DEMOS=FALSE              \
  -DMYGUI_BUILD_TOOLS=FALSE              \
- -DMYGUI_RENDERSYSTEM=7                 \
+ -DMYGUI_RENDERSYSTEM=4                 \
  -DMYGUI_STATIC=ON                      \
  -DMYGUI_USE_FREETYPE=ON                \
  -DMYGUI_BUILD_PLUGINS=OFF              \
@@ -204,11 +196,13 @@ cmake -Wno-dev -GNinja \
 
 samu
 samu install
-cd ../../; rm -rf mygui-MyGUI3.2.2/
+cd ../../; rm -rf mygui-MyGUI3.4.1/
 
 # 7 > bullet
 tar xf /mss/work/sauces/bullet3-3.17.tar.gz
 cd     bullet3-3.17/
+
+cleancmake
 
 mkdir build
 cd    build
@@ -257,9 +251,13 @@ cd ../../; rm -rf bullet3-3.17/
 tar xf /mss/work/sauces/openmw-osg-3.4-8b07809f.tar.zst
 cd     osg/
 
-patch -p1 < "${pdir}"/0003-openscenegraph-cmake.patch
-patch -p1 < "${pdir}"/0004-openscenegraph-docdir.patch
-patch -p1 < "${pdir}"/0005-openscenegraph-musl-fixes.patch
+pdir="/mss/repo/pkg/recipes/openmw/patches"
+patch -p1 < "${pdir}"/0001-openscenegraph-cmake.patch
+patch -p1 < "${pdir}"/0002-openscenegraph-docdir.patch
+patch -p1 < "${pdir}"/0003-openscenegraph-musl-fixes.patch
+patch -p1 < "${pdir}"/0004-openscenegraph-clang-fixes.patch
+
+cleancmake
 
 mkdir builderoo
 cd    builderoo
@@ -272,8 +270,8 @@ cmake -Wno-dev -GNinja \
  -DLIB_POSTFIX=""                               \
  -DCMAKE_C_FLAGS="$CFLAGS ${_xfl}"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS ${_xfl}"          \
- -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS ${_xfl}"    \
- -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS ${_xfl}" \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"            \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"         \
  -DCMAKE_AR="$AR"                               \
  -DCMAKE_NM="$NM"                               \
  -DCMAKE_STRIP="$STRIP"                         \
@@ -302,11 +300,13 @@ cmake -Wno-dev -GNinja \
 
 time samu
 samu install
-cd ../../; rm -rf openmw-osg-3.4-8b07809f/
+cd ../../; rm -rf osg/
 
 # 9 > openmw
 gcd1 --recursive https://github.com/mssx86/openmw
 cd     openmw/
+
+cleancmake
 
 mkdir builderoo
 cd    builderoo

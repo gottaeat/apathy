@@ -17,19 +17,19 @@
 make
 
 # 2
-instdir="$PWD/KEK"
-make DESTDIR="$instdir" install
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
 
 for lib in ncurses form panel menu; do
- rm -rfv                            "$instdir/usr/lib/lib${lib}.so"
- printf '%s\n' "INPUT(-l${lib}w)" > "$instdir/usr/lib/lib${lib}.so"
- chmod         755                  "$instdir/usr/lib/lib${lib}.so"
- ln -sfv       "lib${lib}w.a"       "$instdir/usr/lib/lib${lib}.a"
+ rm -rfv                            "${instdir}/usr/lib/lib${lib}.so"
+ printf '%s\n' "INPUT(-l${lib}w)" > "${instdir}/usr/lib/lib${lib}.so"
+ chmod         755                  "${instdir}/usr/lib/lib${lib}.so"
+ ln -sfv       "lib${lib}w.a"       "${instdir}/usr/lib/lib${lib}.a"
 done
 
-printf '%s\n' "INPUT(-lncursesw)" > "$instdir/usr/lib/libcursesw.so"
-ln -sfv libncurses.so               "$instdir/usr/lib/libcurses.so"
-ln -sfv ncursesw.pc                 "$instdir/usr/lib/pkgconfig/ncurses.pc"
+printf '%s\n' "INPUT(-lncursesw)" > "${instdir}/usr/lib/libcursesw.so"
+ln -sfv libncurses.so               "${instdir}/usr/lib/libcurses.so"
+ln -sfv ncursesw.pc                 "${instdir}/usr/lib/pkgconfig/ncurses.pc"
 
 # 3
 doas -s

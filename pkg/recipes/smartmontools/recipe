@@ -1,0 +1,19 @@
+# 1
+tar xf /mss/work/sauces/smartmontools-7.2.tar.gz
+cd     smartmontools-7.2/
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --sysconfdir=/etc
+
+make
+
+# 2
+doas -s
+for i in smartctl; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

@@ -1,21 +1,19 @@
 # 1
-         CFLAGS="-g0 -s -w -pipe -O2 -march=native -mtune=native -fPIC"
-export   CFLAGS="${CFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
-export CXXFLAGS="${CFLAGS}"
-export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
-
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/opt/boost-1.76.0/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export          CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
+export    LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib"
 
 # 2
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/x220-boost-1.76.0-static-only-nolto.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
 popd
 
 # 3
 gcd1 https://github.com/dscharrer/innoextract
 cd   innoextract
+
+cleancmake
 
 mkdir build
 cd    build
@@ -43,9 +41,14 @@ cmake -Wno-dev -GNinja \
 \
  -DBoost_DIR="/opt/boost-1.76.0/"       \
  -DBoost_USE_STATIC_LIBS=ON             \
- -DBoost_USE_STATIC_RUNTIME=ON          \
 ../
 
 samu
-strip --strip-all -v innoextract
-mv innoextract ~/execs
+
+# 4
+doas -s
+for i in innoextract; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

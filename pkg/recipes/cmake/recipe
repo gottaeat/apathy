@@ -1,13 +1,15 @@
 # 1
 pdir="/mss/repo/pkg/recipes/cmake/patches"
-patch -p1 < "${pdir}"/cmake-no-execinfo.patch
+patch -p1 < "${pdir}"/0001-no-execinfo.patch
 
 sed -i -e '/"${cmake_bootstrap_dir}\/cmake"/s/^/#DONOTRUN /' bootstrap
 
 ./configure \
   --prefix=/usr     \
   --generator=Ninja \
-  --parallel="$(($(nproc) + 1))"
+  --parallel="${ajobcount}"
+
+cleancmake
 
 mkdir build
 cd    build
@@ -40,7 +42,7 @@ cd    build
  -DCMAKE_USE_SYSTEM_LIBLZMA=ON               \
  -DSPHINX_MAN=OFF                            \
  -DSPHINX_HTML=OFF                           \
- -DBUILD_LTO=ON                              \
+ -DBUILD_LTO=OFF                             \
  -DBUILD_TESTING=OFF                         \
  -DBUILD_CursesDialog=OFF                    \
 ..
@@ -48,8 +50,9 @@ cd    build
 samu
 
 # 2
-doas -- samu install
-doas -- rm -rfv \
+doas -s
+samu install
+rm -rfv \
  /usr/doc                   \
  /usr/share/cmake-3.20/Help \
  /usr/share/bash-completion \

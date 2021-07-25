@@ -1,11 +1,9 @@
 # 1
 penis="/mss/work/table/KEK"
-export           CFLAGS="$CFLAGS   -I${penis}/include -L${penis}/lib -fPIC"
-export         CXXFLAGS="$CXXFLAGS -I${penis}/include -L${penis}/lib -fPIC"
-export          LDFLAGS="$LDFLAGS  -I${penis}/include -L${penis}/lib -fPIC"
-
-export     LIBRARY_PATH="${penis}/lib"
+export           CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -fPIC"
+export         CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -fPIC"
 export PKG_BUILD_CONFIG="${penis}/lib/pkgconfig"
+export     LIBRARY_PATH="${penis}/lib"
 
 tar xf /mss/work/sauces/libotr-4.1.1.tar.gz
 cd     libotr-4.1.1/

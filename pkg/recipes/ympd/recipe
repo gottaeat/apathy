@@ -2,6 +2,8 @@
 git clone --depth=1 https://github.com/notandy/ympd
 cd ympd
 
+cleancmake
+
 mkdir build
 cd    build
 
@@ -35,7 +37,9 @@ cmake -Wno-dev -GNinja \
 samu
 
 # 2
-strip --strip-all ympd
 doas -s
-chown -R root:root ympd
-mv ympd /usr/bin
+for i in ympd; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

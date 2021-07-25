@@ -8,9 +8,8 @@ patch -p1 < "${pdir}"/0005-constify-format-strings.patch
 patch -p1 < "${pdir}"/0006-gpm-include-sysmacros.patch
 patch -p1 < "${pdir}"/0007-gcc-10.patch
 
-export   CFLAGS="${CFLAGS}   -I$PWD/src/headers"
-export CXXFLAGS="${CXXFLAGS} -I$PWD/src/headers"
-export  LDFLAGS="${LDFLAGS}  -I$PWD/src/headers"
+export   CFLAGS="${CFLAGS}   -I${PWD}/src/headers"
+export CXXFLAGS="${CXXFLAGS} -I${PWD}/src/headers"
 
 ./autogen.sh
 
@@ -24,5 +23,8 @@ make -j1
 
 # 2
 doas -s
-mv src/gpm /usr/bin/gpm
-chown root:root /usr/bin/gpm
+for i src/gpm; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

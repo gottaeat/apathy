@@ -1,29 +1,23 @@
 # 1
 penis="/mss/work/table/KEK"
-         CFLAGS="-g0 -s -w -pipe -O3 -march=native -mtune=native"
-         CFLAGS="${CFLAGS} -flto -fuse-linker-plugin -fno-fat-lto-objects -fPIC"
-export   CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
-export CXXFLAGS="${CFLAGS}"
-export  LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
-
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
-export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 2
 tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
 cd     SDL2-2.0.14/
 
 pdir="/mss/repo/pkg/recipes/sdl2/patches"
-patch -p1 < "${pdir}"/libsdl2-2.0.14-static-libs.patch
-patch -p1 < "${pdir}"/replace-echo-en-with-printf.patch
+patch -p1 < "${pdir}"/0001-fix-static-libs.patch
+patch -p1 < "${pdir}"/0002-replace-echo-en-with-printf.patch
 
 autoreconf -fvi
 
   CFLAGS="${CFLAGS}   -D__LINUX__" \
 CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
- LDFLAGS="${LDFLAGS}  -D__LINUX__" \
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \

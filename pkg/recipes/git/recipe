@@ -4,7 +4,6 @@ patch -p1 < "${pdir}"/0001-git-tiny.patch
 
 export   CFLAGS="${CFLAGS}   -fPIC"
 export CXXFLAGS="${CXXFLAGS} -fPIC"
-export  LDFLAGS="${LDFLAGS}  -fPIC"
 
 make configure
 

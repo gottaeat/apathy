@@ -115,7 +115,7 @@ cp -v "${fdir}"/mozconfig .
 time ./mach build
 
 # 11 > install
-instdir="$PWD/KEK"
+instdir="${PWD}/KEK"
 DESTDIR="${instdir}" ./mach install
 
 install -v -Dm644 "${fdir}"/vendor.js     "${instdir}"/usr/lib/firefox/browser/defaults/preferences/vendor.js

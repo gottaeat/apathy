@@ -1,0 +1,13 @@
+# 1
+pdir="/mss/repo/pkg/recipes/unrar/patches"
+patch -p1 < "${pdir}"/0001-makefile.patch
+
+make
+
+# 2
+doas -s
+for i in unrar; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

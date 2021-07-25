@@ -52,7 +52,7 @@ if [ -z "${MAKEFLAGS}" ];
   esac
 fi
 
-mymake(){ make CC=x86_64-apathy-linux-musl-gcc "$@";}
+mymake(){ make LLVM=1 LLVM_IAS=1 "$@";}
 
 # 5 > print details
 clear; aprint_nc
@@ -85,7 +85,7 @@ evalretkill
 aprint_nc
 aprint "applying ${cl_grn}patches${c_res}."
  for pp in "${patchdir}"/*.patch; do
-  aprint_ret "${cb_blu}$(echo $pp | awk '{gsub(/^.*\//,""); print}')${c_res}"
+  aprint_ret "${cb_blu}$(echo ${pp} | awk '{gsub(/^.*\//,""); print}')${c_res}"
    patch -p1 < "${pp}" >> "${rdr}" 2>&1
   evalretkill
  done
@@ -94,7 +94,7 @@ aprint "applying ${cl_grn}patches${c_res}."
 aprint_nc; aprint_ask "run menuconfig for manual config? (y/n): "
 read answermenuconf
 
-case "$answermenuconf" in
+case "${answermenuconf}" in
  yes|Y|y) aprint "running menuconfig.";     mymake menuconfig ;;
  *)       aprint "not running menuconfig."; aprint_nc         ;;
 esac
@@ -103,7 +103,7 @@ esac
 aprint_ask "run make? (y/n): "
 read answerbuildkern
 
-case "$answerbuildkern" in
+case "${answerbuildkern}" in
  yes|Y|y)
   aprint "current date is ${cl_grn}$(date '+%a %d %I:%M:%S%P')${c_res}."
   aprint "redirecting output to ${cl_grn}${rdr}${c_res}."
@@ -113,7 +113,7 @@ case "$answerbuildkern" in
   evalretkill
 
   dateafter=$(date +%s)
-  timespent=$(($dateafter - $datebefore))
+  timespent=$((${dateafter} - ${datebefore}))
   humantime=$(printf "%dd %dh %dm\n"                      \
               "$(echo "${timespent}/86400"        | bc)"  \
               "$(echo "(${timespent}%86400)/3600" | bc)"  \
