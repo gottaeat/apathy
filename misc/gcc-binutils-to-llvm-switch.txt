@@ -1,0 +1,205 @@
+# 1 > initial chek
+# 1.1 > list
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+# 1.2 > search me up good big boy
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep -e libgcc_s\\.so -e libstdc++\\.so)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 2 > gcc liblist (binutils libs aren't needed for anything but binutils)
+# 2.1 > smol
+> libatomic.so   -> none
+> libcc1.so      -> none
+> libgomp.so     -> imagemagick
+> libitm.so      -> none
+> libquadmath.so -> none
+> libssp.so      -> none
+
+# 2.2 > libgcc_s + libstdc++ combined
+# 2.2.1 > $HOME/execs
+- adb
+- smartmontools
+- smloadr
+- unrar
+# 2.2.2 > gameshit
+- dhewm3
+- ftl
+- hlm2
+- ioquake3
+- openmw
+- reX
+- yamagi-quake2
+# 2.2.3 > rootfs
+- cmake
+- gperf
+- xorg-libs-part2
+- lzip
+- imagemagick
+- maim
+- mkvtoolnix
+- mpd
+- mpdas
+- ncmpcpp
+- x265
+- mesa
+- flac
+- glu
+- atkmm
+- glibmm
+- gmp
+- libsigc++
+- taglib
+- tiff
+- thinkfan
+# 2.2.4 > barelist
+/home/mss/execs/adb
+/home/mss/execs/append2simg
+/home/mss/execs/fastboot
+/home/mss/execs/img2simg
+/home/mss/execs/mke2fs.android
+/home/mss/execs/simg2img
+/home/mss/execs/smartctl
+/home/mss/execs/smloadr
+/home/mss/execs/unrar
+/mnt/mss/stuff/media/games/dhewm3/dhewm3
+/mnt/mss/stuff/media/games/dhewm3/dhewm3ded
+/mnt/mss/stuff/media/games/dhewm3/lib/base.so
+/mnt/mss/stuff/media/games/dhewm3/lib/d3xp.so
+/mnt/mss/stuff/media/games/ftl/FTL
+/mnt/mss/stuff/media/games/ftl/lib/libIL.so.1
+/mnt/mss/stuff/media/games/hlm2/HotlineMiami2
+/mnt/mss/stuff/media/games/hlm2/lib/libfmod.so.7
+/mnt/mss/stuff/media/games/ioquake3/q3a.x86_64
+/mnt/mss/stuff/media/games/openmw/openmw
+/mnt/mss/stuff/media/games/re3/re3
+/mnt/mss/stuff/media/games/reVC/reVC
+/mnt/mss/stuff/media/games/yamagi-quake2/lib/libopenal.so.1
+/usr/bin/cmake
+/usr/bin/cpack
+/usr/bin/ctest
+/usr/bin/gperf
+/usr/bin/hb-ot-shape-closure
+/usr/bin/hb-shape
+/usr/bin/hb-subset
+/usr/bin/hb-view
+/usr/bin/lzip
+/usr/bin/magick
+/usr/bin/maim
+/usr/bin/mkvextract
+/usr/bin/mkvinfo
+/usr/bin/mkvmerge
+/usr/bin/mkvpropedit
+/usr/bin/mpd
+/usr/bin/mpdas
+/usr/bin/ncmpcpp
+/usr/bin/x265
+/usr/lib/dri/i965_dri.so
+/usr/lib/libEGL.so.1.0.0
+/usr/lib/libFLAC++.so.6.3.0
+/usr/lib/libGLU.so.1.3.1
+/usr/lib/libatkmm-1.6.so.1.1.0
+/usr/lib/libgiomm-2.4.so.1.3.0
+/usr/lib/libglibmm-2.4.so.1.3.0
+/usr/lib/libglibmm_generate_extra_defs-2.4.so.1.3.0
+/usr/lib/libgmpxx.so.4.6.1
+/usr/lib/libpcrecpp.so.0.0.2
+/usr/lib/libsigc-2.0.so.0.0.0
+/usr/lib/libtag.so.1.17.0
+/usr/lib/libtag_c.so.0.0.0
+/usr/lib/libtiffxx.so.5.5.0
+/usr/lib/libx265.so.199
+/usr/sbin/thinkfan
+
+# 3 > todo
+# 3.1 > rootfs
+d rmv gcc        -> :)
+d rmv binutils   -> :)
+d rmv gmp        -> gcc dep
+d rmv mpfr       -> gcc dep
+d rmv libmpc     -> gcc dep
+d rbl gpm        -> accidentally removed it, turns out gmp != gpm
+d rmv lzip       -> unnecessary
+d rmv atkmm      -> unnecessary
+d rmv glibmm     -> unnecessary
+d rmv libsigc++  -> unnecessary
+d rmv taglib     -> build statically for ncpeepeepoopoo
+d rbl musl
+d rbl cmake
+d rbl gperf
+d rbl xorg-libs-part2
+d rbl gtk3
+d rbl imagemagick
+d rbl maim
+d rbl ruby
+d rbl boost
+d rbl mkvtoolnix
+d rbl mpd
+d rbl mpdas
+d upd ncmpcpp
+d rbl x265
+d rbl mesa
+d rbl flac  (apathy)
+d rbl glu
+d rbl tiff
+d upd thinkfan
+d rbl ffmpeg
+d rbl suckless
+d upd linux
+d rbl busybox
+# 3.2 > $HOME/execs
+d android-tools  -> to rootfs
+d smartmontools  -> to rootfs
+x smloadr        -> idk what to do with this, tbd
+d unrar          -> to rootfs
+d innoextract    -> to rootfs
+# 3.3 > gameshit
+d dhewm3
+p ftl            -> removed
+p hlm2           -> removed
+d ioquake3
+d openmw
+d reX
+d yamagi-quake2
+d quakespasm-spiked
+
+# 4 > final check
+# 4.1 > list
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+
+# 4.2 > searcheroo 2: electric penis shaver
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep \
+   -e libatomic\\.so\\.1\\.2\\.0    \
+   -e libbfd-2\\.36\\.1\\.so        \
+   -e libcc1\\.so\\.0\\.0\\.0       \
+   -e libctf-nobfd\\.so\\.0\\.0\\.0 \
+   -e libctf\\.so\\.0\\.0\\.0       \
+   -e libgcc_s\\.so\\.1             \
+   -e libgomp\\.so\\.1\\.0\\.0      \
+   -e libitm\\.so\\.1\\.0\\.0       \
+   -e libopcodes-2\\.36\\.1\\.so    \
+   -e libquadmath\\.so\\.0\\.0\\.0  \
+   -e libssp\\.so\\.0\\.0\\.0       \
+   -e libstdc++\\.so\\.6\\.0\\.29)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 4.3 > end result
+/home/mss/execs/smloadr
