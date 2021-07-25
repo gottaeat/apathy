@@ -1,32 +1,21 @@
-# 1 > flags for make and samu
-case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- X220) ajobcount="5"        ;;
- T61)  ajobcount="2"        ;;
- *)    ajobcount="$(nproc)" ;;
-esac
-
-export MAKEFLAGS="-j${ajobcount} V=1" 
-export SAMUFLAGS="-j${ajobcount} -v"
-
-# 1.1 > --build and --host
-export     CHOST="x86_64-apathy-linux-musl"
-export    CBUILD="${CHOST}"
+# 1.1 > source the jobcount and host details
+. /mss/files/device.conf
 
 # 1.2 > default toolchain
-export        CC="/usr/bin/x86_64-apathy-linux-musl-gcc"
-export       CXX="/usr/bin/x86_64-apathy-linux-musl-g++"
-export        LD="/usr/bin/ld.bfd"
-export        AR="/usr/bin/x86_64-apathy-linux-musl-gcc-ar"
-export        AS="/usr/bin/as"
-export        NM="/usr/bin/x86_64-apathy-linux-musl-gcc-nm"
-export     STRIP="/usr/bin/strip"
-export    RANLIB="/usr/bin/x86_64-apathy-linux-musl-gcc-ranlib"
-export   OBJCOPY="/usr/bin/objcopy"
-export   OBJDUMP="/usr/bin/objdump"
-export   OBJSIZE="/usr/bin/size"
-export   READELF="/usr/bin/readelf"
-export ADDR2LINE="/usr/bin/addr2line"
+export        CC="/opt/llvm-12.0.1/bin/clang"
+export       CXX="/opt/llvm-12.0.1/bin/clang++"
+export        LD="/opt/llvm-12.0.1/bin/ld.lld"
+export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
+export        AS="/opt/llvm-12.0.1/bin/llvm-as"
+export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
+export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
+export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
+export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
+export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
+export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
+export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
+export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
 
-export    CFLAGS="-w -pipe -O2 -mtune=native -march=native -fcommon -flto -fuse-linker-plugin -fno-fat-lto-objects"
+export    CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 -mtune=native -march=native -fcommon -flto-jobs=${ajobcount} -flto=full"
 export  CXXFLAGS="${CFLAGS}"
-export   LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O2"
+export   LDFLAGS="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all -Wl,--lto-O3"
