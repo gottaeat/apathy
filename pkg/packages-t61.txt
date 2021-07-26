@@ -187,7 +187,6 @@ i  apathy  .. cbindgen                 0.19.0
 i  apathy  ... rust                    1.53.0
 i  apathy  .. gtk3                     3.24.29
 i  apathy  . zstd                      1.5.0
-i  apathy  . earlyoom                  1.6.1-apathy
 i  apathy  . transmission              3.0
 o  apathy  . ruby                      2.7.1
 i  apathy  . mkvtoolnix                48.0.0
