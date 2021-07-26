@@ -22,6 +22,24 @@ startnfsbase(){
  evalret
 }
 
+checkswaps(){
+ if [ "$(wc -l /proc/swaps | awk '{print $1}')" -gt 1 ]
+  then
+   ainitsvc "swap" "found active swap(s), disabling"
+    swapoff -a >/dev/null 2>&1
+   evalret
+  else
+   ainitsvc "swap" "no active swaps found"; infoprompt
+ fi
+
+ if [ ! "$(cat /sys/block/zram0/size)" -eq 0 ]; then
+  ainitsvc "swap" "resetting zram"
+   echo "1" > /sys/block/zram0/reset
+  evalret
+ fi
+}
+
+
 # 2 > services themselves
 # 2.1 > gpm
 svc_gpm(){
@@ -411,6 +429,73 @@ svc_transmission(){
   stop)
    ainitsvc "transmission" "stopping"
    ainit_kill transmission-da
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.10 > swap
+svc_swap(){
+ case "$1" in
+  start)
+   case "$2" in
+    zram)
+     checkswaps
+
+     ainitsvc "swap" "setting up sysfs/procfs for zram as swap"
+      echo "${zram_dsize}" > /sys/block/zram0/disksize       &&
+      echo "${zram_limit}" > /sys/block/zram0/mem_limit      &&
+      echo "${cln_min}"    > /proc/sys/vm/clean_min_kbytes   &&
+      echo "${cln_low}"    > /proc/sys/vm/clean_low_kbytes   &&
+      echo "${swpns}"      > /proc/sys/vm/swappiness         &&
+      echo "${vfs_cps}"    > /proc/sys/vm/vfs_cache_pressure &&
+      echo "${wtrm_sf}"    > /proc/sys/vm/watermark_scale_factor
+     evalret
+
+     ainitsvc "swap" "creating and enabling zram as swap"
+      mkswap --label    zram0 /dev/zram0 >/dev/null 2>&1 &&
+      swapon --priority 100   /dev/zram0
+     evalret
+     ;;
+     swapfile)
+     checkswaps
+
+     if [ ! -f "${swappath}" ]
+      then
+       ainitsvc "swap" "swapfile not found, creating"
+        for i in "${swappath}"; do
+         dd if=/dev/zero of="${i}" bs="${swapsize}" \
+          count=1024 conv=notrunc >/dev/null 2>&1                &&
+         mkswap --label "apathy_swapfile" "${i}" >/dev/null 2>&1 &&
+         chown root:root                  "${i}"                 &&
+         chmod 0600                       "${i}"
+        done
+       evalret
+      else
+      ainitsvc "swap" "setting up sysfs/procfs for swapfile as swap"
+       echo "0"   > /proc/sys/vm/clean_min_kbytes   &&
+       echo "0"   > /proc/sys/vm/clean_low_kbytes   &&
+       echo "60"  > /proc/sys/vm/swappiness         &&
+       echo "100" > /proc/sys/vm/vfs_cache_pressure &&
+       echo "10"  > /proc/sys/vm/watermark_scale_factor
+      evalret
+     fi
+
+     ainitsvc "swap" "enabling swapfile as swap"
+      swapon --priority 100 "${swappath}"
+     evalret
+    ;;
+    *)
+     ainitmes "specify either zram or swapfile as \$2."; failprompt
+     exit 1
+    ;;
+   esac
+  ;;
+  stop)
+   checkswaps
   ;;
   *)
    ainitusage "{start|stop}"

@@ -45,10 +45,6 @@ initboi(){
   mount -a                  >/dev/null 2>&1
  evalret
 
- ainitmes "activating ${cb_cyn}swap${c_res}."
-  swapon -a                 >/dev/null 2>&1
- evalret
-
  ainitmes "seeding ${cb_cyn}random${c_res}."
   [ -f /var/tmp/random-seed ] && cat /var/tmp/random-seed > /dev/urandom &&
   dd if=/dev/urandom of=/var/tmp/random-seed count=1 >/dev/null 2>&1
@@ -76,10 +72,6 @@ initboi(){
 
  ainitmes "starting the ${cb_cyn}log daemons${c_res}."
   syslogd && klogd
- evalret
-
- ainitmes "starting ${cb_cyn}earlyoom${c_res}."
-  earlyoom -p -r 0 -M 102400,5120 -S 512000,256000 >/dev/null 2>&1 &
  evalret
 
  ainit_nc
@@ -114,10 +106,6 @@ goingdown(){
 
  ainitmes "terminating ${cb_cyn}remaining processes${c_res}."
   killall5 -s TERM && sleep 3 && killall5 -s KILL
- evalret
-
- ainitmes "deactivating ${cb_cyn}swap${c_res}."
-  swapoff -a >/dev/null 2>&1
  evalret
 
  ainitmes "unmounting all ${cb_cyn}mounted devices${c_res}."
