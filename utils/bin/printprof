@@ -9,7 +9,7 @@ prog_llvm(){
  export       CXX="$(which clang++)"
  export        LD="$(which ld.lld)"
  export        AR="$(which llvm-ar)"
- export        AS="$(which llvm-as)"
+ export        AS="$(which clang)"
  export        NM="$(which llvm-nm)"
  export     STRIP="$(which llvm-strip)"
  export    RANLIB="$(which llvm-ranlib)"
