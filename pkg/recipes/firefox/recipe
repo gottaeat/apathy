@@ -1,57 +1,19 @@
 # 1 > env vars
-unset \
- CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
- OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
-
 penis="/mss/work/table/KEK"
+export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
+export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
+export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/opt/firefox-78.12.0esr,--enable-new-dtags"
 
-t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
-t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
-t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
-t61cf="${t61cf} -march=core2 -mtune=core2"
-
-t61rf="-Ctarget-cpu=core2"
-t61rf="${t61rf} -Ctarget-feature=+x87"  t61rf="${t61rf} -Ctarget-feature=+sse3"
-t61rf="${t61rf} -Ctarget-feature=+cx16" t61rf="${t61rf} -Ctarget-feature=+sse4.1"
-t61rf="${t61rf} -Ctarget-feature=+fxsr" t61rf="${t61rf} -Ctarget-feature=+ssse3"
-t61rf="${t61rf} -Ctarget-feature=+mmx"  t61rf="${t61rf} -Ctarget-feature=-avx"
-t61rf="${t61rf} -Ctarget-feature=+sahf" t61rf="${t61rf} -Ctarget-feature=-aes"
-t61rf="${t61rf} -Ctarget-feature=+sse"  t61rf="${t61rf} -Ctarget-feature=-sse4a"
-t61rf="${t61rf} -Ctarget-feature=+sse2" t61rf="${t61rf} -Ctarget-feature=-sse4.2"
-
-export                     CC="/opt/llvm-12.0.1/bin/clang"
-export                    CXX="/opt/llvm-12.0.1/bin/clang++"
-export                     LD="${CC}"
-export                     AR="/opt/llvm-12.0.1/bin/llvm-ar"
-export                     AS="${CC}"
-export                     NM="/opt/llvm-12.0.1/bin/llvm-nm"
-export                  STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
-export                 RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
-export                OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
-export                OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
-export                OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
-export                READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
-export              ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
-
-                       CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=2"
-                       CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
-export                 CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include"
-export               CXXFLAGS="${CFLAGS}"
-                      LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
-export                LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2,-rpath=/opt/firefox-78.12.0esr,--enable-new-dtags"
-
-                    RUSTFLAGS="-Clinker=${CC} ${t61rf}"
-                    RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
-export              RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
+                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
+export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
-export            RUST_TARGET="x86_64-apathy-linux-musl"
-
-export              CXXSTDLIB="c++"
 
 export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
+export              CXXSTDLIB="c++"
+export            RUST_TARGET="${CHOST}"
 export             MOZ_NOSPAM=1
 export        MOZ_DEBUG_FLAGS="-g0"
 export MACH_USE_SYSTEM_PYTHON=1
@@ -112,6 +74,10 @@ find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
 # 10 > start the build
 cp -v "${fdir}"/mozconfig .
+_echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
+sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g" mozconfig
+unset _echoflags
+
 time ./mach build
 
 # 11 > install

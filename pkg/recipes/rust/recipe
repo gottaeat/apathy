@@ -1,39 +1,4 @@
 # 1
-t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
-t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
-t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
-t61cf="${t61cf} -march=core2 -mtune=core2"
-
-t61rf="-Ctarget-cpu=core2"
-t61rf="${t61rf} -Ctarget-feature=+x87,+cx16,+fxsr,+mmx,+sahf,+sse,+sse2,+sse3,+sse4.1,+ssse3"
-t61rf="${t61rf} -Ctarget-feature=-avx,-aes,-sse4a,-sse4.2"
-
-export        CC="/opt/llvm-12.0.1/bin/clang"
-export       CXX="/opt/llvm-12.0.1/bin/clang++"
-export        LD="${CC}"
-export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
-export        AS="${CC}"
-export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
-export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
-export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
-export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
-export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
-export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
-export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
-export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
-
-          CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=2"
-export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
-export  CXXFLAGS="${CFLAGS}"
-         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
-export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2"
-
-       RUSTFLAGS="-Clinker=${CC} ${t61rf} -Lnative=$(llvm-config --libdir)"
-       RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
-       RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
-export RUSTFLAGS="${RUSTFLAGS} -Clink-args=-Wl,--thinlto-cache-dir=/mss/work/ltocache"
-
-# 2
 tar xf /mss/work/sauces/rustc-1.53.0-src.tar.xz
 cd     rustc-1.53.0-src/
 
@@ -58,7 +23,7 @@ export PKG_CONFIG_ALLOW_CROSS=1
 export LLVM_LINK_SHARED=1
 time python3 ./x.py build -j "${ajobcount}"
 
-# 3
+# 2
 instdir="${PWD}"/KEK
 DESTDIR="${instdir}" python3 ./x.py install
 

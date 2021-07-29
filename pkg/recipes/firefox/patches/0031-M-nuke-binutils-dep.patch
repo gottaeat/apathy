@@ -1,0 +1,65 @@
+diff -uraN a/security/nss/lib/freebl/Makefile b/security/nss/lib/freebl/Makefile
+--- a/security/nss/lib/freebl/Makefile	2021-07-06 22:51:01.000000000 +0300
++++ b/security/nss/lib/freebl/Makefile	2021-07-29 00:01:59.877226167 +0300
+@@ -689,15 +689,6 @@
+ # GCM binary needs -mssse3
+ #
+ $(OBJDIR)/$(PROG_PREFIX)intel-gcm-wrap$(OBJ_SUFFIX): CFLAGS += -mssse3
+-
+-# The integrated assembler in Clang 3.2 does not support % in the
+-# expression of a .set directive. intel-gcm.s uses .set to give
+-# symbolic names to registers, for example,
+-#     .set  Htbl, %rdi
+-# So we can't use Clang's integrated assembler with intel-gcm.s.
+-ifdef CC_IS_CLANG
+-$(OBJDIR)/$(PROG_PREFIX)intel-gcm$(OBJ_SUFFIX): CFLAGS += -no-integrated-as
+-endif
+ endif
+ 
+ ifdef INTEL_GCM_CLANG_CL
+diff -uraN a/security/nss/lib/freebl/freebl.gyp b/security/nss/lib/freebl/freebl.gyp
+--- a/security/nss/lib/freebl/freebl.gyp	2021-07-06 22:51:01.000000000 +0300
++++ b/security/nss/lib/freebl/freebl.gyp	2021-07-28 22:10:00.080235190 +0300
+@@ -16,19 +16,6 @@
+       'dependencies': [
+         '<(DEPTH)/exports.gyp:nss_exports'
+       ],
+-      'conditions': [
+-        [ 'cc_is_clang==1', {
+-          'cflags': [
+-            '-no-integrated-as',
+-          ],
+-          'cflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-          'asflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-        }],
+-      ],
+     },
+     {
+       'target_name': 'intel-gcm-wrap_c_lib',
+diff -uraN a/security/nss/lib/freebl/freebl_base.gypi b/security/nss/lib/freebl/freebl_base.gypi
+--- a/security/nss/lib/freebl/freebl_base.gypi	2021-07-06 22:50:57.000000000 +0300
++++ b/security/nss/lib/freebl/freebl_base.gypi	2021-07-28 22:15:28.477129663 +0300
+@@ -70,19 +70,6 @@
+             'mpi/mpi_amd64_gas.s',
+             'mpi/mp_comba.c',
+           ],
+-          'conditions': [
+-            [ 'cc_is_clang==1 and fuzz!=1 and coverage!=1', {
+-              'cflags': [
+-                '-no-integrated-as',
+-              ],
+-              'cflags_mozilla': [
+-                '-no-integrated-as',
+-              ],
+-              'asflags_mozilla': [
+-                '-no-integrated-as',
+-              ],
+-            }],
+-          ],
+         }],
+         [ 'target_arch=="ia32"', {
+           'sources': [

@@ -1,29 +1,16 @@
 # 1
-t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
-t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
-t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
-t61cf="${t61cf} -march=core2 -mtune=core2"
+case "${CFLAGS}" in
+ *-O2*)
+  export   CFLAGS="$(echo "${CFLAGS}"   | sed 's/-O2/-Os/')"
+  export CXXFLAGS="$(echo "${CXXFLAGS}" | sed 's/-O2/-Os/')"
+ ;;
+ *-O3*)
+  export   CFLAGS="$(echo "${CFLAGS}"   | sed 's/-O3/-Os/')"
+  export CXXFLAGS="$(echo "${CXXFLAGS}" | sed 's/-O3/-Os/')"
+ ;;
+esac
 
-export        CC="/opt/llvm-12.0.1/bin/clang"
-export       CXX="/opt/llvm-12.0.1/bin/clang++"
-export        LD="/opt/llvm-12.0.1/bin/ld.lld"
-export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
-export        AS="/opt/llvm-12.0.1/bin/llvm-as"
-export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
-export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
-export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
-export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
-export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
-export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
-export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
-export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
-
-          CFLAGS="-DNDEBUG -w -pipe -Os ${t61cf} -flto=thin -flto-jobs=2"
-export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
-export  CXXFLAGS="${CFLAGS}"
-         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
-export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2"
-
+# 2
 tar xf /mss/work/sauces/node-v14.17.3.tar.xz
 cd node-v14.17.3/
 
@@ -46,7 +33,7 @@ patch -p1 < "${pdir}"/0001-remove-latomic.patch
 
 time samu -C out/Release
 
-# 2
+# 3
 instdir="${PWD}/KEK"
 tools/install.py install "${instdir}" /opt/node.js-14.17.3
 

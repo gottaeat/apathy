@@ -1,28 +1,6 @@
 # 1
-t61cf="-m64 -m80387 -mcx16 -mfancy-math-387 -mfxsr -mhard-float -mieee-fp"
-t61cf="${t61cf} -mlong-double-80 -mmmx -mred-zone -msahf -msse -msse2 -msse3"
-t61cf="${t61cf} -msse4.1 -mssse3 -mtls-direct-seg-refs -mvzeroupper"
-t61cf="${t61cf} -march=core2 -mtune=core2"
-
-export        CC="/opt/llvm-12.0.1/bin/clang"
-export       CXX="/opt/llvm-12.0.1/bin/clang++"
-export        LD="/opt/llvm-12.0.1/bin/ld.lld"
-export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
-export        AS="/opt/llvm-12.0.1/bin/llvm-as"
-export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
-export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
-export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
-export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
-export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
-export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
-export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
-export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
-
-          CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 ${t61cf} -flto=thin -flto-jobs=2"
-export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
-export  CXXFLAGS="${CFLAGS} -fpermissive"
-         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
-export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2,-z,stack-size=2097152"
+export  CXXFLAGS="${CXXFLAGS} -fpermissive"
+export   LDFLAGS="${LDFLAGS} -Wl,-z,stack-size=2097152"
 
 # 2
 tar xf /mss/work/sauces/llvmorg-12.0.1.tar.gz
@@ -298,7 +276,7 @@ pushd "${instdir}"/opt/llvm-12.0.1/compat
 
 ln -sfv ../bin/llvm-symbolizer addr2line
 ln -sfv ../bin/llvm-ar         ar
-ln -sfv ../bin/llvm-as         as
+ln -sfv ../bin/clang-12        as
 ln -sfv ../bin/clang-12        c++
 ln -sfv ../bin/llvm-cxxfilt    c++filt
 ln -sfv ../bin/clang-12        cc

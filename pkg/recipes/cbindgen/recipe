@@ -1,29 +1,4 @@
 # 1
-export        CC="/opt/llvm-12.0.1/bin/clang"
-export       CXX="/opt/llvm-12.0.1/bin/clang++"
-export        LD="${CC}"
-export        AR="/opt/llvm-12.0.1/bin/llvm-ar"
-export        AS="${CC}"
-export        NM="/opt/llvm-12.0.1/bin/llvm-nm"
-export     STRIP="/opt/llvm-12.0.1/bin/llvm-strip"
-export    RANLIB="/opt/llvm-12.0.1/bin/llvm-ranlib"
-export   OBJCOPY="/opt/llvm-12.0.1/bin/llvm-objcopy"
-export   OBJDUMP="/opt/llvm-12.0.1/bin/llvm-objdump"
-export   OBJSIZE="/opt/llvm-12.0.1/bin/llvm-size"
-export   READELF="/opt/llvm-12.0.1/bin/llvm-readelf"
-export ADDR2LINE="/opt/llvm-12.0.1/bin/llvm-addr2line"
-
-          CFLAGS="-DNDEBUG -g0 -s -w -pipe -O2 -march=native -mtune=native -flto=thin -flto-jobs=2"
-export    CFLAGS="${CFLAGS} -fuse-ld=lld -stdlib=libc++ -rtlib=compiler-rt -unwindlib=libunwind"
-export  CXXFLAGS="${CFLAGS}"
-         LDFLAGS="${CFLAGS} -Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
-export   LDFLAGS="${LDFLAGS} -Wl,--lto-O3,--thinlto-jobs=2"
-
-       RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native"
-       RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
-       RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
-export RUSTFLAGS="${RUSTFLAGS} -Clink-args=-Wl,--thinlto-cache-dir=/mss/work/ltocache"
-
 cargo fetch --locked
 cargo build --release --frozen
 
