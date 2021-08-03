@@ -2,6 +2,21 @@
 autoreconf -fvi
 
 ./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix=/usr
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix=/usr       \
+ --disable-shared    \
+ --enable-static     \
+ --enable-all-static \
+ --disable-valgrind  \
+ --disable-docs
+
+make
+
+# 2
+doas -s
+for i in jq; do
+ strip --strip-all "${i}"
+ chown root:root   "${i}"
+ mv "${i}" /usr/bin/
+done
