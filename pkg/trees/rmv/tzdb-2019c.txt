@@ -1,6 +1,0 @@
-/usr/bin/tzselect
-
-/usr/sbin/zdump
-/usr/sbin/zic
-
-/usr/share/zoneinfo

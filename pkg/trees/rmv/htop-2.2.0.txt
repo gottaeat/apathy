@@ -1,5 +1,0 @@
-/usr/bin/htop
-
-/usr/share/applications
-/usr/share/man
-/usr/share/pixmaps

@@ -1,7 +1,0 @@
-/usr/bin/update-mime-database
-
-/usr/share/mime
-/usr/share/pkgconfig/shared-mime-info.pc
-
-/usr/share/locale
-/usr/share/man

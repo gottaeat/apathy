@@ -1,6 +1,0 @@
-/usr/bin/tar
-
-/usr/lib/rmt
-
-/usr/share/info
-/usr/share/man

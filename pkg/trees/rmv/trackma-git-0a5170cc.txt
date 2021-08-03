@@ -1,8 +1,0 @@
-/usr/bin/trackma
-/usr/bin/trackma-curses
-/usr/bin/trackma-gtk
-/usr/bin/trackma-qt
-/usr/bin/trackma-qt4
-
-/usr/lib/python3.8/site-packages/Trackma-0.8.2-py3.8.egg-info
-/usr/lib/python3.8/site-packages/trackma

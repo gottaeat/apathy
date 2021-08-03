@@ -1,9 +1,0 @@
-/usr/bin/autoconf2.13
-/usr/bin/autoheader2.13
-/usr/bin/autoreconf2.13
-/usr/bin/autoscan2.13
-/usr/bin/autoupdate2.13
-/usr/bin/ifnames2.13
-
-/usr/share/autoconf-2.13
-/usr/share/info

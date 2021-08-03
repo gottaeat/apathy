@@ -1,9 +1,0 @@
-/usr/include/obstack.h
-
-/usr/lib/libobstack.a
-/usr/lib/libobstack.la
-/usr/lib/libobstack.so
-/usr/lib/libobstack.so.0
-/usr/lib/libobstack.so.0.0.0
-
-/usr/lib/pkgconfig/musl-obstack.pc

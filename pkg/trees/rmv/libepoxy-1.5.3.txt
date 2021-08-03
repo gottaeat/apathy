@@ -1,7 +1,0 @@
-/usr/include/epoxy
-
-/usr/lib/libepoxy.so
-/usr/lib/libepoxy.so.0
-/usr/lib/libepoxy.so.0.0.0
-
-/usr/lib/pkgconfig/epoxy.pc

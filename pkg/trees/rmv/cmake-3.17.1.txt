@@ -1,9 +1,0 @@
-/usr/bin/ccmake
-/usr/bin/cmake
-/usr/bin/cpack
-/usr/bin/ctest
-
-/usr/doc/cmake-3.17
-
-/usr/share/aclocal/cmake.m4
-/usr/share/cmake-3.17

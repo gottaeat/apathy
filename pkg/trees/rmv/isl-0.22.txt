@@ -1,9 +1,0 @@
-/usr/include/isl
-
-/usr/lib/libisl.la
-/usr/lib/libisl.so
-/usr/lib/libisl.so.22
-/usr/lib/libisl.so.22.0.0
-/usr/lib/libisl.so.22.0.0-gdb.py
-
-/usr/lib/pkgconfig/isl.pc

@@ -1,6 +1,0 @@
-/etc/i3blocks.conf
-
-/usr/bin/i3blocks
-/usr/lib/i3blocks
-
-/usr/share/man

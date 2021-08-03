@@ -1,5 +1,0 @@
-/usr/bin/xmlif
-/usr/bin/xmlto
-
-/usr/share/man
-/usr/share/xmlto

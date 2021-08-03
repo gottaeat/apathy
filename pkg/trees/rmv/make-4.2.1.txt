@@ -1,6 +1,0 @@
-/usr/bin/make
-/usr/include/gnumake.h
-
-/usr/share/info
-/usr/share/locale
-/usr/share/man

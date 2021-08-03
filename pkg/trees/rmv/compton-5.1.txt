@@ -1,6 +1,0 @@
-/usr/bin/compton
-/usr/bin/compton-convgen.py
-/usr/bin/compton-trans
-
-/usr/share/applications
-/usr/share/icons/hicolor

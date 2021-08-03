@@ -1,3 +1,0 @@
-/lib/libucontext.a
-/lib/libucontext.so
-/lib/libucontext.so.0

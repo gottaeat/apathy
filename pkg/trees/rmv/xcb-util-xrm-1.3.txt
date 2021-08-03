@@ -1,9 +1,0 @@
-/usr/include/xcb/xcb_xrm.h
-
-/usr/lib/libxcb-xrm.a
-/usr/lib/libxcb-xrm.la
-/usr/lib/libxcb-xrm.so
-/usr/lib/libxcb-xrm.so.0
-/usr/lib/libxcb-xrm.so.0.0.0
-
-/usr/lib/pkgconfig/xcb-xrm.pc

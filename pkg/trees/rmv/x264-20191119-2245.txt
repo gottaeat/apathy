@@ -1,7 +1,0 @@
-/usr/include/x264.h
-/usr/include/x264_config.h
-
-/usr/lib/libx264.so
-/usr/lib/libx264.so.157
-
-/usr/lib/pkgconfig/x264.pc

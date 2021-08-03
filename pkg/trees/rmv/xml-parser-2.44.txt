@@ -1,4 +1,0 @@
-/usr/lib/perl5/site_perl/5.30.1/x86_64-linux-thread-multi/XML
-/usr/lib/perl5/site_perl/5.30.1/x86_64-linux-thread-multi/auto/XML
-
-/usr/share/man

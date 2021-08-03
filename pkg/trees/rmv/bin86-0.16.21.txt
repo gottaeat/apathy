@@ -1,7 +1,0 @@
-/usr/bin/as86
-/usr/bin/ld86
-/usr/bin/nm86
-/usr/bin/objdump86
-/usr/bin/size86
-
-/usr/share/man

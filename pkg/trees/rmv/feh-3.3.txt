@@ -1,8 +1,0 @@
-/usr/bin/feh
-
-/usr/share/feh
-
-/usr/share/applications
-/usr/share/doc
-/usr/share/icons/hicolor
-/usr/share/man

@@ -1,3 +1,0 @@
-/usr/bin/xdelta3
-
-/usr/share/man

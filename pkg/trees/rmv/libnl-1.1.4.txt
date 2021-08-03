@@ -1,8 +1,0 @@
-/usr/include/netlink
-
-/usr/lib/libnl.a
-/usr/lib/libnl.so
-/usr/lib/libnl.so.1
-/usr/lib/libnl.so.1.1.4
-
-/usr/lib/pkgconfig/libnl-1.pc
