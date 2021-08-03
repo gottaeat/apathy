@@ -20,7 +20,7 @@ i g . expat               2.3.0
 i g . perl                5.34.0
 i g . autoconf            2.70
 i g . automake            1.16.3
-i g . xz                  5.2.4
+i g . xz                  5.2.5
 i g . libelf              0.183
 i g . libffi              3.3.0
 i g . openssl             1.1.1k
