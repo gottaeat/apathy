@@ -29,7 +29,7 @@ aprint_warn(){  printf "${sbefore}${@}"; warnprompt; }
 aprint_succ(){  printf "${sbefore}${@}"; succprompt; }
 
 aprint_usage(){ aprint "${cb_red}usage${cb_blu}:${c_res} ${@}";  }
-lsdetail(){     aprint "${cb_red}${1}\t${cb_blu}:${c_res} ${2}"; }
+lsdetail(){     aprint "${cb_red}${1} ${cb_blu}:${c_res} ${2}"; }
 
 # 4 >> checks and evaluation functions
 evalret(){
