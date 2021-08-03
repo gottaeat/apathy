@@ -1,0 +1,16 @@
+# 1
+pdir="/mss/repo/pkg/recipes/procps-ng/patches"
+patch -p1 < "${pdir}"/0001-musl-fixes.patch
+
+./configure \
+ --build=$CBUILD    \
+ --host=$CHOST      \
+ --prefix=/usr      \
+ --enable-watch8bit \
+ --with-ncurses     \
+ --disable-nls      \
+ --disable-static   \
+ --disable-rpath    \
+ --disable-kill     \
+ --without-systemd  \
+ --without-elogind

@@ -1,6 +1,0 @@
-# 1
-gcd1 --recursive https://github.com/mssx86/earlyoom
-cd               earlyoom
-
-make
-doas -- make install
