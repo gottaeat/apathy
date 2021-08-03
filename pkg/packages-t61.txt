@@ -199,3 +199,4 @@ i  apathy  . android-tools             31.0.2
 i  apathy  . smartmontools             7.2
 i  apathy  . unrar                     6.0.7
 i  apathy  . innoextract               660546ad
+i  apathy  . fbcat                     99a9aaed
