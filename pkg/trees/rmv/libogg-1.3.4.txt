@@ -1,0 +1,13 @@
+/usr/include/ogg
+
+/usr/lib/libogg.a
+/usr/lib/libogg.la
+/usr/lib/libogg.so
+/usr/lib/libogg.so.0
+/usr/lib/libogg.so.0.8.4
+
+/usr/lib/pkgconfig/ogg.pc
+
+/usr/share/aclocal/ogg.m4
+
+/usr/share/doc

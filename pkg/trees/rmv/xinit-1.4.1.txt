@@ -1,0 +1,6 @@
+/etc/X11/xinit
+
+/usr/bin/startx
+/usr/bin/xinit
+
+/usr/share/man

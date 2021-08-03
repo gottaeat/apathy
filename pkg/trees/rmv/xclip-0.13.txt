@@ -1,0 +1,6 @@
+/usr/bin/xclip
+/usr/bin/xclip-copyfile
+/usr/bin/xclip-cutfile
+/usr/bin/xclip-pastefile
+
+/usr/share/man

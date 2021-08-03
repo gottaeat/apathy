@@ -1,0 +1,14 @@
+/usr/bin/vifm
+/usr/bin/vifm-convert-dircolors
+/usr/bin/vifm-pause
+/usr/bin/vifm-screen-split
+
+/usr/share/vifm
+
+/etc/vifm
+/usr/share/applications
+/usr/share/bash-completion
+/usr/share/doc
+/usr/share/man
+/usr/share/pixmaps
+/usr/share/zsh

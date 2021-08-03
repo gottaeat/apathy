@@ -1,0 +1,9 @@
+/usr/include/lame
+
+/usr/lib/libmp3lame.la
+/usr/lib/libmp3lame.so
+/usr/lib/libmp3lame.so.0
+/usr/lib/libmp3lame.so.0.0.0
+
+/usr/share/doc
+/usr/share/man

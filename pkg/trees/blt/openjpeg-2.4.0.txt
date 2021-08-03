@@ -1,0 +1,13 @@
+/usr/bin/opj_compress
+/usr/bin/opj_decompress
+/usr/bin/opj_dump
+
+/usr/include/openjpeg-2.4
+
+/usr/lib/cmake/openjpeg-2.4
+
+/usr/lib/libopenjp2.so
+/usr/lib/libopenjp2.so.2.4.0
+/usr/lib/libopenjp2.so.7
+
+/usr/lib/pkgconfig/libopenjp2.pc
