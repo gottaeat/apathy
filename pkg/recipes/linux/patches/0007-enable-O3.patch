@@ -1,0 +1,24 @@
+From 7314bfd0f19032fdcfc648e9e22f054080c372aa Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 31 Jul 2021 08:44:28 +0300
+Subject: [PATCH 7/9] enable O3.
+
+---
+ init/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index a61c92066..493fba4e8 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1334,7 +1334,6 @@ config CC_OPTIMIZE_FOR_PERFORMANCE
+ 
+ config CC_OPTIMIZE_FOR_PERFORMANCE_O3
+ 	bool "Optimize more for performance (-O3)"
+-	depends on ARC
+ 	help
+ 	  Choosing this option will pass "-O3" to your compiler to optimize
+ 	  the kernel yet more for performance.
+-- 
+2.32.0
+

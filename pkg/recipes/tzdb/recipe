@@ -1,0 +1,13 @@
+# 1
+tzdir="${PWD}/myzoneinfo"
+make \
+ CFLAGS="${CFLAGS}"   \
+ LDFLAGS="${LDFLAGS}" \
+ TZDIR="${tzdir}"
+
+./zic -b fat -d "${tzdir}" europe
+
+# 2
+doas -s
+cp "${PWD}/myzoneinfo"/Europe/Istanbul /etc/localtime
+chown root:root /etc/localtime

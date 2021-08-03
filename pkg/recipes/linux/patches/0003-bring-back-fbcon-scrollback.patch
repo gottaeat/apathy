@@ -1,15 +1,32 @@
---- b/drivers/video/fbdev/core/bitblit.c
-+++ a/drivers/video/fbdev/core/bitblit.c
-@@ -234,7 +234,7 @@
+From ad80b409206bebf647247e94bee063c0d78d16f2 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 31 Jul 2021 08:31:44 +0300
+Subject: [PATCH 3/9] bring back fbcon scrollback.
+
+---
+ drivers/video/fbdev/core/bitblit.c   |  11 +-
+ drivers/video/fbdev/core/fbcon.c     | 342 ++++++++++++++++++++++++++-
+ drivers/video/fbdev/core/fbcon.h     |   2 +-
+ drivers/video/fbdev/core/fbcon_ccw.c |  11 +-
+ drivers/video/fbdev/core/fbcon_cw.c  |  11 +-
+ drivers/video/fbdev/core/fbcon_ud.c  |  11 +-
+ drivers/video/fbdev/core/tileblit.c  |   2 +-
+ 7 files changed, 380 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index f98e8f298..baa4a2b98 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -234,7 +234,7 @@ static void bit_clear_margins(struct vc_data *vc, struct fb_info *info,
  }
  
  static void bit_cursor(struct vc_data *vc, struct fb_info *info, int mode,
-+		       int softback_lines, int fg, int bg)
 -		       int fg, int bg)
++		       int softback_lines, int fg, int bg)
  {
  	struct fb_cursor cursor;
  	struct fbcon_ops *ops = info->fbcon_par;
-@@ -247,6 +247,15 @@
+@@ -247,6 +247,15 @@ static void bit_cursor(struct vc_data *vc, struct fb_info *info, int mode,
  
  	cursor.set = 0;
  
@@ -25,163 +42,11 @@
   	c = scr_readw((u16 *) vc->vc_pos);
  	attribute = get_attribute(info, c);
  	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
---- b/drivers/video/fbdev/core/fbcon.c
-+++ a/drivers/video/fbdev/core/fbcon.c
-@@ -394,7 +394,7 @@
- 	c = scr_readw((u16 *) vc->vc_pos);
- 	mode = (!ops->cursor_flash || ops->cursor_state.enable) ?
- 		CM_ERASE : CM_DRAW;
-+	ops->cursor(vc, info, mode, 0, get_color(vc, info, c, 1),
--	ops->cursor(vc, info, mode, get_color(vc, info, c, 1),
- 		    get_color(vc, info, c, 0));
- 	console_unlock();
- }
-@@ -1345,7 +1345,7 @@
- 
- 	ops->cursor_flash = (mode == CM_ERASE) ? 0 : 1;
- 
-+	ops->cursor(vc, info, mode, 0, get_color(vc, info, c, 1),
--	ops->cursor(vc, info, mode, get_color(vc, info, c, 1),
- 		    get_color(vc, info, c, 0));
- }
- 
---- b/drivers/video/fbdev/core/fbcon.h
-+++ a/drivers/video/fbdev/core/fbcon.h
-@@ -62,7 +62,7 @@
- 	void (*clear_margins)(struct vc_data *vc, struct fb_info *info,
- 			      int color, int bottom_only);
- 	void (*cursor)(struct vc_data *vc, struct fb_info *info, int mode,
-+		       int softback_lines, int fg, int bg);
--		       int fg, int bg);
- 	int  (*update_start)(struct fb_info *info);
- 	int  (*rotate_font)(struct fb_info *info, struct vc_data *vc);
- 	struct fb_var_screeninfo var;  /* copy of the current fb_var_screeninfo */
---- b/drivers/video/fbdev/core/fbcon_ccw.c
-+++ a/drivers/video/fbdev/core/fbcon_ccw.c
-@@ -219,7 +219,7 @@
- }
- 
- static void ccw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
-+		       int softback_lines, int fg, int bg)
--		       int fg, int bg)
- {
- 	struct fb_cursor cursor;
- 	struct fbcon_ops *ops = info->fbcon_par;
-@@ -236,6 +236,15 @@
- 
- 	cursor.set = 0;
- 
-+	if (softback_lines) {
-+		if (y + softback_lines >= vc->vc_rows) {
-+			mode = CM_ERASE;
-+			ops->cursor_flash = 0;
-+			return;
-+		} else
-+			y += softback_lines;
-+	}
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.width));
---- b/drivers/video/fbdev/core/fbcon_cw.c
-+++ a/drivers/video/fbdev/core/fbcon_cw.c
-@@ -202,7 +202,7 @@
- }
- 
- static void cw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
-+		      int softback_lines, int fg, int bg)
--		      int fg, int bg)
- {
- 	struct fb_cursor cursor;
- 	struct fbcon_ops *ops = info->fbcon_par;
-@@ -219,6 +219,15 @@
- 
- 	cursor.set = 0;
- 
-+	if (softback_lines) {
-+		if (y + softback_lines >= vc->vc_rows) {
-+			mode = CM_ERASE;
-+			ops->cursor_flash = 0;
-+			return;
-+		} else
-+			y += softback_lines;
-+	}
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.width));
---- b/drivers/video/fbdev/core/fbcon_ud.c
-+++ a/drivers/video/fbdev/core/fbcon_ud.c
-@@ -249,7 +249,7 @@
- }
- 
- static void ud_cursor(struct vc_data *vc, struct fb_info *info, int mode,
-+		      int softback_lines, int fg, int bg)
--		      int fg, int bg)
- {
- 	struct fb_cursor cursor;
- 	struct fbcon_ops *ops = info->fbcon_par;
-@@ -267,6 +267,15 @@
- 
- 	cursor.set = 0;
- 
-+	if (softback_lines) {
-+		if (y + softback_lines >= vc->vc_rows) {
-+			mode = CM_ERASE;
-+			ops->cursor_flash = 0;
-+			return;
-+		} else
-+			y += softback_lines;
-+	}
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.height));
---- b/drivers/video/fbdev/core/tileblit.c
-+++ a/drivers/video/fbdev/core/tileblit.c
-@@ -80,7 +80,7 @@
- }
- 
- static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
-+			int softback_lines, int fg, int bg)
--			int fg, int bg)
- {
- 	struct fb_tilecursor cursor;
- 	int use_sw = vc->vc_cursor_type & CUR_SW;
---- b/drivers/video/fbdev/core/fbcon.c
-+++ a/drivers/video/fbdev/core/fbcon.c
-@@ -163,6 +163,8 @@
- 
- #define advance_row(p, delta) (unsigned short *)((unsigned long)(p) + (delta) * vc->vc_size_row)
- 
-+static int fbcon_set_origin(struct vc_data *);
-+
- static int fbcon_cursor_noblink;
- 
- #define divides(a, b)	((!(a) || (b)%(a)) ? 0 : 1)
-@@ -2633,6 +2635,11 @@
- 	}
- }
- 
-+static int fbcon_set_origin(struct vc_data *vc)
-+{
-+	return 0;
-+}
-+
- void fbcon_suspended(struct fb_info *info)
- {
- 	struct vc_data *vc = NULL;
-@@ -3103,6 +3110,7 @@
- 	.con_font_default	= fbcon_set_def_font,
- 	.con_font_copy 		= fbcon_copy_font,
- 	.con_set_palette 	= fbcon_set_palette,
-+	.con_set_origin 	= fbcon_set_origin,
- 	.con_invert_region 	= fbcon_invert_region,
- 	.con_screen_pos 	= fbcon_screen_pos,
- 	.con_getxy 		= fbcon_getxy,
---- b/drivers/video/fbdev/core/fbcon.c
-+++ a/drivers/video/fbdev/core/fbcon.c
-@@ -122,6 +122,12 @@
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 22bb3892f..95a4d8392 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -114,6 +114,12 @@ static int logo_lines;
  /* logo_shown is an index to vc_cons when >= 0; otherwise follows FBCON_LOGO
     enums.  */
  static int logo_shown = FBCON_LOGO_CANSHOW;
@@ -194,7 +59,7 @@
  /* console mappings */
  static int first_fb_vc;
  static int last_fb_vc = MAX_NR_CONSOLES - 1;
-@@ -161,6 +167,8 @@
+@@ -153,8 +159,12 @@ static int margin_color;
  
  static const struct consw fb_con;
  
@@ -202,8 +67,12 @@
 +
  #define advance_row(p, delta) (unsigned short *)((unsigned long)(p) + (delta) * vc->vc_size_row)
  
- static int fbcon_set_origin(struct vc_data *);
-@@ -365,6 +373,18 @@
++static int fbcon_set_origin(struct vc_data *);
++
+ static int fbcon_cursor_noblink;
+ 
+ #define divides(a, b)	((!(a) || (b)%(a)) ? 0 : 1)
+@@ -355,6 +365,18 @@ static int get_color(struct vc_data *vc, struct fb_info *info,
  	return color;
  }
  
@@ -222,19 +91,20 @@
  static void fb_flashcursor(struct work_struct *work)
  {
  	struct fb_info *info = container_of(work, struct fb_info, queue);
-@@ -394,7 +414,7 @@
+@@ -384,7 +406,7 @@ static void fb_flashcursor(struct work_struct *work)
  	c = scr_readw((u16 *) vc->vc_pos);
  	mode = (!ops->cursor_flash || ops->cursor_state.enable) ?
  		CM_ERASE : CM_DRAW;
+-	ops->cursor(vc, info, mode, get_color(vc, info, c, 1),
 +	ops->cursor(vc, info, mode, softback_lines, get_color(vc, info, c, 1),
--	ops->cursor(vc, info, mode, 0, get_color(vc, info, c, 1),
  		    get_color(vc, info, c, 0));
  	console_unlock();
  }
-@@ -451,7 +471,13 @@
+@@ -441,7 +463,13 @@ static int __init fb_console_setup(char *this_opt)
  		}
  		
  		if (!strncmp(options, "scrollback:", 11)) {
+-			pr_warn("Ignoring scrollback size option\n");
 +			options += 11;
 +			if (*options) {
 +				fbcon_softback_size = simple_strtoul(options, &options, 0);
@@ -242,11 +112,10 @@
 +					fbcon_softback_size *= 1024;
 +				}
 +			}
--			pr_warn("Ignoring scrollback size option\n");
  			continue;
  		}
  		
-@@ -996,6 +1022,31 @@
+@@ -986,6 +1014,31 @@ static const char *fbcon_startup(void)
  
  	set_blitting_type(vc, info);
  
@@ -278,7 +147,7 @@
  	/* Setup default font */
  	if (!p->fontdata && !vc->vc_font.data) {
  		if (!fontname[0] || !(font = find_font(fontname)))
-@@ -1169,6 +1220,9 @@
+@@ -1157,6 +1210,9 @@ static void fbcon_init(struct vc_data *vc, int init)
  	if (logo)
  		fbcon_prepare_logo(vc, info, cols, rows, new_cols, new_rows);
  
@@ -288,7 +157,7 @@
  	if (ops->rotate_font && ops->rotate_font(info, vc)) {
  		ops->rotate = FB_ROTATE_UR;
  		set_blitting_type(vc, info);
-@@ -1331,6 +1385,7 @@
+@@ -1319,6 +1375,7 @@ static void fbcon_cursor(struct vc_data *vc, int mode)
  {
  	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
  	struct fbcon_ops *ops = info->fbcon_par;
@@ -296,7 +165,7 @@
   	int c = scr_readw((u16 *) vc->vc_pos);
  
  	ops->cur_blink_jiffies = msecs_to_jiffies(vc->vc_cur_blink_ms);
-@@ -1334,11 +1389,19 @@ static void fbcon_cursor(struct vc_data
+@@ -1332,11 +1389,19 @@ static void fbcon_cursor(struct vc_data *vc, int mode)
  		fbcon_add_cursor_timer(info);
  
  	ops->cursor_flash = (mode == CM_ERASE) ? 0 : 1;
@@ -312,12 +181,12 @@
  	if (!ops->cursor)
  		return;
  
--	ops->cursor(vc, info, mode, 0, get_color(vc, info, c, 1),
+-	ops->cursor(vc, info, mode, get_color(vc, info, c, 1),
 +	ops->cursor(vc, info, mode, y, get_color(vc, info, c, 1),
  		    get_color(vc, info, c, 0));
  }
  
-@@ -1416,6 +1479,8 @@
+@@ -1406,6 +1471,8 @@ static void fbcon_set_disp(struct fb_info *info, struct fb_var_screeninfo *var,
  
  	if (con_is_visible(vc)) {
  		update_screen(vc);
@@ -326,7 +195,7 @@
  	}
  }
  
-@@ -1553,6 +1618,99 @@
+@@ -1543,6 +1610,99 @@ static __inline__ void ypan_down_redraw(struct vc_data *vc, int t, int count)
  	scrollback_current = 0;
  }
  
@@ -426,7 +295,7 @@
  static void fbcon_redraw_move(struct vc_data *vc, struct fbcon_display *p,
  			      int line, int count, int dy)
  {
-@@ -1692,6 +1850,31 @@
+@@ -1682,6 +1842,31 @@ static void fbcon_redraw(struct vc_data *vc, struct fbcon_display *p,
  	}
  }
  
@@ -458,7 +327,7 @@
  static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
  		enum con_scroll dir, unsigned int count)
  {
-@@ -1714,6 +1897,8 @@
+@@ -1704,6 +1889,8 @@ static bool fbcon_scroll(struct vc_data *vc, unsigned int t, unsigned int b,
  	case SM_UP:
  		if (count > vc->vc_rows)	/* Maximum realistic size */
  			count = vc->vc_rows;
@@ -467,7 +336,7 @@
  		if (logo_shown >= 0)
  			goto redraw_up;
  		switch (p->scrollmode) {
-@@ -2084,6 +2269,14 @@
+@@ -2042,6 +2229,14 @@ static int fbcon_switch(struct vc_data *vc)
  	info = registered_fb[con2fb_map[vc->vc_num]];
  	ops = info->fbcon_par;
  
@@ -482,8 +351,8 @@
  	if (logo_shown >= 0) {
  		struct vc_data *conp2 = vc_cons[logo_shown].d;
  
-@@ -2407,6 +2600,9 @@
- 	int cnt;
+@@ -2373,6 +2568,9 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
+ 	int resize;
  	char *old_data = NULL;
  
 +	if (con_is_visible(vc) && softback_lines)
@@ -492,7 +361,7 @@
  	resize = (w != vc->vc_font.width) || (h != vc->vc_font.height);
  	if (p->userfont)
  		old_data = vc->vc_font.data;
-@@ -2432,6 +2628,8 @@
+@@ -2395,6 +2593,8 @@ static int fbcon_do_set_font(struct vc_data *vc, int w, int h, int charcount,
  		cols /= w;
  		rows /= h;
  		vc_resize(vc, cols, rows);
@@ -501,10 +370,11 @@
  	} else if (con_is_visible(vc)
  		   && vc->vc_mode == KD_TEXT) {
  		fbcon_clear_margins(vc, 0);
-@@ -2590,7 +2788,19 @@
+@@ -2544,7 +2744,19 @@ static void fbcon_set_palette(struct vc_data *vc, const unsigned char *table)
  
- static u16 *fbcon_screen_pos(struct vc_data *vc, int offset)
+ static u16 *fbcon_screen_pos(const struct vc_data *vc, int offset)
  {
+-	return (u16 *) (vc->vc_origin + offset);
 +	unsigned long p;
 +	int line;
 +	
@@ -518,26 +388,27 @@
 +	if (p >= softback_end)
 +		p += softback_buf - softback_end;
 +	return (u16 *) p;
--	return (u16 *) (vc->vc_origin + offset);
  }
  
  static unsigned long fbcon_getxy(struct vc_data *vc, unsigned long pos,
-@@ -2604,7 +2814,22 @@
+@@ -2556,9 +2768,24 @@ static unsigned long fbcon_getxy(struct vc_data *vc, unsigned long pos,
+ 	if (pos >= vc->vc_origin && pos < vc->vc_scr_end) {
+ 		unsigned long offset = (pos - vc->vc_origin) / 2;
  
- 		x = offset % vc->vc_cols;
- 		y = offset / vc->vc_cols;
++		x = offset % vc->vc_cols;
++		y = offset / vc->vc_cols;
 +		if (vc->vc_num == fg_console)
 +			y += softback_lines;
- 		ret = pos + (vc->vc_cols - x) * 2;
++		ret = pos + (vc->vc_cols - x) * 2;
 +	} else if (vc->vc_num == fg_console && softback_lines) {
 +		unsigned long offset = pos - softback_curr;
 +
 +		if (pos < softback_curr)
 +			offset += softback_end - softback_buf;
 +		offset /= 2;
-+		x = offset % vc->vc_cols;
-+		y = offset / vc->vc_cols;
-+		ret = pos + (vc->vc_cols - x) * 2;
+ 		x = offset % vc->vc_cols;
+ 		y = offset / vc->vc_cols;
+ 		ret = pos + (vc->vc_cols - x) * 2;
 +		if (ret == softback_end)
 +			ret = softback_buf;
 +		if (ret == softback_in)
@@ -545,7 +416,7 @@
  	} else {
  		/* Should not happen */
  		x = y = 0;
-@@ -2632,11 +2857,106 @@
+@@ -2586,7 +2813,107 @@ static void fbcon_invert_region(struct vc_data *vc, u16 * p, int cnt)
  			a = ((a) & 0x88ff) | (((a) & 0x7000) >> 4) |
  			    (((a) & 0x0700) << 4);
  		scr_writew(a, p++);
@@ -601,7 +472,7 @@
 +		fbcon_redraw_softback(vc, disp, lines);
 +		fbcon_cursor(vc, CM_DRAW | CM_SOFTBACK);
 +		return;
- 	}
++	}
 +
 +	if (!scrollback_phys_max)
 +		return;
@@ -631,7 +502,7 @@
 +		limit -= vc->vc_rows;
 +		info->var.vmode &= ~FB_VMODE_YWRAP;
 +		break;
-+	}
+ 	}
 +	if (offset < 0)
 +		offset += limit;
 +	else if (offset >= limit)
@@ -643,16 +514,17 @@
 +
 +	if (!scrollback_current)
 +		fbcon_cursor(vc, CM_DRAW);
- }
- 
- static int fbcon_set_origin(struct vc_data *vc)
- {
++}
++
++static int fbcon_set_origin(struct vc_data *vc)
++{
 +	if (softback_lines)
 +		fbcon_scrolldelta(vc, softback_lines);
- 	return 0;
++	return 0;
  }
  
-@@ -2700,6 +3020,8 @@
+ void fbcon_suspended(struct fb_info *info)
+@@ -2649,6 +2976,8 @@ static void fbcon_modechanged(struct fb_info *info)
  
  		fbcon_set_palette(vc, color_table);
  		update_screen(vc);
@@ -661,15 +533,16 @@
  	}
  }
  
-@@ -3110,6 +3432,7 @@
+@@ -3053,6 +3382,8 @@ static const struct consw fb_con = {
+ 	.con_font_get 		= fbcon_get_font,
  	.con_font_default	= fbcon_set_def_font,
- 	.con_font_copy 		= fbcon_copy_font,
  	.con_set_palette 	= fbcon_set_palette,
 +	.con_scrolldelta 	= fbcon_scrolldelta,
- 	.con_set_origin 	= fbcon_set_origin,
++	.con_set_origin 	= fbcon_set_origin,
  	.con_invert_region 	= fbcon_invert_region,
  	.con_screen_pos 	= fbcon_screen_pos,
-@@ -3344,6 +3667,9 @@
+ 	.con_getxy 		= fbcon_getxy,
+@@ -3286,6 +3617,9 @@ static void fbcon_exit(void)
  	}
  #endif
  
@@ -679,3 +552,119 @@
  	for_each_registered_fb(i) {
  		int pending = 0;
  
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 9315b360c..5ee153ba9 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -62,7 +62,7 @@ struct fbcon_ops {
+ 	void (*clear_margins)(struct vc_data *vc, struct fb_info *info,
+ 			      int color, int bottom_only);
+ 	void (*cursor)(struct vc_data *vc, struct fb_info *info, int mode,
+-		       int fg, int bg);
++		       int softback_lines, int fg, int bg);
+ 	int  (*update_start)(struct fb_info *info);
+ 	int  (*rotate_font)(struct fb_info *info, struct vc_data *vc);
+ 	struct fb_var_screeninfo var;  /* copy of the current fb_var_screeninfo */
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index 9cd2c4b05..b39663ea3 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
+@@ -219,7 +219,7 @@ static void ccw_clear_margins(struct vc_data *vc, struct fb_info *info,
+ }
+ 
+ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+-		       int fg, int bg)
++		       int softback_lines, int fg, int bg)
+ {
+ 	struct fb_cursor cursor;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+@@ -236,6 +236,15 @@ static void ccw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+ 
+ 	cursor.set = 0;
+ 
++	if (softback_lines) {
++		if (y + softback_lines >= vc->vc_rows) {
++			mode = CM_ERASE;
++			ops->cursor_flash = 0;
++			return;
++		} else
++			y += softback_lines;
++	}
++
+  	c = scr_readw((u16 *) vc->vc_pos);
+ 	attribute = get_attribute(info, c);
+ 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.width));
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index 88d89fad3..c110961b4 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
+@@ -202,7 +202,7 @@ static void cw_clear_margins(struct vc_data *vc, struct fb_info *info,
+ }
+ 
+ static void cw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+-		      int fg, int bg)
++		      int softback_lines, int fg, int bg)
+ {
+ 	struct fb_cursor cursor;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+@@ -219,6 +219,15 @@ static void cw_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+ 
+ 	cursor.set = 0;
+ 
++	if (softback_lines) {
++		if (y + softback_lines >= vc->vc_rows) {
++			mode = CM_ERASE;
++			ops->cursor_flash = 0;
++			return;
++		} else
++			y += softback_lines;
++	}
++
+  	c = scr_readw((u16 *) vc->vc_pos);
+ 	attribute = get_attribute(info, c);
+ 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.width));
+diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
+index 8d5e66b1b..8e204b43e 100644
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
+@@ -249,7 +249,7 @@ static void ud_clear_margins(struct vc_data *vc, struct fb_info *info,
+ }
+ 
+ static void ud_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+-		      int fg, int bg)
++		      int softback_lines, int fg, int bg)
+ {
+ 	struct fb_cursor cursor;
+ 	struct fbcon_ops *ops = info->fbcon_par;
+@@ -267,6 +267,15 @@ static void ud_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+ 
+ 	cursor.set = 0;
+ 
++	if (softback_lines) {
++		if (y + softback_lines >= vc->vc_rows) {
++			mode = CM_ERASE;
++			ops->cursor_flash = 0;
++			return;
++		} else
++			y += softback_lines;
++	}
++
+  	c = scr_readw((u16 *) vc->vc_pos);
+ 	attribute = get_attribute(info, c);
+ 	src = ops->fontbuffer + ((c & charmask) * (w * vc->vc_font.height));
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index 2768eff24..16b844ef4 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -80,7 +80,7 @@ static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
+ }
+ 
+ static void tile_cursor(struct vc_data *vc, struct fb_info *info, int mode,
+-			int fg, int bg)
++			int softback_lines, int fg, int bg)
+ {
+ 	struct fb_tilecursor cursor;
+ 	int use_sw = vc->vc_cursor_type & CUR_SW;
+-- 
+2.32.0
+
