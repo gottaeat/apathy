@@ -1,0 +1,20 @@
+# 1
+pdir="/mss/repo/pkg/recipes/libid3tag/patches"
+patch -p1 < "${pdir}"/0001-CVE-2008-2109.patch
+
+configtomusl
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --disable-static
+
+make
+
+# 2
+doas -s
+make install
+
+fdir="/mss/repo/pkg/recipes/libid3tag/files"
+cp "${fdir}"/id3tag.pc /usr/lib/pkgconfig/

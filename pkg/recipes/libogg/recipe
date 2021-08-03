@@ -1,8 +1,6 @@
 # 1
-configtomusl
-
 ./configure \
- --prefix=/usr   \
  --build=$CBUILD \
  --host=$CHOST   \
- --disable-nls
+ --prefix=/usr   \
+ --disable-static

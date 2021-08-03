@@ -1,0 +1,12 @@
+diff -uraN a/Makefile b/Makefile
+--- a/Makefile	2019-08-02 17:49:26.000000000 +0300
++++ b/Makefile	2021-08-02 15:30:41.623971932 +0300
+@@ -60,7 +60,7 @@
+ LINK_CMD = $(QUIET_LINK) $(MKTGTDIR) ; $(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+ TAGS_CMD = $(QUIET_TAGS) ctags -R
+ WINDRES_CMD = $(QUIET_WINDRES) $(MKTGTDIR) ; $(WINDRES) $< $@
+-OBJCOPY_CMD = $(QUIET_OBJCOPY) $(MKTGTDIR) ; $(LD) -r -b binary -o $@ $<
++OBJCOPY_CMD = $(QUIET_OBJCOPY) $(MKTGTDIR) ; $(LD) -r -b binary -m elf_x86_64 -o $@ $<
+ 
+ # --- Rules ---
+ 

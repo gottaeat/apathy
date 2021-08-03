@@ -1,8 +1,9 @@
 # 1
 pdir="/mss/repo/pkg/recipes/mupdf/patches"
 patch -p1 < "${pdir}"/0001-openssl-x11.patch
+patch -p1 < "${pdir}"/0002-lld-fixes.patch
 
-rm -rf thirdparty/{freetype,harfbuzz,jbig2dec,libjpeg,openjpeg,zlib,curl,lcms2}
+rm -rf thirdparty/{freetype,harfbuzz,libjpeg,openjpeg,zlib,curl,lcms2}
 
 sed -i \
  -e "1iOS = Linux"   \
@@ -21,7 +22,7 @@ export    XLIBS="${LDFLAGS}"
 export USE_SYSTEM_FREETYPE=yes
 export USE_SYSTEM_GUMBO=no
 export USE_SYSTEM_HARFBUZZ=yes
-export USE_SYSTEM_JBIG2DEC=yes
+export USE_SYSTEM_JBIG2DEC=no
 export USE_SYSTEM_JPEGXR=no
 export USE_SYSTEM_LCMS2=yes
 export USE_SYSTEM_LIBJPEG=yes

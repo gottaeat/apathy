@@ -1,0 +1,32 @@
+# 1
+export   CFLAGS="${CFLAGS}   -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+
+autoreconf -fvi
+
+touch data/vifm-help.txt
+
+./configure \
+ --build=$CBUILD         \
+ --host=$CHOST           \
+ --prefix=/usr           \
+ --sysconfdir=/etc       \
+ --disable-desktop-files \
+ --with-libmagic         \
+ --without-gtk           \
+ --without-X11
+
+make
+
+# 2
+doas -s
+make install
+
+rm -rfv \
+ /etc/vifm               \
+ /usr/share/doc          \
+ /usr/share/man          \
+ /usr/share/pixmaps      \
+ /usr/share/zsh          \
+ /usr/share/applications \
+ /usr/share/bash-completion

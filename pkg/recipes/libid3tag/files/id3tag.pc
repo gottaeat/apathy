@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr/bin
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: id3tag
+Description: ID3 tag manipulation library
+Requires:
+Version: 0.15.1b
+Libs: -lid3tag
+Cflags:

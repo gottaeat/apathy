@@ -1,0 +1,18 @@
+# 1
+pdir="/mss/repo/pkg/recipes/giflib/patches"
+patch -p1 < "${pdir}"/0001-restore-deprecated-functions.patch
+
+make \
+ AR="${AR}"                                                 \
+ CC="${CC}"                                                 \
+ CFLAGS="${CFLAGS} -std=gnu99 -fPIC -Wno-format-truncation" \
+ LDFLAGS="${LDFLAGS}"                                       \
+ OFLAGS=""                                                  \
+ all
+
+# 2
+doas -s
+make PREFIX=/usr install
+rm -rfv \
+ /usr/lib/libgif.a \
+ /usr/share/man

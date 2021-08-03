@@ -1,0 +1,14 @@
+# 1
+./configure \
+ --build=$CBUILD   \
+ --host=$CHOST     \
+ --prefix=/usr     \
+ --enable-shared   \
+ --enable-nasm     \
+ --disable-static  \
+ --disable-rpath   \
+ --disable-cpml    \
+ --disable-gtktest \
+ --disable-mp3x    \
+ --disable-mp3rtp  \
+ --disable-frontend

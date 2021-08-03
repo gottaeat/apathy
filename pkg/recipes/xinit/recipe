@@ -1,0 +1,18 @@
+# 1
+pdir="/mss/repo/pkg/recipes/xinit/patches"
+patch -p1 < "${pdir}"/0001-serverauthfile-in-tmp.patch
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --with-xinitdir=/etc/X11/xinit
+
+make
+
+# 2 
+doas -s
+make install
+rm -rf /etc/X11/xinit

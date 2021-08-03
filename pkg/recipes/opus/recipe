@@ -1,0 +1,9 @@
+# 1
+./configure \
+ --build=$CBUILD       \
+ --host=$CHOST         \
+ --prefix=/usr         \
+ --enable-custom-modes \
+ --disable-static      \
+ --disable-doc         \
+ --disable-extra-programs

@@ -1,0 +1,13 @@
+# 1
+configtomusl
+
+# 2
+./configure \
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --disable-static \
+ --with-jpeg      \
+ --with-tiff      \
+ --with-zlib      \
+ --with-threads

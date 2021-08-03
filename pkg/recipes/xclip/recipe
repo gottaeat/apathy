@@ -1,0 +1,40 @@
+# 1
+penis="/mss/work/table/KEK"
+export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
+export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
+
+tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
+cd     libXt-1.2.1/
+
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix="${penis}"         \
+ --enable-static             \
+ --disable-shared            \
+ --sysconfdir=/etc           \
+ --localstatedir=/var        \
+ --enable-malloc0returnsnull \
+ --without-fop               \
+ --without-glib              \
+ --without-perl              \
+ --without-xmlto             \
+ --without-xsltproc          \
+ --disable-specs             \
+ --disable-unit-tests
+
+make
+make install
+
+cd ../; rm -rf libXt-1.2.1/
+
+# 2
+tar xf /mss/work/sauces/xclip-0.13.tar.gz
+cd     xclip-0.13/
+
+autoreconf -vfi
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr

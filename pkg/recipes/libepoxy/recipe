@@ -1,0 +1,13 @@
+# 1
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix=/usr          \
+\
+ -Ddocs=false           \
+ -Dglx=yes              \
+ -Degl=yes              \
+ -Dx11=true             \
+ -Dtests=false          \
+ ..
