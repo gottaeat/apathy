@@ -6,9 +6,8 @@ repodir="/mss/repo"
 localdb="/mss/files/packages.txt"
 
 case "${host}" in
- X220) repodb="${repodir}/pkg/packages-x220.txt" ;;
- T61)  repodb="${repodir}/pkg/packages-t61.txt"  ;;
- *)    aprint_fail "${host} not supported"; exit 1       ;;
+ T61)  repodb="${repodir}/pkg/packages-t61.txt"             ;;
+ *)    aprint_fail "host ${host} is not supported."; exit 1 ;;
 esac
 
 if   [ ! -f "${localdb}" ]; then
