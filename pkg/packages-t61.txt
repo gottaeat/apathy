@@ -40,7 +40,7 @@ i g . vim                 8.2.2549
 i g . util-linux          2.37.0
 i g . e2fsprogs           1.45.6
 i g . eudev               3.2.9
-i l . linux               5.13.6
+i l . linux               5.13.7
 i l . init                20210726_104810
 i g . opendoas            6.8.1
 i g . iptables            1.8.7
@@ -201,3 +201,5 @@ i l . smartmontools       7.2
 i l . unrar               6.0.7
 i l . innoextract         660546ad
 i l . fbcat               99a9aaed
+i l . clzip               1.12
+i l . tzdb                2021a
