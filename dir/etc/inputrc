@@ -1,22 +1,18 @@
-set horizontal-scroll-mode Off
-set meta-flag On
-set input-meta On
-set convert-meta Off
-set output-meta On
 set bell-style none
+set convert-meta Off
 set enable-keypad On
+set horizontal-scroll-mode Off
+set input-meta On
+set meta-flag On
+set output-meta On
 
-"\eOd": backward-word
+"\eOF": end-of-line
+"\eOH": beginning-of-line
 "\eOc": forward-word
-
-# linux console
+"\eOd": backward-word
 "\e[1~": beginning-of-line
+"\e[2~": quoted-insert
+"\e[3~": delete-char
 "\e[4~": end-of-line
 "\e[5~": beginning-of-history
 "\e[6~": end-of-history
-"\e[3~": delete-char
-"\e[2~": quoted-insert
-
-# xterm
-"\eOH": beginning-of-line
-"\eOF": end-of-line

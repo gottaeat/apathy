@@ -1,4 +1,4 @@
-LABEL="x220apathy"              /               ext4  defaults                         0  1
-LABEL="x220apathyswap"          swap            swap  pri=100                          0  0
-LABEL="x220stuff"               /mnt/mss/stuff  ext4  rw,relatime,data=ordered         0  1
-/mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind  0  0
+LABEL="t61apathy"               /                       ext4  defaults                              0  1
+LABEL="t61apathystuff"          /mnt/mss/stuff          ext4  rw,relatime,data=ordered              0  1
+LABEL="externalstuff"           /mnt/mss/externalstuff  ext4  rw,relatime,auto,nofail,data=ordered  0  1
+/mnt/mss/stuff/techy-bits/home  /home/mss               auto  defaults,nofail,nobootwait,bind       0  0
