@@ -8,7 +8,7 @@
       cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
                  familya=tolower($5); familyb=tolower($6); model=tolower($8)};\
                  /MHz/{hz=int($4)};                                           \
-                 END{print familya, familyb, model, hz"mhz"}' /proc/cpuinfo)"
+                 END{print familya,familyb,model,"@",hz"mhz"}' /proc/cpuinfo)"
       mem="$(awk '/Avail/    {avail=int($2/1024)};     \
                   /MemTotal/ {total=int($2/1024)};     \
                   END{print (total-avail)"/"total"m"}' \
