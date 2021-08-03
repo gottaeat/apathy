@@ -31,11 +31,20 @@ info(){
    aprint_nc
    exit 1
   else
-   awk '/'$1'/ { gsub(/^b/,"busybox:   ");   \
-                 gsub(/^i/,"installed: ");   \
-                 gsub(/^o/,"ondemand:  ");   \
-                 print $1,"("$2")\t",$4,$5}' \
-                 "${localdb}"
+   init="$(grep -w "${1}" "${localdb}")"
+   if [ -z "${init}" ]
+    then
+     aprint_nc
+     aprint_fail "package ${1} was not found in the local package database."
+     aprint_nc
+     exit 1
+    else
+     echo "${init}" \
+       | awk '{if($2 == "l") $2="llvm"; else $2="gnu";
+               sub(/^i/,"installed"); \
+               sub(/^o/,"ondemand");  \
+               print $1":",$4,$5,"("$2")"}' | column -t
+   fi
  fi
 }
 
