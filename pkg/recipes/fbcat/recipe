@@ -1,0 +1,13 @@
+# 1
+gcd1 https://github.com/jwilk/fbcat
+cd   fbcat/
+
+make
+
+# 2
+doas -s
+for i in fbcat; do
+ strip --strip-all "${i}"
+ chown root:root   "${i}"
+ mv "${i}" /usr/bin/
+done
