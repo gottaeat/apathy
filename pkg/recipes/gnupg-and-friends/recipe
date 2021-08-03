@@ -7,8 +7,7 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 1.2
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- X220) peen="enable"  ;;
- T61)  peen="disable" ;;
+ *) peen="disable" ;;
 esac
 
 # 2 > shared libgpg-error

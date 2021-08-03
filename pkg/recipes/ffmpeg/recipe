@@ -25,8 +25,7 @@ cd ../; rm -rf libXv-1.0.11/
 
 # 3 > ffmpeg
 case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- X220) schtik="enable"  schtiklist="oss,sndio"      ;;
- T61)  schtik="disable" schtiklist="oss,sndio,v4l2" ;;
+ *) schtik="disable" schtiklist="oss,sndio,v4l2" ;;
 esac
 
 tar xf /mss/work/sauces/ffmpeg-4.4.tar.xz

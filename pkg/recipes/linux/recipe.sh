@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.13 kernels, version 1, for thinkpad x220 and t61.
+# build script for 5.13 kernels, version 1, for thinkpad t61.
 
 . /mss/files/funcs
 
@@ -11,8 +11,7 @@ fi
 
 case "${2}" in
  t61)  confname="t61"  ;;
- x220) confname="x220" ;;
- *)    aprint_fail "specify either t61 or x220 as \$2."; exit 1
+ *)    aprint_fail "host $2 is not supported."; exit 1
 esac
 
 # 2 > set script vars

@@ -1,2 +1,0 @@
-/usr/lib/dri/i965_drv_video.la
-/usr/lib/dri/i965_drv_video.so
