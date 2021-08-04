@@ -57,7 +57,7 @@ ainit_mount(){
 banner(){
    datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
     kerver="$(uname -r)"
-    kerdat="$(uname -v | awk '{print tolower($4)$5,$6}')"
+    kerdat="$(uname -v | awk '{print tolower($5)$6,$7}')"
    datefmt="${cb_grn}${datefmt}${c_res}"
  kerdatfmt="${cb_blu}(${c_res}${cb_red}${kerdat}${cb_blu})${c_res}"
  kerverfmt="${cb_grn}k${cb_blu}:${c_res} ${kerver}"
