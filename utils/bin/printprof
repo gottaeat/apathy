@@ -97,13 +97,13 @@ aprint_nc
 
 # 2 > flags
 # 2.1 > base
-     cfbase="-DNDEBUG -g0 -s -w -pipe -O2 -mtune=native -march=native -fcommon"
+     cfbase="-DNDEBUG -g0 -s -w -pipe -O3 -mtune=native -march=native -fcommon"
     ldfbase="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
 
 # 2.2 > lto
 # 2.2.1 > base
  cfbase_lto="${cfbase} -flto-jobs=\${ajobcount}"
-ldfbase_lto="${ldfbase} -Wl,--lto-O3"
+ldfbase_lto="${ldfbase},--lto-O3"
 
 # 2.2.2 > full
  cflto_full="${cfbase_lto} -flto=full"
@@ -111,7 +111,7 @@ ldflto_full="${ldfbase_lto}"
 
 # 2.2.3 > thin
  cflto_thin="${cfbase_lto} -flto=thin"
-ldflto_thin="${ldfbase_lto} -Wl,--thinlto-jobs=\${ajobcount},--thinlto-cache-dir=/mss/work/ltocache"
+ldflto_thin="${ldfbase_lto},--thinlto-jobs=\${ajobcount},--thinlto-cache-dir=/mss/work/ltocache"
 
 # 3 > action
 case "${1}" in
