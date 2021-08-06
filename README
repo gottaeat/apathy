@@ -1,19 +1,33 @@
 apathy
 ======
-apathy is a linux "distribution" (lol) built from scratch for the sake of having
-something to do. it initially got started off of github.com/mssx86/apathy-mlfs
-but a lot have changed gradually and none of the recipes from mlfs are used
-anymore.
+apathy is a toy linux thing that i actually use daily, built from scratch for
+the sake of having something to do.
 
-like all the meme distributions, apathy utilizes musl as the libc and the rest
-of the system is composed of whatever i felt like putting in with the gaps
-filled with busybox applets where possible, though without creating a scenario
-where the user experience is crippled for the sake of muh minimalism. there also
-is an in-house init system written in posix shell.
+in the toolchain, musl is utilized as the libc implementation, coupled with a
+completely standalone llvm suite without anything gcc or binutils in it. the
+reason behind this is not to be a gnu hating contrarian but due to firefox
+being the fastest compiling modern standards compliant browser and it having a
+hard dependency on rust and clang, therefore llvm. i see no point in having two
+things serving the same purpose.
 
-because apathy is intended for my use only, this repo does not contain an image
-to boot from or a stage{1..4} tarball to unpack. objectively speaking, you would
-not want to use it anyway.
+for small shell utilities like coreutils, busybox applets are used where
+possible, though without creating a scenario where the user experience is
+crippled solely to achieve "minimalism". if it works, it works.
+
+the package building and management is done all by hand and all the packages are
+built using in-house recipes. the list and the build order of all built packages
+are kept in a "database" (a text file). the directory listing of a package is
+saved by doing a destdir install prior to installing it to the rootfs.
+
+the init is also in-house and written in posix shell. the services are collected
+into a single file as shell functions and `rc` does the talking it has basic
+failproofing to save from catastrophies, device specific init configuration and
+a cli tool to manually start and stop services. all are intelligent and mature
+enough for my use cases.
+
+because this whole thing is intended for my use only, this repo does not contain
+an image to boot from or a stage{1..4} tarball to unpack. objectively speaking,
+you would not want to use it anyway.
 
 basic repository tree
 =====================
