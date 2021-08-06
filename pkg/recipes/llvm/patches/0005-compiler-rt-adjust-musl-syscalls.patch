@@ -1,8 +1,17 @@
-diff --git a/lib/sanitizer_common/sanitizer_linux.cpp b/lib/sanitizer_common/sanitizer_linux.cpp
-index 379f6d9..552939e 100644
+From 27964401ce1a5e43c14a5dcf9113b8077e9531aa Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 4 Aug 2021 13:38:35 +0300
+Subject: [PATCH 5/6] compiler-rt: adjust musl syscalls.
+
+---
+ compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp b/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp
+index 9b7d87eb8..6e2d8d115 100644
 --- a/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp
 +++ b/compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp
-@@ -306,8 +306,10 @@ uptr internal_stat(const char *path, void *buf) {
+@@ -314,8 +314,10 @@ uptr internal_stat(const char *path, void *buf) {
  #if SANITIZER_FREEBSD
    return internal_syscall(SYSCALL(fstatat), AT_FDCWD, (uptr)path, (uptr)buf, 0);
  #elif SANITIZER_USES_CANONICAL_LINUX_SYSCALLS
@@ -13,7 +22,7 @@ index 379f6d9..552939e 100644
  #elif SANITIZER_LINUX_USES_64BIT_SYSCALLS
  # if defined(__mips64)
    // For mips64, stat syscall fills buffer in the format of kernel_stat
-@@ -331,8 +333,10 @@ uptr internal_lstat(const char *path, void *buf) {
+@@ -339,8 +341,10 @@ uptr internal_lstat(const char *path, void *buf) {
    return internal_syscall(SYSCALL(fstatat), AT_FDCWD, (uptr)path, (uptr)buf,
                            AT_SYMLINK_NOFOLLOW);
  #elif SANITIZER_USES_CANONICAL_LINUX_SYSCALLS
@@ -24,7 +33,7 @@ index 379f6d9..552939e 100644
  #elif SANITIZER_LINUX_USES_64BIT_SYSCALLS
  # if SANITIZER_MIPS64
    // For mips64, lstat syscall fills buffer in the format of kernel_stat
-@@ -454,7 +458,7 @@ bool FileExists(const char *filename) {
+@@ -460,7 +464,7 @@ bool FileExists(const char *filename) {
    if (ShouldMockFailureToOpen(filename))
      return false;
    struct stat st;
@@ -34,5 +43,5 @@ index 379f6d9..552939e 100644
  #else
    if (internal_stat(filename, &st))
 -- 
-2.31.0
+2.32.0
 

@@ -1,9 +1,18 @@
-diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
-index 2001c09..ecd7904 100644
+From 022f121bbb4bb3b916a240aafc87fa817c43ed0f Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 4 Aug 2021 13:36:39 +0300
+Subject: [PATCH 2/6] libcxx: force link against compiler-rt.
+
+---
+ libcxx/src/CMakeLists.txt | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
+index 496429f38..78b34f464 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -165,6 +165,11 @@ if (LIBCXX_ENABLE_SHARED)
-   endif()
+@@ -195,6 +195,11 @@ if (LIBCXX_ENABLE_SHARED)
+   add_library(cxx_shared SHARED ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_shared PUBLIC cxx-headers
                                     PRIVATE ${LIBCXX_LIBRARIES})
 +
@@ -14,7 +23,7 @@ index 2001c09..ecd7904 100644
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -247,6 +252,11 @@ if (LIBCXX_ENABLE_STATIC)
+@@ -273,6 +278,11 @@ if (LIBCXX_ENABLE_STATIC)
    add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
    target_link_libraries(cxx_static PUBLIC cxx-headers
                                     PRIVATE ${LIBCXX_LIBRARIES})
@@ -23,9 +32,9 @@ index 2001c09..ecd7904 100644
 +    target_link_libraries(cxx_static PRIVATE ${LIBCXX_BUILTINS_LIBRARY})
 +  endif()
 +
-   set(CMAKE_STATIC_LIBRARY_PREFIX "lib")
    set_target_properties(cxx_static
      PROPERTIES
+       COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
 -- 
-2.29.2
+2.32.0
 

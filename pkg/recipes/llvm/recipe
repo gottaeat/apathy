@@ -3,16 +3,16 @@ export  CXXFLAGS="${CXXFLAGS} -fpermissive"
 export   LDFLAGS="${LDFLAGS} -Wl,-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-12.0.1.tar.gz
-cd     llvm-project-llvmorg-12.0.1/
+tar xf /mss/work/sauces/llvmorg-13.0.0-rc1.tar.gz
+cd     llvm-project-llvmorg-13.0.0-rc1/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
 patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
-patch -p1 < "${pdir}"/0002-libcxx-force-link-against-compiler-rt-builtins.patch
-patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_impl.patch
-patch -p1 < "${pdir}"/0004-libcxxabi-force-link-against-compiler-rt-builtins.patch
+patch -p1 < "${pdir}"/0002-libcxx-force-link-against-compiler-rt.patch
+patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_imp.patch
+patch -p1 < "${pdir}"/0004-libcxxabi-force-link-against-compiler-rt.patch
 patch -p1 < "${pdir}"/0005-compiler-rt-adjust-musl-syscalls.patch
-patch -p1 < "${pdir}"/0006-samu-llvm-locstats-fix.patch
+patch -p1 < "${pdir}"/0006-llvm-do-not-build-llvm-locstats.patch
 
 cleancmake
 
@@ -21,7 +21,7 @@ cd    build
 
 myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp"
 cmake -Wno-dev -GNinja\
- -DCMAKE_INSTALL_PREFIX="/opt/llvm-12.0.1"           \
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm-13.0.0"           \
  -DCMAKE_C_FLAGS="$CFLAGS"                           \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                       \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                 \
@@ -45,6 +45,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_HOST_TRIPLE="$CHOST"                         \
  -DLLVM_TARGETS_TO_BUILD="host"                      \
  -DLLVM_TARGET_ARCH="host"                           \
+ -DLLVM_VERSION_SUFFIX=""                            \
 \
  -DLLVM_ENABLE_LTO=Thin                              \
  -DLLVM_PARALLEL_LINK_JOBS=2                         \
@@ -57,6 +58,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_LINK_LLVM_DYLIB=ON                           \
 \
  -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE         \
+ -DGOLD_EXECUTABLE=GOLD_EXECUTABLE-NOTFOUND          \
  -DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND              \
  -DHAVE_LIBXAR=OFF                                   \
  -DLLVM_APPEND_VC_REV=OFF                            \
@@ -83,6 +85,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_BUGPOINT_BUILD=OFF                      \
  -DLLVM_TOOL_BUGPOINT_PASSES_BUILD=OFF               \
  -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=OFF             \
+ -DLLVM_TOOL_CROSS_PROJECT_TESTS_BUILD=OFF           \
  -DLLVM_TOOL_DSYMUTIL_BUILD=OFF                      \
  -DLLVM_TOOL_GOLD_BUILD=OFF                          \
  -DLLVM_TOOL_LLVM_AS_FUZZER_BUILD=OFF                \
@@ -126,10 +129,13 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_RC_BUILD=OFF                       \
  -DLLVM_TOOL_LLVM_REDUCE_BUILD=OFF                   \
  -DLLVM_TOOL_LLVM_RTDYLD_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_RUST_DEMANGLE_FUZZER_BUILD=OFF     \
  -DLLVM_TOOL_LLVM_SHLIB_BUILD=ON                     \
+ -DLLVM_TOOL_LLVM_SIM_BUILD=OFF                      \
  -DLLVM_TOOL_LLVM_SPECIAL_CASE_LIST_FUZZER_BUILD=OFF \
  -DLLVM_TOOL_LLVM_SPLIT_BUILD=OFF                    \
  -DLLVM_TOOL_LLVM_STRESS_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_TAPI_DIFF_BUILD=OFF                \
  -DLLVM_TOOL_LLVM_UNDNAME_BUILD=OFF                  \
  -DLLVM_TOOL_LLVM_XRAY_BUILD=OFF                     \
  -DLLVM_TOOL_LLVM_YAML_NUMERIC_PARSER_FUZZER_BUILD=OFF\
@@ -156,6 +162,8 @@ cmake -Wno-dev -GNinja\
  -DCLANG_ENABLE_STATIC_ANALYZER=OFF                  \
  -DCLANG_LINK_CLANG_DYLIB=ON                         \
  -DCLANG_PLUGIN_SUPPORT=ON                           \
+ -DCLANG_TOOLING_BUILD_AST_INTROSPECTION=OFF         \
+ -DCLANG_TOOL_AMDGPU_ARCH_BUILD=OFF                  \
  -DCLANG_TOOL_APINOTES_TEST_BUILD=OFF                \
  -DCLANG_TOOL_ARCMT_TEST_BUILD=OFF                   \
  -DCLANG_TOOL_CLANG_CHECK_BUILD=OFF                  \
@@ -169,23 +177,27 @@ cmake -Wno-dev -GNinja\
  -DCLANG_TOOL_CLANG_OFFLOAD_WRAPPER_BUILD=OFF        \
  -DCLANG_TOOL_CLANG_REFACTOR_BUILD=OFF               \
  -DCLANG_TOOL_CLANG_RENAME_BUILD=OFF                 \
+ -DCLANG_TOOL_CLANG_REPL_BUILD=OFF                   \
  -DCLANG_TOOL_CLANG_SCAN_DEPS_BUILD=OFF              \
  -DCLANG_TOOL_CLANG_SHLIB_BUILD=ON                   \
  -DCLANG_TOOL_C_ARCMT_TEST_BUILD=OFF                 \
  -DCLANG_TOOL_C_INDEX_TEST_BUILD=OFF                 \
  -DCLANG_TOOL_DIAGTOOL_BUILD=OFF                     \
  -DCLANG_TOOL_SCAN_BUILD_BUILD=OFF                   \
+ -DCLANG_TOOL_SCAN_BUILD_PY_BUILD=OFF                \
  -DCLANG_TOOL_SCAN_VIEW_BUILD=OFF                    \
  -DCLANG_VENDOR="apathy"                             \
- -DCLANG_VENDOR_UTI="org.apathy"                     \
+ -DCLANG_VENDOR_UTI="io.github.mssx86"               \
  -DENABLE_LINKER_BUILD_ID=OFF                        \
  -DLIBCLANG_BUILD_STATIC=OFF                         \
  -DLLD_VENDOR="apathy"                               \
 \
  -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                   \
  -DCOMPILER_RT_BUILD_MEMPROF=OFF                     \
+ -DCOMPILER_RT_BUILD_ORC=OFF                         \
  -DCOMPILER_RT_BUILD_PROFILE=OFF                     \
  -DCOMPILER_RT_BUILD_SANITIZERS=OFF                  \
+ -DCOMPILER_RT_BUILD_STANDALONE_LIBATOMIC=OFF        \
  -DCOMPILER_RT_BUILD_XRAY=OFF                        \
  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                \
  -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF            \
@@ -199,16 +211,18 @@ cmake -Wno-dev -GNinja\
  -DLIBCXXABI_INSTALL_STATIC_LIBRARY=OFF              \
  -DLIBCXXABI_USE_COMPILER_RT=ON                      \
  -DLIBCXXABI_USE_LLVM_UNWINDER=ON                    \
+ -DLIBCXX_ABI_UNSTABLE=OFF                           \
  -DLIBCXX_CXX_ABI="libcxxabi"                        \
  -DLIBCXX_ENABLE_EXPERIMENTAL_LIBRARY=OFF            \
  -DLIBCXX_ENABLE_FILESYSTEM=ON                       \
+ -DLIBCXX_ENABLE_INCOMPLETE_FEATURES=ON              \
  -DLIBCXX_ENABLE_PEDANTIC=ON                         \
  -DLIBCXX_ENABLE_SHARED=ON                           \
  -DLIBCXX_ENABLE_STATIC=OFF                          \
  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF              \
- -DLIBCXX_HAS_MUSL_LIBC=ON                           \
- -DLIBCXX_HAS_GCC_S_LIB=OFF                          \
  -DLIBCXX_HAS_ATOMIC_LIB=OFF                         \
+ -DLIBCXX_HAS_GCC_S_LIB=OFF                          \
+ -DLIBCXX_HAS_MUSL_LIBC=ON                           \
  -DLIBCXX_INCLUDE_BENCHMARKS=OFF                     \
  -DLIBCXX_INSTALL_SHARED_LIBRARY=ON                  \
  -DLIBCXX_INSTALL_STATIC_LIBRARY=OFF                 \
@@ -217,6 +231,7 @@ cmake -Wno-dev -GNinja\
  -DLIBUNWIND_ENABLE_ASSERTIONS=OFF                   \
  -DLIBUNWIND_ENABLE_SHARED=ON                        \
  -DLIBUNWIND_ENABLE_STATIC=OFF                       \
+ -DLIBUNWIND_HIDE_SYMBOLS=OFF                        \
  -DLIBUNWIND_INSTALL_SHARED_LIBRARY=ON               \
  -DLIBUNWIND_INSTALL_STATIC_LIBRARY=OFF              \
  -DLIBUNWIND_USE_COMPILER_RT=ON                      \
@@ -225,6 +240,7 @@ cmake -Wno-dev -GNinja\
  -DLIBOMP_COPY_EXPORTS=OFF                           \
  -DLIBOMP_INSTALL_ALIASES=OFF                        \
  -DLIBOMP_LIBRARY_KIND=SHARED                        \
+ -DLIBOMP_OMPD_SUPPORT=OFF                           \
  -DLIBOMP_OMPT_SUPPORT=OFF                           \
  -DLIBOMP_USE_HWLOC=OFF                              \
  -DOPENMP_ENABLE_LIBOMPTARGET=OFF                    \
@@ -234,6 +250,7 @@ cmake -Wno-dev -GNinja\
  -DCLANG_INCLUDE_DOCS=OFF                            \
  -DCLANG_INCLUDE_TESTS=OFF                           \
  -DCOMPILER_RT_INCLUDE_TESTS=OFF                     \
+ -DLIBUNWIND_INCLUDE_TESTS=OFF                       \
  -DLLVM_BUILD_DOCS=OFF                               \
  -DLLVM_BUILD_EXAMPLES=OFF                           \
  -DLLVM_BUILD_TESTS=OFF                              \
@@ -256,33 +273,33 @@ DESTDIR="${instdir}" samu install
 find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
  -exec rm -rfv {} ';'
 
-rm -rfv "${instdir}"/opt/llvm-12.0.1/share
+rm -rfv "${instdir}"/opt/llvm-13.0.0/share
 
-find "${instdir}"/opt/llvm-12.0.1/bin \
+find "${instdir}"/opt/llvm-13.0.0/bin \
  -type f              -exec strip --strip-all      {} ';'
 
-find "${instdir}"/opt/llvm-12.0.1/lib \
+find "${instdir}"/opt/llvm-13.0.0/lib \
  -type f -name \*.a   -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/llvm-12.0.1/lib \
+find "${instdir}"/opt/llvm-13.0.0/lib \
  -type f -name \*.a   -exec "${RANLIB}" {} ';'
 
-find "${instdir}"/opt/llvm-12.0.1/lib \
+find "${instdir}"/opt/llvm-13.0.0/lib \
  -type f -name \*.so* -exec strip --strip-unneeded {} ';'
 
 # 4
-mkdir "${instdir}"/opt/llvm-12.0.1/compat
-pushd "${instdir}"/opt/llvm-12.0.1/compat
+mkdir "${instdir}"/opt/llvm-13.0.0/compat
+pushd "${instdir}"/opt/llvm-13.0.0/compat
 
 ln -sfv ../bin/llvm-symbolizer addr2line
 ln -sfv ../bin/llvm-ar         ar
-ln -sfv ../bin/clang-12        as
-ln -sfv ../bin/clang-12        c++
+ln -sfv ../bin/clang-13        as
+ln -sfv ../bin/clang-13        c++
 ln -sfv ../bin/llvm-cxxfilt    c++filt
-ln -sfv ../bin/clang-12        cc
-ln -sfv ../bin/clang-12        cpp
-ln -sfv ../bin/clang-12        g++
-ln -sfv ../bin/clang-12        gcc
+ln -sfv ../bin/clang-13        cc
+ln -sfv ../bin/clang-13        cpp
+ln -sfv ../bin/clang-13        g++
+ln -sfv ../bin/clang-13        gcc
 ln -sfv ../bin/llvm-cov        gcov
 ln -sfv ../bin/lld             ld
 ln -sfv ../bin/llvm-nm         nm

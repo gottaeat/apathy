@@ -1,7 +1,7 @@
-From b378e8ea8f3b0b227769112aa350ac0538da8ee6 Mon Sep 17 00:00:00 2001
+From 9cf943be4a1098631ada79f2f0c9a892e3941b5c Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Fri, 2 Jul 2021 18:53:04 +0300
-Subject: [PATCH 1/4] use lib instead of libexec.
+Date: Thu, 5 Aug 2021 11:28:18 +0300
+Subject: [PATCH 1/5] use lib instead of libexec.
 
 ---
  src/bootstrap/dist.rs                          | 2 +-
@@ -9,10 +9,10 @@ Subject: [PATCH 1/4] use lib instead of libexec.
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 8224eac82..d0e0f14b2 100644
+index 16d148db6..856d57faf 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
-@@ -988,7 +988,7 @@ impl Step for Cargo {
+@@ -992,7 +992,7 @@ impl Step for Cargo {
          for dirent in fs::read_dir(cargo.parent().unwrap()).expect("read_dir") {
              let dirent = dirent.expect("read dir entry");
              if dirent.file_name().to_str().expect("utf8").starts_with("cargo-credential-") {

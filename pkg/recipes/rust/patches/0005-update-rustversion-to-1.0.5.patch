@@ -1,7 +1,7 @@
-From a0c11060faafede26c1d509dd8b163e6705c6d3f Mon Sep 17 00:00:00 2001
+From 50b8cab6da16303833a19281eded49b555f0d198 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Fri, 2 Jul 2021 18:58:04 +0300
-Subject: [PATCH 4/4] update rustversion to 1.0.5.
+Date: Thu, 5 Aug 2021 11:32:33 +0300
+Subject: [PATCH 5/5] update rustversion to 1.0.5.
 
 ---
  Cargo.lock                                   |  4 +--
@@ -17,10 +17,10 @@ Subject: [PATCH 4/4] update rustversion to 1.0.5.
  10 files changed, 63 insertions(+), 27 deletions(-)
 
 diff --git a/Cargo.lock b/Cargo.lock
-index 0939f19cd..26a89caf0 100644
+index de110c55a..ff239631c 100644
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -4582,9 +4582,9 @@ dependencies = [
+@@ -4597,9 +4597,9 @@ dependencies = [
  
  [[package]]
  name = "rustversion"

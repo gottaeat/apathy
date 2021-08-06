@@ -1,5 +1,14 @@
-diff --git a/include/locale b/include/locale
-index 3fe4430..e0f5526 100644
+From d664e87362993194eaa75a59bca99234f0816b14 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 4 Aug 2021 13:34:09 +0300
+Subject: [PATCH 1/6] libcxx: fix musl locale.
+
+---
+ libcxx/include/locale | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/libcxx/include/locale b/libcxx/include/locale
+index 8e584005d..947f6a09a 100644
 --- a/libcxx/include/locale
 +++ b/libcxx/include/locale
 @@ -9,7 +9,6 @@
@@ -10,7 +19,7 @@ index 3fe4430..e0f5526 100644
  /*
      locale synopsis
  
-@@ -736,7 +735,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
+@@ -747,7 +746,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -19,7 +28,7 @@ index 3fe4430..e0f5526 100644
          typename remove_reference<decltype(errno)>::type __current_errno = errno;
          if (__current_errno == 0)
              errno = __save_errno;
-@@ -776,7 +775,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
+@@ -787,7 +786,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -29,5 +38,5 @@ index 3fe4430..e0f5526 100644
          if (__current_errno == 0)
              errno = __save_errno;
 -- 
-2.29.2
+2.32.0
 

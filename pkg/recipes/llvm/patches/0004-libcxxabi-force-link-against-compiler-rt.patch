@@ -1,0 +1,40 @@
+From 97c069e3fb11e29b1158d52dca9886e68cd622ef Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 4 Aug 2021 13:38:02 +0300
+Subject: [PATCH 4/6] libcxxabi: force link against compiler-rt.
+
+---
+ libcxxabi/src/CMakeLists.txt | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/libcxxabi/src/CMakeLists.txt b/libcxxabi/src/CMakeLists.txt
+index f07d43349..b78e9f465 100644
+--- a/libcxxabi/src/CMakeLists.txt
++++ b/libcxxabi/src/CMakeLists.txt
+@@ -177,6 +177,11 @@ endif()
+ if (LIBCXXABI_ENABLE_SHARED)
+   add_library(cxxabi_shared SHARED ${LIBCXXABI_SOURCES} ${LIBCXXABI_HEADERS})
+   target_link_libraries(cxxabi_shared PRIVATE cxx-headers ${LIBCXXABI_SHARED_LIBRARIES} ${LIBCXXABI_LIBRARIES})
++
++  if (LIBCXXABI_USE_COMPILER_RT)
++    target_link_libraries(cxxabi_shared PRIVATE ${LIBCXXABI_BUILTINS_LIBRARY})
++  endif()
++
+   if (TARGET pstl::ParallelSTL)
+     target_link_libraries(cxxabi_shared PUBLIC pstl::ParallelSTL)
+   endif()
+@@ -233,6 +238,11 @@ endif()
+ if (LIBCXXABI_ENABLE_STATIC)
+   add_library(cxxabi_static STATIC ${LIBCXXABI_SOURCES} ${LIBCXXABI_HEADERS})
+   target_link_libraries(cxxabi_static PRIVATE cxx-headers ${LIBCXXABI_STATIC_LIBRARIES} ${LIBCXXABI_LIBRARIES})
++
++  if (LIBCXXABI_USE_COMPILER_RT)
++    target_link_libraries(cxxabi_static PRIVATE ${LIBCXXABI_BUILTINS_LIBRARY})
++  endif()
++
+   if (TARGET pstl::ParallelSTL)
+     target_link_libraries(cxxabi_static PUBLIC pstl::ParallelSTL)
+   endif()
+-- 
+2.32.0
+
