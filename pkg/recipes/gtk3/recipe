@@ -1,49 +1,58 @@
 # 1
-sed -i 's/ATK_PACKAGES="atk atk-bridge-2.0"/ATK_PACKAGES="atk"/' configure
-sed -i '/<atk-bridge.h>/d;/atk_bridge_adaptor_init/d'            gtk/a11y/gtkaccessibility.c
-sed -i 's/demos tests testsuite examples//'                      Makefile.am Makefile.in
-sed -i 's/docs m4macros/m4macros/'                               Makefile.am Makefile.in
-
-./configure \
- --build=$CBUILD           \
- --host=$CHOST             \
- --prefix=/usr             \
- --sysconfdir=/etc         \
- --localstatedir=/var      \
- --enable-colord=no        \
- --enable-gtk-doc-html=no  \
- --enable-introspection=no \
- --enable-x11-backend      \
- --enable-xcomposite       \
- --enable-xdamage          \
- --enable-xfixes           \
- --enable-xinerama         \
- --enable-xkb              \
- --enable-xrandr           \
- --disable-cloudprint      \
- --disable-cups            \
- --disable-glibtest        \
- --disable-installed-tests \
- --disable-nls             \
- --disable-papi            \
- --disable-schemas-compile
+sed -i -e '/atkbridge_dep/d;/atk-bridge-2.0/d'           meson.build
+sed -i -e '/atkbridge_dep,/d'                            gtk/meson.build
+sed -i -e '/<atk-bridge.h>/d;/atk_bridge_adaptor_init/d' gtk/a11y/gtkaccessibility.c
 
 cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained.css
 
-make
+mkdir build
+cd    build
 
+meson --buildtype=plain \
+ --prefix=/usr            \
+\
+ -Dx11_backend=true       \
+ -Dwayland_backend=false  \
+ -Dbroadway_backend=false \
+ -Dwin32_backend=false    \
+ -Dquartz_backend=false   \
+\
+ -Dxinerama=yes           \
+ -Dcloudproviders=false   \
+ -Dprofiler=false         \
+ -Dtracker3=false         \
+\
+ -Dprint_backends=file    \
+ -Dcolord=no              \
+\
+ -Dgtk_doc=false          \
+ -Dman=false              \
+ -Dintrospection=false    \
+\
+ -Ddemos=false            \
+ -Dexamples=false         \
+ -Dtests=false            \
+ -Dinstalled_tests=false  \
+\
+ -Dbuiltin_immodules=yes  \
+..
+
+time samu
+
+# 2
 instdir="${PWD}/KEK"
-make DESTDIR="${instdir}" install
+DESTDIR="${instdir}" samu install
 
 glib-compile-schemas \
  --targetdir="${instdir}"/usr/share/glib-2.0/schemas/ \
              "${instdir}"/usr/share/glib-2.0/schemas/
 
-# 2
+# 3
 doas -s
-make install
+samu install
 glib-compile-schemas /usr/share/glib-2.0/schemas/
 
 rm -rfv \
- /usr/share/themes \
- /usr/share/gettext
+ /usr/share/themes  \
+ /usr/share/gettext \
+ /usr/bin/gtk-encode-symbolic-svg

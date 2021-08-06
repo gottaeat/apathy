@@ -45,8 +45,8 @@ make install
 cd ../; rm -rf libXfont2-2.0.4/
 
 # 3 > xorg-server
-tar xf /mss/work/sauces/xorg-server-1.20.11.tar.bz2
-cd     xorg-server-1.20.11/
+tar xf /mss/work/sauces/xorg-server-1.20.13.tar.xz
+cd     xorg-server-1.20.13/
 
 ./configure \
  --build=$CBUILD                     \
