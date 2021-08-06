@@ -2,14 +2,14 @@
 # 1.1 > set before export
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"
 mypath="$mypath:/mss/bin:/home/mss/execs"
-mypath="$mypath:/opt/llvm-12.0.1/bin"
-mypath="$mypath:/opt/llvm-12.0.1/compat"
-mypath="$mypath:/opt/rustc-1.53.0/bin"
-mypath="$mypath:/opt/cbindgen-0.19.0/bin"
+mypath="$mypath:/opt/llvm-13.0.0/bin"
+mypath="$mypath:/opt/llvm-13.0.0/compat"
+mypath="$mypath:/opt/rustc-1.54.0/bin"
+mypath="$mypath:/opt/cbindgen-0.20.0/bin"
 mypath="$mypath:/opt/node.js-14.17.3/bin"
 
-mylibpath="/opt/llvm-12.0.1/lib"
-mylibpath="$mylibpath:/opt/rustc-1.53.0/lib"
+mylibpath="/opt/llvm-13.0.0/lib"
+mylibpath="$mylibpath:/opt/rustc-1.54.0/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
 # 1.2 > essentials
