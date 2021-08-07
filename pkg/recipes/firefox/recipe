@@ -2,7 +2,7 @@
 penis="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/opt/firefox-78.12.0esr,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/opt/firefox-78.12.0esr/lib,--enable-new-dtags"
 
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
@@ -127,5 +127,12 @@ time ./mach build
 instdir="${PWD}/KEK"
 DESTDIR="${instdir}" ./mach install
 
-install -v -Dm644 "${fdir}"/vendor.js     "${instdir}"/usr/lib/firefox/browser/defaults/preferences/vendor.js
-install -v -Dm644 "${fdir}"/policies.json "${instdir}"/usr/lib/firefox/distribution/policies.json
+mv      "${instdir}"/opt/firefox-78.12.0esr/lib/firefox/ "${instdir}"/opt/firefox-78.12.0esr/a
+rm -rf  "${instdir}"/opt/firefox-78.12.0esr/{lib,bin}
+mv      "${instdir}"/opt/firefox-78.12.0esr/a "${instdir}"/opt/firefox-78.12.0esr/lib
+mkdir   "${instdir}"/opt/firefox-78.12.0esr/bin
+pushd   "${instdir}"/opt/firefox-78.12.0esr/bin
+ln -sfv ../lib/firefox firefox
+
+install -v -Dm644 "${fdir}"/vendor.js     "${instdir}"/opt/firefox-78.12.0esr/lib/browser/defaults/preferences/vendor.js
+install -v -Dm644 "${fdir}"/policies.json "${instdir}"/opt/firefox-78.12.0esr/lib/distribution/policies.json

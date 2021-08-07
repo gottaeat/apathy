@@ -5,8 +5,8 @@ mk_add_options MOZ_MAKE_FLAGS="-j2"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix=/usr
-ac_add_options --libdir=/usr/lib
+ac_add_options --prefix="/opt/firefox-78.12.0esr"
+ac_add_options --libdir="/opt/firefox-78.12.0esr/lib"
 ac_add_options --with-libclang-path="/opt/llvm-13.0.0/lib"
 ac_add_options --with-clang-path="/opt/llvm-13.0.0/bin/clang"
 
@@ -37,7 +37,6 @@ ac_add_options --with-distribution-id=io.github.mssx86
 # > 6
 ac_add_options --enable-alsa
 ac_add_options --enable-ffmpeg
-ac_add_options --enable-webspeech
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
@@ -52,6 +51,7 @@ ac_add_options --disable-system-extension-dirs
 ac_add_options --disable-updater
 ac_add_options --disable-vtune
 ac_add_options --disable-webrtc
+ac_add_options --disable-webspeech
 
 # > 7
 ac_add_options --enable-system-ffi
