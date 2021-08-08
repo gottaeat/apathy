@@ -41,7 +41,7 @@ i g . util-linux          2.37.0
 i g . e2fsprogs           1.45.6
 i g . eudev               3.2.9
 i l . linux               5.13.8
-i l . init                20210804_031809
+i l . init                20210808_190646
 i g . opendoas            6.8.1
 i g . iptables            1.8.7
 i l . curl                7.78.0
