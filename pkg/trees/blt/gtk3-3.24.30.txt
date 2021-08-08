@@ -1,7 +1,6 @@
 /etc/gtk-3.0
 
 /usr/bin/gtk-builder-tool
-/usr/bin/gtk-encode-symbolic-svg
 /usr/bin/gtk-launch
 /usr/bin/gtk-query-immodules-3.0
 /usr/bin/gtk-query-settings

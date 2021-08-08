@@ -1,2 +1,5 @@
+/usr/bin/awk
+/usr/bin/gawk
 /usr/bin/mawk
+
 /usr/share/man
