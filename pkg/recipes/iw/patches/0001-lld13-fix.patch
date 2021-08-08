@@ -1,0 +1,52 @@
+diff --git a/iw.h b/iw.h
+index 7f7f4fc..8ca8e44 100644
+--- a/iw.h
++++ b/iw.h
+@@ -118,8 +118,9 @@ struct chandef {
+ 		.parent = _section,					\
+ 		.selector = (_sel),					\
+ 	};								\
++	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+ 	static struct cmd *__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden ## _p \
+-	__attribute__((used,section("__cmd"))) =			\
++	__attribute__((used,retain,section("__cmd"))) =			\
+ 	&__cmd ## _ ## _symname ## _ ## _handler ## _ ## _nlcmd ## _ ## _idby ## _ ## _hidden
+ #define __ACMD(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel, _alias)\
+ 	__COMMAND(_section, _symname, _name, _args, _nlcmd, _flags, _hidden, _idby, _handler, _help, _sel);\
+@@ -141,16 +142,18 @@ struct chandef {
+ 		.handler = (_handler),					\
+ 		.help = (_help),					\
+ 	 };								\
++	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+ 	static struct cmd *__section ## _ ## _name ## _p		\
+-	__attribute__((used,section("__cmd"))) = &__section ## _ ## _name
++	__attribute__((used,retain,section("__cmd"))) = &__section ## _ ## _name
+ 
+ #define SECTION(_name)							\
+ 	struct cmd __section ## _ ## _name = {				\
+ 		.name = (#_name),					\
+ 		.hidden = 1,						\
+ 	};								\
++	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+ 	static struct cmd *__section ## _ ## _name ## _p		\
+-	__attribute__((used,section("__cmd"))) = &__section ## _ ## _name
++	__attribute__((used,retain,section("__cmd"))) = &__section ## _ ## _name
+ 
+ #define DECLARE_SECTION(_name)						\
+ 	extern struct cmd __section ## _ ## _name;
+@@ -162,13 +165,14 @@ struct vendor_event {
+ };
+ 
+ #define VENDOR_EVENT(_id, _subcmd, _callback)				\
++	_Pragma("GCC diagnostic ignored \"-Wattributes\"") 		\
+ 	const struct vendor_event 					\
+ 	vendor_event_ ## _id ## _ ## _subcmd = {			\
+ 		.vendor_id = _id,					\
+ 		.subcmd = _subcmd,					\
+ 		.callback = _callback,					\
+ 	}, * const vendor_event_ ## _id ## _ ## _subcmd ## _p		\
+-	__attribute__((used,section("vendor_event"))) =			\
++	__attribute__((used,retain,section("vendor_event"))) =			\
+ 		&vendor_event_ ## _id ## _ ## _subcmd
+ 
+ extern const char iw_version[];

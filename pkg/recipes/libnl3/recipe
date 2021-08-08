@@ -1,0 +1,12 @@
+# 1
+pdir="/mss/repo/pkg/recipes/libnl3/patches"
+patch -p1 < "${pdir}"/0001-musl-fixes.patch
+
+./configure \
+ --build=$CBUILD   \
+ --host=$CHOST     \
+ --prefix=/usr     \
+ --sysconfdir=/etc \
+ --enable-cli=no   \
+ --disable-debug   \
+ --disable-static 
