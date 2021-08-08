@@ -1,0 +1,3 @@
+/usr/bin/aircrack-ng
+/usr/bin/aireplay-ng
+/usr/bin/airodump-ng

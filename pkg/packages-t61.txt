@@ -165,7 +165,8 @@ i l . slmenu              0.1
 i l . st                  0.8.4
 i l . lz4                 1.9.3
 i g . links               2.20.2
-i g . wpa-supplicant      2.9
+i l . wpa-supplicant      2.9 
+i l .. libnl3             3.5.0
 i g . lilo                24.2
 i l . dwm                 6.2
 i g . irssi               1.2.3
@@ -203,3 +204,5 @@ i l . innoextract         660546ad
 i l . fbcat               99a9aaed
 i l . clzip               1.12
 i l . tzdb                2021a
+i l . aircrack-ng         1.6
+i l .. iw                 5.9
