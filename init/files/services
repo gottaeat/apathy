@@ -282,7 +282,7 @@ svc_nfs(){
      startnfsbase 
  
      ainitsvc "nfs" "starting rpc.nfsd"
-      rpc.nfsd -p 2049 8
+      rpc.nfsd -p 2049 "${nfs_threads}"
      evalret
  
      ainitsvc "nfs" "starting rpc.mountd"
