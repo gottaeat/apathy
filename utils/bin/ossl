@@ -1,0 +1,61 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+
+case "${1}" in
+ pass) openssl rand -base64 12; exit 0 ;;
+ dec)  params="enc -d" action="dec"  outext=".OSSLdec" ;;
+ enc)  params="enc"    action="enc"  outext=".OSSLenc" ;;
+ *)
+  aprint_nc
+  aprint_usage "{pass}{enc|dec}"
+  aprint_nc
+  exit 1
+ ;;
+esac
+
+if [ -z "${2}" ]
+ then
+  aprint_nc
+  aprint_fail "set an input file in \$2, exiting."
+  aprint_nc
+  exit 1
+ else
+  infile="${2}"
+  if [ -f "$(readlink -f ${infile})" ]
+   then
+    case "$(file "${infile}")" in
+     *salted*) fcheck="yes" ;;
+     *)        fcheck="no"  ;;
+    esac
+
+    if [ "${action}" = "dec" ] && [ "${fcheck}" = "no" ]; then
+     aprint_nc
+     aprint_fail "can't decrypt what's not encrypted."
+     aprint_nc
+     exit 1
+    elif [ "${action}" = "enc" ] && [ "${fcheck}" = "yes" ]; then
+     aprint_nc
+     aprint_fail "already encrypted."
+     aprint_nc
+     exit 1
+    fi
+
+    outfile="$(echo ${infile} | sed "s/\.OSSLdec//;s/\.OSSLenc//")${outext}"
+
+    aprint_nc
+    aprint "${action}rypting ${infile}."
+     openssl ${params} \
+      -aes-256-cbc     \
+      -md sha512       \
+      -pbkdf2          \
+      -iter 100000     \
+      -salt            \
+      -in "${infile}" -out "${outfile}"
+    aprint_nc
+   else
+    aprint_nc
+    aprint_fail "set an input file in \$2, exiting."
+    aprint_nc
+    exit 1
+  fi
+fi
