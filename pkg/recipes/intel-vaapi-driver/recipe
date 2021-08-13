@@ -1,0 +1,12 @@
+# 1
+mkdir build
+cd    build
+
+meson --buildtype=plain      \
+ --prefix=/usr               \
+\
+ -Dwith_x11=yes              \
+ -Dwith_wayland=no           \
+ -Denable_hybrid_codec=false \
+ -Denable_tests=false        \
+.. 

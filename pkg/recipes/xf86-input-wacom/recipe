@@ -1,0 +1,20 @@
+# 1
+  CFLAGS="${CFLAGS}   -fno-builtin" \
+CXXFLAGS="${CXXFLAGS} -fno-builtin" \
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --disable-debug      \
+ --disable-unit-tests \
+ --disable-hal-fdi-preprobe-quirk
+
+make
+
+# 2
+doas -s
+make install
+rm -rfv \
+ /usr/share/man   \
+ /usr/lib/systemd \
+ /usr/lib/xorg/modules/input/wacom_drv.la

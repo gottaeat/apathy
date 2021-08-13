@@ -12,7 +12,7 @@ cd     libXv-1.0.11/
 ./configure  \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${schtik}" \
+ --prefix="${penis}" \
  --sysconfdir=/etc    \
  --localstatedir=/var \
  --enable-static      \
@@ -24,8 +24,9 @@ make install
 cd ../; rm -rf libXv-1.0.11/
 
 # 3 > ffmpeg
-case "$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)" in
- *) schtik="disable" schtiklist="oss,sndio,v4l2" ;;
+case "${amachine}" in
+ t61)   peen="disable" peenlist="oss,sndio,v4l2" ;;
+ x230t) peen="enable"  peenlist="oss,sndio"      ;;
 esac
 
 tar xf /mss/work/sauces/ffmpeg-4.4.tar.xz
@@ -68,12 +69,12 @@ cd    build
  --disable-static                 \
  --disable-symver                 \
 \
- --"${schtik}"-aesni              \
- --"${schtik}"-avx                \
- --"${schtik}"-sse42              \
- --"${schtik}"-xop                \
- --"${schtik}"-fma3               \
- --"${schtik}"-fma4               \
+ --"${peen}"-aesni                \
+ --"${peen}"-avx                  \
+ --"${peen}"-sse42                \
+ --"${peen}"-xop                  \
+ --"${peen}"-fma3                 \
+ --"${peen}"-fma4                 \
  --enable-mmxext                  \
  --enable-asm                     \
  --enable-fast-unaligned          \
@@ -108,9 +109,9 @@ cd    build
  --disable-ffplay                 \
  --disable-ffprobe                \
 \
- --"${schtik}"-libv4l2            \
- --"${schtik}"-v4l2-m2m           \
- --"${schtik}"-vaapi              \
+ --"${peen}"-libv4l2              \
+ --"${peen}"-v4l2-m2m             \
+ --"${peen}"-vaapi                \
  --enable-alsa                    \
  --enable-bzlib                   \
  --enable-libass                  \
@@ -138,8 +139,8 @@ cd    build
  --enable-xlib                    \
  --enable-zlib                    \
 \
- --disable-indev="${schtiklist}"  \
- --disable-outdev="${schtiklist}" \
+ --disable-indev="${peenlist}"    \
+ --disable-outdev="${peenlist}"   \
 \
  --disable-doc                    \
  --disable-htmlpages              \

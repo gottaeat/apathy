@@ -1,22 +1,23 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.13 kernels, version 1, for thinkpad t61.
+# build script for 5.13 kernels, version 2, for thinkpad t61 and x230t.
 
 . /mss/files/funcs
+. /mss/files/device.conf
 
 # 1 > check if variables are set
 if [ -z "${1}" ]
  then aprint_fail "specify a linux tarball with \$1."; exit 1
 fi
 
-case "${2}" in
- t61)  confname="t61"  ;;
- *)    aprint_fail "host $2 is not supported."; exit 1
+case "${amachine}" in
+ x230t|t61)    continue                                                 ;;
+ unrecognized) aprint_fail "host ${amachine} is not supported."; exit 1 ;;
 esac
 
 # 2 > set script vars
   blddate="$(date "+%Y%m%d_%H%M%S")"
- storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel/${confname}"
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel/${amachine}"
   repodir="/mss/repo/pkg/recipes/linux"
  saucedir="/mss/work/sauces"
   workdir="/mss/work/table"
@@ -27,7 +28,7 @@ esac
  patchdir="${repodir}/patches"
       rdr="${logdir}/${blddate}-linux-${kerver}.log"
 
-  useconf="${repodir}/files/${confname}.config"
+  useconf="${repodir}/files/${amachine}.config"
  localver="5.13$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                       print}' ${useconf})"
   bldsalt="$(awk     '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
@@ -56,7 +57,7 @@ mymake(){ make LLVM=1 LLVM_IAS=1 "$@";}
 # 5 > print details
 clear; aprint_nc
 lsdetail "release  " "${kerver}   "
-lsdetail "machine  " "${confname} "
+lsdetail "machine  " "${amachine} "
 lsdetail "localver " "${localver} "
 lsdetail "details  " "${bldsalt}  "
 lsdetail "makeflags" "${MAKEFLAGS}"
@@ -147,6 +148,12 @@ read answerpkgup
 
 case "${answerpkgup}" in
  yes|Y|y)
+  if [ ! -d "${storepkg}" ]; then
+   aprint_ret "creating storepkg dir for ${amachine}."
+    mkdir -pv "${storepkg}" >> "${rdr}" 2>&1
+   evalret
+  fi
+
   aprint_ret "packaging up the built kernel."
    pkglocalver="$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                        print}' ${makedir}/.config)"
@@ -171,6 +178,6 @@ aprint_nc; aprint_ask "clean up the work directory? (y/n): "
 read answerclean
 
 case "${answerclean}" in
- yes|Y|y) aprint_ret "cleaning up the workdir."; rm -rf ${makedir}; evalret ;;
- *)       aprint "not cleaning up the workdir."; exit 0                     ;;
+ yes|Y|y) aprint_ret "cleaning up the workdir."; rm -rf "${makedir}"; evalret ;;
+ *)       aprint "not cleaning up the workdir."; exit 0                       ;;
 esac

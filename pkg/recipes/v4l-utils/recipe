@@ -1,9 +1,5 @@
 # 1
 penis="/mss/work/table/KEK"
-export       CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -D__off_t=off_t -fPIC"
-export     CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -D__off_t=off_t -fPIC"
-export      LDFLAGS="${LDFLAGS}  -largp"
-export LIBRARY_PATH="${penis}/lib"
 
 tar xf /mss/work/sauces/argp-standalone-1.3.tar.gz
 cd     argp-standalone-1.3/
@@ -14,21 +10,26 @@ patch -p1 < "${pdir}"/0002-argp-standalone-gnu89-inline.patch
 
 autoreconf -vfi
 
-CFLAGS="${CFLAGS} -fPIC" \
+CFLAGS="${CFLAGS} -fPIC -fno-builtin" \
 ./configure      \
  --build=$CBUILD \
  --host=$CHOST   \
  --prefix="${penis}"
 
 make
+
 mkdir -pv "${penis}"/{include,lib}
 cp    -rf argp.h    "${penis}"/include
 cp    -rf libargp.a "${penis}"/lib
 
-cd ..
-rm -rf argp-standalone-1.3/
+cd ../; rm -rf argp-standalone-1.3/
 
 # 2
+export       CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -D__off_t=off_t"
+export     CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -D__off_t=off_t"
+export      LDFLAGS="${LDFLAGS}  -largp"
+export LIBRARY_PATH="${penis}/lib"
+
 tar xf /mss/work/sauces/v4l-utils-1.20.0.tar.bz2
 cd     v4l-utils-1.20.0/
 
