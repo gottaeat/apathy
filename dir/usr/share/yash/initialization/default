@@ -1,12 +1,13 @@
+# 1 > includery
 . /mss/files/sourceme
 . /mss/files/sourceme-aliases
 . /mss/files/sourceme-build
 
-## a >> yash settings
-# a1 >> history 
+# 2 > vars
 HISTFILE=~/.yash_history HISTSIZE=30000
+FCEDIT="vim"
 
-# a2 >> enable features
+# 3 > features
 set --vi
 set --brace-expand
 set --extended-glob
@@ -14,15 +15,12 @@ set --no-unset
 set --notify-le
 set --hist-space
 
-# a3 >> clear screen with C-l
 bindkey -av '\^L' clear-and-redraw-all
 
-# a4 >> set vi mode editor
-FCEDIT="vim"
+# 4 > prompts
+if [ "$(id -u)" -eq 0 ]
+ then YASH_PS1='\fob $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD'
+ else YASH_PS1='\fok $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD'
+fi
 
-# a5 >> prompts
-[ "$(id -u)" -eq 0 ] \
- && YASH_PS1='\fob $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD' \
- || YASH_PS1='\fok $?\fow ${${${PWD:/~/\~}##*/}:-$PWD}\for: \fD'
-    YASH_PS2="\fc > \fD"
-   YASH_PS2R="\fc <\fD"
+YASH_PS2=" \fow> \fD"

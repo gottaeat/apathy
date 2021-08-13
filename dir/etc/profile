@@ -1,17 +1,17 @@
-umask 022
-unset ROOTPATH
-
+# 1 > includery
 . /mss/files/sourceme         || source /mss/files/sourceme
 . /mss/files/sourceme-aliases || source /mss/files/sourceme-aliases
 . /mss/files/sourceme-build   || source /mss/files/sourceme-build
 
-## a >> ash/bash settings
-# a1 >> prompts
-[ $(id -u) -eq 0 ] \
- && _user="\[\e[34m\] \#\[\e[m\] " \
- || _user="\[\e[37m\]$\[\e[m\] "
-export PS1="${_user}\[\e[34m\]\W\[\e[m\] "
-export PS2="\[\e[33m\] -> \[\e[m\] "
-
-# a2 >> history
+# 2 > vars
+umask 022
+unset ROOTPATH
 export HISTSIZE=1000
+
+# 3 > prompts
+if [ $(id -u) -eq 0 ]
+ then PS1=export PS1="\[\033[1;34m\] \$? \[\033[1;37m\]\W\[\033[1;31m\]:\[\e[m\] "
+ else PS1=export PS1="\[\033[1;30m\] \$? \[\033[1;37m\]\W\[\033[1;31m\]:\[\e[m\] "
+fi
+
+PS2=" \[\033[1;37m\]>\[\e[m\] "
