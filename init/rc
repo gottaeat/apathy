@@ -1,6 +1,5 @@
 #!/mss/bin/sh
 . /mss/init/files/funcs
-. /mss/files/init.conf
 
 # 1 > silence dmesg
 dmesg --console-off
@@ -20,6 +19,10 @@ initboi(){
   ln    -sfn /run/shm  /dev/shm          &&
 
   ainit_mount gid=5,mode=620 devpts devpts /dev/pts
+ evalret
+
+ ainitmes "loading the ${cb_cyn}init config${c_res}."
+  . /mss/files/init.conf >/dev/null 2>&1
  evalret
 
  ainitmes "starting ${cb_cyn}udev${c_res}."
@@ -66,9 +69,11 @@ initboi(){
   alsactl restore >/dev/null 2>&1
  evalret
 
- ainitmes "setting the ${cb_cyn}console font${c_res}."
-  loadfont < /usr/share/consolefonts/"${dev_font}".psf >/dev/null 2>&1
- evalret
+ if [ -f /usr/share/consolefonts/"${dev_font}".psf ]; then
+  ainitmes "setting the ${cb_cyn}console font${c_res}."
+   loadfont < /usr/share/consolefonts/"${dev_font}".psf >/dev/null 2>&1
+  evalret
+ fi
 
  ainitmes "starting the ${cb_cyn}log daemons${c_res}."
   syslogd && klogd
@@ -89,6 +94,10 @@ initboi(){
 
 goingdown(){
  stty onlcr; banner
+
+ ainitmes "loading the ${cb_cyn}init config${c_res}."
+  . /mss/files/init.conf >/dev/null 2>&1
+ evalret
 
  stopsvcs
 
