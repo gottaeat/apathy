@@ -1,18 +1,26 @@
 #!/mss/bin/sh
 . /mss/files/funcs
+. /mss/files/device.conf
 
 # system info
-     dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
-     kern="$(uname -r)"
-    model="$(awk '{print tolower($0)}' /sys/devices/virtual/dmi/id/product_family)"
-      cpu="$(awk '/model name/{sub(/\(TM\)/,"");                               \
-                 familya=tolower($5); familyb=tolower($6); model=tolower($8)};\
-                 /MHz/{hz=int($4)};                                           \
-                 END{print familya,familyb,model,"@",hz"mhz"}' /proc/cpuinfo)"
-      mem="$(awk '/Avail/    {avail=int($2/1024)};     \
-                  /MemTotal/ {total=int($2/1024)};     \
-                  END{print (total-avail)"/"total"m"}' \
-                  /proc/meminfo)"
+    dist="$(awk '/PRETTY/{gsub(/PRETTY_NAME=\"|\"/,""); print}' /etc/os-release)"
+    kern="$(uname -r)"
+     mem="$(awk '/^MemFree:/      {mfree=int($2/1024)};          \
+                 /^Cached:/       {mcached=$2};                  \
+                 /^Buffers:/      {mbuffers=$2};                 \
+                 /^SReclaimable:/ {mrecl=$2};                    \
+                 /^MemAvailable:/ {mavail=int($2/1024)};         \
+                 {mcachefin=int((mcached+mbuffers+mrecl)/1024)}; \
+                 END{print mavail"m","("mfree"+"mcachefin")"}' /proc/meminfo)"
+
+ cpu_pre="$(awk '/model name/{gsub(/model name[[:space:]]: |Intel\(R\) |\(TM\)|CPU|@/,"");
+                 a=$0}; END{print tolower(a)}' /proc/cpuinfo)"
+
+case "${cpu_pre}" in
+ *core2*) cpu="$(echo "${cpu_pre}" | awk '{print $1,$2,$3,"@"$4}')" ;;
+ *)       cpu="$(echo "${cpu_pre}" | awk '{print $1,$2,"@"$3}')"    ;;
+esac
+
 # shell
  intshell=$(basename $(grep ${LOGNAME} /etc/passwd | cut -d: -f7))
     binsh="(/bin/sh: $(realpath /bin/sh | awk 'sub(/\/bin\//,"")'))"
@@ -53,7 +61,7 @@ read _host < /etc/hostname
 aprint_nc
 lsdetail "os  " "${dist}"
 lsdetail "kern" "${kern}"
-lsdetail "host" "${cl_grn}${_host}${c_res} on ${cb_blu}${model}${c_res}"
+lsdetail "host" "${cl_grn}${_host}${c_res} on ${cb_blu}${amachine}${c_res}"
 lsdetail "sh  " "${shell} ${binsh}"
 lsdetail "cpu " "${cpu}"
 lsdetail "mem " "${mem}"

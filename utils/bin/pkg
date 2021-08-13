@@ -1,13 +1,13 @@
 #!/mss/bin/sh
 . /mss/files/funcs
+. /mss/files/device.conf
 
-   host="$(awk '{print $2}' /sys/devices/virtual/dmi/id/product_family)"
 repodir="/mss/repo"
 localdb="/mss/files/packages.txt"
 
-case "${host}" in
- T61)  repodb="${repodir}/pkg/packages-t61.txt"             ;;
- *)    aprint_fail "host ${host} is not supported."; exit 1 ;;
+case "${amachine}" in
+ t61|x230t) repodb="${repodir}/pkg/packages-${amachine}.txt"     ;;
+ *)         aprint_fail "${amachine} is not recognized."; exit 1 ;;
 esac
 
 if   [ ! -f "${localdb}" ]; then
@@ -17,7 +17,7 @@ if   [ ! -f "${localdb}" ]; then
  exit 1
 elif [ ! -f "${repodb}"  ]; then
  aprint_nc
- aprint_fail "(repo)  database file for ${host} does not exist, exiting."
+ aprint_fail "(repo)  database file for ${amachine} does not exist, exiting."
  aprint_nc
  exit 1
 fi
@@ -121,7 +121,7 @@ stats(){
 
 sync(){
  aprint_nc
- aprint_ret "(repo -> local) syncing packages database for ${host}."
+ aprint_ret "(repo -> local) syncing packages database for ${amachine}."
   cp "${repodb}" "${localdb}"
  evalret
  aprint_nc
