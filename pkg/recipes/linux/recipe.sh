@@ -5,15 +5,12 @@
 . /mss/files/funcs
 . /mss/files/device.conf
 
-# 1 > check if variables are set
-if [ -z "${1}" ]
- then aprint_fail "specify a linux tarball with \$1."; exit 1
+# 1 > first stage checks
+if [ "${amachine}" = "unrecognized" ]; then
+ aprint_fail "host is not recognized, exiting."; exit 1
+elif [ -z "${1}" ]; then
+ aprint_fail "specify a linux tarball with \$1."; exit 1
 fi
-
-case "${amachine}" in
- x230t|t61)    continue                                                 ;;
- unrecognized) aprint_fail "host ${amachine} is not supported."; exit 1 ;;
-esac
 
 # 2 > set script vars
   blddate="$(date "+%Y%m%d_%H%M%S")"
