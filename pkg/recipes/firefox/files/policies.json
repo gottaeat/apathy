@@ -1,5 +1,6 @@
 {
  "policies": {
+  "AppAutoUpdate": false,
   "AppUpdateURL": "https://localhost",
   "CaptivePortal": false,
   "DisableAppUpdate": true,
@@ -12,7 +13,7 @@
   "DisablePocket": true,
   "DisableProfileImport": false,
   "DisableSetDesktopBackground": true,
-  "DisableSystemAddonUpdate": true,
+  "DisableSystemAddonUpdate": false,
   "DisableTelemetry": true,
   "DontCheckDefaultBrowser": true,
   "NetworkPrediction": false,
@@ -22,30 +23,6 @@
    "Enabled": false,
    "ProviderURL": "",
    "Locked": false
-  },
-
-  "WebsiteFilter": {
-   "Block": ["https://localhost/*"],
-   "Exceptions": ["https://localhost/*"]
-  },
-
-  "Extensions": {
-   "Uninstall": [
-    "amazondotcom@search.mozilla.org",
-    "bing@search.mozilla.org",
-    "ddg@search.mozilla.org",
-    "ebay@search.mozilla.org",
-    "twitter@search.mozilla.org",
-    "wikipedia@search.mozilla.org",
-    "yandex@search.mozilla.org"
-   ]
-  },
-
-  "SearchSuggestEnabled": false,
-  "SearchEngines": {
-   "PreventInstalls": false,
-   "Default": "Google",
-   "Remove": ["DuckDuckGo", "Bing", "Amazon.com", "eBay", "Twitter"]
   }
  }
 }

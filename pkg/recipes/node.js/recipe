@@ -1,14 +1,14 @@
 # 1
-case "${CFLAGS}" in
- *-O2*)
-  export   CFLAGS="$(echo "${CFLAGS}"   | sed 's/-O2/-Os/')"
-  export CXXFLAGS="$(echo "${CXXFLAGS}" | sed 's/-O2/-Os/')"
- ;;
- *-O3*)
-  export   CFLAGS="$(echo "${CFLAGS}"   | sed 's/-O3/-Os/')"
-  export CXXFLAGS="$(echo "${CXXFLAGS}" | sed 's/-O3/-Os/')"
- ;;
-esac
+t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-O[23]/-Os/')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-O[23]/-Os/')"
 
 # 2
 tar xf /mss/work/sauces/node-v14.17.3.tar.xz

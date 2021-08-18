@@ -1,0 +1,102 @@
+From ad325230c610bd5bbf441cd9ff72235705d40a7e Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Mon, 16 Aug 2021 03:04:36 +0300
+Subject: [PATCH 1/9] nuke no-integrated-as.
+
+---
+ security/nss/lib/freebl/Makefile         |  9 --------
+ security/nss/lib/freebl/freebl.gyp       | 26 ------------------------
+ security/nss/lib/freebl/freebl_base.gypi | 13 ------------
+ 3 files changed, 48 deletions(-)
+
+diff --git a/security/nss/lib/freebl/Makefile b/security/nss/lib/freebl/Makefile
+index 0b8c6f42fa..ba9b7f46ce 100644
+--- a/security/nss/lib/freebl/Makefile
++++ b/security/nss/lib/freebl/Makefile
+@@ -746,15 +746,6 @@ ifdef INTEL_GCM
+ # GCM binary needs -mssse3
+ #
+ $(OBJDIR)/$(PROG_PREFIX)intel-gcm-wrap$(OBJ_SUFFIX): CFLAGS += -mssse3
+-
+-# The integrated assembler in Clang 3.2 does not support % in the
+-# expression of a .set directive. intel-gcm.s uses .set to give
+-# symbolic names to registers, for example,
+-#     .set  Htbl, %rdi
+-# So we can't use Clang's integrated assembler with intel-gcm.s.
+-ifdef CC_IS_CLANG
+-$(OBJDIR)/$(PROG_PREFIX)intel-gcm$(OBJ_SUFFIX): CFLAGS += -no-integrated-as
+-endif
+ endif
+ 
+ ifdef INTEL_GCM_CLANG_CL
+diff --git a/security/nss/lib/freebl/freebl.gyp b/security/nss/lib/freebl/freebl.gyp
+index e7703baf8d..c51a70344d 100644
+--- a/security/nss/lib/freebl/freebl.gyp
++++ b/security/nss/lib/freebl/freebl.gyp
+@@ -16,19 +16,6 @@
+       'dependencies': [
+         '<(DEPTH)/exports.gyp:nss_exports'
+       ],
+-      'conditions': [
+-        [ 'cc_is_clang==1', {
+-          'cflags': [
+-            '-no-integrated-as',
+-          ],
+-          'cflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-          'asflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-        }],
+-      ],
+     },
+     {
+       'target_name': 'intel-gcm-wrap_c_lib',
+@@ -325,19 +312,6 @@
+       'dependencies': [
+         '<(DEPTH)/exports.gyp:nss_exports'
+       ],
+-      'conditions': [
+-        [ 'cc_is_clang==1', {
+-          'cflags': [
+-            '-no-integrated-as',
+-          ],
+-          'cflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-          'asflags_mozilla': [
+-            '-no-integrated-as',
+-          ],
+-        }],
+-      ],
+     },
+     {
+       'target_name': 'ppc-gcm-wrap-nodepend_c_lib',
+diff --git a/security/nss/lib/freebl/freebl_base.gypi b/security/nss/lib/freebl/freebl_base.gypi
+index afbffac729..4446fd95eb 100644
+--- a/security/nss/lib/freebl/freebl_base.gypi
++++ b/security/nss/lib/freebl/freebl_base.gypi
+@@ -71,19 +71,6 @@
+             'mpi/mpi_amd64_common.S',
+             'mpi/mp_comba.c',
+           ],
+-          'conditions': [
+-            [ 'cc_is_clang==1 and fuzz!=1 and coverage!=1', {
+-              'cflags': [
+-                '-no-integrated-as',
+-              ],
+-              'cflags_mozilla': [
+-                '-no-integrated-as',
+-              ],
+-              'asflags_mozilla': [
+-                '-no-integrated-as',
+-              ],
+-            }],
+-          ],
+         }],
+         [ 'target_arch=="ia32"', {
+           'sources': [
+-- 
+2.32.0
+

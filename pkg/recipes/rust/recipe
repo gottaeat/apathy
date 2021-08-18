@@ -1,4 +1,15 @@
-# 1 > rust
+# 1
+t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx,-aes,-sse4a,-sse4.2"
+
+export    CFLAGS="$(echo "${CFLAGS}"    \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export  CXXFLAGS="$(echo "${CXXFLAGS}"  \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export RUSTFLAGS="$(echo "${RUSTFLAGS}" \
+ | sed "s/-Ctarget-cpu=native/${t61rf}/")"
+
+# 2
 tar xf /mss/work/sauces/rustc-1.54.0-src.tar.gz
 cd     rustc-1.54.0-src/
 
@@ -24,7 +35,7 @@ export PKG_CONFIG_ALLOW_CROSS=1
 export LLVM_LINK_SHARED=1
 time python3 ./x.py build -j "${ajobcount}"
 
-# 2
+# 3
 instdir="${PWD}"/KEK
 DESTDIR="${instdir}" python3 ./x.py install
 
@@ -50,4 +61,4 @@ find "${instdir}"/opt/rustc-1.54.0/lib -name \*.rlib \
  -exec strip --strip-debug    {} ';'
 
 find "${instdir}"/opt/rustc-1.54.0/lib -name \*.rlib \
- -exec ${RANLIB}                 {} ';'
+ -exec ${RANLIB}              {} ';'

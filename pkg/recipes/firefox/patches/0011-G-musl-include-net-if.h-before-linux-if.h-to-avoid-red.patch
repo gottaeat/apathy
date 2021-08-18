@@ -1,0 +1,27 @@
+From aef14ba62a0b721b25d7210aa02eb263edefb715 Mon Sep 17 00:00:00 2001
+From: Rasmus Thomsen <oss@cogitri.dev>
+Date: Wed, 28 Oct 2020 17:50:24 +0100
+Subject: [PATCH 20/35] musl: include net/if.h before linux/if.h to avoid
+ redefinition
+
+Bug: https://bugs.gentoo.org/751469
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ .../webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c  | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c b/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
+index 73e85c6ccc..9eca548638 100644
+--- a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
++++ b/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
+@@ -31,6 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+ 
+ #if defined(LINUX)
++#include <net/if.h>
+ #include "addrs-netlink.h"
+ #include <csi_platform.h>
+ #include <assert.h>
+-- 
+2.32.0
+

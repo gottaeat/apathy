@@ -1,10 +1,21 @@
 # 1 > env vars
+t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx -Ctarget-feature=-aes"
+t61rf="${t61rf} -Ctarget-feature=-sse4a -Ctarget-feature=-sse4.2"
 penis="/mss/work/table/KEK"
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--thinlto-cache-dir=\/mss\/work\/ltocache//g')"
+
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS} -Wl,-rpath=/opt/firefox-78.12.0esr/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-91.0.1esr/lib,--enable-new-dtags"
 
-                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
+                    RUSTFLAGS="-Clinker=${CC} ${t61rf} -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
@@ -19,8 +30,7 @@ export             MOZ_NOSPAM=1
 export        MOZ_DEBUG_FLAGS="-g0"
 export MACH_USE_SYSTEM_PYTHON=1
 
-# 2 > static libXt?
-# doesn't link against it but still wants it for build for some reason
+# 2 > static libXt
 tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
 cd     libXt-1.2.1/
 
@@ -56,7 +66,7 @@ configtomusl
  --build=$CBUILD     \
  --host=$CHOST       \
  --prefix="${penis}" \
- --program-suffix=-2.13
+ --program-suffix="-2.13"
 
 make
 make install
@@ -89,8 +99,8 @@ make prefix="${penis}"     -f unix/Makefile install
 cd ../; rm -rf zip30/
 
 # 6 > extraction
-tar xf /mss/work/sauces/firefox-78.12.0esr.source.tar.xz
-cd     firefox-78.12.0/
+tar xf /mss/work/sauces/firefox-91.0.1esr.source.tar.xz
+cd     firefox-91.0.1/
 
 # 7 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
@@ -98,10 +108,12 @@ for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
 # 8 > nuke addons and pocket
 rm -rf \
- browser/{components/pocket,extensions/{webcompat,doh-rollout,screenshots,report-site-issue}}
+ browser/components/pocket                          \
+ browser/extensions/{report-site-issue,screenshots} \
+ browser/extensions/{translations,webcompat,doh-rollout,pictureinpicture}
 
 # 9 > clear sums
-for sum in audio_thread_priority target-lexicon-0.9.0 packed_simd; do
+for sum in target-lexicon-0.9.0; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
@@ -109,30 +121,29 @@ done
 fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/bookmarks.html.in  browser/locales/generic/profile/bookmarks.html.in
 
-# 11 > add header from alpine
-cp -vf "${fdir}"/stab.h             toolkit/crashreporter/google-breakpad/src/
-
-# 12 > remove prebuilt binaries
+# 11 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 13 > start the build
+# 12 > start the build
 cp -v "${fdir}"/mozconfig .
 _echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
 sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g" mozconfig
+sed -i -e "s/JOBCOUNTREPLACE/${ajobcount}/g" mozconfig
 unset _echoflags
 
 time ./mach build
 
-# 14 > install
-instdir="${PWD}/KEK"
-DESTDIR="${instdir}" ./mach install
+# 13 > install
+instdir="${PWD}/KEK/opt/firefox-91.0.1esr"
+DESTDIR="${PWD}/dummyinstall" ./mach install
 
-mv      "${instdir}"/opt/firefox-78.12.0esr/lib/firefox/ "${instdir}"/opt/firefox-78.12.0esr/a
-rm -rf  "${instdir}"/opt/firefox-78.12.0esr/{lib,bin}
-mv      "${instdir}"/opt/firefox-78.12.0esr/a "${instdir}"/opt/firefox-78.12.0esr/lib
-mkdir   "${instdir}"/opt/firefox-78.12.0esr/bin
-pushd   "${instdir}"/opt/firefox-78.12.0esr/bin
+mkdir "${instdir}"/bin
+mv    "${PWD}/dummyinstall"/opt/firefox-91.0.1esr/lib/firefox "${instdir}"/lib
+pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
+popd
 
-install -v -Dm644 "${fdir}"/vendor.js     "${instdir}"/opt/firefox-78.12.0esr/lib/browser/defaults/preferences/vendor.js
-install -v -Dm644 "${fdir}"/policies.json "${instdir}"/opt/firefox-78.12.0esr/lib/distribution/policies.json
+install -v -Dm644 "${fdir}"/vendor.js     \
+ "${instdir}"/lib/browser/defaults/preferences/vendor.js
+install -v -Dm644 "${fdir}"/policies.json \
+"${instdir}"/lib/distribution/policies.json

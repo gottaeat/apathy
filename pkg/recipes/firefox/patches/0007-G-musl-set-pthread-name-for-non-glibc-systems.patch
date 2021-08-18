@@ -1,7 +1,7 @@
-From 16c585391a3deb2d2e942f2b16e2e3f27822bdbd Mon Sep 17 00:00:00 2001
+From 5ea46892b64e9da2a6a7f03d2c0b02ff158bb0cd Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:10:03 +0200
-Subject: [PATCH 15/46] musl: Set pthread name for non glibc systems
+Subject: [PATCH 16/35] musl: Set pthread name for non glibc systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/js/src/threading/posix/PosixThread.cpp b/js/src/threading/posix/PosixThread.cpp
-index 82467e64bc..fcefe128dd 100644
+index 35532e375b..983da45326 100644
 --- a/js/src/threading/posix/PosixThread.cpp
 +++ b/js/src/threading/posix/PosixThread.cpp
-@@ -103,8 +103,10 @@ void ThisThread::SetName(const char* name) {
+@@ -115,8 +115,10 @@ void ThisThread::SetName(const char* name) {
    rv = 0;
  #elif defined(__NetBSD__)
    rv = pthread_setname_np(pthread_self(), "%s", (void*)name);

@@ -1,0 +1,49 @@
+From f680cce1b77a598656f585c8c11e9a88425443ac Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Wed, 11 Aug 2021 02:22:26 +0200
+Subject: [PATCH 35/35] bmo#1721326: Use small stack for DoClone()
+
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ security/sandbox/linux/launch/SandboxLaunch.cpp | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/security/sandbox/linux/launch/SandboxLaunch.cpp b/security/sandbox/linux/launch/SandboxLaunch.cpp
+index d55acbc1a5..c7f7acd8d1 100644
+--- a/security/sandbox/linux/launch/SandboxLaunch.cpp
++++ b/security/sandbox/linux/launch/SandboxLaunch.cpp
+@@ -509,8 +509,7 @@ static int CloneCallee(void* aPtr) {
+ MOZ_NEVER_INLINE MOZ_ASAN_BLACKLIST static pid_t DoClone(int aFlags,
+                                                          jmp_buf* aCtx) {
+   static constexpr size_t kStackAlignment = 16;
+-  uint8_t miniStack[PTHREAD_STACK_MIN]
+-      __attribute__((aligned(kStackAlignment)));
++  uint8_t miniStack[4096] __attribute__((aligned(kStackAlignment)));
+ #ifdef __hppa__
+   void* stackPtr = miniStack;
+ #else
+@@ -531,13 +530,19 @@ static pid_t ForkWithFlags(int aFlags) {
+                                CLONE_CHILD_CLEARTID;
+   MOZ_RELEASE_ASSERT((aFlags & kBadFlags) == 0);
+ 
++  // Block signals due to small stack in DoClone.
++  sigset_t oldSigs;
++  BlockAllSignals(&oldSigs);
++
++  int ret = 0;
+   jmp_buf ctx;
+   if (setjmp(ctx) == 0) {
+     // In the parent and just called setjmp:
+-    return DoClone(aFlags | SIGCHLD, &ctx);
++    ret = DoClone(aFlags | SIGCHLD, &ctx);
+   }
++  RestoreSignals(&oldSigs);
+   // In the child and have longjmp'ed:
+-  return 0;
++  return ret;
+ }
+ 
+ static bool WriteStringToFile(const char* aPath, const char* aStr,
+-- 
+2.32.0
+

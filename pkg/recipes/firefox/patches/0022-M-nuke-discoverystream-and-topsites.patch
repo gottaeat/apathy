@@ -1,28 +1,49 @@
-From 65400ace0ec3014c65911976bc89f84f59c5b299 Mon Sep 17 00:00:00 2001
+From 52455396070759549cc86cbc06e21ec3637d8eb7 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 28 Jan 2021 23:16:28 +0300
-Subject: [PATCH 5/5] nuke discoverystream.
+Date: Mon, 16 Aug 2021 03:04:59 +0300
+Subject: [PATCH 2/9] nuke discoverystream and topsites.
 
 ---
- .../newtab/lib/AboutPreferences.jsm           |  19 +--
- .../components/newtab/lib/ActivityStream.jsm  | 108 +++++-------------
- .../newtab/lib/DiscoveryStreamFeed.jsm        |   2 +-
+ .../newtab/lib/AboutPreferences.jsm           |  32 +----
+ .../components/newtab/lib/ActivityStream.jsm  | 123 +++++-------------
+ .../newtab/lib/DiscoveryStreamFeed.jsm        |  33 +----
  .../components/newtab/lib/SectionsManager.jsm |   8 --
- 4 files changed, 33 insertions(+), 104 deletions(-)
+ .../components/newtab/lib/TopSitesFeed.jsm    |  41 +-----
+ 5 files changed, 38 insertions(+), 199 deletions(-)
 
 diff --git a/browser/components/newtab/lib/AboutPreferences.jsm b/browser/components/newtab/lib/AboutPreferences.jsm
-index b226cb42db..df28190eb7 100644
+index 30bb8acdb1..4125c257b9 100644
 --- a/browser/components/newtab/lib/AboutPreferences.jsm
 +++ b/browser/components/newtab/lib/AboutPreferences.jsm
-@@ -98,7 +98,6 @@ this.AboutPreferences = class AboutPreferences {
+@@ -45,18 +45,7 @@ const PREFS_BEFORE_SECTIONS = ({
+           ? "home-prefs-shortcuts-description"
+           : "home-prefs-topsites-description",
+       get nestedPrefs() {
+-        return Services.prefs.getBoolPref("browser.topsites.useRemoteSetting")
+-          ? [
+-              {
+-                name: "showSponsoredTopSites",
+-                titleString:
+-                  newNewtabExperienceEnabled || customizationMenuEnabled
+-                    ? "home-prefs-shortcuts-by-option-sponsored"
+-                    : "home-prefs-topsites-by-option-sponsored",
+-                eventSource: "SPONSORED_TOP_SITES",
+-              },
+-            ]
+-          : [];
++        return [];
+       },
+     },
+     icon: "topsites",
+@@ -153,7 +142,6 @@ this.AboutPreferences = class AboutPreferences {
      this.renderPreferences(window, [
-       ...PREFS_BEFORE_SECTIONS,
+       ...PREFS_BEFORE_SECTIONS(featureConfig),
        ...sections,
--      ...PREFS_AFTER_SECTIONS,
+-      ...PREFS_AFTER_SECTIONS(featureConfig),
      ]);
    }
  
-@@ -157,6 +156,11 @@ this.AboutPreferences = class AboutPreferences {
+@@ -213,6 +201,11 @@ this.AboutPreferences = class AboutPreferences {
        const { feed: name, titleString = {}, descString, nestedPrefs = [] } =
          prefData || {};
  
@@ -34,7 +55,7 @@ index b226cb42db..df28190eb7 100644
        // Don't show any sections that we don't want to expose in preferences UI
        if (shouldHidePref) {
          return;
-@@ -181,19 +185,6 @@ this.AboutPreferences = class AboutPreferences {
+@@ -241,19 +234,6 @@ this.AboutPreferences = class AboutPreferences {
  
        linkPref(checkbox, name, "bool");
  
@@ -55,10 +76,10 @@ index b226cb42db..df28190eb7 100644
        const detailVbox = createAppend("vbox", sectionVbox);
        detailVbox.classList.add("indent");
 diff --git a/browser/components/newtab/lib/ActivityStream.jsm b/browser/components/newtab/lib/ActivityStream.jsm
-index 307af70eb5..f68c499a40 100644
+index 5aff4741dc..6c9b0a7ccf 100644
 --- a/browser/components/newtab/lib/ActivityStream.jsm
 +++ b/browser/components/newtab/lib/ActivityStream.jsm
-@@ -146,10 +146,7 @@ const REGION_LAYOUT_CONFIG =
+@@ -117,10 +117,7 @@ const LOCALE_LIST_CONFIG =
  
  // Determine if spocs should be shown for a geo/locale
  function showSpocs({ geo }) {
@@ -70,9 +91,9 @@ index 307af70eb5..f68c499a40 100644
  }
  
  // Configure default Activity Stream prefs with a plain `value` or a `getValue`
-@@ -176,15 +173,10 @@ const PREFS_CONFIG = new Map([
+@@ -147,15 +144,10 @@ const PREFS_CONFIG = new Map([
            hidden: !PREFS_CONFIG.get("feeds.system.topstories").getValue(args),
-           provider_icon: "pocket",
+           provider_icon: "chrome://global/skin/icons/pocket.svg",
            provider_name: "Pocket",
 -          read_more_endpoint:
 -            "https://getpocket.com/explore/trending?src=fx_new_tab",
@@ -87,19 +108,10 @@ index 307af70eb5..f68c499a40 100644
 +          stories_endpoint: "",
 +          stories_referrer: "",
 +          topics_endpoint: "",
-           model_keys: [
-             "nmf_model_animals",
-             "nmf_model_business",
-@@ -244,7 +236,7 @@ const PREFS_CONFIG = new Map([
-             "nb_model_writing",
-           ],
            show_spocs: showSpocs(args),
--          personalized: true,
-+          personalized: false,
-           version: 1,
          }),
      },
-@@ -253,7 +245,7 @@ const PREFS_CONFIG = new Map([
+@@ -164,7 +156,7 @@ const PREFS_CONFIG = new Map([
      "feeds.topsites",
      {
        title: "Displays Top Sites on the New Tab Page",
@@ -108,7 +120,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -261,7 +253,7 @@ const PREFS_CONFIG = new Map([
+@@ -180,14 +172,14 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Show sponsored cards in spoc experiment (show_spocs in topstories.options has to be set to true as well)",
@@ -117,7 +129,15 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -280,21 +272,21 @@ const PREFS_CONFIG = new Map([
+     "showSponsoredTopSites",
+     {
+       title: "Show sponsored top sites",
+-      value: true,
++      value: false,
+     },
+   ],
+   [
+@@ -206,14 +198,14 @@ const PREFS_CONFIG = new Map([
      "filterAdult",
      {
        title: "Remove adult pages from sites, highlights, etc.",
@@ -134,15 +154,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-     "feeds.snippets",
-     {
-       title: "Show snippets on activity stream",
--      value: true,
-+      value: false,
-     },
-   ],
-   [
-@@ -308,7 +300,7 @@ const PREFS_CONFIG = new Map([
+@@ -234,7 +226,7 @@ const PREFS_CONFIG = new Map([
      "telemetry",
      {
        title: "Enable system error and usage data collection",
@@ -151,7 +163,7 @@ index 307af70eb5..f68c499a40 100644
        value_local_dev: false,
      },
    ],
-@@ -316,7 +308,7 @@ const PREFS_CONFIG = new Map([
+@@ -242,7 +234,7 @@ const PREFS_CONFIG = new Map([
      "telemetry.ut.events",
      {
        title: "Enable Unified Telemetry event data collection",
@@ -160,16 +172,7 @@ index 307af70eb5..f68c499a40 100644
        value_local_dev: false,
      },
    ],
-@@ -324,7 +316,7 @@ const PREFS_CONFIG = new Map([
-     "telemetry.structuredIngestion",
-     {
-       title: "Enable Structured Ingestion Telemetry data collection",
--      value: true,
-+      value: false,
-       value_local_dev: false,
-     },
-   ],
-@@ -332,7 +324,7 @@ const PREFS_CONFIG = new Map([
+@@ -250,7 +242,7 @@ const PREFS_CONFIG = new Map([
      "telemetry.structuredIngestion.endpoint",
      {
        title: "Structured Ingestion telemetry server endpoint",
@@ -178,7 +181,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -340,7 +332,7 @@ const PREFS_CONFIG = new Map([
+@@ -258,7 +250,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show visited pages in highlights.",
@@ -187,7 +190,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -348,7 +340,7 @@ const PREFS_CONFIG = new Map([
+@@ -266,7 +258,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show bookmarks in highlights.",
@@ -196,7 +199,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -356,7 +348,7 @@ const PREFS_CONFIG = new Map([
+@@ -274,7 +266,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show saved Pocket stories in highlights.",
@@ -205,7 +208,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -364,7 +356,7 @@ const PREFS_CONFIG = new Map([
+@@ -282,7 +274,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show saved recent Downloads in highlights.",
@@ -214,7 +217,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -385,7 +377,7 @@ const PREFS_CONFIG = new Map([
+@@ -303,7 +295,7 @@ const PREFS_CONFIG = new Map([
      "sectionOrder",
      {
        title: "The rendering order for the sections",
@@ -223,7 +226,7 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -402,21 +394,7 @@ const PREFS_CONFIG = new Map([
+@@ -320,21 +312,7 @@ const PREFS_CONFIG = new Map([
          "An ordered, comma-delimited list of search shortcuts that we should try and pin",
        // This pref is dynamic as the shortcuts vary depending on the region
        getValue: ({ geo }) => {
@@ -246,7 +249,7 @@ index 307af70eb5..f68c499a40 100644
        },
      },
    ],
-@@ -494,13 +472,12 @@ const PREFS_CONFIG = new Map([
+@@ -397,13 +375,12 @@ const PREFS_CONFIG = new Map([
          return JSON.stringify({
            api_key_pref: "extensions.pocket.oAuthConsumerKey",
            collapsible: true,
@@ -262,7 +265,7 @@ index 307af70eb5..f68c499a40 100644
          });
        },
      },
-@@ -510,7 +487,7 @@ const PREFS_CONFIG = new Map([
+@@ -413,7 +390,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Endpoint prefixes (comma-separated) that are allowed to be requested",
@@ -271,29 +274,37 @@ index 307af70eb5..f68c499a40 100644
      },
    ],
    [
-@@ -605,7 +582,7 @@ const FEEDS_DATA = [
-     name: "section.highlights",
-     factory: () => new HighlightsFeed(),
-     title: "Fetches content recommendations from places db",
--    value: true,
-+    value: false,
-   },
-   {
-     name: "system.topstories",
-@@ -615,38 +592,7 @@ const FEEDS_DATA = [
+@@ -466,7 +443,7 @@ const PREFS_CONFIG = new Map([
+     {
+       title:
+         "Endpoint for when a user opts-out of sponsored content to delete the user's data from the ad server.",
+-      value: "https://spocs.getpocket.com/user",
++      value: "",
+     },
+   ],
+   [
+@@ -525,49 +502,7 @@ const FEEDS_DATA = [
        "System pref that fetches content recommendations from a configurable content provider",
      // Dynamically determine if Pocket should be shown for a geo / locale
      getValue: ({ geo, locale }) => {
--      const userPreffedStoriesBool = Services.prefs.getBoolPref(
--        "browser.newtabpage.activity-stream.feeds.section.topstories",
--        false
--      );
--      if (!userPreffedStoriesBool) {
-         return false;
+-      // If we don't have geo, we don't want to flash the screen with stories while geo loads.
+-      // Best to display nothing until geo is ready.
+-      if (!geo) {
+-        return false;
 -      }
+-      const preffedRegionsBlockString =
+-        Services.prefs.getStringPref(REGION_STORIES_BLOCK) || "";
 -      const preffedRegionsString =
 -        Services.prefs.getStringPref(REGION_STORIES_CONFIG) || "";
+-      const preffedLocaleListString =
+-        Services.prefs.getStringPref(LOCALE_LIST_CONFIG) || "";
+-      const preffedBlockRegions = preffedRegionsBlockString
+-        .split(",")
+-        .map(s => s.trim());
 -      const preffedRegions = preffedRegionsString.split(",").map(s => s.trim());
+-      const preffedLocales = preffedLocaleListString
+-        .split(",")
+-        .map(s => s.trim());
 -      const locales = {
 -        US: ["en-CA", "en-GB", "en-US"],
 -        CA: ["en-CA", "en-GB", "en-US"],
@@ -303,8 +314,8 @@ index 307af70eb5..f68c499a40 100644
 -        IN: ["en-CA", "en-GB", "en-US"],
 -        IE: ["en-CA", "en-GB", "en-US"],
 -        ZA: ["en-CA", "en-GB", "en-US"],
--        CH: ["de", "fr", "it"],
--        BE: ["fr", "de"],
+-        CH: ["de"],
+-        BE: ["de"],
 -        DE: ["de"],
 -        AT: ["de"],
 -        IT: ["it"],
@@ -313,13 +324,17 @@ index 307af70eb5..f68c499a40 100644
 -        PL: ["pl"],
 -        JP: ["ja", "ja-JP-mac"],
 -      }[geo];
--      return (
--        preffedRegions.includes(geo) && !!locales && locales.includes(locale)
--      );
+-
+-      const regionBlocked = preffedBlockRegions.includes(geo);
+-      const localeEnabled = locale && preffedLocales.includes(locale);
+-      const regionEnabled =
+-        preffedRegions.includes(geo) && !!locales && locales.includes(locale);
+-      return !regionBlocked && (localeEnabled || regionEnabled);
++         return false;
      },
    },
    {
-@@ -659,7 +605,7 @@ const FEEDS_DATA = [
+@@ -580,31 +515,31 @@ const FEEDS_DATA = [
      name: "telemetry",
      factory: () => new TelemetryFeed(),
      title: "Relays telemetry-related actions to PingCentre",
@@ -328,7 +343,26 @@ index 307af70eb5..f68c499a40 100644
    },
    {
      name: "favicon",
-@@ -689,7 +635,7 @@ const FEEDS_DATA = [
+     factory: () => new FaviconFeed(),
+     title: "Fetches tippy top manifests from remote service",
+-    value: true,
++    value: false,
+   },
+   {
+     name: "system.topsites",
+     factory: () => new TopSitesFeed(),
+     title: "Queries places and gets metadata for Top Sites section",
+-    value: true,
++    value: false,
+   },
+   {
+     name: "recommendationproviderswitcher",
+     factory: () => new RecommendationProviderSwitcher(),
+     title: "Handles switching between two types of personality providers",
+-    value: true,
++    value: false,
+   },
+   {
      name: "discoverystreamfeed",
      factory: () => new DiscoveryStreamFeed(),
      title: "Handles new pocket ui for the new tab page",
@@ -338,23 +372,68 @@ index 307af70eb5..f68c499a40 100644
  ];
  
 diff --git a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-index da7dd28f7a..78bb02191f 100644
+index 69569ee56f..c598b2f198 100644
 --- a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
 +++ b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-@@ -1960,7 +1960,7 @@ getHardcodedLayout = isBasicLayout => ({
+@@ -1784,7 +1784,7 @@ this.DiscoveryStreamFeed = class DiscoveryStreamFeed {
+ getHardcodedLayout = isBasicLayout => ({
+   lastUpdate: Date.now(),
+   spocs: {
+-    url: "https://spocs.getpocket.com/spocs",
++    url: "",
+   },
+   layout: [
+     {
+@@ -1863,7 +1863,7 @@ getHardcodedLayout = isBasicLayout => ({
            feed: {
              embed_reference: null,
              url:
--              "https://getpocket.cdn.mozilla.net/v3/firefox/global-recs?version=3&consumer_key=$apiKey&locale_lang=$locale&count=30",
+-              "https://getpocket.cdn.mozilla.net/v3/firefox/global-recs?version=3&consumer_key=$apiKey&locale_lang=$locale&region=$region&count=30",
 +              "",
            },
            spocs: {
              probability: 1,
+@@ -1888,35 +1888,6 @@ getHardcodedLayout = isBasicLayout => ({
+           properties: {
+             alignment: "left-align",
+             links: [
+-              {
+-                name: "Self Improvement",
+-                url:
+-                  "https://getpocket.com/explore/self-improvement?utm_source=pocket-newtab",
+-              },
+-              {
+-                name: "Food",
+-                url:
+-                  "https://getpocket.com/explore/food?utm_source=pocket-newtab",
+-              },
+-              {
+-                name: "Entertainment",
+-                url:
+-                  "https://getpocket.com/explore/entertainment?utm_source=pocket-newtab",
+-              },
+-              {
+-                name: "Health",
+-                url:
+-                  "https://getpocket.com/explore/health?utm_source=pocket-newtab",
+-              },
+-              {
+-                name: "Science",
+-                url:
+-                  "https://getpocket.com/explore/science?utm_source=pocket-newtab",
+-              },
+-              {
+-                name: "More Recommendations ›",
+-                url: "https://getpocket.com/explore?utm_source=pocket-newtab",
+-              },
+             ],
+             privacyNoticeURL: {
+               url:
 diff --git a/browser/components/newtab/lib/SectionsManager.jsm b/browser/components/newtab/lib/SectionsManager.jsm
-index d19cab7427..86b294761f 100644
+index 258e941140..70c0a2fb90 100644
 --- a/browser/components/newtab/lib/SectionsManager.jsm
 +++ b/browser/components/newtab/lib/SectionsManager.jsm
-@@ -108,14 +108,6 @@ const BUILT_IN_SECTIONS = {
+@@ -125,14 +125,6 @@ const BUILT_IN_SECTIONS = ({
            name: "section.highlights.includeDownloads",
            titleString: "home-prefs-highlights-option-most-recent-download",
          },
@@ -369,6 +448,72 @@ index d19cab7427..86b294761f 100644
        ],
      },
      shouldHidePref: false,
+diff --git a/browser/components/newtab/lib/TopSitesFeed.jsm b/browser/components/newtab/lib/TopSitesFeed.jsm
+index 782408026d..70795b1d13 100644
+--- a/browser/components/newtab/lib/TopSitesFeed.jsm
++++ b/browser/components/newtab/lib/TopSitesFeed.jsm
+@@ -388,24 +388,6 @@ this.TopSitesFeed = class TopSitesFeed {
+       }
+       if (siteData.search_shortcut) {
+         link = await this.topSiteToSearchTopSite(link);
+-      } else if (siteData.sponsored_position) {
+-        if (contileEnabled && hasContileTiles) {
+-          continue;
+-        }
+-        const {
+-          sponsored_position,
+-          sponsored_tile_id,
+-          sponsored_impression_url,
+-          sponsored_click_url,
+-        } = siteData;
+-        link = {
+-          sponsored_position,
+-          sponsored_tile_id,
+-          sponsored_impression_url,
+-          sponsored_click_url,
+-          show_sponsored_label: link.hostname !== "yandex",
+-          ...link,
+-        };
+       }
+       DEFAULT_TOP_SITES.push(link);
+     }
+@@ -713,14 +695,7 @@ this.TopSitesFeed = class TopSitesFeed {
+         continue;
+       }
+       if (link.sponsored_position) {
+-        if (!prefValues[SHOW_SPONSORED_PREF]) {
+-          continue;
+-        }
+-        sponsored[link.sponsored_position - 1] = link;
+-
+-        // Unpin search shortcut if present for the sponsored link to be shown
+-        // instead.
+-        this._unpinSearchShortcut(link.hostname);
++        continue;
+       } else {
+         notBlockedDefaultSites.push(
+           searchShortcutsExperiment
+@@ -811,20 +786,6 @@ this.TopSitesFeed = class TopSitesFeed {
+ 
+     // Insert the original pinned sites into the deduped frecent and defaults.
+     let withPinned = insertPinned(checkedAdult, pinned);
+-    // Insert sponsored sites at their desired position.
+-    dedupedSponsored.forEach(link => {
+-      if (!link) {
+-        return;
+-      }
+-      let index = link.sponsored_position - 1;
+-      if (index > withPinned.length) {
+-        withPinned[index] = link;
+-      } else {
+-        withPinned.splice(index, 0, link);
+-      }
+-    });
+-    // Remove excess items after we inserted sponsored ones.
+-    withPinned = withPinned.slice(0, numItems);
+ 
+     // Now, get a tippy top icon, a rich icon, or screenshot for every item
+     for (const link of withPinned) {
 -- 
-2.29.2
+2.32.0
 

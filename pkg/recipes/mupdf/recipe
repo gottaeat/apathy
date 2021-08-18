@@ -15,7 +15,7 @@ sed -i \
 
 export   CFLAGS="${CFLAGS}   -fPIC -DFZ_ENABLE_JS=0"
 export CXXFLAGS="${CXXFLAGS} -fPIC -DFZ_ENABLE_JS=0"
-export  LDFLAGS="${LDFLAGS}  -Wl,-z,noexecstack"
+export  LDFLAGS="${LDFLAGS},-z,noexecstack"
 export  XCFLAGS="${CFLAGS}"
 export    XLIBS="${LDFLAGS}"
 

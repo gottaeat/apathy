@@ -1,6 +1,15 @@
 # 1
-export  CXXFLAGS="${CXXFLAGS} -fpermissive"
-export   LDFLAGS="${LDFLAGS} -Wl,-z,stack-size=2097152"
+t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-march=native -mtune=native/${t61cf}/")"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--thinlto-cache-dir=\/mss\/work\/ltocache//g')"
+
+export CXXFLAGS="${CXXFLAGS} -fpermissive"
+export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
 tar xf /mss/work/sauces/llvmorg-13.0.0-rc1.tar.gz
@@ -48,7 +57,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_VERSION_SUFFIX=""                            \
 \
  -DLLVM_ENABLE_LTO=Thin                              \
- -DLLVM_PARALLEL_LINK_JOBS=2                         \
+ -DLLVM_PARALLEL_LINK_JOBS="${ajobcount}"            \
 \
  -DLLVM_BUILD_LLVM_DYLIB=ON                          \
  -DLLVM_BUILD_STATIC=OFF                             \

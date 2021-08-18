@@ -1,18 +1,18 @@
-From 11ecf0188cf2eb926fbd3dabf75cf4f1d4dbfdda Mon Sep 17 00:00:00 2001
+From 9ebb6eeb4572273a8424a6b80dd8f6b5df312bca Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 19:16:36 +0200
-Subject: [PATCH 02/46] Fortify sources properly
+Subject: [PATCH 02/35] Fortify sources properly
 
 Ensure we fortify properly, features.h is pulled in via fortification.
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
- config/system-headers.mozbuild                     | 1 -
- media/webrtc/signaling/src/sdp/sipcc/sdp_os_defs.h | 3 ---
+ config/system-headers.mozbuild  | 1 -
+ third_party/sipcc/sdp_os_defs.h | 3 ---
  2 files changed, 4 deletions(-)
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
-index 8942b6244e..a2fd6daf3e 100644
+index 6e017df20f..5f7b5bb23e 100644
 --- a/config/system-headers.mozbuild
 +++ b/config/system-headers.mozbuild
 @@ -229,7 +229,6 @@ system_headers = [
@@ -23,10 +23,10 @@ index 8942b6244e..a2fd6daf3e 100644
      'fenv.h',
      'ffi.h',
      'fibdef.h',
-diff --git a/media/webrtc/signaling/src/sdp/sipcc/sdp_os_defs.h b/media/webrtc/signaling/src/sdp/sipcc/sdp_os_defs.h
-index 6e4dd8c645..bbfa95f138 100644
---- a/media/webrtc/signaling/src/sdp/sipcc/sdp_os_defs.h
-+++ b/media/webrtc/signaling/src/sdp/sipcc/sdp_os_defs.h
+diff --git a/third_party/sipcc/sdp_os_defs.h b/third_party/sipcc/sdp_os_defs.h
+index 16c9b33329..df38d9336c 100644
+--- a/third_party/sipcc/sdp_os_defs.h
++++ b/third_party/sipcc/sdp_os_defs.h
 @@ -20,8 +20,5 @@
  typedef uint8_t    tinybool;
  typedef unsigned short ushort;

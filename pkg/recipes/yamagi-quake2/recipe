@@ -3,7 +3,7 @@
 gamedir="/mnt/mss/stuff/media/games/yamagi-quake2"
 export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
 export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export         LDFLAGS="${LDFLAGS} -Wl,-rpath=${gamedir}/lib,--enable-new-dtags"
+export         LDFLAGS="${LDFLAGS},-rpath=${gamedir}/lib,--enable-new-dtags"
 export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LD_LIBRARY_PATH}"

@@ -1,7 +1,7 @@
-From 93fe2b439e98dea320ecfab15f939be46ed40f3e Mon Sep 17 00:00:00 2001
+From ea16f90f0bc7809ee3c0213e7e4a4e52c199ea4d Mon Sep 17 00:00:00 2001
 From: "Jory A. Pratt" <anarchy@gentoo.org>
 Date: Mon, 6 Apr 2020 20:12:09 +0200
-Subject: [PATCH 17/46] musl: sys/auvx.h avaliable on more then just glibc
+Subject: [PATCH 18/35] musl: sys/auvx.h avaliable on more then just glibc
  systems
 
 Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  .../webrtc/system_wrappers/source/cpu_features_linux.c   | 9 +++------
  1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/media/webrtc/trunk/webrtc/system_wrappers/source/cpu_features_linux.c b/media/webrtc/trunk/webrtc/system_wrappers/source/cpu_features_linux.c
+diff --git a/third_party/libwebrtc/webrtc/system_wrappers/source/cpu_features_linux.c b/third_party/libwebrtc/webrtc/system_wrappers/source/cpu_features_linux.c
 index 9c5645068a..05fea37ee0 100644
---- a/media/webrtc/trunk/webrtc/system_wrappers/source/cpu_features_linux.c
-+++ b/media/webrtc/trunk/webrtc/system_wrappers/source/cpu_features_linux.c
+--- a/third_party/libwebrtc/webrtc/system_wrappers/source/cpu_features_linux.c
++++ b/third_party/libwebrtc/webrtc/system_wrappers/source/cpu_features_linux.c
 @@ -11,10 +11,7 @@
  #include <stdlib.h>
  #include <string.h>
