@@ -17,7 +17,7 @@ export   OBJSIZE="/opt/llvm-13.0.0/bin/llvm-size"
 export   READELF="/opt/llvm-13.0.0/bin/llvm-readelf"
 export ADDR2LINE="/opt/llvm-13.0.0/bin/llvm-addr2line"
 
-export    CFLAGS="-DNDEBUG -g0 -s -w -pipe -O3 -mtune=native -march=native -fcommon -flto-jobs=${ajobcount} -flto=thin"
+export    CFLAGS="-DNDEBUG -g0 -s -w -pipe -O3 -march=native -mtune=native -fcommon -flto-jobs=${ajobcount} -flto=thin"
 export  CXXFLAGS="${CFLAGS}"
 export   LDFLAGS="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all,--lto-O3,--thinlto-jobs=${ajobcount},--thinlto-cache-dir=/mss/work/ltocache"
 
