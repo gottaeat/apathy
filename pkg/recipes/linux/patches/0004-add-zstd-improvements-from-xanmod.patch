@@ -1,7 +1,7 @@
-From 31f9fda81ce38070343b0e972436de391d436719 Mon Sep 17 00:00:00 2001
+From 67c7a27e8ea38d10c62e94a04b7c6e29697b364b Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 31 Jul 2021 08:33:14 +0300
-Subject: [PATCH 4/9] add zstd improvements from xanmod.
+Date: Wed, 25 Aug 2021 23:47:51 +0300
+Subject: [PATCH 04/10] add zstd improvements from xanmod.
 
 ---
  MAINTAINERS                                   |   12 +

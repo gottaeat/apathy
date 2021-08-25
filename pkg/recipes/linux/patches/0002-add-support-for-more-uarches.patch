@@ -1,7 +1,7 @@
-From cb7a280c14b71d0e26a71bd4beef648fd2e8ca2d Mon Sep 17 00:00:00 2001
+From 01ad428c5b9ceb50c5d019dd5680d70559bd8800 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 31 Jul 2021 08:30:59 +0300
-Subject: [PATCH 2/9] add support for more uarches.
+Date: Wed, 25 Aug 2021 23:47:02 +0300
+Subject: [PATCH 02/10] add support for more uarches.
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--

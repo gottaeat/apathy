@@ -31,12 +31,7 @@ fi
   bldsalt="$(awk     '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
                       print}' ${useconf})"
 
-# 3 > check if config exists
-if [ ! -f "${useconf}" ]
- then aprint_fail "specified config does not exist."; exit 1
-fi
-
-# 4 > set make vars
+# 3 > set make vars
 unset \
  CC CXX LD AR AS NM STRIP RANLIB OBJCOPY OBJDUMP \
  OBJSIZE READELF ADDR2LINE CFLAGS CXXFLAGS LDFLAGS
@@ -51,6 +46,13 @@ fi
 
 mymake(){ make LLVM=1 LLVM_IAS=1 "$@";}
 
+# 4 > check if config exists
+if [ ! -f "${useconf}" ]; then
+ aprint_fail "specified config does not exist."; exit 1
+elif [ ! -f "${saucedir}/${1}" ]; then
+ aprint_fail "tarball does not exist."; exit 1
+fi
+
 # 5 > print details
 clear; aprint_nc
 lsdetail "release  " "${kerver}   "
@@ -60,13 +62,10 @@ lsdetail "details  " "${bldsalt}  "
 lsdetail "makeflags" "${MAKEFLAGS}"
 
 # 6 > unpack the kernel
-if [ ! -f "${saucedir}/${1}" ]
- then aprint_fail "tarball does not exist."; exit 1
- else
-  aprint_nc; aprint_ret "unpacking the kernel sauce."
-   tar xf ${saucedir}/${1} --directory="${workdir}" >> "${rdr}" 2>&1
-  evalretkill
-fi
+aprint_nc
+aprint_ret "unpacking the kernel sauce."
+ tar xf ${saucedir}/${1} --directory="${workdir}" >> "${rdr}" 2>&1
+evalretkill
 
 # 7 > run mrproper
 aprint_ret "running mrproper"
@@ -88,7 +87,8 @@ aprint "applying ${cl_grn}patches${c_res}."
  done
 
 # 10 > run menuconfig
-aprint_nc; aprint_ask "run menuconfig for manual config? (y/n): "
+aprint_nc
+aprint_ask "run menuconfig for manual config? (y/n): "
 read answermenuconf
 
 case "${answermenuconf}" in
@@ -122,7 +122,8 @@ case "${answerbuildkern}" in
 esac
 
 # 12 > install kernel
-aprint_nc; aprint_ask "install the built kernel? (y/n): "
+aprint_nc
+aprint_ask "install the built kernel? (y/n): "
 read answerkinst
 
 case "${answerkinst}" in
@@ -140,7 +141,8 @@ case "${answerkinst}" in
 esac
 
 # 13 > package up the built kernel
-aprint_nc; aprint_ask "package up the built kernel? (y/n): "
+aprint_nc
+aprint_ask "package up the built kernel? (y/n): "
 read answerpkgup
 
 case "${answerpkgup}" in
@@ -171,7 +173,8 @@ esac
 
 
 # 14 > clean up the work directory.
-aprint_nc; aprint_ask "clean up the work directory? (y/n): "
+aprint_nc
+aprint_ask "clean up the work directory? (y/n): "
 read answerclean
 
 case "${answerclean}" in

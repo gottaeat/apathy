@@ -1,7 +1,7 @@
-From 573db6f9dd0691f726ff36f66f37af2f96a62336 Mon Sep 17 00:00:00 2001
+From a301d44c7eb603692d454107a35ca0575328eeda Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 31 Jul 2021 08:34:50 +0300
-Subject: [PATCH 5/9] add paragon's ntfs3 from xanmod.
+Date: Wed, 25 Aug 2021 23:48:22 +0300
+Subject: [PATCH 05/10] add paragon's ntfs3 from xanmod.
 
 ---
  Documentation/filesystems/ntfs3.rst |  106 +
@@ -9,7 +9,7 @@ Subject: [PATCH 5/9] add paragon's ntfs3 from xanmod.
  fs/Kconfig                          |    1 +
  fs/Makefile                         |    1 +
  fs/ntfs3/Kconfig                    |   46 +
- fs/ntfs3/Makefile                   |   38 +
+ fs/ntfs3/Makefile                   |   36 +
  fs/ntfs3/attrib.c                   | 2082 +++++++++++
  fs/ntfs3/attrlist.c                 |  456 +++
  fs/ntfs3/bitfunc.c                  |  135 +
@@ -21,7 +21,7 @@ Subject: [PATCH 5/9] add paragon's ntfs3 from xanmod.
  fs/ntfs3/fslog.c                    | 5181 +++++++++++++++++++++++++++
  fs/ntfs3/fsntfs.c                   | 2542 +++++++++++++
  fs/ntfs3/index.c                    | 2641 ++++++++++++++
- fs/ntfs3/inode.c                    | 2033 +++++++++++
+ fs/ntfs3/inode.c                    | 2034 +++++++++++
  fs/ntfs3/lib/decompress_common.c    |  332 ++
  fs/ntfs3/lib/decompress_common.h    |  352 ++
  fs/ntfs3/lib/lib.h                  |   26 +
@@ -36,7 +36,7 @@ Subject: [PATCH 5/9] add paragon's ntfs3 from xanmod.
  fs/ntfs3/super.c                    | 1500 ++++++++
  fs/ntfs3/upcase.c                   |  105 +
  fs/ntfs3/xattr.c                    | 1046 ++++++
- 32 files changed, 30919 insertions(+)
+ 32 files changed, 30918 insertions(+)
  create mode 100644 Documentation/filesystems/ntfs3.rst
  create mode 100644 fs/ntfs3/Kconfig
  create mode 100644 fs/ntfs3/Makefile
@@ -275,21 +275,19 @@ index 000000000..6e4cbc48a
 +	  If you don't know what Access Control Lists are, say N.
 diff --git a/fs/ntfs3/Makefile b/fs/ntfs3/Makefile
 new file mode 100644
-index 000000000..5adc54eba
+index 000000000..279701b62
 --- /dev/null
 +++ b/fs/ntfs3/Makefile
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,36 @@
 +# SPDX-License-Identifier: GPL-2.0
 +#
 +# Makefile for the ntfs3 filesystem support.
 +#
 +
 +# to check robot warnings
-+ccflags-y += -Wint-to-pointer-cast
-+condflags := \
-+	$(call cc-option, -Wunused-but-set-variable) \
-+	$(call cc-option, -Wold-style-declaration)
-+ccflags-y += $(condflags)
++ccflags-y += -Wint-to-pointer-cast \
++	$(call cc-option,-Wunused-but-set-variable,-Wunused-const-variable) \
++	$(call cc-option,-Wold-style-declaration,-Wout-of-line-declaration)
 +
 +obj-$(CONFIG_NTFS3_FS) += ntfs3.o
 +
@@ -317,6 +315,7 @@ index 000000000..5adc54eba
 +		lzx_decompress.o \
 +		xpress_decompress.o \
 +		)
+\ No newline at end of file
 diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
 new file mode 100644
 index 000000000..bca85e7b6
@@ -19800,10 +19799,10 @@ index 000000000..931a7241e
 +}
 diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
 new file mode 100644
-index 000000000..9e836c192
+index 000000000..3e2056c95
 --- /dev/null
 +++ b/fs/ntfs3/inode.c
-@@ -0,0 +1,2033 @@
+@@ -0,0 +1,2034 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
 + *
@@ -21831,6 +21830,7 @@ index 000000000..9e836c192
 +	.write_end = ntfs_write_end,
 +	.direct_IO = ntfs_direct_IO,
 +	.bmap = ntfs_bmap,
++	.set_page_dirty = __set_page_dirty_buffers,
 +};
 +
 +const struct address_space_operations ntfs_aops_cmpr = {
