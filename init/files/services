@@ -448,6 +448,7 @@ svc_swap(){
      ainitsvc "swap" "setting up sysfs/procfs for zram as swap"
       echo "${zram_dsize}" > /sys/block/zram0/disksize       &&
       echo "${zram_limit}" > /sys/block/zram0/mem_limit      &&
+      echo "${anon_min}"   > /proc/sys/vm/anon_min_kbytes    &&
       echo "${cln_min}"    > /proc/sys/vm/clean_min_kbytes   &&
       echo "${cln_low}"    > /proc/sys/vm/clean_low_kbytes   &&
       echo "${swpns}"      > /proc/sys/vm/swappiness         &&
@@ -475,13 +476,14 @@ svc_swap(){
         done
        evalret
       else
-      ainitsvc "swap" "setting up sysfs/procfs for swapfile as swap"
-       echo "0"   > /proc/sys/vm/clean_min_kbytes   &&
-       echo "0"   > /proc/sys/vm/clean_low_kbytes   &&
-       echo "60"  > /proc/sys/vm/swappiness         &&
-       echo "100" > /proc/sys/vm/vfs_cache_pressure &&
-       echo "10"  > /proc/sys/vm/watermark_scale_factor
-      evalret
+       ainitsvc "swap" "setting up sysfs/procfs for swapfile as swap"
+        echo "0"   > /proc/sys/vm/anon_min_kbytes    &&
+        echo "0"   > /proc/sys/vm/clean_min_kbytes   &&
+        echo "0"   > /proc/sys/vm/clean_low_kbytes   &&
+        echo "60"  > /proc/sys/vm/swappiness         &&
+        echo "100" > /proc/sys/vm/vfs_cache_pressure &&
+        echo "10"  > /proc/sys/vm/watermark_scale_factor
+       evalret
      fi
 
      ainitsvc "swap" "enabling swapfile as swap"
