@@ -1,4 +1,6 @@
 #!/bin/ash
+. /mss/files/funcs
+
 aprint_nc
 printf ' normal         -> bright\n'
 printf ' \033[1;40m      \033[0;39m\033[0;30m black  \033[0;39m -> \033[0;100m      \033[0;39m\033[1;30m black   \033[0;39m\n'
