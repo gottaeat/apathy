@@ -55,17 +55,25 @@ ainit_mount(){
 }
 
 banner(){
-   datefmt="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
-    kerver="$(uname -r)"
-    kerdat="$(uname -v | awk '{print tolower($5)$6,$7}')"
-   datefmt="${cb_grn}${datefmt}${c_res}"
- kerdatfmt="${cb_blu}(${c_res}${cb_red}${kerdat}${cb_blu})${c_res}"
- kerverfmt="${cb_grn}k${cb_blu}:${c_res} ${kerver}"
- clear
+ d_name="$(awk '/^NAME/{sub(/NAME=/,"");       print}' /etc/os-release)"
+  d_var="$(awk '/^VARI/{sub(/VARIANT=/,"");    print}' /etc/os-release)"
+  d_ver="$(awk '/^VERS/{sub(/VERSION_ID=/,""); print}' /etc/os-release)"
+   dist="${cb_blu}${d_name} ${cb_red}${d_var} ${cb_cyn}${d_ver}${c_res}"
 
+ uname_v="$(uname -v)"
+
+ case "${uname_v}" in
+  *PREEMPT*) kerdat="$(echo ${uname_v} | awk '{print tolower($5),$6,$7}')" ;;
+          *) kerdat="$(echo ${uname_v} | awk '{print tolower($4),$5,$6}')" ;;
+ esac
+
+ kerfmt="${cb_red}$(uname -r) ${cb_blu}(${cl_whi}${kerdat}${cb_blu})${c_res}"
+   date="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
+
+ clear
  ainit_nc; ainit_nc
- ainitmes "${cb_blu}apathy ${cb_red}musl ${cb_cyn}1.2 - ${datefmt}"; ainit_nc
- ainitmes "${kerverfmt} ${kerdatfmt}";                               ainit_nc
+ ainitmes "${dist} - ${cb_blk}${date}${c_res}"; ainit_nc
+ ainitmes "${kerfmt}";                          ainit_nc
  ainit_nc
 }
 
