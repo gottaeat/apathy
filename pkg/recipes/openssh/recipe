@@ -8,11 +8,12 @@
  --datadir=/usr/share/openssh      \ 
  --libexecdir=/usr/lib/ssh         \
 \
- --with-privsep-user=sshd          \
  --with-privsep-path=/var/lib/sshd \
+ --with-privsep-user=sshd          \
  --with-ssl-engine                 \
- --without-selinux                 \
  --without-rpath                   \
- --disable-wtmp                    \
+ --without-selinux                 \
+ --disable-lastlog                 \
+ --disable-strip                   \
  --disable-utmp                    \
- --disable-lastlog
+ --disable-wtmp

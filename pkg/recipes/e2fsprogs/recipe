@@ -1,14 +1,32 @@
 # 1
 ./configure \
- --build=$CBUILD      \
- --host=$CHOST        \
- --prefix=/usr        \
- --sbindir=/usr/bin   \
- --sysconfdir=/etc    \
- --disable-nls        \
- --disable-uuidd      \
- --disable-fsck       \
- --disable-elf-shlibs \
- --disable-libblkid   \
- --disable-libuuid    \
- --disable-rpath
+ --build=$CBUILD          \
+ --host=$CHOST            \
+ --prefix=/usr            \
+ --sbindir=/usr/bin       \
+ --sysconfdir=/etc        \
+\
+ --enable-symlink-install \
+ --disable-elf-shlibs     \
+ --disable-fsck           \
+ --disable-libblkid       \
+ --disable-libuuid        \
+ --disable-nls            \
+ --disable-rpath          \
+ --disable-uuidd
+
+make
+
+# 2
+make -j1 MKDIR_P="install -d" DESTDIR="${PWD}"/KEK install
+cd "${PWD}"/KEK/usr/bin
+
+doas -s
+for i in chattr e2fsck lsattr mklost+found resize2fs tune2fs mke2fs; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+ln -sfv tune2fs /usr/bin/e2label
+ln -sfv mke2fs  /usr/bin/mkfs.ext4
