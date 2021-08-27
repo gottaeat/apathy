@@ -1,0 +1,13 @@
+/usr/bin/scp
+/usr/bin/sftp
+/usr/bin/ssh
+/usr/bin/ssh-add
+/usr/bin/ssh-agent
+/usr/bin/ssh-keygen
+/usr/bin/ssh-keyscan
+/usr/bin/sshd
+
+/usr/lib/ssh
+/var/lib/sshd
+
+/usr/share/man
