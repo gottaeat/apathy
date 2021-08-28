@@ -1,0 +1,37 @@
+# 1 > keyboard
+          fn+f1   button/fnf1          FNF1        00000080 00000000 K
+          fn+f2   button/screenlock    SCRNLCK     00000080 00000000 K
+lock      fn+f3   button/battery       BAT         00000080 00000000 K
+sleep     fn+f4   button/sleep         SBTN        00000080 00000000
+                  button/sleep         PNP0C0E:00  00000080 00000007
+wlan      fn+f5   button/wlan          WLAN        00000080 00000000 K
+mmedia    fn+f6
+projector fn+f7   video/switchmode     VMOD        00000080 00000000
+brigh_dn  fn+f8   video/brightnessdown BRTDN       00000087 00000000
+brigh_up  fn+f9   video/brightnessup   BRTUP       00000086 0000000
+med_prev  fn+f10  cd/prev              CDPREV      00000080 00000000 K
+med_play  fn+f11  cd/play              CDPLAY      00000080 00000000 K
+med_next  fn+f12  cd/next              CDNEXT      00000080 00000000 K
+
+# 2 > extra keyboard
+mute      ex1     button/mute          MUTE        00000080 00000000 K
+-         ex2     button/volumedown    VOLDN       00000080 00000000 K
++         ex3     button/volumeup      VOLUP       00000080 00000000 K
+micmute   ex4     button/micmute       MICMUTE     00000080 00000000 K
+          ex5     button/vendor        VNDR        00000080 00000000 K
+
+# 3 > lid
+          lid-    button/lid           LID         close
+          lid+    button/lid           LID         open
+
+# 4 > charger
+          rmv ac  ac_adapter           ACPI0003:00 00000080 00000000
+                  battery              PNP0C0A:00  00000080 00000001
+          con ac  ac_adapter           ACPI0003:00 00000080 00000001
+                  battery              PNP0C0A:00  00000080 00000001
+
+# 5 > battery
+          bat-    battery              PNP0C0A:00  00000081 00000000
+          bat+    battery              PNP0C0A:00  00000081 00000001
+
+# 6 > docking, tablet buttons and power puttons don't show up as events
