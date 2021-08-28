@@ -16,7 +16,19 @@ case "${answersusp}" in
    echo 3 > /proc/sys/vm/drop_caches
   evalretkill
 
-  ainitmgr start swap swapfile
+  case "$(sed '/^Filename/d' /proc/swaps | awk '{print $1}')" in
+   *swapfile*)
+    lateron(){ :;}
+   ;;
+   */dev/zram*)
+    lateron(){ ainitmgr start swap zram ;}
+    ainitmgr start swap swapfile
+   ;;
+   *)
+    lateron(){ ainitmgr stop  swap      ;}
+    ainitmgr start swap swapfile
+   ;;
+  esac
 
   aprint_nc
   datebefore="$(date +%s)"
@@ -37,8 +49,7 @@ case "${answersusp}" in
   aprint "slept for ${cl_grn}${humantime}${c_res}."
   aprint_nc
 
-  ainitmgr start swap "$(grep ^\ ainitmgr\ start /mss/files/init.conf \
-                         | awk '/swap/{print $4}')"
+  lateron
  ;;
  n|N|no)
   aprint_nc
