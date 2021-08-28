@@ -1,0 +1,52 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+rootcheck
+
+     sysfspath="/sys/class/backlight/acpi_video0"
+    brightfile="${sysfspath}/brightness"
+ maxbrightfile="${sysfspath}/max_brightness"
+
+usage(){
+ aprint_usage "{max}{0-${maxbright}}"
+ aprint_nc
+ exit 1
+}
+
+aprint_nc
+if [ ! -f "${brightfile}" ]
+ then
+  aprint_fail "sysfs acpi_video0 thing does not exist."
+  aprint_nc
+  exit 1
+ else
+  read maxbright < "${maxbrightfile}"
+
+  if [ -z "${1}" ]; then usage
+   else
+    if [ "${1}" -eq "${1}" ] 2>/dev/null; then setbright="${1}"
+     else
+      case "${1}" in
+       cur)
+        read curbright < "${brightfile}"
+        lsdetail "current brightness" "${curbright}"
+        aprint_nc
+        exit 0
+       ;;
+       max) setbright="${maxbright}" ;;
+       *)   usage                    ;;
+      esac
+    fi
+  fi
+
+  if [ "${setbright}" -gt "${maxbright}" ]
+   then
+    aprint_fail "${setbright} is bigger than maximum brightness (${maxbright})."
+    aprint_nc
+    exit 1
+   else
+    aprint_ret "setting the brightness to ${setbright}"
+     echo "${setbright}" > "${brightfile}"
+    evalretkill
+    aprint_nc
+  fi
+fi
