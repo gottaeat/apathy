@@ -206,3 +206,4 @@ i l . clzip               1.12
 i l . tzdb                2021a
 i l . aircrack-ng         1.6
 i l .. iw                 5.9
+i l . acpid               2.0.32
