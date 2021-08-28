@@ -91,6 +91,8 @@ ainit_kill(){
  fi
 }
 
+xorgcheck(){ xset q >/dev/null 2>&1;}
+
 if [ "$(id -u)" -ne 0 ]; then
  ainitmes "this script must be run as uid 0, exiting."; failprompt
  exit 1

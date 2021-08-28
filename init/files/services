@@ -505,3 +505,22 @@ svc_swap(){
   ;;
  esac
 }
+
+# 2.11 > acpid
+svc_acpid(){
+case "$1" in
+ start)
+  ainitsvc "acpid" "starting"
+   acpid -n -S -f -c /mss/init/files/acpi >/dev/null 2>&1 &
+  evalret
+ ;;
+ stop)
+  ainitsvc "acpid" "stopping"
+  ainit_kill acpid
+ ;;
+ *)
+  ainitusage "{start|stop}"
+  exit 1
+ ;;
+esac
+}

@@ -1,0 +1,2 @@
+event=.*
+action=/mss/init/files/acpi.script %e
