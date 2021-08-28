@@ -1,5 +1,5 @@
 #!/mss/bin/sh
-. /mss/files/init/funcs
+. /mss/init/files/funcs
 . /mss/files/device.conf
 
 case "${amachine}" in
