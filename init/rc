@@ -93,7 +93,7 @@ initboi(){
 }
 
 goingdown(){
- stty onlcr; banner
+ stty onlcr; reset >/dev/null 2>&1; banner
 
  ainitmes "loading the ${cb_cyn}init config${c_res}."
   . /mss/files/init.conf >/dev/null 2>&1
