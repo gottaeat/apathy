@@ -7,29 +7,32 @@
    cur_zero="\\033[0G"
 
     s_fail="${cb_red}f${c_res}"
-    s_warn="${cb_blu}w${c_res}"
+    s_info="${cb_blu}i${c_res}"
     s_succ="${cb_grn}s${c_res}"
+     s_arm="${cb_cyn}└${c_res}"
 
 memearrow="${pbefore}${cb_whi}→${c_res} "
      askq="${pbefore}${cb_blu}?${c_res} "
 
 # 3 >> printing functions
-aprint(){       printf "${memearrow}${@}\n"; }
-aprint_nc(){    printf "\n";                 }
-aprint_nm(){    printf "${sbefore}${@}\n";   }
-aprint_ret(){   printf "${sbefore}${@}";     }
-aprint_ask(){   printf "${askq}${@}";        }
+aprint()      { printf "${memearrow}${@}\n"; }
+aprint_nc()   { printf "\n";                 }
+aprint_nm()   { printf "${sbefore}${@}\n";   }
+aprint_ret()  { printf "${sbefore}${@}";     }
+aprint_ask()  { printf "${askq}${@}";        }
 
-failprompt(){   printf "${cur_zero}${pbefore}${s_fail}\n"; }
-warnprompt(){   printf "${cur_zero}${pbefore}${s_warn}\n"; }
-succprompt(){   printf "${cur_zero}${pbefore}${s_succ}\n"; }
+failprompt()  { printf "${cur_zero}${pbefore}${s_fail}\n"; }
+infoprompt()  { printf "${cur_zero}${pbefore}${s_info}\n"; }
+succprompt()  { printf "${cur_zero}${pbefore}${s_succ}\n"; }
+armprompt()   { printf "${cur_zero}${pbefore}${s_arm}\n";  }
 
-aprint_fail(){  printf "${sbefore}${@}"; failprompt; }
-aprint_warn(){  printf "${sbefore}${@}"; warnprompt; }
-aprint_succ(){  printf "${sbefore}${@}"; succprompt; }
+aprint_fail() { printf "${sbefore}${@}"; failprompt; }
+aprint_info() { printf "${sbefore}${@}"; infoprompt; }
+aprint_succ() { printf "${sbefore}${@}"; succprompt; }
+aprint_arm()  { printf "${sbefore}${@}"; armprompt ; }
 
-aprint_usage(){ aprint "${cb_red}usage${cb_blu}:${c_res} ${@}";  }
-lsdetail(){     aprint "${cb_red}${1} ${cb_blu}:${c_res} ${2}"; }
+aprint_usage(){ aprint "${cb_red}usage${cb_blu}:${c_res} ${@}"; }
+lsdetail()    { aprint "${cb_red}${1} ${cb_blu}:${c_res} ${2}"; }
 
 # 4 >> checks and evaluation functions
 evalret(){
@@ -51,3 +54,5 @@ rootcheck(){
    exit 1
  fi
 }
+
+xorgcheck(){ xset q >/dev/null 2>&1;}
