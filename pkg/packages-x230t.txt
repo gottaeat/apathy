@@ -38,7 +38,7 @@ i g . patch               2.7.6
 i g . tar                 1.33
 i g . vim                 8.2.2549
 i l . util-linux          2.37.2
-i l . e2fsprogs           1.46.4
+i l . e2fsprogs           1.46.4 
 i g . eudev               3.2.9
 i l . linux               5.13.13
 i l . init                20210828_043300

@@ -1,7 +1,6 @@
 /usr/bin/chattr
 /usr/bin/e2fsck
 /usr/bin/e2label
-/usr/bin/filefrag
 /usr/bin/lsattr
 /usr/bin/mke2fs
 /usr/bin/mkfs.ext4
