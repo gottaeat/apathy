@@ -1,5 +1,6 @@
 #!/mss/bin/sh
 . /mss/files/funcs
+. /mss/files/device.conf
 
 if [ ! "$(xrandr | awk '/VGA-1/{print $2}')" = "connected" ]
  then
@@ -9,12 +10,18 @@ if [ ! "$(xrandr | awk '/VGA-1/{print $2}')" = "connected" ]
   exit 1
  else
    cur_res="$(xrandr | awk 'NR==1{print $8}')"
-  lvds_res="$(xrandr | awk '/LVDS/{sub(/x.*/,"");print $4}')"
+  lvds_res="$(xrandr | awk '/LVDS/{sub(/x.*/,""); print $4}')"
 
   if [ ! "${cur_res}" -gt "${lvds_res}" ]
    then
     xrandr --output VGA-1 --auto --right-of LVDS-1     
     [ -f "${HOME}"/.fehbg ] && "${HOME}"/.fehbg
+
+    if [ "${amachine}" = "x230t" ]; then
+     for i in $(xsetwacom list | awk '{print $7}'); do
+      xsetwacom set $i MapToOutput LVDS-1
+     done
+    fi
    else
     xrandr --output VGA-1 --off
   fi
