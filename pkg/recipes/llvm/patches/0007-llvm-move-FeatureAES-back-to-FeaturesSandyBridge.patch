@@ -1,0 +1,76 @@
+From e3a60b18325f3e020f200f7b7854d5f78aa93131 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sun, 29 Aug 2021 07:53:19 +0300
+Subject: [PATCH 7/7] llvm: move FeatureAES back to FeaturesSandyBridge.
+
+---
+ llvm/lib/Support/X86TargetParser.cpp | 6 +++---
+ llvm/lib/Target/X86/X86.td           | 9 ++++-----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/llvm/lib/Support/X86TargetParser.cpp b/llvm/lib/Support/X86TargetParser.cpp
+index c9530659c..6672bec48 100644
+--- a/llvm/lib/Support/X86TargetParser.cpp
++++ b/llvm/lib/Support/X86TargetParser.cpp
+@@ -154,7 +154,7 @@ constexpr FeatureBitset FeaturesNehalem =
+     FeaturesPenryn | FeaturePOPCNT | FeatureSSE4_2;
+ constexpr FeatureBitset FeaturesWestmere = FeaturesNehalem | FeaturePCLMUL;
+ constexpr FeatureBitset FeaturesSandyBridge =
+-    FeaturesWestmere | FeatureAVX | FeatureXSAVE | FeatureXSAVEOPT;
++    FeaturesWestmere | FeatureAES | FeatureAVX | FeatureXSAVE | FeatureXSAVEOPT;
+ constexpr FeatureBitset FeaturesIvyBridge =
+     FeaturesSandyBridge | FeatureF16C | FeatureFSGSBASE | FeatureRDRND;
+ constexpr FeatureBitset FeaturesHaswell =
+@@ -166,13 +166,13 @@ constexpr FeatureBitset FeaturesBroadwell =
+ // Intel Knights Landing and Knights Mill
+ // Knights Landing has feature parity with Broadwell.
+ constexpr FeatureBitset FeaturesKNL =
+-    FeaturesBroadwell | FeatureAES | FeatureAVX512F | FeatureAVX512CD |
++    FeaturesBroadwell | FeatureAVX512F | FeatureAVX512CD |
+     FeatureAVX512ER | FeatureAVX512PF | FeaturePREFETCHWT1;
+ constexpr FeatureBitset FeaturesKNM = FeaturesKNL | FeatureAVX512VPOPCNTDQ;
+ 
+ // Intel Skylake processors.
+ constexpr FeatureBitset FeaturesSkylakeClient =
+-    FeaturesBroadwell | FeatureAES | FeatureCLFLUSHOPT | FeatureXSAVEC |
++    FeaturesBroadwell | FeatureCLFLUSHOPT | FeatureXSAVEC |
+     FeatureXSAVES | FeatureSGX;
+ // SkylakeServer inherits all SkylakeClient features except SGX.
+ // FIXME: That doesn't match gcc.
+diff --git a/llvm/lib/Target/X86/X86.td b/llvm/lib/Target/X86/X86.td
+index 53bbd9379..c4f315828 100644
+--- a/llvm/lib/Target/X86/X86.td
++++ b/llvm/lib/Target/X86/X86.td
+@@ -606,7 +606,8 @@ def ProcessorFeatures {
+     !listconcat(NHMFeatures, WSMAdditionalFeatures);
+ 
+   // Sandybridge
+-  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAVX,
++  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAES,
++                                                  FeatureAVX,
+                                                   FeatureXSAVE,
+                                                   FeatureXSAVEOPT];
+   list<SubtargetFeature> SNBTuning = [FeatureMacroFusion,
+@@ -661,8 +662,7 @@ def ProcessorFeatures {
+     !listconcat(HSWFeatures, BDWAdditionalFeatures);
+ 
+   // Skylake
+-  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureAES,
+-                                                  FeatureXSAVEC,
++  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureXSAVEC,
+                                                   FeatureXSAVES,
+                                                   FeatureCLFLUSHOPT];
+   list<SubtargetFeature> SKLTuning = [FeatureHasFastGather,
+@@ -681,8 +681,7 @@ def ProcessorFeatures {
+     !listconcat(BDWFeatures, SKLAdditionalFeatures);
+ 
+   // Skylake-AVX512
+-  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureAES,
+-                                                  FeatureXSAVEC,
++  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureXSAVEC,
+                                                   FeatureXSAVES,
+                                                   FeatureCLFLUSHOPT,
+                                                   FeatureAVX512,
+-- 
+2.33.0
+

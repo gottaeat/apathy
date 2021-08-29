@@ -1,7 +1,7 @@
-From d664e87362993194eaa75a59bca99234f0816b14 Mon Sep 17 00:00:00 2001
+From 0e5fc1c1dd86c88c0a04cd94cec4e643da2b11e0 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 4 Aug 2021 13:34:09 +0300
-Subject: [PATCH 1/6] libcxx: fix musl locale.
+Date: Sun, 29 Aug 2021 07:35:15 +0300
+Subject: [PATCH 1/7] libcxx: fix musl locale.
 
 ---
  libcxx/include/locale | 5 ++---
@@ -38,5 +38,5 @@ index 8e584005d..947f6a09a 100644
          if (__current_errno == 0)
              errno = __save_errno;
 -- 
-2.32.0
+2.33.0
 

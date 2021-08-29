@@ -12,16 +12,17 @@ export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-13.0.0-rc1.tar.gz
-cd     llvm-project-llvmorg-13.0.0-rc1/
+tar xf /mss/work/sauces/llvmorg-13.0.0-rc2.tar.gz
+cd     llvm-project-llvmorg-13.0.0-rc2/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
 patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
 patch -p1 < "${pdir}"/0002-libcxx-force-link-against-compiler-rt.patch
-patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_imp.patch
+patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_im.patch
 patch -p1 < "${pdir}"/0004-libcxxabi-force-link-against-compiler-rt.patch
 patch -p1 < "${pdir}"/0005-compiler-rt-adjust-musl-syscalls.patch
-patch -p1 < "${pdir}"/0006-llvm-do-not-build-llvm-locstats.patch
+patch -p1 < "${pdir}"/0006-llvm-don-t-build-llvm-locstats.patch
+patch -p1 < "${pdir}"/0007-llvm-move-FeatureAES-back-to-FeaturesSandyBridge.patch
 
 cleancmake
 
