@@ -1,0 +1,7 @@
+/usr/bin/dmenu
+/usr/bin/dmenu_path
+/usr/bin/dmenu_run
+/usr/bin/dwm
+/usr/bin/slmenu
+/usr/bin/st
+/usr/bin/stest
