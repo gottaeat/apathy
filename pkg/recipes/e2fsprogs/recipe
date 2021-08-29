@@ -22,7 +22,7 @@ make -j1 MKDIR_P="install -d" DESTDIR="${PWD}"/KEK install
 cd "${PWD}"/KEK/usr/bin
 
 doas -s
-for i in chattr e2fsck lsattr mklost+found resize2fs tune2fs mke2fs; do
+for i in chattr e2fsck filefrag lsattr mklost+found resize2fs tune2fs mke2fs; do
  strip --strip-all "${i}"
  chown root:root "${i}"
  mv "${i}" /usr/bin/
