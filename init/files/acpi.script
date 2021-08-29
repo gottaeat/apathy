@@ -8,50 +8,81 @@ case "${amachine}" in
    # keyboard
    button/fnf1)          : ;;
    button/screenlock)    : ;;
-   button/battery)       xorgcheck && xtrlock ;;
-   button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes > /dev/null 2>&1 ;;
+   button/battery)       xorgcheck && xtrlock                     ;;
+   button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
-   video/switchmode)     xorgcheck && setmon  ;;
+   video/switchmode)     xorgcheck && setmon                      ;;
    video/brightnessdown) : ;;
    video/brightnessup)   : ;;
 
    # extra keys
-   cd/prev)              mpc -q prev                  ;;
-   cd/play)              mpc -q toggle                ;;
-   cd/next)              mpc -q next                  ;;
-   button/mute)          amixer -q set Master  toggle ;;
-   button/volumedown)    amixer -q set Master  3dB-   ;;
-   button/volumeup)      amixer -q set Master  3dB+   ;;
-   button/micmute)       amixer -q set Capture toggle ;;
-   button/vendor)        : ;;
+   cd/prev)              mpc -q prev                       ;;
+   cd/play)              mpc -q toggle                     ;;
+   cd/next)              mpc -q next                       ;;
+   button/mute)          amixer -q set Master  toggle      ;;
+   button/volumedown)    amixer -q set Master  3dB-        ;;
+   button/volumeup)      amixer -q set Master  3dB+        ;;
+   button/micmute)       amixer -q set Capture toggle      ;;
+   button/vendor)        echo 3 > /proc/sys/vm/drop_caches ;;
 
    # lid
    button/lid)
     case "${3}" in
-     open)  : ;;
-     close) : ;;
+     open)               : ;;
+     close)              : ;;
     esac
    ;;
 
    # charger
    ac_adapter)
     case "${4}" in
-     00000000)
-      setbright 5         > /dev/null 2>&1
-      setgov    powersave > /dev/null 2>&1
-     ;;
-     00000001)
-      setbright max       > /dev/null 2>&1
-      setgov    schedutil > /dev/null 2>&1
-     ;;
+     00000000)           setbright 5   && setgov powersave ;;
+     00000001)           setbright max && setgov schedutil ;;
     esac
    ;;
 
    # battery
    battery)
     case "${4}" in
-     00000000) : ;;
-     00000001) : ;;
+     00000000)          : ;;
+     00000001)          : ;;
+    esac
+   ;;
+   *)
+    printf "acpid handler thing: event not understood:\n$1\n" > /dev/kmsg
+   ;;
+  esac
+ ;;
+ t61)
+  case "${1}" in
+   button/fnf1)          : ;;
+   button/screenlock)    xorgcheck && xtrlock                     ;;
+   button/battery)       : ;;
+   button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
+   button/wlan)          : ;;
+   video/switchmode)     xorgcheck && setmon                      ;;
+   button/fnf9)          : ;;
+   button/fnf11)         : ;;
+   button/suspend)       : ;;
+   video/brightnessup)   : ;;
+   video/brightnessdown) : ;;
+   button/zoom)          : ;;
+   cd/stop)              mpc -q stop   ;;
+   cd/prev)              mpc -q prev   ;;
+   cd/play)              mpc -q toggle ;;
+   cd/next)              mpc -q next   ;;
+
+   # extra keyboard
+   button/mute)          amixer -q set Master toggle       ;;
+   button/volumedown)    amixer -q set Master 3dB-         ;;
+   button/volumeup)      amixer -q set Master 3dB+         ;;
+   button/vendor)        echo 3 > /proc/sys/vm/drop_caches ;;
+
+   # lid
+   button/lid)
+    case "${3}" in
+     open)               : ;;
+     close)              : ;;
     esac
    ;;
    *)
