@@ -54,5 +54,3 @@ rootcheck(){
    exit 1
  fi
 }
-
-xorgcheck(){ xset q >/dev/null 2>&1;}
