@@ -1,35 +1,48 @@
 # 1 > keyboard
-          fn+f1   button/fnf1          FNF1    00000080 00000000 K
-lock      fn+f2   button/screenlock    SCRNLCK 00000080 00000000 K
-battery   fn+f3   button/battery       BAT     00000080 00000000 K
-sleep     fn+f4   button/sleep         SBTN    00000080 00000000 K
-wlan      fn+f5   button/wlan          WLAN    00000080 00000000 K
+          fn+f1   button/fnf1          FNF1        00000080 00000000 K
+lock      fn+f2   button/screenlock    SCRNLCK     00000080 00000000 K
+battery   fn+f3   button/battery       BAT         00000080 00000000 K
+sleep     fn+f4   button/sleep         SBTN        00000080 00000000 K
+wlan      fn+f5   button/wlan          WLAN        00000080 00000000 K
           fn+f6
-projector fn+f7   video/switchmode     VMOD    00000080 00000000 K
+projector fn+f7   video/switchmode     VMOD        00000080 00000000 K
           fn+f8
-eject?    fn+f9   button/fnf9          FNF9    00000080 00000000 K
+eject?    fn+f9   button/fnf9          FNF9        00000080 00000000 K
           fn+f10
-          fn+f11  button/fnf11         FF11    00000080 00000000 K
-suspend   fn+f12  button/suspend       SUSP    00000080 00000000 K
+          fn+f11  button/fnf11         FF11        00000080 00000000 K
+suspend   fn+f12  button/suspend       SUSP        00000080 00000000 K
 
-brigh_up  home    video/brightnessup   BRTUP   00000086 00000000
-brigh_dn  end     video/brightnessdown BRTDN   00000087 00000000
+bright_up home    video/brightnessup   BRTUP       00000086 00000000
+bright_dn end     video/brightnessdown BRTDN       00000087 00000000
 
-zoom      space   button/zoom          ZOOM    00000080 00000000 K
+zoom      space   button/zoom          ZOOM        00000080 00000000 K
 
-stop      uparrow cd/stop              CDSTOP  00000080 00000000 K
-prev      learrow cd/prev              CDPREV  00000080 00000000 K
-play      dnarrow cd/play              CDPLAY  00000080 00000000 K
-next      riarrow cd/next              CDNEXT  00000080 00000000 K
+stop      uparrow cd/stop              CDSTOP      00000080 00000000 K
+prev      learrow cd/prev              CDPREV      00000080 00000000 K
+play      dnarrow cd/play              CDPLAY      00000080 00000000 K
+next      riarrow cd/next              CDNEXT      00000080 00000000 K
 
 # 2 > extra keyboard
-          ex1     button/mute          MUTE    00000080 00000000 K
-          ex2     button/volumedown    VOLDN   00000080 00000000 K
-          ex3     button/volumeup      VOLUP   00000080 00000000 K
-          ex4     button/vendor        VNDR    00000080 00000000 K
+          ex1     button/mute          MUTE        00000080 00000000 K
+          ex2     button/volumedown    VOLDN       00000080 00000000 K
+          ex3     button/volumeup      VOLUP       00000080 00000000 K
+          ex4     button/vendor        VNDR        00000080 00000000 K
 
 # 3 > lid
-          lid-    button/lid           LID     close
-          lid+    button/lid           LID     open
+          lid-    button/lid           LID         close
+          lid+    button/lid           LID         open
 
-# 4 > no charger, battery, dock, power buttons
+# 4 > laptop jack
+          hphead+ jack/headphone       HEADPHONE   plug
+          hphead- jack/headphone       HEADPHONE   unplug
+          hpmic+  jack/microphone      MICROPHONE  plug
+          hpmic-  jack/microphone      MICROPHONE  unplug
+
+# 5 > wake up from suspend
+                  processor            LNXCPU:00   00000081 00000000
+                  processor            LNXCPU:01   00000081 00000000
+                  thermal_zone         LNXTHERM:00 00000081 00000000
+
+
+# no charger, no battery, no dock; can't test.
+# power button is not detected as an acpi event.
