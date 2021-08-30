@@ -1,0 +1,27 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+. /mss/files/device.conf
+
+if [ "${amachine}" = "x230t" ]
+ then
+  case "$(xrandr | awk '/LVDS-1/{gsub(/\(|\)/,"");print $5}')" in
+   normal)   rot="right"    wac="cw"   ;;
+   right)    rot="inverted" wac="half" ;;
+   inverted) rot="left"     wac="ccw"  ;;
+   left)     rot="normal"   wac="none" ;;
+  esac
+
+  aprint_ret "setting rotation to: ${rot}"
+   xrandr --output LVDS-1 --rotate "${rot}" &&
+   for i in $(xsetwacom list | awk '{print $7}'); do
+    xsetwacom set "${i}" MapToOutput LVDS-1 &&
+    xsetwacom set "${i}" Rotate "${wac}"
+   done &&
+   [ -f /home/mss/.fehbg ] && /home/mss/.fehbg 
+  evalret
+  aprint_nc
+ else
+  aprint_fail "device is not on the whitelist."
+  aprint_nc
+  exit 1
+fi
