@@ -4,3 +4,16 @@
  --host=$CHOST   \
  --prefix=/usr   \
  --sbindir=/usr/bin
+
+make
+
+# 2
+make DESTDIR="${PWD}"/KEK install
+cd "${PWD}"/KEK/usr/bin
+
+doas -s
+for i in acpid ; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
