@@ -91,7 +91,15 @@ ainit_kill(){
  fi
 }
 
-xorgcheck(){ xset q >/dev/null 2>&1;}
+xorgexec(){
+ if pidof X >/dev/null 2>&1
+  then
+   DISPLAY=:0 ${@}
+  else
+   ainitmes "X is not running."; failprompt
+   exit 1
+ fi
+}
 
 if [ "$(id -u)" -ne 0 ]; then
  ainitmes "this script must be run as uid 0, exiting."; failprompt

@@ -6,11 +6,11 @@ case "${amachine}" in
  x230t)
   case "${1}" in
    # keyboard
-   button/fnf1)          xorgcheck && setrotate                   ;;
-   button/screenlock)    xorgcheck && xtrlock                     ;;
+   button/fnf1)          xorgexec setrotate                       ;;
+   button/screenlock)    xorgexec xtrlock                         ;;
    button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
-   video/switchmode)     xorgcheck && setmon                      ;;
+   video/switchmode)     xorgexec setmon                          ;;
    video/brightnessdown) : ;;
    video/brightnessup)   : ;;
    cd/prev)              mpc -q prev                              ;;
@@ -71,11 +71,11 @@ case "${amachine}" in
  t61)
   case "${1}" in
    button/fnf1)          : ;;
-   button/screenlock)    xorgcheck && xtrlock                     ;;
+   button/screenlock)    xorgexec xtrlock                         ;;
    button/battery)       : ;;
    button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
-   video/switchmode)     xorgcheck && setmon                      ;;
+   video/switchmode)     xorgexec setmon                          ;;
    button/fnf9)          : ;;
    button/fnf11)         : ;;
    button/suspend)       : ;;
