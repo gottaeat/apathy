@@ -6,24 +6,23 @@ case "${amachine}" in
  x230t)
   case "${1}" in
    # keyboard
-   button/fnf1)          : ;;
-   button/screenlock)    : ;;
-   button/battery)       xorgcheck && xtrlock                     ;;
+   button/fnf1)          xorgcheck && setrotate                   ;;
+   button/screenlock)    xorgcheck && xtrlock                     ;;
    button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
    video/switchmode)     xorgcheck && setmon                      ;;
    video/brightnessdown) : ;;
    video/brightnessup)   : ;;
+   cd/prev)              mpc -q prev                              ;;
+   cd/play)              mpc -q toggle                            ;;
+   cd/next)              mpc -q next                              ;;
 
    # extra keys
-   cd/prev)              mpc -q prev                       ;;
-   cd/play)              mpc -q toggle                     ;;
-   cd/next)              mpc -q next                       ;;
-   button/mute)          amixer -q set Master  toggle      ;;
-   button/volumedown)    amixer -q set Master  3dB-        ;;
-   button/volumeup)      amixer -q set Master  3dB+        ;;
-   button/micmute)       amixer -q set Capture toggle      ;;
-   button/vendor)        echo 3 > /proc/sys/vm/drop_caches ;;
+   button/mute)          amixer -q set Master  toggle             ;;
+   button/volumedown)    amixer -q set Master  3dB-               ;;
+   button/volumeup)      amixer -q set Master  3dB+               ;;
+   button/micmute)       amixer -q set Capture toggle             ;;
+   button/vendor)        echo 3 > /proc/sys/vm/drop_caches        ;;
 
    # lid
    button/lid)
@@ -36,20 +35,36 @@ case "${amachine}" in
    # charger
    ac_adapter)
     case "${4}" in
-     00000000)           setbright 5   && setgov powersave ;;
-     00000001)           setbright max && setgov schedutil ;;
+     00000000)           setbright 5   && setgov powersave        ;;
+     00000001)           setbright max && setgov schedutil        ;;
     esac
    ;;
 
    # battery
    battery)
     case "${4}" in
-     00000000)          : ;;
-     00000001)          : ;;
+     00000000)           : ;;
+     00000001)           : ;;
     esac
    ;;
+
+   # headphone in
+   jack/headphone)
+    case "${3}" in
+     plug)               : ;;
+     unplug)             : ;;
+   esac
+   ;;
+
+   # mic in
+   jack/microphone)
+    case "${3}" in
+     plug)               : ;;
+     unplug)             : ;;
+   esac
+   ;;
    *)
-    printf "acpid handler thing: event not understood:\n$1\n" > /dev/kmsg
+    printf "acpi.script: event not understood:\n${1}\n" > /dev/kmsg
    ;;
   esac
  ;;
@@ -67,16 +82,16 @@ case "${amachine}" in
    video/brightnessup)   : ;;
    video/brightnessdown) : ;;
    button/zoom)          : ;;
-   cd/stop)              mpc -q stop   ;;
-   cd/prev)              mpc -q prev   ;;
-   cd/play)              mpc -q toggle ;;
-   cd/next)              mpc -q next   ;;
+   cd/stop)              mpc -q stop                              ;;
+   cd/prev)              mpc -q prev                              ;;
+   cd/play)              mpc -q toggle                            ;;
+   cd/next)              mpc -q next                              ;;
 
    # extra keyboard
-   button/mute)          amixer -q set Master toggle       ;;
-   button/volumedown)    amixer -q set Master 3dB-         ;;
-   button/volumeup)      amixer -q set Master 3dB+         ;;
-   button/vendor)        echo 3 > /proc/sys/vm/drop_caches ;;
+   button/mute)          amixer -q set Master toggle              ;;
+   button/volumedown)    amixer -q set Master 3dB-                ;;
+   button/volumeup)      amixer -q set Master 3dB+                ;;
+   button/vendor)        echo 3 > /proc/sys/vm/drop_caches        ;;
 
    # lid
    button/lid)
@@ -85,12 +100,28 @@ case "${amachine}" in
      close)              : ;;
     esac
    ;;
+
+   # headphone in
+   jack/headphone)
+    case "${3}" in
+     plug)               : ;;
+     unplug)             : ;;
+   esac
+   ;;
+
+   # mic in
+   jack/microphone)
+    case "${3}" in
+     plug)               : ;;
+     unplug)             : ;;
+   esac
+   ;;
    *)
-    printf "acpid handler thing: event not understood:\n$1\n" > /dev/kmsg
+    printf "acpi.script: event not understood:\n$1\n" > /dev/kmsg
    ;;
   esac
  ;;
  *)
-  printf "acpid handler thing: no profile available for this device:\n" > /dev/kmsg
+  printf "acpi.script: no profile available for this device:\n" > /dev/kmsg
  ;;
 esac
