@@ -41,7 +41,7 @@ i l . util-linux          2.37.2
 i l . e2fsprogs           1.46.4 
 i g . eudev               3.2.9
 i l . linux               5.13.13
-i l . init                20210829_062537
+i l . init                20210830_050341
 i g . opendoas            6.8.1
 i g . iptables            1.8.7
 i l . curl                7.78.0
@@ -170,14 +170,14 @@ i l .. libnl3             3.5.0
 i g . lilo                24.2
 i l . dwm                 6.2 
 i g . irssi               1.2.3
-i l . clang               13.0.0-rc1 
-i l . compiler-rt         13.0.0-rc1 
-i l . libcxx              13.0.0-rc1 
-i l . libcxxabi           13.0.0-rc1 
-i l . libunwind           13.0.0-rc1 
-i l . lld                 13.0.0-rc1 
-i l . llvm                13.0.0-rc1 
-i l . openmp              13.0.0-rc1 
+i l . clang               13.0.0-rc2
+i l . compiler-rt         13.0.0-rc2
+i l . libcxx              13.0.0-rc2
+i l . libcxxabi           13.0.0-rc2
+i l . libunwind           13.0.0-rc2
+i l . lld                 13.0.0-rc2
+i l . llvm                13.0.0-rc2
+i l . openmp              13.0.0-rc2
 i l . firefox             91.0.1esr
 i l .. node.js            14.17.3  
 i l .. cbindgen           0.20.0 
@@ -206,4 +206,4 @@ i l . clzip               1.12
 i l . tzdb                2021a
 i l . aircrack-ng         1.6
 i l .. iw                 5.9
-i l . acpid               2.0.32
+i l . acpid               2.0.32 

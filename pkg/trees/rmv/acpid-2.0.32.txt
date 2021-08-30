@@ -1,0 +1,6 @@
+/usr/bin/acpi_listen
+/usr/bin/acpid
+/usr/bin/kacpimon
+
+/usr/share/doc
+/usr/share/man
