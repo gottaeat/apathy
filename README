@@ -3,27 +3,33 @@ apathy
 apathy is a toy linux thing that i actually use daily, built from scratch for
 the sake of having something to do.
 
-in the toolchain, musl is utilized as the libc implementation, coupled with a
-completely standalone llvm suite without anything gcc or binutils in it. the
-reason behind this is not to be a gnu hating contrarian but due to firefox
-being the fastest compiling modern standards compliant browser and it having a
-hard dependency on rust and clang, therefore llvm. i see no point in having two
-things serving the same purpose.
+musl is utilized as the libc implementation for the toolery bits, coupled with a
+standalone llvm suite, without anything gcc or binutils in it. the reason behind
+this is not to be a gnu hating contrarian but due to firefox being the fastest
+compiling modern standards compliant browser and it having a hard dependency on
+rust and clang, therefore llvm. i see no point in having two things serving the
+same purpose.
 
-for small shell utilities like coreutils, busybox applets are used where
-possible, though without creating a scenario where the user experience is
-crippled solely to achieve "minimalism". if it works, it works.
+busybox applets are used where possible, though without creating a scenario
+where the user experience is crippled solely to achieve "minimalism". if it
+works, it works.
 
 the package building and management is done all by hand and all the packages are
 built using in-house recipes. the list and the build order of all built packages
-are kept in a "database" (a text file). the directory listing of a package is
+are kept in a parsable plain text file. the directory listing of a package is
 saved by doing a destdir install prior to installing it to the rootfs.
 
-the init is also in-house and written in posix shell. the services are collected
-into a single file as shell functions and `rc` does the talking it has basic
-failproofing to save from catastrophies, device specific init configuration and
-a cli tool to manually start and stop services. all are intelligent and mature
-enough for my use cases.
+the init is in-house and written in posix shell. services are collected into a
+single file as shell functions. `rc` does the talking for booting up and going
+down. it features basic failproofing to save from catastrophies, device tailored
+init configuration and a cli tool to manually start and stop services. like the
+init systems of old times, there's no watchdoggery going on therefore no auto
+restarting exists. all things considered, all are intellgent and mature enough
+for my use cases.
+
+on top of the init configuration, each machine running apathy also has a device
+and acpi profile to aid with using all of the features of the machine in an
+automated manner.
 
 because this whole thing is intended for my use only, this repo does not contain
 an image to boot from or a stage{1..4} tarball to unpack. objectively speaking,
