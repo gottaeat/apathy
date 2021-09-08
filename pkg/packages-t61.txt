@@ -40,7 +40,7 @@ i g . vim                 8.2.2549
 i l . util-linux          2.37.2
 i l . e2fsprogs           1.46.4 
 i g . eudev               3.2.9
-i l . linux               5.13.13
+i l . linux               5.14.1
 i l . init                20210906_195141
 i g . opendoas            6.8.1
 i g . iptables            1.8.7
@@ -178,7 +178,7 @@ i l . libunwind           13.0.0-rc2
 i l . lld                 13.0.0-rc2
 i l . llvm                13.0.0-rc2
 i l . openmp              13.0.0-rc2
-i l . firefox             91.0.1esr
+i l . firefox             91.1.0esr
 i l .. node.js            14.17.3  
 i l .. cbindgen           0.20.0 
 i l ... rust              1.54.0 
