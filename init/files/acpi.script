@@ -3,7 +3,7 @@
 . /mss/files/device.conf
 
 case "${amachine}" in
- x230t)
+ x230)
   case "${1}" in
    # keyboard
    button/fnf1)          xorgexec setrotate                       ;;
