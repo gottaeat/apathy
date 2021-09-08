@@ -1,7 +1,7 @@
-From e32554bb61753ed84417cf93d08fb050355a787e Mon Sep 17 00:00:00 2001
+From 8cca8cc13fc376cba03739d6273450f3a6b8a2a0 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 25 Aug 2021 23:47:20 +0300
-Subject: [PATCH 03/10] bring back fbcon scrollback.
+Date: Wed, 8 Sep 2021 08:05:29 +0300
+Subject: [PATCH 03/11] bring back fbcon scrollback.
 
 ---
  drivers/video/fbdev/core/bitblit.c   |  11 +-
@@ -666,5 +666,5 @@ index 2768eff24..16b844ef4 100644
  	struct fb_tilecursor cursor;
  	int use_sw = vc->vc_cursor_type & CUR_SW;
 -- 
-2.32.0
+2.33.0
 

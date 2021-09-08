@@ -1,7 +1,7 @@
-From 67c7a27e8ea38d10c62e94a04b7c6e29697b364b Mon Sep 17 00:00:00 2001
+From e027c714f527be569b17e1ac6085d66c9d902f15 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 25 Aug 2021 23:47:51 +0300
-Subject: [PATCH 04/10] add zstd improvements from xanmod.
+Date: Wed, 8 Sep 2021 08:06:31 +0300
+Subject: [PATCH 04/11] add zstd improvements from xanmod.
 
 ---
  MAINTAINERS                                   |   12 +
@@ -149,10 +149,10 @@ Subject: [PATCH 04/10] add zstd improvements from xanmod.
  delete mode 100644 lib/zstd/zstd_opt.h
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cce91cd5..c8eb9c87e 100644
+index d7b4f3287..4e2240d31 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -20259,6 +20259,18 @@ F:	Documentation/vm/zsmalloc.rst
+@@ -20566,6 +20566,18 @@ F:	Documentation/vm/zsmalloc.rst
  F:	include/linux/zsmalloc.h
  F:	mm/zsmalloc.c
  
@@ -441,10 +441,10 @@ index 3e26b4664..6d984a832 100644
  			goto finish;
  		}
 diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 925a5ca37..274750875 100644
+index 455561826..003c602b0 100644
 --- a/fs/f2fs/compress.c
 +++ b/fs/f2fs/compress.c
-@@ -333,8 +333,8 @@ static const struct f2fs_compress_ops f2fs_lz4_ops = {
+@@ -334,8 +334,8 @@ static const struct f2fs_compress_ops f2fs_lz4_ops = {
  
  static int zstd_init_compress_ctx(struct compress_ctx *cc)
  {
@@ -455,7 +455,7 @@ index 925a5ca37..274750875 100644
  	void *workspace;
  	unsigned int workspace_size;
  	unsigned char level = F2FS_I(cc->inode)->i_compress_flag >>
-@@ -343,17 +343,17 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+@@ -344,17 +344,17 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
  	if (!level)
  		level = F2FS_ZSTD_DEFAULT_CLEVEL;
  
@@ -477,7 +477,7 @@ index 925a5ca37..274750875 100644
  				KERN_ERR, F2FS_I_SB(cc->inode)->sb->s_id,
  				__func__);
  		kvfree(workspace);
-@@ -376,9 +376,9 @@ static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
+@@ -377,9 +377,9 @@ static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
  
  static int zstd_compress_pages(struct compress_ctx *cc)
  {
@@ -490,7 +490,7 @@ index 925a5ca37..274750875 100644
  	int src_size = cc->rlen;
  	int dst_size = src_size - PAGE_SIZE - COMPRESS_HEADER_SIZE;
  	int ret;
-@@ -391,19 +391,19 @@ static int zstd_compress_pages(struct compress_ctx *cc)
+@@ -392,19 +392,19 @@ static int zstd_compress_pages(struct compress_ctx *cc)
  	outbuf.dst = cc->cbuf->cdata;
  	outbuf.size = dst_size;
  
@@ -518,7 +518,7 @@ index 925a5ca37..274750875 100644
  		return -EIO;
  	}
  
-@@ -420,22 +420,22 @@ static int zstd_compress_pages(struct compress_ctx *cc)
+@@ -421,22 +421,22 @@ static int zstd_compress_pages(struct compress_ctx *cc)
  
  static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
  {
@@ -545,7 +545,7 @@ index 925a5ca37..274750875 100644
  				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id,
  				__func__);
  		kvfree(workspace);
-@@ -457,9 +457,9 @@ static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
+@@ -458,9 +458,9 @@ static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
  
  static int zstd_decompress_pages(struct decompress_io_ctx *dic)
  {
@@ -558,7 +558,7 @@ index 925a5ca37..274750875 100644
  	int ret;
  
  	inbuf.pos = 0;
-@@ -470,11 +470,11 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
+@@ -471,11 +471,11 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
  	outbuf.dst = dic->rbuf;
  	outbuf.size = dic->rlen;
  
@@ -575,10 +575,10 @@ index 925a5ca37..274750875 100644
  	}
  
 diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index b29de80ab..06187adb6 100644
+index 8fecd3050..8164ed1bc 100644
 --- a/fs/f2fs/super.c
 +++ b/fs/f2fs/super.c
-@@ -529,7 +529,7 @@ static int f2fs_set_zstd_level(struct f2fs_sb_info *sbi, const char *str)
+@@ -588,7 +588,7 @@ static int f2fs_set_zstd_level(struct f2fs_sb_info *sbi, const char *str)
  	if (kstrtouint(str + 1, 10, &level))
  		return -EINVAL;
  
@@ -4605,7 +4605,7 @@ index 000000000..d945c2998
 +#endif   /* ZSTD_H_ZSTD_STATIC_LINKING_ONLY */
 +
 diff --git a/lib/decompress_unzstd.c b/lib/decompress_unzstd.c
-index 790abc472..6e5ecfba0 100644
+index 6b629ab31..a512b99ae 100644
 --- a/lib/decompress_unzstd.c
 +++ b/lib/decompress_unzstd.c
 @@ -68,11 +68,7 @@
@@ -37638,7 +37638,7 @@ index 0b353530f..000000000
 -}
 diff --git a/lib/zstd/huf.h b/lib/zstd/huf.h
 deleted file mode 100644
-index 2143da28d..000000000
+index 923218d12..000000000
 --- a/lib/zstd/huf.h
 +++ /dev/null
 @@ -1,212 +0,0 @@
@@ -37778,7 +37778,7 @@ index 2143da28d..000000000
 -	HUF_repeat_none,  /**< Cannot use the previous table */
 -	HUF_repeat_check, /**< Can use the previous table but it must be checked. Note : The previous table must have been constructed by HUF_compress{1,
 -			     4}X_repeat */
--	HUF_repeat_valid  /**< Can use the previous table and it is asumed to be valid */
+-	HUF_repeat_valid  /**< Can use the previous table and it is assumed to be valid */
 -} HUF_repeat;
 -/** HUF_compress4X_repeat() :
 -*   Same as HUF_compress4X_wksp(), but considers using hufTable if *repeat != HUF_repeat_none.
@@ -41378,5 +41378,5 @@ index 55e1b4cba..000000000
 -
 -#endif /* ZSTD_OPT_H_91842398743 */
 -- 
-2.32.0
+2.33.0
 

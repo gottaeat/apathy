@@ -1,0 +1,25 @@
+From cd60874a3b00d7845b7000bede87bbb027151ec9 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 8 Sep 2021 08:31:57 +0300
+Subject: [PATCH 07/11] add remove !MAXSMP check for multigen_lru.
+
+---
+ mm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 4cd257cfd..aec1cd9f7 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -894,7 +894,7 @@ config LRU_GEN
+ 	bool "Multigenerational LRU"
+ 	depends on MMU
+ 	# the following options may leave not enough spare bits in page->flags
+-	depends on !MAXSMP && (64BIT || !SPARSEMEM || SPARSEMEM_VMEMMAP)
++	depends on 64BIT || !SPARSEMEM || SPARSEMEM_VMEMMAP
+ 	help
+ 	  A high performance LRU implementation to heavily overcommit workloads
+ 	  that are not IO bound. See Documentation/vm/multigen_lru.rst for
+-- 
+2.33.0
+

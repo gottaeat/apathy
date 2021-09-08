@@ -27,7 +27,7 @@ pref("browser.uidensity", 1);
 pref("dom.allow_cut_copy", true);
 pref("dom.event.clipboardevents.enabled", true);
 pref("dom.ipc.processCount", 2);
-pref("dom.w3c_touch_events.enabled", 1);
+pref("dom.w3c_touch_events.enabled", 0);
 pref("findbar.highlightAll", true);
 pref("font.default.x-western", "sans-serif");
 pref("font.name.monospace.ja", "xos4 Terminus");

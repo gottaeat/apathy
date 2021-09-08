@@ -1,0 +1,52 @@
+{
+  "data": [
+    {
+      "schema": 1619432100208,
+      "appliesTo": [
+        {
+          "included": {
+            "everywhere": true
+          }
+        }
+      ],
+      "extraParams": [
+        {
+          "name": "t",
+          "value": "ffcm",
+          "purpose": "contextmenu",
+          "condition": "purpose"
+        },
+        {
+          "name": "t",
+          "value": "ffab",
+          "purpose": "keyword",
+          "condition": "purpose"
+        },
+        {
+          "name": "t",
+          "value": "ffsb",
+          "purpose": "searchbar",
+          "condition": "purpose"
+        },
+        {
+          "name": "t",
+          "value": "ffhp",
+          "purpose": "homepage",
+          "condition": "purpose"
+        },
+        {
+          "name": "t",
+          "value": "ffnt",
+          "purpose": "newtab",
+          "condition": "purpose"
+        }
+      ],
+      "telemetryId": "ddg",
+      "webExtension": {
+        "id": "ddg@search.mozilla.org"
+      },
+      "id": "c0b26c0e-63e6-4235-b2ce-5f16b6a8bf87",
+      "last_modified": 1619450717295
+    }
+  ]
+}
