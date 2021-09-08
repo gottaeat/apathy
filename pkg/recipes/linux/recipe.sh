@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.13 kernels, version 2, for thinkpad t61 and x230t.
+# build script for 5.13 kernels, version 2, for thinkpad t61 and x230.
 
 . /mss/files/funcs
 . /mss/files/device.conf
