@@ -40,8 +40,8 @@ i g . vim                 8.2.2549
 i l . util-linux          2.37.2
 i l . e2fsprogs           1.46.4
 i g . eudev               3.2.9
-i l . linux               5.13.13
-i l . init                20210831_001315
+i l . linux               5.13.13 
+i l . init                20210906_195141
 i g . opendoas            6.8.1
 i g . iptables            1.8.7
 i l . curl                7.78.0
@@ -117,7 +117,6 @@ i l . xorg-server         1.20.13
 i l .. libepoxy           1.5.8
 i g . xf86-input-libinput 1.1.0
 i g .. libinput           1.18.0
-i l . xf86-input-wacom    0.40.0
 i l . xinit               1.4.1
 i g . atk                 2.36.0
 i g . freeglut            3.2.1
