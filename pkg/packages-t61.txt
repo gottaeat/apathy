@@ -178,10 +178,10 @@ i l . libunwind           13.0.0-rc2
 i l . lld                 13.0.0-rc2
 i l . llvm                13.0.0-rc2
 i l . openmp              13.0.0-rc2
-i l . firefox             91.1.0esr
+i l . firefox             91.1.0esr 
 i l .. node.js            14.17.3  
 i l .. cbindgen           0.20.0 
-i l ... rust              1.54.0 
+i l ... rust              1.55.0
 i l .. gtk3               3.24.30
 i g . zstd                1.5.0
 i g . transmission        3.0
