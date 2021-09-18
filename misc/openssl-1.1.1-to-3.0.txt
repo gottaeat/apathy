@@ -1,0 +1,53 @@
+# 1
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+# 2
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep -e libcrypto\\.so -e libssl\\.so)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 3
+node.js        /opt/node.js-14.17.3/bin/node
+rustc          /opt/rustc-1.55.0/bin/cargo
+xorg-server    /usr/bin/Xorg
+aircrack-ng    /usr/bin/aircrack-ng
+irssi          /usr/bin/irssi
+links          /usr/bin/links
+openssh        /usr/bin/scp
+               /usr/bin/sftp
+               /usr/bin/ssh
+               /usr/bin/ssh-add
+               /usr/bin/ssh-agent
+               /usr/bin/ssh-keygen
+               /usr/bin/ssh-keyscan
+               /usr/bin/sshd
+               /usr/lib/ssh/sftp-server
+               /usr/lib/ssh/ssh-keysign
+               /usr/lib/ssh/ssh-pkcs11-helper
+               /usr/lib/ssh/ssh-sk-helper
+transmission   /usr/bin/transmission-cli
+               /usr/bin/transmission-create
+               /usr/bin/transmission-daemon
+               /usr/bin/transmission-edit
+               /usr/bin/transmission-remote
+               /usr/bin/transmission-show
+wpa-supplicant /usr/bin/wpa_passphrase
+               /usr/bin/wpa_supplicant
+ympd           /usr/bin/ympd
+ffmpeg         /usr/lib/libavformat.so.58.76.100
+curl           /usr/lib/libcurl.so.4.7.0
+libevent       /usr/lib/libevent_openssl-2.1.so.7.0.0
+libssh2        /usr/lib/libssh2.so.1.0.1
+python         /usr/lib/python3.9/lib-dynload/_hashlib.cpython-39-x86_64-linux-gnu.so
+               /usr/lib/python3.9/lib-dynload/_ssl.cpython-39-x86_64-linux-gnu.so
+git            /usr/libexec/git-core/git-imap-send
+openvpn        /usr/sbin/openvpn
