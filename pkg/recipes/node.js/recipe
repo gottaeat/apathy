@@ -11,11 +11,12 @@ export CXXFLAGS="$(echo "${CXXFLAGS}" \
  | sed 's/-O[23]/-Os/')"
 
 # 2
-tar xf /mss/work/sauces/node-v14.17.3.tar.xz
-cd node-v14.17.3/
+tar xf /mss/work/sauces/node-v16.9.1.tar.gz
+cd     node-v16.9.1/
 
 pdir="/mss/repo/pkg/recipes/node.js/patches"
 patch -p1 < "${pdir}"/0001-remove-latomic.patch
+patch -p1 < "${pdir}"/0002-fix-libc++.patch
 
 ./configure \
  --ninja                    \
@@ -35,10 +36,10 @@ time samu -C out/Release
 
 # 3
 instdir="${PWD}/KEK"
-tools/install.py install "${instdir}" /opt/node.js-14.17.3
+tools/install.py install "${instdir}" /opt/node.js-16.9.1
 
 rm -rfv \
- "${instdir}"/opt/node.js-14.17.3/share \
- "${instdir}"/opt/node.js-14.17.3/include
+ "${instdir}"/opt/node.js-16.9.1/share \
+ "${instdir}"/opt/node.js-16.9.1/include
 
-strip --strip-all "${instdir}"/opt/node.js-14.17.3/bin/node
+strip --strip-all "${instdir}"/opt/node.js-16.9.1/bin/node

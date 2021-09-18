@@ -3,10 +3,17 @@ pdir="/mss/repo/pkg/recipes/libssh2/patches"
 patch -p1 < "${pdir}"/0001-CVE-2019-17498.patch
 
 ./configure \
- --build=$CBUILD         \
- --host=$CHOST           \
- --prefix=/usr           \
- --sysconfdir=/etc       \
- --localstatedir=/var    \
- --mandir=/usr/share/man \
- --infodir=/usr/share/info
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --sysconfdir=/etc         \
+ --localstatedir=/var      \
+ --mandir=/usr/share/man   \
+ --infodir=/usr/share/info \
+\
+ --enable-hidden-symbols   \
+ --enable-shared           \
+ --disable-debug           \
+ --disable-examples-build  \
+ --disable-rpath           \
+ --disable-static

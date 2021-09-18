@@ -1,0 +1,11 @@
+--- a/deps/v8/include/cppgc/allocation.h	2021-09-10 20:25:12.000000000 +0300
++++ b/deps/v8/include/cppgc/allocation.h	2021-09-16 22:28:48.881534847 +0300
+@@ -2,6 +2,8 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include <array>
++
+ #ifndef INCLUDE_CPPGC_ALLOCATION_H_
+ #define INCLUDE_CPPGC_ALLOCATION_H_
+ 

@@ -1,29 +1,37 @@
 # 1
-perl ./Configure linux-x86_64 \
- --prefix=/usr              \
- --libdir=lib               \
- --openssldir=/etc/ssl      \
-\
- shared                     \
- enable-ec_nistp_64_gcc_128 \
-\
- no-zlib                    \
- no-async                   \
- no-comp                    \
- no-idea                    \
- no-mdc2                    \
- no-rc5                     \
- no-ec2m                    \
- no-sm2                     \
- no-sm4                     \
- no-ssl2                    \
- no-ssl3                    \
- no-seed                    \
- no-weak-ssl-ciphers        \
-\
- ${CFLAGS} ${LDFLAGS} -Wa,--noexecstack
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
 
-make
+# 2
+perl ./Configure linux-x86_64 \
+ --prefix=/usr                \
+ --libdir=lib                 \
+ --openssldir=/etc/ssl        \
+\
+ shared                       \
+ no-async                     \
+ no-comp                      \
+ no-ec2m                      \
+ no-idea                      \
+ no-mdc2                      \
+ no-rc5                       \
+ no-seed                      \
+ no-sm2                       \
+ no-sm4                       \
+ no-ssl2                      \
+ no-ssl3                      \
+ no-tests                     \
+ no-unit-test                 \
+ no-weak-ssl-ciphers          \
+ no-zlib                      \
+\
+ "${CFLAGS} ${LDFLAGS} -Wa,--noexecstack"
+
+time make
 
 # 2
 instdir="${PWD}/KEK"
