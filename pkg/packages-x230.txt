@@ -1,212 +1,212 @@
-i g . linux-headers       5.12.0
-i l . musl                1.2.2
-i g . zlib                1.2.11
-i g . file                5.40
-i g . readline            8.1
-i g . m4                  1.4.18
-i g . bc                  4.0.1
-i g . bzip2               1.0.8
-i g . pkgconf             1.7.4
-i g . ncurses             6.2
-i g . sed                 4.8
-i g . bison               3.7.4
-i g . flex                2.6.4
-i l . grep                3.7
-i g . yash                2.51
-i l . busybox             1.34.0
-i g . libtool             2.4.6
-i l . gperf               3.1
-i g . expat               2.3.0
-i g . perl                5.34.0
-i g . autoconf            2.70
-i g . automake            1.16.3
-i g . xz                  5.2.5
-i g . libelf              0.183
-i g . libffi              3.3.0
-i l . openssl             3.0.0
-i l . python              3.9.5 
-i g . samurai             1.2
-i l . meson               0.58.1 
-i g . procps-ng           3.3.17
-i g . diffutils           3.7
-i g . mawk                1.3.4-20200120
-i g . findutils           4.8.0
-i g . less                563
-i g . pigz                2.6
-i g . make                4.3
-i g . patch               2.7.6
-i g . tar                 1.33
-i g . vim                 8.2.2549
-i l . util-linux          2.37.2
-i l . e2fsprogs           1.46.4
-i g . eudev               3.2.9
-i l . linux               5.14.5
-i l . init                20210906_195141
-i g . opendoas            6.8.1
-i g . iptables            1.8.7
-i l . curl                7.79.0
-i l . git                 2.33.0 
-i l . openssh             8.7p1 
-i l . libssh2             1.9.0 
-i l . cmake               3.20.0
-i g . usbutils            013
-i g .. libusb             1.0.24
-i l . gpm                 1.20.7
-i g . rsync               3.2.3
-i g . tmux                3.2a
-i l .. libevent           2.1.11 
-i g . htop                3.0.2
-i g . sqlite              3.36.0
-i l . gnupg               2.2.28
-i l .. libgpg-error       1.42
-i l .. libassuan          2.5.5
-i l .. libgcrypt          1.9.3
-i l .. pinentry           1.1.1
-i l . openvpn             2.5.3 
-i g . jq                  1.6
-i l . util-macros         1.19.3 
-i l . xorgproto           2021.4.99.2 
-i l . libXau              1.0.9 
-i l . libXdmcp            1.1.3 
-i l . xcb-proto           1.14.1 
-i l . libxcb              1.14 
-i l . fontconfig          2.13.94
-i l .. freetype           2.10.4
-i l ... libpng            1.6.37
-i l ... harfbuzz          2.8.1
-i l .... glib             2.68.3
-i l ..... pcre            8.44
-i l . cairo               1.16.0
-i l .. pixman             0.40.0
-i g . xtrans              1.4.0
-i g . libX11              1.7.2
-i g . libXext             1.3.4
-i g . libICE              1.0.10
-i g . libSM               1.2.3
-i g . libXmu              1.1.3
-i g . libXfixes           5.0.3
-i g . libXcomposite       0.4.5
-i g . libXrender          0.9.10
-i g . libXcursor          1.2.0
-i g . libXdamage          1.1.5
-i g . libXft              2.3.3
-i g . libXi               1.7.10
-i g . libXinerama         1.1.4
-i g . libXrandr           1.5.2
-i g . libXxf86vm          1.1.4
-i g . libpciaccess        0.16
-i g . libxkbfile          1.1.0
-i g . libxshmfence        1.3
-i l . mesa                21.2.1
-i g .. libdrm             2.4.105
-i g . setxkbmap           1.3.2
-i g . xauth               1.1
-i g . xev                 1.2.4
-i g . xhost               1.0.8
-i g . xinput              1.6.3
-i g . xkill               1.0.5
-i g . xprop               1.2.5
-i g . xrandr              1.5.1
-i g . xrdb                1.2.0
-i g . xset                1.2.4
-i g . xbitmaps            1.1.2
-i g . xsetroot            1.1.2
-i g . xkbcomp             1.4.5
-i g . xkeyboard-config    2.33
-i l . xorg-server         1.20.13 
-i l .. libepoxy           1.5.8
-i g . xf86-input-libinput 1.1.0
-i g .. libinput           1.18.0
-i l . xinit               1.4.1
-i g . atk                 2.36.0
-i g . freeglut            3.2.1
-i l .. glu                9.0.1
-i g . gdk-pixbuf          2.42.4
-i g .. libjpeg-turbo      2.0.5
-i l ... nasm              2.15.05
-i g .. pango              1.43.0
-i g ... fribidi           1.0.10
-i l .. tiff               4.1.0
-i g . imlib2              1.6.1
-i l .. giflib             5.2.1
-i l .. libid3tag          0.15.1b
-i g . alsa-lib            1.2.5.1
-i l . libvorbis           1.3.7
-i l .. libogg             1.3.5
-i g . alsa-utils          1.2.5.1
-i l . flac                1.3.3
-i g . libass              0.15.0
-i g . libvpx              1.10.0
-i l . opus                1.3.1
-i g . x264                20191119-2245
-i l . x265                3.5
-i l . dmenu               4.9
-i g . xtrlock             2.12
-i l . youtube-dl          2021.06.06 
-i g . compton             5.1
-i l . ffmpeg              4.4 
-i l .. libva              2.12.0
-i l .. v4l-utils          1.20.0
-i l .. lame               3.100
-i l .. openjpeg           2.4.0
-i l . mpv                 0.33.1
-i l .. intel-vaapi-driver 2.4.1
-i l . mpd                 0.21.10
-i g .. libmpdclient       2.18
-o l .. boost              1.76.0
-i g . mpc                 0.33
-i l . ncmpcpp             0.9.2
-i l . maim                5.5.3
-i l . xclip               0.13
-i l . imagemagick         7.0.10.23
-i l .. lcms2              2.12
-i l . feh                 3.7.1
-i l . mupdf               1.16.1
-i g . gcompat             1.0.0
-i l . vifm                0.11
-i l . slmenu              0.1
-i l . st                  0.8.4
-i l . lz4                 1.9.3
-i l . links               2.20.2 
-i l . wpa-supplicant      2.9 
-i l .. libnl3             3.5.0
-i g . lilo                24.2
-i l . dwm                 6.2
-i l . irssi               1.2.3 
-i l . clang               13.0.0-rc2
-i l . compiler-rt         13.0.0-rc2
-i l . libcxx              13.0.0-rc2
-i l . libcxxabi           13.0.0-rc2
-i l . libunwind           13.0.0-rc2
-i l . lld                 13.0.0-rc2
-i l . llvm                13.0.0-rc2
-i l . openmp              13.0.0-rc2
-i l . firefox             91.1.0esr 
-i l .. node.js            16.9.1
-i l .. cbindgen           0.20.0
-i l ... rust              1.55.0 
-i l .. gtk3               3.24.30
-i g . zstd                1.5.0
-i l . transmission        3.0 
-o l . ruby                2.7.1
-i l . mkvtoolnix          48.0.0
-i g . pciutils            3.7.0
-i l . thinkfan            0c29363
-i g . apulse              0f9f8487
-i g . fdupes              2.1.2
-i l . ympd                612f8fc0 
-i g . nfs-utils           2.5.2
-i g .. libtirpc           1.3.1
-i g .. rpcbind            1.2.5
-i l . mpdas               c81c480
-i g . nfqws               86241cb5
-i l . android-tools       31.0.2
-i l . smartmontools       7.2
-i l . unrar               6.0.7
-i l . innoextract         660546ad
-i l . fbcat               99a9aaed
-i l . clzip               1.12
-i l . tzdb                2021a
-i l . aircrack-ng         1.6 
-i l .. iw                 5.9
-i l . acpid               2.0.32
+i  g  1  .      linux-headers        5.12.0
+i  l  1  .      musl                 1.2.2
+i  g  1  .      zlib                 1.2.11
+i  g  1  .      file                 5.40
+i  g  1  .      readline             8.1
+i  g  1  .      m4                   1.4.18
+i  g  1  .      bc                   4.0.1
+i  g  1  .      bzip2                1.0.8
+i  g  1  .      pkgconf              1.7.4
+i  g  1  .      ncurses              6.2
+i  g  1  .      sed                  4.8
+i  g  1  .      bison                3.7.4
+i  g  1  .      flex                 2.6.4
+i  l  1  .      grep                 3.7
+i  g  1  .      yash                 2.51
+i  l  1  .      busybox              1.34.0
+i  g  1  .      libtool              2.4.6
+i  l  1  .      gperf                3.1
+i  g  1  .      expat                2.3.0
+i  g  1  .      perl                 5.34.0
+i  g  1  .      autoconf             2.70
+i  g  1  .      automake             1.16.3
+i  g  1  .      xz                   5.2.5
+i  g  1  .      libelf               0.183
+i  g  1  .      libffi               3.3.0
+i  l  1  .      openssl              3.0.0
+i  l  1  .      python               3.9.5
+i  g  1  .      samurai              1.2
+i  l  1  .      meson                0.58.1
+i  g  1  .      procps-ng            3.3.17
+i  g  1  .      diffutils            3.7
+i  g  1  .      mawk                 1.3.4-20200120
+i  g  1  .      findutils            4.8.0
+i  g  1  .      less                 563
+i  g  1  .      pigz                 2.6
+i  g  1  .      make                 4.3
+i  g  1  .      patch                2.7.6
+i  g  1  .      tar                  1.33
+i  g  1  .      vim                  8.2.2549
+i  l  1  .      util-linux           2.37.2
+i  l  1  .      e2fsprogs            1.46.4
+i  g  1  .      eudev                3.2.9
+i  l  1  .      linux                5.14.5
+i  l  1  .      init                 20210906_195141
+i  g  1  .      opendoas             6.8.1
+i  g  1  .      iptables             1.8.7
+i  l  1  .      curl                 7.79.0
+i  l  1  .      git                  2.33.0
+i  l  1  .      openssh              8.7p1
+i  l  1  .      libssh2              1.9.0
+i  l  1  .      cmake                3.20.0
+i  g  1  .      usbutils             013
+i  g  1  ..     libusb               1.0.24
+i  l  1  .      gpm                  1.20.7
+i  g  1  .      rsync                3.2.3
+i  g  1  .      tmux                 3.2a
+i  l  1  ..     libevent             2.1.11
+i  g  1  .      htop                 3.0.2
+i  g  1  .      sqlite               3.36.0
+i  l  1  .      gnupg                2.2.28
+i  l  1  ..     libgpg-error         1.42
+i  l  1  ..     libassuan            2.5.5
+i  l  1  ..     libgcrypt            1.9.3
+i  l  1  ..     pinentry             1.1.1
+i  l  1  .      openvpn              2.5.3
+i  g  1  .      jq                   1.6
+i  l  1  .      util-macros          1.19.3
+i  l  1  .      xorgproto            2021.4.99.2
+i  l  1  .      libXau               1.0.9
+i  l  1  .      libXdmcp             1.1.3
+i  l  1  .      xcb-proto            1.14.1
+i  l  1  .      libxcb               1.14
+i  l  1  .      fontconfig           2.13.94
+i  l  1  ..     freetype             2.10.4
+i  l  1  ...    libpng               1.6.37
+i  l  1  ...    harfbuzz             2.8.1
+i  l  1  ....   glib                 2.68.3
+i  l  1  .....  pcre                 8.44
+i  l  1  .      cairo                1.16.0
+i  l  1  ..     pixman               0.40.0
+i  g  1  .      xtrans               1.4.0
+i  g  1  .      libX11               1.7.2
+i  g  1  .      libXext              1.3.4
+i  g  1  .      libICE               1.0.10
+i  g  1  .      libSM                1.2.3
+i  g  1  .      libXmu               1.1.3
+i  g  1  .      libXfixes            5.0.3
+i  g  1  .      libXcomposite        0.4.5
+i  g  1  .      libXrender           0.9.10
+i  g  1  .      libXcursor           1.2.0
+i  g  1  .      libXdamage           1.1.5
+i  g  1  .      libXft               2.3.3
+i  g  1  .      libXi                1.7.10
+i  g  1  .      libXinerama          1.1.4
+i  g  1  .      libXrandr            1.5.2
+i  g  1  .      libXxf86vm           1.1.4
+i  g  1  .      libpciaccess         0.16
+i  g  1  .      libxkbfile           1.1.0
+i  g  1  .      libxshmfence         1.3
+i  l  1  .      mesa                 21.2.1
+i  g  1  ..     libdrm               2.4.105
+i  g  1  .      setxkbmap            1.3.2
+i  g  1  .      xauth                1.1
+i  g  1  .      xev                  1.2.4
+i  g  1  .      xhost                1.0.8
+i  g  1  .      xinput               1.6.3
+i  g  1  .      xkill                1.0.5
+i  g  1  .      xprop                1.2.5
+i  g  1  .      xrandr               1.5.1
+i  g  1  .      xrdb                 1.2.0
+i  g  1  .      xset                 1.2.4
+i  g  1  .      xbitmaps             1.1.2
+i  g  1  .      xsetroot             1.1.2
+i  g  1  .      xkbcomp              1.4.5
+i  g  1  .      xkeyboard-config     2.33
+i  l  1  .      xorg-server          1.20.13
+i  l  1  ..     libepoxy             1.5.8
+i  g  1  .      xf86-input-libinput  1.1.0
+i  g  1  ..     libinput             1.18.0
+i  l  1  .      xinit                1.4.1
+i  g  1  .      atk                  2.36.0
+i  g  1  .      freeglut             3.2.1
+i  l  1  ..     glu                  9.0.1
+i  g  1  .      gdk-pixbuf           2.42.4
+i  g  1  ..     libjpeg-turbo        2.0.5
+i  l  1  ...    nasm                 2.15.05
+i  g  1  ..     pango                1.43.0
+i  g  1  ...    fribidi              1.0.10
+i  l  1  ..     tiff                 4.1.0
+i  g  1  .      imlib2               1.6.1
+i  l  1  ..     giflib               5.2.1
+i  l  1  ..     libid3tag            0.15.1b
+i  g  1  .      alsa-lib             1.2.5.1
+i  l  1  .      libvorbis            1.3.7
+i  l  1  ..     libogg               1.3.5
+i  g  1  .      alsa-utils           1.2.5.1
+i  l  1  .      flac                 1.3.3
+i  g  1  .      libass               0.15.0
+i  g  1  .      libvpx               1.10.0
+i  l  1  .      opus                 1.3.1
+i  g  1  .      x264                 20191119-2245
+i  l  1  .      x265                 3.5
+i  l  1  .      dmenu                4.9
+i  g  1  .      xtrlock              2.12
+i  l  1  .      youtube-dl           2021.06.06
+i  g  1  .      compton              5.1
+i  l  1  .      ffmpeg               4.4
+i  l  1  ..     libva                2.12.0
+i  l  1  ..     v4l-utils            1.20.0
+i  l  1  ..     lame                 3.100
+i  l  1  ..     openjpeg             2.4.0
+i  l  1  .      mpv                  0.33.1
+i  l  1  ..     intel-vaapi-driver   2.4.1
+i  l  1  .      mpd                  0.21.10
+i  g  1  ..     libmpdclient         2.18
+o  l  1  ..     boost                1.76.0
+i  g  1  .      mpc                  0.33
+i  l  1  .      ncmpcpp              0.9.2
+i  l  1  .      maim                 5.5.3
+i  l  1  .      xclip                0.13
+i  l  1  .      imagemagick          7.0.10.23
+i  l  1  ..     lcms2                2.12
+i  l  1  .      feh                  3.7.1
+i  l  1  .      mupdf                1.16.1
+i  g  1  .      gcompat              1.0.0
+i  l  1  .      vifm                 0.11
+i  l  1  .      slmenu               0.1
+i  l  1  .      st                   0.8.4
+i  l  1  .      lz4                  1.9.3
+i  l  1  .      links                2.20.2
+i  l  1  .      wpa-supplicant       2.9
+i  l  1  ..     libnl3               3.5.0
+i  g  1  .      lilo                 24.2
+i  l  1  .      dwm                  6.2
+i  l  1  .      irssi                1.2.3
+i  l  1  .      clang                13.0.0-rc2
+i  l  1  .      compiler-rt          13.0.0-rc2
+i  l  1  .      libcxx               13.0.0-rc2
+i  l  1  .      libcxxabi            13.0.0-rc2
+i  l  1  .      libunwind            13.0.0-rc2
+i  l  1  .      lld                  13.0.0-rc2
+i  l  1  .      llvm                 13.0.0-rc2
+i  l  1  .      openmp               13.0.0-rc2
+i  l  1  .      firefox              91.1.0esr
+i  l  1  ..     node.js              16.9.1
+i  l  1  ..     cbindgen             0.20.0
+i  l  1  ...    rust                 1.55.0
+i  l  1  ..     gtk3                 3.24.30
+i  g  1  .      zstd                 1.5.0
+i  l  1  .      transmission         3.0
+o  l  1  .      ruby                 2.7.1
+i  l  1  .      mkvtoolnix           48.0.0
+i  g  1  .      pciutils             3.7.0
+i  l  1  .      thinkfan             0c29363
+i  g  1  .      apulse               0f9f8487
+i  g  1  .      fdupes               2.1.2
+i  l  1  .      ympd                 612f8fc0
+i  g  1  .      nfs-utils            2.5.2
+i  g  1  ..     libtirpc             1.3.1
+i  g  1  ..     rpcbind              1.2.5
+i  l  1  .      mpdas                c81c480
+i  g  1  .      nfqws                86241cb5
+i  l  1  .      android-tools        31.0.2
+i  l  1  .      smartmontools        7.2
+i  l  1  .      unrar                6.0.7
+i  l  1  .      innoextract          660546ad
+i  l  1  .      fbcat                99a9aaed
+i  l  1  .      clzip                1.12
+i  l  1  .      tzdb                 2021a
+i  l  1  .      aircrack-ng          1.6
+i  l  1  ..     iw                   5.9
+i  l  1  .      acpid                2.0.32
