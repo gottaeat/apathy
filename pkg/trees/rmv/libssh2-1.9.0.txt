@@ -2,6 +2,7 @@
 /usr/include/libssh2_publickey.h
 /usr/include/libssh2_sftp.h
 
+/usr/lib/libssh2.a
 /usr/lib/libssh2.la
 /usr/lib/libssh2.so
 /usr/lib/libssh2.so.1
