@@ -187,7 +187,7 @@ i  l  1  ..     cbindgen             0.20.0
 i  l  1  ...    rust                 1.55.0
 i  l  1  ..     gtk3                 3.24.30
 i  g  1  .      zstd                 1.5.0
-i  l  1  .      transmission         3.0
+i  l  2  .      transmission         3.0
 o  l  1  .      ruby                 2.7.1
 i  l  1  .      mkvtoolnix           48.0.0
 i  g  1  .      pciutils             3.7.0

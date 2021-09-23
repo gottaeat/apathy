@@ -1,0 +1,11 @@
+/usr/bin/transmission-cli
+/usr/bin/transmission-create
+/usr/bin/transmission-daemon
+/usr/bin/transmission-edit
+/usr/bin/transmission-remote
+/usr/bin/transmission-show
+
+/usr/share/transmission
+
+/usr/share/doc
+/usr/share/man
