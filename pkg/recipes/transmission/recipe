@@ -1,4 +1,7 @@
 # 1
+pdir="/mss/repo/pkg/recipes/transmission/patches"
+patch -p1 < "${pdir}"/0001-backport-arc4-to-fix-openssl3-segv.patch
+
 cleancmake
 
 mkdir build
@@ -24,11 +27,28 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
- -DENABLE_CLI=TRUE                      \
- -DENABLE_UTILS=TRUE                    \
- -DENABLE_GTK=FALSE                     \
- -DENABLE_NLS=FALSE                     \
- -DENABLE_TESTS=FALSE                   \
- -DWITH_SYSTEMD=FALSE                   \
- -DINSTALL_LIB=FALSE                    \
+ -DENABLE_CLI=ON                        \
+ -DENABLE_DAEMON=ON                     \
+ -DENABLE_GTK=OFF                       \
+ -DENABLE_LIGHTWEIGHT=OFF               \
+ -DENABLE_MAC=OFF                       \
+ -DENABLE_NLS=OFF                       \
+ -DENABLE_QT=OFF                        \
+ -DENABLE_TESTS=OFF                     \
+ -DENABLE_UTILS=ON                      \
+ -DENABLE_UTP=ON                        \
+ -DINSTALL_DOC=OFF                      \
+ -DINSTALL_LIB=OFF                      \
+ -DUSE_SYSTEM_EVENT2=ON                 \
 ..
+
+samu
+
+# 2
+doas -s
+samu install
+
+rm -rfv \
+ /usr/bin/transmission-create \
+ /usr/bin/transmission-edit   \
+ /usr/bin/transmission-show

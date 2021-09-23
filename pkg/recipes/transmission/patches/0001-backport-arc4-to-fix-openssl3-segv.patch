@@ -1,0 +1,671 @@
+From 29cf70ece6fc4869be9cdc36b468bff274051af5 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Thu, 23 Sep 2021 10:01:35 +0300
+Subject: [PATCH] backport arc4 to fix openssl3 segv.
+
+---
+ CMakeLists.txt                          |  2 +
+ libtransmission/CMakeLists.txt          |  1 +
+ libtransmission/crypto-utils-cyassl.c   | 38 -----------
+ libtransmission/crypto-utils-openssl.c  | 53 ---------------
+ libtransmission/crypto-utils-polarssl.c | 49 --------------
+ libtransmission/crypto-utils.c          |  1 +
+ libtransmission/crypto-utils.h          | 22 -------
+ libtransmission/crypto.c                | 58 +++++++----------
+ libtransmission/crypto.h                |  4 +-
+ third-party/arc4/CMakeLists.txt         | 75 ++++++++++++++++++++++
+ third-party/arc4/config.cmake.in        |  1 +
+ third-party/arc4/src/CMakeLists.txt     | 25 ++++++++
+ third-party/arc4/src/arc4.c             | 85 +++++++++++++++++++++++++
+ third-party/arc4/src/arc4.h             | 26 ++++++++
+ 14 files changed, 241 insertions(+), 199 deletions(-)
+ create mode 100644 third-party/arc4/CMakeLists.txt
+ create mode 100644 third-party/arc4/config.cmake.in
+ create mode 100644 third-party/arc4/src/CMakeLists.txt
+ create mode 100644 third-party/arc4/src/arc4.c
+ create mode 100644 third-party/arc4/src/arc4.h
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 62bf87b..0607620 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -334,6 +334,8 @@ endif()
+ 
+ tr_add_external_auto_library(B64 libb64 b64)
+ 
++add_subdirectory(third-party/arc4)
++
+ if(WITH_INOTIFY)
+     tr_get_required_flag(WITH_INOTIFY INOTIFY_IS_REQUIRED)
+ 
+diff --git a/libtransmission/CMakeLists.txt b/libtransmission/CMakeLists.txt
+index 672cd0e..62b68b9 100644
+--- a/libtransmission/CMakeLists.txt
++++ b/libtransmission/CMakeLists.txt
+@@ -274,6 +274,7 @@ target_link_libraries(${TR_NAME}
+     ${LIBINTL_LIBRARY}
+     ${LIBM_LIBRARY}
+     ${TR_NETWORK_LIBRARIES}
++    arc4::arc4
+ )
+ 
+ if(ICONV_FOUND)
+diff --git a/libtransmission/crypto-utils-cyassl.c b/libtransmission/crypto-utils-cyassl.c
+index 60659ff..f2d3779 100644
+--- a/libtransmission/crypto-utils-cyassl.c
++++ b/libtransmission/crypto-utils-cyassl.c
+@@ -19,7 +19,6 @@
+ #define API_VERSION_HEX LIBCYASSL_VERSION_HEX
+ #endif
+ 
+-#include API_HEADER_CRYPT(arc4.h)
+ #include API_HEADER_CRYPT(dh.h)
+ #include API_HEADER_CRYPT(error-crypt.h)
+ #include API_HEADER_CRYPT(random.h)
+@@ -167,43 +166,6 @@ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
+ ****
+ ***/
+ 
+-tr_rc4_ctx_t tr_rc4_new(void)
+-{
+-    return tr_new0(Arc4, 1);
+-}
+-
+-void tr_rc4_free(tr_rc4_ctx_t handle)
+-{
+-    tr_free(handle);
+-}
+-
+-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
+-{
+-    TR_ASSERT(handle != NULL);
+-    TR_ASSERT(key != NULL);
+-
+-    API(Arc4SetKey)(handle, key, key_length);
+-}
+-
+-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length)
+-{
+-    TR_ASSERT(handle != NULL);
+-
+-    if (length == 0)
+-    {
+-        return;
+-    }
+-
+-    TR_ASSERT(input != NULL);
+-    TR_ASSERT(output != NULL);
+-
+-    API(Arc4Process)(handle, output, input, length);
+-}
+-
+-/***
+-****
+-***/
+-
+ tr_dh_ctx_t tr_dh_new(uint8_t const* prime_num, size_t prime_num_length, uint8_t const* generator_num,
+     size_t generator_num_length)
+ {
+diff --git a/libtransmission/crypto-utils-openssl.c b/libtransmission/crypto-utils-openssl.c
+index 45fd719..ca6909e 100644
+--- a/libtransmission/crypto-utils-openssl.c
++++ b/libtransmission/crypto-utils-openssl.c
+@@ -182,59 +182,6 @@ static void openssl_evp_cipher_context_free(EVP_CIPHER_CTX* handle)
+ 
+ #endif
+ 
+-tr_rc4_ctx_t tr_rc4_new(void)
+-{
+-    EVP_CIPHER_CTX* handle = EVP_CIPHER_CTX_new();
+-
+-    if (check_result(EVP_CipherInit_ex(handle, EVP_rc4(), NULL, NULL, NULL, -1)))
+-    {
+-        return handle;
+-    }
+-
+-    EVP_CIPHER_CTX_free(handle);
+-    return NULL;
+-}
+-
+-void tr_rc4_free(tr_rc4_ctx_t handle)
+-{
+-    if (handle == NULL)
+-    {
+-        return;
+-    }
+-
+-    EVP_CIPHER_CTX_free(handle);
+-}
+-
+-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
+-{
+-    TR_ASSERT(handle != NULL);
+-    TR_ASSERT(key != NULL);
+-
+-    if (!check_result(EVP_CIPHER_CTX_set_key_length(handle, key_length)))
+-    {
+-        return;
+-    }
+-
+-    check_result(EVP_CipherInit_ex(handle, NULL, NULL, key, NULL, -1));
+-}
+-
+-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length)
+-{
+-    TR_ASSERT(handle != NULL);
+-
+-    if (length == 0)
+-    {
+-        return;
+-    }
+-
+-    TR_ASSERT(input != NULL);
+-    TR_ASSERT(output != NULL);
+-
+-    int output_length;
+-
+-    check_result(EVP_CipherUpdate(handle, output, &output_length, input, length));
+-}
+-
+ /***
+ ****
+ ***/
+diff --git a/libtransmission/crypto-utils-polarssl.c b/libtransmission/crypto-utils-polarssl.c
+index 889332a..f193258 100644
+--- a/libtransmission/crypto-utils-polarssl.c
++++ b/libtransmission/crypto-utils-polarssl.c
+@@ -18,7 +18,6 @@
+ #endif
+ /* *INDENT-ON* */
+ 
+-#include API_HEADER(arc4.h)
+ #include API_HEADER(base64.h)
+ #include API_HEADER(ctr_drbg.h)
+ #include API_HEADER(dhm.h)
+@@ -45,7 +44,6 @@
+ 
+ typedef API (ctr_drbg_context) api_ctr_drbg_context;
+ typedef API (sha1_context) api_sha1_context;
+-typedef API (arc4_context) api_arc4_context;
+ typedef API (dhm_context) api_dhm_context;
+ 
+ static void log_polarssl_error(int error_code, char const* file, int line)
+@@ -186,53 +184,6 @@ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash)
+ ****
+ ***/
+ 
+-tr_rc4_ctx_t tr_rc4_new(void)
+-{
+-    api_arc4_context* handle = tr_new0(api_arc4_context, 1);
+-
+-#if API_VERSION_NUMBER >= 0x01030800
+-    API(arc4_init)(handle);
+-#endif
+-
+-    return handle;
+-}
+-
+-void tr_rc4_free(tr_rc4_ctx_t handle)
+-{
+-#if API_VERSION_NUMBER >= 0x01030800
+-    API(arc4_free)(handle);
+-#endif
+-
+-    tr_free(handle);
+-}
+-
+-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length)
+-{
+-    TR_ASSERT(handle != NULL);
+-    TR_ASSERT(key != NULL);
+-
+-    API(arc4_setup)(handle, key, key_length);
+-}
+-
+-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length)
+-{
+-    TR_ASSERT(handle != NULL);
+-
+-    if (length == 0)
+-    {
+-        return;
+-    }
+-
+-    TR_ASSERT(input != NULL);
+-    TR_ASSERT(output != NULL);
+-
+-    API(arc4_crypt)(handle, length, input, output);
+-}
+-
+-/***
+-****
+-***/
+-
+ tr_dh_ctx_t tr_dh_new(uint8_t const* prime_num, size_t prime_num_length, uint8_t const* generator_num,
+     size_t generator_num_length)
+ {
+diff --git a/libtransmission/crypto-utils.c b/libtransmission/crypto-utils.c
+index 329adc0..bc6ae0e 100644
+--- a/libtransmission/crypto-utils.c
++++ b/libtransmission/crypto-utils.c
+@@ -10,6 +10,7 @@
+ #include <stdlib.h> /* abs(), srand(), rand() */
+ #include <string.h> /* memcpy(), memmove(), memset(), strcmp(), strlen() */
+ 
++#include <arc4.h>
+ #include <b64/cdecode.h>
+ #include <b64/cencode.h>
+ 
+diff --git a/libtransmission/crypto-utils.h b/libtransmission/crypto-utils.h
+index 7ae3cee..9c223d0 100644
+--- a/libtransmission/crypto-utils.h
++++ b/libtransmission/crypto-utils.h
+@@ -27,8 +27,6 @@ extern "C"
+ 
+ /** @brief Opaque SHA1 context type. */
+ typedef void* tr_sha1_ctx_t;
+-/** @brief Opaque RC4 context type. */
+-typedef void* tr_rc4_ctx_t;
+ /** @brief Opaque DH context type. */
+ typedef void* tr_dh_ctx_t;
+ /** @brief Opaque DH secret key type. */
+@@ -60,26 +58,6 @@ bool tr_sha1_update(tr_sha1_ctx_t handle, void const* data, size_t data_length);
+  */
+ bool tr_sha1_final(tr_sha1_ctx_t handle, uint8_t* hash);
+ 
+-/**
+- * @brief Allocate and initialize new RC4 cipher context.
+- */
+-tr_rc4_ctx_t tr_rc4_new(void);
+-
+-/**
+- * @brief Free RC4 cipher context.
+- */
+-void tr_rc4_free(tr_rc4_ctx_t handle);
+-
+-/**
+- * @brief Set RC4 cipher key.
+- */
+-void tr_rc4_set_key(tr_rc4_ctx_t handle, uint8_t const* key, size_t key_length);
+-
+-/**
+- * @brief Process memory block with RC4 cipher.
+- */
+-void tr_rc4_process(tr_rc4_ctx_t handle, void const* input, void* output, size_t length);
+-
+ /**
+  * @brief Allocate and initialize new Diffie-Hellman (DH) key exchange context.
+  */
+diff --git a/libtransmission/crypto.c b/libtransmission/crypto.c
+index e64b998..289f6db 100644
+--- a/libtransmission/crypto.c
++++ b/libtransmission/crypto.c
+@@ -8,6 +8,8 @@
+ 
+ #include <string.h> /* memcpy(), memmove(), memset() */
+ 
++#include <arc4.h>
++
+ #include "transmission.h"
+ #include "crypto.h"
+ #include "crypto-utils.h"
+@@ -64,8 +66,8 @@ void tr_cryptoDestruct(tr_crypto* crypto)
+ {
+     tr_dh_secret_free(crypto->mySecret);
+     tr_dh_free(crypto->dh);
+-    tr_rc4_free(crypto->enc_key);
+-    tr_rc4_free(crypto->dec_key);
++    tr_free(crypto->enc_key);
++    tr_free(crypto->dec_key);
+ }
+ 
+ /**
+@@ -90,36 +92,27 @@ uint8_t const* tr_cryptoGetMyPublicKey(tr_crypto const* crypto, int* setme_len)
+ ***
+ **/
+ 
+-static void initRC4(tr_crypto* crypto, tr_rc4_ctx_t* setme, char const* key)
++static void init_rc4(tr_crypto const* crypto, struct arc4_context** setme, char const* key)
+ {
+     TR_ASSERT(crypto->torrentHashIsSet);
+ 
+     if (*setme == NULL)
+     {
+-        *setme = tr_rc4_new();
++        *setme = tr_new0(struct arc4_context, 1);
+     }
+ 
+     uint8_t buf[SHA_DIGEST_LENGTH];
+ 
+     if (tr_cryptoSecretKeySha1(crypto, key, 4, crypto->torrentHash, SHA_DIGEST_LENGTH, buf))
+     {
+-        tr_rc4_set_key(*setme, buf, SHA_DIGEST_LENGTH);
++        arc4_init(*setme, buf, SHA_DIGEST_LENGTH);
++        arc4_discard(*setme, 1024);
+     }
+ }
+ 
+-void tr_cryptoDecryptInit(tr_crypto* crypto)
+-{
+-    uint8_t discard[1024];
+-    char const* txt = crypto->isIncoming ? "keyA" : "keyB";
+-
+-    initRC4(crypto, &crypto->dec_key, txt);
+-    tr_rc4_process(crypto->dec_key, discard, discard, sizeof(discard));
+-}
+-
+-void tr_cryptoDecrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, void* buf_out)
++static void crypt_rc4(struct arc4_context* key, size_t buf_len, void const* buf_in, void* buf_out)
+ {
+-    /* FIXME: someone calls this function with uninitialized key */
+-    if (crypto->dec_key == NULL)
++    if (key == NULL)
+     {
+         if (buf_in != buf_out)
+         {
+@@ -129,32 +122,27 @@ void tr_cryptoDecrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, voi
+         return;
+     }
+ 
+-    tr_rc4_process(crypto->dec_key, buf_in, buf_out, buf_len);
++    arc4_process(key, buf_in, buf_out, buf_len);
+ }
+ 
+-void tr_cryptoEncryptInit(tr_crypto* crypto)
++void tr_cryptoDecryptInit(tr_crypto* crypto)
+ {
+-    uint8_t discard[1024];
+-    char const* txt = crypto->isIncoming ? "keyB" : "keyA";
+-
+-    initRC4(crypto, &crypto->enc_key, txt);
+-    tr_rc4_process(crypto->enc_key, discard, discard, sizeof(discard));
++    init_rc4(crypto, &crypto->dec_key, crypto->isIncoming ? "keyA" : "keyB"); // lgtm[cpp/weak-cryptographic-algorithm]
+ }
+ 
+-void tr_cryptoEncrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, void* buf_out)
++void tr_cryptoDecrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, void* buf_out)
+ {
+-    /* FIXME: someone calls this function with uninitialized key */
+-    if (crypto->enc_key == NULL)
+-    {
+-        if (buf_in != buf_out)
+-        {
+-            memmove(buf_out, buf_in, buf_len);
+-        }
++    crypt_rc4(crypto->dec_key, buf_len, buf_in, buf_out); // lgtm[cpp/weak-cryptographic-algorithm]
++}
+ 
+-        return;
+-    }
++void tr_cryptoEncryptInit(tr_crypto* crypto)
++{
++    init_rc4(crypto, &crypto->enc_key, crypto->isIncoming ? "keyB" : "keyA"); // lgtm[cpp/weak-cryptographic-algorithm]
++}
+ 
+-    tr_rc4_process(crypto->enc_key, buf_in, buf_out, buf_len);
++void tr_cryptoEncrypt(tr_crypto* crypto, size_t buf_len, void const* buf_in, void* buf_out)
++{
++    crypt_rc4(crypto->enc_key, buf_len, buf_in, buf_out); // lgtm[cpp/weak-cryptographic-algorithm]
+ }
+ 
+ bool tr_cryptoSecretKeySha1(tr_crypto const* crypto, void const* prepend_data, size_t prepend_data_size,
+diff --git a/libtransmission/crypto.h b/libtransmission/crypto.h
+index 7e6c85d..7fe14f7 100644
+--- a/libtransmission/crypto.h
++++ b/libtransmission/crypto.h
+@@ -31,8 +31,8 @@ enum
+ /** @brief Holds state information for encrypted peer communications */
+ typedef struct
+ {
+-    tr_rc4_ctx_t dec_key;
+-    tr_rc4_ctx_t enc_key;
++    struct arc4_context* dec_key;
++    struct arc4_context* enc_key;
+     tr_dh_ctx_t dh;
+     uint8_t myPublicKey[KEY_LEN];
+     tr_dh_secret_t mySecret;
+diff --git a/third-party/arc4/CMakeLists.txt b/third-party/arc4/CMakeLists.txt
+new file mode 100644
+index 0000000..384e5e9
+--- /dev/null
++++ b/third-party/arc4/CMakeLists.txt
+@@ -0,0 +1,75 @@
++cmake_minimum_required(VERSION 3.5)
++project(arc4 VERSION 1.0 LANGUAGES C)
++
++set(ARC4_STANDALONE_BUILD OFF)
++if(PROJECT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
++    set(ARC4_STANDALONE_BUILD ON)
++endif()
++
++option(ARC4_ENABLE_INSTALL "${PROJECT_NAME}: Enable install" ${ARC4_STANDALONE_BUILD})
++option(ARC4_ENABLE_TESTS "${PROJECT_NAME}: Enable tests" ${ARC4_STANDALONE_BUILD})
++option(ARC4_ENABLE_WERROR "${PROJECT_NAME}: Treat warnings as errors" ${ARC4_STANDALONE_BUILD})
++
++if(ARC4_ENABLE_INSTALL)
++    include(GNUInstallDirs)
++    include(CMakePackageConfigHelpers)
++endif()
++
++if(ARC4_ENABLE_TESTS)
++    enable_testing()
++endif()
++
++if(ARC4_STANDALONE_BUILD)
++    if(NOT CMAKE_C_STANDARD)
++        set(CMAKE_C_STANDARD 99)
++        set(CMAKE_C_STANDARD_REQUIRED ON)
++        set(CMAKE_C_EXTENSIONS OFF)
++    endif()
++
++    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++        add_compile_options(
++            -Wall
++            -Wextra
++            -pedantic
++            $<$<BOOL:${ARC4_ENABLE_WERROR}>:-Werror>)
++    elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
++        add_compile_options(
++            /W4
++            $<$<BOOL:${ARC4_ENABLE_WERROR}>:/WX>)
++    endif()
++endif()
++
++add_subdirectory(src)
++
++if(ARC4_ENABLE_TESTS)
++    add_subdirectory(test)
++endif()
++
++if(ARC4_ENABLE_INSTALL)
++    write_basic_package_version_file(
++        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
++        VERSION ${PROJECT_VERSION}
++        COMPATIBILITY AnyNewerVersion)
++
++    configure_file(
++        config.cmake.in
++        ${PROJECT_NAME}-config.cmake
++        @ONLY)
++
++    install(
++        EXPORT ${PROJECT_NAME}-targets
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
++        NAMESPACE ${PROJECT_NAME}::)
++
++    install(
++        FILES
++            ${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
++            ${PROJECT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
++        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
++
++    install(
++        FILES
++            LICENSE
++            README.md
++        DESTINATION ${CMAKE_INSTALL_DOCDIR})
++endif()
+diff --git a/third-party/arc4/config.cmake.in b/third-party/arc4/config.cmake.in
+new file mode 100644
+index 0000000..0fedff8
+--- /dev/null
++++ b/third-party/arc4/config.cmake.in
+@@ -0,0 +1 @@
++include(${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake)
+diff --git a/third-party/arc4/src/CMakeLists.txt b/third-party/arc4/src/CMakeLists.txt
+new file mode 100644
+index 0000000..3e6b8a8
+--- /dev/null
++++ b/third-party/arc4/src/CMakeLists.txt
+@@ -0,0 +1,25 @@
++add_library(arc4 STATIC
++    arc4.c
++    arc4.h)
++
++if(NOT ARC4_STANDALONE_BUILD)
++    add_library(${PROJECT_NAME}::arc4 ALIAS arc4)
++endif()
++
++target_include_directories(arc4
++    PUBLIC
++        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
++        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
++
++if(ARC4_ENABLE_INSTALL)
++    install(
++        TARGETS arc4
++        EXPORT ${PROJECT_NAME}-targets
++        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
++
++    install(
++        FILES arc4.h
++        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
++endif()
+diff --git a/third-party/arc4/src/arc4.c b/third-party/arc4/src/arc4.c
+new file mode 100644
+index 0000000..8d696fc
+--- /dev/null
++++ b/third-party/arc4/src/arc4.c
+@@ -0,0 +1,85 @@
++#include "arc4.h"
++
++#include <assert.h>
++
++#define ARC4_MAGIC 0x34637261 // 'arc4' (LE)
++
++static inline void arc4_swap(struct arc4_context* ctx, size_t i, size_t j)
++{
++    assert(ctx != NULL);
++    assert(i < 256);
++    assert(j < 256);
++
++    uint8_t const t = ctx->s[i];
++    ctx->s[i] = ctx->s[j];
++    ctx->s[j] = t;
++}
++
++static inline uint8_t arc4_next(struct arc4_context* ctx)
++{
++    assert(ctx != NULL);
++
++    ctx->i += 1;
++    ctx->j += ctx->s[ctx->i];
++
++    arc4_swap(ctx, ctx->i, ctx->j);
++
++    return ctx->s[(uint8_t)(ctx->s[ctx->i] + ctx->s[ctx->j])];
++}
++
++void arc4_init(struct arc4_context* ctx, void const* key, size_t key_length)
++{
++    assert(ctx != NULL);
++    assert(key != NULL);
++    assert(key_length < 256);
++
++#ifndef NDEBUG
++    ctx->magic = ARC4_MAGIC;
++#endif
++
++    ctx->i = 0;
++    ctx->j = 0;
++
++    for (size_t i = 0; i < 256; ++i)
++    {
++        ctx->s[i] = (uint8_t)i;
++    }
++
++    for (size_t i = 0, j = 0; i < 256; ++i)
++    {
++        j = (uint8_t)(j + ctx->s[i] + ((uint8_t const*)key)[i % key_length]);
++        arc4_swap(ctx, i, j);
++    }
++}
++
++void arc4_process(struct arc4_context* ctx, void const* src_data, void* dst_data, size_t data_length)
++{
++    assert(ctx != NULL);
++    assert(ctx->magic == ARC4_MAGIC);
++
++    if (data_length == 0)
++    {
++        return;
++    }
++
++    assert(src_data != NULL);
++    assert(dst_data != NULL);
++    assert(data_length < SIZE_MAX);
++
++    for (size_t i = 0; i < data_length; ++i)
++    {
++        ((uint8_t*)dst_data)[i] = ((uint8_t const*)src_data)[i] ^ arc4_next(ctx);
++    }
++}
++
++void arc4_discard(struct arc4_context* ctx, size_t length)
++{
++    assert(ctx != NULL);
++    assert(ctx->magic == ARC4_MAGIC);
++    assert(length < SIZE_MAX);
++
++    for (size_t i = 0; i < length; ++i)
++    {
++        arc4_next(ctx);
++    }
++}
+diff --git a/third-party/arc4/src/arc4.h b/third-party/arc4/src/arc4.h
+new file mode 100644
+index 0000000..48df184
+--- /dev/null
++++ b/third-party/arc4/src/arc4.h
+@@ -0,0 +1,26 @@
++#pragma once
++
++#include <stddef.h>
++#include <stdint.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++struct arc4_context
++{
++#ifndef NDEBUG
++    uint32_t magic;
++#endif
++    uint8_t i;
++    uint8_t j;
++    uint8_t s[256];
++};
++
++void arc4_init(struct arc4_context* ctx, void const* key, size_t key_length);
++void arc4_process(struct arc4_context* ctx, void const* src_data, void* dst_data, size_t data_length);
++void arc4_discard(struct arc4_context* ctx, size_t length);
++
++#ifdef __cplusplus
++}
++#endif
+-- 
+2.33.0
+
