@@ -108,25 +108,31 @@ svc_iptables(){
 svc_mpd(){
  case "$1" in
   start)
-   ainitsvc "mpd" "starting mpd"
-    printf '' > /var/lib/mpd/log
-    doas -u mpd /usr/bin/mpd /etc/mpd.conf >/dev/null 2>&1
-   evalret
- 
-   ainitsvc "mpd" "setting up"
-    mpc repeat  on  >/dev/null 2>&1 &&
-    mpc random  off >/dev/null 2>&1 &&
-    mpc single  off >/dev/null 2>&1 &&
-    mpc consume off >/dev/null 2>&1
-   evalret
- 
-   ainitsvc "mpd" "starting ympd"
-    doas -u mpd ympd >/dev/null 2>&1 &
-   evalret
- 
-   ainitsvc "mpd" "starting mpdas"
-    doas -u mss mpdas >/dev/null 2>&1 &
-   evalret
+   if [ -d "$(awk '/music_directory/{gsub(/\"/,""); print $2}' /etc/mpd.conf)" ]
+    then
+     ainitsvc "mpd" "starting mpd"
+      doas -u mss mpd /etc/mpd.conf >/dev/null 2>&1
+     evalret
+
+     ainitsvc "mpd" "setting up"
+      mpc repeat  on  >/dev/null 2>&1 &&
+      mpc random  off >/dev/null 2>&1 &&
+      mpc single  off >/dev/null 2>&1 &&
+      mpc consume off >/dev/null 2>&1 &&
+      mpc disable only "$(mpc outputs | awk '/http/{print $2}')" >/dev/null 2>&1
+     evalret
+
+     ainitsvc "mpd" "starting ympd"
+      doas -u mss ympd >/dev/null 2>&1 &
+     evalret
+
+     ainitsvc "mpd" "starting mpdas"
+      doas -u mss mpdas >/dev/null 2>&1 &
+     evalret
+    else
+     ainitsvc "mpd" "music_directory does not exist"; failprompt
+     exit 1
+   fi
   ;;
   stop)
    ainitsvc "mpd" "stopping ympd"
