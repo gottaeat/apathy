@@ -34,7 +34,7 @@ export       INFOPATH="/usr/share/info"
 unset mypath mylibpath mypkgconfigpath
 
 # 1.4 > extra
-export        MPD_HOST="/var/lib/mpd/socket"
+export        MPD_HOST="/mnt/mss/stuff/media/music/mpd/socket"
 
 # 1.5 > colors
  c_res="\033[0;39m"
