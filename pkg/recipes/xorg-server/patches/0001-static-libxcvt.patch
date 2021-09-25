@@ -1,0 +1,10 @@
+diff -uraN a/lib/meson.build b/lib/meson.build
+--- a/lib/meson.build	2021-07-08 04:01:47.798067000 +0300
++++ b/lib/meson.build	2021-09-23 22:32:22.246748882 +0300
+@@ -1,5 +1,5 @@
+ libxcvt_sources = ['libxcvt.c']
+-libxcvt = shared_library('xcvt',
++libxcvt = static_library('xcvt',
+                          libxcvt_sources,
+                          include_directories : inc,
+                          install : true)

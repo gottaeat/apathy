@@ -41,8 +41,8 @@ cd ..
 rm -rf libevdev-1.11.0/
 
 # 4
-tar xf /mss/work/sauces/libinput-1.18.0.tar.gz
-cd     libinput-1.18.0/
+tar xf /mss/work/sauces/libinput-1.19.0.tar.xz
+cd     libinput-1.19.0/
 
 mkdir build
 cd    build

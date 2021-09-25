@@ -44,48 +44,83 @@ make install
 
 cd ../; rm -rf libXfont2-2.0.4/
 
-# 3 > xorg-server
-tar xf /mss/work/sauces/xorg-server-1.20.13.tar.xz
-cd     xorg-server-1.20.13/
+# 4 > libxcvt
+tar xf /mss/work/sauces/libxcvt-0.1.0.tar.xz
+cd     libxcvt-0.1.0/
+
+pdir="/mss/repo/pkg/recipes/xorg-server/patches"
+patch -p1 < "${pdir}"/0001-static-libxcvt.patch
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}" \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf libxcvt-0.1.0/
+
+# 5 > xorg-server
+tar xf /mss/work/sauces/xorg-server-21.0.99.901.tar.gz
+cd     xorg-server-21.0.99.901/
 
 ./configure \
- --build=$CBUILD                     \
- --host=$CHOST                       \
- --prefix=/usr                       \
- --sysconfdir=/etc                   \
- --localstatedir=/var                \
- --with-xkb-output=/var/lib/xkb      \
- --with-fontrootdir=/usr/share/fonts \
- --with-sha1=libcrypto               \
- --with-os-vendor=apathy             \
+ --build=$CBUILD                                      \
+ --host=$CHOST                                        \
+ --prefix=/usr                                        \
+ --sysconfdir=/etc                                    \
+ --localstatedir=/var                                 \
+ --with-xkb-output=/var/lib/xkb                       \
+ --with-fontrootdir=/usr/share/fonts                  \
 \
- --enable-config-udev                \
- --enable-dri                        \
- --enable-dri2                       \
- --enable-dri3                       \
- --enable-glamor                     \
- --enable-glx                        \
- --enable-install-setuid             \
- --enable-libdrm                     \
- --enable-shared                     \
- --enable-xorg                       \
- --disable-config-hal                \
- --disable-debug                     \
- --disable-dmx                       \
- --disable-ipv6                      \
- --disable-kdrive                    \
- --disable-libunwind                 \
- --disable-linux-acpi                \
- --disable-record                    \
- --disable-static                    \
- --disable-suid-wrapper              \
- --disable-systemd-logind            \
- --disable-unit-tests                \
- --disable-xcsecurity                \
- --disable-xephyr                    \
- --disable-xfree86-utils             \
- --disable-xnest                     \
- --disable-xvfb                      \
- --disable-xwayland                  \
- --without-dtrace                    \
- --without-fop
+ --with-builder-addr="mss@tutanota.de"                \
+ --with-builderstring="mss"                           \
+ --with-vendor-name-short="apathy"                    \
+ --with-vendor-name="apathy 1.2"                      \
+ --with-vendor-web="https://github.com/mssx86/apathy" \
+\
+ --with-int10="stub"                                  \
+ --with-sha1="libcrypto"                              \
+ --without-doxygen                                    \
+ --without-dtrace                                     \
+ --without-fop                                        \
+ --without-systemd-daemon                             \
+ --without-xmlto                                      \
+ --without-xsltproc                                   \
+\
+ --enable-config-udev                                 \
+ --enable-config-udev-kms                             \
+ --enable-dri                                         \
+ --enable-dri2                                        \
+ --enable-dri3                                        \
+ --enable-glamor                                      \
+ --enable-glx                                         \
+ --enable-install-setuid                              \
+ --enable-libdrm                                      \
+ --enable-shared                                      \
+ --enable-xorg                                        \
+ --disable-config-hal                                 \
+ --disable-debug                                      \
+ --disable-devel-docs                                 \
+ --disable-docs                                       \
+ --disable-int10-module                               \
+ --disable-ipv6                                       \
+ --disable-kdrive                                     \
+ --disable-libunwind                                  \
+ --disable-linux-acpi                                 \
+ --disable-linux-apm                                  \
+ --disable-record                                     \
+ --disable-secure-rpc                                 \
+ --disable-static                                     \
+ --disable-suid-wrapper                               \
+ --disable-systemd-logind                             \
+ --disable-unit-tests                                 \
+ --disable-xcsecurity                                 \
+ --disable-xephyr                                     \
+ --disable-xf86-input-inputtest                       \
+ --disable-xfree86-utils                              \
+ --disable-xnest                                      \
+ --disable-xvfb

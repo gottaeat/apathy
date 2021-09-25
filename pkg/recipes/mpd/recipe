@@ -51,13 +51,4 @@ for i in KEK/usr/bin/mpd; do
  mv "${i}" /usr/bin/
 done
 
-# 5
-doas -s
-addgroup -g 103 mpd
-adduser -c "mpd daemon" -h /var/lib/mpd -u 103 -G mpd -s /bin/nologin mpd
-
-mkdir /var/lib/mpd
-touch /var/lib/mpd/db
-chown -R mpd:mpd /var/lib/mpd
-
 cp /mss/repo/dir/etc/mpd.conf /etc
