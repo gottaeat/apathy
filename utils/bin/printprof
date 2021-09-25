@@ -111,7 +111,7 @@ ldflto_full="${ldfbase_lto}"
 
 # 2.2.3 > thin
  cflto_thin="${cfbase_lto} -flto=thin"
-ldflto_thin="${ldfbase_lto},--thinlto-jobs=\${ajobcount},--thinlto-cache-dir=/mss/work/ltocache"
+ldflto_thin="${ldfbase_lto},--thinlto-jobs=\${ajobcount}"
 
 # 3 > action
 case "${1}" in
