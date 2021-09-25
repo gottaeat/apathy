@@ -14,10 +14,6 @@ for log in /var/log/*; do
   fi
  done
 
-aprint_ret "cleaning ${cl_grn}/var/lib/mpd/log${c_res}."
- > /var/lib/mpd/log
-evalret
-
 aprint_ret "nuking ${cl_grn}.la${c_res} files."
  find /lib /lib64 /usr/lib /opt -type f -name \*.la \
   -exec rm -rf {} ';'
