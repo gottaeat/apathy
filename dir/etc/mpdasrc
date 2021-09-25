@@ -1,6 +1,6 @@
-host     = /var/lib/mpd/socket
+host     = /mnt/mss/stuff/media/music/mpd/socket
 
-runas    = mpd
+runas    = mss
 debug    = 0
 
 service  = lastfm

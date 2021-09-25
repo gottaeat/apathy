@@ -10,7 +10,7 @@ floppy:x:8:
 disk:x:9:mss
 lp:x:10:mss
 dialout:x:11:
-audio:x:12:mss,mpd
+audio:x:12:mss
 video:x:13:mss
 adm:x:14:
 cdrom:x:15:mss
@@ -25,4 +25,3 @@ nogroup:x:99:
 users:x:100:mss
 mss:x:101:mss
 sshd:x:102:sshd
-mpd:x:103:mpd
