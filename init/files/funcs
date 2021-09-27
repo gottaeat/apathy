@@ -1,20 +1,8 @@
 #!/mss/bin/sh
-# 1 > prerequisites
-umask 022
-export PATH="/mss/init/bin:/usr/sbin:/usr/bin:/sbin:/bin:/mss/bin"
+. /mss/files/sourceme
+export PATH="/mss/init/bin:${PATH}"
 
-# 2 > colors
- c_res="\033[0;39m"
-cl_blk="\033[0;30m" cb_blk="\033[1;30m"
-cl_red="\033[0;31m" cb_red="\033[1;31m"
-cl_grn="\033[0;32m" cb_grn="\033[1;32m"
-cl_yel="\033[0;33m" cb_yel="\033[1;33m"
-cl_blu="\033[0;34m" cb_blu="\033[1;34m"
-cl_mgn="\033[0;35m" cb_mgn="\033[1;35m"
-cl_cyn="\033[0;36m" cb_cyn="\033[1;36m"
-cl_whi="\033[0;37m" cb_whi="\033[1;37m"
-
-# 3 > prompts
+# 1 > prompts
  sbefore="    "
  pbefore="  "
 cur_zero="\\033[0G"
@@ -23,7 +11,7 @@ cur_zero="\\033[0G"
   s_succ="${cb_grn}s${c_res}"
    s_arm="${cb_cyn}└${c_res}"
 
-# 4 > funcs
+# 2 > funcs
 ainit_nc()  { printf "\n";}
 ainitmes()  { printf "${sbefore}${@}";}
 ainitsvc()  { printf "${sbefore}${cb_blu}${1}${c_res} ${2}.";}
