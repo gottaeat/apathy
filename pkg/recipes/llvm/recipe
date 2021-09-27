@@ -5,15 +5,13 @@ export   CFLAGS="$(echo "${CFLAGS}"   \
  | sed "s/-march=native -mtune=native/${t61cf}/")"
 export CXXFLAGS="$(echo "${CXXFLAGS}" \
  | sed "s/-march=native -mtune=native/${t61cf}/")"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed 's/,--thinlto-cache-dir=\/mss\/work\/ltocache//g')"
 
 export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-13.0.0-rc3.tar.gz
-cd     llvm-project-llvmorg-13.0.0-rc3/
+tar xf /mss/work/sauces/llvmorg-13.0.0-rc4.tar.gz
+cd     llvm-project-llvmorg-13.0.0-rc4/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
 patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
