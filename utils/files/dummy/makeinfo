@@ -1,2 +1,0 @@
-#!/bin/sh
-printf 'makeinfo (GNU texinfo) 5.2\n'
