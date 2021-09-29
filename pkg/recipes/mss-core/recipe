@@ -1,0 +1,34 @@
+# 1 > utils/
+cd /mnt/mss/stuff/techy-bits/git/apathy/utils
+
+mkdir build
+cd    build
+
+meson ..; samu; doas -- samu install
+
+# 2 > init/
+cd /mnt/mss/stuff/techy-bits/git/apathy/init
+
+mkdir build
+cd    build
+
+meson ..; samu; doas -- samu install
+
+# 3 > set up /mss
+doas -s
+
+ln -sfv /mnt/mss/stuff/personal/networks     /mss/files/networks
+ln -sfv /mnt/mss/stuff/techy-bits/git/apathy /mss/repo
+ln -sfv /mnt/mss/stuff/techy-bits/work       /mss/work
+
+ln -sfv /bin/yash                            /mss/bin/sh
+ln -sfv /mss/bin/ainitmgr                    /mss/bin/ainitmgr
+
+touch /mss/files/packages.txt
+pkg sync
+
+chown -Rh root:root /mss
+
+for i in /mss /mss/files/ /mss/files/packages.txt; do
+ chown mss:mss "${i}"
+done
