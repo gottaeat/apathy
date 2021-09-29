@@ -25,9 +25,9 @@ static struct {
 	{ SIGINT,  sigreboot   },
 };
 
-static char *const rcinitcmd[]     = { "/mss/init/rc", "init",     NULL };
-static char *const rcrebootcmd[]   = { "/mss/init/rc", "reboot",   NULL };
-static char *const rcpoweroffcmd[] = { "/mss/init/rc", "poweroff", NULL };
+static char *const rcinitcmd[]     = { "/mss/init/bin/rc", "init",     NULL };
+static char *const rcrebootcmd[]   = { "/mss/init/bin/rc", "reboot",   NULL };
+static char *const rcpoweroffcmd[] = { "/mss/init/bin/rc", "poweroff", NULL };
 
 static sigset_t set;
 
