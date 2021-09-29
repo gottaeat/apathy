@@ -38,8 +38,11 @@ you would not want to use it anyway.
 basic repository tree
 =====================
 ├ dir/             -> base system configuration files.
-├ init/            -> in-house init system written in posix shell, using sinit
+├ init/[1]         -> in-house init system written in posix shell, using sinit
 │                     with some ubase programs with {b,u,w}tmp disabled.
+├ landfill/[2]     -> modified versions of dwm, st and dmenu cobbled together
+│                     under a single meson project as an attempt to create a
+│                     desktop environment type of thing.
 ├ misc/            -> miscellaneous notes and images.
 ├ pkg/
 │ ├ recipes/       -> in-house build recipes for a variety of software.
@@ -49,3 +52,6 @@ basic repository tree
 └ utils/
   ├ bin/           -> utilities used in apathy, written in posix shell.
   └ files/         -> files complementing the utilities and shells.
+
+[1] sinit, ubase and libutil are licensed under MIT.
+[2] dwm, st and dmenu are licensed under MIT.
