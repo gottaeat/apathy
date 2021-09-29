@@ -41,7 +41,8 @@ i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  g  1  .      eudev                3.2.9
 i  l  1  .      linux                5.14.8
-i  l  1  .      init                 20210927_042855
+i  l  1  .      init                 1
+i  l  1  ..     utils                1
 i  g  1  .      opendoas             6.8.1
 i  g  1  .      iptables             1.8.7
 i  l  1  .      curl                 7.79.1
@@ -118,6 +119,7 @@ i  l  1  ..     libepoxy             1.5.8
 i  l  1  .      xf86-input-libinput  1.2.0
 i  l  1  ..     libinput             1.19.0
 i  l  1  .      xinit                1.4.1
+i  l  1  .      landfill             1
 i  g  1  .      atk                  2.36.0
 i  g  1  .      freeglut             3.2.1
 i  l  1  ..     glu                  9.0.1
@@ -140,7 +142,6 @@ i  g  1  .      libvpx               1.10.0
 i  l  1  .      opus                 1.3.1
 i  g  1  .      x264                 20191119-2245
 i  l  1  .      x265                 3.5
-i  l  4  .      dmenu                4.9
 i  g  1  .      xtrlock              2.12
 i  l  1  .      youtube-dl           2021.06.06
 i  g  1  .      compton              5.1
@@ -161,14 +162,11 @@ i  l  1  .      feh                  3.7.1
 i  l  1  .      mupdf                1.16.1
 i  g  1  .      gcompat              1.0.0
 i  l  1  .      vifm                 0.11
-i  l  4  .      slmenu               0.1
-i  l  4  .      st                   0.8.4
 i  l  1  .      lz4                  1.9.3
 i  l  1  .      links                2.20.2
 i  l  1  .      wpa-supplicant       2.9
 i  l  1  ..     libnl3               3.5.0
 i  g  1  .      lilo                 24.2
-i  l  4  .      dwm                  6.2
 i  l  1  .      irssi                1.2.3
 i  l  1  .      clang                13.0.0-rc4
 i  l  1  .      compiler-rt          13.0.0-rc4
@@ -189,7 +187,6 @@ o  l  1  .      ruby                 2.7.1
 i  l  1  .      mkvtoolnix           48.0.0
 i  g  1  .      pciutils             3.7.0
 i  l  1  .      thinkfan             0c29363
-i  g  1  .      apulse               0f9f8487
 i  g  1  .      fdupes               2.1.2
 i  l  1  .      ympd                 612f8fc0
 i  g  1  .      nfs-utils            2.5.2

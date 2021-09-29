@@ -1,0 +1,8 @@
+/usr/bin/apulse
+/usr/lib/apulse
+
+/mss/files/pkgconfig/libpulse-mainloop-glib.pc
+/mss/files/pkgconfig/libpulse-simple.pc
+/mss/files/pkgconfig/libpulse.pc
+
+/usr/share/man
