@@ -1,0 +1,8 @@
+option('fontname',
+ type: 'string',
+ value: 'xos4 Terminus'
+)
+option('fontsize',
+ type: 'integer',
+ value: 10
+)
