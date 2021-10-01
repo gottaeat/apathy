@@ -23,7 +23,7 @@ i  g  1  .      automake             1.16.3
 i  g  1  .      xz                   5.2.5
 i  g  1  .      libelf               0.183
 i  g  1  .      libffi               3.3.0
-i  l  1  .      openssl              3.0.0
+i  l  2  .      openssl              3.0.0
 i  l  1  .      python               3.9.5
 i  g  1  .      samurai              1.2
 i  l  1  .      meson                0.58.1
