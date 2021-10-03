@@ -72,10 +72,12 @@ ainit_kill(){
    failprompt
    ainitmes "${cb_red}no proccess found to kill${c_res}."; armprompt
   else
-   case "${2}" in
-    kernel) kill -HUP ${pidlist} >/dev/null 2>&1; evalret ;;
-    *)      kill -15  ${pidlist} >/dev/null 2>&1; evalret ;;
-   esac
+   if [ -z "${2}" ]
+    then
+     kill -15  ${pidlist} >/dev/null 2>&1; evalret
+    else
+     kill -HUP ${pidlist} >/dev/null 2>&1; evalret
+   fi
  fi
 }
 
