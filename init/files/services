@@ -39,6 +39,12 @@ checkswaps(){
  fi
 }
 
+killwpasup(){
+ if pidof wpa_supplicant >/dev/null 2>&1; then 
+  ainitsvc "network" "killing wpa_supplicant"
+  ainit_kill wpa_supplicant
+ fi
+}
 
 # 2 > services themselves
 # 2.1 > gpm
@@ -157,109 +163,113 @@ svc_network(){
   start)
    if [ -z "${2}" ]
     then
-     ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
-    else _iface="${2}"
-   fi
- 
-   if [ "$(ip addr | grep ${_iface} | grep inet)" ]; then
-    ainitmes "${_iface} has an ip assinged, exiting"; failprompt; exit 1
-   fi
- 
-   case "${_iface}" in
-    wlan0)
-     if [ -z "${4}" ]
-      then
-       ainitmes "specify a wpaconf with \$4, exiting."; failprompt; exit 1
-      else
-       wpaconf="/mss/files/networks/${4}.conf"
- 
-      if [ -f "${wpaconf}" ]
-       then
-        ainitsvc "network" "invoking wpa_supplicant"
-         wpa_supplicant -B -i "${_iface}" -c "${wpaconf}" >/dev/null 2>&1
-        evalret
-       else
-        ainitmes "wpaconf file not found, exiting."; failprompt; exit 1
-      fi
-     fi
-    ;;
-    eth0)
-     ainitsvc "network" "selected eth0"; succprompt
-    ;;
-    *)
-     ainitmes "interface ${_iface} is not understood, exiting."; failprompt
+     ainitsvc "network" "specify an interface with \$2"; failprompt
      exit 1
-    ;;
-   esac
- 
-   if [ -z "${3}" ]
-    then
-     ainitmes "specify an ip setting with \$3, exiting."; failprompt; exit 1
     else
-     case "${3}" in
-      static)
-       ainitsvc "network" "adding ${dev_sip} to ${_iface}"
-        ip addr add "${dev_sip}/${dev_pref}" broadcast "${dev_bcast}" dev "${_iface}"
-       evalret
+     iface="${2}"
  
-       ainitsvc "network" "bringing ${_iface} up"
-        ip link set "${_iface}" up
-       evalret
+     if ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
+      ainitsvc "network" "${iface} already has an ip assinged"; failprompt
+      exit 1
+     fi
+
+     case "${iface}" in
+      wlan[0-9])
+       if [ -z "${4}" ]
+        then
+         ainitsvc "network" "specify a wpaconf with \$4"; failprompt
+         exit 1
+        else
+         wpaconf="/mss/files/networks/${4}.conf"
  
-       ainitsvc "network" "setting up the default gateway"
-        ip route add default via "${dev_gway}" dev "${_iface}"
-       evalret
+         if [ -f "${wpaconf}" ]
+          then
+           killwpasup
+           ainitsvc "network" "invoking wpa_supplicant"
+            wpa_supplicant -B -i "${iface}" -c "${wpaconf}" >/dev/null 2>&1
+           evalret
+          else
+           ainitsvc "network" "${wpaconf} does not exist"; failprompt
+           exit 1
+         fi
+       fi
       ;;
-      dhcp)
-       ainitsvc "network" "invoking udhcpc"
-        udhcpc \
-         -i "${_iface}" \
-         -s "/mss/init/files/udhcpc.script"  \
-         -p "/run/udhcpc.pid"                \
-         -B                                  \
-         -t 10 -T 3                          \
-         -n                                  \
-         -R                                  \
-         -a                                  \
-         -S >/dev/null 2>&1 &
-        evalret
+      eth[0-9]) :
       ;;
       *)
-       ainitmes "${3} is not understood, exiting."; failprompt; exit 1 
-      esac
+       ainitsvc "network" "${iface} does not exist"; failprompt
+       exit 1
+      ;;
+     esac
+
+     if [ -z "${3}" ]
+      then
+       ainitsvc "network" "specify either static or dhcp with \$3"; failprompt
+       exit 1
+      else
+       case "${3}" in
+        static)
+         ainitsvc "network" "adding ${dev_sip} to ${iface}"
+          ip addr add "${dev_sip}/${dev_pref}" broadcast "${dev_bcast}" dev "${iface}"
+         evalret
+ 
+         ainitsvc "network" "bringing ${iface} up"
+          ip link set "${iface}" up
+         evalret
+ 
+         ainitsvc "network" "setting up the default gateway"
+          ip route add default via "${dev_gway}" dev "${iface}"
+         evalret
+        ;;
+        dhcp)
+         ainitsvc "network" "invoking udhcpc"
+          udhcpc \
+           -i "${iface}" \
+           -s "/mss/init/files/udhcpc.script"  \
+           -p "/run/udhcpc.pid"                \
+           -B                                  \
+           -t 10 -T 3                          \
+           -n                                  \
+           -R                                  \
+           -a                                  \
+           -S >/dev/null 2>&1 &
+         evalret
+        ;;
+        *)
+         ainitsvc "network" "specify either static or dhcp with \$3"; failprompt
+         case "${iface}" in wlan[0-9]) killwpasup;; esac
+         exit 1
+        ;;
+       esac
+     fi
    fi
   ;;
   stop)
    if [ -z "${2}" ]
     then
-     ainitmes "specify an interface with \$2, exiting."; failprompt; exit 1
+     ainitsvc "network" "specify an interface with \$2"; failprompt; exit 1
     else
-     _iface="${2}"
- 
-    if [ "$(ip addr | grep ${_iface} | grep inet)" ]; 
-     then
-       ainitsvc "network" "flushing ${_iface}"
-        ip -4 addr flush dev "${_iface}"
+     iface="${2}"
+
+     if ip addr | grep ${iface} | grep inet >/dev/null 2>&1
+      then
+       ainitsvc "network" "flushing ${iface}"
+        ip -4 addr flush dev "${iface}"
        evalret
-       ainitsvc "network" "bringing down ${_iface}"
-        ip link set "${_iface}" down
+       ainitsvc "network" "bringing down ${iface}"
+        ip link set "${iface}" down
        evalret
       else
-       ainitmes "no ip is assigned to ${_iface}, exiting."; failprompt; exit 1
+       ainitsvc "network" "${iface} does not have an ip assinged"; failprompt; exit 1   
      fi
- 
-      wspid="$(pidof wpa_supplicant 2>/dev/null)"
-     dhcpid="$(pidof udhcpc         2>/dev/null)"
- 
+
+     dhcpid="$(pidof udhcpc 2>/dev/null)"
      if [ ! -z "${dhcpid}" ]; then
       ainitsvc "network" "killing udhcpc"
-      kill -USR2 "${dhcpid}"; sleep 1; ainit_kill udhcpc
+      kill -USR2 "${dhcpid}" && sleep 1 && ainit_kill udhcpc
      fi
- 
-     if [ ! -z "${wspid}" ]; then
-      ainitsvc "network" "killing wpa_supplicant"
-      ainit_kill wpa_supplicant
-     fi
+
+     killwpasup
    fi
   ;;
   *)
