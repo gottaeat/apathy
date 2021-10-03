@@ -41,7 +41,7 @@ i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  g  1  .      eudev                3.2.9
 i  l  1  .      linux                5.14.8
-i  2  1  .      init                 1
+i  2  1  .      init                 2
 i  2  1  ..     utils                1
 i  g  1  .      opendoas             6.8.1
 i  g  1  .      iptables             1.8.7
