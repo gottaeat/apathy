@@ -144,7 +144,6 @@
 /usr/include/xorg/xf86cmap.h
 /usr/include/xorg/xf86fbman.h
 /usr/include/xorg/xf86i2c.h
-/usr/include/xorg/xf86int10.h
 /usr/include/xorg/xf86platformBus.h
 /usr/include/xorg/xf86sbusBus.h
 /usr/include/xorg/xf86str.h
@@ -177,8 +176,6 @@
 /usr/lib/xorg/modules/libfbdevhw.so
 /usr/lib/xorg/modules/libglamoregl.la
 /usr/lib/xorg/modules/libglamoregl.so
-/usr/lib/xorg/modules/libint10.la
-/usr/lib/xorg/modules/libint10.so
 /usr/lib/xorg/modules/libshadow.la
 /usr/lib/xorg/modules/libshadow.so
 /usr/lib/xorg/modules/libshadowfb.la
