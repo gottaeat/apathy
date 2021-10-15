@@ -3,8 +3,8 @@
 // bar
 static const int showbar            = 1;
 static const int topbar             = 1;
-static const char *tags[]           = { "a", "b", "c", "d", "e", "f" };
-static const char *fonts[]          = { "@fontname@:size=@fontsize@" };
+static const char *tags[]           = { "a", "b", "c", "d", "e", "f", "g", "h", "i" };
+static const char *fonts[]          = { "@fontname@:size=@fontsize@"                };
 static const Layout layouts[]       = {
  { "T",     tile    },
  { "F",     NULL    },
@@ -63,6 +63,9 @@ static Key keys[] = {
  TAGKEYS( XK_4, 3)
  TAGKEYS( XK_5, 4)
  TAGKEYS( XK_6, 5)
+ TAGKEYS( XK_7, 6)
+ TAGKEYS( XK_8, 7)
+ TAGKEYS( XK_9, 8)
 
  // scripts
  { MODKEY,            XK_b,                     spawn,           SHCMD("/mss/bin/switchcompositor novsync")       },
