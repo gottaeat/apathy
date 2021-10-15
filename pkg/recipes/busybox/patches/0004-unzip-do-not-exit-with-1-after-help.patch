@@ -1,0 +1,32 @@
+From 274b486b64011bc3941b0238132f202b0ad8fdb5 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Mon, 11 Oct 2021 15:24:51 +0300
+Subject: [PATCH 4/4] unzip: do not exit with 1 after help.
+
+---
+ archival/unzip.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/archival/unzip.c b/archival/unzip.c
+index fc92ac6..dfa39e6 100644
+--- a/archival/unzip.c
++++ b/archival/unzip.c
+@@ -616,6 +616,7 @@ int unzip_main(int argc, char **argv)
+ 			break;
+ 
+ 		default:
++			xfunc_error_retval = 0;
+ 			bb_show_usage();
+ 		}
+ 	}
+@@ -639,6 +640,7 @@ int unzip_main(int argc, char **argv)
+ #endif
+ 
+ 	if (!src_fn) {
++		xfunc_error_retval = 0;
+ 		bb_show_usage();
+ 	}
+ 
+-- 
+2.33.0
+

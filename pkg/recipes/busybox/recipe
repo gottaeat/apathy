@@ -1,9 +1,32 @@
 # 1
+cdt1
+
 doas -s
+penis="/mss/work/table/KEK"
+tar xf /mss/work/sauces/busybox-1.31.0-full.tar.zst
+mkdir "${penis}"
+./busybox-x86_64 --install "${penis}"
+export PATH="${PATH}:${penis}"
+cat /mss/repo/pkg/trees/**/busybox-* | sort | uniq | xargs rm -rfv
+ln -sfv "${penis}"/sh /bin/sh
+
+tar xf /mss/work/sauces/busybox-1.34.1.tar.bz2
+cd     busybox-1.34.1/
+
 pdir="/mss/repo/pkg/recipes/busybox/patches"
-patch -p1 < "${pdir}"/0001-unzip-usage-no-error.patch
-patch -p1 < "${pdir}"/0002-print-unicode.patch
-patch -p1 < "${pdir}"/0003-install-fix-chown.patch
+patch -p1 < "${pdir}"/0001-libbb-ash-fix-clang-ub.patch
+patch -p1 < "${pdir}"/0002-install-fix-chown.patch
+patch -p1 < "${pdir}"/0003-libbb-print-unicode.patch
+patch -p1 < "${pdir}"/0004-unzip-do-not-exit-with-1-after-help.patch
+
+sed -i \
+ -e "s#= g[c+][c+]#= $CC#g"              \
+ -e "s#\(\$(CROSS_COMPILE)\)gcc#\1$CC#g" \
+ Makefile
+
+sed -i \
+ -e "s&\(\$(CC),\)clang&\1$CC&g"         \
+ Makefile.flags
 
 fdir="/mss/repo/pkg/recipes/busybox/files"
 cp    -v    "${fdir}"/config ./.config
@@ -11,6 +34,7 @@ cp    -v    "${fdir}"/config ./.config
 mymake(){
  make \
        AS="${AS}"      \
+   HOSTCC="${CC}"      \
        CC="${CC}"      \
        LD="${LD}"      \
       CPP="${CC} -E"   \

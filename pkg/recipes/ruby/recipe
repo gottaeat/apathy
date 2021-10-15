@@ -1,4 +1,11 @@
 # 1
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
+
 export   CFLAGS="${CFLAGS}   -fno-omit-frame-pointer -fno-strict-aliasing"
 export CXXFLAGS="${CXXFLAGS} -fno-omit-frame-pointer -fno-strict-aliasing"
 
@@ -6,18 +13,21 @@ pdir="/mss/repo/pkg/recipes/ruby/patches"
 patch -p1 < "${pdir}"/0001-fix-get_main_stack.patch
 patch -p1 < "${pdir}"/0002-rubygems-avoid-platform-specific-gems.patch
 
-export ac_cv_func_isnan=yes
-export ac_cv_func_isinf=yes
+ac_cv_func_isnan=yes \
+ac_cv_func_isinf=yes \
 ./configure \
  --build=$CBUILD          \
  --host=$CHOST            \
  --prefix=/opt/ruby-2.7.1 \
- --disable-rpath          \
- --disable-rubygems       \
+ --without-gmp            \
+ --enable-pthread         \
+ --enable-shared          \
+ --disable-debug          \
  --disable-install-doc    \
  --disable-install-rdoc   \
- --enable-shared          \
- --enable-pthread
+ --disable-ipv6           \
+ --disable-rpath          \
+ --disable-rubygems
 
 time make
 
