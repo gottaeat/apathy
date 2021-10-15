@@ -13,7 +13,7 @@ i  g  1  .      bison                3.7.4
 i  g  1  .      flex                 2.6.4
 i  l  1  .      grep                 3.7
 i  g  1  .      yash                 2.51
-i  l  1  .      busybox              1.34.0
+i  l  1  .      busybox              1.34.1
 i  g  1  .      libtool              2.4.6
 i  l  1  .      gperf                3.1
 i  g  1  .      expat                2.3.0
@@ -40,7 +40,7 @@ i  g  1  .      vim                  8.2.2549
 i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  g  1  .      eudev                3.2.9
-i  l  1  .      linux                5.14.9
+i  l  1  .      linux                5.14.11
 i  l  1  .      init                 2
 i  l  2  ..     utils                1
 i  g  1  .      opendoas             6.8.1
@@ -119,7 +119,7 @@ i  l  1  ..     libepoxy             1.5.8
 i  l  2  .      xf86-input-libinput  1.2.0
 i  l  2  ..     libinput             1.19.0
 i  l  1  .      xinit                1.4.1
-i  l  1  .      landfill             1
+i  l  1  .      landfill             2
 i  g  1  .      atk                  2.36.0
 i  g  1  .      freeglut             3.2.1
 i  l  1  ..     glu                  9.0.1
