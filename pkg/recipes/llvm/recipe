@@ -1,11 +1,11 @@
 # 1
-t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
-
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-
+#t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+#
+#export   CFLAGS="$(echo "${CFLAGS}"   \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
+#export CXXFLAGS="$(echo "${CXXFLAGS}" \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
+#
 export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
@@ -119,7 +119,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_JITLINK_BUILD=OFF                  \
  -DLLVM_TOOL_LLVM_JITLISTENER_BUILD=OFF              \
  -DLLVM_TOOL_LLVM_LIBTOOL_DARWIN_BUILD=OFF           \
- -DLLVM_TOOL_LLVM_LINK_BUILD=OFF                     \
+ -DLLVM_TOOL_LLVM_LINK_BUILD=ON                      \
  -DLLVM_TOOL_LLVM_LIPO_BUILD=OFF                     \
  -DLLVM_TOOL_LLVM_MCA_BUILD=OFF                      \
  -DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=OFF       \
@@ -149,7 +149,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_YAML_NUMERIC_PARSER_FUZZER_BUILD=OFF\
  -DLLVM_TOOL_LLVM_YAML_PARSER_FUZZER_BUILD=OFF       \
  -DLLVM_TOOL_OBJ2YAML_BUILD=OFF                      \
- -DLLVM_TOOL_OPT_BUILD=OFF                           \
+ -DLLVM_TOOL_OPT_BUILD=ON                            \
  -DLLVM_TOOL_OPT_VIEWER_BUILD=OFF                    \
  -DLLVM_TOOL_REMARKS_SHLIB_BUILD=ON                  \
  -DLLVM_TOOL_SANCOV_BUILD=OFF                        \

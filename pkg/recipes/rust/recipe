@@ -1,23 +1,26 @@
 # 1
-t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
-t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx,-aes,-sse4a,-sse4.2"
-
-export    CFLAGS="$(echo "${CFLAGS}"    \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-export  CXXFLAGS="$(echo "${CXXFLAGS}"  \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-export RUSTFLAGS="$(echo "${RUSTFLAGS}" \
- | sed "s/-Ctarget-cpu=native/${t61rf}/")"
+#t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+#t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx,-aes,-sse4a,-sse4.2"
+#
+#export    CFLAGS="$(echo "${CFLAGS}"    \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
+#export  CXXFLAGS="$(echo "${CXXFLAGS}"  \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
+#export RUSTFLAGS="$(echo "${RUSTFLAGS}" \
+# | sed "s/-Ctarget-cpu=native/${t61rf}/")"
 
 # 2
 tar xf /mss/work/sauces/rustc-1.55.0-src.tar.xz
 cd     rustc-1.55.0-src/
 
+rm -rfv vendor/curl-sys/.cargo-checksum.json
+
 pdir="/mss/repo/pkg/recipes/rust/patches"
 patch -p1 < "${pdir}"/0001-use-lib-instead-of-libexec.patch
 patch -p1 < "${pdir}"/0002-use-libunwind-instead-of-libgcc_s.patch
 patch -p1 < "${pdir}"/0003-fix-musl-crt.patch
-patch -p1 < "${pdir}"/0004-add-x86_64-apathy-triplets.patch
+patch -p1 < "${pdir}"/0004-fix-cargo-cert-error.patch
+patch -p1 < "${pdir}"/0005-add-x86_64-apathy-triplets.patch
 
 sed -i 's/crt_static_default = true/crt_static_default = false/' \
  ./compiler/rustc_target/src/spec/linux_musl_base.rs        \

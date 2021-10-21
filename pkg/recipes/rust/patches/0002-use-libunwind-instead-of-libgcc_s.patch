@@ -1,6 +1,6 @@
-From daba987986d3212db53a70287c725728f3f8fd70 Mon Sep 17 00:00:00 2001
+From 7c7c42d621b8908feca431550feeef4160e029a1 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 5 Aug 2021 11:30:34 +0300
+Date: Tue, 19 Oct 2021 16:03:11 +0300
 Subject: [PATCH 2/5] use libunwind instead of libgcc_s.
 
 ---
@@ -21,7 +21,7 @@ index 0529d24a2..36755866a 100644
 +            println!("cargo:rustc-link-lib=unwind");
          } else if target.contains("android") {
              let build = cc::Build::new();
-
+ 
 @@ -71,7 +71,6 @@ mod llvm_libunwind {
      /// Compile the libunwind C/C++ source code.
      pub fn compile() {
@@ -69,7 +69,7 @@ index eaeec72fb..968e4b7d4 100644
  // When building with crt-static, we get `gcc_eh` from the `libc` crate, since
  // glibc needs it, and needs it listed later on the linker command line. We
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 856d57faf..829a22977 100644
+index 889bcb7c0..37de5517e 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
 @@ -839,7 +839,7 @@ impl Step for Src {
@@ -82,5 +82,5 @@ index 856d57faf..829a22977 100644
                  // not needed and contains symlinks which rustup currently
                  // chokes on when unpacking.
 -- 
-2.32.0
+2.33.0
 
