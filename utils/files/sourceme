@@ -4,13 +4,14 @@ mypath="/usr/sbin:/usr/bin:/sbin:/bin"
 mypath="$mypath:/mss/bin:/home/mss/execs"
 mypath="$mypath:/opt/llvm-13.0.0/bin"
 mypath="$mypath:/opt/llvm-13.0.0/compat"
-mypath="$mypath:/opt/rustc-1.55.0/bin"
+mypath="$mypath:/opt/rustc-1.56.0/bin"
 mypath="$mypath:/opt/cbindgen-0.20.0/bin"
 mypath="$mypath:/opt/node.js-16.9.1/bin"
 mypath="$mypath:/opt/firefox-91.2.0esr/bin"
+mypath="$mypath:/opt/wlanshit/bin"
 
 mylibpath="/opt/llvm-13.0.0/lib"
-mylibpath="$mylibpath:/opt/rustc-1.55.0/lib"
+mylibpath="$mylibpath:/opt/rustc-1.56.0/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
 # 1.2 > essentials

@@ -182,7 +182,7 @@ i  l  2  .      openmp               13.0.0
 i  l  1  .      firefox              91.2.0esr
 i  l  1  ..     node.js              16.9.1
 i  l  1  ..     cbindgen             0.20.0
-i  l  2  ...    rust                 1.55.0
+i  l  1  ...    rust                 1.56.0
 i  l  1  ..     gtk3                 3.24.30
 i  g  1  .      zstd                 1.5.0
 i  l  2  .      transmission         3.0
@@ -205,3 +205,9 @@ i  l  1  .      fbcat                99a9aaed
 i  l  1  .      clzip                1.12
 i  l  1  .      tzdb                 2021a
 i  l  1  .      acpid                2.0.32
+i  l  1  .      profanity            0.11.1
+i  l  1  .      aircrack-ng          1.6
+i  l  1  .      bully                3ab3bc8
+i  l  1  .      iw                   5.9
+i  l  1  .      pixiewps             1.4.2
+i  l  1  .      reaver-wps-fork-t6x  d6c931c
