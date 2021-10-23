@@ -74,7 +74,7 @@ cd ../; rm -rf iw-5.9/
 
 # 5 > reaver
 tar xf /mss/work/sauces/reaver-wps-fork-t6x-d6c931c.tar.zst
-cd     reaver-wps-fork-t6x/src
+cd     reaver-wps-fork-t6x/src/
 
 sed -i -e 's|CFLAGS=|CFLAGS+=|' Makefile
 
@@ -109,4 +109,7 @@ cd     pixiewps-1.4.2/
 make OPENSSL=1 CFLAGS="${CFLAGS}"
 mv pixiewps "${instdir}"/bin
 
-cd ../; rm -rf pixiewps-1.4.2
+cd ../; rm -rf pixiewps-1.4.2/
+
+# 8 > strippery
+for i in "${instdir}"/bin/*; do strip --strip-all "${i}"; done
