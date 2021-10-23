@@ -1,0 +1,41 @@
+From 95ba2ec9ca3b34986019740fcf21bd6f7c627327 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 23 Oct 2021 00:30:37 +0300
+Subject: [PATCH 2/6] libunwind adjustments.
+
+---
+ library/unwind/src/lib.rs | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
+
+diff --git a/library/unwind/src/lib.rs b/library/unwind/src/lib.rs
+index 06384b159..5109ff05b 100644
+--- a/library/unwind/src/lib.rs
++++ b/library/unwind/src/lib.rs
+@@ -40,22 +40,8 @@ cfg_if::cfg_if! {
+ }
+ 
+ #[cfg(target_env = "musl")]
+-cfg_if::cfg_if! {
+-    if #[cfg(all(feature = "llvm-libunwind", feature = "system-llvm-libunwind"))] {
+-        compile_error!("`llvm-libunwind` and `system-llvm-libunwind` cannot be enabled at the same time");
+-    } else if #[cfg(feature = "llvm-libunwind")] {
+-        #[link(name = "unwind", kind = "static", modifiers = "-bundle")]
+-        extern "C" {}
+-    } else if #[cfg(feature = "system-llvm-libunwind")] {
+-        #[link(name = "unwind", kind = "static", modifiers = "-bundle", cfg(target_feature = "crt-static"))]
+-        #[link(name = "unwind", cfg(not(target_feature = "crt-static")))]
+-        extern "C" {}
+-    } else {
+-        #[link(name = "unwind", kind = "static", modifiers = "-bundle", cfg(target_feature = "crt-static"))]
+-        #[link(name = "gcc_s", cfg(not(target_feature = "crt-static")))]
+-        extern "C" {}
+-    }
+-}
++#[link(name = "unwind")]
++extern "C" {}
+ 
+ // When building with crt-static, we get `gcc_eh` from the `libc` crate, since
+ // glibc needs it, and needs it listed later on the linker command line. We
+-- 
+2.31.1
+

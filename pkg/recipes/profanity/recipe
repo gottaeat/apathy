@@ -1,0 +1,95 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2 > libstrophe
+tar xf /mss/work/sauces/libstrophe-0.10.1.tar.xz
+cd     libstrophe-0.10.1/
+
+autoreconf -fvi
+
+  CFLAGS="${CFLAGS} -fno-builtin"   \
+CXXFLAGS="${CXXFLAGS} -fno-builtin" \
+./configure \
+ --host=$CHOST       \
+ --build=$CBUILD     \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf libstrophe-0.10.1/
+
+# 3 > libsignal-protocol-c
+tar xf /mss/work/sauces/libsignal-protocol-c-2.3.3.tar.gz
+cd     libsignal-protocol-c-2.3.3/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf libsignal-protocol-c-2.3.3/
+
+# 4 > profanity
+tar xf /mss/work/sauces/profanity-0.11.1.tar.xz
+cd     profanity-0.11.1/
+
+LDFLAGS="${LDFLAGS} -lssl" \
+./configure \
+ --host=$CHOST                 \
+ --build=$CBUILD               \
+ --prefix=/usr                 \
+\
+ --without-themes              \
+ --without-xscreensaver        \
+ --enable-omemo                \
+ --disable-c-plugins           \
+ --disable-icons-and-clipboard \
+ --disable-notifications       \
+ --disable-otr                 \
+ --disable-pgp                 \
+ --disable-plugins             \
+ --disable-python-plugins
+
+make
+make DESTDIR="${PWD}/KEK" install
+
+doas -s
+for i in KEK/usr/bin/profanity; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

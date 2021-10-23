@@ -1,7 +1,7 @@
-From 9c9cb4a01f1a80ef21bba1c334818dca9b387f9b Mon Sep 17 00:00:00 2001
+From 83bfd2f6a3f34dea37d58325ec40a4381d5be753 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Tue, 19 Oct 2021 16:05:27 +0300
-Subject: [PATCH 5/5] add x86_64 apathy triplets.
+Date: Sat, 23 Oct 2021 00:32:22 +0300
+Subject: [PATCH 6/6] add x86_64 apathy triplets.
 
 ---
  compiler/rustc_target/src/spec/mod.rs                 |  1 +
@@ -10,7 +10,7 @@ Subject: [PATCH 5/5] add x86_64 apathy triplets.
  create mode 100644 compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
 
 diff --git a/compiler/rustc_target/src/spec/mod.rs b/compiler/rustc_target/src/spec/mod.rs
-index 0185132ee..ca339af07 100644
+index 273221360..1b3bf0732 100644
 --- a/compiler/rustc_target/src/spec/mod.rs
 +++ b/compiler/rustc_target/src/spec/mod.rs
 @@ -738,6 +738,7 @@ macro_rules! supported_targets {
@@ -39,5 +39,5 @@ index 000000000..19101adfd
 +    base
 +}
 -- 
-2.33.0
+2.31.1
 

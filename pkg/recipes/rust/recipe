@@ -10,23 +10,22 @@
 # | sed "s/-Ctarget-cpu=native/${t61rf}/")"
 
 # 2
-tar xf /mss/work/sauces/rustc-1.55.0-src.tar.xz
-cd     rustc-1.55.0-src/
-
-rm -rfv vendor/curl-sys/.cargo-checksum.json
+tar xf /mss/work/sauces/rustc-1.56.0-src.tar.xz
+cd     rustc-1.56.0-src/
 
 pdir="/mss/repo/pkg/recipes/rust/patches"
 patch -p1 < "${pdir}"/0001-use-lib-instead-of-libexec.patch
-patch -p1 < "${pdir}"/0002-use-libunwind-instead-of-libgcc_s.patch
-patch -p1 < "${pdir}"/0003-fix-musl-crt.patch
-patch -p1 < "${pdir}"/0004-fix-cargo-cert-error.patch
-patch -p1 < "${pdir}"/0005-add-x86_64-apathy-triplets.patch
+patch -p1 < "${pdir}"/0002-libunwind-adjustments.patch
+patch -p1 < "${pdir}"/0003-use-system-libunwind.patch
+patch -p1 < "${pdir}"/0004-use-cpp-to-compile-cpp-code-on-musl.patch
+patch -p1 < "${pdir}"/0005-fix-curl-cert-error-with-cargo.patch
+patch -p1 < "${pdir}"/0006-add-x86_64-apathy-triplets.patch
 
 sed -i 's/crt_static_default = true/crt_static_default = false/' \
  ./compiler/rustc_target/src/spec/linux_musl_base.rs        \
  ./vendor/rustc-ap-rustc_target/src/spec/linux_musl_base.rs
 
-for i in rustc-ap-rustc_target libc; do
+for i in curl-sys libc rustc-ap-rustc_target; do
  sed -i 's/\("files":{\)[^}]*/\1/' vendor/${i}/.cargo-checksum.json
 done
 
@@ -43,24 +42,24 @@ DESTDIR="${instdir}" python3 ./x.py install
 
 rm -rfv \
  "${instdir}"/etc                                                 \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/components             \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/etc                    \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/install.log            \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/manifest-*             \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/rust-installer-version \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/uninstall.sh           \
- "${instdir}"/opt/rustc-1.55.0/share
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/components             \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/etc                    \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/install.log            \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/manifest-*             \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/rust-installer-version \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/uninstall.sh           \
+ "${instdir}"/opt/rustc-1.56.0/share
 
 strip --strip-all \
- "${instdir}"/opt/rustc-1.55.0/bin/*                              \
- "${instdir}"/opt/rustc-1.55.0/lib/cargo-credential-1password     \
- "${instdir}"/opt/rustc-1.55.0/lib/rustlib/x86_64-apathy-linux-musl/bin/*
+ "${instdir}"/opt/rustc-1.56.0/bin/*                              \
+ "${instdir}"/opt/rustc-1.56.0/lib/cargo-credential-1password     \
+ "${instdir}"/opt/rustc-1.56.0/lib/rustlib/x86_64-apathy-linux-musl/bin/*
 
-find "${instdir}"/opt/rustc-1.55.0/lib -name \*.so   \
+find "${instdir}"/opt/rustc-1.56.0/lib -name \*.so   \
  -exec strip --strip-unneeded {} ';'
 
-find "${instdir}"/opt/rustc-1.55.0/lib -name \*.rlib \
+find "${instdir}"/opt/rustc-1.56.0/lib -name \*.rlib \
  -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/rustc-1.55.0/lib -name \*.rlib \
+find "${instdir}"/opt/rustc-1.56.0/lib -name \*.rlib \
  -exec ${RANLIB}              {} ';'

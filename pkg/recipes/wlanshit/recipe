@@ -1,0 +1,112 @@
+# 1
+  penis="/mss/work/table/KEK"
+instdir="/mss/work/table/wlanshit"
+ findir="/opt/wlanshit"
+
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+mkdir -pv        "${instdir}"/bin
+ln -sfv ./reaver "${instdir}"/bin/wash
+
+# 2 > static libpcap
+tar xf /mss/work/sauces/libpcap-1.10.1.tar.gz
+cd     libpcap-1.10.1/
+
+pdir="/mss/repo/pkg/recipes/wlanshit/patches"
+patch -p1 < "${pdir}"/0001-libpcap-fix-headers.patch
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared    \
+ --disable-ipv6      \
+ --disable-dbus
+
+make
+make install
+
+cd ../; rm -rf libpcap-1.10.1/
+
+# 3 > aircrack-ng
+tar xf /mss/work/sauces/aircrack-ng-1.6.tar.gz
+cd     aircrack-ng-1.6/
+
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix="${findir}"      \
+ --sbindir="${findir}"/bin \
+ --enable-libnl            \
+ --enable-static           \
+ --enable-static-pcap      \
+ --disable-shared          \
+ --disable-asan            \
+ --disable-tsan            \
+ --without-opt             \
+ --without-experimental
+
+make
+
+make DESTDIR="${PWD}/KEK" install
+pushd "${PWD}/KEK/${findir}"/bin
+mv aircrack-ng airodump-ng aireplay-ng "${instdir}"/bin
+popd
+
+cd ../; rm -rf aircrack-ng-1.6/
+
+# 4 > iw
+tar xf /mss/work/sauces/iw-5.9.tar.xz
+cd     iw-5.9/
+
+patch -p1 < "${pdir}"/0001-iw-lld13-fix.patch
+
+make
+mv iw "${instdir}"/bin
+
+cd ../; rm -rf iw-5.9/
+
+# 5 > reaver
+tar xf /mss/work/sauces/reaver-wps-fork-t6x-d6c931c.tar.zst
+cd     reaver-wps-fork-t6x/src
+
+sed -i -e 's|CFLAGS=|CFLAGS+=|' Makefile
+
+  CFLAGS="${CFLAGS}   `pkgconf --cflags libnl-3.0 libnl-genl-3.0`" \
+CXXFLAGS="${CXXFLAGS} `pkgconf --cflags libnl-3.0 libnl-genl-3.0`" \
+ LDFLAGS="${LDFLAGS}  `pkgconf --libs   libnl-3.0 libnl-genl-3.0`" \
+\
+./configure \
+ --host=$CHOST        \
+ --build=$CBUILD      \
+ --prefix="${findir}" \
+ --sysconfdir="${findir}"/etc
+
+make
+mv reaver "${instdir}"/bin
+
+cd ../../; rm -rf reaver-wps-fork-t6x/
+
+# 6 > bully
+tar xf /mss/work/sauces/bully-3ab3bc8.tar.zst
+cd     bully/
+
+make -C src LDFLAGS="${LDFLAGS} `pkgconf --libs libnl-3.0 libnl-genl-3.0` -lpcap"
+mv src/bully "${instdir}"/bin
+
+cd ../; rm -rf bully/
+
+# 7 > pixiewps
+tar xf /mss/work/sauces/pixiewps-1.4.2.tar.gz
+cd     pixiewps-1.4.2/
+
+make OPENSSL=1 CFLAGS="${CFLAGS}"
+mv pixiewps "${instdir}"/bin
+
+cd ../; rm -rf pixiewps-1.4.2
