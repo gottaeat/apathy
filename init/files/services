@@ -167,7 +167,8 @@ svc_network(){
      exit 1
     else
      iface="${2}"
- 
+     ainitsvc "network" "going with ${iface}"; infoprompt
+
      if ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
       ainitsvc "network" "${iface} already has an ip assinged"; failprompt
       exit 1
@@ -196,6 +197,8 @@ svc_network(){
       ;;
       eth[0-9]) :
       ;;
+      usb[0-9]) :
+      ;;
       *)
        ainitsvc "network" "${iface} does not exist"; failprompt
        exit 1
@@ -222,6 +225,15 @@ svc_network(){
          evalret
         ;;
         dhcp)
+
+         case "${iface}" in
+          usb[0-9])
+           ainitsvc "network" "bringing ${iface} up"
+            ip link set "${iface}" up
+           evalret
+         ;;
+         esac
+
          ainitsvc "network" "invoking udhcpc"
           udhcpc \
            -i "${iface}" \
