@@ -26,7 +26,7 @@ i  g  1  .      libffi               3.3.0
 i  l  2  .      openssl              3.0.0
 i  l  1  .      python               3.9.5
 i  g  1  .      samurai              1.2
-i  l  1  .      meson                0.58.1
+i  l  1  .      meson                0.60.0
 i  g  1  .      procps-ng            3.3.17
 i  g  1  .      diffutils            3.7
 i  g  1  .      mawk                 1.3.4-20200120
@@ -40,7 +40,7 @@ i  g  1  .      vim                  8.2.2549
 i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  g  1  .      eudev                3.2.9
-i  l  1  .      linux                5.14.14
+i  l  1  .      linux                5.14.15
 i  l  1  .      init                 3
 i  l  3  ..     utils                1
 i  g  1  .      opendoas             6.8.1
@@ -98,7 +98,7 @@ i  g  1  .      libXxf86vm           1.1.4
 i  g  1  .      libpciaccess         0.16
 i  g  1  .      libxkbfile           1.1.0
 i  g  1  .      libxshmfence         1.3
-i  l  1  .      mesa                 21.2.4
+i  l  1  .      mesa                 21.2.5
 i  g  1  ..     libdrm               2.4.105
 i  g  1  .      setxkbmap            1.3.2
 i  g  1  .      xauth                1.1
@@ -145,7 +145,7 @@ i  l  1  .      x265                 3.5
 i  g  1  .      xtrlock              2.12
 i  l  1  .      youtube-dl           2021.06.06
 i  g  1  .      compton              5.1
-i  l  1  .      ffmpeg               4.4
+i  l  1  .      ffmpeg               4.4.1
 i  l  1  ..     libva                2.12.0
 i  l  1  ..     v4l-utils            1.20.0
 i  l  1  ..     lame                 3.100
