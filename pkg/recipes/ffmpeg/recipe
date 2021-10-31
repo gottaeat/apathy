@@ -29,8 +29,8 @@ case "${amachine}" in
  x230) peen="enable"  peenlist="oss,sndio"      ;;
 esac
 
-tar xf /mss/work/sauces/ffmpeg-4.4.tar.xz
-cd ffmpeg-4.4/
+tar xf /mss/work/sauces/ffmpeg-4.4.1.tar.xz
+cd ffmpeg-4.4.1/
 
 mkdir build
 cd    build
