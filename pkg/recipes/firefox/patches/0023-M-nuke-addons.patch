@@ -15,7 +15,7 @@ diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
 index 1ab9167d87..dab7c04363 100644
 --- a/browser/extensions/moz.build
 +++ b/browser/extensions/moz.build
-@@ -5,15 +5,5 @@
+@@ -5,16 +5,5 @@
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
  DIRS += [
@@ -25,6 +25,7 @@ index 1ab9167d87..dab7c04363 100644
 -    "webcompat",
 -    "report-site-issue",
 -    "pictureinpicture",
+-    "proxy-failover",
  ]
 -
 -if CONFIG["NIGHTLY_BUILD"]:

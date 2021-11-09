@@ -1,21 +1,22 @@
 # 1 > env vars
-t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
-t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx -Ctarget-feature=-aes"
-t61rf="${t61rf} -Ctarget-feature=-sse4a -Ctarget-feature=-sse4.2"
-penis="/mss/work/table/KEK"
-
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
+#t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
+#t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx -Ctarget-feature=-aes"
+#t61rf="${t61rf} -Ctarget-feature=-sse4a -Ctarget-feature=-sse4.2"
+#
+#export   CFLAGS="$(echo "${CFLAGS}"   \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
+#export CXXFLAGS="$(echo "${CXXFLAGS}" \
+# | sed "s/-march=native -mtune=native/${t61cf}/")"
 export  LDFLAGS="$(echo "${LDFLAGS}"  \
  | sed 's/,--thinlto-cache-dir=\/mss\/work\/ltocache//g')"
 
+penis="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-91.2.0esr/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-91.3.0esr/lib,--enable-new-dtags"
 
-                    RUSTFLAGS="-Clinker=${CC} ${t61rf} -Lnative=$(llvm-config --libdir)"
+#                   RUSTFLAGS="-Clinker=${CC} ${t61rf} -Lnative=$(llvm-config --libdir)"
+                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
@@ -99,8 +100,8 @@ make prefix="${penis}"     -f unix/Makefile install
 cd ../; rm -rf zip30/
 
 # 6 > extraction
-tar xf /mss/work/sauces/firefox-91.2.0esr.source.tar.xz
-cd     firefox-91.2.0/
+tar xf /mss/work/sauces/firefox-91.3.0esr.source.tar.xz
+cd     firefox-91.3.0/
 
 # 7 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
@@ -108,9 +109,9 @@ for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
 # 8 > nuke addons and pocket
 rm -rf \
- browser/components/pocket                          \
- browser/extensions/{report-site-issue,screenshots} \
- browser/extensions/{translations,webcompat,doh-rollout,pictureinpicture}
+ browser/components/pocket                                        \
+ browser/extensions/{doh-rollout,pictureinpicture,proxy-failover} \
+ browser/extensions/{report-site-issue,screenshots,translations,webcompat}
 
 # 9 > clear sums
 for sum in target-lexicon-0.9.0; do
@@ -137,11 +138,11 @@ unset _echoflags
 time ./mach build
 
 # 14 > install
-instdir="${PWD}/KEK/opt/firefox-91.2.0esr"
+instdir="${PWD}/KEK/opt/firefox-91.3.0esr"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-91.2.0esr/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox-91.3.0esr/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd
