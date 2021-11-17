@@ -1,0 +1,25 @@
+From 4c71f647d46d2a03750b1e5643fb0e4e3e97bca0 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Tue, 16 Nov 2021 15:39:44 +0300
+Subject: [PATCH 02/10] disable auto_mic by default.
+
+---
+ sound/pci/hda/hda_generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 3bf5e3410..9fd600c02 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -135,7 +135,7 @@ static void parse_user_hints(struct hda_codec *codec)
+ 	val = snd_hda_get_bool_hint(codec, "auto_mute");
+ 	if (val >= 0)
+ 		spec->suppress_auto_mute = !val;
+-	val = snd_hda_get_bool_hint(codec, "auto_mic");
++	val = 0;
+ 	if (val >= 0)
+ 		spec->suppress_auto_mic = !val;
+ 	val = snd_hda_get_bool_hint(codec, "line_in_auto_switch");
+-- 
+2.31.1
+

@@ -1,10 +1,9 @@
-From 22a3bd53e862a88f6c70c95891c32119ffe46120 Mon Sep 17 00:00:00 2001
+From 20ee1e347dc18de84af43bbb5b049b3b16fd900e Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 20 Oct 2021 15:45:33 +0300
-Subject: [PATCH 04/12] zstd improvements from xanmod.
+Date: Tue, 16 Nov 2021 15:43:46 +0300
+Subject: [PATCH 08/10] add zstd improvements from xanmod.
 
 ---
- MAINTAINERS                                   |   12 +
  crypto/zstd.c                                 |   28 +-
  fs/btrfs/zstd.c                               |   68 +-
  fs/f2fs/compress.c                            |   56 +-
@@ -50,18 +49,18 @@ Subject: [PATCH 04/12] zstd improvements from xanmod.
  lib/zstd/compress/zstd_double_fast.h          |   32 +
  lib/zstd/compress/zstd_fast.c                 |  496 ++
  lib/zstd/compress/zstd_fast.h                 |   31 +
- lib/zstd/compress/zstd_lazy.c                 | 1412 +++++
+ lib/zstd/compress/zstd_lazy.c                 | 1414 +++++
  lib/zstd/compress/zstd_lazy.h                 |   81 +
  lib/zstd/compress/zstd_ldm.c                  |  686 +++
  lib/zstd/compress/zstd_ldm.h                  |  110 +
  lib/zstd/compress/zstd_ldm_geartab.h          |  103 +
- lib/zstd/compress/zstd_opt.c                  | 1345 +++++
+ lib/zstd/compress/zstd_opt.c                  | 1346 +++++
  lib/zstd/compress/zstd_opt.h                  |   50 +
  lib/zstd/decompress.c                         | 2531 --------
  lib/zstd/decompress/huf_decompress.c          | 1205 ++++
  lib/zstd/decompress/zstd_ddict.c              |  241 +
  lib/zstd/decompress/zstd_ddict.h              |   44 +
- lib/zstd/decompress/zstd_decompress.c         | 2082 +++++++
+ lib/zstd/decompress/zstd_decompress.c         | 2085 +++++++
  lib/zstd/decompress/zstd_decompress_block.c   | 1540 +++++
  lib/zstd/decompress/zstd_decompress_block.h   |   62 +
  .../decompress/zstd_decompress_internal.h     |  202 +
@@ -80,7 +79,9 @@ Subject: [PATCH 04/12] zstd improvements from xanmod.
  lib/zstd/zstd_decompress_module.c             |  105 +
  lib/zstd/zstd_internal.h                      |  273 -
  lib/zstd/zstd_opt.h                           | 1014 ----
- 76 files changed, 27361 insertions(+), 12941 deletions(-)
+ scripts/Makefile.package                      |   10 +-
+ scripts/package/buildtar                      |    4 +
+ 77 files changed, 27366 insertions(+), 12944 deletions(-)
  create mode 100644 include/linux/zstd_errors.h
  create mode 100644 include/linux/zstd_lib.h
  delete mode 100644 lib/zstd/bitstream.h
@@ -148,29 +149,6 @@ Subject: [PATCH 04/12] zstd improvements from xanmod.
  delete mode 100644 lib/zstd/zstd_internal.h
  delete mode 100644 lib/zstd/zstd_opt.h
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d7b4f3287..4e2240d31 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20566,6 +20566,18 @@ F:	Documentation/vm/zsmalloc.rst
- F:	include/linux/zsmalloc.h
- F:	mm/zsmalloc.c
- 
-+ZSTD
-+M:	Nick Terrell <terrelln@fb.com>
-+S:	Maintained
-+B:	https://github.com/facebook/zstd/issues
-+T:	git git://github.com/terrelln/linux.git
-+F:	include/linux/zstd*
-+F:	lib/zstd/
-+F:	lib/decompress_unzstd.c
-+F:	crypto/zstd.c
-+N:	zstd
-+K:	zstd
-+
- ZSWAP COMPRESSED SWAP CACHING
- M:	Seth Jennings <sjenning@redhat.com>
- M:	Dan Streetman <ddstreet@ieee.org>
 diff --git a/crypto/zstd.c b/crypto/zstd.c
 index 1a3309f06..154a969c8 100644
 --- a/crypto/zstd.c
@@ -257,7 +235,7 @@ index 1a3309f06..154a969c8 100644
  	*dlen = out_len;
  	return 0;
 diff --git a/fs/btrfs/zstd.c b/fs/btrfs/zstd.c
-index 3e26b4664..6d984a832 100644
+index f06b68040..fc42dd0ba 100644
 --- a/fs/btrfs/zstd.c
 +++ b/fs/btrfs/zstd.c
 @@ -28,10 +28,10 @@
@@ -362,9 +340,9 @@ index 3e26b4664..6d984a832 100644
  			ret = -EIO;
  			goto out;
  		}
-@@ -550,17 +550,17 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
- 	u64 disk_start = cb->start;
- 	struct bio *orig_bio = cb->orig_bio;
+@@ -548,17 +548,17 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
+ 	struct workspace *workspace = list_entry(ws, struct workspace, list);
+ 	struct page **pages_in = cb->compressed_pages;
  	size_t srclen = cb->compressed_len;
 -	ZSTD_DStream *stream;
 +	zstd_dstream *stream;
@@ -383,7 +361,7 @@ index 3e26b4664..6d984a832 100644
  		ret = -EIO;
  		goto done;
  	}
-@@ -576,11 +576,11 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
+@@ -574,11 +574,11 @@ int zstd_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
  	while (1) {
  		size_t ret2;
  
@@ -399,7 +377,7 @@ index 3e26b4664..6d984a832 100644
  			ret = -EIO;
  			goto done;
  		}
-@@ -626,16 +626,16 @@ int zstd_decompress(struct list_head *ws, unsigned char *data_in,
+@@ -624,16 +624,16 @@ int zstd_decompress(struct list_head *ws, unsigned char *data_in,
  		size_t destlen)
  {
  	struct workspace *workspace = list_entry(ws, struct workspace, list);
@@ -419,7 +397,7 @@ index 3e26b4664..6d984a832 100644
  		ret = -EIO;
  		goto finish;
  	}
-@@ -659,15 +659,15 @@ int zstd_decompress(struct list_head *ws, unsigned char *data_in,
+@@ -657,15 +657,15 @@ int zstd_decompress(struct list_head *ws, unsigned char *data_in,
  
  		/* Check if the frame is over and we still need more input */
  		if (ret2 == 0) {
@@ -441,10 +419,10 @@ index 3e26b4664..6d984a832 100644
  			goto finish;
  		}
 diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index b8b3f1160..91b110df6 100644
+index c1bf9ad4c..f56bb2501 100644
 --- a/fs/f2fs/compress.c
 +++ b/fs/f2fs/compress.c
-@@ -334,8 +334,8 @@ static const struct f2fs_compress_ops f2fs_lz4_ops = {
+@@ -335,8 +335,8 @@ static const struct f2fs_compress_ops f2fs_lz4_ops = {
  
  static int zstd_init_compress_ctx(struct compress_ctx *cc)
  {
@@ -455,7 +433,7 @@ index b8b3f1160..91b110df6 100644
  	void *workspace;
  	unsigned int workspace_size;
  	unsigned char level = F2FS_I(cc->inode)->i_compress_flag >>
-@@ -344,17 +344,17 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+@@ -345,17 +345,17 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
  	if (!level)
  		level = F2FS_ZSTD_DEFAULT_CLEVEL;
  
@@ -477,7 +455,7 @@ index b8b3f1160..91b110df6 100644
  				KERN_ERR, F2FS_I_SB(cc->inode)->sb->s_id,
  				__func__);
  		kvfree(workspace);
-@@ -377,9 +377,9 @@ static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
+@@ -378,9 +378,9 @@ static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
  
  static int zstd_compress_pages(struct compress_ctx *cc)
  {
@@ -490,7 +468,7 @@ index b8b3f1160..91b110df6 100644
  	int src_size = cc->rlen;
  	int dst_size = src_size - PAGE_SIZE - COMPRESS_HEADER_SIZE;
  	int ret;
-@@ -392,19 +392,19 @@ static int zstd_compress_pages(struct compress_ctx *cc)
+@@ -393,19 +393,19 @@ static int zstd_compress_pages(struct compress_ctx *cc)
  	outbuf.dst = cc->cbuf->cdata;
  	outbuf.size = dst_size;
  
@@ -518,7 +496,7 @@ index b8b3f1160..91b110df6 100644
  		return -EIO;
  	}
  
-@@ -421,22 +421,22 @@ static int zstd_compress_pages(struct compress_ctx *cc)
+@@ -422,22 +422,22 @@ static int zstd_compress_pages(struct compress_ctx *cc)
  
  static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
  {
@@ -545,7 +523,7 @@ index b8b3f1160..91b110df6 100644
  				KERN_ERR, F2FS_I_SB(dic->inode)->sb->s_id,
  				__func__);
  		kvfree(workspace);
-@@ -458,9 +458,9 @@ static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
+@@ -459,9 +459,9 @@ static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
  
  static int zstd_decompress_pages(struct decompress_io_ctx *dic)
  {
@@ -558,7 +536,7 @@ index b8b3f1160..91b110df6 100644
  	int ret;
  
  	inbuf.pos = 0;
-@@ -471,11 +471,11 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
+@@ -472,11 +472,11 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
  	outbuf.dst = dic->rbuf;
  	outbuf.size = dic->rlen;
  
@@ -575,10 +553,10 @@ index b8b3f1160..91b110df6 100644
  	}
  
 diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 2b093a209..2fca4bcfb 100644
+index 78ebc306e..97e5a051c 100644
 --- a/fs/f2fs/super.c
 +++ b/fs/f2fs/super.c
-@@ -588,7 +588,7 @@ static int f2fs_set_zstd_level(struct f2fs_sb_info *sbi, const char *str)
+@@ -592,7 +592,7 @@ static int f2fs_set_zstd_level(struct f2fs_sb_info *sbi, const char *str)
  	if (kstrtouint(str + 1, 10, &level))
  		return -EINVAL;
  
@@ -601,7 +579,7 @@ index b9614db48..f243cb5e6 100644
  #endif
  
 diff --git a/fs/squashfs/zstd_wrapper.c b/fs/squashfs/zstd_wrapper.c
-index b7cb1faa6..6967c0aae 100644
+index 0015cf8b5..c40445dbf 100644
 --- a/fs/squashfs/zstd_wrapper.c
 +++ b/fs/squashfs/zstd_wrapper.c
 @@ -34,7 +34,7 @@ static void *zstd_init(struct squashfs_sb_info *msblk, void *buff)
@@ -14334,7 +14312,7 @@ index 000000000..486a3ccb7
 +}
 diff --git a/lib/zstd/compress/zstd_compress.c b/lib/zstd/compress/zstd_compress.c
 new file mode 100644
-index 000000000..59e5d1016
+index 000000000..a4e916008
 --- /dev/null
 +++ b/lib/zstd/compress/zstd_compress.c
 @@ -0,0 +1,5109 @@
@@ -15061,8 +15039,8 @@ index 000000000..59e5d1016
 +        return CCtxParams->ldmParams.bucketSizeLog;
 +
 +    case ZSTD_c_ldmHashRateLog :
-+        RETURN_ERROR_IF(value > ZSTD_WINDOWLOG_MAX - ZSTD_HASHLOG_MIN,
-+                        parameter_outOfBound, "Param out of bounds!");
++        if (value!=0)   /* 0 ==> default */
++            BOUNDCHECK(ZSTD_c_ldmHashRateLog, value);
 +        CCtxParams->ldmParams.hashRateLog = value;
 +        return CCtxParams->ldmParams.hashRateLog;
 +
@@ -23831,10 +23809,10 @@ index 000000000..fddc2f532
 +#endif /* ZSTD_FAST_H */
 diff --git a/lib/zstd/compress/zstd_lazy.c b/lib/zstd/compress/zstd_lazy.c
 new file mode 100644
-index 000000000..87cfa353a
+index 000000000..fb54d4e28
 --- /dev/null
 +++ b/lib/zstd/compress/zstd_lazy.c
-@@ -0,0 +1,1412 @@
+@@ -0,0 +1,1414 @@
 +/*
 + * Copyright (c) Yann Collet, Facebook, Inc.
 + * All rights reserved.
@@ -23930,7 +23908,7 @@ index 000000000..87cfa353a
 +    assert(curr >= btLow);
 +    assert(ip < iend);   /* condition for ZSTD_count */
 +
-+    while (nbCompares-- && (matchIndex > windowLow)) {
++    for (; nbCompares && (matchIndex > windowLow); --nbCompares) {
 +        U32* const nextPtr = bt + 2*(matchIndex & btMask);
 +        size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
 +        assert(matchIndex < curr);
@@ -24022,7 +24000,7 @@ index 000000000..87cfa353a
 +    (void)dictMode;
 +    assert(dictMode == ZSTD_dictMatchState);
 +
-+    while (nbCompares-- && (dictMatchIndex > dictLowLimit)) {
++    for (; nbCompares && (dictMatchIndex > dictLowLimit); --nbCompares) {
 +        U32* const nextPtr = dictBt + 2*(dictMatchIndex & btMask);
 +        size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
 +        const BYTE* match = dictBase + dictMatchIndex;
@@ -24146,7 +24124,7 @@ index 000000000..87cfa353a
 +        matchIndex  = hashTable[h];
 +        hashTable[h] = curr;   /* Update Hash Table */
 +
-+        while (nbCompares-- && (matchIndex > windowLow)) {
++        for (; nbCompares && (matchIndex > windowLow); --nbCompares) {
 +            U32* const nextPtr = bt + 2*(matchIndex & btMask);
 +            size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
 +            const BYTE* match;
@@ -24194,6 +24172,7 @@ index 000000000..87cfa353a
 +
 +        *smallerPtr = *largerPtr = 0;
 +
++        assert(nbCompares <= (1U << ZSTD_SEARCHLOG_MAX)); /* Check we haven't underflowed. */
 +        if (dictMode == ZSTD_dictMatchState && nbCompares) {
 +            bestLength = ZSTD_DUBT_findBetterDictMatch(
 +                    ms, ip, iend,
@@ -24497,6 +24476,7 @@ index 000000000..87cfa353a
 +        matchIndex = NEXT_IN_CHAIN(matchIndex, chainMask);
 +    }
 +
++    assert(nbAttempts <= (1U << ZSTD_SEARCHLOG_MAX)); /* Check we haven't underflowed. */
 +    if (dictMode == ZSTD_dedicatedDictSearch) {
 +        const U32 ddsLowestIndex  = dms->window.dictLimit;
 +        const BYTE* const ddsBase = dms->window.base;
@@ -25101,7 +25081,7 @@ index 000000000..87cfa353a
 +                matchLength = ml2, start = ip, offset=offsetFound;
 +        }
 +
-+         if (matchLength < 4) {
++        if (matchLength < 4) {
 +            ip += ((ip-anchor) >> kSearchStrength) + 1;   /* jump faster over incompressible sections */
 +            continue;
 +        }
@@ -26253,10 +26233,10 @@ index 000000000..e5c24d856
 +#endif /* ZSTD_LDM_GEARTAB_H */
 diff --git a/lib/zstd/compress/zstd_opt.c b/lib/zstd/compress/zstd_opt.c
 new file mode 100644
-index 000000000..b955cf559
+index 000000000..70adc7c2c
 --- /dev/null
 +++ b/lib/zstd/compress/zstd_opt.c
-@@ -0,0 +1,1345 @@
+@@ -0,0 +1,1346 @@
 +/*
 + * Copyright (c) Przemyslaw Skibinski, Yann Collet, Facebook, Inc.
 + * All rights reserved.
@@ -26667,7 +26647,7 @@ index 000000000..b955cf559
 +    hashTable[h] = curr;   /* Update Hash Table */
 +
 +    assert(windowLow > 0);
-+    while (nbCompares-- && (matchIndex >= windowLow)) {
++    for (; nbCompares && (matchIndex >= windowLow); --nbCompares) {
 +        U32* const nextPtr = bt + 2*(matchIndex & btMask);
 +        size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
 +        assert(matchIndex < curr);
@@ -26898,7 +26878,7 @@ index 000000000..b955cf559
 +
 +    hashTable[h] = curr;   /* Update Hash Table */
 +
-+    while (nbCompares-- && (matchIndex >= matchLow)) {
++    for (; nbCompares && (matchIndex >= matchLow); --nbCompares) {
 +        U32* const nextPtr = bt + 2*(matchIndex & btMask);
 +        const BYTE* match;
 +        size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
@@ -26951,12 +26931,13 @@ index 000000000..b955cf559
 +
 +    *smallerPtr = *largerPtr = 0;
 +
++    assert(nbCompares <= (1U << ZSTD_SEARCHLOG_MAX)); /* Check we haven't underflowed. */
 +    if (dictMode == ZSTD_dictMatchState && nbCompares) {
 +        size_t const dmsH = ZSTD_hashPtr(ip, dmsHashLog, mls);
 +        U32 dictMatchIndex = dms->hashTable[dmsH];
 +        const U32* const dmsBt = dms->chainTable;
 +        commonLengthSmaller = commonLengthLarger = 0;
-+        while (nbCompares-- && (dictMatchIndex > dmsLowLimit)) {
++        for (; nbCompares && (dictMatchIndex > dmsLowLimit); --nbCompares) {
 +            const U32* const nextPtr = dmsBt + 2*(dictMatchIndex & dmsBtMask);
 +            size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger);   /* guaranteed minimum nb of common bytes */
 +            const BYTE* match = dmsBase + dictMatchIndex;
@@ -30197,7 +30178,7 @@ index 66cd487a3..000000000
 -MODULE_DESCRIPTION("Zstd Decompressor");
 diff --git a/lib/zstd/decompress/huf_decompress.c b/lib/zstd/decompress/huf_decompress.c
 new file mode 100644
-index 000000000..8cb8b3a7d
+index 000000000..04cc617ac
 --- /dev/null
 +++ b/lib/zstd/decompress/huf_decompress.c
 @@ -0,0 +1,1205 @@
@@ -31089,7 +31070,7 @@ index 000000000..8cb8b3a7d
 +            HUF_DECODE_SYMBOLX2_0(op2, &bitD2);
 +            HUF_DECODE_SYMBOLX2_0(op3, &bitD3);
 +            HUF_DECODE_SYMBOLX2_0(op4, &bitD4);
-+            endSignal = (U32)LIKELY(
++            endSignal = (U32)LIKELY((U32)
 +                        (BIT_reloadDStreamFast(&bitD1) == BIT_DStream_unfinished)
 +                      & (BIT_reloadDStreamFast(&bitD2) == BIT_DStream_unfinished)
 +                      & (BIT_reloadDStreamFast(&bitD3) == BIT_DStream_unfinished)
@@ -31705,10 +31686,10 @@ index 000000000..8c1a79d66
 +#endif /* ZSTD_DDICT_H */
 diff --git a/lib/zstd/decompress/zstd_decompress.c b/lib/zstd/decompress/zstd_decompress.c
 new file mode 100644
-index 000000000..7a39dc799
+index 000000000..b4d81d844
 --- /dev/null
 +++ b/lib/zstd/decompress/zstd_decompress.c
-@@ -0,0 +1,2082 @@
+@@ -0,0 +1,2085 @@
 +/*
 + * Copyright (c) Yann Collet, Facebook, Inc.
 + * All rights reserved.
@@ -31882,12 +31863,15 @@ index 000000000..7a39dc799
 +static ZSTD_DDictHashSet* ZSTD_createDDictHashSet(ZSTD_customMem customMem) {
 +    ZSTD_DDictHashSet* ret = (ZSTD_DDictHashSet*)ZSTD_customMalloc(sizeof(ZSTD_DDictHashSet), customMem);
 +    DEBUGLOG(4, "Allocating new hash set");
++    if (!ret)
++        return NULL;
 +    ret->ddictPtrTable = (const ZSTD_DDict**)ZSTD_customCalloc(DDICT_HASHSET_TABLE_BASE_SIZE * sizeof(ZSTD_DDict*), customMem);
-+    ret->ddictPtrTableSize = DDICT_HASHSET_TABLE_BASE_SIZE;
-+    ret->ddictPtrCount = 0;
-+    if (!ret || !ret->ddictPtrTable) {
++    if (!ret->ddictPtrTable) {
++        ZSTD_customFree(ret, customMem);
 +        return NULL;
 +    }
++    ret->ddictPtrTableSize = DDICT_HASHSET_TABLE_BASE_SIZE;
++    ret->ddictPtrCount = 0;
 +    return ret;
 +}
 +
@@ -41445,6 +41429,61 @@ index 55e1b4cba..000000000
 -}
 -
 -#endif /* ZSTD_OPT_H_91842398743 */
+diff --git a/scripts/Makefile.package b/scripts/Makefile.package
+index b74c65284..77b612183 100644
+--- a/scripts/Makefile.package
++++ b/scripts/Makefile.package
+@@ -103,7 +103,7 @@ snap-pkg:
+ 
+ # tarball targets
+ # ---------------------------------------------------------------------------
+-tar-pkgs := dir-pkg tar-pkg targz-pkg tarbz2-pkg tarxz-pkg
++tar-pkgs := dir-pkg tar-pkg targz-pkg tarbz2-pkg tarxz-pkg tarzst-pkg
+ PHONY += $(tar-pkgs)
+ $(tar-pkgs):
+ 	$(MAKE) -f $(srctree)/Makefile
+@@ -130,10 +130,12 @@ $(if $(findstring tar-src,$@),,                                     \
+ $(if $(findstring bz2,$@),$(KBZIP2),                                 \
+ $(if $(findstring gz,$@),$(KGZIP),                                  \
+ $(if $(findstring xz,$@),$(XZ),                                     \
+-$(error unknown target $@))))                                       \
++$(if $(findstring zst,$@),$(ZSTD),                                  \
++$(error unknown target $@)))))                                      \
+ 	-f -9 $(perf-tar).tar)
+ 
+-perf-tar-pkgs := perf-tar-src-pkg perf-targz-src-pkg perf-tarbz2-src-pkg perf-tarxz-src-pkg
++perf-tar-pkgs := perf-tar-src-pkg perf-targz-src-pkg perf-tarbz2-src-pkg \
++		 perf-tarxz-src-pkg perf-tarzst-src-pkg
+ PHONY += $(perf-tar-pkgs)
+ $(perf-tar-pkgs):
+ 	$(call cmd,perf_tar)
+@@ -153,9 +155,11 @@ help:
+ 	@echo '  targz-pkg           - Build the kernel as a gzip compressed tarball'
+ 	@echo '  tarbz2-pkg          - Build the kernel as a bzip2 compressed tarball'
+ 	@echo '  tarxz-pkg           - Build the kernel as a xz compressed tarball'
++	@echo '  tarzst-pkg          - Build the kernel as a zstd compressed tarball'
+ 	@echo '  perf-tar-src-pkg    - Build $(perf-tar).tar source tarball'
+ 	@echo '  perf-targz-src-pkg  - Build $(perf-tar).tar.gz source tarball'
+ 	@echo '  perf-tarbz2-src-pkg - Build $(perf-tar).tar.bz2 source tarball'
+ 	@echo '  perf-tarxz-src-pkg  - Build $(perf-tar).tar.xz source tarball'
++	@echo '  perf-tarzst-src-pkg - Build $(perf-tar).tar.zst source tarball'
+ 
+ .PHONY: $(PHONY)
+diff --git a/scripts/package/buildtar b/scripts/package/buildtar
+index 221aa7df0..cb54c7f1a 100755
+--- a/scripts/package/buildtar
++++ b/scripts/package/buildtar
+@@ -39,6 +39,10 @@ case "${1}" in
+ 		opts="-I ${XZ}"
+ 		tarball=${tarball}.xz
+ 		;;
++	tarzst-pkg)
++		opts="-I ${ZSTD}"
++		tarball=${tarball}.zst
++		;;
+ 	*)
+ 		echo "Unknown tarball target \"${1}\" requested, please add it to ${0}." >&2
+ 		exit 1
 -- 
-2.33.0
+2.31.1
 
