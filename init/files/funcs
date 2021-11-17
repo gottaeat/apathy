@@ -72,12 +72,13 @@ ainit_kill(){
    failprompt
    ainitmes "${cb_red}no proccess found to kill${c_res}."; armprompt
   else
-   if [ -z "${2}" ]
-    then
-     kill -15  ${pidlist} >/dev/null 2>&1; evalret
-    else
-     kill -HUP ${pidlist} >/dev/null 2>&1; evalret
-   fi
+   if [ -z "${2}" ]; then usesig="-TERM"; else usesig="-HUP"; fi
+
+   for i in "${pidlist}"; do
+    ainitmes "killing ${cb_blu}${i}${c_res}."
+     kill "${usesig}" "${i}" >/dev/null 2>&1
+    evalret
+   done
  fi
 }
 
