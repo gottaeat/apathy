@@ -1,12 +1,27 @@
 # 1
+linver="5.15.2"
+
+if [ -z "${MAKEFLAGS}" ];
+ then MAKEFLAGS="-j$(nproc) V=0"
+ else
+  case "${MAKEFLAGS}" in
+   *V=1*) export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1/V=0/g')" ;
+  esac
+fi
+
+clear; echo "${MAKEFLAGS}"
+
+# 2
+tar xf "/mss/work/sauces/linux-${linver}.tar.xz"
+cd     linux-"${linver}"/
+
 pdir="/mss/repo/pkg/recipes/linux/patches"
 patch -p1 < "${pdir}"/0001-fix-__always_inline.patch
 
 make mrproper
-
-# 2
 make headers
 
+# 3
 find usr/include -name '.*' -delete
 
 instdir="${PWD}/KEK"
@@ -17,9 +32,9 @@ rm -v                "${instdir}"/usr/include/Makefile
 cd "${instdir}"
 ldir /tmp/headertree
 cat /tmp/headertree | sed '/\.h$/!d' \
- | sort -su > /mss/repo/pkg/trees/blt/linux-headers-5.12.0.txt
+ | sort -su > /mss/repo/pkg/trees/blt/linux-headers-"${linver}".txt
 cd ..
 
-# 3
+# 4
 clear; doas -- cp -rv "${instdir}"/* / 2>&1 \
          | tee ../header-install.log

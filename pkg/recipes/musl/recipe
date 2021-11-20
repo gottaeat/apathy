@@ -1,4 +1,11 @@
 # 1
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
 tar xf /mss/work/sauces/musl-1.2.2.tar.gz
 cd     musl-1.2.2/
 
