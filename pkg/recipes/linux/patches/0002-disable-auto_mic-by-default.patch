@@ -1,7 +1,7 @@
 From 4c71f647d46d2a03750b1e5643fb0e4e3e97bca0 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Tue, 16 Nov 2021 15:39:44 +0300
-Subject: [PATCH 02/10] disable auto_mic by default.
+Subject: [PATCH 02/08] disable auto_mic by default.
 
 ---
  sound/pci/hda/hda_generic.c | 2 +-

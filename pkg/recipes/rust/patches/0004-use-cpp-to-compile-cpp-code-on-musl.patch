@@ -1,6 +1,6 @@
-From c4917416fb86acb39344c9ecf3e7da64aa4a9625 Mon Sep 17 00:00:00 2001
+From c0d12e1778d4a0d039fcd1673957c792d4779d4f Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 23 Oct 2021 00:31:05 +0300
+Date: Sat, 4 Dec 2021 15:56:41 +0300
 Subject: [PATCH 4/6] use cpp to compile cpp code on musl.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 4/6] use cpp to compile cpp code on musl.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/bootstrap/native.rs b/src/bootstrap/native.rs
-index 8cf43eac4..f416cb211 100644
+index 27c9bb250..a67d1bf21 100644
 --- a/src/bootstrap/native.rs
 +++ b/src/bootstrap/native.rs
-@@ -1051,7 +1051,7 @@ impl Step for Libunwind {
+@@ -1056,7 +1056,7 @@ impl Step for Libunwind {
              cpp_cfg.flag("-std=c++11");
          }
  

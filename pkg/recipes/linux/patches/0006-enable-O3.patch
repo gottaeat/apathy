@@ -1,7 +1,7 @@
 From 1ee54d3bed56e626d98b2ba997717888ac398870 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Tue, 16 Nov 2021 15:42:16 +0300
-Subject: [PATCH 06/10] enable O3.
+Subject: [PATCH 06/08] enable O3.
 
 ---
  init/Kconfig | 1 -

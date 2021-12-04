@@ -1,7 +1,7 @@
 From 20ee1e347dc18de84af43bbb5b049b3b16fd900e Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Tue, 16 Nov 2021 15:43:46 +0300
-Subject: [PATCH 08/10] add zstd improvements from xanmod.
+Subject: [PATCH 07/08] add zstd improvements from xanmod.
 
 ---
  crypto/zstd.c                                 |   28 +-

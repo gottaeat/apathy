@@ -1,6 +1,6 @@
-From 95ba2ec9ca3b34986019740fcf21bd6f7c627327 Mon Sep 17 00:00:00 2001
+From bdb63a9b7dc811af7f5cecb8e01ad7316f610a7d Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 23 Oct 2021 00:30:37 +0300
+Date: Sat, 4 Dec 2021 15:55:37 +0300
 Subject: [PATCH 2/6] libunwind adjustments.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 2/6] libunwind adjustments.
  1 file changed, 2 insertions(+), 16 deletions(-)
 
 diff --git a/library/unwind/src/lib.rs b/library/unwind/src/lib.rs
-index 06384b159..5109ff05b 100644
+index e263780bf..c68b2cf2a 100644
 --- a/library/unwind/src/lib.rs
 +++ b/library/unwind/src/lib.rs
-@@ -40,22 +40,8 @@ cfg_if::cfg_if! {
+@@ -41,22 +41,8 @@ cfg_if::cfg_if! {
  }
  
  #[cfg(target_env = "musl")]

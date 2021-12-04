@@ -1,7 +1,7 @@
 From 95d75766f9341dfe6abf4d030e67a0a41caa04fb Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Tue, 16 Nov 2021 15:40:44 +0300
-Subject: [PATCH 03/10] bring back fbcon scrollback.
+Subject: [PATCH 03/08] bring back fbcon scrollback.
 
 ---
  drivers/video/fbdev/core/bitblit.c   |  11 +-

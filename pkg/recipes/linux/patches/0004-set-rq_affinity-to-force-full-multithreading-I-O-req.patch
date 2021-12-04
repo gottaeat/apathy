@@ -1,7 +1,7 @@
 From d73e82e15eadaed69d15e632a7c3d47fcfca3b85 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Tue, 16 Nov 2021 15:41:17 +0300
-Subject: [PATCH 04/10] set rq_affinity to force full multithreading I/O
+Subject: [PATCH 04/08] set rq_affinity to force full multithreading I/O
  requests.
 
 ---
