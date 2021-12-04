@@ -272,7 +272,7 @@ svc_network(){
         ip link set "${iface}" down
        evalret
       else
-       ainitsvc "network" "${iface} does not have an ip assinged"; failprompt; exit 1   
+       ainitsvc "network" "${iface} does not have an ip assinged"; failprompt
      fi
 
      dhcpid="$(pidof udhcpc 2>/dev/null)"
