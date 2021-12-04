@@ -40,8 +40,8 @@ i  g  1  .      vim                  8.2.2549
 i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  g  1  .      eudev                3.2.9
-i  l  2  .      linux                5.15.3
-i  l  1  .      init                 3
+i  l  1  .      linux                5.15.6
+i  l  1  .      init                 4
 i  l  1  ..     utils                2
 i  g  1  .      opendoas             6.8.1
 i  g  1  .      iptables             1.8.7
@@ -182,7 +182,7 @@ i  l  3  .      openmp               13.0.0
 i  l  1  .      firefox              91.3.0esr
 i  l  1  ..     node.js              16.9.1
 i  l  1  ..     cbindgen             0.20.0
-i  l  1  ...    rust                 1.56.1
+i  l  1  ...    rust                 1.57.0
 i  l  1  ..     gtk3                 3.24.30
 i  g  1  .      zstd                 1.5.0
 i  l  2  .      transmission         3.0
