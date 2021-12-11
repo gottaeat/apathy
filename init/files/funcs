@@ -75,7 +75,7 @@ ainit_kill(){
    if [ -z "${2}" ]; then usesig="-TERM"; else usesig="-HUP"; fi
 
    for i in "${pidlist}"; do
-    ainitmes "killing ${cb_blu}${i}${c_res}."
+    printf " ${cb_blu}${i}${c_res}"
      kill "${usesig}" "${i}" >/dev/null 2>&1
     evalret
    done
