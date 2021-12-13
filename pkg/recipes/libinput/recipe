@@ -41,8 +41,8 @@ cd ..
 rm -rf libevdev-1.11.0/
 
 # 4
-tar xf /mss/work/sauces/libinput-1.19.0.tar.xz
-cd     libinput-1.19.0/
+tar xf /mss/work/sauces/libinput-1.19.3.tar.gz
+cd     libinput-1.19.3/
 
 mkdir build
 cd    build
@@ -53,7 +53,6 @@ meson --buildtype=plain   \
  -Dlibwacom=false         \
  -Ddebug-gui=false        \
  -Dtests=false            \
- -Dinstalled-tests=false  \
  -Ddocumentation=false    \
  -Dcoverity=false         \
  -Dzshcompletiondir=no    \

@@ -3,9 +3,13 @@ penis="/mss/work/table/KEK"
 ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
 export          CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
 export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
-export            PATH="${PATH}:${penis}/bin"
+export            PATH="${penis}/bin:${PATH}"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+tar xf /mss/work/sauces/busybox-1.31.0-full.tar.zst
+mkdir                  "${penis}"/bin
+mv    ./busybox-x86_64 "${penis}"/bin/grep
 
 # 2 > system libpng
 tar xf /mss/work/sauces/libpng-1.6.37.tar.xz
@@ -28,8 +32,8 @@ doas -- make install
 cd ../; rm -rf libpng-1.6.37/
 
 # 3 > system pcre
-tar xf /mss/work/sauces/pcre-8.44.tar.gz
-cd     pcre-8.44/
+tar xf /mss/work/sauces/pcre-8.45.tar.gz
+cd     pcre-8.45/
 
 ./configure \
  --build=$CBUILD  \
@@ -44,11 +48,11 @@ make
 make DESTDIR=/mss/work/XorgLIBS2 install
 doas -- make install
 
-cd ../; rm -rf pcre-8.44/
+cd ../; rm -rf pcre-8.45/
 
 # 4 > system glib
-tar xf /mss/work/sauces/glib-2.68.3.tar.xz
-cd     glib-2.68.3/
+tar xf /mss/work/sauces/glib-2.70.2.tar.xz
+cd     glib-2.70.2/
 
 find . -type f -name meson.build -exec \
  sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
@@ -61,7 +65,6 @@ meson --buildtype=plain \
  -Dfam=false             \
  -Dgtk_doc=false         \
  -Dinstalled_tests=false \
- -Dinternal_pcre=false   \
  -Dlibmount=enabled      \
  -Dman=false             \
  -Dnls=disabled          \
@@ -73,11 +76,11 @@ samu
 DESTDIR=/mss/work/XorgLIBS2 samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.68.3/
+cd ../../; rm -rf glib-2.70.2/
 
 # 5 > penis freetype (w/o harfbuzz)
-tar xf /mss/work/sauces/freetype-2.10.4.tar.xz
-cd     freetype-2.10.4/
+tar xf /mss/work/sauces/freetype-2.11.1.tar.xz
+cd     freetype-2.11.1/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -91,11 +94,11 @@ patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
 make
 make install
-cd ../; rm -rf freetype-2.10.4/
+cd ../; rm -rf freetype-2.11.1/
 
 # 6 > penis harfbuzz
-tar xf /mss/work/sauces/harfbuzz-2.8.1.tar.gz
-cd     harfbuzz-2.8.1/
+tar xf /mss/work/sauces/harfbuzz-3.2.0.tar.xz
+cd     harfbuzz-3.2.0/
 
 mkdir build
 cd    build
@@ -103,7 +106,6 @@ cd    build
 meson --buildtype=plain \
  --prefix="${penis}"      \
  -Dcairo=disabled         \
- -Dfontconfig=disabled    \
  -Dglib=enabled           \
  -Dgobject=disabled       \
  -Dicu=disabled           \
@@ -120,11 +122,11 @@ meson --buildtype=plain \
 samu
 samu install
 
-cd ../../; rm -rf harfbuzz-2.8.1/
+cd ../../; rm -rf harfbuzz-3.2.0/
 
 # 7 > system freetype (w/ harfbuzz)
-tar xf /mss/work/sauces/freetype-2.10.4.tar.xz
-cd     freetype-2.10.4/
+tar xf /mss/work/sauces/freetype-2.11.1.tar.xz
+cd     freetype-2.11.1/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -140,7 +142,7 @@ make
 make DESTDIR=/mss/work/XorgLIBS2 install
 doas -- make install
 
-cd ../ && rm -rf freetype-2.10.4/
+cd ../ && rm -rf freetype-2.11.1/
 
 # 8 > system fontconfig
 tar xf /mss/work/sauces/fontconfig-2.13.94.tar.xz
@@ -229,8 +231,8 @@ doas -- make install
 cd ../; rm -rf cairo-1.16.0/
 
 # 11 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-2.8.1.tar.gz
-cd     harfbuzz-2.8.1/
+tar xf /mss/work/sauces/harfbuzz-3.2.0.tar.xz
+cd     harfbuzz-3.2.0/
 
 mkdir build
 cd    build
@@ -238,7 +240,6 @@ cd    build
 meson --buildtype=plain \
  --prefix="/usr"          \
  -Dcairo=enabled          \
- -Dfontconfig=enabled     \
  -Dglib=enabled           \
  -Dgobject=disabled       \
  -Dicu=disabled           \
@@ -256,7 +257,7 @@ samu
 DESTDIR=/mss/work/XorgLIBS2 samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-2.8.1/
+cd ../../; rm -rf harfbuzz-3.2.0/
 
 # 12 > cleanup
 doas -- rm -rfv \

@@ -1,32 +1,29 @@
 # 1 > alsa-libs
-tar xf /mss/work/sauces/alsa-lib-1.2.5.1.tar.bz2
-cd     alsa-lib-1.2.5.1/
-
-sed -i '/<dirent.h>/a #include <limits.h>' src/ucm/ucm_exec.c
+tar xf /mss/work/sauces/alsa-lib-1.2.6.1.tar.bz2
+cd     alsa-lib-1.2.6.1/
 
 ./configure \
- --build=$CBUILD  \
- --host=$CHOST    \
- --prefix=/usr    \
- --enable-rawmidi \
- --enable-seq     \
- --without-debug  \
- --disable-aload  \
- --disable-python \
- --disable-static \
- --disable-resmgr
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix=/usr       \
+ --enable-rawmidi    \
+ --enable-seq        \
+ --without-debug     \
+ --without-versioned \
+ --disable-aload     \
+ --disable-python    \
+ --disable-resmgr    \
+ --disable-static
 
 make V=0
 
 make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-lib-1.2.5.1/
+cd ../; rm -rf alsa-lib-1.2.6.1/
 
 # 2 > alsa-utils
-tar xf /mss/work/sauces/alsa-utils-1.2.5.1.tar.bz2
-cd     alsa-utils-1.2.5.1/
-
-sed -i '/<syslog.h>/a #include <limits.h>' alsactl/utils.c
+tar xf /mss/work/sauces/alsa-utils-1.2.6.tar.bz2
+cd     alsa-utils-1.2.6/
 
 ./configure \
  --build=$CBUILD    \
@@ -34,14 +31,16 @@ sed -i '/<syslog.h>/a #include <limits.h>' alsactl/utils.c
  --prefix=/usr      \
  --disable-alsaconf \
  --disable-bat      \
- --disable-xmlto    \
+ --disable-nls      \
  --disable-rst2man  \
- --disable-nls
+ --disable-xmlto
 
 make V=0
 
 make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-utils-1.2.5.1/
+cd ../; rm -rf alsa-utils-1.2.6/
 
-doas -- rm -rf /usr/share/man
+doas -- rm -rfv \
+ /usr/share/man \
+ /usr/sbin/alsa-info.sh

@@ -1,20 +1,14 @@
 # 1
-fdir="/mss/repo/pkg/recipes/libelf/files"
-cp -vf "${fdir}"/error.h ./lib/
+pdir="/mss/repo/pkg/recipes/libelf/patches"
+patch -p1 < "${pdir}"/0001-musl-fix.patch
 
-sed -i \
- -e 's/as_fn_error.*argp/: "/g'    \
- -e 's/as_fn_error.*fts/: "/g'     \
- -e 's/as_fn_error.*obstack/: "/g' \
-  configure
-
-sed -i 's/color.*printversion../#/g' lib/Makefile.in
-
+ac_cv_c99=yes \
 ./configure \
  --build=$CBUILD             \
  --host=$CHOST               \
  --prefix=/usr               \
  --disable-symbol-versioning \
+ --disable-libdebuginfod     \
  --disable-debuginfod        \
  --disable-nls
 
@@ -26,7 +20,9 @@ instdir="${PWD}/KEK"
 make -C libelf DESTDIR="${instdir}" install
 mkdir -pv                  "${instdir}"/usr/lib/pkgconfig
 cp    -vf config/libelf.pc "${instdir}"/usr/lib/pkgconfig/libelf.pc
+rm   -rfv                  "${instdir}"/usr/lib/libelf.a
 
 doas -s
 make -C libelf install
 cp  -vf config/libelf.pc /usr/lib/pkgconfig/libelf.pc
+rm -rfv /usr/lib/libelf.a
