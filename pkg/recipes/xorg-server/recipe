@@ -64,10 +64,8 @@ samu install
 cd ../../; rm -rf libxcvt-0.1.1/
 
 # 5 > xorg-server
-tar xf /mss/work/sauces/xorg-server-21.1.1.tar.xz
-cd     xorg-server-21.1.1/
-
-patch -p1 < "${pdir}"/0002-xorg-server-revert-dpi-calculation.patch
+tar xf /mss/work/sauces/xorg-server-21.1.2.tar.xz
+cd     xorg-server-21.1.2/
 
 ./configure \
  --build=$CBUILD                                      \
