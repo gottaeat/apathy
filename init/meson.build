@@ -1,5 +1,5 @@
 project('init', 'c',
- version: '7',
+ version: '8',
  license: 'MIT',
  default_options: [
   'buildtype=plain',

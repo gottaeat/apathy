@@ -62,6 +62,23 @@ initboi(){
   echo "bbr" > /proc/sys/net/ipv4/tcp_congestion_control
  evalret
 
+ ainitmes "setting up procfs/${cb_cyn}net.ipv4${c_res}."
+  echo "1"   > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts      &&
+  echo "0"   > /proc/sys/net/ipv4/conf/all/accept_source_route     &&
+  echo "0"   > /proc/sys/net/ipv4/conf/default/accept_source_route &&
+  echo "1"   > /proc/sys/net/ipv4/tcp_syncookies                   &&
+  echo "0"   > /proc/sys/net/ipv4/conf/default/accept_redirects    &&
+  echo "0"   > /proc/sys/net/ipv4/conf/all/send_redirects          &&
+  echo "0"   > /proc/sys/net/ipv4/conf/default/send_redirects      &&
+  echo "1"   > /proc/sys/net/ipv4/conf/all/rp_filter               &&
+  echo "1"   > /proc/sys/net/ipv4/conf/default/rp_filter           &&
+  echo "1"   > /proc/sys/net/ipv4/conf/all/log_martians            &&
+  echo "1"   > /proc/sys/net/ipv4/conf/default/log_martians        &&
+  echo "2"   > /proc/sys/net/ipv4/ip_dynaddr                       &&
+  echo "0"   > /proc/sys/net/ipv4/tcp_ecn                          &&
+  echo "1"   > /proc/sys/net/ipv4/ip_forward
+ evalret
+
  ainitmes "setting the ${cb_cyn}hostname${c_res}."
   cat /etc/hostname > /proc/sys/kernel/hostname
  evalret
