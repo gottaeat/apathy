@@ -1,65 +1,69 @@
 #!/mss/bin/sh
+ # 1 > procfs (from ``linux 2.4 packet filtering howto'')
+ # 1.1 > firewallery
+ echo "1"   > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts      # e: broadcast echo protection
+ echo "0"   > /proc/sys/net/ipv4/conf/all/accept_source_route     # d: source routed packets
+ echo "0"   > /proc/sys/net/ipv4/conf/default/accept_source_route # ^^^^^^^^^^^^^^^^^^^^^^^^
+ echo "1"   > /proc/sys/net/ipv4/tcp_syncookies                   # e: tcp syn cookie protection
+ echo "0"   > /proc/sys/net/ipv4/conf/default/accept_redirects    # d: icmp redirect acceptance
+ echo "0"   > /proc/sys/net/ipv4/conf/all/send_redirects          # don't send redirect messages
+ echo "0"   > /proc/sys/net/ipv4/conf/default/send_redirects      # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ echo "1"   > /proc/sys/net/ipv4/conf/all/rp_filter               # drop spoofed packages
+ echo "1"   > /proc/sys/net/ipv4/conf/default/rp_filter           # ^^^^^^^^^^^^^^^^^^^^^
+ echo "1"   > /proc/sys/net/ipv4/conf/all/log_martians            # log packets with impossible addresses
+ echo "1"   > /proc/sys/net/ipv4/conf/default/log_martians        # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ echo "2"   > /proc/sys/net/ipv4/ip_dynaddr                       # be verbose on dynamic ip's
+ echo "0"   > /proc/sys/net/ipv4/tcp_ecn                          # d: explicit congestion notification
+ echo "1"   > /proc/sys/net/ipv4/ip_forward                       # for the ssh tunnel.
 
- # from linux 2.4 packet filtering howto
- echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts	# e: broadcast echo protection
- echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route	# d: source routed packets
- echo 0 > /proc/sys/net/ipv4/conf/default/accept_source_route	# ^^^^^^^^^^^^^^^^^^^^^^^^
- echo 1 > /proc/sys/net/ipv4/tcp_syncookies			# e: tcp syn cookie protection
- echo 0 > /proc/sys/net/ipv4/conf/default/accept_redirects	# d: icmp redirect acceptance
- echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects		# don't send redirect messages
- echo 0 > /proc/sys/net/ipv4/conf/default/send_redirects	# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter			# drop spoofed packages
- echo 1 > /proc/sys/net/ipv4/conf/default/rp_filter		# ^^^^^^^^^^^^^^^^^^^^^
- echo 1 > /proc/sys/net/ipv4/conf/all/log_martians		# log packets with impossible addresses
- echo 1 > /proc/sys/net/ipv4/conf/default/log_martians		# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- echo 2 > /proc/sys/net/ipv4/ip_dynaddr				# be verbose on dynamic ip's
- echo 0 > /proc/sys/net/ipv4/tcp_ecn				# d: explicit congestion notification
- echo 1 > /proc/sys/net/ipv4/ip_forward				# for the ssh tunnel.
-
- # set a known state
+ # 2 > iptables
+ # 2.1 > set a known state
  iptables -P INPUT   DROP
  iptables -P FORWARD DROP
  iptables -P OUTPUT  DROP
  
- # remove all existing user defined rules before implementing new ones
+ # 2.2 > remove all existing user defined rules before implementing new ones
  iptables -F
  iptables -X
  iptables -Z
  iptables -t nat -F
  
- # permit answers on already established connections and permit new connections related to established ones
- iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-
- iptables -A INPUT -i lo -j ACCEPT					# allow all loopback traffic
- iptables -A INPUT ! -i lo -d 127.0.0.0/8 -j REJECT			# block all 127/8 that doesn't use lo0
+ # 2.3 > nukery
+ iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # permit answers on already established
+                                                                        # connections and permit new connections
+                                                                        # related to established ones
+ iptables -A INPUT -i lo -j ACCEPT                                      # allow all loopback traffic
+ iptables -A INPUT ! -i lo -d 127.0.0.0/8 -j REJECT                     # block all 127/8 that doesn't use lo0
+ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT       # allow all established inbound connections
+ iptables -A OUTPUT -j ACCEPT                                           # allow all outbound traffic
  
- iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT	# allow all established inbound connections
- iptables -A OUTPUT -j ACCEPT						# allow all outbound traffic
- 
- # allowed protocol/ports
- iptables -A INPUT -p tcp --dport 80   -j ACCEPT			# http
- iptables -A INPUT -p tcp --dport 443  -j ACCEPT			# https
- iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT		# ping
+ # 2.4 > allowed ports
+ iptables -A INPUT -p tcp --dport 80   -j ACCEPT                        # http
+ iptables -A INPUT -p tcp --dport 443  -j ACCEPT                        # https
+ iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT              # ping
 
- iptables -A INPUT -p tcp -m state --state NEW --dport 3131 -j ACCEPT	# ssh
+ iptables -A INPUT -p tcp -m state --state NEW --dport 3131 -j ACCEPT   # ssh
 
- iptables -A INPUT -p tcp --dport 8000 -j ACCEPT			# httpd port for mpd
- iptables -A INPUT -p tcp --dport 8080 -j ACCEPT			# httpd port for ympd
- iptables -A INPUT -p tcp --dport 9091 -j ACCEPT			# httpd port for transmission-daemon
+ iptables -A INPUT -p tcp --dport 8000   -j ACCEPT                      # httpd port for mpd
+ iptables -A INPUT -p tcp --dport 8080   -j ACCEPT                      # httpd port for ympd
+ iptables -A INPUT -p tcp --dport 9091   -j ACCEPT                      # httpd port for transmission-daemon
 
- iptables -A INPUT -p tcp --dport 111    -j ACCEPT			# rpcbind
- iptables -A INPUT -p tcp --dport 2049   -j ACCEPT			# rpc.nfsd   -p
- iptables -A INPUT -p tcp --dport 31310  -j ACCEPT			# rpc.statd  -p
- iptables -A INPUT -p tcp --dport 31311  -j ACCEPT			# rpc.statd  -o
- iptables -A INPUT -p tcp --dport 31312  -j ACCEPT			# rpc.mountd -p
+ iptables -A INPUT -p tcp --dport 111    -j ACCEPT                      # rpcbind
+ iptables -A INPUT -p tcp --dport 2049   -j ACCEPT                      # rpc.nfsd   -p
+ iptables -A INPUT -p tcp --dport 31310  -j ACCEPT                      # rpc.statd  -p
+ iptables -A INPUT -p tcp --dport 31311  -j ACCEPT                      # rpc.statd  -o
+ iptables -A INPUT -p tcp --dport 31312  -j ACCEPT                      # rpc.mountd -p
 
- # zapret
+ iptables -A INPUT -p udp --dport 31313  -j ACCEPT                      # ioquake3
+ iptables -A INPUT -p udp --dport 31314  -j ACCEPT                      # cs1.6
+
+ # 2.5 > zapret: route ports 80 and 443 through `zapret` for passing through retard dpi
  iptables -t mangle -I POSTROUTING                                               \
   -p tcp -m multiport --dports 80,443                                            \
   -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:4 \
   -m mark ! --mark 0x40000000/0x40000000                                         \
   -j NFQUEUE --queue-num 200 --queue-bypass
 
- # deny unless explicitly allowed
- iptables -A INPUT -j REJECT
+ # 2.6 > deny unless explicitly allowed above
+ iptables -A INPUT   -j REJECT
  iptables -A FORWARD -j REJECT

@@ -57,6 +57,11 @@ initboi(){
   ip link set up dev lo
  evalret
 
+ ainitmes "enabling ${cb_cyn}bbr${c_res}."
+  echo "fq"  > /proc/sys/net/core/default_qdisc &&
+  echo "bbr" > /proc/sys/net/ipv4/tcp_congestion_control
+ evalret
+
  ainitmes "setting the ${cb_cyn}hostname${c_res}."
   cat /etc/hostname > /proc/sys/kernel/hostname
  evalret
