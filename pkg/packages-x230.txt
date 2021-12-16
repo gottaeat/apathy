@@ -114,7 +114,7 @@ i  g  1  .      xbitmaps             1.1.2
 i  g  1  .      xsetroot             1.1.2
 i  g  1  .      xkbcomp              1.4.5
 i  g  1  .      xkeyboard-config     2.33
-i  l  1  .      xorg-server          1.20.13
+i  l  1  .      xorg-server          21.1.1
 i  l  1  ..     libepoxy             1.5.8
 i  l  2  .      xf86-input-libinput  1.2.0
 i  l  1  ..     libinput             1.19.3
