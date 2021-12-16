@@ -32,3 +32,7 @@ chown -Rh root:root /mss
 for i in /mss /mss/files/ /mss/files/packages.txt; do
  chown mss:mss "${i}"
 done
+
+# 4 > remove build artifacts
+cdr
+cat .gitignore | xargs rm -rfv
