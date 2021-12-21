@@ -8,7 +8,8 @@ case "${amachine}" in
    # keyboard
    button/fnf1)          xorgexec setrotate                       ;;
    button/screenlock)    xorgexec xtrlock                         ;;
-   button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
+   button/sleep)         xorgexec xtrlock &
+                         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
    video/switchmode)     xorgexec setmon                          ;;
    video/brightnessdown) : ;;
@@ -73,7 +74,8 @@ case "${amachine}" in
    button/fnf1)          : ;;
    button/screenlock)    xorgexec xtrlock                         ;;
    button/battery)       : ;;
-   button/sleep)         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
+   button/sleep)         xorgexec xtrlock &
+                         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
    button/wlan)          : ;;
    video/switchmode)     xorgexec setmon                          ;;
    button/fnf9)          : ;;
