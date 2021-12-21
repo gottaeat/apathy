@@ -18,7 +18,8 @@
 make
 
 # 2
-doas -- make install
-doas -- cp -rv \
+doas -s
+make install
+cp -rv \
  /mss/repo/dir/etc/udev/rules.d/* \
  /etc/udev/rules.d/

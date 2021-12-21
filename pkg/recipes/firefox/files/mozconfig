@@ -5,8 +5,8 @@ mk_add_options MOZ_MAKE_FLAGS="-jJOBCOUNTREPLACE"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix="/opt/firefox-91.4.0esr"
-ac_add_options --libdir="/opt/firefox-91.4.0esr/lib"
+ac_add_options --prefix="/opt/firefox-91.4.1esr"
+ac_add_options --libdir="/opt/firefox-91.4.1esr/lib"
 ac_add_options --with-libclang-path="/opt/llvm-13.0.0/lib"
 ac_add_options --with-clang-path="/opt/llvm-13.0.0/bin/clang"
 
