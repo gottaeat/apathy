@@ -1,0 +1,2 @@
+/bin/yash
+/usr/share/yash
