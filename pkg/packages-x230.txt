@@ -39,14 +39,14 @@ i  g  1  .      tar                  1.33
 i  g  1  .      vim                  8.2.2549
 i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
-i  g  1  .      eudev                3.2.9
-i  l  1  .      linux                5.15.7
-i  l  1  .      init                 8
+i  l  1  .      eudev                3.2.11
+i  l  1  .      linux                5.15.10
+i  l  1  .      init                 9
 i  l  1  ..     utils                2
 i  g  1  .      opendoas             6.8.1
 i  g  1  .      iptables             1.8.7
 i  l  1  .      curl                 7.79.1
-i  l  1  .      git                  2.33.1
+i  l  1  .      git                  2.34.1
 i  l  1  .      openssh              8.8p1
 i  l  1  .      libssh2              1.9.0
 i  l  1  .      cmake                3.20.0
@@ -98,7 +98,7 @@ i  g  1  .      libXxf86vm           1.1.4
 i  g  1  .      libpciaccess         0.16
 i  g  1  .      libxkbfile           1.1.0
 i  g  1  .      libxshmfence         1.3
-i  l  1  .      mesa                 21.3.1
+i  l  1  .      mesa                 21.3.2
 i  l  1  ..     libdrm               2.4.109
 i  g  1  .      setxkbmap            1.3.2
 i  g  1  .      xauth                1.1
@@ -179,7 +179,7 @@ i  l  3  .      libunwind            13.0.0
 i  l  3  .      lld                  13.0.0
 i  l  3  .      llvm                 13.0.0
 i  l  3  .      openmp               13.0.0
-i  l  1  .      firefox              91.4.0esr
+i  l  1  .      firefox              91.4.1esr
 i  l  1  ..     node.js              16.9.1
 i  l  1  ..     cbindgen             0.20.0
 i  l  1  ...    rust                 1.57.0
