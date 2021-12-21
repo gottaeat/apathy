@@ -12,3 +12,15 @@
  --enable-socket   \
  --enable-test     \
  --enable-ulimit
+
+make
+
+# 2
+doas -s
+for i in yash; do
+ strip --strip-all "${i}"
+ chown root:root   "${i}"
+ mv "${i}" /bin/
+done
+
+cp -rfv /mss/repo/dir/usr/share/yash/ /usr/share/
