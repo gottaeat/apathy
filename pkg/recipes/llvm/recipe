@@ -10,8 +10,8 @@ export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-13.0.0.tar.gz
-cd     llvm-project-llvmorg-13.0.0/
+tar xf /mss/work/sauces/llvmorg-13.0.1-rc1.tar.gz
+cd     llvm-project-llvmorg-13.0.1-rc1/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
 patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
@@ -29,7 +29,7 @@ cd    build
 
 myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp"
 cmake -Wno-dev -GNinja\
- -DCMAKE_INSTALL_PREFIX="/opt/llvm-13.0.0"           \
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm-13.0.1"           \
  -DCMAKE_C_FLAGS="$CFLAGS"                           \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                       \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                 \
@@ -281,23 +281,23 @@ DESTDIR="${instdir}" samu install
 find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
  -exec rm -rfv {} ';'
 
-rm -rfv "${instdir}"/opt/llvm-13.0.0/share
+rm -rfv "${instdir}"/opt/llvm-13.0.1/share
 
-find "${instdir}"/opt/llvm-13.0.0/bin \
+find "${instdir}"/opt/llvm-13.0.1/bin \
  -type f              -exec strip --strip-all      {} ';'
 
-find "${instdir}"/opt/llvm-13.0.0/lib \
+find "${instdir}"/opt/llvm-13.0.1/lib \
  -type f -name \*.a   -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/llvm-13.0.0/lib \
+find "${instdir}"/opt/llvm-13.0.1/lib \
  -type f -name \*.a   -exec "${RANLIB}" {} ';'
 
-find "${instdir}"/opt/llvm-13.0.0/lib \
+find "${instdir}"/opt/llvm-13.0.1/lib \
  -type f -name \*.so* -exec strip --strip-unneeded {} ';'
 
 # 4
-mkdir "${instdir}"/opt/llvm-13.0.0/compat
-pushd "${instdir}"/opt/llvm-13.0.0/compat
+mkdir "${instdir}"/opt/llvm-13.0.1/compat
+pushd "${instdir}"/opt/llvm-13.0.1/compat
 
 ln -sfv ../bin/llvm-symbolizer addr2line
 ln -sfv ../bin/llvm-ar         ar
