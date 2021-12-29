@@ -2,15 +2,15 @@
 # 1.1 > set before export
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"
 mypath="$mypath:/mss/bin:/home/mss/execs"
-mypath="$mypath:/opt/llvm-13.0.0/bin"
-mypath="$mypath:/opt/llvm-13.0.0/compat"
+mypath="$mypath:/opt/llvm-13.0.1/bin"
+mypath="$mypath:/opt/llvm-13.0.1/compat"
 mypath="$mypath:/opt/rustc-1.57.0/bin"
 mypath="$mypath:/opt/cbindgen-0.20.0/bin"
 mypath="$mypath:/opt/node.js-16.9.1/bin"
 mypath="$mypath:/opt/firefox-91.4.1esr/bin"
 mypath="$mypath:/opt/wlanshit/bin"
 
-mylibpath="/opt/llvm-13.0.0/lib"
+mylibpath="/opt/llvm-13.0.1/lib"
 mylibpath="$mylibpath:/opt/rustc-1.57.0/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
