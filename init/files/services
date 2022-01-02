@@ -277,8 +277,11 @@ svc_network(){
 
      dhcpid="$(pidof udhcpc 2>/dev/null)"
      if [ ! -z "${dhcpid}" ]; then
-      ainitsvc "network" "killing udhcpc"
-      kill -USR2 "${dhcpid}" && sleep 1 && ainit_kill udhcpc
+      for i in "${dhcpid}"; do
+       ainitsvc "network" "killing udhcpc"
+        kill -USR2 "${i}" && sleep 1 && kill -TERM "${i}"
+       evalret
+      done
      fi
 
      killwpasup
