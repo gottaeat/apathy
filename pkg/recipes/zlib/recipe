@@ -12,4 +12,6 @@ make
 # 2
 doas -s
 make install
-rm -rf /usr/lib/libz.a
+rm -rfv \
+ /usr/lib/libz.a \
+ /usr/share/man

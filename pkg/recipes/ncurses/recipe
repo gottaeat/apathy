@@ -24,12 +24,17 @@ for lib in ncurses form panel menu; do
  rm -rfv                            "${instdir}/usr/lib/lib${lib}.so"
  printf '%s\n' "INPUT(-l${lib}w)" > "${instdir}/usr/lib/lib${lib}.so"
  chmod         755                  "${instdir}/usr/lib/lib${lib}.so"
- ln -sfv       "lib${lib}w.a"       "${instdir}/usr/lib/lib${lib}.a"
 done
 
 printf '%s\n' "INPUT(-lncursesw)" > "${instdir}/usr/lib/libcursesw.so"
 ln -sfv libncurses.so               "${instdir}/usr/lib/libcurses.so"
 ln -sfv ncursesw.pc                 "${instdir}/usr/lib/pkgconfig/ncurses.pc"
+
+rm -rfv \
+ "${instdir}/usr/lib/libmenuw.a"    \
+ "${instdir}/usr/lib/libformw.a"    \
+ "${instdir}/usr/lib/libncursesw.a" \
+ "${instdir}/usr/lib/libpanelw.a"
 
 # 3
 doas -s
@@ -38,9 +43,14 @@ for lib in ncurses form panel menu; do
  rm -rfv                            "/usr/lib/lib${lib}.so"
  printf '%s\n' "INPUT(-l${lib}w)" > "/usr/lib/lib${lib}.so"
  chmod         755                  "/usr/lib/lib${lib}.so"
- ln -sfv       "lib${lib}w.a"       "/usr/lib/lib${lib}.a"
 done
 
 printf '%s\n' "INPUT(-lncursesw)" > "/usr/lib/libcursesw.so"
 ln -sfv libncurses.so               "/usr/lib/libcurses.so"
 ln -sfv ncursesw.pc                 "/usr/lib/pkgconfig/ncurses.pc"
+
+rm -rfv \
+ "/usr/lib/libmenuw.a"    \
+ "/usr/lib/libformw.a"    \
+ "/usr/lib/libncursesw.a" \
+ "/usr/lib/libpanelw.a"

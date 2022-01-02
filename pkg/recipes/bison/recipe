@@ -1,4 +1,7 @@
 # 1
+export   CFLAGS="${CFLAGS}   -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+
 ./configure \
  --build=$CBUILD \
  --host=$CHOST   \
