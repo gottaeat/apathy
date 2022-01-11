@@ -179,7 +179,7 @@ i  l  3  .      libunwind            13.0.1-rc1
 i  l  3  .      lld                  13.0.1-rc1
 i  l  3  .      llvm                 13.0.1-rc1
 i  l  3  .      openmp               13.0.1-rc1
-i  l  1  .      firefox              91.4.1esr
+i  l  1  .      firefox              91.5.0esr
 i  l  1  ..     node.js              16.9.1
 i  l  1  ..     cbindgen             0.20.0
 i  l  1  ...    rust                 1.57.0

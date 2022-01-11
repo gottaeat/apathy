@@ -7,7 +7,7 @@ mypath="$mypath:/opt/llvm-13.0.1/compat"
 mypath="$mypath:/opt/rustc-1.57.0/bin"
 mypath="$mypath:/opt/cbindgen-0.20.0/bin"
 mypath="$mypath:/opt/node.js-16.9.1/bin"
-mypath="$mypath:/opt/firefox-91.4.1esr/bin"
+mypath="$mypath:/opt/firefox-91.5.0esr/bin"
 mypath="$mypath:/opt/wlanshit/bin"
 
 mylibpath="/opt/llvm-13.0.1/lib"
