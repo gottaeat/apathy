@@ -1,7 +1,7 @@
-From eede86bc306f632d085374e42cd31932944e9367 Mon Sep 17 00:00:00 2001
+From 858fedbe9bf9c204374f74ee480ea6c30a6c42b2 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Tue, 16 Nov 2021 15:41:39 +0300
-Subject: [PATCH 05/08] add support for more uarches.
+Date: Tue, 11 Jan 2022 18:00:19 +0300
+Subject: [PATCH 3/5] add support for more uarches.
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--
@@ -10,7 +10,7 @@ Subject: [PATCH 05/08] add support for more uarches.
  3 files changed, 424 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index 814fe0d34..61f0d7757 100644
+index eefc43435..331f76313 100644
 --- a/arch/x86/Kconfig.cpu
 +++ b/arch/x86/Kconfig.cpu
 @@ -157,7 +157,7 @@ config MPENTIUM4
@@ -439,7 +439,7 @@ index 814fe0d34..61f0d7757 100644
  	default "4"
  
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 7488cfbbd..01876b6fb 100644
+index 422438692..8e643985d 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
 @@ -119,8 +119,44 @@ else
@@ -574,5 +574,5 @@ index 75884d2cd..4e6a08d4c 100644
  #define MODULE_PROC_FAMILY "ELAN "
  #elif defined CONFIG_MCRUSOE
 -- 
-2.31.1
+2.34.1
 
