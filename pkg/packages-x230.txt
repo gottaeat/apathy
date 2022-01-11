@@ -40,7 +40,7 @@ i  g  1  .      vim                  8.2.2549
 i  l  1  .      util-linux           2.37.2
 i  l  1  .      e2fsprogs            1.46.4
 i  l  1  .      eudev                3.2.11
-i  l  1  .      linux                5.15.13
+i  l  1  .      linux                5.16.0
 i  l  1  .      init                 10
 i  l  1  ..     utils                2
 i  g  1  .      opendoas             6.8.1
