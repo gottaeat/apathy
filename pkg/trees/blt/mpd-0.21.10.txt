@@ -1,4 +1,3 @@
-/usr/bin/mpd
+/etc/mpd.conf
 
-/usr/share/doc
-/usr/share/icons
+/usr/bin/mpd
