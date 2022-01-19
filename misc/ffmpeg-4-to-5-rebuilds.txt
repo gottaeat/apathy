@@ -1,0 +1,30 @@
+# 1 > initial chek
+# 1.1 > list
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+# 1.2 > search me up good big boy
+aaaa="$(cat /tmp/all-files.txt)"
+
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep \
+  -e libavcodec\\.so    \
+  -e libavdevice\\.so   \
+  -e libavfilter\\.so   \
+  -e libavformat\\.so   \
+  -e libavutil\\.so     \
+  -e libpostproc\\.so   \
+  -e libswresample\\.so \
+  -e libswscale\\.so)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 2 > haha
+/mnt/mss/stuff/media/games/openmw/openmw
+/usr/bin/mpd
+/usr/bin/mpv
