@@ -182,7 +182,7 @@ i  l  3  .      openmp               13.0.1-rc1
 i  l  1  .      firefox              91.5.0esr
 i  l  1  ..     node.js              16.9.1
 i  l  1  ..     cbindgen             0.20.0
-i  l  1  ...    rust                 1.57.0
+i  l  1  ...    rust                 1.58.0
 i  l  2  ..     gtk3                 3.24.30
 i  l  1  .      zstd                 1.5.1
 i  l  2  .      transmission         3.0
