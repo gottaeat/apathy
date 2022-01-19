@@ -1,0 +1,47 @@
+From 176118496fa2908af6c5972411cbcfaecb6e5cb4 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Thu, 13 Jan 2022 16:08:41 +0300
+Subject: [PATCH 05/10] drivers: initialize ata before graphics. (xanmod/intel)
+
+---
+ drivers/Makefile | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/Makefile b/drivers/Makefile
+index a110338c8..f91099276 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -59,15 +59,8 @@ obj-y				+= char/
+ # iommu/ comes before gpu as gpu are using iommu controllers
+ obj-y				+= iommu/
+ 
+-# gpu/ comes after char for AGP vs DRM startup and after iommu
+-obj-y				+= gpu/
+-
+ obj-$(CONFIG_CONNECTOR)		+= connector/
+ 
+-# i810fb and intelfb depend on char/agp/
+-obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
+-obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
+-
+ obj-$(CONFIG_PARPORT)		+= parport/
+ obj-y				+= base/ block/ misc/ mfd/ nfc/
+ obj-$(CONFIG_LIBNVDIMM)		+= nvdimm/
+@@ -79,6 +72,14 @@ obj-y				+= macintosh/
+ obj-y				+= scsi/
+ obj-y				+= nvme/
+ obj-$(CONFIG_ATA)		+= ata/
++
++# gpu/ comes after char for AGP vs DRM startup and after iommu
++obj-y				+= gpu/
++
++# i810fb and intelfb depend on char/agp/
++obj-$(CONFIG_FB_I810)           += video/fbdev/i810/
++obj-$(CONFIG_FB_INTEL)          += video/fbdev/intelfb/
++
+ obj-$(CONFIG_TARGET_CORE)	+= target/
+ obj-$(CONFIG_MTD)		+= mtd/
+ obj-$(CONFIG_SPI)		+= spi/
+-- 
+2.34.1
+

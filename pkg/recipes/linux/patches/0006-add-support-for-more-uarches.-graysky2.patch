@@ -1,7 +1,7 @@
-From 858fedbe9bf9c204374f74ee480ea6c30a6c42b2 Mon Sep 17 00:00:00 2001
+From d50977c68f288f3bf482be451293c21525e6eee5 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Tue, 11 Jan 2022 18:00:19 +0300
-Subject: [PATCH 3/5] add support for more uarches.
+Date: Thu, 13 Jan 2022 16:08:54 +0300
+Subject: [PATCH 06/10] add support for more uarches. (graysky2)
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--
@@ -439,7 +439,7 @@ index eefc43435..331f76313 100644
  	default "4"
  
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 422438692..8e643985d 100644
+index 422438692..ab1ad6959 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
 @@ -119,8 +119,44 @@ else
@@ -454,9 +454,9 @@ index 422438692..8e643985d 100644
 +        cflags-$(CONFIG_MBOBCAT) 	+= -march=btver1
 +        cflags-$(CONFIG_MJAGUAR) 	+= -march=btver2
 +        cflags-$(CONFIG_MBULLDOZER) 	+= -march=bdver1
-+        cflags-$(CONFIG_MPILEDRIVER)	+= -march=bdver2
-+        cflags-$(CONFIG_MSTEAMROLLER) 	+= -march=bdver3
-+        cflags-$(CONFIG_MEXCAVATOR) 	+= -march=bdver4
++        cflags-$(CONFIG_MPILEDRIVER)	+= -march=bdver2 -mno-tbm
++        cflags-$(CONFIG_MSTEAMROLLER) 	+= -march=bdver3 -mno-tbm
++        cflags-$(CONFIG_MEXCAVATOR) 	+= -march=bdver4 -mno-tbm
 +        cflags-$(CONFIG_MZEN) 		+= -march=znver1
 +        cflags-$(CONFIG_MZEN2) 	+= -march=znver2
 +        cflags-$(CONFIG_MZEN3) 	+= -march=znver3

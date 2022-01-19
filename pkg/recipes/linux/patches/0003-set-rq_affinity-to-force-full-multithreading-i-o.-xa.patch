@@ -1,0 +1,25 @@
+From 32bc7cd1bf5ac18ce6efc87464310e02af5281f1 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Thu, 13 Jan 2022 16:08:06 +0300
+Subject: [PATCH 03/10] set rq_affinity to force full multithreading i/o.
+ (xanmod/xanmod)
+
+---
+ include/linux/blkdev.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index bd4370bac..207f910f3 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -408,6 +408,7 @@ struct request_queue {
+ 
+ #define QUEUE_FLAG_MQ_DEFAULT	((1 << QUEUE_FLAG_IO_STAT) |		\
+ 				 (1 << QUEUE_FLAG_SAME_COMP) |		\
++				 (1 << QUEUE_FLAG_SAME_FORCE) |		\
+ 				 (1 << QUEUE_FLAG_NOWAIT))
+ 
+ void blk_queue_flag_set(unsigned int flag, struct request_queue *q);
+-- 
+2.34.1
+
