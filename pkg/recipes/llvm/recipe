@@ -10,8 +10,8 @@ export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-13.0.1-rc1.tar.gz
-cd     llvm-project-llvmorg-13.0.1-rc1/
+tar xf /mss/work/sauces/llvmorg-13.0.1-rc2.tar.gz
+cd     llvm-project-llvmorg-13.0.1-rc2/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
 patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch

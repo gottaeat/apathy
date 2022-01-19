@@ -1,8 +1,8 @@
-clang       13.0.1-rc1
-compiler-rt 13.0.1-rc1
-libcxx      13.0.1-rc1
-libcxxabi   13.0.1-rc1
-libunwind   13.0.1-rc1
-lld         13.0.1-rc1
-llvm        13.0.1-rc1
-openmp      13.0.1-rc1
+clang       13.0.1-rc2
+compiler-rt 13.0.1-rc2
+libcxx      13.0.1-rc2
+libcxxabi   13.0.1-rc2
+libunwind   13.0.1-rc2
+lld         13.0.1-rc2
+llvm        13.0.1-rc2
+openmp      13.0.1-rc2

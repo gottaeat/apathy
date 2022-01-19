@@ -1,4 +1,11 @@
 # 1
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g')"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
 penis="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
 export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
@@ -23,14 +30,17 @@ make install
 
 cd ../; rm -rf libXv-1.0.11/
 
+sed -i -e 's/-lXv/-lXv -lXext -lX11/g' \
+ "${penis}"/lib/pkgconfig/xv.pc
+
 # 3 > ffmpeg
 case "${amachine}" in
  t61)  peen="disable" peenlist="oss,sndio,v4l2" ;;
  x230) peen="enable"  peenlist="oss,sndio"      ;;
 esac
 
-tar xf /mss/work/sauces/ffmpeg-4.4.1.tar.xz
-cd ffmpeg-4.4.1/
+tar xf /mss/work/sauces/ffmpeg-5.0.tar.xz
+cd     ffmpeg-5.0/
 
 mkdir build
 cd    build
@@ -39,7 +49,6 @@ cd    build
  --prefix=/usr                    \
  --enable-gpl                     \
  --enable-nonfree                 \
- --disable-logging                \
 \
  --nm="${NM}"                     \
  --ar="${AR}"                     \
@@ -101,7 +110,6 @@ cd    build
  --disable-mipsdsp                \
  --disable-mipsdspr2              \
  --disable-msa                    \
- --disable-msa2                   \
  --disable-mipsfpu                \
  --disable-mmi                    \
 \

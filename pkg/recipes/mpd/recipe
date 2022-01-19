@@ -41,7 +41,7 @@ meson --buildtype=plain \
 ..
 
 time samu
-DESTDIR="${PWD/KEK}" samu install
+DESTDIR="${PWD}/KEK" samu install
 
 # 4
 doas -s
