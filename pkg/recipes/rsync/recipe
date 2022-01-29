@@ -10,5 +10,13 @@
  --disable-ipv6          \
  --disable-locale        \
  --disable-lz4           \
- --disable-xxhash        \
- --disable-openssl
+ --disable-xxhash
+
+make
+
+# 2
+doas -s
+make install
+rm -rfv \
+ /usr/bin/rsync-ssl \
+ /usr/share/man

@@ -2,6 +2,8 @@
 pdir="/mss/repo/pkg/recipes/pciutils/patches"
 patch -p1 < "${pdir}"/0001-pread.patch
 
+sed -i -e 's/STRIP=-s//g;s/\$(STRIP)//g' Makefile
+
 make \
  OPT="${CFLAGS} ${LDFLAGS} -fPIC -DPIC" \
  CC="${CC}"                   \

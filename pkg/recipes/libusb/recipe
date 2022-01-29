@@ -1,4 +1,7 @@
 # 1
+export   CFLAGS="${CFLAGS}   -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+
 pdir="/mss/repo/pkg/recipes/libusb/patches"
 patch -p1 < "${pdir}"/0001-f6d2cb56.patch
 patch -p1 < "${pdir}"/0002-f38f09da.patch

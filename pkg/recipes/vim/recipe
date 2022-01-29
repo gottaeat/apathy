@@ -1,4 +1,6 @@
 # 1
+export LDFLAGS="$(echo ${LDFLAGS} | sed 's/,-/ -Wl,-/g;s/-Wl -Wl,/-Wl,/g;')"
+
 echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
 
 ./configure \
@@ -42,6 +44,9 @@ make
 # 2
 doas -s
 make install
+
+ln -sfv /usr/bin/vim /usr/bin/vi
+
 rm -rfv \
  /usr/bin/vimtutor                      \
  /usr/share/applications                \

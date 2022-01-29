@@ -1,6 +1,4 @@
 # 1
-cleancmake
-
 mkdir build
 cd    build
 

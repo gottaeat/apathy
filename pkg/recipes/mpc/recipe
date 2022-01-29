@@ -8,8 +8,3 @@ meson --buildtype=plain   \
  -Dtest=false             \
  -Ddocumentation=disabled \
 ..
-
-# 2
-doas -s
-samu install
-rm -rfv /usr/share/doc

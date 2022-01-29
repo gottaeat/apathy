@@ -42,17 +42,24 @@ cd .. && rm -rf libucontext-1.1/
 tar xf /mss/work/sauces/gcompat-1.0.0.tar.xz
 cd     gcompat-1.0.0/
 
-mymake(){
- make \
-  LINKER_PATH="/lib/ld-musl-x86_64.so.1"       \
-  LOADER_NAME="ld-linux-x86-64.so.2"           \
-  LOADER_PATH="/lib64/ld-linux-x86-64.so.2"    \
-  WITH_LIBUCONTEXT=1 WITH_OBSTACK=musl-obstack \
-  ${@}
-}
+sed -i -e 's/-static-pie//' Makefile
 
-mymake
-mymake DESTDIR="${PWD}/KEK" install
+make \
+ LINKER_PATH="/lib/ld-musl-x86_64.so.1"       \
+ LOADER_NAME="ld-linux-x86-64.so.2"           \
+ LOADER_PATH="/lib64/ld-linux-x86-64.so.2"    \
+ WITH_LIBUCONTEXT=1 WITH_OBSTACK=musl-obstack
 
-doas -s
-mymake install
+make \
+ LINKER_PATH="/lib/ld-musl-x86_64.so.1"       \
+ LOADER_NAME="ld-linux-x86-64.so.2"           \
+ LOADER_PATH="/lib64/ld-linux-x86-64.so.2"    \
+ WITH_LIBUCONTEXT=1 WITH_OBSTACK=musl-obstack \
+ DESTDIR="${PWD}/KEK" install
+
+doas -- make \
+ LINKER_PATH="/lib/ld-musl-x86_64.so.1"       \
+ LOADER_NAME="ld-linux-x86-64.so.2"           \
+ LOADER_PATH="/lib64/ld-linux-x86-64.so.2"    \
+ WITH_LIBUCONTEXT=1 WITH_OBSTACK=musl-obstack \
+ install

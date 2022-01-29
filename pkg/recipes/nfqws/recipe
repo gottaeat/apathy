@@ -33,6 +33,8 @@ cdt1
 tar xf /mss/work/sauces/libcap-2.49.tar.xz
 cd     libcap-2.49/
 
+find . -type f -name Makefile -exec sed -i -e 's/--static//g' {} +
+
 mymake
 mymake install
 
@@ -76,21 +78,6 @@ make install
 cd ../; rm -rf libnetfilter_queue-1.0.5/
 
 # 6
-find "${penis}" -type f -name \*.a -exec \
- strip \
-  --strip-debug                   \
-  --remove-section=.comment       \
-  --remove-section=.note          \
-  --enable-deterministic-archives \
-  -R .gnu.lto_*                   \
-  -R .gnu.debuglto_*              \
-  -N __gnu_lto_slim               \
-  -N __gnu_lto_v1                 \
-{} ';'
-
-find "${penis}" -type f -name \*.a -exec ${RANLIB} {} ';'
-
-# 7
 gcd1 --recursive https://github.com/bol-van/zapret
 cd zapret/nfq/
 make clean
@@ -102,7 +89,7 @@ done
 ${CC} ${CFLAGS} ${LDFLAGS} -std=gnu99 -o nfqws *.c \
  -lz libcap.a libmnl.a libnetfilter_queue.a libnfnetlink.a
 
-# 8
+# 7
 doas -s
 for i in nfqws; do
  strip --strip-all "${i}"
