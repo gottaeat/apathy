@@ -1,0 +1,24 @@
+diff -uraN a/src/edit.c b/src/edit.c
+--- a/src/edit.c	2015-11-22 01:50:17.000000000 +0200
++++ b/src/edit.c	2022-01-29 04:59:52.102127463 +0300
+@@ -192,8 +192,7 @@
+ 	   BITMAPLILOHEADER bmlh;
+ 	} tm;
+ static	MENUTABLE *menu = &tm.mt;
+-static	BITMAPLILOHEADER *lh = (void*)(tm.buffer +
+-    			((intptr_t)&tm.mt.row - (intptr_t)&tm.bmlh.row));
++static	BITMAPLILOHEADER *lh;
+ 
+ /* a convenience definition */
+ #define mn tm.mt
+@@ -283,7 +282,9 @@
+     ofd = open(temp_file, O_CREAT|O_WRONLY, 0644);
+     if (ofd<0) pdie("Cannot open temporary file");
+     temp_register(temp_file);
+-    
++
++    lh = (void*)(tm.buffer + ((long)&tm.mt.row - (long)&tm.bmlh.row));
++
+     n = get_std_headers(ifd, &fh, &bmh, lh);
+     if (verbose >= 3) printf("get_std_headers:  returns %d\n", n);
+     

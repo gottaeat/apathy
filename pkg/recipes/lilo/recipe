@@ -21,6 +21,7 @@ patch -p1 < "${pdir}"/0002-lilo-novga.patch
 patch -p1 < "${pdir}"/0003-lilo-remove-O_ACCMODE.patch
 patch -p1 < "${pdir}"/0004-lilo-remove__GLIBC__.patch
 patch -p1 < "${pdir}"/0005-lilo-fix-gcc-10.patch
+patch -p1 < "${pdir}"/0006-lilo-fix-compile-time-constant.patch
 
 sed -i Makefile src/Makefile \
  -e '/strip/d;s|^	make|	$(MAKE)|g' \
@@ -30,29 +31,9 @@ sed -i Makefile src/Makefile \
 make all
 
 # 3
-instdir="${PWD}/KEK"
-make DESTDIR="${instdir}" install
-
-rm -rfv \
- "${instdir}"/etc/kernel            \
- "${instdir}"/etc/initramfs         \
- "${instdir}"/etc/lilo.conf_example \
- "${instdir}"/usr/share/man         \
- "${instdir}"/usr/sbin/keytab-lilo  \
- "${instdir}"/usr/sbin/liloconfig   \
- "${instdir}"/usr/sbin/mkrescue     \
- "${instdir}"/usr/sbin/lilo-uuid-diskid
-
-# 4
 doas -s
-make install
-
-rm -rfv \
- /etc/kernel            \
- /etc/initramfs         \
- /etc/lilo.conf_example \
- /usr/share/man         \
- /usr/sbin/keytab-lilo  \
- /usr/sbin/liloconfig   \
- /usr/sbin/mkrescue     \
- /usr/sbin/lilo-uuid-diskid
+for i in src/lilo; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /sbin/
+done
