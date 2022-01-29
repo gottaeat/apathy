@@ -8,3 +8,8 @@
 /usr/bin/xxd
 
 /usr/share/vim
+
+/usr/share/applications
+/usr/share/icons/hicolor
+/usr/share/icons/locolor
+/usr/share/man
