@@ -152,7 +152,7 @@ i  1  ..     lame                 3.100
 i  1  ..     openjpeg             2.4.0
 i  1  .      mpv                  0.34.0
 i  1  ..     intel-vaapi-driver   2.4.1
-i  1  .      mpd                  0.21.10
+i  2  .      mpd                  0.21.10
 i  2  ..     libmpdclient         2.18
 o  1  ..     boost                1.76.0
 i  2  .      mpc                  0.33
