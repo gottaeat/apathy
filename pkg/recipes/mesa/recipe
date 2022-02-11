@@ -15,8 +15,8 @@ unset curpwd
 export   CFLAGS="${CFLAGS}   -DGLX_X86_READONLY_TEXT"
 export CXXFLAGS="${CXXFLAGS} -DGLX_X86_READONLY_TEXT"
 
-tar xf /mss/work/sauces/mesa-21.3.5.tar.xz
-cd     mesa-21.3.5/
+tar xf /mss/work/sauces/mesa-22.0.0-rc2.tar.xz
+cd     mesa-22.0.0-rc2/
 
 sed -i "/pre_args += '-DUSE_ELF_TLS'/d" meson.build
 python3 bin/git_sha1_gen.py --output include/git_sha1.h
@@ -38,9 +38,16 @@ meson --buildtype=plain \
  -Dglx=dri                    \
  -Degl=enabled                \
 \
- -Ddri-drivers=i965           \
- -Dgallium-drivers=           \
+ -Ddri-drivers=               \
+ -Dgallium-drivers=crocus     \
  -Dvulkan-drivers=            \
+\
+ -Dgallium-extra-hud=false    \
+ -Dgallium-vdpau=disabled     \
+ -Dgallium-xvmc=disabled      \
+ -Dgallium-omx=disabled       \
+ -Dgallium-va=disabled        \
+ -Dgallium-xa=disabled        \
 \
  -Dgles1=disabled             \
  -Dgles2=disabled             \
