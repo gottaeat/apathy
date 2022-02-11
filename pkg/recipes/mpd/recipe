@@ -1,17 +1,17 @@
 # 1
-cdt1
-git clone --depth=1 https://github.com/mssx86/mpd
-cd mpd
+tar xf /mss/work/sauces/mpd-0.21.10.tar.gz
+cd     MPD-0.21.10/
 
-# 2
+pdir="/mss/repo/pkg/recipes/mpd/patches"
+patch -p1 < "${pdir}"/0001-fix-libc++-std-forward.patch
+
+mkdir mybuild
+cd    mybuild
+
 pushd /opt
 doas -- tar xf \
  /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
 popd
-
-# 3
-mkdir mybuild
-cd    mybuild
 
 export       CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
 export     CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
