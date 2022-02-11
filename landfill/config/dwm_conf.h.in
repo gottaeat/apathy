@@ -70,7 +70,6 @@ static Key keys[] = {
  // scripts
  { MODKEY,            XK_b,                     spawn,           SHCMD("/mss/bin/switchcompositor novsync")       },
  { MODKEY|ShiftMask,  XK_b,                     spawn,           SHCMD("/mss/bin/switchcompositor vsync")         },
- { Mod1Mask,          XK_t,                     spawn,           SHCMD("/mss/bin/switchkb")                       },
  { MODKEY,            XK_p,                     spawn,           SHCMD("/mss/bin/maimscrot")                      },
  { MODKEY|ShiftMask,  XK_p,                     spawn,           SHCMD("/mss/bin/maimclip")                       },
  { MODKEY,            XK_o,                     spawn,           SHCMD("/mss/bin/maimcrop")                       },
