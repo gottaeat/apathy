@@ -42,7 +42,7 @@ i  1  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                5.16.4
 i  1  .      init                 10
-i  1  ..     utils                3
+i  1  ..     utils                4
 i  2  .      opendoas             6.8.1
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.81.0
@@ -119,7 +119,7 @@ i  1  ..     libepoxy             1.5.8
 i  2  .      xf86-input-libinput  1.2.0
 i  1  ..     libinput             1.19.3
 i  1  .      xinit                1.4.1
-i  1  .      landfill             2
+i  1  .      landfill             3
 i  2  .      atk                  2.36.0
 i  2  .      freeglut             3.2.1
 i  1  ..     glu                  9.0.1
