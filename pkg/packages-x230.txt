@@ -42,7 +42,7 @@ i  1  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                5.16.9
 i  1  .      init                 10
-i  1  ..     utils                4
+i  1  ..     utils                5
 i  2  .      opendoas             6.8.1
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.81.0
