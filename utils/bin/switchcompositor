@@ -1,31 +1,23 @@
 #!/mss/bin/sh
-
-pidboi="$(pidof compton)"
-
-cvsync(){
- compton \
-  --backend glx --unredir-if-possible --glx-no-stencil \
-  --glx-no-rebind-pixmap --glx-swap-method buffer-age  \
-  --vsync opengl-swc & disown
-
- exit 0
-}
-
-cnovsync(){
- compton \
-  --backend glx --unredir-if-possible --glx-no-stencil \
-  --glx-no-rebind-pixmap --glx-swap-method buffer-age  \
-  & disown
+mypicom(){
+ picom \
+  --backend glx          \
+  --unredir-if-possible  \
+  --glx-no-stencil       \
+  --glx-no-rebind-pixmap \
+  --use-damage           \
+  ${@} & disown
 
  exit 0
 }
 
+pidboi="$(pidof picom)"
 if [ ! -z "${pidboi}" ]
  then 
   kill -15 "${pidboi}"
  else
   case "${1}" in
-   vsync|-v)  cvsync   ;;
-   *)         cnovsync ;;
+   vsync|-v)  mypicom --vsync ;;
+   *)         mypicom         ;;
   esac
 fi
