@@ -1,4 +1,8 @@
 # 1
+pdir="/mss/repo/pkg/recipes/ncurses/patches"
+patch -p1 < "${pdir}"/0001-no-toolchain-artifacts-in-libs.patch
+patch -p1 < "${pdir}"/0002-no-toolchain-artifacts-in-pkgconfig.patch
+
 ./configure \
  --build=$CBUILD         \
  --host=$CHOST           \

@@ -1,7 +1,14 @@
 # 1
 cdt1
-
 doas -s
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
 penis="/mss/work/table/KEK"
 tar xf /mss/work/sauces/busybox-1.31.0-full.tar.zst
 mkdir "${penis}"
@@ -10,14 +17,15 @@ export PATH="${PATH}:${penis}"
 cat /mss/repo/pkg/trees/**/busybox-* | sort | uniq | xargs rm -rfv
 ln -sfv "${penis}"/sh /bin/sh
 
-tar xf /mss/work/sauces/busybox-1.34.1.tar.bz2
-cd     busybox-1.34.1/
+tar xf /mss/work/sauces/busybox-1.35.0.tar.bz2
+cd     busybox-1.35.0/
 
 pdir="/mss/repo/pkg/recipes/busybox/patches"
-patch -p1 < "${pdir}"/0001-libbb-ash-fix-clang-ub.patch
+patch -p1 < "${pdir}"/0001-test-libbb-lineedit-ash-fix-clang-UB.patch
 patch -p1 < "${pdir}"/0002-install-fix-chown.patch
 patch -p1 < "${pdir}"/0003-libbb-print-unicode.patch
-patch -p1 < "${pdir}"/0004-unzip-do-not-exit-with-1-after-help.patch
+patch -p1 < "${pdir}"/0004-unzip-exit-with-0-after-printing-usage.patch
+patch -p1 < "${pdir}"/0005-ping-work-without-suid.patch
 
 sed -i \
  -e "s#= g[c+][c+]#= $CC#g"              \
@@ -32,7 +40,7 @@ fdir="/mss/repo/pkg/recipes/busybox/files"
 cp    -v    "${fdir}"/config ./.config
 
 mymake(){
- make \
+ make V=0 \
        AS="${AS}"      \
    HOSTCC="${CC}"      \
        CC="${CC}"      \
@@ -53,7 +61,18 @@ mymake clean
 mymake
 
 # 2
-mymake CONFIG_PREFIX="${PWD}/KEK"  install
-mymake CONFIG_PREFIX=/             install
+mymake CONFIG_PREFIX="${PWD}/KEK" install
+mymake CONFIG_PREFIX=/            install
 
-chmod u+s /bin/busybox
+# 3
+for i in bbsuid; do
+ ${CC} -c "${fdir}"/"${i}".c ${CFLAGS}
+ ${CC} -o "${i}"    "${i}".o ${LDFLAGS}
+
+ strip --strip-all "${i}"
+ chown root:root   "${i}"
+ install -m4111    "${i}"              /bin/"${i}"
+ install -m4111    "${i}"  "${PWD}/KEK"/bin/"${i}"
+done
+
+bbsuid --install

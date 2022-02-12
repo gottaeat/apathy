@@ -1,0 +1,95 @@
+From b89773e4cf6961e5ff935e88362005f0f78ba511 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Sat, 12 Feb 2022 15:10:23 +0300
+Subject: [PATCH 1/5] test, libbb, lineedit, ash: fix clang UB.
+
+---
+ coreutils/test.c | 2 +-
+ include/libbb.h  | 8 ++++----
+ libbb/lineedit.c | 2 +-
+ shell/ash.c      | 6 +++---
+ 4 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/coreutils/test.c b/coreutils/test.c
+index a914c74..aaca93f 100644
+--- a/coreutils/test.c
++++ b/coreutils/test.c
+@@ -435,7 +435,7 @@ struct test_statics {
+ };
+ 
+ /* See test_ptr_hack.c */
+-extern struct test_statics *BB_GLOBAL_CONST test_ptr_to_statics;
++extern struct test_statics *test_ptr_to_statics;
+ 
+ #define S (*test_ptr_to_statics)
+ #define args            (S.args         )
+diff --git a/include/libbb.h b/include/libbb.h
+index a487828..880fb0c 100644
+--- a/include/libbb.h
++++ b/include/libbb.h
+@@ -379,14 +379,14 @@ struct BUG_off_t_size_is_misdetected {
+  * set "-DBB_GLOBAL_CONST=''" in CONFIG_EXTRA_CFLAGS to disable
+  * this optimization.
+  */
+-#ifndef BB_GLOBAL_CONST
+-# define BB_GLOBAL_CONST const
+-#endif
++
++#undef BB_GLOBAL_CONST
++#define BB_GLOBAL_CONST
+ 
+ #if defined(errno)
+ /* If errno is a define, assume it's "define errno (*__errno_location())"
+  * and we will cache it's result in this variable */
+-extern int *BB_GLOBAL_CONST bb_errno;
++extern int *bb_errno;
+ # undef errno
+ # define errno (*bb_errno)
+ # define bb_cached_errno_ptr 1
+diff --git a/libbb/lineedit.c b/libbb/lineedit.c
+index e14c787..cc6fb6f 100644
+--- a/libbb/lineedit.c
++++ b/libbb/lineedit.c
+@@ -189,7 +189,7 @@ struct lineedit_statics {
+ };
+ 
+ /* See lineedit_ptr_hack.c */
+-extern struct lineedit_statics *BB_GLOBAL_CONST lineedit_ptr_to_statics;
++extern struct lineedit_statics *lineedit_ptr_to_statics;
+ 
+ #define S (*lineedit_ptr_to_statics)
+ #define state            (S.state           )
+diff --git a/shell/ash.c b/shell/ash.c
+index 8276438..8834a20 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -474,7 +474,7 @@ struct globals_misc {
+ #endif
+ 	pid_t backgndpid;        /* pid of last background process */
+ };
+-extern struct globals_misc *BB_GLOBAL_CONST ash_ptr_to_globals_misc;
++extern struct globals_misc *ash_ptr_to_globals_misc;
+ #define G_misc (*ash_ptr_to_globals_misc)
+ #define exitstatus        (G_misc.exitstatus )
+ #define back_exitstatus   (G_misc.back_exitstatus )
+@@ -1574,7 +1574,7 @@ struct globals_memstack {
+ 	size_t g_stacknleft; // = MINSIZE;
+ 	struct stack_block stackbase;
+ };
+-extern struct globals_memstack *BB_GLOBAL_CONST ash_ptr_to_globals_memstack;
++extern struct globals_memstack *ash_ptr_to_globals_memstack;
+ #define G_memstack (*ash_ptr_to_globals_memstack)
+ #define g_stackp     (G_memstack.g_stackp    )
+ #define g_stacknxt   (G_memstack.g_stacknxt  )
+@@ -2174,7 +2174,7 @@ struct globals_var {
+ 	unsigned trap_depth;
+ 	bool in_trap_ERR; /* ERR cannot recurse, no need to be a counter */
+ };
+-extern struct globals_var *BB_GLOBAL_CONST ash_ptr_to_globals_var;
++extern struct globals_var *ash_ptr_to_globals_var;
+ #define G_var (*ash_ptr_to_globals_var)
+ #define shellparam    (G_var.shellparam   )
+ //#define redirlist     (G_var.redirlist    )
+-- 
+2.35.1
+

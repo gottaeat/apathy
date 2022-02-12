@@ -1,7 +1,6 @@
 # 1
 pdir="/mss/repo/pkg/recipes/wpa-supplicant/patches"
-patch -p1 < "${pdir}"/0001-CVE-2019-16275.patch
-patch -p1 < "${pdir}"/0002-eloop.patch
+patch -p1 < "${pdir}"/0001-eloop.patch
 
 fdir="/mss/repo/pkg/recipes/wpa-supplicant/files"
 cp -vf "${fdir}"/config wpa_supplicant/.config
