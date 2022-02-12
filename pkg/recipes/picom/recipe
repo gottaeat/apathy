@@ -68,25 +68,39 @@ make install
 cd ../; rm -rf libev-4.31/
 
 # 6
-tar xf /mss/work/sauces/compton-5.1.tar.gz
-cd     picom-5.1/
+tar xf /mss/work/sauces/uthash-2.3.0.tar.gz
+cd     uthash-2.3.0/
+
+cp -fv include/* "${penis}"/include
+cd ../; rm -rf uthash-2.3.0/
+
+# 7
+tar xf /mss/work/sauces/picom-9.tar.gz
+cd     picom-9/
 
 mkdir build
 cd    build
 
 meson --buildtype=plain \
  --prefix=/usr          \
+ -Dcompton=false        \
  -Dconfig_file=false    \
  -Ddbus=false           \
- ..
+ -Dmodularize=false     \
+ -Dopengl=true          \
+ -Dregex=false          \
+ -Dsanitize=false       \
+ -Dunittest=false       \
+ -Dvsync_drm=false      \
+ -Dwith_docs=false      \
+ -Dxrescheck=false      \
+..
 
 samu
 
-DESTDIR="${PWD}/KEK" samu install
-
 # 7
 doas -s
-for i in KEK/usr/bin/compton; do
+for i in src/picom; do
  strip --strip-all "${i}"
  chown root:root "${i}"
  mv "${i}" /usr/bin/
