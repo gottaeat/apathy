@@ -1,6 +1,7 @@
 /bin/ash
 /bin/base32
 /bin/base64
+/bin/bbsuid
 /bin/busybox
 /bin/cat
 /bin/chgrp

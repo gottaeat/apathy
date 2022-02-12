@@ -7,13 +7,13 @@ i  2  .      m4                   1.4.18
 i  2  .      bc                   4.0.1
 i  2  .      bzip2                1.0.8
 i  2  .      pkgconf              1.7.4
-i  2  .      ncurses              6.2
+i  1  .      ncurses              6.3
 i  2  .      sed                  4.8
 i  2  .      bison                3.7.4
 i  2  .      flex                 2.6.4
 i  1  .      grep                 3.7
 i  1  .      yash                 2.52
-i  1  .      busybox              1.34.1
+i  1  .      busybox              1.35.0
 i  2  .      libtool              2.4.6
 i  1  .      gperf                3.1
 i  2  .      expat                2.3.0
@@ -167,7 +167,7 @@ i  2  .      gcompat              1.0.0
 i  1  .      vifm                 0.11
 i  1  .      lz4                  1.9.3
 i  1  .      links                2.20.2
-i  1  .      wpa-supplicant       2.9
+i  1  .      wpa-supplicant       2.10
 i  1  ..     libnl3               3.5.0
 i  2  .      lilo                 24.2
 i  1  .      irssi                1.2.3
