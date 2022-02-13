@@ -1,7 +1,7 @@
 From 176118496fa2908af6c5972411cbcfaecb6e5cb4 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:08:41 +0300
-Subject: [PATCH 05/10] drivers: initialize ata before graphics. (xanmod/intel)
+Subject: [PATCH 05/12] drivers: initialize ata before graphics. (xanmod/intel)
 
 ---
  drivers/Makefile | 15 ++++++++-------

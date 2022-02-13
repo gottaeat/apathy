@@ -1,7 +1,7 @@
 From fa7d96825f2d5afaa6e59e34d2681184eaa56f9e Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:09:26 +0300
-Subject: [PATCH 08/10] bring in mglru. (xanmod/mm/mglru)
+Subject: [PATCH 08/12] bring in mglru. (xanmod/mm/mglru)
 
 ---
  Documentation/vm/index.rst          |    1 +

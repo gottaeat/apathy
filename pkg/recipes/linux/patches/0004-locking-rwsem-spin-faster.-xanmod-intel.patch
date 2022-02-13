@@ -1,7 +1,7 @@
 From e0314a76f562603d440d7a88b957650c0c2061ef Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:08:30 +0300
-Subject: [PATCH 04/10] locking/rwsem: spin faster. (xanmod/intel)
+Subject: [PATCH 04/12] locking/rwsem: spin faster. (xanmod/intel)
 
 ---
  kernel/locking/rwsem.c | 4 +++-

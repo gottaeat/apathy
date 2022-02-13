@@ -1,7 +1,7 @@
 From 5dc1a55108143d289d1746a41104fc64155b9dfc Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:10:21 +0300
-Subject: [PATCH 09/10] remove MAXSMP check for for mglru. (mss)
+Subject: [PATCH 09/12] remove MAXSMP check for for mglru. (mss)
 
 ---
  mm/Kconfig | 2 +-

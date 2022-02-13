@@ -1,7 +1,7 @@
 From d50977c68f288f3bf482be451293c21525e6eee5 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:08:54 +0300
-Subject: [PATCH 06/10] add support for more uarches. (graysky2)
+Subject: [PATCH 06/12] add support for more uarches. (graysky2)
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--

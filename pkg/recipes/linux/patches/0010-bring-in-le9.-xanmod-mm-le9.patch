@@ -1,7 +1,7 @@
 From 07f8160e1e9d1fb7be17e93cea906f47ec4d0034 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
 Date: Thu, 13 Jan 2022 16:12:01 +0300
-Subject: [PATCH 10/10] bring in le9. (xanmod/mm/le9)
+Subject: [PATCH 10/12] bring in le9. (xanmod/mm/le9)
 
 ---
  Documentation/admin-guide/sysctl/vm.rst | 66 ++++++++++++++++++
