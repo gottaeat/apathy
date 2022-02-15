@@ -23,6 +23,7 @@ startnfsbase(){
  evalret
 }
 
+# 1.2 > swap
 checkswaps(){
  if [ "$(wc -l /proc/swaps | awk '{print $1}')" -gt 1 ]
   then
