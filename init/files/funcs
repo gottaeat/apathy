@@ -74,11 +74,11 @@ ainit_kill(){
   else
    if [ -z "${2}" ]; then usesig="-TERM"; else usesig="-HUP"; fi
 
-   for i in "${pidlist}"; do
+   for i in ${pidlist}; do
     printf " ${cb_blu}${i}${c_res}"
-     kill "${usesig}" "${i}" >/dev/null 2>&1
-    evalret
+    kill "${usesig}" "${i}" >/dev/null 2>&1
    done
+   evalret
  fi
 }
 
