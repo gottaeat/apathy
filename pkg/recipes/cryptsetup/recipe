@@ -1,0 +1,233 @@
+# 1
+  penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2 > libaio
+tar xf /mss/work/sauces/libaio-0.3.112.tar.gz
+cd     libaio-0.3.112/
+
+pdir="/mss/repo/pkg/recipes/cryptshit/patches"
+patch -p1 < "${pdir}"/0001-libaio-makefile-fixes.patch
+
+mymake(){
+ CC=${CC}                \
+ AR=${AR}                \
+ RANLIB=${RANLIB}        \
+ ABI_LIBDIR=${penis}/lib \
+ make \
+  prefix="${penis}"      \
+  ${@}
+}
+mymake
+mymake install
+
+rm -rfv "${penis}"/lib/libaio.so*
+
+cd ../; rm -rf libaio-0.3.112/
+
+# 3 > popt
+tar xf /mss/work/sauces/popt-1.18.tar.gz
+cd     popt-1.18/
+
+./configure \
+ --build="$CBUILD"   \
+ --host="$CHOST"     \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static
+
+make
+make install
+
+cd ../; rm -rfv popt-1.18/
+
+# 4 > json-c
+tar xf /mss/work/sauces/json-c-0.15.tar.gz
+cd     json-c-0.15/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DBUILD_STATIC_LIBS=ON                 \
+ -DBUILD_TESTING=OFF                    \
+ ../
+
+samu
+samu install
+
+cd ../../; rm -rf json-c-0.15/
+
+# 5 > argon2
+tar xf /mss/work/sauces/argon2-20190702.tar.gz
+cd     phc-winner-argon2-20190702/
+
+sed -i Makefile  \
+    -e 's/-O3//' \
+    -e 's/-g//'  \
+    -e 's/-march=\$(OPTTARGET)//'
+
+mymake(){
+ make \
+  OPTTEST="1"                 \
+  PREFIX="${penis}/"          \
+  LIBRARY_REL="lib"           \
+  ARGON2_VERSION="0~20190702" \
+  ${@}
+}
+
+mymake
+mymake install
+
+rm -rfv "${penis}"/lib/libargon2.so*
+
+cd ../; rm -rf phc-winner-argon2-20190702/
+
+# 6 > lvm2
+tar xf /mss/work/sauces/LVM2.2.02.187.tgz
+cd     LVM2.2.02.187/
+
+pdir="/mss/repo/pkg/recipes/cryptshit/patches"
+patch -p1 < "${pdir}"/0002-lvm2-mallinfo.patch
+patch -p1 < "${pdir}"/0003-lvm2-stdio.patch
+patch -p1 < "${pdir}"/0004-lvm2-mlockall.patch
+patch -p1 < "${pdir}"/0005-lvm2-bashism.patch
+
+sed -i -e 's| -static | |g'     \
+ daemons/dmeventd/Makefile.in   \
+ daemons/dmfilemapd/Makefile.in \
+ tools/Makefile.in
+
+sed -i -e 's/fmt -1/tr " " "\\n"/' make.tmpl.in
+sed -i -e "s|<libaio.h>|\"${penis}\/include\/libaio.h\"|g" lib/device/bcache.c
+
+export      MKDIR_P="install -d"
+export CONFIG_SHELL=/bin/sh
+
+./configure \
+ --build="${CBUILD}"                           \
+ --host="${CHOST}"                             \
+ --prefix="${penis}"                           \
+ --sysconfdir="${penis}/etc"                   \
+ --with-confdir="${penis}/etc"                 \
+ --with-default-system-dir="${penis}/etc/lvm"  \
+ --localstatedir=/var                          \
+ --with-cache=none                             \
+ --with-cluster=none                           \
+ --with-clvmd=none                             \
+ --with-mirrors="none"                         \
+ --with-snapshots="none"                       \
+ --with-thin=none                              \
+ --enable-blkid_wiping                         \
+ --enable-devmapper                            \
+ --enable-ioctl                                \
+ --enable-o_direct                             \
+ --enable-pkgconfig                            \
+ --enable-realtime                             \
+ --enable-static_link                          \
+ --disable-applib                              \
+ --disable-blkdeactivate                       \
+ --disable-cmdlib                              \
+ --disable-cmirrord                            \
+ --disable-compat                              \
+ --disable-dbus-service                        \
+ --disable-debug                               \
+ --disable-dmeventd                            \
+ --disable-dmfilemapd                          \
+ --disable-fsadm                               \
+ --disable-lvmetad                             \
+ --disable-lvmlockd-dlm                        \
+ --disable-lvmlockd-sanlock                    \
+ --disable-lvmpolld                            \
+ --disable-nls                                 \
+ --disable-notify-dbus                         \
+ --disable-ocf                                 \
+ --disable-profiling                           \
+ --disable-python2_bindings                    \
+ --disable-python3_bindings                    \
+ --disable-python_bindings                     \
+ --disable-readline                            \
+ --disable-selinux                             \
+ --disable-udev-rule-exec-detection            \
+ --disable-udev-systemd-background-jobs        \
+ --disable-udev_rules                          \
+ --disable-udev_sync                           \
+ --disable-units-compat                        \
+ --disable-use-lvmetad                         \
+ --disable-use-lvmlockd                        \
+ --disable-use-lvmpolld                        \
+ --disable-valgrind-pool                       \
+ --disable-write_install                       \
+ CLDFLAGS="$LDFLAGS"
+
+make device-mapper
+make install_device-mapper
+
+rm -rfv "${penis}"/lib/libdevmapper.so*
+
+cd ../; rm -rfv LVM2.2.02.187/
+
+# 8 > cryptsetup
+tar xf /mss/work/sauces/cryptsetup-2.4.3.tar.gz
+cd     cryptsetup-2.4.3/
+
+sed -i -e 's/\/bin\/bash/\/bin\/sh/g' \
+ tests/generate-symbols-list
+
+ac_cv_lib_popt_poptGetContext=yes \
+./configure \
+ --build="$CBUILD"                \
+ --host="$CHOST"                  \
+ --prefix="${penis}"              \
+ --enable-internal-sse-argon2     \
+ --enable-libargon2               \
+ --enable-static                  \
+ --disable-cryptsetup-reencrypt   \
+ --disable-dev-random             \
+ --disable-external-tokens        \
+ --disable-internal-argon2        \
+ --disable-luks2-reencryption     \
+ --disable-nls                    \
+ --disable-pwquality              \
+ --disable-rpath                  \
+ --disable-shared                 \
+ --disable-ssh-token              \
+ --disable-udev                   \
+ --with-crypto_backend=openssl    \
+ --with-default-luks-format=LUKS2 \
+ --with-luks2-pbkdf=pbkdf2
+
+make
+
+doas -s
+for i in cryptsetup; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

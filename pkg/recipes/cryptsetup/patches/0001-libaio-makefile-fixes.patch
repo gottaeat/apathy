@@ -1,0 +1,35 @@
+diff -uraN a/harness/Makefile b/harness/Makefile
+--- a/harness/Makefile	2018-10-22 22:59:34.000000000 +0300
++++ b/harness/Makefile	2022-02-15 21:58:05.297999342 +0300
+@@ -6,7 +6,7 @@
+ HARNESS_SRCS:=main.c
+ # io_queue.c
+ 
+-CFLAGS+=-Wall -Werror -I../src -g -O2 -DPAGE_SIZE=$(shell getconf PAGESIZE)
++CFLAGS+=-I../src -DPAGE_SIZE=$(shell getconf PAGESIZE)
+ #-lpthread -lrt
+ 
+ all: $(PROGS)
+diff -uraN a/src/Makefile b/src/Makefile
+--- a/src/Makefile	2018-10-22 22:59:34.000000000 +0300
++++ b/src/Makefile	2022-02-15 21:59:13.587996955 +0300
+@@ -2,8 +2,8 @@
+ includedir=$(prefix)/include
+ libdir=$(prefix)/lib
+ 
+-CFLAGS ?= -g -fomit-frame-pointer -O2
+-CFLAGS += -Wall -I. -fPIC
++CFLAGS ?= -fomit-frame-pointer
++CFLAGS += -I. -fPIC
+ SO_CFLAGS=-shared $(CFLAGS)
+ L_CFLAGS=$(CFLAGS)
+ LINK_FLAGS=
+@@ -55,7 +55,7 @@
+ 	$(RANLIB) libaio.a
+ 
+ $(libname): $(libaio_sobjs) libaio.map
+-	$(CC) $(SO_CFLAGS) -Wl,--version-script=libaio.map -Wl,-soname=$(soname) -o $@ $(libaio_sobjs) $(LINK_FLAGS)
++	$(CC) $(SO_CFLAGS) $(LINK_FLAGS) -Wl,--version-script=libaio.map -Wl,-soname=$(soname) -o $@ $(libaio_sobjs)
+ 
+ install: $(all_targets)
+ 	install -D -m 644 libaio.h $(includedir)/libaio.h

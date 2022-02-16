@@ -7,8 +7,8 @@ ac_cv_func_reboot=no   \
  --prefix="/usr"                       \
  --libdir="/usr/lib"                   \
 \
- --enable-colors-default               \
  --enable-cal                          \
+ --enable-colors-default               \
  --enable-fdisks                       \
  --enable-fsck                         \
  --enable-hwclock                      \
@@ -25,6 +25,7 @@ ac_cv_func_reboot=no   \
  --enable-mountpoint                   \
  --enable-rfkill                       \
  --enable-shared                       \
+ --enable-wipefs                       \
  --with-libmagic                       \
  --with-libz                           \
  --with-ncursesw                       \
@@ -95,7 +96,6 @@ ac_cv_func_reboot=no   \
  --disable-vipw                        \
  --disable-wall                        \
  --disable-wdctl                       \
- --disable-wipefs                      \
  --disable-write                       \
  --disable-zramctl                     \
  --without-audit                       \
