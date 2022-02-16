@@ -1,0 +1,24 @@
+# create luks
+cryptsetup \
+ --type      luks2           \
+ --cipher    aes-xts-plain64 \
+ --hash      sha512          \
+ --iter-time 2000            \
+ --key-size  512             \
+ --pbkdf     argon2id        \
+\
+ --use-urandom               \
+ --verify-passphrase         \
+\
+ luksFormat /dev/sdb
+
+# format the partition
+cryptsetup luksOpen /dev/sdb archive
+
+mkfs.ext4 /dev/mapper/archive
+e2label   /dev/mapper/archive archive
+
+cryptsetup close archive
+
+# nuking luks header
+wipefs -a /dev/sdb
