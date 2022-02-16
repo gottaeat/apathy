@@ -101,3 +101,4 @@
 /usr/sbin/rtcwake
 
 /usr/share/doc
+/usr/share/man
