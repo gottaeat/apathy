@@ -1,19 +1,2 @@
 #!/mss/bin/sh
-exec rsync \
-\
- --links          \
- --perms          \
- --executability  \
- --owner          \
- --group          \
- --times          \
- --devices        \
- --specials       \
-\
- --fake-super     \
- --recursive      \
-\
- --human-readable \
- --progress       \
-\
- "${@}"
+rsync -rlptgoDEh --progress ${@}
