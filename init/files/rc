@@ -44,6 +44,10 @@ initboi(){
   mount -o remount,rw /     >/dev/null 2>&1
  evalret
 
+ ainitmes "opening ${cb_cyn}LUKS${c_res} partitions."
+  infoprompt; printf "${sbefore}"
+  cryptsetup luksOpen "${lukspart}" "${luksname}"
+
  ainitmes "mounting the entries in ${cb_cyn}fstab${c_res}."
   mount -a                  >/dev/null 2>&1
  evalret
@@ -141,6 +145,10 @@ goingdown(){
 
  ainitmes "unmounting all ${cb_cyn}mounted devices${c_res}."
   umount -f -rat nosysfs,noproc,nodevtmpfs,notmpfs >/dev/null 2>&1
+ evalret
+
+ ainitmes "closing ${cb_cyn}LUKS${c_res} partitions."
+  cryptsetup luksClose "${luksname}"
  evalret
 }
 
