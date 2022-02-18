@@ -98,6 +98,7 @@ aprint_nc
 # 2 > flags
 # 2.1 > base
      cfbase="-DNDEBUG -g0 -s -w -pipe -O3 -march=native -mtune=native -fcommon"
+     cfbase="${cfbase} -D_FORTIFY_SOURCE=2 -fstack-protector-strong"
     ldfbase="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all"
 
 # 2.2 > lto
