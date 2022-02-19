@@ -57,6 +57,8 @@ cd     glib-2.70.2/
 find . -type f -name meson.build -exec \
  sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
 
+sed -i -e 's/libmount_dep.found()/false/' meson.build
+
 mkdir build
 cd    build
 
@@ -65,7 +67,7 @@ meson --buildtype=plain \
  -Dfam=false             \
  -Dgtk_doc=false         \
  -Dinstalled_tests=false \
- -Dlibmount=enabled      \
+ -Dlibmount=disabled     \
  -Dman=false             \
  -Dnls=disabled          \
  -Dtests=false           \

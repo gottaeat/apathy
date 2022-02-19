@@ -22,6 +22,7 @@
 
 const static char * applets[] = {
 	"/bin/login",
+	"/bin/mount",
 	"/bin/ping",
 	"/bin/su",
 	"/usr/bin/crontab",

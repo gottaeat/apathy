@@ -1,116 +1,194 @@
 # 1
-ac_cv_func_reboot=no   \
+export   CFLAGS="${CFLAGS}   -fPIC"
+export CXXFLAGS="${CXXFLAGS} -fPIC"
+
+nobuild="blkdiscard
+         blkzone
+         blockdev
+         chcpu
+         choom
+         col
+         colcrt
+         colrm
+         ctrlaltdel
+         dmesg
+         fincore
+         findfs
+         findmnt
+         flock
+         fsfreeze
+         getopt
+         hexdump
+         i386
+         ipcmk
+         isosize
+         ldattach
+         linux32
+         linux64
+         look
+         lsipc
+         lslocks
+         lsns
+         mkswap
+         namei
+         prlimit
+         readprofile
+         renice
+         rev
+         rtcwake
+         setarch
+         setsid
+         sfdisk
+         uname26
+         uuidparse
+         x86_64"
+
+for i in $nobuild; do
+ sed -i -e "s|build_${i}|no|g" configure
+done
+
+sed -i -e 's|\$no|no|g;s|noumn|yes|g' configure
+
 ./configure \
- ADJTIME_PATH=/var/lib/hwclock/adjtime \
- --build="${CBUILD}"                   \
- --host="${CHOST}"                     \
- --prefix="/usr"                       \
- --libdir="/usr/lib"                   \
+ --build="${CBUILD}"               \
+ --host="${CHOST}"                 \
+ --prefix="/usr"                   \
+ --libdir="/usr/lib"               \
+ --sbindir="/usr/bin"              \
+ --enable-shared                   \
+ --enable-static                   \
 \
- --enable-cal                          \
- --enable-colors-default               \
- --enable-fdisks                       \
- --enable-fsck                         \
- --enable-hwclock                      \
- --enable-hwclock-cmos                 \
- --enable-hwclock-gplv3                \
- --enable-kill                         \
- --enable-libblkid                     \
- --enable-libfdisk                     \
- --enable-libmount                     \
- --enable-libsmartcols                 \
- --enable-libuuid                      \
- --enable-losetup                      \
- --enable-mount                        \
- --enable-mountpoint                   \
- --enable-rfkill                       \
- --enable-shared                       \
- --enable-wipefs                       \
- --with-libmagic                       \
- --with-libz                           \
- --with-ncursesw                       \
- --with-readline                       \
- --with-tinfo                          \
- --with-udev                           \
+ --disable-symvers                 \
+ --disable-assert                  \
+ --disable-rpath                   \
+ --disable-gtk-doc                 \
+ --disable-nls                     \
+ --disable-asciidoc                \
+ --disable-poman                   \
 \
- --disable-agetty                      \
- --disable-assert                      \
- --disable-bash-completion             \
- --disable-bfs                         \
- --disable-chfn-chsh                   \
- --disable-chfn-chsh-password          \
- --disable-chmem                       \
- --disable-chsh-only-listed            \
- --disable-cramfs                      \
- --disable-eject                       \
- --disable-fallocate                   \
- --disable-fdformat                    \
- --disable-gtk-doc                     \
- --disable-hardlink                    \
- --disable-ipcrm                       \
- --disable-ipcs                        \
- --disable-irqtop                      \
- --disable-last                        \
- --disable-libmount-support-mtab       \
- --disable-line                        \
- --disable-logger                      \
- --disable-login                       \
- --disable-login-chown-vcs             \
- --disable-login-stat-mail             \
- --disable-lsirq                       \
- --disable-lslogins                    \
- --disable-lsmem                       \
- --disable-mesg                        \
- --disable-minix                       \
- --disable-more                        \
- --disable-newgrp                      \
- --disable-nls                         \
- --disable-nologin                     \
- --disable-nsenter                     \
- --disable-partx                       \
- --disable-pg                          \
- --disable-pg-bell                     \
- --disable-pivot_root                  \
- --disable-plymouth_support            \
- --disable-pylibmount                  \
- --disable-raw                         \
- --disable-rename                      \
- --disable-rpath                       \
- --disable-runuser                     \
- --disable-schedutils                  \
- --disable-setpriv                     \
- --disable-setterm                     \
- --disable-static                      \
- --disable-su                          \
- --disable-sulogin                     \
- --disable-sulogin-emergency-mount     \
- --disable-switch_root                 \
- --disable-tls                         \
- --disable-tunelp                      \
- --disable-ul                          \
- --disable-unshare                     \
- --disable-use-tty-group               \
- --disable-usrdir-path                 \
- --disable-utmpdump                    \
- --disable-uuidd                       \
- --disable-vipw                        \
- --disable-wall                        \
- --disable-wdctl                       \
- --disable-write                       \
- --disable-zramctl                     \
- --without-audit                       \
- --without-bashcompletiondir           \
- --without-btrfs                       \
- --without-cap-ng                      \
- --without-cryptsetup                  \
- --without-econf                       \
- --without-ncurses                     \
- --without-python                      \
- --without-selinux                     \
- --without-slang                       \
- --without-smack                       \
- --without-systemd                     \
- --without-systemdsystemunitdir        \
- --without-user                        \
- --without-utempter                    \
- --without-vendordir
+ --enable-wipefs                   \
+ --enable-libuuid                  \
+ --enable-libblkid                 \
+ --enable-libsmartcols             \
+ --disable-libfdisk                \
+ --disable-libmount                \
+\
+ --enable-colors-default           \
+ --with-cryptsetup                 \
+ --with-libmagic                   \
+ --with-libz                       \
+ --with-tinfo                      \
+ --with-ncursesw                   \
+ --with-readline                   \
+ --with-udev                       \
+\
+ --without-bashcompletiondir       \
+ --without-audit                   \
+ --without-btrfs                   \
+ --without-cap-ng                  \
+ --without-econf                   \
+ --without-ncurses                 \
+ --without-python                  \
+ --without-selinux                 \
+ --without-slang                   \
+ --without-smack                   \
+ --without-systemd                 \
+ --without-systemdsystemunitdir    \
+ --without-user                    \
+ --without-utempter                \
+ --without-util                    \
+ --without-vendordir               \
+ --disable-agetty                  \
+ --disable-bash-completion         \
+ --disable-bfs                     \
+ --disable-blkid                   \
+ --disable-cal                     \
+ --disable-chfn-chsh               \
+ --disable-chfn-chsh-password      \
+ --disable-chmem                   \
+ --disable-chsh-only-listed        \
+ --disable-cramfs                  \
+ --disable-eject                   \
+ --disable-fallocate               \
+ --disable-fdformat                \
+ --disable-fdisks                  \
+ --disable-fsck                    \
+ --disable-fstrim                  \
+ --disable-hardlink                \
+ --disable-hwclock                 \
+ --disable-hwclock-cmos            \
+ --disable-hwclock-gplv3           \
+ --disable-ipcrm                   \
+ --disable-ipcs                    \
+ --disable-irqtop                  \
+ --disable-kill                    \
+ --disable-last                    \
+ --disable-line                    \
+ --disable-logger                  \
+ --disable-login                   \
+ --disable-login-chown-vcs         \
+ --disable-login-stat-mail         \
+ --disable-losetup                 \
+ --disable-lscpu                   \
+ --disable-lsirq                   \
+ --disable-lslogins                \
+ --disable-lsmem                   \
+ --disable-mesg                    \
+ --disable-minix                   \
+ --disable-mkfs                    \
+ --disable-more                    \
+ --disable-mount                   \
+ --disable-mountpoint              \
+ --disable-newgrp                  \
+ --disable-nologin                 \
+ --disable-nsenter                 \
+ --disable-partx                   \
+ --disable-pg                      \
+ --disable-pg-bell                 \
+ --disable-pivot_root              \
+ --disable-plymouth_support        \
+ --disable-pylibmount              \
+ --disable-raw                     \
+ --disable-rename                  \
+ --disable-rfkill                  \
+ --disable-runuser                 \
+ --disable-schedutils              \
+ --disable-scriptutils             \
+ --disable-setpriv                 \
+ --disable-setterm                 \
+ --disable-su                      \
+ --disable-sulogin                 \
+ --disable-sulogin-emergency-mount \
+ --disable-swapon                  \
+ --disable-switch_root             \
+ --disable-tunelp                  \
+ --disable-ul                      \
+ --disable-unshare                 \
+ --disable-use-tty-group           \
+ --disable-utmpdump                \
+ --disable-uuidd                   \
+ --disable-uuidgen                 \
+ --disable-vipw                    \
+ --disable-wall                    \
+ --disable-wdctl                   \
+ --disable-whereis                 \
+ --disable-write                   \
+ --disable-zramctl
+
+make
+
+doas -s
+make install
+
+rm -rfv /usr/share/man
+
+mkdir util-linux-2.37.2-static-libs/
+for i in blkid smartcols uuid; do
+ mv -v /usr/lib/lib${i}.a util-linux-2.37.2-static-libs/
+done
+
+pkgup util-linux-2.37.2-static-libs/ \
+ "${amachine}"-util-linux-2.37.2-static-libs/
+
+mv "${amachine}"-util-linux-2.37.2-static-libs.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/

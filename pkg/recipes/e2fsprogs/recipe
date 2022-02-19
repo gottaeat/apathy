@@ -28,5 +28,6 @@ for i in chattr e2fsck filefrag lsattr mklost+found resize2fs tune2fs mke2fs; do
  mv "${i}" /usr/bin/
 done
 
+ln -sfv e2fsck  /usr/bin/fsck.ext4
 ln -sfv tune2fs /usr/bin/e2label
 ln -sfv mke2fs  /usr/bin/mkfs.ext4

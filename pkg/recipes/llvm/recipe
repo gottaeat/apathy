@@ -65,10 +65,8 @@ cmake -Wno-dev -GNinja\
  -DLLVM_INSTALL_UTILS=ON                             \
  -DLLVM_LINK_LLVM_DYLIB=ON                           \
 \
- -DENABLE_EXPERIMENTAL_NEW_PASS_MANAGER=TRUE         \
  -DGOLD_EXECUTABLE=GOLD_EXECUTABLE-NOTFOUND          \
  -DGO_EXECUTABLE=GO_EXECUTABLE-NOTFOUND              \
- -DHAVE_LIBXAR=OFF                                   \
  -DLLVM_APPEND_VC_REV=OFF                            \
  -DLLVM_ENABLE_ASSERTIONS=OFF                        \
  -DLLVM_ENABLE_BACKTRACES=OFF                        \
@@ -108,7 +106,6 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_DIS_BUILD=OFF                      \
  -DLLVM_TOOL_LLVM_DWARFDUMP_BUILD=OFF                \
  -DLLVM_TOOL_LLVM_DWP_BUILD=ON                       \
- -DLLVM_TOOL_LLVM_ELFABI_BUILD=OFF                   \
  -DLLVM_TOOL_LLVM_EXEGESIS_BUILD=OFF                 \
  -DLLVM_TOOL_LLVM_EXTRACT_BUILD=OFF                  \
  -DLLVM_TOOL_LLVM_GO_BUILD=OFF                       \
@@ -207,6 +204,7 @@ cmake -Wno-dev -GNinja\
  -DCOMPILER_RT_BUILD_SANITIZERS=OFF                  \
  -DCOMPILER_RT_BUILD_STANDALONE_LIBATOMIC=OFF        \
  -DCOMPILER_RT_BUILD_XRAY=OFF                        \
+ -DCOMPILER_RT_BUILTINS_HIDE_SYMBOLS=ON              \
  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                \
  -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF            \
  -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON               \
@@ -229,7 +227,6 @@ cmake -Wno-dev -GNinja\
  -DLIBCXX_ENABLE_STATIC=OFF                          \
  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF              \
  -DLIBCXX_HAS_ATOMIC_LIB=OFF                         \
- -DLIBCXX_HAS_GCC_S_LIB=OFF                          \
  -DLIBCXX_HAS_MUSL_LIBC=ON                           \
  -DLIBCXX_INCLUDE_BENCHMARKS=OFF                     \
  -DLIBCXX_INSTALL_SHARED_LIBRARY=ON                  \
@@ -238,10 +235,10 @@ cmake -Wno-dev -GNinja\
 \
  -DLIBUNWIND_ENABLE_ASSERTIONS=OFF                   \
  -DLIBUNWIND_ENABLE_SHARED=ON                        \
- -DLIBUNWIND_ENABLE_STATIC=OFF                       \
- -DLIBUNWIND_HIDE_SYMBOLS=OFF                        \
+ -DLIBUNWIND_ENABLE_STATIC=ON                        \
+ -DLIBUNWIND_HIDE_SYMBOLS=ON                         \
  -DLIBUNWIND_INSTALL_SHARED_LIBRARY=ON               \
- -DLIBUNWIND_INSTALL_STATIC_LIBRARY=OFF              \
+ -DLIBUNWIND_INSTALL_STATIC_LIBRARY=ON               \
  -DLIBUNWIND_USE_COMPILER_RT=ON                      \
 \
  -DCMAKE_DISABLE_FIND_PACKAGE_CUDA=ON                \
@@ -278,7 +275,10 @@ time samu
 instdir="${PWD}/KEK"
 DESTDIR="${instdir}" samu install
 
-find "${instdir}" -type f \( -name \*.a -a ! -name libclang_rt\* \) \
+find "${instdir}" -type f \
+ \( -name \*.a -a        \
+  ! -name libclang_rt\*  \
+  ! -name libunwind.a \) \
  -exec rm -rfv {} ';'
 
 rm -rfv "${instdir}"/opt/llvm-13.0.1/share

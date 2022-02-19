@@ -9,7 +9,7 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 tar xf /mss/work/sauces/libaio-0.3.112.tar.gz
 cd     libaio-0.3.112/
 
-pdir="/mss/repo/pkg/recipes/cryptshit/patches"
+pdir="/mss/repo/pkg/recipes/cryptsetup/patches"
 patch -p1 < "${pdir}"/0001-libaio-makefile-fixes.patch
 
 mymake(){
@@ -113,7 +113,7 @@ cd ../; rm -rf phc-winner-argon2-20190702/
 tar xf /mss/work/sauces/LVM2.2.02.187.tgz
 cd     LVM2.2.02.187/
 
-pdir="/mss/repo/pkg/recipes/cryptshit/patches"
+pdir="/mss/repo/pkg/recipes/cryptsetup/patches"
 patch -p1 < "${pdir}"/0002-lvm2-mallinfo.patch
 patch -p1 < "${pdir}"/0003-lvm2-stdio.patch
 patch -p1 < "${pdir}"/0004-lvm2-mlockall.patch
@@ -193,37 +193,41 @@ rm -rfv "${penis}"/lib/libdevmapper.so*
 
 cd ../; rm -rfv LVM2.2.02.187/
 
-# 8 > cryptsetup
+# 8 > shared cryptsetup
 tar xf /mss/work/sauces/cryptsetup-2.4.3.tar.gz
 cd     cryptsetup-2.4.3/
 
 sed -i -e 's/\/bin\/bash/\/bin\/sh/g' \
  tests/generate-symbols-list
 
-ac_cv_lib_popt_poptGetContext=yes \
-./configure \
- --build="$CBUILD"                \
- --host="$CHOST"                  \
- --prefix="${penis}"              \
- --enable-internal-sse-argon2     \
- --enable-libargon2               \
- --enable-static                  \
- --disable-cryptsetup-reencrypt   \
- --disable-dev-random             \
- --disable-external-tokens        \
- --disable-internal-argon2        \
- --disable-luks2-reencryption     \
- --disable-nls                    \
- --disable-pwquality              \
- --disable-rpath                  \
- --disable-shared                 \
- --disable-ssh-token              \
- --disable-udev                   \
- --with-crypto_backend=openssl    \
- --with-default-luks-format=LUKS2 \
- --with-luks2-pbkdf=pbkdf2
+myconfigure(){
+ ac_cv_lib_popt_poptGetContext=yes \
+ ./configure \
+  --build="$CBUILD"                \
+  --host="$CHOST"                  \
+  --prefix="${penis}"              \
+  --enable-internal-sse-argon2     \
+  --enable-libargon2               \
+  --enable-static                  \
+  --disable-cryptsetup-reencrypt   \
+  --disable-dev-random             \
+  --disable-external-tokens        \
+  --disable-internal-argon2        \
+  --disable-luks2-reencryption     \
+  --disable-nls                    \
+  --disable-pwquality              \
+  --disable-rpath                  \
+  --disable-shared                 \
+  --disable-ssh-token              \
+  --disable-udev                   \
+  --with-crypto_backend=openssl    \
+  --with-default-luks-format=LUKS2 \
+  --with-luks2-pbkdf=pbkdf2        \
+  ${@}
+}
 
-make
+myconfigure --disable-static-cryptsetup
+make cryptsetup
 
 doas -s
 for i in cryptsetup; do
@@ -231,3 +235,28 @@ for i in cryptsetup; do
  chown root:root "${i}"
  mv "${i}" /usr/bin/
 done
+exit
+
+cd ../
+
+# 9 > static crypsetup
+statdir="/mnt/mss/stuff/techy-bits/packaged-software/${amachine}"
+tar xf "${statdir}"-openssl-3.0.1-static-libs.tar.zst
+tar xf "${statdir}"-util-linux-2.37.2-static-libs.tar.zst
+
+mkdir "${penis}"/lib
+
+mv \
+ openssl-3.0.1-static-libs/*     \
+ util-linux-2.37.2-static-libs/* \
+ "${penis}"/lib
+
+cd cryptsetup-2.4.3/
+
+myconfigure --enable-static-cryptsetup
+make cryptsetup.static
+
+strip --strip-all cryptsetup.static
+pkgup cryptsetup.static "${amachine}"-cryptsetup-2.4.3
+mv "${amachine}"-cryptsetup-2.4.3.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/
