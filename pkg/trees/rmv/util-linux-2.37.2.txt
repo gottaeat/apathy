@@ -25,6 +25,7 @@
 /sbin/swaplabel
 /sbin/swapoff
 /sbin/swapon
+/sbin/wipefs
 
 /usr/bin/cal
 /usr/bin/choom
