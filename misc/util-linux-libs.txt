@@ -1,0 +1,58 @@
+# 1 > initial chek
+# 1.1 > list
+find \
+ /bin /home/mss/execs /lib /lib64 /mss/bin  \
+ /opt /sbin /usr /mnt/mss/stuff/media/games \
+ -type f -exec file {} ';' | grep ELF\      \
+ | awk '{print $1}' | sed 's/:$//g'         \
+ > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+
+# 2
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep -e libuuid\\.so)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 2.1 > libblkid.so -> needed
+/bin/lsblk
+/sbin/fsck
+ /sbin/swaplabel
+ /sbin/wipefs
+ /usr/bin/cryptsetup
+ /usr/bin/e2fsck
+ /usr/bin/mke2fs
+ /usr/bin/tune2fs
+ /usr/bin/udevadm
+ /usr/bin/udevd
+/usr/lib/libfdisk.so.1.1.0
+/usr/lib/libmount.so.1.1.0
+ /usr/sbin/rpc.mountd
+
+# 2.2 > libfdisk.so -> no need
+ /sbin/cfdisk
+ /sbin/fdisk
+
+# 2.3 > libmount.so -> no need
+ /bin/lsblk
+ /sbin/cfdisk
+ /sbin/fsck
+ /usr/lib/libgio-2.0.so.0.7000.2
+
+# 2.4 > libsmartcols.so -> column + wipefs 
+/sbin/cfdisk
+/sbin/fdisk
+ /sbin/wipefs
+ /usr/bin/column
+
+# 2.5 > libuuid.so -> needed
+ /sbin/swaplabel
+ /usr/bin/cryptsetup
+ /usr/bin/e2fsck
+ /usr/bin/mke2fs
+ /usr/bin/tune2fs
+ /usr/lib/libSM.so.6.0.1
+ /usr/lib/libXmu.so.6.2.0
+/usr/lib/libfdisk.so.1.1.0
