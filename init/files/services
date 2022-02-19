@@ -382,12 +382,12 @@ svc_ntpd(){
     ntpd -n -q >/dev/null 2>&1 &
    evalret
    ainitsvc "ntpd" "sys -> hwclock"
-    hwclock --systohc
+    hwclock -w
    evalret
   ;;
   stop)
    ainitsvc "ntpd" "sys -> hwclock"
-    hwclock --systohc
+    hwclock -w
    evalret
   ;;
   *)
@@ -487,8 +487,8 @@ svc_swap(){
      evalret
 
      ainitsvc "swap" "creating and enabling zram as swap"
-      mkswap --label    zram0 /dev/zram0 >/dev/null 2>&1 &&
-      swapon --priority 100   /dev/zram0
+      mkswap -L zram0 /dev/zram0 >/dev/null 2>&1 &&
+      swapon -p 100   /dev/zram0
      evalret
      ;;
      swapfile)
@@ -500,7 +500,7 @@ svc_swap(){
         for i in "${swappath}"; do
          dd if=/dev/zero of="${i}" bs="${swapsize}" \
           count=1024 conv=notrunc >/dev/null 2>&1                &&
-         mkswap --label "apathy_swapfile" "${i}" >/dev/null 2>&1 &&
+         mkswap -L "apathy_swapfile" "${i}" >/dev/null 2>&1 &&
          chown root:root                  "${i}"                 &&
          chmod 0600                       "${i}"
         done
@@ -517,7 +517,7 @@ svc_swap(){
      fi
 
      ainitsvc "swap" "enabling swapfile as swap"
-      swapon --priority 100 "${swappath}"
+      swapon -p 100 "${swappath}"
      evalret
     ;;
     *)
