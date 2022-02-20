@@ -1,0 +1,40 @@
+# 1 > create luks for the entire partition (cryptsetup)
+cryptsetup \
+ --type      luks2           \
+ --cipher    aes-xts-plain64 \
+ --hash      sha512          \
+ --iter-time 2000            \
+ --key-size  512             \
+ --pbkdf     argon2id        \
+\
+ --use-urandom               \
+ --verify-passphrase         \
+\
+ luksFormat /dev/sda4
+
+cryptsetup open /dev/sda4 x230
+
+# 2 > create physical volume (pvcreate)
+pvcreate /dev/mapper/x230
+
+# 3 > create volumegroup (vgcreate) 
+vgcreate apathy /dev/mapper/x230
+
+# 4 > create logical volumes (lvcreate)
+lvcreate -L 4G       apathy -n rootfs
+lvcreate -l 100%FREE apathy -n stuff
+
+# 5 > format partitions (mkfs.ext4)
+mkfs.ext4 /dev/apathy/rootfs -L apathy-rootfs
+mkfs.ext4 /dev/apathy/stuff  -L apathy-stuff
+
+# 6 > format /boot (mkfs.ext4)
+mkfs.ext4 /dev/sda3          -L apathy-boot
+
+# 7 > allow discards + disable workqueue
+cryptsetup \
+ --perf-no_read_workqueue  \
+ --perf-no_write_workqueue \
+ --allow-discards          \
+ --persistent              \
+ refresh x230
