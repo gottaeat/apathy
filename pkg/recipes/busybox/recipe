@@ -76,3 +76,12 @@ for i in bbsuid; do
 done
 
 bbsuid --install
+
+# 4
+cp -v "${fdir}"/config-initramfs ./.config
+mymake clean
+mymake
+pkgup busybox "${amachine}"-busybox-1.35.0-initramfs
+chown mss:mss "${amachine}"-busybox-1.35.0-initramfs.tar.zst
+mv "${amachine}"-busybox-1.35.0-initramfs.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/

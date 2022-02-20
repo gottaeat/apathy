@@ -14,8 +14,11 @@ cp /usr/lib/libuuid.so.1.3.0  usr/lib/libuuid.so.1
 ln -sfv ../usr/lib/libc.so    bin/ldd
 ln -sfv ../usr/lib/libc.so    lib/ld-musl-x86_64.so.1
 
-cp    /bin/busybox            bin/busybox
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-busybox-1.35.0-initramfs.tar.zst
+mv    ./busybox               bin/
 cp -r /opt/cryptshit          opt/
+
+rm -rf opt/cryptshit/include opt/cryptshit/lib/pkgconfig
 
 cat << EOF > etc/ld-musl-x86_64.path
 /lib
@@ -28,7 +31,8 @@ cp "${fdir}"/init .
 chmod +x init
 
 # 2
-find . | cpio -o -H newc | gzip > ../initramfs.gz
+find . | cpio -o -H newc | zstd -19 > ../initramfs.zst
 doas -s
-mv ../initramfs.gz /boot
+mv ../initramfs.zst /boot
+chown -Rh root:root /boot
 lilo

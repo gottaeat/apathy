@@ -28,6 +28,10 @@ sed -i Makefile src/Makefile \
  -e '/images install/d'                    \
  -e '/images all/d'
 
+sed -i make.vars \
+ -e "s|/usr/include/libdevmapper.h|/opt/cryptshit/include/libdevmapper.h|g" \
+ -e "s|-DHAS_LIBDEVMAPPER_H|-DHAS_LIBDEVMAPPER_H -I/opt/cryptshit/include|g"
+
 make all
 
 # 3

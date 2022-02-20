@@ -14,7 +14,7 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 tar xf /mss/work/sauces/libaio-0.3.112.tar.gz
 cd     libaio-0.3.112/
 
-pdir="/mss/repo/pkg/recipes/cryptsetup/patches"
+pdir="/mss/repo/pkg/recipes/cryptshit/patches"
 patch -p1 < "${pdir}"/0001-libaio-makefile-fixes.patch
 
 mymake(){
@@ -118,7 +118,7 @@ cd ../; rm -rf phc-winner-argon2-20190702/
 tar xf /mss/work/sauces/LVM2.2.02.187.tgz
 cd     LVM2.2.02.187/
 
-pdir="/mss/repo/pkg/recipes/cryptsetup/patches"
+pdir="/mss/repo/pkg/recipes/cryptshit/patches"
 patch -p1 < "${pdir}"/0002-lvm2-mallinfo.patch
 patch -p1 < "${pdir}"/0003-lvm2-stdio.patch
 patch -p1 < "${pdir}"/0004-lvm2-mlockall.patch
@@ -239,9 +239,5 @@ doas -- mv -v cryptsetup "${findir}"/bin
 cd ../; rm -rf cryptsetup-2.4.3/
 
 # 9
-doas -- rm -rf \
- "${findir}"/include \
- "${findir}"/lib/pkgconfig
-
 doas -- strip --strip-all      "${findir}"/bin/{cryptsetup,dmsetup,lvm}
 doas -- strip --strip-unneeded "${findir}"/lib/libdevmapper.so.1.02
