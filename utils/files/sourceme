@@ -13,7 +13,6 @@ mypath="$mypath:/opt/cryptshit/bin"
 
 mylibpath="/opt/llvm-13.0.1/lib"
 mylibpath="$mylibpath:/opt/rustc-1.58.1/lib"
-mylibpath="$mylibpath:/opt/cryptshit/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
 # 1.2 > essentials
