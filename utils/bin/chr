@@ -14,12 +14,12 @@ fi
 
 aprint_nc
 aprint_ret "mounting ${chrpnt} to itself."
- mount -B "${chrpnt}" "${chrpnt}"
+ mount --bind "${chrpnt}" "${chrpnt}"
 evalretkill
 
 for i in dev sys run proc; do
  aprint_ret "mounting ${i} to ${chrpnt}/${i}"
-  mount -R /${i} ${chrpnt}/${i}
+  mount --rbind /${i} ${chrpnt}/${i}
  evalretkill
 done
 
