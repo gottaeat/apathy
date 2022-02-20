@@ -1,14 +1,21 @@
 # 1
   penis="/mss/work/table/KEK"
  findir="/opt/cryptshit"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib  -I${penis}/include  -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib  -I${penis}/include  -fPIC"
-export          CFLAGS="${CFLAGS}   -L${findir}/lib -I${findir}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${findir}/lib -I${findir}/include -fPIC"
-
+export          CFLAGS="${CFLAGS}   -L${penis}/lib  -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib  -I${penis}/include -fPIC"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${findir}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+statdir="/mnt/mss/stuff/techy-bits/packaged-software/${amachine}"
+tar xf "${statdir}"-openssl-3.0.1-static-libs.tar.zst
+tar xf "${statdir}"-util-linux-2.37.2-static-libs.tar.zst
+
+mkdir "${penis}"/lib
+
+mv \
+ openssl-3.0.1-static-libs/*     \
+ util-linux-2.37.2-static-libs/* \
+ "${penis}"/lib
 
 # 2 > libaio
 tar xf /mss/work/sauces/libaio-0.3.112.tar.gz
@@ -131,60 +138,65 @@ export      MKDIR_P="install -d"
 export CONFIG_SHELL=/bin/sh
 
 ./configure \
- --build="${CBUILD}"                           \
- --host="${CHOST}"                             \
- --prefix="${findir}"                          \
- --sysconfdir="${findir}/"                     \
- --sbindir="${findir}/bin"                     \
- --with-confdir="${findir}/"                   \
- --with-default-system-dir="${findir}/lvm"     \
- --localstatedir=/var                          \
- --with-cache=none                             \
- --with-cluster=none                           \
- --with-clvmd=none                             \
- --with-mirrors=none                           \
- --with-snapshots=none                         \
- --with-thin=none                              \
- --enable-blkid_wiping                         \
- --enable-devmapper                            \
- --enable-ioctl                                \
- --enable-o_direct                             \
- --enable-pkgconfig                            \
- --enable-realtime                             \
- --disable-static_link                         \
- --disable-applib                              \
- --disable-blkdeactivate                       \
- --disable-cmdlib                              \
- --disable-cmirrord                            \
- --disable-compat                              \
- --disable-dbus-service                        \
- --disable-debug                               \
- --disable-dmeventd                            \
- --disable-dmfilemapd                          \
- --disable-fsadm                               \
- --disable-lvmetad                             \
- --disable-lvmlockd-dlm                        \
- --disable-lvmlockd-sanlock                    \
- --disable-lvmpolld                            \
- --disable-nls                                 \
- --disable-notify-dbus                         \
- --disable-ocf                                 \
- --disable-profiling                           \
- --disable-python2_bindings                    \
- --disable-python3_bindings                    \
- --disable-python_bindings                     \
- --disable-readline                            \
- --disable-selinux                             \
- --disable-udev-rule-exec-detection            \
- --disable-udev-systemd-background-jobs        \
- --disable-udev_rules                          \
- --disable-udev_sync                           \
- --disable-units-compat                        \
- --disable-use-lvmetad                         \
- --disable-use-lvmlockd                        \
- --disable-use-lvmpolld                        \
- --disable-valgrind-pool                       \
- --disable-write_install                       \
+ --build=$CBUILD                           \
+ --host=$CHOST                             \
+ --prefix="${findir}"                      \
+ --sbindir="${findir}"/bin                 \
+ --localstatedir=/var                      \
+ --with-confdir="${findir}"                \
+ --with-default-system-dir="${findir}"/lvm \
+ --with-staticdir="${findir}"/bin          \
+ --with-usrlibdir="${findir}"/lib          \
+ --with-usrsbindir="${findir}"/bin         \
+\
+ --with-cluster=none                       \
+ --with-snapshots=none                     \
+ --with-mirrors=none                       \
+ --with-thin=none                          \
+ --with-cache=none                         \
+ --with-clvmd=none                         \
+\
+ --enable-ioctl                            \
+ --enable-o_direct                         \
+ --enable-pkgconfig                        \
+ --enable-realtime                         \
+ --enable-static_link                      \
+ --enable-devmapper                        \
+\
+ --disable-applib                          \
+ --disable-blkdeactivate                   \
+ --disable-blkid_wiping                    \
+ --disable-cmdlib                          \
+ --disable-cmirrord                        \
+ --disable-compat                          \
+ --disable-dbus-service                    \
+ --disable-debug                           \
+ --disable-dmeventd                        \
+ --disable-dmfilemapd                      \
+ --disable-fsadm                           \
+ --disable-lvmetad                         \
+ --disable-lvmlockd-dlm                    \
+ --disable-lvmlockd-sanlock                \
+ --disable-lvmpolld                        \
+ --disable-nls                             \
+ --disable-notify-dbus                     \
+ --disable-ocf                             \
+ --disable-profiling                       \
+ --disable-python2_bindings                \
+ --disable-python3_bindings                \
+ --disable-python_bindings                 \
+ --disable-readline                        \
+ --disable-selinux                         \
+ --disable-udev-rule-exec-detection        \
+ --disable-udev-systemd-background-jobs    \
+ --disable-udev_rules                      \
+ --disable-udev_sync                       \
+ --disable-units-compat                    \
+ --disable-use-lvmetad                     \
+ --disable-use-lvmlockd                    \
+ --disable-use-lvmpolld                    \
+ --disable-valgrind-pool                   \
+ --disable-write_install                   \
  CLDFLAGS="$LDFLAGS"
 
 make
@@ -192,15 +204,32 @@ make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install
 
-rm -rf \
- "${instdir}"/"${findir}"/share \
- "${instdir}"/"${findir}"/lvm/profile \
- "${instdir}"/"${findir}"/bin/lvmconf \
- "${instdir}"/"${findir}"/bin/lvmdump
+mkdir ../cryptshit/bin
 
-doas -- mv -v "${instdir}"/"${findir}" /opt
+mv      "${instdir}${findir}"/bin/dmsetup.static         ../cryptshit/bin/dmsetup
+mv      "${instdir}${findir}"/bin/lvm.static             ../cryptshit/bin/lvm
+mv      "${instdir}${findir}"/lvm                        ../cryptshit/
+ln -sfv dmsetup                                          ../cryptshit/bin/dmstats
 
-cd ../; rm -rfv LVM2.2.02.187/
+mkdir   ../cryptshit/lvm/cache
+touch   ../cryptshit/lvm/cache/.cache
+rm -rf  ../cryptshit/lvm/{profile/,lvmlocal.conf}
+
+cp      "${instdir}${findir}"/include/libdevmapper.h     "${penis}"/include/
+cp      "${instdir}${findir}"/lib/libdevmapper.a         "${penis}"/lib
+cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${penis}"/lib/pkgconfig
+
+mkdir lvm2.2.02.187-static-libs/{include,lib/pkgconfig}
+pkgupdir="lvm2.2.02.187-static-libs"
+cp      "${instdir}${findir}"/include/libdevmapper.h     "${pkgupdir}"/include/
+cp      "${instdir}${findir}"/lib/libdevmapper.a         "${pkgupdir}"/lib
+cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${pkgupdir}"/lib/pkgconfig
+
+pkgup "${pkgupdir}" "${amachine}"-"${pkgupdir}"
+mv    "${amachine}"-"${pkgupdir}".tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/
+
+cd ../; rm -rf LVM2.2.02.187/
 
 # 8 > cryptsetup
 tar xf /mss/work/sauces/cryptsetup-2.4.3.tar.gz
@@ -216,6 +245,8 @@ ac_cv_lib_popt_poptGetContext=yes \
  --prefix="${findir}"             \
  --enable-internal-sse-argon2     \
  --enable-libargon2               \
+ --enable-static                  \
+ --enable-static-cryptsetup       \
  --disable-cryptsetup-reencrypt   \
  --disable-dev-random             \
  --disable-external-tokens        \
@@ -226,18 +257,10 @@ ac_cv_lib_popt_poptGetContext=yes \
  --disable-rpath                  \
  --disable-shared                 \
  --disable-ssh-token              \
- --disable-static                 \
- --disable-static-cryptsetup      \
  --disable-udev                   \
  --with-crypto_backend=openssl    \
  --with-default-luks-format=LUKS2 \
  --with-luks2-pbkdf=pbkdf2
 
-make cryptsetup
-doas -- mv -v cryptsetup "${findir}"/bin
-
-cd ../; rm -rf cryptsetup-2.4.3/
-
-# 9
-doas -- strip --strip-all      "${findir}"/bin/{cryptsetup,dmsetup,lvm}
-doas -- strip --strip-unneeded "${findir}"/lib/libdevmapper.so.1.02
+make cryptsetup.static
+mv   cryptsetup.static ../cryptshit/bin/cryptsetup

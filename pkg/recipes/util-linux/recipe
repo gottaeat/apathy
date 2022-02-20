@@ -56,7 +56,7 @@ sed -i -e 's|\$no|no|g;s|noumn|yes|g' configure
  --libdir="/usr/lib"               \
  --sbindir="/usr/bin"              \
  --enable-shared                   \
- --disable-static                  \
+ --enable-static                   \
 \
  --disable-symvers                 \
  --disable-assert                  \
@@ -174,3 +174,21 @@ sed -i -e 's|\$no|no|g;s|noumn|yes|g' configure
  --disable-whereis                 \
  --disable-write                   \
  --disable-zramctl
+
+make
+
+doas -s
+make install
+
+rm -rfv /usr/share/man
+
+mkdir util-linux-2.37.2-static-libs/
+for i in blkid smartcols uuid; do
+ mv -v /usr/lib/lib${i}.a util-linux-2.37.2-static-libs/
+done
+
+pkgup util-linux-2.37.2-static-libs/ \
+ "${amachine}"-util-linux-2.37.2-static-libs/
+
+mv "${amachine}"-util-linux-2.37.2-static-libs.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/

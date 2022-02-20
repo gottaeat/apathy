@@ -1,4 +1,11 @@
 # 1
+cdt1
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/x230-lvm2.2.02.187-static-libs.tar.zst
+mv     lvm2.2.02.187-static-libs/ KEK/
+
+export LIBRARY_PATH="${LIBRARY_PATH}:${PWD}/KEK/lib"
+
+# 2
 tar xf /mss/work/sauces/bin86-0.16.21.tar.gz
 cd     bin86-0.16.21/
 
@@ -13,7 +20,7 @@ make PREFIX="${PWD}"/KEK MANDIR="${PWD}"/KEK/share/man/man1 install
 export PATH="${PATH}:${PWD}/KEK/bin"
 cd ..
 
-# 2
+# 3
 tar xf /mss/work/sauces/lilo-24.2.tar.gz
 cd     lilo-24.2/
 
@@ -29,12 +36,12 @@ sed -i Makefile src/Makefile \
  -e '/images all/d'
 
 sed -i make.vars \
- -e "s|/usr/include/libdevmapper.h|/opt/cryptshit/include/libdevmapper.h|g" \
- -e "s|-DHAS_LIBDEVMAPPER_H|-DHAS_LIBDEVMAPPER_H -I/opt/cryptshit/include|g"
+ -e "s|/usr/include/libdevmapper.h|/mss/work/table/KEK/include/libdevmapper.h|g" \
+ -e "s|-DHAS_LIBDEVMAPPER_H|-DHAS_LIBDEVMAPPER_H -I/mss/work/table/KEK/include|g"
 
 make all
 
-# 3
+# 4
 doas -s
 for i in src/lilo; do
  strip --strip-all "${i}"

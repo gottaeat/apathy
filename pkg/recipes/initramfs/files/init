@@ -1,7 +1,7 @@
 #!/bin/busybox sh
-/bin/busybox --install -s
+/bin/busybox --install bin/
 
-export PATH="/bin:/sbin:/usr/bin:/opt/cryptshit/bin"
+export PATH="/bin:/opt/cryptshit/bin"
 
 mount -n -t devtmpfs devtmpfs /dev
 mount -n -t proc     proc     /proc
@@ -13,7 +13,7 @@ clear
 
 cryptsetup open /dev/sda4 x230
 
-vgchange -ay >/dev/null 2>&1
+lvm vgchange -ay >/dev/null 2>&1
 
 mount /dev/apathy/rootfs /mnt
 
