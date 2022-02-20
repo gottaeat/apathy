@@ -9,8 +9,10 @@ set mouse=
 set ruler
 set number
 set backspace=indent,eol,start
-set laststatus=2
 set colorcolumn=80
+
+set laststatus=2
+set statusline=%F%r%m\ \|\ %{wordcount().words}\ words
 
 syntax on
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown

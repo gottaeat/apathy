@@ -1,3 +1,7 @@
-LABEL="apathy"                  /                       ext4  defaults                              0  1
-/dev/mapper/stuff               /mnt/mss/stuff          ext4  rw,relatime,data=ordered              0  1
-/mnt/mss/stuff/techy-bits/home  /home/mss               auto  defaults,nofail,nobootwait,bind       0  0
+# luks -> lvm for rootfs + storage
+/dev/apathy/rootfs              /               ext4  defaults,noatime                  0  1
+/dev/apathy/stuff               /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
+
+# boot + home
+/dev/sda3                       /boot           ext4  defaults,noatime                  0  2
+/mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind   0  0
