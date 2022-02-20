@@ -37,11 +37,12 @@ i  2  .      make                 4.3
 i  2  .      patch                2.7.6
 i  2  .      tar                  1.33
 i  2  .      vim                  8.2.2549
-i  3  .      util-linux           2.37.2
+i  4  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  1  .      linux                5.16.10
-i  1  .      init                 14
+i  2  .      linux                5.16.10
+i  1  ..     initramfs            1
+i  1  .      init                 16
 i  1  ..     utils                8
 i  2  .      opendoas             6.8.1
 i  2  .      iptables             1.8.7
@@ -212,4 +213,5 @@ i  2  .      bully                3ab3bc8
 i  2  .      iw                   5.9
 i  2  .      pixiewps             1.4.2
 i  2  .      reaver-wps-fork-t6x  d6c931c
-i  2  .      cryptsetup           2.4.3
+i  3  .      cryptsetup           2.4.3
+i  1  .      lvm2                 2.2.02.187
