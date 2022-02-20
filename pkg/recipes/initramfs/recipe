@@ -1,0 +1,34 @@
+# 1
+cdt1
+mkdir initramfs
+cd    initramfs
+
+mkdir bin/ sbin/ usr/bin/ usr/sbin/ lib/ usr/lib/ opt/ etc/
+mkdir dev/ sys/ proc/ mnt/ run/
+
+cp /usr/lib/libc.so           usr/lib/
+cp /usr/lib/libcrypto.so.3    usr/lib/
+cp /usr/lib/libblkid.so.1.1.0 usr/lib/libblkid.so.1
+cp /usr/lib/libuuid.so.1.3.0  usr/lib/libuuid.so.1
+
+ln -sfv ../usr/lib/libc.so    bin/ldd
+ln -sfv ../usr/lib/libc.so    lib/ld-musl-x86_64.so.1
+
+cp    /bin/busybox            bin/busybox
+cp -r /opt/cryptshit          opt/
+
+cat << EOF > etc/ld-musl-x86_64.path
+/lib
+/usr/lib
+/opt/cryptshit/lib
+EOF
+
+fdir="/mss/repo/pkg/recipes/initramfs/files"
+cp "${fdir}"/init .
+chmod +x init
+
+# 2
+find . | cpio -o -H newc | gzip > ../initramfs.gz
+doas -s
+mv ../initramfs.gz /boot
+lilo

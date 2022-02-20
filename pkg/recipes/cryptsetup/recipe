@@ -1,8 +1,13 @@
 # 1
   penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+ findir="/opt/cryptshit"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib  -I${penis}/include  -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib  -I${penis}/include  -fPIC"
+export          CFLAGS="${CFLAGS}   -L${findir}/lib -I${findir}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${findir}/lib -I${findir}/include -fPIC"
+
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${findir}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 2 > libaio
@@ -119,11 +124,6 @@ patch -p1 < "${pdir}"/0003-lvm2-stdio.patch
 patch -p1 < "${pdir}"/0004-lvm2-mlockall.patch
 patch -p1 < "${pdir}"/0005-lvm2-bashism.patch
 
-sed -i -e 's| -static | |g'     \
- daemons/dmeventd/Makefile.in   \
- daemons/dmfilemapd/Makefile.in \
- tools/Makefile.in
-
 sed -i -e 's/fmt -1/tr " " "\\n"/' make.tmpl.in
 sed -i -e "s|<libaio.h>|\"${penis}\/include\/libaio.h\"|g" lib/device/bcache.c
 
@@ -133,16 +133,17 @@ export CONFIG_SHELL=/bin/sh
 ./configure \
  --build="${CBUILD}"                           \
  --host="${CHOST}"                             \
- --prefix="${penis}"                           \
- --sysconfdir="${penis}/etc"                   \
- --with-confdir="${penis}/etc"                 \
- --with-default-system-dir="${penis}/etc/lvm"  \
+ --prefix="${findir}"                          \
+ --sysconfdir="${findir}/"                     \
+ --sbindir="${findir}/bin"                     \
+ --with-confdir="${findir}/"                   \
+ --with-default-system-dir="${findir}/lvm"     \
  --localstatedir=/var                          \
  --with-cache=none                             \
  --with-cluster=none                           \
  --with-clvmd=none                             \
- --with-mirrors="none"                         \
- --with-snapshots="none"                       \
+ --with-mirrors=none                           \
+ --with-snapshots=none                         \
  --with-thin=none                              \
  --enable-blkid_wiping                         \
  --enable-devmapper                            \
@@ -150,7 +151,7 @@ export CONFIG_SHELL=/bin/sh
  --enable-o_direct                             \
  --enable-pkgconfig                            \
  --enable-realtime                             \
- --enable-static_link                          \
+ --disable-static_link                         \
  --disable-applib                              \
  --disable-blkdeactivate                       \
  --disable-cmdlib                              \
@@ -186,77 +187,61 @@ export CONFIG_SHELL=/bin/sh
  --disable-write_install                       \
  CLDFLAGS="$LDFLAGS"
 
-make device-mapper
-make install_device-mapper
+make
 
-rm -rfv "${penis}"/lib/libdevmapper.so*
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+rm -rf \
+ "${instdir}"/"${findir}"/share \
+ "${instdir}"/"${findir}"/lvm/profile \
+ "${instdir}"/"${findir}"/bin/lvmconf \
+ "${instdir}"/"${findir}"/bin/lvmdump
+
+doas -- mv -v "${instdir}"/"${findir}" /opt
 
 cd ../; rm -rfv LVM2.2.02.187/
 
-# 8 > shared cryptsetup
+# 8 > cryptsetup
 tar xf /mss/work/sauces/cryptsetup-2.4.3.tar.gz
 cd     cryptsetup-2.4.3/
 
 sed -i -e 's/\/bin\/bash/\/bin\/sh/g' \
  tests/generate-symbols-list
 
-myconfigure(){
- ac_cv_lib_popt_poptGetContext=yes \
- ./configure \
-  --build="$CBUILD"                \
-  --host="$CHOST"                  \
-  --prefix="${penis}"              \
-  --enable-internal-sse-argon2     \
-  --enable-libargon2               \
-  --enable-static                  \
-  --disable-cryptsetup-reencrypt   \
-  --disable-dev-random             \
-  --disable-external-tokens        \
-  --disable-internal-argon2        \
-  --disable-luks2-reencryption     \
-  --disable-nls                    \
-  --disable-pwquality              \
-  --disable-rpath                  \
-  --disable-shared                 \
-  --disable-ssh-token              \
-  --disable-udev                   \
-  --with-crypto_backend=openssl    \
-  --with-default-luks-format=LUKS2 \
-  --with-luks2-pbkdf=pbkdf2        \
-  ${@}
-}
+ac_cv_lib_popt_poptGetContext=yes \
+./configure \
+ --build="$CBUILD"                \
+ --host="$CHOST"                  \
+ --prefix="${findir}"             \
+ --enable-internal-sse-argon2     \
+ --enable-libargon2               \
+ --disable-cryptsetup-reencrypt   \
+ --disable-dev-random             \
+ --disable-external-tokens        \
+ --disable-internal-argon2        \
+ --disable-luks2-reencryption     \
+ --disable-nls                    \
+ --disable-pwquality              \
+ --disable-rpath                  \
+ --disable-shared                 \
+ --disable-ssh-token              \
+ --disable-static                 \
+ --disable-static-cryptsetup      \
+ --disable-udev                   \
+ --with-crypto_backend=openssl    \
+ --with-default-luks-format=LUKS2 \
+ --with-luks2-pbkdf=pbkdf2
 
-myconfigure --disable-static-cryptsetup
 make cryptsetup
+doas -- mv -v cryptsetup "${findir}"/bin
 
-doas -s
-for i in cryptsetup; do
- strip --strip-all "${i}"
- chown root:root "${i}"
- mv "${i}" /usr/bin/
-done
-exit
+cd ../; rm -rf cryptsetup-2.4.3/
 
-cd ../
+# 9
+doas -- rm -rf \
+ "${findir}"/include \
+ "${findir}"/lib/pkgconfig
 
-# 9 > static crypsetup
-statdir="/mnt/mss/stuff/techy-bits/packaged-software/${amachine}"
-tar xf "${statdir}"-openssl-3.0.1-static-libs.tar.zst
-tar xf "${statdir}"-util-linux-2.37.2-static-libs.tar.zst
-
-mkdir "${penis}"/lib
-
-mv \
- openssl-3.0.1-static-libs/*     \
- util-linux-2.37.2-static-libs/* \
- "${penis}"/lib
-
-cd cryptsetup-2.4.3/
-
-myconfigure --enable-static-cryptsetup
-make cryptsetup.static
-
-strip --strip-all cryptsetup.static
-pkgup cryptsetup.static "${amachine}"-cryptsetup-2.4.3
-mv "${amachine}"-cryptsetup-2.4.3.tar.zst \
- /mnt/mss/stuff/techy-bits/packaged-software/
+doas -- strip --strip-all      "${findir}"/bin/{cryptsetup,dmsetup,lvm}
+doas -- strip --strip-unneeded "${findir}"/lib/libdevmapper.so.1.02
