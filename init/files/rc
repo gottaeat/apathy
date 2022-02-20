@@ -35,10 +35,6 @@ initboi(){
   mount -o remount,ro /     >/dev/null 2>&1
  evalret
 
- ainitmes "opening ${cb_cyn}LUKS${c_res} partitions."
-  infoprompt; printf "${sbefore}"
-  cryptsetup luksOpen "${lukspart}" "${luksname}"
-
  ainitmes "running ${cb_cyn}fsck${c_res}."
   fsck -ATat noopts=_netdev >/dev/null 2>&1
  evalret
@@ -140,16 +136,6 @@ goingdown(){
 
  ainitmes "terminating ${cb_cyn}remaining processes${c_res}."
   killall5 -s TERM && sleep 3 && killall5 -s KILL
- evalret
-
- ainitmes "unmounting ${cb_cyn}LUKS${c_res} partitions."
-  for i in $(mount | awk '/\/dev\/mapper/{print $1}' | uniq); do
-   umount -f "${i}" >/dev/null 2>&1
-  done
- evalret
-
- ainitmes "closing ${cb_cyn}LUKS${c_res} partitions."
-  cryptsetup luksClose "${luksname}"
  evalret
 
  ainitmes "unmounting all ${cb_cyn}mounted devices${c_res}."
