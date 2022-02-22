@@ -1,11 +1,18 @@
 # 1
 ./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix=/usr   \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --localstatedir=/var \
  --disable-nls
 
 make
 
 # 2
-doas -- mv /usr/bin/find /bin/find
+doas -s
+make install
+mv /usr/bin/find /bin/
+
+rm -rfv \
+ /usr/share/info \
+ /usr/share/man
