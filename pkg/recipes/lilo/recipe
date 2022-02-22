@@ -1,6 +1,6 @@
 # 1
 cdt1
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/x230-lvm2.2.02.187-static-libs.tar.zst
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-lvm2.2.02.187-static-libs.tar.zst
 mv     lvm2.2.02.187-static-libs/ KEK/
 
 export LIBRARY_PATH="${LIBRARY_PATH}:${PWD}/KEK/lib"

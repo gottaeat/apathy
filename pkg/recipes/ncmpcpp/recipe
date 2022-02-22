@@ -10,7 +10,7 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 cdt1
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
 popd
 
 # 3

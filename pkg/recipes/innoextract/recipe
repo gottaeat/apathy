@@ -6,7 +6,7 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib"
 # 2
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
 popd
 
 # 3

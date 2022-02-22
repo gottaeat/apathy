@@ -11,9 +11,9 @@ export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
 cdt1
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/t61-ruby-2.7.1.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-ruby-2.7.1.tar.zst
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/t61-boost-1.76.0-static-only-nolto.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
 popd
 
 # 3
