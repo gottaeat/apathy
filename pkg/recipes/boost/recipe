@@ -1,15 +1,24 @@
 # 1
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
 export    CFLAGS="${CFLAGS}   -fPIC"
 export  CXXFLAGS="${CXXFLAGS} -fPIC -std=c++14"
 
+instdir="${PWD}/KEK"
+
 ./bootstrap.sh \
- --prefix="${PWD}/KEK/opt/boost-1.76.0" \
+ --prefix="${instdir}/opt/boost-1.76.0" \
  --with-toolset=clang                   \
  --with-python="/usr/bin/python3"
 
 mybee2(){
 time ./b2 "$@" -j "${ajobcount}"        \
- --prefix="${PWD}/KEK/opt/boost-1.76.0" \
+ --prefix="${instdir}/opt/boost-1.76.0" \
  --layout=system                        \
  --without-stacktrace                   \
  --without-mpi                          \
@@ -32,18 +41,14 @@ mybee2 stage
 mybee2 install
 
 # 2
-find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
+find "${instdir}"/opt/boost-1.76.0/lib -type f -name \*.a \
  -exec strip \
   --strip-debug                   \
   --remove-section=.comment       \
   --remove-section=.note          \
   --enable-deterministic-archives \
-  -R .gnu.lto_*                   \
-  -R .gnu.debuglto_*              \
-  -N __gnu_lto_slim               \
-  -N __gnu_lto_v1                 \
 {} ';'
 
-find KEK/opt/boost-1.76.0/lib -type f -name \*.a \
+find "${instdir}"/opt/boost-1.76.0/lib -type f -name \*.a \
  -exec ${RANLIB} \
 {} ';'
