@@ -1,10 +1,4 @@
 # 1
-t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
-
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed "s/-march=native -mtune=native/${t61cf}/")"
 export   CFLAGS="$(echo "${CFLAGS}"   \
  | sed 's/-O[23]/-Os/')"
 export CXXFLAGS="$(echo "${CXXFLAGS}" \

@@ -1,6 +1,5 @@
 # 1
 case "${amachine}" in
- t61)  fname="xos4 Terminus" fsize="9"  ;;
  x230) fname="xos4 Terminus" fsize="10" ;;
 esac
 

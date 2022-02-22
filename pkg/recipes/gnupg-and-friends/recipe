@@ -8,8 +8,7 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 1.2
 case "${amachine}" in
- t61)  peen="disable" ;;
- x230) peen="enable"  ;;
+ x230) peen="enable" ;;
 esac
 
 # 2 > shared libgpg-error

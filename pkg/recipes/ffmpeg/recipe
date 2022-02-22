@@ -35,8 +35,7 @@ sed -i -e 's/-lXv/-lXv -lXext -lX11/g' \
 
 # 3 > ffmpeg
 case "${amachine}" in
- t61)  peen="disable" peenlist="oss,sndio,v4l2" ;;
- x230) peen="enable"  peenlist="oss,sndio"      ;;
+ x230) peen="enable"  peenlist="oss,sndio" ;;
 esac
 
 tar xf /mss/work/sauces/ffmpeg-5.0.tar.xz

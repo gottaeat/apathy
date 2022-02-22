@@ -1,13 +1,5 @@
 # 1 > env vars
-#t61cf="-march=penryn -mtune=penryn -mno-avx -mno-aes -mno-sse4a -mno-sse4.2"
-#t61rf="-Ctarget-cpu=penryn -Ctarget-feature=-avx -Ctarget-feature=-aes"
-#t61rf="${t61rf} -Ctarget-feature=-sse4a -Ctarget-feature=-sse4.2"
-#
-#export   CFLAGS="$(echo "${CFLAGS}"   \
-# | sed "s/-march=native -mtune=native/${t61cf}/")"
-#export CXXFLAGS="$(echo "${CXXFLAGS}" \
-# | sed "s/-march=native -mtune=native/${t61cf}/")"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
+export  LDFLAGS="$(echo "${LDFLAGS}" \
  | sed 's/,--thinlto-cache-dir=\/mss\/work\/ltocache//g')"
 
 penis="/mss/work/table/KEK"
@@ -15,7 +7,6 @@ export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
 export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-91.6.0esr/lib,--enable-new-dtags"
 
-#                   RUSTFLAGS="-Clinker=${CC} ${t61rf} -Lnative=$(llvm-config --libdir)"
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
