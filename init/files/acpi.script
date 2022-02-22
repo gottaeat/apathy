@@ -69,60 +69,6 @@ case "${amachine}" in
    ;;
   esac
  ;;
- t61)
-  case "${1}" in
-   button/fnf1)          : ;;
-   button/screenlock)    xorgexec xtrlock                         ;;
-   button/battery)       : ;;
-   button/sleep)         xorgexec xtrlock &
-                         [ "${2}" = "SBTN" ] && suspendtodisk yes ;;
-   button/wlan)          : ;;
-   video/switchmode)     xorgexec setmon                          ;;
-   button/fnf9)          : ;;
-   button/fnf11)         : ;;
-   button/suspend)       : ;;
-   video/brightnessup)   : ;;
-   video/brightnessdown) : ;;
-   button/zoom)          : ;;
-   cd/stop)              mpc -q stop                              ;;
-   cd/prev)              mpc -q prev                              ;;
-   cd/play)              mpc -q toggle                            ;;
-   cd/next)              mpc -q next                              ;;
-
-   # extra keyboard
-   button/mute)          amixer -q set Master toggle              ;;
-   button/volumedown)    amixer -q set Master 3dB-                ;;
-   button/volumeup)      amixer -q set Master 3dB+                ;;
-   button/vendor)        echo 3 > /proc/sys/vm/drop_caches        ;;
-
-   # lid
-   button/lid)
-    case "${3}" in
-     open)               : ;;
-     close)              : ;;
-    esac
-   ;;
-
-   # headphone in
-   jack/headphone)
-    case "${3}" in
-     plug)               : ;;
-     unplug)             : ;;
-   esac
-   ;;
-
-   # mic in
-   jack/microphone)
-    case "${3}" in
-     plug)               : ;;
-     unplug)             : ;;
-   esac
-   ;;
-   *)
-    printf "acpi.script: event not understood:\n$1\n" > /dev/kmsg
-   ;;
-  esac
- ;;
  *)
   printf "acpi.script: no profile available for this device:\n" > /dev/kmsg
  ;;
