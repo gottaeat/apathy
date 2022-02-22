@@ -12,9 +12,12 @@
 /bin/date
 /bin/dd
 /bin/df
+/bin/dmesg
 /bin/echo
 /bin/false
+/bin/getopt
 /bin/hostname
+/bin/kill
 /bin/link
 /bin/ln
 /bin/login
@@ -22,12 +25,15 @@
 /bin/mkdir
 /bin/mknod
 /bin/mktemp
+/bin/mount
+/bin/mountpoint
 /bin/mt
 /bin/mv
 /bin/nice
 /bin/ping
 /bin/printenv
 /bin/pwd
+/bin/rev
 /bin/rm
 /bin/rmdir
 /bin/sh
@@ -38,18 +44,30 @@
 /bin/sync
 /bin/touch
 /bin/true
+/bin/umount
 /bin/uname
 
+/sbin/blkid
+/sbin/fdisk
+/sbin/fsck
+/sbin/fstrim
+/sbin/hwclock
 /sbin/ip
 /sbin/klogd
+/sbin/losetup
 /sbin/lsmod
 /sbin/mkdosfs
 /sbin/mkfs.vfat
+/sbin/mkswap
+/sbin/swapoff
+/sbin/swapon
+/sbin/switch_root
 /sbin/syslogd
 /sbin/udhcpc
 
 /usr/bin/[
 /usr/bin/basename
+/usr/bin/cal
 /usr/bin/cksum
 /usr/bin/comm
 /usr/bin/crontab
@@ -64,11 +82,11 @@
 /usr/bin/fold
 /usr/bin/groups
 /usr/bin/head
+/usr/bin/hexdump
 /usr/bin/hostid
 /usr/bin/id
 /usr/bin/install
 /usr/bin/logname
-/usr/bin/man
 /usr/bin/md5sum
 /usr/bin/mkfifo
 /usr/bin/nl
@@ -80,6 +98,7 @@
 /usr/bin/printf
 /usr/bin/readlink
 /usr/bin/realpath
+/usr/bin/renice
 /usr/bin/seq
 /usr/bin/sha1sum
 /usr/bin/sha256sum
@@ -121,3 +140,4 @@
 /usr/sbin/loadfont
 /usr/sbin/nologin
 /usr/sbin/ntpd
+/usr/sbin/rfkill

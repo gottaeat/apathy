@@ -7,3 +7,4 @@
 
 /usr/share/info
 /usr/share/man
+/usr/var
