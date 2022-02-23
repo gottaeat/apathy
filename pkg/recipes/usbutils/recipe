@@ -1,13 +1,21 @@
 # 1
-pdir="/mss/repo/pkg/recipes/usbutils/patches"
-patch -p1 < "${pdir}"/0001-hwdata.patch
-
-./autogen.sh
+autoreconf -fvi
 
 ./configure \
- --build=$CBUILD             \
- --host=$CHOST               \
- --prefix=/usr               \
- --datadir=/usr/share/hwdata \
- --enable-usbids             \
- --disable-zlib
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --datadir=/usr/share/hwdata
+
+make lsusb
+
+doas -s
+for i in lsusb; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+fdir="/mss/repo/pkg/recipes/usbutils/files"
+cp "${fdir}"/usb.ids /usr/share/hwdata/
+chown root:root /usr/share/hwdata/usb.ids
