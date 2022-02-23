@@ -1,5 +1,5 @@
 project('utils',
- version: '11',
+ version: '12',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
