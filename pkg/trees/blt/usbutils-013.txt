@@ -1,6 +1,3 @@
 /usr/bin/lsusb
-/usr/bin/lsusb.py
-/usr/bin/usb-devices
-/usr/bin/usbhid-dump
 
-/usr/share/man
+/usr/share/hwdata/usb.ids
