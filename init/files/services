@@ -498,10 +498,10 @@ svc_swap(){
       then
        ainitsvc "swap" "swapfile not found, creating"
         for i in "${swappath}"; do
-         dd if=/dev/zero of="${i}" bs="${swapsize}" \
-          count=1024 conv=notrunc >/dev/null 2>&1                &&
-         mkswap -L "apathy_swapfile" "${i}" >/dev/null 2>&1 &&
-         chown root:root                  "${i}"                 &&
+         dd if=/dev/zero of="${i}" \
+          count="${swapsize}" bs=1M conv=notrunc >/dev/null 2>&1 &&
+         mkswap -L "apathy_swapfile"      "${i}" >/dev/null 2>&1 &&
+         chown root:root                  "${i}"            &&
          chmod 0600                       "${i}"
         done
        evalret
