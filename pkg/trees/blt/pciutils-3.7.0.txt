@@ -2,9 +2,6 @@
 /usr/bin/setpci
 /usr/bin/update-pciids
 
-/usr/lib/libpci.so.3
-/usr/lib/libpci.so.3.7.0
-
 /usr/share/hwdata/pci.ids
 
 /usr/share/man
