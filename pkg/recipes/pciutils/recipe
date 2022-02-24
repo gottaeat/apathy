@@ -3,14 +3,6 @@ pdir="/mss/repo/pkg/recipes/pciutils/patches"
 patch -p1 < "${pdir}"/0001-pread.patch
 
 sed -i -e 's/STRIP=-s//g;s/\$(STRIP)//g' Makefile
-
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
-
 export   CFLAGS="${CFLAGS}   -fPIC -DPIC"
 export CXXFLAGS="${CXXFLAGS} -fPIC -DPIC"
 export  LDFLAGS="${CFLAGS} ${LDFLAGS}"
@@ -22,7 +14,7 @@ make \
  RANLIB="${RANLIB}"           \
 \
  ZLIB=no                      \
- SHARED=yes                   \
+ SHARED=no                    \
  PREFIX=/usr                  \
  SHAREDIR=/usr/share/hwdata   \
  MANDIR=/usr/share/man        \
@@ -38,7 +30,7 @@ make \
  RANLIB="${RANLIB}"           \
 \
  ZLIB=no                      \
- SHARED=yes                   \
+ SHARED=no                    \
  PREFIX=/usr                  \
  SHAREDIR=/usr/share/hwdata   \
  MANDIR=/usr/share/man        \
@@ -55,7 +47,7 @@ make \
  RANLIB="${RANLIB}"           \
 \
  ZLIB=no                      \
- SHARED=yes                   \
+ SHARED=no                    \
  PREFIX=/usr                  \
  SHAREDIR=/usr/share/hwdata   \
  MANDIR=/usr/share/man        \
