@@ -24,7 +24,7 @@ datebefore="$(date +%s)"
 
 aprint_ret "comressing to ${cl_grn}${zname}.tar.zst${c_res}."
  /bin/busybox time \
-  zstd --rm -v -12 "${bname}".tar -o "${zname}".tar.zst \
+  zstd -T4 --rm -v -12 "${bname}".tar -o "${zname}".tar.zst \
    >> "${redirect_to}" 2>&1
 evalret
 
