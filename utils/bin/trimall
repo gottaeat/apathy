@@ -1,0 +1,11 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+
+rootcheck
+
+aprint_nc
+aprint_info "trimming all mounted ext4 partitions:"
+ for i in $(awk '/ext4/{print $2}' /proc/mounts | sort); do
+  fstrim -v "${i}" | awk '{print $1,int($2/1024/1024)"mb trimmed"}'
+ done | column -t
+aprint_nc
