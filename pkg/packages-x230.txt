@@ -184,7 +184,7 @@ i  1  .      openmp               13.0.1
 i  3  .      firefox              91.6.0esr
 i  1  ..     node.js              16.9.1
 i  1  ..     cbindgen             0.20.0
-i  1  ...    rust                 1.58.1
+i  1  ...    rust                 1.59.0
 i  2  ..     gtk3                 3.24.30
 i  1  ...    mss-ec               1b7882e1
 i  1  .      zstd                 1.5.1
