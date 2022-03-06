@@ -238,7 +238,7 @@ case "${1}" in
       -s "/mss/init/files/udhcpc.script" \
       -p "/run/udhcpc.pid"               \
       -B                                 \
-      -t 10 -T 3                         \
+      -t 30 -T 2                         \
       -n                                 \
       -R                                 \
       -a                                 \
