@@ -11,9 +11,30 @@ mount -n -t tmpfs    tmpfs    /run
 echo 0 > /proc/sys/kernel/printk
 clear
 
+printf '\n\033[1;41m%s\033[0;39m\n\n' 'initramfs (built @ REPLACEDAT)'
+
+rshell(){
+ printf '\n\e[1;31m %s\e[00m\n\n' 'you done fucked up lad.'
+ exec setsid cttyhack /bin/sh
+}
+
 cryptsetup open /dev/sda4 x230
 
 lvm vgchange -ay >/dev/null 2>&1
+
+for i in $(cat /proc/cmdline); do
+ case $i in
+  resume=*)        susdev_uuid="$(echo ${i} | cut -d= -f3)" ;;
+  resume_offset=*) susdev_oset="$(echo ${i} | cut -d= -f2)" ;;
+ esac
+done
+
+susdev_node="$(findfs             UUID=${susdev_uuid})"
+susdev_stat="$(stat -L -c '0x%t 0x%T'  ${susdev_node})"
+susdev_mjmn="$(printf     '%u:%u\n'    ${susdev_stat})"
+
+echo "${susdev_mjmn}" > /sys/power/resume         || rshell
+echo "${susdev_oset}" > /sys/power/resume_offset  || rshell
 
 mount /dev/apathy/rootfs /mnt
 

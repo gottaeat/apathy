@@ -13,6 +13,10 @@ cp -r /opt/cryptshit opt/
 
 fdir="/mss/repo/pkg/recipes/initramfs/files"
 cp "${fdir}"/init .
+
+sed -i init \
+ -e "s/REPLACEDAT/`dn`/g"
+
 chmod +x init
 
 # 2
