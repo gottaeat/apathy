@@ -4,6 +4,7 @@ cd     MPD-0.21.10/
 
 pdir="/mss/repo/pkg/recipes/mpd/patches"
 patch -p1 < "${pdir}"/0001-fix-libc++-std-forward.patch
+patch -p1 < "${pdir}"/0002-ffmpeg-5-const.patch
 
 mkdir mybuild
 cd    mybuild

@@ -95,6 +95,8 @@ tar xf /mss/work/sauces/firefox-91.6.0esr.source.tar.xz
 cd     firefox-91.6.0/
 
 # 7 > apply patches
+ulimit -n 4096
+
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 

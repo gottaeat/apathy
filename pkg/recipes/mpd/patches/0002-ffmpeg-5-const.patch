@@ -1,0 +1,11 @@
+--- a/src/decoder/plugins/FfmpegDecoderPlugin.cxx	2019-06-05 23:32:32.000000000 +0300
++++ b/src/decoder/plugins/FfmpegDecoderPlugin.cxx	2022-03-02 13:45:25.000000000 +0300
+@@ -529,7 +529,7 @@
+ 		FormatDebug(ffmpeg_domain, "codec '%s'",
+ 			    codec_descriptor->name);
+ 
+-	AVCodec *codec = avcodec_find_decoder(codec_params.codec_id);
++	const AVCodec *codec = avcodec_find_decoder(codec_params.codec_id);
+ 
+ 	if (!codec) {
+ 		LogError(ffmpeg_domain, "Unsupported audio codec");
