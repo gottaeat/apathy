@@ -13,7 +13,7 @@ i  2  .      bison                3.7.4
 i  2  .      flex                 2.6.4
 i  2  .      grep                 3.7
 i  1  .      yash                 2.52
-i  5  .      busybox              1.35.0
+i  6  .      busybox              1.35.0
 i  2  .      libtool              2.4.6
 i  1  .      gperf                3.1
 i  2  .      expat                2.3.0
@@ -40,7 +40,7 @@ i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                5.16.11
-i  1  ..     initramfs            3
+i  1  ..     initramfs            4
 i  5  ...    cryptsetup           2.4.3
 i  3  ....   lvm2                 2.2.02.187
 i  1  .      init                 19
