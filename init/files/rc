@@ -90,12 +90,6 @@ initboi(){
   alsactl restore >/dev/null 2>&1
  evalret
 
- if [ -f /usr/share/consolefonts/"${dev_font}".psf ]; then
-  ainitmes "setting the ${cb_cyn}console font${c_res}."
-   loadfont < /usr/share/consolefonts/"${dev_font}".psf >/dev/null 2>&1
-  evalret
- fi
-
  ainitmes "starting the ${cb_cyn}log daemons${c_res}."
   syslogd && klogd
  evalret
