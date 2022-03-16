@@ -11,6 +11,8 @@ mount -n -t tmpfs    tmpfs    /run
 echo 0 > /proc/sys/kernel/printk
 clear
 
+loadfont < ./font.psf >/dev/null 2>&1
+
 printf '\n\033[1;41m%s\033[0;39m\n\n' 'initramfs (built @ REPLACEDAT)'
 
 rshell(){

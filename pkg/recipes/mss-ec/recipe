@@ -2,5 +2,5 @@
 gcd1 https://github.com/mssx86/mss-ec
 cd   mss-ec/
 
-doas -- cp -rfv consolefonts/ fonts/ icons/ \
+doas -- cp -rfv fonts/ icons/ \
  /usr/share
