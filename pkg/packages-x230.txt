@@ -13,7 +13,7 @@ i  2  .      bison                3.7.4
 i  2  .      flex                 2.6.4
 i  2  .      grep                 3.7
 i  1  .      yash                 2.52
-i  6  .      busybox              1.35.0
+i  7  .      busybox              1.35.0
 i  2  .      libtool              2.4.6
 i  1  .      gperf                3.1
 i  2  .      expat                2.3.0
@@ -40,11 +40,11 @@ i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                5.16.14
-i  1  ..     initramfs            4
+i  1  ..     initramfs            5
 i  5  ...    cryptsetup           2.4.3
 i  3  ....   lvm2                 2.2.02.187
-i  1  .      init                 19
-i  1  ..     utils                15
+i  1  .      init                 20
+i  1  ..     utils                16
 i  2  .      opendoas             6.8.1
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.82.0
@@ -186,7 +186,7 @@ i  1  ..     node.js              16.9.1
 i  1  ..     cbindgen             0.20.0
 i  1  ...    rust                 1.59.0
 i  2  ..     gtk3                 3.24.30
-i  1  ...    mss-ec               1b7882e1
+i  2  ...    mss-ec               1b7882e1
 i  1  .      zstd                 1.5.1
 i  2  .      transmission         3.0
 o  1  .      ruby                 2.7.1

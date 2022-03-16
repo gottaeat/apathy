@@ -30,8 +30,10 @@
 /bin/mt
 /bin/mv
 /bin/nice
+/bin/pidof
 /bin/ping
 /bin/printenv
+/bin/ps
 /bin/pwd
 /bin/rev
 /bin/rm
@@ -61,7 +63,6 @@
 /sbin/mkswap
 /sbin/swapoff
 /sbin/swapon
-/sbin/switch_root
 /sbin/syslogd
 /sbin/udhcpc
 
@@ -70,7 +71,6 @@
 /usr/bin/cal
 /usr/bin/cksum
 /usr/bin/comm
-/usr/bin/crontab
 /usr/bin/cut
 /usr/bin/dirname
 /usr/bin/dos2unix
@@ -80,6 +80,7 @@
 /usr/bin/expr
 /usr/bin/factor
 /usr/bin/fold
+/usr/bin/free
 /usr/bin/groups
 /usr/bin/head
 /usr/bin/hexdump
@@ -95,6 +96,8 @@
 /usr/bin/od
 /usr/bin/passwd
 /usr/bin/paste
+/usr/bin/pgrep
+/usr/bin/pkill
 /usr/bin/printf
 /usr/bin/readlink
 /usr/bin/realpath
@@ -124,6 +127,7 @@
 /usr/bin/unix2dos
 /usr/bin/unlink
 /usr/bin/unzip
+/usr/bin/uptime
 /usr/bin/uudecode
 /usr/bin/uuencode
 /usr/bin/wc
@@ -134,7 +138,6 @@
 /usr/sbin/addgroup
 /usr/sbin/adduser
 /usr/sbin/chroot
-/usr/sbin/crond
 /usr/sbin/delgroup
 /usr/sbin/deluser
 /usr/sbin/loadfont
