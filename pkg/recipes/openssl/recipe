@@ -37,16 +37,16 @@ time make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install_sw install_ssldirs
 
-mkdir openssl-3.0.1-static-libs/
+mkdir openssl-3.0.2-static-libs/
 cp -v \
  "${instdir}"/usr/lib/libssl.a    \
  "${instdir}"/usr/lib/libcrypto.a \
- openssl-3.0.1-static-libs/
+ openssl-3.0.2-static-libs/
 
-pkgup openssl-3.0.1-static-libs/ \
- "${amachine}"-openssl-3.0.1-static-libs/
+pkgup openssl-3.0.2-static-libs/ \
+ "${amachine}"-openssl-3.0.2-static-libs/
 
-mv "${amachine}"-openssl-3.0.1-static-libs.tar.zst \
+mv "${amachine}"-openssl-3.0.2-static-libs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
 
 rm -rfv \
