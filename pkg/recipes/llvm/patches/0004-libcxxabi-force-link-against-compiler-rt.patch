@@ -1,6 +1,6 @@
-From 87795680950b5909f75358b18465d50c95143a9c Mon Sep 17 00:00:00 2001
+From 4b42afdc949dfe499449ffb88fe547ebad43ee95 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 29 Aug 2021 07:36:24 +0300
+Date: Thu, 24 Mar 2022 12:43:32 +0300
 Subject: [PATCH 4/7] libcxxabi: force link against compiler-rt.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 4/7] libcxxabi: force link against compiler-rt.
  1 file changed, 10 insertions(+)
 
 diff --git a/libcxxabi/src/CMakeLists.txt b/libcxxabi/src/CMakeLists.txt
-index f07d43349..b78e9f465 100644
+index 762649a96..5093d0cdf 100644
 --- a/libcxxabi/src/CMakeLists.txt
 +++ b/libcxxabi/src/CMakeLists.txt
-@@ -177,6 +177,11 @@ endif()
+@@ -178,6 +178,11 @@ endif()
  if (LIBCXXABI_ENABLE_SHARED)
    add_library(cxxabi_shared SHARED ${LIBCXXABI_SOURCES} ${LIBCXXABI_HEADERS})
    target_link_libraries(cxxabi_shared PRIVATE cxx-headers ${LIBCXXABI_SHARED_LIBRARIES} ${LIBCXXABI_LIBRARIES})
@@ -36,5 +36,5 @@ index f07d43349..b78e9f465 100644
      target_link_libraries(cxxabi_static PUBLIC pstl::ParallelSTL)
    endif()
 -- 
-2.33.0
+2.35.1
 

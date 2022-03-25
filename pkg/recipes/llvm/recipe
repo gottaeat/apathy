@@ -3,17 +3,11 @@ export CXXFLAGS="${CXXFLAGS} -fpermissive"
 export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
 
 # 2
-tar xf /mss/work/sauces/llvmorg-13.0.1.tar.gz
-cd     llvm-project-llvmorg-13.0.1/
+tar xf /mss/work/sauces/llvmorg-14.0.0.tar.gz
+cd     llvm-project-llvmorg-14.0.0/
 
 pdir="/mss/repo/pkg/recipes/llvm/patches"
-patch -p1 < "${pdir}"/0001-libcxx-fix-musl-locale.patch
-patch -p1 < "${pdir}"/0002-libcxx-force-link-against-compiler-rt.patch
-patch -p1 < "${pdir}"/0003-libcxxabi-don-t-link-against-__cxa_thread_atexit_im.patch
-patch -p1 < "${pdir}"/0004-libcxxabi-force-link-against-compiler-rt.patch
-patch -p1 < "${pdir}"/0005-compiler-rt-adjust-musl-syscalls.patch
-patch -p1 < "${pdir}"/0006-llvm-don-t-build-llvm-locstats.patch
-patch -p1 < "${pdir}"/0007-llvm-move-FeatureAES-back-to-FeaturesSandyBridge.patch
+for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
 cleancmake
 
@@ -22,7 +16,7 @@ cd    build
 
 myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp"
 cmake -Wno-dev -GNinja\
- -DCMAKE_INSTALL_PREFIX="/opt/llvm-13.0.1"           \
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm-14.0.0"           \
  -DCMAKE_C_FLAGS="$CFLAGS"                           \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                       \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                 \
@@ -63,6 +57,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_APPEND_VC_REV=OFF                            \
  -DLLVM_ENABLE_ASSERTIONS=OFF                        \
  -DLLVM_ENABLE_BACKTRACES=OFF                        \
+ -DLLVM_ENABLE_CURL=OFF                              \
  -DLLVM_ENABLE_EH=ON                                 \
  -DLLVM_ENABLE_FFI=ON                                \
  -DLLVM_ENABLE_LIBCXX=ON                             \
@@ -75,6 +70,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_ENABLE_WARNINGS=OFF                          \
  -DLLVM_ENABLE_Z3_SOLVER=OFF                         \
  -DLLVM_ENABLE_ZLIB=ON                               \
+ -DLLVM_OMIT_DAGISEL_COMMENTS=ON                     \
  -DLLVM_OPTIMIZED_TABLEGEN=ON                        \
  -DLLVM_USE_FOLDERS=OFF                              \
  -DLLVM_USE_NEWPM=ON                                 \
@@ -95,8 +91,10 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_CXXDUMP_BUILD=OFF                  \
  -DLLVM_TOOL_LLVM_CXXMAP_BUILD=OFF                   \
  -DLLVM_TOOL_LLVM_C_TEST_BUILD=OFF                   \
+ -DLLVM_TOOL_LLVM_DEBUGINFOD_FIND_BUILD=OFF          \
  -DLLVM_TOOL_LLVM_DIFF_BUILD=OFF                     \
  -DLLVM_TOOL_LLVM_DIS_BUILD=OFF                      \
+ -DLLVM_TOOL_LLVM_DLANG_DEMANGLE_FUZZER_BUILD=OFF    \
  -DLLVM_TOOL_LLVM_DWARFDUMP_BUILD=OFF                \
  -DLLVM_TOOL_LLVM_DWP_BUILD=ON                       \
  -DLLVM_TOOL_LLVM_EXEGESIS_BUILD=OFF                 \
@@ -134,6 +132,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_TOOL_LLVM_SPLIT_BUILD=OFF                    \
  -DLLVM_TOOL_LLVM_STRESS_BUILD=OFF                   \
  -DLLVM_TOOL_LLVM_TAPI_DIFF_BUILD=OFF                \
+ -DLLVM_TOOL_LLVM_TLI_CHECKER_BUILD=OFF              \
  -DLLVM_TOOL_LLVM_UNDNAME_BUILD=OFF                  \
  -DLLVM_TOOL_LLVM_XRAY_BUILD=OFF                     \
  -DLLVM_TOOL_LLVM_YAML_NUMERIC_PARSER_FUZZER_BUILD=OFF\
@@ -154,6 +153,7 @@ cmake -Wno-dev -GNinja\
  -DCLANG_DEFAULT_LINKER="lld"                        \
  -DCLANG_DEFAULT_OBJCOPY="llvm-objcopy"              \
  -DCLANG_DEFAULT_OPENMP_RUNTIME="libomp"             \
+ -DCLANG_DEFAULT_PIE_OFF_LINUX=ON                    \
  -DCLANG_DEFAULT_RTLIB="compiler-rt"                 \
  -DCLANG_DEFAULT_UNWINDLIB="libunwind"               \
  -DCLANG_ENABLE_ARCMT=OFF                            \
@@ -171,6 +171,8 @@ cmake -Wno-dev -GNinja\
  -DCLANG_TOOL_CLANG_FORMAT_VS_BUILD=OFF              \
  -DCLANG_TOOL_CLANG_FUZZER_BUILD=OFF                 \
  -DCLANG_TOOL_CLANG_IMPORT_TEST_BUILD=OFF            \
+ -DCLANG_TOOL_CLANG_LINKER_WRAPPER_BUILD=OFF         \
+ -DCLANG_TOOL_CLANG_NVLINK_WRAPPER_BUILD=OFF         \
  -DCLANG_TOOL_CLANG_OFFLOAD_BUNDLER_BUILD=OFF        \
  -DCLANG_TOOL_CLANG_OFFLOAD_WRAPPER_BUILD=OFF        \
  -DCLANG_TOOL_CLANG_REFACTOR_BUILD=OFF               \
@@ -190,6 +192,7 @@ cmake -Wno-dev -GNinja\
  -DLIBCLANG_BUILD_STATIC=OFF                         \
  -DLLD_VENDOR="apathy"                               \
 \
+ -DCOMPILER_RT_BUILD_GWP_ASAN=OFF                    \
  -DCOMPILER_RT_BUILD_LIBFUZZER=OFF                   \
  -DCOMPILER_RT_BUILD_MEMPROF=OFF                     \
  -DCOMPILER_RT_BUILD_ORC=OFF                         \
@@ -199,6 +202,7 @@ cmake -Wno-dev -GNinja\
  -DCOMPILER_RT_BUILD_XRAY=OFF                        \
  -DCOMPILER_RT_BUILTINS_HIDE_SYMBOLS=ON              \
  -DCOMPILER_RT_DEFAULT_TARGET_ONLY=ON                \
+ -DCOMPILER_RT_ENABLE_CET=OFF                        \
  -DCOMPILER_RT_EXCLUDE_ATOMIC_BUILTIN=OFF            \
  -DCOMPILER_RT_USE_BUILTINS_LIBRARY=ON               \
 \
@@ -219,6 +223,9 @@ cmake -Wno-dev -GNinja\
  -DLIBCXX_ENABLE_SHARED=ON                           \
  -DLIBCXX_ENABLE_STATIC=OFF                          \
  -DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=OFF              \
+ -DLIBCXX_ENABLE_UNICODE=ON                          \
+ -DLIBCXX_ENABLE_WIDE_CHARACTERS=ON                  \
+ -DLIBCXX_EXTRA_SITE_DEFINES=OFF                     \
  -DLIBCXX_HAS_ATOMIC_LIB=OFF                         \
  -DLIBCXX_HAS_MUSL_LIBC=ON                           \
  -DLIBCXX_INCLUDE_BENCHMARKS=OFF                     \
@@ -227,6 +234,7 @@ cmake -Wno-dev -GNinja\
  -DLIBCXX_USE_COMPILER_RT=ON                         \
 \
  -DLIBUNWIND_ENABLE_ASSERTIONS=OFF                   \
+ -DLIBUNWIND_ENABLE_CET=OFF                          \
  -DLIBUNWIND_ENABLE_SHARED=ON                        \
  -DLIBUNWIND_ENABLE_STATIC=ON                        \
  -DLIBUNWIND_HIDE_SYMBOLS=ON                         \
@@ -274,33 +282,33 @@ find "${instdir}" -type f \
   ! -name libunwind.a \) \
  -exec rm -rfv {} ';'
 
-rm -rfv "${instdir}"/opt/llvm-13.0.1/share
+rm -rfv "${instdir}"/opt/llvm-14.0.0/share
 
-find "${instdir}"/opt/llvm-13.0.1/bin \
+find "${instdir}"/opt/llvm-14.0.0/bin \
  -type f              -exec strip --strip-all      {} ';'
 
-find "${instdir}"/opt/llvm-13.0.1/lib \
+find "${instdir}"/opt/llvm-14.0.0/lib \
  -type f -name \*.a   -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/llvm-13.0.1/lib \
+find "${instdir}"/opt/llvm-14.0.0/lib \
  -type f -name \*.a   -exec "${RANLIB}" {} ';'
 
-find "${instdir}"/opt/llvm-13.0.1/lib \
+find "${instdir}"/opt/llvm-14.0.0/lib \
  -type f -name \*.so* -exec strip --strip-unneeded {} ';'
 
 # 4
-mkdir "${instdir}"/opt/llvm-13.0.1/compat
-pushd "${instdir}"/opt/llvm-13.0.1/compat
+mkdir "${instdir}"/opt/llvm-14.0.0/compat
+pushd "${instdir}"/opt/llvm-14.0.0/compat
 
 ln -sfv ../bin/llvm-symbolizer addr2line
 ln -sfv ../bin/llvm-ar         ar
-ln -sfv ../bin/clang-13        as
-ln -sfv ../bin/clang-13        c++
+ln -sfv ../bin/clang-14        as
+ln -sfv ../bin/clang-14        c++
 ln -sfv ../bin/llvm-cxxfilt    c++filt
-ln -sfv ../bin/clang-13        cc
-ln -sfv ../bin/clang-13        cpp
-ln -sfv ../bin/clang-13        g++
-ln -sfv ../bin/clang-13        gcc
+ln -sfv ../bin/clang-14        cc
+ln -sfv ../bin/clang-14        cpp
+ln -sfv ../bin/clang-14        g++
+ln -sfv ../bin/clang-14        gcc
 ln -sfv ../bin/llvm-cov        gcov
 ln -sfv ../bin/lld             ld
 ln -sfv ../bin/llvm-nm         nm

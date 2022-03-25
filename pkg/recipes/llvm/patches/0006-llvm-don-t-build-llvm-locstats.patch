@@ -1,6 +1,6 @@
-From 7f2d2a6ffacf6a31646c28f46a4ea43a05aa5ac6 Mon Sep 17 00:00:00 2001
+From 5c1e4b9330d8126bb7ede992567a1de19e64c864 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 29 Aug 2021 07:37:11 +0300
+Date: Thu, 24 Mar 2022 12:44:31 +0300
 Subject: [PATCH 6/7] llvm: don't build llvm-locstats.
 
 ---
@@ -8,11 +8,11 @@ Subject: [PATCH 6/7] llvm: don't build llvm-locstats.
  1 file changed, 4 deletions(-)
 
 diff --git a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
-index 99773a5ee..c2c078fd7 100644
+index 00d01f4dd..785306fc8 100644
 --- a/llvm/CMakeLists.txt
 +++ b/llvm/CMakeLists.txt
-@@ -1163,7 +1163,3 @@ if (LLVM_INCLUDE_BENCHMARKS)
-   add_subdirectory(utils/benchmark)
+@@ -1257,7 +1257,3 @@ if (LLVM_INCLUDE_BENCHMARKS)
+     ${CMAKE_CURRENT_BINARY_DIR}/third-party/benchmark)
    add_subdirectory(benchmarks)
  endif()
 -
@@ -20,5 +20,5 @@ index 99773a5ee..c2c078fd7 100644
 -  add_subdirectory(utils/llvm-locstats)
 -endif()
 -- 
-2.33.0
+2.35.1
 

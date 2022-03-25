@@ -1,6 +1,6 @@
-From 06e2f481f190cce6ba3329e53f2583335be756c0 Mon Sep 17 00:00:00 2001
+From 59069b4de1addaa62b0b80084164fe6f2a4744af Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 29 Aug 2021 07:35:40 +0300
+Date: Thu, 24 Mar 2022 12:42:45 +0300
 Subject: [PATCH 2/7] libcxx: force link against compiler-rt.
 
 ---
@@ -8,11 +8,11 @@ Subject: [PATCH 2/7] libcxx: force link against compiler-rt.
  1 file changed, 10 insertions(+)
 
 diff --git a/libcxx/src/CMakeLists.txt b/libcxx/src/CMakeLists.txt
-index 496429f38..78b34f464 100644
+index 12dcdf954..be6652f08 100644
 --- a/libcxx/src/CMakeLists.txt
 +++ b/libcxx/src/CMakeLists.txt
-@@ -195,6 +195,11 @@ if (LIBCXX_ENABLE_SHARED)
-   add_library(cxx_shared SHARED ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
+@@ -213,6 +213,11 @@ if (LIBCXX_ENABLE_SHARED)
+   target_include_directories(cxx_shared PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
    target_link_libraries(cxx_shared PUBLIC cxx-headers
                                     PRIVATE ${LIBCXX_LIBRARIES})
 +
@@ -23,8 +23,8 @@ index 496429f38..78b34f464 100644
    set_target_properties(cxx_shared
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
-@@ -273,6 +278,11 @@ if (LIBCXX_ENABLE_STATIC)
-   add_library(cxx_static STATIC ${exclude_from_all} ${LIBCXX_SOURCES} ${LIBCXX_HEADERS})
+@@ -291,6 +296,11 @@ if (LIBCXX_ENABLE_STATIC)
+   target_include_directories(cxx_static PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
    target_link_libraries(cxx_static PUBLIC cxx-headers
                                     PRIVATE ${LIBCXX_LIBRARIES})
 +
@@ -36,5 +36,5 @@ index 496429f38..78b34f464 100644
      PROPERTIES
        COMPILE_FLAGS "${LIBCXX_COMPILE_FLAGS}"
 -- 
-2.33.0
+2.35.1
 

@@ -1,6 +1,6 @@
-From ea514b599856026a8ec5015c5fa03bd3f4f7579e Mon Sep 17 00:00:00 2001
+From 9d85876d2f5397cb49983e9c25a2f4414319c516 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 29 Aug 2021 07:36:02 +0300
+Date: Thu, 24 Mar 2022 12:43:04 +0300
 Subject: [PATCH 3/7] libcxxabi: don't link against __cxa_thread_atexit_im.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 3/7] libcxxabi: don't link against __cxa_thread_atexit_im.
  1 file changed, 2 deletions(-)
 
 diff --git a/libcxxabi/cmake/config-ix.cmake b/libcxxabi/cmake/config-ix.cmake
-index 7f1cecbcd..f75ecfc62 100644
+index efc572ea7..e09d32734 100644
 --- a/libcxxabi/cmake/config-ix.cmake
 +++ b/libcxxabi/cmake/config-ix.cmake
-@@ -94,7 +94,5 @@ if(FUCHSIA)
+@@ -95,7 +95,5 @@ if(FUCHSIA)
  else()
    check_library_exists(dl dladdr "" LIBCXXABI_HAS_DL_LIB)
    check_library_exists(pthread pthread_once "" LIBCXXABI_HAS_PTHREAD_LIB)
@@ -20,5 +20,5 @@ index 7f1cecbcd..f75ecfc62 100644
    check_library_exists(System write "" LIBCXXABI_HAS_SYSTEM_LIB)
  endif()
 -- 
-2.33.0
+2.35.1
 

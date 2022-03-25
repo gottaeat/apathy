@@ -1,6 +1,6 @@
-From 0e5fc1c1dd86c88c0a04cd94cec4e643da2b11e0 Mon Sep 17 00:00:00 2001
+From 37e94fcf99cf0080d1dbec4c75216b28cd2788e8 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sun, 29 Aug 2021 07:35:15 +0300
+Date: Thu, 24 Mar 2022 12:42:28 +0300
 Subject: [PATCH 1/7] libcxx: fix musl locale.
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH 1/7] libcxx: fix musl locale.
  1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/libcxx/include/locale b/libcxx/include/locale
-index 8e584005d..947f6a09a 100644
+index 7c2d2361f..1d6811b6f 100644
 --- a/libcxx/include/locale
 +++ b/libcxx/include/locale
 @@ -9,7 +9,6 @@
@@ -19,7 +19,7 @@ index 8e584005d..947f6a09a 100644
  /*
      locale synopsis
  
-@@ -747,7 +746,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
+@@ -749,7 +748,7 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -28,7 +28,7 @@ index 8e584005d..947f6a09a 100644
          typename remove_reference<decltype(errno)>::type __current_errno = errno;
          if (__current_errno == 0)
              errno = __save_errno;
-@@ -787,7 +786,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
+@@ -789,7 +788,7 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
          typename remove_reference<decltype(errno)>::type __save_errno = errno;
          errno = 0;
          char *__p2;
@@ -38,5 +38,5 @@ index 8e584005d..947f6a09a 100644
          if (__current_errno == 0)
              errno = __save_errno;
 -- 
-2.33.0
+2.35.1
 
