@@ -1,7 +1,7 @@
-From 0b502a1423dc956083e61f11df2ac5698e1a21e0 Mon Sep 17 00:00:00 2001
+From 8e904e89ea1d38f1310b5c2c6bfde23e3f853bc7 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 24 Mar 2022 12:43:57 +0300
-Subject: [PATCH 5/7] compiler-rt: adjust musl syscalls.
+Date: Fri, 1 Apr 2022 18:11:17 +0300
+Subject: [PATCH 6/8] compiler-rt: adjust musl syscalls.
 
 ---
  compiler-rt/lib/sanitizer_common/sanitizer_linux.cpp | 6 +++++-

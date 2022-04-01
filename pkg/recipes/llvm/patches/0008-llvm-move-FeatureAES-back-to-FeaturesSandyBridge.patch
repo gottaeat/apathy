@@ -1,7 +1,7 @@
-From 61d487fe6ff3cbc0e0da09c852b808f37cf18dc1 Mon Sep 17 00:00:00 2001
+From 2f505c8a82eb26a0064797ce34f3941772832079 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 24 Mar 2022 12:44:53 +0300
-Subject: [PATCH 7/7] llvm: move FeatureAES back to FeaturesSandyBridge.
+Date: Fri, 1 Apr 2022 18:11:54 +0300
+Subject: [PATCH 8/8] llvm: move FeatureAES back to FeaturesSandyBridge.
 
 ---
  llvm/lib/Support/X86TargetParser.cpp | 6 +++---

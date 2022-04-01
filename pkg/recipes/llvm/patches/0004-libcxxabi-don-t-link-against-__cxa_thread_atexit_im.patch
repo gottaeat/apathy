@@ -1,7 +1,7 @@
-From 9d85876d2f5397cb49983e9c25a2f4414319c516 Mon Sep 17 00:00:00 2001
+From 8b7e6a208e5d28c5d22bfcaec31e41995854c852 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 24 Mar 2022 12:43:04 +0300
-Subject: [PATCH 3/7] libcxxabi: don't link against __cxa_thread_atexit_im.
+Date: Fri, 1 Apr 2022 18:10:34 +0300
+Subject: [PATCH 4/8] libcxxabi: don't link against __cxa_thread_atexit_im.
 
 ---
  libcxxabi/cmake/config-ix.cmake | 2 --

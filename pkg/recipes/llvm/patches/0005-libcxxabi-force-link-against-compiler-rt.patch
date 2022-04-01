@@ -1,7 +1,7 @@
-From 4b42afdc949dfe499449ffb88fe547ebad43ee95 Mon Sep 17 00:00:00 2001
+From e984ce5660b3410fc19fba3b647cdac66ca75f6a Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 24 Mar 2022 12:43:32 +0300
-Subject: [PATCH 4/7] libcxxabi: force link against compiler-rt.
+Date: Fri, 1 Apr 2022 18:10:54 +0300
+Subject: [PATCH 5/8] libcxxabi: force link against compiler-rt.
 
 ---
  libcxxabi/src/CMakeLists.txt | 10 ++++++++++
