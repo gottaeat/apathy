@@ -3,6 +3,6 @@ cargo fetch --locked
 cargo build --release --frozen
 
 # 2
-mkdir cbindgen-0.20.0/bin
+mkdir cbindgen-0.21.0/bin
 strip --strip-all target/release/cbindgen
-mv target/release/cbindgen cbindgen-0.20.0/bin/
+mv target/release/cbindgen cbindgen-0.21.0/bin/

@@ -1,7 +1,7 @@
 # 1
 penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -fPIC -I${penis}/include -L${penis}/lib -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -fPIC -I${penis}/include -L${penis}/lib -fPIC"
+export          CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -fPIC -fno-builtin"
+export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -fPIC -fno-builtin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
@@ -20,8 +20,8 @@ configtomusl
 
 make
 make install
-cd ..
-rm -rf mtdev-1.1.6/
+
+cd ../; rm -rf mtdev-1.1.6/
 
 # 3
 tar xf /mss/work/sauces/libevdev-1.11.0.tar.xz
@@ -37,12 +37,12 @@ cd     libevdev-1.11.0/
 
 make
 make install
-cd ..
-rm -rf libevdev-1.11.0/
+
+cd ../; rm -rf libevdev-1.11.0/
 
 # 4
-tar xf /mss/work/sauces/libinput-1.19.3.tar.gz
-cd     libinput-1.19.3/
+tar xf /mss/work/sauces/libinput-1.20.0.tar.gz
+cd     libinput-1.20.0/
 
 mkdir build
 cd    build
@@ -57,3 +57,29 @@ meson --buildtype=plain   \
  -Dcoverity=false         \
  -Dzshcompletiondir=no    \
  ..
+
+samu
+DESTDIR=/mss/work/LIBINPUTfuck samu install
+doas -- samu install
+
+cd ../../; rm -rf libinput-1.20.0/
+
+# 5
+tar xf /mss/work/sauces/xf86-input-libinput-1.2.1.tar.gz
+cd     xorg-xf86-input-libinput-xf86-input-libinput-1.2.1/
+
+autoreconf -fvi
+
+./configure \
+ --host=$CHOST   \
+ --build=$CBUILD \
+ --prefix=/usr
+
+make
+make DESTDIR=/mss/work/LIBINPUTfuck install
+doas -- make install
+
+cd ../; rm -rf xorg-xf86-input-libinput-xf86-input-libinput-1.2.1/
+
+# 6
+doas -- rm -rf /usr/share/man
