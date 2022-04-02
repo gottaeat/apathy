@@ -1,0 +1,3 @@
+/usr/bin/doas
+
+/usr/share/man

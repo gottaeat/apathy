@@ -3,12 +3,14 @@
 /usr/bin/libinput
 
 /usr/include/libinput.h
+/usr/include/xorg/libinput-properties.h
 
 /usr/lib/libinput.so
 /usr/lib/libinput.so.10
 /usr/lib/libinput.so.10.13.0
 
 /usr/lib/pkgconfig/libinput.pc
+/usr/lib/pkgconfig/xorg-libinput.pc
 
 /usr/lib/udev/libinput-device-group
 /usr/lib/udev/libinput-fuzz-extract
@@ -16,7 +18,12 @@
 /usr/lib/udev/rules.d/80-libinput-device-groups.rules
 /usr/lib/udev/rules.d/90-libinput-fuzz-override.rules
 
+/usr/lib/xorg/modules/input/libinput_drv.la
+/usr/lib/xorg/modules/input/libinput_drv.so
+
 /usr/libexec/libinput
 /usr/share/libinput
+
+/usr/share/X11/xorg.conf.d/40-libinput.conf
 
 /usr/share/man

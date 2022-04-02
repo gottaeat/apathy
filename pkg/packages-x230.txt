@@ -1,6 +1,6 @@
 i  1  .      linux-headers        5.15.2
 i  2  .      musl                 1.2.2
-i  2  .      zlib                 1.2.11
+i  1  .      zlib                 1.2.12
 i  2  .      file                 5.40
 i  2  .      readline             8.1
 i  2  .      m4                   1.4.18
@@ -16,7 +16,7 @@ i  1  .      yash                 2.52
 i  7  .      busybox              1.35.0
 i  2  .      libtool              2.4.6
 i  1  .      gperf                3.1
-i  2  .      expat                2.3.0
+i  1  .      expat                2.4.8
 i  2  .      perl                 5.34.0
 i  2  .      autoconf             2.70
 i  2  .      automake             1.16.3
@@ -26,7 +26,7 @@ i  2  .      libffi               3.3.0
 i  1  .      openssl              3.0.2
 i  1  .      python               3.9.5
 i  2  .      samurai              1.2
-i  1  .      meson                0.60.0
+i  1  .      meson                0.62.0
 i  3  .      diffutils            3.7
 i  3  .      mawk                 1.3.4-20200120
 i  3  .      findutils            4.8.0
@@ -45,11 +45,11 @@ i  6  ...    cryptsetup           2.4.3
 i  4  ....   lvm2                 2.2.02.187
 i  1  .      init                 20
 i  1  ..     utils                16
-i  2  .      opendoas             6.8.1
+i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.82.0
 i  1  .      git                  2.35.1
-i  1  .      openssh              8.8p1
+i  1  .      openssh              8.9p1
 i  1  .      libssh2              1.9.0
 i  1  .      cmake                3.20.0
 i  3  .      usbutils             013
@@ -59,7 +59,7 @@ i  2  .      rsync                3.2.3
 i  2  .      tmux                 3.2a
 i  1  ..     libevent             2.1.11
 i  2  .      htop                 3.0.2
-i  1  .      sqlite               3.37.0
+i  1  .      sqlite               3.38.2
 i  1  .      gnupg                2.2.28
 i  1  ..     libgpg-error         1.42
 i  1  ..     libassuan            2.5.5
@@ -118,8 +118,8 @@ i  2  .      xkbcomp              1.4.5
 i  2  .      xkeyboard-config     2.33
 i  1  .      xorg-server          21.1.2
 i  1  ..     libepoxy             1.5.8
-i  2  .      xf86-input-libinput  1.2.0
-i  1  ..     libinput             1.19.3
+i  1  .      xf86-input-libinput  1.2.1
+i  1  ..     libinput             1.20.0
 i  1  .      xinit                1.4.1
 i  1  .      landfill             3
 i  2  .      atk                  2.36.0
@@ -148,7 +148,7 @@ i  2  .      xtrlock              2.12
 i  1  .      yt-dlp               2021.10.22
 i  1  .      picom                9
 i  1  .      ffmpeg               5.0
-i  1  ..     libva                2.12.0
+i  1  ..     libva                2.14.0
 i  1  ..     v4l-utils            1.20.0
 i  1  ..     lame                 3.100
 i  1  ..     openjpeg             2.4.0
@@ -183,11 +183,11 @@ i  2  .      llvm                 14.0.0
 i  2  .      openmp               14.0.0
 i  2  .      firefox              91.7.1esr
 i  1  ..     node.js              16.9.1
-i  1  ..     cbindgen             0.20.0
+i  1  ..     cbindgen             0.21.0
 i  1  ...    rust                 1.60.0-beta.6-7bccde197
 i  2  ..     gtk3                 3.24.30
 i  2  ...    mss-ec               1b7882e1
-i  1  .      zstd                 1.5.1
+i  1  .      zstd                 1.5.2
 i  2  .      transmission         3.0
 o  1  .      ruby                 2.7.1
 i  1  .      mkvtoolnix           48.0.0
@@ -198,7 +198,7 @@ i  1  .      ympd                 612f8fc0
 i  2  .      nfs-utils            2.5.2
 i  2  ..     libtirpc             1.3.1
 i  2  ..     rpcbind              1.2.5
-i  1  .      mpdas                c81c480
+i  2  .      mpdas                c81c480
 i  1  .      nfqws                9a7d1e8e
 i  1  .      android-tools        31.0.2
 i  1  .      smartmontools        7.2
