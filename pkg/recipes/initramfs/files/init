@@ -20,7 +20,7 @@ rshell(){
  exec setsid cttyhack /bin/sh
 }
 
-cryptsetup open /dev/sda4 x230
+cryptsetup open /dev/sda4 x230 || rshell
 
 lvm vgchange -ay >/dev/null 2>&1
 
@@ -35,8 +35,8 @@ susdev_node="$(findfs             UUID=${susdev_uuid})"
 susdev_stat="$(stat -L -c '0x%t 0x%T'  ${susdev_node})"
 susdev_mjmn="$(printf     '%u:%u\n'    ${susdev_stat})"
 
-echo "${susdev_mjmn}" > /sys/power/resume         || rshell
-echo "${susdev_oset}" > /sys/power/resume_offset  || rshell
+echo "${susdev_mjmn}" > /sys/power/resume
+echo "${susdev_oset}" > /sys/power/resume_offset
 
 mount /dev/apathy/rootfs /mnt
 

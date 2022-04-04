@@ -1,8 +1,8 @@
 cairo      1.16.0
-fontconfig 2.13.94
-freetype   2.11.1
-glib       2.70.2
-harfbuzz   3.2.0
+fontconfig 2.14.0
+freetype   2.12.0
+glib       2.72.0
+harfbuzz   4.2.0
 libpng     1.6.37
 pcre       8.45
 pixman     0.40.0

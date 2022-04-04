@@ -1,5 +1,6 @@
 # 1 > env vars
 penis="/mss/work/table/KEK"
+instdir="/mss/work/XorgLIBS2"
 ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
 export          CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
 export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
@@ -26,7 +27,7 @@ LIBS=-lpthread \
  --disable-static
 
 make
-make DESTDIR=/mss/work/XorgLIBS2 install
+make DESTDIR="${instdir}" install
 doas -- make install
 
 cd ../; rm -rf libpng-1.6.37/
@@ -45,14 +46,14 @@ cd     pcre-8.45/
  --enable-unicode-properties
 
 make
-make DESTDIR=/mss/work/XorgLIBS2 install
+make DESTDIR="${instdir}" install
 doas -- make install
 
 cd ../; rm -rf pcre-8.45/
 
 # 4 > system glib
-tar xf /mss/work/sauces/glib-2.70.2.tar.xz
-cd     glib-2.70.2/
+tar xf /mss/work/sauces/glib-2.72.0.tar.xz
+cd     glib-2.72.0/
 
 find . -type f -name meson.build -exec \
  sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
@@ -75,14 +76,14 @@ meson --buildtype=plain \
 ..
 
 samu
-DESTDIR=/mss/work/XorgLIBS2 samu install
+DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.70.2/
+cd ../../; rm -rf glib-2.72.0/
 
 # 5 > penis freetype (w/o harfbuzz)
-tar xf /mss/work/sauces/freetype-2.11.1.tar.xz
-cd     freetype-2.11.1/
+tar xf /mss/work/sauces/freetype-2.12.0.tar.xz
+cd     freetype-2.12.0/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -96,11 +97,11 @@ patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
 make
 make install
-cd ../; rm -rf freetype-2.11.1/
+cd ../; rm -rf freetype-2.12.0/
 
 # 6 > penis harfbuzz
-tar xf /mss/work/sauces/harfbuzz-3.2.0.tar.xz
-cd     harfbuzz-3.2.0/
+tar xf /mss/work/sauces/harfbuzz-4.2.0.tar.xz
+cd     harfbuzz-4.2.0/
 
 mkdir build
 cd    build
@@ -124,11 +125,11 @@ meson --buildtype=plain \
 samu
 samu install
 
-cd ../../; rm -rf harfbuzz-3.2.0/
+cd ../../; rm -rf harfbuzz-4.2.0/
 
 # 7 > system freetype (w/ harfbuzz)
-tar xf /mss/work/sauces/freetype-2.11.1.tar.xz
-cd     freetype-2.11.1/
+tar xf /mss/work/sauces/freetype-2.12.0.tar.xz
+cd     freetype-2.12.0/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -141,14 +142,14 @@ patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
  --disable-static
 
 make
-make DESTDIR=/mss/work/XorgLIBS2 install
+make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../ && rm -rf freetype-2.11.1/
+cd ../ && rm -rf freetype-2.12.0/
 
 # 8 > system fontconfig
-tar xf /mss/work/sauces/fontconfig-2.13.94.tar.xz
-cd     fontconfig-2.13.94/
+tar xf /mss/work/sauces/fontconfig-2.14.0.tar.xz
+cd     fontconfig-2.14.0/
 
 ./configure           \
  --build=$CBUILD      \
@@ -161,10 +162,10 @@ cd     fontconfig-2.13.94/
  --with-xmldir=/etc/fonts
 
 make
-make DESTDIR=/mss/work/XorgLIBS2 install
+make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../; rm -rf fontconfig-2.13.94/
+cd ../; rm -rf fontconfig-2.14.0/
 
 # 9 > system pixman
 tar xf /mss/work/sauces/pixman-0.40.0.tar.gz
@@ -196,7 +197,7 @@ meson --buildtype=plain \
 ..
 
 samu
-DESTDIR=/mss/work/XorgLIBS2 samu install
+DESTDIR="${instdir}" samu install
 doas -- samu install
 
 cd ../../; rm -rf pixman-0.40.0/
@@ -227,14 +228,14 @@ ax_cv_c_float_words_bigendian=no \
  --disable-gtk-doc-html
 
 make
-make DESTDIR=/mss/work/XorgLIBS2 install
+make DESTDIR="${instdir}" install
 doas -- make install
 
 cd ../; rm -rf cairo-1.16.0/
 
 # 11 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-3.2.0.tar.xz
-cd     harfbuzz-3.2.0/
+tar xf /mss/work/sauces/harfbuzz-4.2.0.tar.xz
+cd     harfbuzz-4.2.0/
 
 mkdir build
 cd    build
@@ -256,10 +257,10 @@ meson --buildtype=plain \
 ..
 
 samu
-DESTDIR=/mss/work/XorgLIBS2 samu install
+DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-3.2.0/
+cd ../../; rm -rf harfbuzz-4.2.0/
 
 # 12 > cleanup
 doas -- rm -rfv \

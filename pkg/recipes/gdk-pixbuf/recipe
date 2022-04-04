@@ -6,9 +6,9 @@ cd    build
 
 meson --buildtype=plain \
  --prefix=/usr            \
- -Dpng=true               \
- -Dtiff=true              \
- -Djpeg=true              \
+ -Dpng=enabled            \
+ -Dtiff=enabled           \
+ -Djpeg=enabled           \
  -Dbuiltin_loaders=all    \
  -Dgtk_doc=false          \
  -Ddocs=false             \

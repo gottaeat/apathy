@@ -157,21 +157,29 @@ make install
 
 cd ../; rm -rf mpg123-1.27.2/
 
+# 7 > premake
+unzip -q /mss/work/sauces/premake-5.0.0-beta1-src.zip
+cd       premake-5.0.0-beta1-src/build/gmake2.unix/
+
+make config=release
+
+cd ../../../
+mv premake-5.0.0-beta1-src/bin/release/premake5 .
+
+rm -rf premake-5.0.0-beta1-src/
+
 # 7 > re3
-tar xf /mss/work/sauces/re3-20210221_154316.tar.zst
+tar xf /mss/work/sauces/re3-20210904_095606.tar.zst
 cd     re3/
 
-pdir="/mss/repo/pkg/recipes/reX/patches"
-patch -p1 < "${pdir}"/0001-remove-unnecessary-sndfile-link.patch
-patch -p1 < "${pdir}"/0002-fix-musl.patch
-patch -p1 < "${pdir}"/0003-fix-echo-e.patch
+cp ../premake5 ./premake5Linux
 
 ./premake5Linux --with-librw --verbose gmake2
 ./printHash.sh src/extras/GitSHA1.cpp
 
 make -C build config=release_linux-amd64-librw_gl3_glfw-oal verbose=yes              \
  CC="${CC}" CXX="${CXX}" AR="${AR}" NM="${NM}" RANLIB="${RANLIB}" CFLAGS="${CFLAGS}" \
- CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
+ CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS} -lX11"
 
 re3dir="/mss/work/table/out/re3"
 mkdir -pv "${re3dir}"
@@ -181,24 +189,22 @@ cp -rfv \
  gamefiles/                                     \
  "${re3dir}"
 
-cd ../; rm -rf re3
+cd ../; rm -rf re3/
 
 # 8 > reVC
-tar xf /mss/work/sauces/re3-20210221_154316.tar.zst
+tar xf /mss/work/sauces/re3-20210904_095606.tar.zst
 cd     re3/
 
 git checkout miami
 
-patch -p1 < "${pdir}"/0001-remove-unnecessary-sndfile-link.patch
-patch -p1 < "${pdir}"/0002-fix-musl.patch
-patch -p1 < "${pdir}"/0003-fix-echo-e.patch
+cp ../premake5 ./premake5Linux
 
 ./premake5Linux --with-librw --verbose gmake2
 ./printHash.sh src/extras/GitSHA1.cpp
 
 make -C build config=release_linux-amd64-librw_gl3_glfw-oal verbose=yes              \
  CC="${CC}" CXX="${CXX}" AR="${AR}" NM="${NM}" RANLIB="${RANLIB}" CFLAGS="${CFLAGS}" \
- CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}"
+ CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS} -lX11"
 
 revcdir="/mss/work/table/out/reVC"
 mkdir -pv "${revcdir}"
