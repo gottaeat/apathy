@@ -1,0 +1,7 @@
+/usr/include/atk-1.0
+
+/usr/lib/libatk-1.0.so
+/usr/lib/libatk-1.0.so.0
+/usr/lib/libatk-1.0.so.0.23809.1
+
+/usr/lib/pkgconfig/atk.pc
