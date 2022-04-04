@@ -204,6 +204,14 @@ case "${1}" in
    exit 1
   fi
 
+  case "${method}" in dhcp)
+   randommac="$(hexdump -n3 -e'/3 "00:60:2F" 3/1 ":%02X"' /dev/urandom)"
+
+   ainitsvc "network" "setting mac for ${iface} to ${randommac}"
+    ip link set dev "${iface}" address "${randommac}" >/dev/null 2>&1
+   evalret
+  esac
+
   case "${iface}" in
    usb*)
     ainitsvc "network" "bringing ${iface} up"
