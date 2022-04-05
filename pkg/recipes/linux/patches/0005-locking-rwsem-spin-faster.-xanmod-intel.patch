@@ -1,17 +1,17 @@
-From e0314a76f562603d440d7a88b957650c0c2061ef Mon Sep 17 00:00:00 2001
+From 15c27ace9b62265134fde30dbd23d377d2ac2532 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 13 Jan 2022 16:08:30 +0300
-Subject: [PATCH 04/12] locking/rwsem: spin faster. (xanmod/intel)
+Date: Mon, 4 Apr 2022 22:44:39 +0300
+Subject: [PATCH 05/13] locking/rwsem: spin faster. (xanmod/intel)
 
 ---
  kernel/locking/rwsem.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/kernel/locking/rwsem.c b/kernel/locking/rwsem.c
-index 04a74d040..cb416cbd6 100644
+index 69aba4abe..b4818ccad 100644
 --- a/kernel/locking/rwsem.c
 +++ b/kernel/locking/rwsem.c
-@@ -716,6 +716,7 @@ rwsem_spin_on_owner(struct rw_semaphore *sem)
+@@ -707,6 +707,7 @@ rwsem_spin_on_owner(struct rw_semaphore *sem)
  	struct task_struct *new, *owner;
  	unsigned long flags, new_flags;
  	enum owner_state state;
@@ -19,7 +19,7 @@ index 04a74d040..cb416cbd6 100644
  
  	lockdep_assert_preemption_disabled();
  
-@@ -752,7 +753,8 @@ rwsem_spin_on_owner(struct rw_semaphore *sem)
+@@ -743,7 +744,8 @@ rwsem_spin_on_owner(struct rw_semaphore *sem)
  			break;
  		}
  
@@ -30,5 +30,5 @@ index 04a74d040..cb416cbd6 100644
  
  	return state;
 -- 
-2.34.1
+2.35.1
 

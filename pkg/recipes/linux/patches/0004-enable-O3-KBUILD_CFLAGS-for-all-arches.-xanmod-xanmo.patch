@@ -1,14 +1,15 @@
-From 9584b7298073e3d8cfccfc9b3ca63b4a2bc2e448 Mon Sep 17 00:00:00 2001
+From 68165d9eec4a6f400126f90bf1e551e68a63811b Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 13 Jan 2022 16:08:59 +0300
-Subject: [PATCH 07/12] enable -O3. (mss)
+Date: Mon, 4 Apr 2022 22:43:30 +0300
+Subject: [PATCH 04/13] enable -O3 KBUILD_CFLAGS for all arches.
+ (xanmod/xanmod)
 
 ---
  init/Kconfig | 1 -
  1 file changed, 1 deletion(-)
 
 diff --git a/init/Kconfig b/init/Kconfig
-index 4b7bac10c..32f03ee98 100644
+index e9119bf54..98b648e3c 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
 @@ -1370,7 +1370,6 @@ config CC_OPTIMIZE_FOR_PERFORMANCE
@@ -20,5 +21,5 @@ index 4b7bac10c..32f03ee98 100644
  	  Choosing this option will pass "-O3" to your compiler to optimize
  	  the kernel yet more for performance.
 -- 
-2.34.1
+2.35.1
 

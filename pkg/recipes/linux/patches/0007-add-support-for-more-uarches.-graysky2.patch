@@ -1,7 +1,7 @@
-From d50977c68f288f3bf482be451293c21525e6eee5 Mon Sep 17 00:00:00 2001
+From bfbf3c39383f2a136ca117c5b7e5fef1f06d6e8d Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Thu, 13 Jan 2022 16:08:54 +0300
-Subject: [PATCH 06/12] add support for more uarches. (graysky2)
+Date: Mon, 4 Apr 2022 22:45:55 +0300
+Subject: [PATCH 07/13] add support for more uarches. (graysky2)
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--
@@ -10,7 +10,7 @@ Subject: [PATCH 06/12] add support for more uarches. (graysky2)
  3 files changed, 424 insertions(+), 14 deletions(-)
 
 diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index eefc43435..331f76313 100644
+index 542377cd4..22b919cdb 100644
 --- a/arch/x86/Kconfig.cpu
 +++ b/arch/x86/Kconfig.cpu
 @@ -157,7 +157,7 @@ config MPENTIUM4
@@ -404,9 +404,9 @@ index eefc43435..331f76313 100644
 -	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MATOM
 +	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MATOM || MK8SSE3 || MK10 || MBARCELONA || MBOBCAT || MJAGUAR || MBULLDOZER || MPILEDRIVER || MSTEAMROLLER || MEXCAVATOR || MZEN || MZEN2 || MZEN3 || MNEHALEM || MWESTMERE || MSILVERMONT || MGOLDMONT || MGOLDMONTPLUS || MSANDYBRIDGE || MIVYBRIDGE || MHASWELL || MBROADWELL || MSKYLAKE || MSKYLAKEX || MCANNONLAKE || MICELAKE || MCASCADELAKE || MCOOPERLAKE || MTIGERLAKE || MSAPPHIRERAPIDS || MROCKETLAKE || MALDERLAKE || MNATIVE_INTEL || MNATIVE_AMD
  
- config X86_USE_3DNOW
- 	def_bool y
-@@ -360,26 +668,26 @@ config X86_USE_3DNOW
+ #
+ # P6_NOPs are a relatively minor optimization that require a family >=
+@@ -356,26 +664,26 @@ config X86_USE_PPRO_CHECKSUM
  config X86_P6_NOP
  	def_bool y
  	depends on X86_64
@@ -439,10 +439,10 @@ index eefc43435..331f76313 100644
  	default "4"
  
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 422438692..ab1ad6959 100644
+index e84cdd409..7d3bbf060 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
-@@ -119,8 +119,44 @@ else
+@@ -131,8 +131,44 @@ else
          # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
          cflags-$(CONFIG_MK8)		+= -march=k8
          cflags-$(CONFIG_MPSC)		+= -march=nocona
@@ -574,5 +574,5 @@ index 75884d2cd..4e6a08d4c 100644
  #define MODULE_PROC_FAMILY "ELAN "
  #elif defined CONFIG_MCRUSOE
 -- 
-2.34.1
+2.35.1
 
