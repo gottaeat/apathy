@@ -116,10 +116,10 @@ i  2  .      xbitmaps             1.1.2
 i  2  .      xsetroot             1.1.2
 i  2  .      xkbcomp              1.4.5
 i  2  .      xkeyboard-config     2.33
-i  1  .      xorg-server          21.1.2
+i  1  .      xorg-server          1.20.14
 i  1  ..     libepoxy             1.5.8
-i  1  .      xf86-input-libinput  1.2.1
-i  1  ..     libinput             1.20.0
+i  2  .      xf86-input-libinput  1.2.1
+i  2  ..     libinput             1.20.0
 i  1  .      xinit                1.4.1
 i  1  .      landfill             3
 i  1  .      atk                  2.38.0
