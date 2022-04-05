@@ -23,7 +23,7 @@ case "${amachine}" in
    button/volumedown)    amixer -q set Master  3dB-               ;;
    button/volumeup)      amixer -q set Master  3dB+               ;;
    button/micmute)       amixer -q set Capture toggle             ;;
-   button/vendor)        echo 3 > /proc/sys/vm/drop_caches        ;;
+   button/vendor)        printf '%s' 'mem' > /sys/power/state     ;;
 
    # lid
    button/lid)
