@@ -44,9 +44,28 @@ make install
 
 cd ../; rm -rf libXfont2-2.0.4/
 
-# 4 > xorg-server
-tar xf /mss/work/sauces/xorg-server-1.20.14.tar.xz
-cd     xorg-server-1.20.14/
+# 4 > libxcvt
+tar xf /mss/work/sauces/libxcvt-0.1.1.tar.xz
+cd     libxcvt-0.1.1/
+
+pdir="/mss/repo/pkg/recipes/xorg-server/patches"
+patch -p1 < "${pdir}"/0001-static-libxcvt.patch
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}" \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf libxcvt-0.1.1/
+
+# 5 > xorg-server
+tar xf /mss/work/sauces/xorg-server-21.1.3.tar.xz
+cd     xorg-server-21.1.3/
 
 ./configure \
  --build=$CBUILD                                      \
@@ -59,8 +78,6 @@ cd     xorg-server-1.20.14/
 \
  --with-builder-addr="mss@tutanota.de"                \
  --with-builderstring="mss"                           \
- --with-os-name="apathy"                              \
- --with-os-vendor="apathy 1.2"                        \
  --with-vendor-name-short="apathy"                    \
  --with-vendor-name="apathy 1.2"                      \
  --with-vendor-web="https://github.com/mssx86/apathy" \
@@ -103,6 +120,9 @@ cd     xorg-server-1.20.14/
  --disable-unit-tests                                 \
  --disable-xcsecurity                                 \
  --disable-xephyr                                     \
+ --disable-xf86-input-inputtest                       \
  --disable-xfree86-utils                              \
  --disable-xnest                                      \
  --disable-xvfb
+
+sed -i -e 's/libxcvt //' xorg-server.pc
