@@ -1,0 +1,53 @@
+#!/mss/bin/sh
+. /mss/files/funcs
+rootcheck
+
+returnorm(){
+ if awk '/wlan/{gsub(/:/,""); print $1}' /proc/net/dev \
+    | grep "${iface}mon" >/dev/null 2>&1
+  then
+   ip link set "${iface}"mon down
+   ip link set "${iface}"mon name "${iface}"
+   iw dev      "${iface}"    set  type      managed
+  else
+   aprint_fail "iface ${iface} is not in monitor mode."
+   exit 1
+ fi
+}
+
+monmode(){
+ if echo "${iflist}" | grep "${iface}" >/dev/null 2>&1; then
+  ainitmgr stop network "${iface}"
+ fi
+
+ if ! awk '/wlan/{gsub(/:/,""); print $1}' /proc/net/dev \
+    | grep "${iface}mon" >/dev/null 2>&1; then 
+  ip link set "${iface}"    down
+  ip link set "${iface}"    name "${iface}"mon
+  iw dev      "${iface}"mon set  type      monitor
+ fi
+
+ airodump-ng "${iface}"mon ${adngargs}
+}
+
+if [ -z "${3}" ]
+ then adngargs="--ignore-negative-one"
+ else adngargs="--ignore-negative-one --essid ${3}"
+fi
+
+case "${1}" in
+ n|normal)  act="returnorm"                            ;;
+ m|monitor) act="monmode"                              ;;
+ *)         aprint_usage "{n|m}{iface}{essid}"; exit 1 ;;
+esac
+
+case "${2}" in
+ wlan*)
+ export iface="${2}"
+ export iflist="`ip -o addr | grep -v -e '^.: lo' -e '^.: tun' \
+                 | awk '{print $2}'`"
+ ;;
+ *)     aprint_fail "set iface with \$2"; exit 1 ;;
+esac
+
+"${act}"

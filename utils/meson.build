@@ -1,5 +1,5 @@
 project('utils',
- version: '16',
+ version: '17',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
@@ -27,6 +27,7 @@ files_bin = [
  'bin/maimclip',
  'bin/maimcrop',
  'bin/maimscrot',
+ 'bin/monmode',
  'bin/ossl',
  'bin/pkg',
  'bin/pkgup',
