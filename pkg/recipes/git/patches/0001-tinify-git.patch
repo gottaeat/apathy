@@ -1,17 +1,18 @@
-From 1b4010aa6e0ecc95eaa63bb9b79978f0e4342339 Mon Sep 17 00:00:00 2001
+From 587145e3f65f9e59028da3428321cbb90271a8a9 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Mon, 31 Jan 2022 09:54:38 +0300
-Subject: [PATCH] tinify git.
+Date: Wed, 13 Apr 2022 09:39:36 +0300
+Subject: [PATCH] tinify-git.
 
 ---
- Makefile | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ Makefile   | 28 ++++++++--------------------
+ shared.mak |  2 +-
+ 2 files changed, 9 insertions(+), 21 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 5580859..8a6fd58 100644
+index f8bccfa..8cca33c 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -811,10 +811,7 @@ export PYTHON_PATH
+@@ -829,10 +829,7 @@ export PYTHON_PATH
  
  TEST_SHELL_PATH = $(SHELL_PATH)
  
@@ -23,34 +24,25 @@ index 5580859..8a6fd58 100644
  
  GENERATED_H += command-list.h
  GENERATED_H += config-list.h
-@@ -1194,7 +1191,7 @@ THIRD_PARTY_SOURCES += compat/regex/%
- THIRD_PARTY_SOURCES += sha1collisiondetection/%
+@@ -1240,7 +1237,7 @@ THIRD_PARTY_SOURCES += sha1collisiondetection/%
  THIRD_PARTY_SOURCES += sha1dc/%
  
--GITLIBS = common-main.o $(LIB_FILE) $(XDIFF_LIB) $(REFTABLE_LIB)
+ # xdiff and reftable libs may in turn depend on what is in libgit.a
+-GITLIBS = common-main.o $(LIB_FILE) $(XDIFF_LIB) $(REFTABLE_LIB) $(LIB_FILE)
 +GITLIBS = common-main.o $(LIB_FILE)
  EXTLIBS =
  
  GIT_USER_AGENT = git/$(GIT_VERSION)
-@@ -1253,7 +1250,7 @@ ALL_COMMANDS_TO_INSTALL += git-upload-pack$(X)
+@@ -1299,7 +1296,7 @@ ALL_COMMANDS_TO_INSTALL += git-upload-pack$(X)
  endif
  
  ALL_CFLAGS = $(DEVELOPER_CFLAGS) $(CPPFLAGS) $(CFLAGS)
 -ALL_LDFLAGS = $(LDFLAGS)
 +ALL_LDFLAGS = $(LDFLAGS) -Wl,-rpath,$(gitexecdir_SQ)
  
- comma := ,
- empty :=
-@@ -1964,7 +1961,7 @@ ifneq ($(findstring s,$(MAKEFLAGS)),s)
- ifndef V
- 	QUIET_CC       = @echo '   ' CC $@;
- 	QUIET_AR       = @echo '   ' AR $@;
--	QUIET_LINK     = @echo '   ' LINK $@;
-+	QUIET_LINK     = @echo '   ' CCLD $@;
- 	QUIET_BUILT_IN = @echo '   ' BUILTIN $@;
- 	QUIET_GEN      = @echo '   ' GEN $@;
- 	QUIET_LNCP     = @echo '   ' LN/CP $@;
-@@ -2213,7 +2210,7 @@ git.sp git.s git.o: EXTRA_CPPFLAGS = \
+ ifdef SANITIZE
+ SANITIZERS := $(foreach flag,$(subst $(comma),$(space),$(SANITIZE)),$(flag))
+@@ -2242,7 +2239,7 @@ git.sp git.s git.o: EXTRA_CPPFLAGS = \
  	'-DGIT_MAN_PATH="$(mandir_relative_SQ)"' \
  	'-DGIT_INFO_PATH="$(infodir_relative_SQ)"'
  
@@ -59,10 +51,13 @@ index 5580859..8a6fd58 100644
  	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
  		$(filter %.o,$^) $(LIBS)
  
-@@ -2638,14 +2635,8 @@ contrib/scalar/scalar$X: $(SCALAR_OBJECTS) GIT-LDFLAGS $(GITLIBS)
- $(LIB_FILE): $(LIB_OBJS)
- 	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
+@@ -2662,17 +2659,8 @@ contrib/scalar/scalar$X: $(SCALAR_OBJECTS) GIT-LDFLAGS $(GITLIBS)
+ 	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
+ 		$(filter %.o,$^) $(LIBS)
  
+-$(LIB_FILE): $(LIB_OBJS)
+-	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
+-
 -$(XDIFF_LIB): $(XDIFF_OBJS)
 -	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
 -
@@ -71,12 +66,12 @@ index 5580859..8a6fd58 100644
 -
 -$(REFTABLE_TEST_LIB): $(REFTABLE_TEST_OBJS)
 -	$(QUIET_AR)$(RM) $@ && $(AR) $(ARFLAGS) $@ $^
-+$(LIB_FILE): $(LIB_OBJS) $(BUILTIN_OBJS) $(XDIFF_OBJS) $(VCSSVN_OBJS) $(REFTABLE_OBJS) $(REFTABLE_TEST_OBJS) git.o
++$(LIB_FILE): $(LIB_OBJS) $(BUILTIN_OBJS) $(XDIFF_OBJS) $(REFTABLE_OBJS) $(REFTABLE_TEST_OBJS) git.o
 +	$(QUIET_LINK)$(RM) $@ && $(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) -lz -lpthread -shared -o $@ $^
  
  export DEFAULT_EDITOR DEFAULT_PAGER
  
-@@ -3064,7 +3055,7 @@ install: all
+@@ -3073,7 +3061,7 @@ install: all
  	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(bindir_SQ)'
  	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(PROGRAMS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
@@ -85,7 +80,7 @@ index 5580859..8a6fd58 100644
  	$(INSTALL) -m 644 $(SCRIPT_LIB) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(install_bindir_xprograms) '$(DESTDIR_SQ)$(bindir_SQ)'
  	$(INSTALL) $(BINDIR_PROGRAMS_NO_X) '$(DESTDIR_SQ)$(bindir_SQ)'
-@@ -3283,7 +3274,7 @@ cocciclean:
+@@ -3292,7 +3280,7 @@ cocciclean:
  clean: profile-clean coverage-clean cocciclean
  	$(RM) *.res
  	$(RM) $(OBJECTS)
@@ -94,6 +89,19 @@ index 5580859..8a6fd58 100644
  	$(RM) $(ALL_PROGRAMS) $(SCRIPT_LIB) $(BUILT_INS) git$X
  	$(RM) $(TEST_PROGRAMS)
  	$(RM) $(FUZZ_PROGRAMS)
+diff --git a/shared.mak b/shared.mak
+index 50d4596..ece1225 100644
+--- a/shared.mak
++++ b/shared.mak
+@@ -58,7 +58,7 @@ ifndef V
+ ## Used in "Makefile"
+ 	QUIET_CC       = @echo '   ' CC $@;
+ 	QUIET_AR       = @echo '   ' AR $@;
+-	QUIET_LINK     = @echo '   ' LINK $@;
++	QUIET_LINK     = @echo '   ' CCLD $@;
+ 	QUIET_BUILT_IN = @echo '   ' BUILTIN $@;
+ 	QUIET_LNCP     = @echo '   ' LN/CP $@;
+ 	QUIET_XGETTEXT = @echo '   ' XGETTEXT $@;
 -- 
-2.34.1
+2.35.1
 
