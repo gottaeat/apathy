@@ -214,5 +214,5 @@ i  2  .      bully                3ab3bc8
 i  2  .      iw                   5.9
 i  2  .      pixiewps             1.4.2
 i  2  .      reaver-wps-fork-t6x  d6c931c
-i  1  .      tor                  0.4.6.10
-i  1  .      proxychains-ng       4.16
+i  2  .      tor                  0.4.6.10
+i  2  .      proxychains-ng       4.16
