@@ -6,8 +6,8 @@ export CXXFLAGS="$(echo "${CXXFLAGS}" \
 export  LDFLAGS="$(echo "${LDFLAGS}"  \
  | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
 
-tar xf /mss/work/sauces/musl-1.2.2.tar.gz
-cd     musl-1.2.2/
+tar xf /mss/work/sauces/musl-1.2.3.tar.gz
+cd     musl-1.2.3/
 
 pdir="/mss/repo/pkg/recipes/musl/patches"
 patch -p1 < "${pdir}"/0001-handle-aux-at_base.patch

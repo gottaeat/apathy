@@ -1,13 +1,8 @@
 # 1
-linver="5.15.2"
+linver="5.17.3"
 
-if [ -z "${MAKEFLAGS}" ];
- then MAKEFLAGS="-j$(nproc) V=0"
- else
-  case "${MAKEFLAGS}" in
-   *V=1*) export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1/V=0/g')" ;
-  esac
-fi
+export MAKEFLAGS="$(echo "${MAKEFLAGS}" \
+                    | sed 's/V=1/V=0/g')" ;
 
 clear; echo "${MAKEFLAGS}"
 
@@ -16,7 +11,7 @@ tar xf "/mss/work/sauces/linux-${linver}.tar.xz"
 cd     linux-"${linver}"/
 
 pdir="/mss/repo/pkg/recipes/linux/patches"
-patch -p1 < "${pdir}"/0001-fix-__always_inline.patch
+patch -p1 < "${pdir}"/0001-fix-__always_inline.-mss.patch
 
 make mrproper
 make headers
