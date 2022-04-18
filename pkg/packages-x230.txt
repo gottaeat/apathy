@@ -1,5 +1,5 @@
-i  1  .      linux-headers        5.15.2
-i  2  .      musl                 1.2.2
+i  1  .      linux-headers        5.17.3
+i  1  .      musl                 1.2.3
 i  1  .      zlib                 1.2.12
 i  2  .      file                 5.40
 i  2  .      readline             8.1
@@ -48,7 +48,7 @@ i  1  ..     utils                17
 i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.82.0
-i  1  .      git                  2.36.0-rc2
+i  1  .      git                  2.36.0
 i  1  .      openssh              9.0p1
 i  1  .      libssh2              1.9.0
 i  1  .      cmake                3.20.0

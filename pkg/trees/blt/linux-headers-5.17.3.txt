@@ -134,6 +134,7 @@
 /usr/include/linux/agpgart.h
 /usr/include/linux/aio_abi.h
 /usr/include/linux/am437x-vpfe.h
+/usr/include/linux/amt.h
 /usr/include/linux/android/binder.h
 /usr/include/linux/android/binderfs.h
 /usr/include/linux/apm_bios.h
@@ -169,7 +170,6 @@
 /usr/include/linux/batadv_packet.h
 /usr/include/linux/batman_adv.h
 /usr/include/linux/baycom.h
-/usr/include/linux/bcache.h
 /usr/include/linux/bcm933xx_hcs.h
 /usr/include/linux/bfs_fs.h
 /usr/include/linux/binfmts.h
@@ -217,9 +217,11 @@
 /usr/include/linux/cn_proc.h
 /usr/include/linux/coda.h
 /usr/include/linux/coff.h
+/usr/include/linux/comedi.h
 /usr/include/linux/connector.h
 /usr/include/linux/const.h
 /usr/include/linux/coresight-stm.h
+/usr/include/linux/counter.h
 /usr/include/linux/cramfs_fs.h
 /usr/include/linux/cryptouser.h
 /usr/include/linux/cuda.h
@@ -346,6 +348,7 @@
 /usr/include/linux/if_xdp.h
 /usr/include/linux/ife.h
 /usr/include/linux/igmp.h
+/usr/include/linux/iio/buffer.h
 /usr/include/linux/iio/events.h
 /usr/include/linux/iio/types.h
 /usr/include/linux/ila.h
@@ -357,8 +360,12 @@
 /usr/include/linux/input-event-codes.h
 /usr/include/linux/input.h
 /usr/include/linux/io_uring.h
+/usr/include/linux/ioam6.h
+/usr/include/linux/ioam6_genl.h
+/usr/include/linux/ioam6_iptunnel.h
 /usr/include/linux/ioctl.h
 /usr/include/linux/iommu.h
+/usr/include/linux/ioprio.h
 /usr/include/linux/ip.h
 /usr/include/linux/ip6_tunnel.h
 /usr/include/linux/ip_vs.h
@@ -369,7 +376,6 @@
 /usr/include/linux/ipsec.h
 /usr/include/linux/ipv6.h
 /usr/include/linux/ipv6_route.h
-/usr/include/linux/ipx.h
 /usr/include/linux/irqnr.h
 /usr/include/linux/isdn/capicmd.h
 /usr/include/linux/iso_fs.h
@@ -390,11 +396,12 @@
 /usr/include/linux/keyboard.h
 /usr/include/linux/keyctl.h
 /usr/include/linux/kfd_ioctl.h
+/usr/include/linux/kfd_sysfs.h
 /usr/include/linux/kvm.h
 /usr/include/linux/kvm_para.h
 /usr/include/linux/l2tp.h
+/usr/include/linux/landlock.h
 /usr/include/linux/libc-compat.h
-/usr/include/linux/lightnvm.h
 /usr/include/linux/limits.h
 /usr/include/linux/lirc.h
 /usr/include/linux/llc.h
@@ -403,9 +410,11 @@
 /usr/include/linux/lwtunnel.h
 /usr/include/linux/magic.h
 /usr/include/linux/major.h
+/usr/include/linux/map_to_14segment.h
 /usr/include/linux/map_to_7segment.h
 /usr/include/linux/matroxfb.h
 /usr/include/linux/max2175.h
+/usr/include/linux/mctp.h
 /usr/include/linux/mdio.h
 /usr/include/linux/media-bus-format.h
 /usr/include/linux/media.h
@@ -432,7 +441,6 @@
 /usr/include/linux/msdos_fs.h
 /usr/include/linux/msg.h
 /usr/include/linux/mtio.h
-/usr/include/linux/n_r3964.h
 /usr/include/linux/nbd-netlink.h
 /usr/include/linux/nbd.h
 /usr/include/linux/ncsi.h
@@ -465,6 +473,7 @@
 /usr/include/linux/netfilter/nfnetlink_conntrack.h
 /usr/include/linux/netfilter/nfnetlink_cthelper.h
 /usr/include/linux/netfilter/nfnetlink_cttimeout.h
+/usr/include/linux/netfilter/nfnetlink_hook.h
 /usr/include/linux/netfilter/nfnetlink_log.h
 /usr/include/linux/netfilter/nfnetlink_osf.h
 /usr/include/linux/netfilter/nfnetlink_queue.h
@@ -601,11 +610,11 @@
 /usr/include/linux/nfsd/cld.h
 /usr/include/linux/nfsd/debug.h
 /usr/include/linux/nfsd/export.h
-/usr/include/linux/nfsd/nfsfh.h
 /usr/include/linux/nfsd/stats.h
 /usr/include/linux/nilfs2_api.h
 /usr/include/linux/nilfs2_ondisk.h
 /usr/include/linux/nitro_enclaves.h
+/usr/include/linux/nl80211-vnd-intel.h
 /usr/include/linux/nl80211.h
 /usr/include/linux/nsfs.h
 /usr/include/linux/nubus.h
@@ -626,6 +635,7 @@
 /usr/include/linux/perf_event.h
 /usr/include/linux/personality.h
 /usr/include/linux/pfkeyv2.h
+/usr/include/linux/pfrut.h
 /usr/include/linux/pg.h
 /usr/include/linux/phantom.h
 /usr/include/linux/phonet.h
@@ -659,7 +669,6 @@
 /usr/include/linux/raid/md_p.h
 /usr/include/linux/raid/md_u.h
 /usr/include/linux/random.h
-/usr/include/linux/raw.h
 /usr/include/linux/rds.h
 /usr/include/linux/reboot.h
 /usr/include/linux/reiserfs_fs.h
@@ -723,6 +732,7 @@
 /usr/include/linux/string.h
 /usr/include/linux/sunrpc/debug.h
 /usr/include/linux/surface_aggregator/cdev.h
+/usr/include/linux/surface_aggregator/dtx.h
 /usr/include/linux/suspend_ioctls.h
 /usr/include/linux/swab.h
 /usr/include/linux/switchtec_ioctl.h
@@ -819,6 +829,7 @@
 /usr/include/linux/vbox_vmmdev_types.h
 /usr/include/linux/vboxguest.h
 /usr/include/linux/vdpa.h
+/usr/include/linux/vduse.h
 /usr/include/linux/version.h
 /usr/include/linux/veth.h
 /usr/include/linux/vfio.h
@@ -830,11 +841,14 @@
 /usr/include/linux/virtio_9p.h
 /usr/include/linux/virtio_balloon.h
 /usr/include/linux/virtio_blk.h
+/usr/include/linux/virtio_bt.h
 /usr/include/linux/virtio_config.h
 /usr/include/linux/virtio_console.h
 /usr/include/linux/virtio_crypto.h
 /usr/include/linux/virtio_fs.h
+/usr/include/linux/virtio_gpio.h
 /usr/include/linux/virtio_gpu.h
+/usr/include/linux/virtio_i2c.h
 /usr/include/linux/virtio_ids.h
 /usr/include/linux/virtio_input.h
 /usr/include/linux/virtio_iommu.h
@@ -842,10 +856,13 @@
 /usr/include/linux/virtio_mmio.h
 /usr/include/linux/virtio_net.h
 /usr/include/linux/virtio_pci.h
+/usr/include/linux/virtio_pcidev.h
 /usr/include/linux/virtio_pmem.h
 /usr/include/linux/virtio_ring.h
 /usr/include/linux/virtio_rng.h
+/usr/include/linux/virtio_scmi.h
 /usr/include/linux/virtio_scsi.h
+/usr/include/linux/virtio_snd.h
 /usr/include/linux/virtio_types.h
 /usr/include/linux/virtio_vsock.h
 /usr/include/linux/vm_sockets.h
@@ -860,6 +877,7 @@
 /usr/include/linux/wireguard.h
 /usr/include/linux/wireless.h
 /usr/include/linux/wmi.h
+/usr/include/linux/wwan.h
 /usr/include/linux/x25.h
 /usr/include/linux/xattr.h
 /usr/include/linux/xdp_diag.h
@@ -886,12 +904,12 @@
 /usr/include/rdma/hfi/hfi1_ioctl.h
 /usr/include/rdma/hfi/hfi1_user.h
 /usr/include/rdma/hns-abi.h
-/usr/include/rdma/i40iw-abi.h
 /usr/include/rdma/ib_user_ioctl_cmds.h
 /usr/include/rdma/ib_user_ioctl_verbs.h
 /usr/include/rdma/ib_user_mad.h
 /usr/include/rdma/ib_user_sa.h
 /usr/include/rdma/ib_user_verbs.h
+/usr/include/rdma/irdma-abi.h
 /usr/include/rdma/mlx4-abi.h
 /usr/include/rdma/mlx5-abi.h
 /usr/include/rdma/mlx5_user_ioctl_cmds.h
@@ -929,6 +947,7 @@
 /usr/include/sound/sb16_csp.h
 /usr/include/sound/sfnt_info.h
 /usr/include/sound/skl-tplg-interface.h
+/usr/include/sound/snd_ar_tokens.h
 /usr/include/sound/snd_sst_tokens.h
 /usr/include/sound/sof/abi.h
 /usr/include/sound/sof/fw.h
