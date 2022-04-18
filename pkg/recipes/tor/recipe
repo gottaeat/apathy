@@ -1,0 +1,75 @@
+# 1
+tar xf /mss/work/sauces/tor-0.4.6.10.tar.gz
+cd     tor-tor-0.4.6.10/
+
+autoreconf -fvi
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-DNDEBUG//g;')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-DNDEBUG//g;')"
+
+findir="/opt/tor"
+
+./configure \
+ --build=$CHOST            \
+ --host=$CBUILD            \
+ --prefix="${findir}"      \
+ --sysconfdir="${findir}"  \
+ --datarootdir="${findir}" \
+ --localstatedir="/var"    \
+\
+ --with-tor-user=mss       \
+ --with-tor-group=mss      \
+\
+ --enable-pic              \
+ --disable-unittests       \
+ --disable-manpage         \
+ --disable-html-manual     \
+ --disable-asciidoc        \
+ --disable-module-relay
+
+make
+
+instdir_t="${PWD}/KEK"
+make DESTDIR="${instdir_t}" install
+mv           "${instdir_t}/${findir}" ../
+
+cd ../; rm -rf tor-tor-0.4.6.10/
+
+# 2
+tar xf /mss/work/sauces/proxychains-ng-4.16.tar.xz
+cd     proxychains-ng-4.16/
+
+./configure \
+ --prefix="${findir}"         \
+ --sysconfdir="${findir}/tor"
+
+make
+
+instdir_p="${PWD}/KEK"
+make DESTDIR="${instdir_p}" install install-config
+
+mv "${instdir_p}/${findir}"/bin/* ../tor/bin/
+mv "${instdir_p}/${findir}"/lib/  ../tor/
+
+cd ../; rm -rf proxychains-ng-4.16/
+
+# 3
+mv tor/tor/{torrc.sample,torrc}; > tor/tor/torrc
+
+cat << EOF > tor/tor/proxychains.conf
+proxy_dns
+quiet_mode
+strict_chain
+
+remote_dns_subnet    224
+tcp_connect_time_out 8000
+tcp_read_time_out    15000
+
+[ProxyList]
+socks5               127.0.0.1 9050
+EOF
+
+pkgup tor/ "${amachine}"-tor-`dn`
+mv    "${amachine}"-tor-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
