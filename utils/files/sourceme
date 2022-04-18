@@ -10,6 +10,7 @@ mypath="$mypath:/opt/node.js-16.9.1/bin"
 mypath="$mypath:/opt/firefox-91.8.0esr/bin"
 mypath="$mypath:/opt/wlanshit/bin"
 mypath="$mypath:/opt/cryptshit/bin"
+mypath="$mypath:/opt/tor/bin"
 
 mylibpath="/opt/llvm-14.0.1/lib"
 mylibpath="$mylibpath:/opt/rustc-1.60.0/lib"
