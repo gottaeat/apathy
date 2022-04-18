@@ -71,5 +71,8 @@ tcp_read_time_out    15000
 socks5               127.0.0.1 9050
 EOF
 
+for i in tor/bin/*; do strip --strip-all $i; done
+strip --strip-unneeded tor/lib/libproxychains4.so
+
 pkgup tor/ "${amachine}"-tor-`dn`
 mv    "${amachine}"-tor-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
