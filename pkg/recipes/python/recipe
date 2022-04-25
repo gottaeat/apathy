@@ -40,14 +40,14 @@ ln -sfv python3 "${instdir}"/usr/bin/python
 ln -sfv pip3    "${instdir}"/usr/bin/pip
 
 rm -rfv \
- "${instdir}"/usr/lib/python3.9/test      \
- "${instdir}"/usr/lib/python3.9/*/test    \
- "${instdir}"/usr/lib/python3.9/*/tests   \
- "${instdir}"/usr/lib/python3.9/pydoc*    \
- "${instdir}"/usr/lib/python3.9/idlelib   \
- "${instdir}"/usr/lib/python3.9/turtle*   \
- "${instdir}"/usr/lib/python3.9/config-*  \
- "${instdir}"/usr/lib/python3.9/ensurepip \
+ "${instdir}"/usr/lib/python3.10/test      \
+ "${instdir}"/usr/lib/python3.10/*/test    \
+ "${instdir}"/usr/lib/python3.10/*/tests   \
+ "${instdir}"/usr/lib/python3.10/pydoc*    \
+ "${instdir}"/usr/lib/python3.10/idlelib   \
+ "${instdir}"/usr/lib/python3.10/turtle*   \
+ "${instdir}"/usr/lib/python3.10/config-*  \
+ "${instdir}"/usr/lib/python3.10/ensurepip \
  "${instdir}"/usr/bin/pydoc*              \
  "${instdir}"/usr/bin/idle*
 
@@ -61,17 +61,17 @@ ln -sfv python3 /usr/bin/python
 ln -sfv pip3    /usr/bin/pip
 
 rm -rfv \
- /usr/lib/python3.9/test      \
- /usr/lib/python3.9/*/test    \
- /usr/lib/python3.9/*/tests   \
- /usr/lib/python3.9/pydoc*    \
- /usr/lib/python3.9/idlelib   \
- /usr/lib/python3.9/turtle*   \
- /usr/lib/python3.9/config-*  \
- /usr/lib/python3.9/ensurepip \
+ /usr/lib/python3.10/test      \
+ /usr/lib/python3.10/*/test    \
+ /usr/lib/python3.10/*/tests   \
+ /usr/lib/python3.10/pydoc*    \
+ /usr/lib/python3.10/idlelib   \
+ /usr/lib/python3.10/turtle*   \
+ /usr/lib/python3.10/config-*  \
+ /usr/lib/python3.10/ensurepip \
  /usr/bin/pydoc*              \
  /usr/bin/idle*
 
-find /usr/lib/python3.9 -type f -name \*.exe -exec rm -rfv {} ';'
+find /usr/lib/python3.10 -type f -name \*.exe -exec rm -rfv {} ';'
 
 rm -rfv /usr/share/man
