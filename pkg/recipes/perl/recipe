@@ -63,3 +63,5 @@ find "/usr/lib/perl5" -name \*.bs        -exec rm -rfv {} +
 find "/usr/lib/perl5" -name \*.0 -type f -exec rm -rfv {} +
 
 find "/usr/lib/perl5" -type f -exec chmod 644 {} \;
+
+rm -rf /usr/share/man

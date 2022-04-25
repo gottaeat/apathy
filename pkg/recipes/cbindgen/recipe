@@ -3,6 +3,11 @@ cargo fetch --locked
 cargo build --release --frozen
 
 # 2
-mkdir cbindgen-0.21.0/bin
+mkdir cbindgen-0.23.0/bin
 strip --strip-all target/release/cbindgen
-mv target/release/cbindgen cbindgen-0.21.0/bin/
+mv target/release/cbindgen cbindgen-0.23.0/bin/
+
+pkgup cbindgen-0.23.0/ "${amachine}"-cbindgen-0.23.0/
+
+mv "${amachine}"-cbindgen-0.23.0.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software

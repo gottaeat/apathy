@@ -1,6 +1,6 @@
 # 1
-tar xf /mss/work/sauces/Python-3.9.5.tar.xz
-cd Python-3.9.5/
+tar xf /mss/work/sauces/python-3.10.4.tar.xz
+cd     Python-3.10.4/
 
 pdir="/mss/repo/pkg/recipes/python/patches"
 patch -p1 < "${pdir}"/0001-always-pip.patch
