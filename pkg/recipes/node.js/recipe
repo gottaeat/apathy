@@ -33,8 +33,10 @@ instdir="${PWD}/KEK"
 tools/install.py install "${instdir}" /opt/node.js-18.0.0
 
 rm -rfv \
- "${instdir}"/opt/node.js-18.0.0/share \
- "${instdir}"/opt/node.js-18.0.0/include
+ "${instdir}"/opt/node.js-18.0.0/include \
+ "${instdir}"/opt/node.js-18.0.0/lib     \
+ "${instdir}"/opt/node.js-18.0.0/share   \
+ "${instdir}"/opt/node.js-18.0.0/bin/corepack
 
 strip --strip-all "${instdir}"/opt/node.js-18.0.0/bin/node
 
