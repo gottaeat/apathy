@@ -187,7 +187,7 @@ cmake -Wno-dev -GNinja\
  -DCLANG_TOOL_SCAN_BUILD_PY_BUILD=OFF                \
  -DCLANG_TOOL_SCAN_VIEW_BUILD=OFF                    \
  -DCLANG_VENDOR="apathy"                             \
- -DCLANG_VENDOR_UTI="io.github.mssx86"               \
+ -DCLANG_VENDOR_UTI="us.among.mssx86"                \
  -DENABLE_LINKER_BUILD_ID=OFF                        \
  -DLIBCLANG_BUILD_STATIC=OFF                         \
  -DLLD_VENDOR="apathy"                               \

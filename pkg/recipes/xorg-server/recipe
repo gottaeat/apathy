@@ -80,7 +80,7 @@ cd     xorg-server-21.1.3/
  --with-builderstring="mss"                           \
  --with-vendor-name-short="apathy"                    \
  --with-vendor-name="apathy 1.2"                      \
- --with-vendor-web="https://github.com/mssx86/apathy" \
+ --with-vendor-web="https://git.sr.ht/~mssx86/apathy" \
 \
  --with-int10="stub"                                  \
  --with-sha1="libcrypto"                              \
