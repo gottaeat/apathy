@@ -47,7 +47,7 @@ i  1  .      init                 22
 i  1  ..     utils                17
 i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
-i  1  .      curl                 7.82.0
+i  1  .      curl                 7.83.0
 i  1  .      git                  2.36.0
 i  1  .      openssh              9.0p1
 i  1  .      libssh2              1.9.0
@@ -59,7 +59,7 @@ i  2  .      rsync                3.2.3
 i  2  .      tmux                 3.2a
 i  1  ..     libevent             2.1.11
 i  2  .      htop                 3.0.2
-i  1  .      sqlite               3.38.2
+i  1  .      sqlite               3.38.3
 i  1  .      gnupg                2.2.28
 i  1  ..     libgpg-error         1.42
 i  1  ..     libassuan            2.5.5
