@@ -1,7 +1,7 @@
-From 65db1aa0b466bf25d63097204281bc2eed541105 Mon Sep 17 00:00:00 2001
+From d8ec0bd6f3b0ad2dfd8a97a864f08decaafdea69 Mon Sep 17 00:00:00 2001
 From: Samuel Holland <samuel@sholland.org>
 Date: Sun, 8 Jan 2017 19:16:38 -0600
-Subject: [PATCH 13/35] musl: Add alternate name for private siginfo struct
+Subject: [PATCH 10/30] musl: Add alternate name for private siginfo struct
  member
 
 musl does not provide a macro for detecting its presence. For now,
@@ -31,5 +31,5 @@ index 9884be8bb2..86d8f88e30 100644
  
  #if defined(__mips__)
 -- 
-2.32.0
+2.34.1
 

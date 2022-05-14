@@ -1,0 +1,246 @@
+From 1f7e20dfa88a113d3bb0de5adedd0fb7f36e3da7 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 May 2022 12:51:08 +0300
+Subject: [PATCH 10/10] nuke handlers.
+
+---
+ uriloader/exthandler/HandlerList.jsm | 223 +--------------------------
+ 1 file changed, 1 insertion(+), 222 deletions(-)
+
+diff --git a/uriloader/exthandler/HandlerList.jsm b/uriloader/exthandler/HandlerList.jsm
+index 04b92059ff..40a7a5d419 100644
+--- a/uriloader/exthandler/HandlerList.jsm
++++ b/uriloader/exthandler/HandlerList.jsm
+@@ -13,228 +13,7 @@ this.kHandlerList = {
+     schemes: {
+       mailto: {
+         handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  cs: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Seznam",
+-            uriTemplate: "https://email.seznam.cz/newMessageScreen?mailto=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  csb: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Poczta Interia.pl",
+-            uriTemplate: "http://poczta.interia.pl/mh/?mailto=%s",
+-          },
+-          {
+-            name: "OnetPoczta",
+-            uriTemplate: "http://poczta.onet.pl/napisz.html?uri=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  "es-CL": {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-          {
+-            name: "Outlook",
+-            uriTemplate:
+-              "https://outlook.live.com/default.aspx?rru=compose&to=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  "ja-JP-mac": {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Yahoo!メール",
+-            uriTemplate: "https://mail.yahoo.co.jp/compose/?To=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  ja: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Yahoo!メール",
+-            uriTemplate: "https://mail.yahoo.co.jp/compose/?To=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  kk: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Яндекс.Почта",
+-            uriTemplate: "https://mail.yandex.ru/compose?mailto=%s",
+-          },
+-          {
+-            name: "Mail.Ru",
+-            uriTemplate: "https://e.mail.ru/cgi-bin/sentmsg?mailto=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  ltg: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-          {
+-            name: "inbox.lv mail",
+-            uriTemplate: "https://mail.inbox.lv/compose?to=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  lv: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-          {
+-            name: "inbox.lv mail",
+-            uriTemplate: "https://mail.inbox.lv/compose?to=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  pl: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Poczta Interia.pl",
+-            uriTemplate: "https://poczta.interia.pl/mh/?mailto=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  ru: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Яндекс.Почту",
+-            uriTemplate: "https://mail.yandex.ru/compose?mailto=%s",
+-          },
+-          {
+-            name: "Mail.Ru",
+-            uriTemplate: "https://e.mail.ru/cgi-bin/sentmsg?mailto=%s",
+-          },
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  sah: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Яндекс.Почта",
+-            uriTemplate: "https://mail.yandex.ru/compose?mailto=%s",
+-          },
+-          {
+-            name: "Mail.Ru",
+-            uriTemplate: "https://e.mail.ru/cgi-bin/sentmsg?mailto=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  uk: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-          {
+-            name: "Outlook",
+-            uriTemplate:
+-              "https://outlook.live.com/default.aspx?rru=compose&to=%s",
+-          },
+-        ],
+-      },
+-    },
+-  },
+-  uz: {
+-    schemes: {
+-      mailto: {
+-        handlers: [
+-          {
+-            name: "Gmail",
+-            uriTemplate: "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+-          },
+-          {
+-            name: "Mail.Ru",
+-            uriTemplate: "https://e.mail.ru/cgi-bin/sentmsg?mailto=%s",
+-          },
++          {},
+         ],
+       },
+     },
+-- 
+2.36.0
+

@@ -1,21 +1,21 @@
-From 8e17b6a6f377856333137665e1b98b09189a3c9c Mon Sep 17 00:00:00 2001
+From 4e6fb75029018747b66f296070570ff9ae625cee Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Mon, 16 Aug 2021 03:06:25 +0300
-Subject: [PATCH 5/9] nuke addons.
+Date: Fri, 13 May 2022 11:23:00 +0300
+Subject: [PATCH 05/10] nuke addons.
 
 ---
- browser/extensions/moz.build | 10 ----------
- browser/locales/Makefile.in  |  2 --
- browser/locales/filter.py    |  1 -
- browser/locales/l10n.ini     |  1 -
- browser/locales/l10n.toml    |  4 ----
- 5 files changed, 18 deletions(-)
+ browser/extensions/moz.build | 6 ------
+ browser/locales/Makefile.in  | 2 --
+ browser/locales/filter.py    | 1 -
+ browser/locales/l10n.ini     | 1 -
+ browser/locales/l10n.toml    | 4 ----
+ 5 files changed, 14 deletions(-)
 
 diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
-index 1ab9167d87..dab7c04363 100644
+index 0d4b9c3561..dab7c04363 100644
 --- a/browser/extensions/moz.build
 +++ b/browser/extensions/moz.build
-@@ -5,16 +5,5 @@
+@@ -5,11 +5,5 @@
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
  DIRS += [
@@ -25,18 +25,13 @@ index 1ab9167d87..dab7c04363 100644
 -    "webcompat",
 -    "report-site-issue",
 -    "pictureinpicture",
--    "proxy-failover",
+-    "search-detection",
  ]
--
--if CONFIG["NIGHTLY_BUILD"]:
--    DIRS += [
--        "translations",
--    ]
 diff --git a/browser/locales/Makefile.in b/browser/locales/Makefile.in
-index 496379c430..dd6f359c37 100644
+index e4b60a0399..c38fdd2cf5 100644
 --- a/browser/locales/Makefile.in
 +++ b/browser/locales/Makefile.in
-@@ -61,7 +61,6 @@ l10n-%:
+@@ -55,7 +55,6 @@ l10n-%:
  ifneq (,$(wildcard ../extensions/formautofill/locales))
  	@$(MAKE) -C ../extensions/formautofill/locales AB_CD=$* XPI_NAME=locale-$*
  endif
@@ -44,7 +39,7 @@ index 496379c430..dd6f359c37 100644
  	@$(MAKE) -C ../../devtools/client/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) -C ../../devtools/startup/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) l10n AB_CD=$* XPI_NAME=locale-$* PREF_DIR=$(PREF_DIR)
-@@ -82,7 +81,6 @@ endif
+@@ -76,7 +75,6 @@ endif
  	@$(MAKE) -C ../../devtools/startup/locales chrome AB_CD=$*
  	@$(MAKE) chrome AB_CD=$*
  	@$(MAKE) -C $(DEPTH)/$(MOZ_BRANDING_DIRECTORY)/locales chrome AB_CD=$*
@@ -53,10 +48,10 @@ index 496379c430..dd6f359c37 100644
  package-win32-installer: $(SUBMAKEFILES)
  	$(MAKE) -C ../installer/windows CONFIG_DIR=l10ngen ZIP_IN='$(ZIP_OUT)' installer
 diff --git a/browser/locales/filter.py b/browser/locales/filter.py
-index 562465d06e..ea2291638b 100644
+index 22eb5cbdb1..5e1f09ff38 100644
 --- a/browser/locales/filter.py
 +++ b/browser/locales/filter.py
-@@ -19,7 +19,6 @@ def test(mod, path, entity=None):
+@@ -17,7 +17,6 @@ def test(mod, path, entity=None):
          "devtools/startup",
          "browser",
          "browser/extensions/formautofill",
@@ -77,10 +72,10 @@ index 7a6599740b..7f976679ee 100644
  [includes]
  # non-central apps might want to use %(topsrcdir)s here, or other vars
 diff --git a/browser/locales/l10n.toml b/browser/locales/l10n.toml
-index 130de78b46..4a90ad2d4b 100644
+index e9d50107cb..914a2f1a63 100644
 --- a/browser/locales/l10n.toml
 +++ b/browser/locales/l10n.toml
-@@ -131,10 +131,6 @@ locales = [
+@@ -133,10 +133,6 @@ locales = [
      reference = "browser/extensions/formautofill/locales/en-US/**"
      l10n = "{l}browser/extensions/formautofill/**"
  
@@ -92,5 +87,5 @@ index 130de78b46..4a90ad2d4b 100644
      reference = "services/sync/locales/en-US/**"
      l10n = "{l}services/sync/**"
 -- 
-2.32.0
+2.36.0
 

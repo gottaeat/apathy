@@ -1,7 +1,7 @@
-From 193b5459953e4d0291eb171f8dc5039bbbf0b65e Mon Sep 17 00:00:00 2001
+From 61e8f03c526a40dda89b57aad6aec3f37d7125cd Mon Sep 17 00:00:00 2001
 From: Thomas Deutschmann <whissi@gentoo.org>
 Date: Mon, 6 Apr 2020 19:32:39 +0200
-Subject: [PATCH 04/35] bmo#847568: Support system harfbuzz
+Subject: [PATCH 04/30] bmo#847568: Support system harfbuzz
 
 Allow building against system-wide harfbuzz.
 
@@ -21,10 +21,10 @@ Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
  10 files changed, 40 insertions(+), 1 deletion(-)
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
-index 5f7b5bb23e..449328ffaa 100644
+index ae0c9d6d7c..44d08cf06b 100644
 --- a/config/system-headers.mozbuild
 +++ b/config/system-headers.mozbuild
-@@ -1236,6 +1236,13 @@ if CONFIG['OS_TARGET'] == 'Android':
+@@ -1237,6 +1237,13 @@ if CONFIG['OS_TARGET'] == 'Android':
          'vr/gvr/capi/include/gvr.h',
      ]
  
@@ -39,10 +39,10 @@ index 5f7b5bb23e..449328ffaa 100644
      system_headers += [
          'jack/jack.h',
 diff --git a/dom/base/moz.build b/dom/base/moz.build
-index fa75996f78..56652f41de 100644
+index d390adfc49..4508f19cb6 100644
 --- a/dom/base/moz.build
 +++ b/dom/base/moz.build
-@@ -559,6 +559,9 @@ FINAL_LIBRARY = "xul"
+@@ -567,6 +567,9 @@ FINAL_LIBRARY = "xul"
  if CONFIG["MOZ_X11"]:
      CXXFLAGS += CONFIG["TK_CFLAGS"]
  
@@ -53,20 +53,20 @@ index fa75996f78..56652f41de 100644
      "UseCounterList.h",
      script="gen-usecounters.py",
 diff --git a/gfx/moz.build b/gfx/moz.build
-index 82623117ab..2f2d3dc54f 100644
+index 4d6d63da9d..8222b72333 100644
 --- a/gfx/moz.build
 +++ b/gfx/moz.build
-@@ -13,6 +13,9 @@ with Files("wr/**"):
- if CONFIG["MOZ_TREE_CAIRO"]:
-     DIRS += ["cairo"]
+@@ -10,6 +10,9 @@ with Files("**"):
+ with Files("wr/**"):
+     BUG_COMPONENT = ("Core", "Graphics: WebRender")
  
 +if not CONFIG["MOZ_SYSTEM_HARFBUZZ"]:
 +    DIRS += ["harfbuzz/src"]
 +
  DIRS += [
+     "cairo",
      "2d",
-     "ycbcr",
-@@ -22,7 +25,6 @@ DIRS += [
+@@ -20,7 +23,6 @@ DIRS += [
      "gl",
      "layers",
      "graphite2/src",
@@ -75,10 +75,10 @@ index 82623117ab..2f2d3dc54f 100644
      "thebes",
      "ipc",
 diff --git a/gfx/skia/generate_mozbuild.py b/gfx/skia/generate_mozbuild.py
-index e23ec37b1a..85e9beb81d 100755
+index 5e0fd17d79..860b80af4f 100755
 --- a/gfx/skia/generate_mozbuild.py
 +++ b/gfx/skia/generate_mozbuild.py
-@@ -97,6 +97,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
+@@ -96,6 +96,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
          '-Wno-unused-private-field',
      ]
  
@@ -86,13 +86,13 @@ index e23ec37b1a..85e9beb81d 100755
 +    CXXFLAGS += CONFIG['MOZ_HARFBUZZ_CFLAGS']
 +
  if CONFIG['MOZ_WIDGET_TOOLKIT'] in ('gtk', 'android'):
-     CXXFLAGS += CONFIG['MOZ_CAIRO_CFLAGS']
-     CXXFLAGS += CONFIG['CAIRO_FT_CFLAGS']
+     LOCAL_INCLUDES += [
+         "/gfx/cairo/cairo/src",
 diff --git a/gfx/skia/moz.build b/gfx/skia/moz.build
-index 7d5ad42f48..fe5751a33f 100755
+index 524bd28dac..615c93b266 100755
 --- a/gfx/skia/moz.build
 +++ b/gfx/skia/moz.build
-@@ -489,6 +489,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
+@@ -488,6 +488,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
          '-Wno-unused-private-field',
      ]
  
@@ -100,13 +100,13 @@ index 7d5ad42f48..fe5751a33f 100755
 +    CXXFLAGS += CONFIG['MOZ_HARFBUZZ_CFLAGS']
 +
  if CONFIG['MOZ_WIDGET_TOOLKIT'] in ('gtk', 'android'):
-     CXXFLAGS += CONFIG['MOZ_CAIRO_CFLAGS']
-     CXXFLAGS += CONFIG['CAIRO_FT_CFLAGS']
+     LOCAL_INCLUDES += [
+         "/gfx/cairo/cairo/src",
 diff --git a/gfx/thebes/moz.build b/gfx/thebes/moz.build
-index baa7005a8f..7f1bde7f37 100644
+index baa6f090a9..c51c36e2b4 100644
 --- a/gfx/thebes/moz.build
 +++ b/gfx/thebes/moz.build
-@@ -293,6 +293,9 @@ LOCAL_INCLUDES += CONFIG["SKIA_INCLUDES"]
+@@ -288,6 +288,9 @@ LOCAL_INCLUDES += CONFIG["SKIA_INCLUDES"]
  
  DEFINES["GRAPHITE2_STATIC"] = True
  
@@ -117,7 +117,7 @@ index baa7005a8f..7f1bde7f37 100644
      # Suppress warnings from Skia header files.
      SOURCES["gfxPlatform.cpp"].flags += ["-Wno-implicit-fallthrough"]
 diff --git a/intl/unicharutil/util/moz.build b/intl/unicharutil/util/moz.build
-index 897bfad92a..5a83cdb2c1 100644
+index 301eb9a854..7cece5e06c 100644
 --- a/intl/unicharutil/util/moz.build
 +++ b/intl/unicharutil/util/moz.build
 @@ -25,6 +25,9 @@ UNIFIED_SOURCES += [
@@ -127,14 +127,14 @@ index 897bfad92a..5a83cdb2c1 100644
 +if CONFIG["MOZ_SYSTEM_HARFBUZZ"]:
 +    CXXFLAGS += CONFIG["MOZ_HARFBUZZ_CFLAGS"]
 +
+ include("/ipc/chromium/chromium-config.mozbuild")
+ 
  GeneratedFile(
-     "BaseChars.h",
-     script="base_chars.py",
 diff --git a/netwerk/dns/moz.build b/netwerk/dns/moz.build
-index 1498dd2ceb..026798bf71 100644
+index f769e270fa..8f64710257 100644
 --- a/netwerk/dns/moz.build
 +++ b/netwerk/dns/moz.build
-@@ -106,6 +106,9 @@ LOCAL_INCLUDES += [
+@@ -109,4 +109,7 @@ LOCAL_INCLUDES += [
      "/netwerk/protocol/http",
  ]
  
@@ -142,15 +142,13 @@ index 1498dd2ceb..026798bf71 100644
 +    CXXFLAGS += CONFIG["MOZ_HARFBUZZ_CFLAGS"]
 +
  USE_LIBS += ["icu"]
- 
- if CONFIG["CC_TYPE"] in ("clang", "gcc"):
 diff --git a/toolkit/library/moz.build b/toolkit/library/moz.build
-index bf771ca044..8f9525edc0 100644
+index 2c3f86948e..dd6901ba9a 100644
 --- a/toolkit/library/moz.build
 +++ b/toolkit/library/moz.build
-@@ -254,6 +254,9 @@ if CONFIG["MOZ_ANDROID_GOOGLE_VR"]:
- OS_LIBS += CONFIG["MOZ_CAIRO_OSLIBS"]
- OS_LIBS += CONFIG["MOZ_WEBRTC_X11_LIBS"]
+@@ -260,6 +260,9 @@ if CONFIG["MOZ_ANDROID_GOOGLE_VR"]:
+         "-lgvr",
+     ]
  
 +if CONFIG["MOZ_SYSTEM_HARFBUZZ"]:
 +    OS_LIBS += CONFIG["MOZ_HARFBUZZ_LIBS"]
@@ -159,12 +157,12 @@ index bf771ca044..8f9525edc0 100644
      OS_LIBS += CONFIG["MOZ_JPEG_LIBS"]
  
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index 026e7fa7ba..61413a1ae7 100644
+index 00698656f6..1843188d11 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
-@@ -475,6 +475,15 @@ add_old_configure_assignment(
-     "_HAVE_FREETYPE2", depends_if(freetype2_info)(lambda _: True)
+@@ -460,6 +460,15 @@ add_old_configure_assignment(
  )
+ set_define("MOZ_HAVE_FREETYPE2", depends_if(freetype2_info)(lambda _: True))
  
 +# HarfBuzz
 +# ==============================================================
@@ -179,5 +177,5 @@ index 026e7fa7ba..61413a1ae7 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.32.0
+2.34.1
 

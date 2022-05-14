@@ -1,25 +1,25 @@
-From df668e1b5d2badd3e1cefcc038128f9f444f3199 Mon Sep 17 00:00:00 2001
+From 595d06f7c9ac89163e368b31a1f48770ccf14bcc Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Mon, 16 Aug 2021 03:06:46 +0300
-Subject: [PATCH 6/9] nuke urlbarprovider.
+Date: Fri, 13 May 2022 11:29:11 +0300
+Subject: [PATCH 06/10] nuke urlbarprovider.
 
 ---
  browser/components/urlbar/UrlbarProviderInterventions.jsm | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/browser/components/urlbar/UrlbarProviderInterventions.jsm b/browser/components/urlbar/UrlbarProviderInterventions.jsm
-index be2f3524e2..811daaeb2d 100644
+index ad1468c5fe..9134aae2f9 100644
 --- a/browser/components/urlbar/UrlbarProviderInterventions.jsm
 +++ b/browser/components/urlbar/UrlbarProviderInterventions.jsm
-@@ -451,7 +451,7 @@ class ProviderInterventions extends UrlbarProvider {
+@@ -452,7 +452,7 @@ class ProviderInterventions extends UrlbarProvider {
          ]),
        });
        for (let [id, phrases] of Object.entries(DOCUMENTS)) {
 -        queryScorer.addDocument({ id, phrases });
-+//        queryScorer.addDocument({ id, phrases });
++      // queryScorer.addDocument({ id, phrases });
        }
        return queryScorer;
      });
 -- 
-2.32.0
+2.36.0
 

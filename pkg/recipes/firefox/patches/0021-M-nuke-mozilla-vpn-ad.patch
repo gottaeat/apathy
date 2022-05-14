@@ -1,36 +1,36 @@
-From 5c0eec0abf6d447f7037e3a0fc3cb9117639823d Mon Sep 17 00:00:00 2001
+From 12feb1696b03a01766b2950172a1b1a2815251bc Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Mon, 16 Aug 2021 03:08:14 +0300
-Subject: [PATCH 9/9] nuke mozilla vpn ad.
+Date: Fri, 13 May 2022 12:46:32 +0300
+Subject: [PATCH 07/10] nuke mozilla vpn ad.
 
 ---
  .../privatebrowsing/content/aboutPrivateBrowsing.html         | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
-index f8a17646a6..ebf4206d23 100644
+index 2de873e8f8..8b3ca9f764 100644
 --- a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
 +++ b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
-@@ -54,10 +54,11 @@
+@@ -56,10 +56,11 @@
        <div class="info">
-         <h1 id="info-title" data-l10n-id="about-private-browsing-info-title"></h1>
-         <p id="info-body" data-l10n-id="about-private-browsing-info-description"></p>
--        <a id="private-browsing-myths" data-l10n-id="about-private-browsing-info-myths"></a>
-+<!--        <a id="private-browsing-myths" data-l10n-id="about-private-browsing-info-myths"></a> -->
+         <h1 id="info-title"></h1>
+         <p id="info-body"></p>
+-        <a id="private-browsing-myths"></a>
++<!--        <a id="private-browsing-myths"></a> -->
        </div>
      </div>
  
 +    <!--
-     <div class="promo">
+     <div class="promo" hidden>
        <div class="promo-image-large">
          <img src="" alt="" />
-@@ -73,5 +74,6 @@
-         </div>
+@@ -76,5 +77,6 @@
        </div>
+       <button data-l10n-id="about-private-browsing-promo-close-button" id="dismiss-btn" class="promo-dismiss"></button>
      </div>
 +    -->
    </body>
  </html>
 -- 
-2.32.0
+2.36.0
 

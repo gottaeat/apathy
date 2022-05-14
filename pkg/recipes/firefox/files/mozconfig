@@ -5,8 +5,8 @@ mk_add_options MOZ_MAKE_FLAGS="-jJOBCOUNTREPLACE"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix="/opt/firefox-91.9.0esr"
-ac_add_options --libdir="/opt/firefox-91.9.0esr/lib"
+ac_add_options --prefix="/opt/firefox-100.0"
+ac_add_options --libdir="/opt/firefox-100.0/lib"
 ac_add_options --with-libclang-path="/opt/llvm-14.0.2/lib"
 ac_add_options --with-clang-path="/opt/llvm-14.0.2/bin/clang"
 
@@ -18,7 +18,6 @@ ac_add_options --enable-rust-simd
 ac_add_options --enable-strip
 ac_add_options --disable-debug-symbols
 ac_add_options --disable-elf-hack
-ac_add_options --disable-gold
 ac_add_options --disable-jemalloc
 ac_add_options --disable-profiling
 ac_add_options --disable-tests
@@ -32,19 +31,22 @@ ac_add_options --enable-lto="cross"
 ac_add_options --disable-official-branding
 ac_add_options --enable-application=browser
 ac_add_options --with-branding=browser/branding/unofficial
-ac_add_options --with-distribution-id=io.github.mssx86
+ac_add_options --with-distribution-id=us.among.mssx86
 
 # > 6
-ac_add_options --enable-alsa
+ac_add_options --enable-audio-backends="alsa"
 ac_add_options --enable-ffmpeg
+ac_add_options --enable-negotiateauth
+ac_add_options --enable-new-pass-manager
+ac_add_options --enable-sandbox
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
 ac_add_options --disable-dbus
 ac_add_options --disable-eme
+ac_add_options --disable-libproxy
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-parental-controls
-ac_add_options --disable-pulseaudio
 ac_add_options --disable-smoosh
 ac_add_options --disable-synth-speechd
 ac_add_options --disable-system-extension-dirs
@@ -52,6 +54,7 @@ ac_add_options --disable-updater
 ac_add_options --disable-vtune
 ac_add_options --disable-webrtc
 ac_add_options --disable-webspeech
+ac_add_options --without-wasm-sandboxed-libraries
 
 # > 7
 ac_add_options --enable-system-ffi

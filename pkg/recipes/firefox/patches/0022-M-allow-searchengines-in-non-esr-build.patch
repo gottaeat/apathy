@@ -1,0 +1,25 @@
+From 4bba328122fe807f25e03349949c8f44bda1481b Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 May 2022 12:48:43 +0300
+Subject: [PATCH 08/10] allow searchengines in non esr build.
+
+---
+ .../components/enterprisepolicies/schemas/policies-schema.json  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/browser/components/enterprisepolicies/schemas/policies-schema.json b/browser/components/enterprisepolicies/schemas/policies-schema.json
+index 3dad98ea62..4c4941d9c5 100644
+--- a/browser/components/enterprisepolicies/schemas/policies-schema.json
++++ b/browser/components/enterprisepolicies/schemas/policies-schema.json
+@@ -1139,7 +1139,7 @@
+     },
+ 
+     "SearchEngines": {
+-      "enterprise_only": true,
++      "enterprise_only": false,
+ 
+       "type": "object",
+       "properties": {
+-- 
+2.36.0
+

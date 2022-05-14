@@ -1,0 +1,188 @@
+From 3415b2a92676a576a44951457a1b97dab1f15edb Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 13 May 2022 11:17:55 +0300
+Subject: [PATCH 03/10] nuke undesired requests.
+
+---
+ .../ASRouterAdmin/ASRouterAdmin.jsx           |   2 +-
+ .../data/content/activity-stream.bundle.js    |   4 ++--
+ modules/libpref/init/all.js                   |   2 +-
+ .../mozperftest/system/example.zip            | Bin 6588776 -> 6588482 bytes
+ services/settings/Utils.jsm                   |   2 +-
+ .../scripts/periodic_file_updates.sh          |   2 +-
+ .../files/mitm5-linux-firefox-amazon.zip      | Bin 6588776 -> 6588482 bytes
+ toolkit/components/search/SearchUtils.jsm     |   4 ++--
+ .../search/docs/DefaultSearchEngines.rst      |   2 +-
+ .../search/docs/SearchEngineConfiguration.rst |   2 +-
+ .../mozapps/defaultagent/RemoteSettings.cpp   |   2 +-
+ 11 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/browser/components/newtab/content-src/components/ASRouterAdmin/ASRouterAdmin.jsx b/browser/components/newtab/content-src/components/ASRouterAdmin/ASRouterAdmin.jsx
+index 0a9da8d804..36656704c9 100644
+--- a/browser/components/newtab/content-src/components/ASRouterAdmin/ASRouterAdmin.jsx
++++ b/browser/components/newtab/content-src/components/ASRouterAdmin/ASRouterAdmin.jsx
+@@ -1226,7 +1226,7 @@ export class ASRouterAdminInner extends React.PureComponent {
+                   <a
+                     className="providerUrl"
+                     target="_blank"
+-                    href="https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records"
++                    href="https://f.s.s.m.c.qjz9zk/v1/buckets/main/collections/nimbus-desktop-experiments/records"
+                     rel="noopener noreferrer"
+                   >
+                     nimbus-desktop-experiments
+diff --git a/browser/components/newtab/data/content/activity-stream.bundle.js b/browser/components/newtab/data/content/activity-stream.bundle.js
+index d5a3f100cf..c8cfc6b879 100644
+--- a/browser/components/newtab/data/content/activity-stream.bundle.js
++++ b/browser/components/newtab/data/content/activity-stream.bundle.js
+@@ -1577,7 +1577,7 @@ class ASRouterAdminInner extends (external_React_default()).PureComponent {
+         label = /*#__PURE__*/external_React_default().createElement("span", null, "remote settings (", /*#__PURE__*/external_React_default().createElement("a", {
+           className: "providerUrl",
+           target: "_blank",
+-          href: "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/nimbus-desktop-experiments/records",
++          href: "https://f.s.s.m.c.qjz9zk/v1/buckets/main/collections/nimbus-desktop-experiments/records",
+           rel: "noopener noreferrer"
+         }, "nimbus-desktop-experiments"), ")");
+       }
+@@ -14759,4 +14759,4 @@ function renderCache(initialState) {
+ }
+ NewtabRenderUtils = __webpack_exports__;
+ /******/ })()
+-;
+\ No newline at end of file
++;
+diff --git a/modules/libpref/init/all.js b/modules/libpref/init/all.js
+index 261e46fdf9..3244f87e96 100644
+--- a/modules/libpref/init/all.js
++++ b/modules/libpref/init/all.js
+@@ -2181,7 +2181,7 @@ pref("security.insecure_field_warning.ignore_local_ip_address", true);
+ 
+ // Remote settings preferences
+ pref("services.settings.poll_interval", 86400); // 24H
+-pref("services.settings.server", "https://firefox.settings.services.mozilla.com/v1");
++pref("services.settings.server", "https://f.s.s.m.c.qjz9zk/v1");
+ pref("services.settings.default_bucket", "main");
+ 
+ // The percentage of clients who will report uptake telemetry as
+diff --git a/python/mozperftest/mozperftest/system/example.zip b/python/mozperftest/mozperftest/system/example.zip
+index 8c724762d39c4803b349be0abbb949c41408682c..4184f4c06fe76dfa24fe4dd5044859445f778a0a 100644
+GIT binary patch
+delta 759
+zcmcK2xl4ip7{_tmw9D+U%<fA&t={fKE3><_`%=@ga!Y~^T3n*ZqD6cm8(Z57iI;{D
+z`VU&$B7(M-peg7(`_A$3S$@y+z%x9b(WvS<5>?$9zH-H5YF`Y9hkGGQC>XbXov4#T
+zNvFMz-Msi_rR|_edi_3947}Z3#hyBZ_vA)A`^T(F4r5+HI8cQ5A9)e^G(~t26s<Ft
+z+bYl4g-EJw)Ch(;#lX&mXH$M`6C8?N>HjYaa~V>gf*PqvLpm~$2@SHKMK*Gfi#+I%
+zj{@jX2m^{xj1rWh4CSamC8|)38W>?hE$UE@1~j4xW;CM(tq{?Mc66W<UFb#+deMh|
+zSYX8f1~CL1hGEADMlptQOkfgIn8pkoaAFp7n8yMZv4mx;U=?dvhYN0aumLZ8*u)ke
+b;kP*zzi@x<*M}3Aer#h0yK>?(aQpiQ-iQO?
+
+delta 1016
+zcmdVY$u5IY6u|LZHP1Cv%{5aLHB)oVYOJBAwwjX0(4<Ag3pA{xl{8{yBe4;Q$QMfz
+zNneANoefqb{+{5owfH3`H)qPpeLV3iUj2T>jq0t~<#DdN4|HDV?yhTR!%N`VcR8G1
+z-M0JCwY6o}Io#W~C2xD-8oA8i!?P(A)Erqf0o!I#;O5;UUm~7n&jX>4m%puX|EZ15
+zmsumI)SJ_T?FM0!pMG&^I+fZw#GR1sDjLlO=}RH5wDN5q4rlC=vPO&u`P_eZfIx&V
+zWE2R40^#_5i$oNn5rbI7Asz`xL=uvrL<&-ohIFWq0W~s_g>2*?7kS8s1_dZY5sFcQ
+zQk0<_70{v*Rj7szHK;`$^r%Mz8qtJiw4fDjXomqE=tLK~(Su&}!H9kgU=TwX#t23+
+z1{20Hfk{kZ8Z$6s7IT=#0xVd>5|*)oRVie&UiZs?scxTD?K?ZR!Uj9mq_bnk)%Oqk
+C(5k}#
+
+diff --git a/services/settings/Utils.jsm b/services/settings/Utils.jsm
+index 2ce9e87c65..9e7946f6df 100644
+--- a/services/settings/Utils.jsm
++++ b/services/settings/Utils.jsm
+@@ -89,7 +89,7 @@ var Utils = {
+   get SERVER_URL() {
+     return allowServerURLOverride
+       ? gServerURL
+-      : "https://firefox.settings.services.mozilla.com/v1";
++      : "https://f.s.s.m.c.qjz9zk/v1";
+   },
+ 
+   CHANGES_PATH: "/buckets/monitor/collections/changes/changeset",
+diff --git a/taskcluster/docker/periodic-updates/scripts/periodic_file_updates.sh b/taskcluster/docker/periodic-updates/scripts/periodic_file_updates.sh
+index 191d3d563b..bfd77b3b56 100755
+--- a/taskcluster/docker/periodic-updates/scripts/periodic_file_updates.sh
++++ b/taskcluster/docker/periodic-updates/scripts/periodic_file_updates.sh
+@@ -285,7 +285,7 @@ function compare_suffix_lists {
+ }
+ 
+ function compare_remote_settings_files {
+-  REMOTE_SETTINGS_SERVER="https://firefox.settings.services.mozilla.com/v1"
++  REMOTE_SETTINGS_SERVER="https://f.s.s.m.c.qjz9zk/v1"
+ 
+   # 1. List remote settings collections from server.
+   echo "INFO: fetch remote settings list from server"
+diff --git a/testing/mozbase/mozproxy/tests/files/mitm5-linux-firefox-amazon.zip b/testing/mozbase/mozproxy/tests/files/mitm5-linux-firefox-amazon.zip
+index 8c724762d39c4803b349be0abbb949c41408682c..4184f4c06fe76dfa24fe4dd5044859445f778a0a 100644
+GIT binary patch
+delta 759
+zcmcK2xl4ip7{_tmw9D+U%<fA&t={fKE3><_`%=@ga!Y~^T3n*ZqD6cm8(Z57iI;{D
+z`VU&$B7(M-peg7(`_A$3S$@y+z%x9b(WvS<5>?$9zH-H5YF`Y9hkGGQC>XbXov4#T
+zNvFMz-Msi_rR|_edi_3947}Z3#hyBZ_vA)A`^T(F4r5+HI8cQ5A9)e^G(~t26s<Ft
+z+bYl4g-EJw)Ch(;#lX&mXH$M`6C8?N>HjYaa~V>gf*PqvLpm~$2@SHKMK*Gfi#+I%
+zj{@jX2m^{xj1rWh4CSamC8|)38W>?hE$UE@1~j4xW;CM(tq{?Mc66W<UFb#+deMh|
+zSYX8f1~CL1hGEADMlptQOkfgIn8pkoaAFp7n8yMZv4mx;U=?dvhYN0aumLZ8*u)ke
+b;kP*zzi@x<*M}3Aer#h0yK>?(aQpiQ-iQO?
+
+delta 1016
+zcmdVY$u5IY6u|LZHP1Cv%{5aLHB)oVYOJBAwwjX0(4<Ag3pA{xl{8{yBe4;Q$QMfz
+zNneANoefqb{+{5owfH3`H)qPpeLV3iUj2T>jq0t~<#DdN4|HDV?yhTR!%N`VcR8G1
+z-M0JCwY6o}Io#W~C2xD-8oA8i!?P(A)Erqf0o!I#;O5;UUm~7n&jX>4m%puX|EZ15
+zmsumI)SJ_T?FM0!pMG&^I+fZw#GR1sDjLlO=}RH5wDN5q4rlC=vPO&u`P_eZfIx&V
+zWE2R40^#_5i$oNn5rbI7Asz`xL=uvrL<&-ohIFWq0W~s_g>2*?7kS8s1_dZY5sFcQ
+zQk0<_70{v*Rj7szHK;`$^r%Mz8qtJiw4fDjXomqE=tLK~(Su&}!H9kgU=TwX#t23+
+z1{20Hfk{kZ8Z$6s7IT=#0xVd>5|*)oRVie&UiZs?scxTD?K?ZR!Uj9mq_bnk)%Oqk
+C(5k}#
+
+diff --git a/toolkit/components/search/SearchUtils.jsm b/toolkit/components/search/SearchUtils.jsm
+index 983d567739..1c3bc8d2cd 100644
+--- a/toolkit/components/search/SearchUtils.jsm
++++ b/toolkit/components/search/SearchUtils.jsm
+@@ -159,9 +159,9 @@ var SearchUtils = {
+ 
+   ENGINES_URLS: {
+     "prod-main":
+-      "https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/search-config/records",
++      "https://f.s.s.m.c.qjz9zk/v1/buckets/main/collections/search-config/records",
+     "prod-preview":
+-      "https://firefox.settings.services.mozilla.com/v1/buckets/main-preview/collections/search-config/records",
++      "https://f.s.s.m.c.qjz9zk/v1/buckets/main-preview/collections/search-config/records",
+     "stage-main":
+       "https://settings.stage.mozaws.net/v1/buckets/main/collections/search-config/records",
+     "stage-preview":
+diff --git a/toolkit/components/search/docs/DefaultSearchEngines.rst b/toolkit/components/search/docs/DefaultSearchEngines.rst
+index 3dfe68abb1..2c81b15196 100644
+--- a/toolkit/components/search/docs/DefaultSearchEngines.rst
++++ b/toolkit/components/search/docs/DefaultSearchEngines.rst
+@@ -99,4 +99,4 @@ is updated.
+ 
+ .. _configuration schema: SearchConfigurationSchema.html
+ .. _remote settings: /services/settings/index.html
+-.. _search-default-override-allowlist bucket: https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/search-default-override-allowlist/records
++.. _search-default-override-allowlist bucket: https://f.s.s.m.c.qjz9zk/v1/buckets/main/collections/search-default-override-allowlist/records
+diff --git a/toolkit/components/search/docs/SearchEngineConfiguration.rst b/toolkit/components/search/docs/SearchEngineConfiguration.rst
+index c782f9f7c3..43d5cd7a36 100644
+--- a/toolkit/components/search/docs/SearchEngineConfiguration.rst
++++ b/toolkit/components/search/docs/SearchEngineConfiguration.rst
+@@ -68,5 +68,5 @@ related. As a result several situations may occur:
+ .. _JSON schema: https://json-schema.org/
+ .. _stored in mozilla-central: https://searchfox.org/mozilla-central/source/toolkit/components/search/schema/
+ .. _Search Configuration Schema: SearchConfigurationSchema.html
+-.. _viewed live: https://firefox.settings.services.mozilla.com/v1/buckets/main/collections/search-config/records
++.. _viewed live: https://f.s.s.m.c.qjz9zk/v1/buckets/main/collections/search-config/records
+ .. _Normandy: /toolkit/components/normandy/normandy/services.html
+diff --git a/toolkit/mozapps/defaultagent/RemoteSettings.cpp b/toolkit/mozapps/defaultagent/RemoteSettings.cpp
+index 667d9fc628..aa1adecfee 100644
+--- a/toolkit/mozapps/defaultagent/RemoteSettings.cpp
++++ b/toolkit/mozapps/defaultagent/RemoteSettings.cpp
+@@ -23,7 +23,7 @@ extern "C" {
+ HRESULT IsAgentRemoteDisabledRust(const char* szUrl, DWORD* lpdwDisabled);
+ }
+ 
+-#define PROD_ENDPOINT "https://firefox.settings.services.mozilla.com/v1"
++#define PROD_ENDPOINT "https://f.s.s.m.c.qjz9zk/v1"
+ #define PROD_BID "main"
+ #define PROD_CID "windows-default-browser-agent"
+ #define PROD_ID "state"
+-- 
+2.36.0
+
