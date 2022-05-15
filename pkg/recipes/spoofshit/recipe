@@ -1,0 +1,195 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC -fPIE"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC -fPIE"
+export            PATH="${PATH}:/mss/work/table/go-1.15.2-alpine/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+myconfigure(){
+ ./configure \
+  --build=$CBUILD     \
+  --host=$CHOST       \
+  --prefix="${penis}" \
+  --enable-static     \
+  --disable-shared    \
+  ${@}
+}
+
+# 2
+tar xf /mss/work/sauces/go-1.15.2-alpine.tar.zst
+
+# 3
+tar xf /mss/work/sauces/libmnl-1.0.4.tar.bz2
+cd     libmnl-1.0.4/
+
+pdir="/mss/repo/pkg/recipes/nfqws/patches"
+patch -p1 < "${pdir}"/0001-libmnl-fix-includes.patch
+
+myconfigure
+make
+make install
+
+cd ../; rm -rf libmnl-1.0.4/
+
+# 4
+tar xf /mss/work/sauces/libnfnetlink-1.0.1.tar.bz2
+cd     libnfnetlink-1.0.1/
+
+patch -p1 < "${pdir}"/0002-libnfnetlink-fix-includes.patch
+
+configtomusl
+myconfigure
+make
+make install
+
+cd ../; rm -rf libnfnetlink-1.0.1/
+
+# 5
+tar xf /mss/work/sauces/libnetfilter_queue-1.0.5.tar.bz2
+cd     libnetfilter_queue-1.0.5/
+
+configtomusl
+myconfigure
+make
+make install
+
+cd ../; rm -rf libnetfilter_queue-1.0.5/
+
+# 6
+tar xf /mss/work/sauces/libpcap-1.10.1.tar.gz
+cd     libpcap-1.10.1/
+
+pdir="/mss/repo/pkg/recipes/wlanshit/patches"
+patch -p1 < "${pdir}"/0001-libpcap-fix-headers.patch
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared    \
+ --disable-ipv6      \
+ --disable-dbus
+
+make
+make install
+
+cd ../; rm -rf libpcap-1.10.1/
+
+# 7
+tar xf /mss/work/sauces/libnet-1.2.tar.gz
+cd     libnet-1.2/
+
+pdir="/mss/repo/pkg/recipes/spoofshit/patches/"
+patch -p1 < "${pdir}"/0001-libnet-fix-types.patch
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static     \
+ --with-link-layer=linux
+
+make
+make install
+cd ../; rm -rf libnet-1.2/
+
+# 8
+tar xf /mss/work/sauces/libnids-1.24.tar.gz
+cd     libnids-1.24/
+
+configtomusl
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-shared    \
+ --enable-static     \
+
+make
+make install
+
+cd ../; rm -rf libnids-1.24/
+
+# 9
+tar xf /mss/work/sauces/libtirpc-1.3.1.tar.bz2
+cd     libtirpc-1.3.1/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --disable-gssapi    \
+ --disable-shared    \
+ --enable-static
+
+make
+make install
+
+cd ../; rm -rf libtirpc-1.3.1/
+
+# 10
+tar xf /mss/work/sauces/dsniff-2.4b1.tar.gz
+cd     dsniff-2.4/
+
+pdir="/mss/repo/pkg/recipes/spoofshit/patches/"
+for i in "${pdir}"/*dsniff*.patch; do patch -p1 < $i; done
+
+autoreconf -fvi
+
+sed -i -e \
+ 's/as_fn_error net\/bpf\.h \"pcap\.h\" \"\$LINENO\" 5/echo dickballs/' \
+ configure
+
+   CFLAGS="${CFLAGS}   `pkgconf --cflags libnl-3.0 libnl-genl-3.0 libpcap`" \
+ CXXFLAGS="${CXXFLAGS} `pkgconf --cflags libnl-3.0 libnl-genl-3.0 libpcap`" \
+  LDFLAGS="${LDFLAGS}  `pkgconf --libs   libnl-3.0 libnl-genl-3.0 libpcap`" \
+\
+./configure \
+ --with-db=no               \
+ --with-libpcap="${penis}"  \
+ --with-libnet="${penis}"   \
+ --with-libnids="${penis}"  \
+ --with-libtirpc="${penis}" \
+ --with-openssl
+
+find . -type f -exec sed -i -e 's/pcap_init/pcap_myinit/g' {} ';'
+make tcpnice
+
+strip --strip-all tcpnice
+mv tcpnice ../
+
+cd ../; rm -rf dsniff-2.4/
+
+# 11
+tar xf /mss/work/sauces/bettercap-v2.32.0.tar.gz
+cd     bettercap-2.32.0/
+
+export   GO11MODULE=on
+export      GOFLAGS="-buildmode=pie -ldflags=-linkmode=external -trimpath -mod=readonly -modcacherw"
+
+         CGO_CFLAGS="$(echo "${CFLAGS}"   | sed 's/-flto=....//g;s/-flto-jobs=.//g;') -v"
+       CGO_CXXFLAGS="$(echo "${CXXFLAGS}" | sed 's/-flto=....//g;s/-flto-jobs=.//g;') -v"
+        CGO_LDFLAGS="$(echo "${LDFLAGS}"  | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
+export   CGO_CFLAGS="${CGO_CFLAGS}   `pkgconf --cflags libnl-3.0 libnl-genl-3.0`"
+export CGO_CXXFLAGS="${CGO_CXXFLAGS} `pkgconf --cflags libnl-3.0 libnl-genl-3.0`"
+export  CGO_LDFLAGS="${CGO_LDFLAGS}  `pkgconf --libs   libnl-3.0 libnl-genl-3.0`"
+
+go build
+
+strip --strip-all bettercap
+mv                bettercap ../
+
+cd ../; rm -rf bettercap-2.32.0/
+
+# 11
+mkdir spoofshit/bin/
+mv    bettercap tcpnice spoofshit/bin/
+
+pkgup spoofshit "${amachine}"-spoofshit-`dn`
+
+mv "${amachine}"-spoofshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software
