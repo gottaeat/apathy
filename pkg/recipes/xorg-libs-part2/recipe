@@ -82,8 +82,8 @@ doas -- samu install
 cd ../../; rm -rf glib-2.72.1/
 
 # 5 > penis freetype (w/o harfbuzz)
-tar xf /mss/work/sauces/freetype-2.12.0.tar.xz
-cd     freetype-2.12.0/
+tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
+cd     freetype-2.12.1/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -97,11 +97,11 @@ patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
 make
 make install
-cd ../; rm -rf freetype-2.12.0/
+cd ../; rm -rf freetype-2.12.1/
 
 # 6 > penis harfbuzz
-tar xf /mss/work/sauces/harfbuzz-4.2.1.tar.gz
-cd     harfbuzz-4.2.1/
+tar xf /mss/work/sauces/harfbuzz-4.3.0.tar.xz
+cd     harfbuzz-4.3.0/
 
 mkdir build
 cd    build
@@ -125,11 +125,11 @@ meson --buildtype=plain \
 samu
 samu install
 
-cd ../../; rm -rf harfbuzz-4.2.1/
+cd ../../; rm -rf harfbuzz-4.3.0/
 
 # 7 > system freetype (w/ harfbuzz)
-tar xf /mss/work/sauces/freetype-2.12.0.tar.xz
-cd     freetype-2.12.0/
+tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
+cd     freetype-2.12.1/
 
 patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
 
@@ -145,7 +145,7 @@ make
 make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../ && rm -rf freetype-2.12.0/
+cd ../ && rm -rf freetype-2.12.1/
 
 # 8 > system fontconfig
 tar xf /mss/work/sauces/fontconfig-2.14.0.tar.xz
@@ -234,8 +234,8 @@ doas -- make install
 cd ../; rm -rf cairo-1.16.0/
 
 # 11 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-4.2.1.tar.gz
-cd     harfbuzz-4.2.1/
+tar xf /mss/work/sauces/harfbuzz-4.3.0.tar.xz
+cd     harfbuzz-4.3.0/
 
 mkdir build
 cd    build
@@ -260,7 +260,7 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-4.2.1/
+cd ../../; rm -rf harfbuzz-4.3.0/
 
 # 12 > cleanup
 doas -- rm -rfv \
