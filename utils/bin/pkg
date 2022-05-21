@@ -85,11 +85,11 @@ pver(){
  fi
 
  aprint_nc
- lsdetail "ssl/tls       " "${tls}"
- lsdetail "libc          " "${libc}"
- lsdetail "cca           " "${clangver}"
- lsdetail "rust/cargo    " "${rustfin}"
- lsdetail "host triplet  " "${trpl}"
+ lsdetail "host      " "${trpl}"
+ lsdetail "libc      " "${libc}"
+ lsdetail "ssl/crypto" "${tls}"
+ lsdetail "cc        " "${clangver}"
+ lsdetail "rust/cargo" "${rustfin}"
  aprint_nc
 }
 
