@@ -44,7 +44,7 @@ i  2  ..     initramfs            6
 i  7  ...    cryptsetup           2.4.3
 i  5  ....   lvm2                 2.2.02.187
 i  1  .      init                 22
-i  1  ..     utils                17
+i  1  ..     utils                18
 i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
 i  1  .      curl                 7.83.1
