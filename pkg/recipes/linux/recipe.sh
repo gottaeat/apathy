@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 5.16 kernels, version 1, for thinkpad x230.
+# build script for 5.18 kernels, version 1, for thinkpad x230.
 
 . /mss/files/funcs
 . /mss/files/device.conf
@@ -26,7 +26,7 @@ fi
       rdr="${logdir}/${blddate}-linux-${kerver}.log"
 
   useconf="${repodir}/files/${amachine}.config"
- localver="5.16$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+ localver="5.18$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                       print}' ${useconf})"
   bldsalt="$(awk     '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
                       print}' ${useconf})"

@@ -1,0 +1,91 @@
+From 38068d0801ad85ba36673ab2ad6a53e0fd3ffdde Mon Sep 17 00:00:00 2001
+From: Thomas Deutschmann <whissi@gentoo.org>
+Date: Thu, 29 Apr 2021 18:22:48 +0200
+Subject: [PATCH 27/30] Disable FFVPX with VA-API
+
+Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
+---
+ dom/media/platforms/PDMFactory.cpp | 32 +++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/dom/media/platforms/PDMFactory.cpp b/dom/media/platforms/PDMFactory.cpp
+index 9b0342ce82..4e377082ae 100644
+--- a/dom/media/platforms/PDMFactory.cpp
++++ b/dom/media/platforms/PDMFactory.cpp
+@@ -486,12 +486,6 @@ void PDMFactory::CreateRddPDMs() {
+     CreateAndStartupPDM<AppleDecoderModule>();
+   }
+ #endif
+-#ifdef MOZ_FFVPX
+-  if (StaticPrefs::media_ffvpx_enabled() &&
+-      StaticPrefs::media_rdd_ffvpx_enabled()) {
+-    CreateAndStartupPDM<FFVPXRuntimeLinker>();
+-  }
+-#endif
+ #ifdef MOZ_FFMPEG
+   if (StaticPrefs::media_ffmpeg_enabled() &&
+       StaticPrefs::media_rdd_ffmpeg_enabled() &&
+@@ -499,6 +493,12 @@ void PDMFactory::CreateRddPDMs() {
+     mFailureFlags += GetFailureFlagBasedOnFFmpegStatus(
+         FFmpegRuntimeLinker::LinkStatusCode());
+   }
++#endif
++#ifdef MOZ_FFVPX
++  if (StaticPrefs::media_ffvpx_enabled() &&
++      StaticPrefs::media_rdd_ffvpx_enabled()) {
++    CreateAndStartupPDM<FFVPXRuntimeLinker>();
++  }
+ #endif
+   CreateAndStartupPDM<AgnosticDecoderModule>();
+ }
+@@ -535,11 +535,6 @@ void PDMFactory::CreateContentPDMs() {
+     CreateAndStartupPDM<OmxDecoderModule>();
+   }
+ #endif
+-#ifdef MOZ_FFVPX
+-  if (StaticPrefs::media_ffvpx_enabled()) {
+-    CreateAndStartupPDM<FFVPXRuntimeLinker>();
+-  }
+-#endif
+ #ifdef MOZ_FFMPEG
+   if (StaticPrefs::media_ffmpeg_enabled() &&
+       !CreateAndStartupPDM<FFmpegRuntimeLinker>()) {
+@@ -547,6 +542,11 @@ void PDMFactory::CreateContentPDMs() {
+         FFmpegRuntimeLinker::LinkStatusCode());
+   }
+ #endif
++#ifdef MOZ_FFVPX
++  if (StaticPrefs::media_ffvpx_enabled()) {
++    CreateAndStartupPDM<FFVPXRuntimeLinker>();
++  }
++#endif
+ #ifdef MOZ_WIDGET_ANDROID
+   if (StaticPrefs::media_android_media_codec_enabled()) {
+     StartupPDM(AndroidDecoderModule::Create(),
+@@ -581,11 +581,6 @@ void PDMFactory::CreateDefaultPDMs() {
+     CreateAndStartupPDM<OmxDecoderModule>();
+   }
+ #endif
+-#ifdef MOZ_FFVPX
+-  if (StaticPrefs::media_ffvpx_enabled()) {
+-    CreateAndStartupPDM<FFVPXRuntimeLinker>();
+-  }
+-#endif
+ #ifdef MOZ_FFMPEG
+   if (StaticPrefs::media_ffmpeg_enabled() &&
+       !CreateAndStartupPDM<FFmpegRuntimeLinker>()) {
+@@ -593,6 +588,11 @@ void PDMFactory::CreateDefaultPDMs() {
+         FFmpegRuntimeLinker::LinkStatusCode());
+   }
+ #endif
++#ifdef MOZ_FFVPX
++  if (StaticPrefs::media_ffvpx_enabled()) {
++    CreateAndStartupPDM<FFVPXRuntimeLinker>();
++  }
++#endif
+ #ifdef MOZ_WIDGET_ANDROID
+   if (StaticPrefs::media_android_media_codec_enabled()) {
+     StartupPDM(AndroidDecoderModule::Create(),
+-- 
+2.34.1
+

@@ -1,7 +1,7 @@
-From 182a7c7715d0e1c342b475b605af8100f0e44743 Mon Sep 17 00:00:00 2001
+From 7619c80cb1f3651a77586823d61e8f2b5adea553 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 14 May 2022 14:04:46 +0300
-Subject: [PATCH] port xanmod 5.17 bbr2 to 5.17.7. (mss)
+Date: Wed, 25 May 2022 18:31:52 +0300
+Subject: [PATCH 10/12] port xanmod 5.17 bbr2 to 5.18. (mss)
 
 ---
  README.md                          |  169 ++
@@ -200,7 +200,7 @@ index 000000000..340d7c472
 +
 +If you have questions about BBR, check the [BBR FAQ](https://github.com/google/bbr/blob/master/Documentation/bbr-faq.md).
 diff --git a/include/linux/tcp.h b/include/linux/tcp.h
-index 78b91bb92..618568b01 100644
+index 1168302b7..138c1e6f1 100644
 --- a/include/linux/tcp.h
 +++ b/include/linux/tcp.h
 @@ -225,7 +225,8 @@ struct tcp_sock {
@@ -214,7 +214,7 @@ index 78b91bb92..618568b01 100644
  	u32	chrono_stat[3];	/* Time in jiffies for chrono_stat stats */
  	u8	chrono_type:2,	/* current chronograph type */
 diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 4ad47d9f9..7623bb1f8 100644
+index 3908296d1..41ed0ac26 100644
 --- a/include/net/inet_connection_sock.h
 +++ b/include/net/inet_connection_sock.h
 @@ -134,7 +134,8 @@ struct inet_connection_sock {
@@ -228,7 +228,7 @@ index 4ad47d9f9..7623bb1f8 100644
  };
  
 diff --git a/include/net/tcp.h b/include/net/tcp.h
-index a3fe2f9bc..9775df686 100644
+index cc1295037..21f9abab8 100644
 --- a/include/net/tcp.h
 +++ b/include/net/tcp.h
 @@ -370,6 +370,7 @@ static inline void tcp_dec_quickack_mode(struct sock *sk,
@@ -449,10 +449,10 @@ index bbdd9c44f..8dee1547d 100644
  obj-$(CONFIG_TCP_CONG_CDG) += tcp_cdg.o
  obj-$(CONFIG_TCP_CONG_CUBIC) += tcp_cubic.o
 diff --git a/net/ipv4/bpf_tcp_ca.c b/net/ipv4/bpf_tcp_ca.c
-index de610cb83..afda34c26 100644
+index f79ab942f..389f4c874 100644
 --- a/net/ipv4/bpf_tcp_ca.c
 +++ b/net/ipv4/bpf_tcp_ca.c
-@@ -20,7 +20,7 @@ static u32 optional_ops[] = {
+@@ -21,7 +21,7 @@ static u32 optional_ops[] = {
  	offsetof(struct tcp_congestion_ops, cwnd_event),
  	offsetof(struct tcp_congestion_ops, in_ack_event),
  	offsetof(struct tcp_congestion_ops, pkts_acked),
@@ -462,7 +462,7 @@ index de610cb83..afda34c26 100644
  	offsetof(struct tcp_congestion_ops, cong_control),
  };
 diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 28ff2a820..857f7cef2 100644
+index cf18fbcbf..38b4e4a4d 100644
 --- a/net/ipv4/tcp.c
 +++ b/net/ipv4/tcp.c
 @@ -3085,6 +3085,7 @@ int tcp_disconnect(struct sock *sk, int flags)
@@ -474,7 +474,7 @@ index 28ff2a820..857f7cef2 100644
  
  	/* Clean up fastopen related fields */
 diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
-index ec5550089..56e719166 100644
+index 02e8626cc..664c9e119 100644
 --- a/net/ipv4/tcp_bbr.c
 +++ b/net/ipv4/tcp_bbr.c
 @@ -294,26 +294,40 @@ static void bbr_set_pacing_rate(struct sock *sk, u32 bw, int gain)
@@ -3219,10 +3219,10 @@ index 000000000..fa49e17c4
 +MODULE_LICENSE("Dual BSD/GPL");
 +MODULE_DESCRIPTION("TCP BBR (Bottleneck Bandwidth and RTT)");
 diff --git a/net/ipv4/tcp_cong.c b/net/ipv4/tcp_cong.c
-index db5831e6c..153ed9010 100644
+index dc9557216..3e3864471 100644
 --- a/net/ipv4/tcp_cong.c
 +++ b/net/ipv4/tcp_cong.c
-@@ -179,6 +179,7 @@ void tcp_init_congestion_control(struct sock *sk)
+@@ -177,6 +177,7 @@ void tcp_init_congestion_control(struct sock *sk)
  	struct inet_connection_sock *icsk = inet_csk(sk);
  
  	tcp_sk(sk)->prior_ssthresh = 0;
@@ -3231,7 +3231,7 @@ index db5831e6c..153ed9010 100644
  		icsk->icsk_ca_ops->init(sk);
  	if (tcp_ca_needs_ecn(sk))
 diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 7bf84ce34..db3380ad5 100644
+index 60f99e9fb..d2e4f9f9b 100644
 --- a/net/ipv4/tcp_input.c
 +++ b/net/ipv4/tcp_input.c
 @@ -349,7 +349,7 @@ static void __tcp_ecn_check_ce(struct sock *sk, const struct sk_buff *skb)
@@ -3299,7 +3299,7 @@ index 7bf84ce34..db3380ad5 100644
  	tcp_rate_gen(sk, delivered, lost, is_sack_reneg, sack_state.rate);
  	tcp_cong_control(sk, ack, delivered, flag, sack_state.rate);
  	tcp_xmit_recovery(sk, rexmit);
-@@ -5476,13 +5494,14 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
+@@ -5493,13 +5511,14 @@ static void __tcp_ack_snd_check(struct sock *sk, int ofo_possible)
  
  	    /* More than one full frame received... */
  	if (((tp->rcv_nxt - tp->rcv_wup) > inet_csk(sk)->icsk_ack.rcv_mss &&
@@ -3317,7 +3317,7 @@ index 7bf84ce34..db3380ad5 100644
  	    tcp_in_quickack_mode(sk) ||
  	    /* Protocol state mandates a one-time immediate ACK */
 diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 0b5eab685..d940ced2d 100644
+index 1ca2f28c9..9a336caa7 100644
 --- a/net/ipv4/tcp_output.c
 +++ b/net/ipv4/tcp_output.c
 @@ -378,7 +378,8 @@ static void tcp_ecn_send(struct sock *sk, struct sk_buff *skb,
@@ -3355,7 +3355,7 @@ index 0b5eab685..d940ced2d 100644
  	}
  
  	/* Link BUFF into the send queue. */
-@@ -1979,13 +1989,12 @@ static u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
+@@ -1988,13 +1998,12 @@ static u32 tcp_tso_autosize(const struct sock *sk, unsigned int mss_now,
  static u32 tcp_tso_segs(struct sock *sk, unsigned int mss_now)
  {
  	const struct tcp_congestion_ops *ca_ops = inet_csk(sk)->icsk_ca_ops;
@@ -3374,8 +3374,8 @@ index 0b5eab685..d940ced2d 100644
  	return min_t(u32, tso_segs, sk->sk_gso_max_segs);
  }
  
-@@ -2620,6 +2629,7 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
- 			skb->skb_mstamp_ns = tp->tcp_wstamp_ns = tp->tcp_clock_cache;
+@@ -2630,6 +2639,7 @@ static bool tcp_write_xmit(struct sock *sk, unsigned int mss_now, int nonagle,
+ 			skb_set_delivery_time(skb, tp->tcp_wstamp_ns, true);
  			list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_sent_queue);
  			tcp_init_tso_segs(skb, mss_now);
 +			tcp_set_tx_in_flight(sk, skb);

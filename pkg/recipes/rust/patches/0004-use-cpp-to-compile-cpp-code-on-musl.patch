@@ -1,6 +1,6 @@
-From c0d12e1778d4a0d039fcd1673957c792d4779d4f Mon Sep 17 00:00:00 2001
+From ad2446f4629b2278416eeefedd645cfe7e7ee8a4 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 4 Dec 2021 15:56:41 +0300
+Date: Wed, 25 May 2022 12:07:41 +0300
 Subject: [PATCH 4/6] use cpp to compile cpp code on musl.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 4/6] use cpp to compile cpp code on musl.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/bootstrap/native.rs b/src/bootstrap/native.rs
-index 27c9bb250..a67d1bf21 100644
+index 6d7ca9a94..44ed8ccb7 100644
 --- a/src/bootstrap/native.rs
 +++ b/src/bootstrap/native.rs
-@@ -1056,7 +1056,7 @@ impl Step for Libunwind {
+@@ -1108,7 +1108,7 @@ impl Step for Libunwind {
              cpp_cfg.flag("-std=c++11");
          }
  
@@ -21,5 +21,5 @@ index 27c9bb250..a67d1bf21 100644
              // C++ compiler env variables on the builders.
              // Don't set this for clang++, as clang++ is able to compile this without libc++.
 -- 
-2.31.1
+2.36.0
 

@@ -1,8 +1,8 @@
-From 370d417f1f1c37d6731a104682dfa3592d56154c Mon Sep 17 00:00:00 2001
+From 921c26343f4817489c7ef0099ee411cabdc0401b Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Mon, 4 Apr 2022 22:52:23 +0300
-Subject: [PATCH 13/13] mac80211: ignore ap power level if tx power is fixed.
- (xanmod/net/mac80221)
+Date: Wed, 25 May 2022 18:32:56 +0300
+Subject: [PATCH 12/12] mac80211: ignore ap power level if tx power is fixed.
+ (xanmod5.17/net/mac80221)
 
 ---
  net/mac80211/iface.c | 3 ++-
@@ -23,5 +23,5 @@ index 415314784..b0a941c4f 100644
  
  	if (power != sdata->vif.bss_conf.txpower) {
 -- 
-2.35.1
+2.36.0
 

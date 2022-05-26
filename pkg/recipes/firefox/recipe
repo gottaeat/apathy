@@ -2,7 +2,7 @@
 penis="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-100.0/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-100.0.2/lib,--enable-new-dtags"
 
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
@@ -107,8 +107,8 @@ make prefix="${penis}"     -f unix/Makefile install
 cd ../; rm -rf zip30/
 
 # 7 > extraction
-tar xf /mss/work/sauces/firefox-100.0.source.tar.xz
-cd     firefox-100.0/
+tar xf /mss/work/sauces/firefox-100.0.2.source.tar.xz
+cd     firefox-100.0.2/
 
 # 8 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
@@ -148,11 +148,11 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 time ./mach build
 
 # 15 > install
-instdir="${PWD}/KEK/opt/firefox-100.0"
+instdir="${PWD}/KEK/opt/firefox-100.0.2"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-100.0/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox-100.0.2/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd

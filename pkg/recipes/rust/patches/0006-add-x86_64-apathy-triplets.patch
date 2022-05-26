@@ -1,6 +1,6 @@
-From 563f687798ea4cb413d5d5f30d7e40f6422b786f Mon Sep 17 00:00:00 2001
+From bd3ce9a2478c8da7aa084e8c0f00183595c9173a Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 4 Dec 2021 15:57:33 +0300
+Date: Wed, 25 May 2022 12:10:40 +0300
 Subject: [PATCH 6/6] add x86_64-apathy triplets.
 
 ---
@@ -10,10 +10,10 @@ Subject: [PATCH 6/6] add x86_64-apathy triplets.
  create mode 100644 compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
 
 diff --git a/compiler/rustc_target/src/spec/mod.rs b/compiler/rustc_target/src/spec/mod.rs
-index ff5dfa3f7..d41324c7d 100644
+index bd5b712c1..4156d23b9 100644
 --- a/compiler/rustc_target/src/spec/mod.rs
 +++ b/compiler/rustc_target/src/spec/mod.rs
-@@ -742,6 +742,7 @@ macro_rules! supported_targets {
+@@ -808,6 +808,7 @@ macro_rules! supported_targets {
  }
  
  supported_targets! {
@@ -23,7 +23,7 @@ index ff5dfa3f7..d41324c7d 100644
      ("i686-unknown-linux-gnu", i686_unknown_linux_gnu),
 diff --git a/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs b/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
 new file mode 100644
-index 000000000..19101adfd
+index 000000000..c57f00a9c
 --- /dev/null
 +++ b/compiler/rustc_target/src/spec/x86_64_apathy_linux_musl.rs
 @@ -0,0 +1,11 @@
@@ -32,12 +32,12 @@ index 000000000..19101adfd
 +pub fn target() -> Target {
 +    let mut base = super::x86_64_unknown_linux_musl::target();
 +
-+    base.llvm_target = "x86_64-apathy-linux-musl".to_string();
-+    base.options.vendor = "apathy".to_string();
++    base.llvm_target = "x86_64-apathy-linux-musl".into();
++    base.options.vendor = "apathy".into();
 +    base.options.crt_static_default = false;
 +
 +    base
 +}
 -- 
-2.31.1
+2.36.0
 

@@ -1,6 +1,6 @@
-From bdb63a9b7dc811af7f5cecb8e01ad7316f610a7d Mon Sep 17 00:00:00 2001
+From ed7166b9c769a7afa49ae3b2863c2558d55eb879 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Sat, 4 Dec 2021 15:55:37 +0300
+Date: Wed, 25 May 2022 12:06:54 +0300
 Subject: [PATCH 2/6] libunwind adjustments.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 2/6] libunwind adjustments.
  1 file changed, 2 insertions(+), 16 deletions(-)
 
 diff --git a/library/unwind/src/lib.rs b/library/unwind/src/lib.rs
-index e263780bf..c68b2cf2a 100644
+index 82f1e63f4..eefc8dc01 100644
 --- a/library/unwind/src/lib.rs
 +++ b/library/unwind/src/lib.rs
-@@ -41,22 +41,8 @@ cfg_if::cfg_if! {
+@@ -40,22 +40,8 @@ cfg_if::cfg_if! {
  }
  
  #[cfg(target_env = "musl")]
@@ -37,5 +37,5 @@ index e263780bf..c68b2cf2a 100644
  // When building with crt-static, we get `gcc_eh` from the `libc` crate, since
  // glibc needs it, and needs it listed later on the linker command line. We
 -- 
-2.31.1
+2.36.0
 

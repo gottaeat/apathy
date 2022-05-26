@@ -2,14 +2,15 @@ changelog-seen        = 2
 
 [llvm]
 link-shared           = true
+static-libstdcpp      = false
 
 [build]
 build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
 
-cargo                 = '/opt/rustc-1.60.0-beta.6-7bccde197/bin/cargo'
-rustc                 = '/opt/rustc-1.60.0-beta.6-7bccde197/bin/rustc'
+cargo                 = '/opt/rustc-1.60.0/bin/cargo'
+rustc                 = '/opt/rustc-1.60.0/bin/rustc'
 python                = 'python3'
 
 extended              = true
@@ -35,7 +36,7 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.60.0'
+prefix                = '/opt/rustc-1.61.0'
 
 [rust]
 channel               = 'stable'
@@ -72,7 +73,7 @@ debuginfo-level-tools = 0
 debuginfo-level-tests = 0
 
 [target.x86_64-apathy-linux-musl]
-llvm-config           = '/opt/llvm-14.0.0/bin/llvm-config'
+llvm-config           = '/opt/llvm-14.0.2/bin/llvm-config'
 crt-static            = false
 
 cc                    = 'clang'
