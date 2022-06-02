@@ -5,8 +5,8 @@ mk_add_options MOZ_MAKE_FLAGS="-jJOBCOUNTREPLACE"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix="/opt/firefox-100.0.2"
-ac_add_options --libdir="/opt/firefox-100.0.2/lib"
+ac_add_options --prefix="/opt/firefox-101.0"
+ac_add_options --libdir="/opt/firefox-101.0/lib"
 ac_add_options --with-libclang-path="/opt/llvm-14.0.4/lib"
 ac_add_options --with-clang-path="/opt/llvm-14.0.4/bin/clang"
 
@@ -44,6 +44,7 @@ ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
 ac_add_options --disable-dbus
 ac_add_options --disable-eme
+ac_add_options --disable-gpsd
 ac_add_options --disable-libproxy
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-parental-controls

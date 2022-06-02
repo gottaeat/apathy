@@ -113,7 +113,7 @@ index baa6f090a9..c51c36e2b4 100644
 +if CONFIG["MOZ_SYSTEM_HARFBUZZ"]:
 +    CXXFLAGS += CONFIG["MOZ_HARFBUZZ_CFLAGS"]
 +
- if CONFIG["CC_TYPE"] == "clang":
+ if CONFIG["CC_TYPE"] in ("clang", "clang-cl"):
      # Suppress warnings from Skia header files.
      SOURCES["gfxPlatform.cpp"].flags += ["-Wno-implicit-fallthrough"]
 diff --git a/intl/unicharutil/util/moz.build b/intl/unicharutil/util/moz.build

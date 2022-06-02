@@ -1,6 +1,6 @@
 # 1 > alsa-libs
-tar xf /mss/work/sauces/alsa-lib-1.2.6.1.tar.bz2
-cd     alsa-lib-1.2.6.1/
+tar xf /mss/work/sauces/alsa-lib-1.2.7.tar.bz2
+cd     alsa-lib-1.2.7/
 
 ./configure \
  --build=$CBUILD     \
@@ -13,17 +13,18 @@ cd     alsa-lib-1.2.6.1/
  --disable-aload     \
  --disable-python    \
  --disable-resmgr    \
- --disable-static
+ --disable-static    \
+ --disable-topology
 
 make V=0
 
 make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-lib-1.2.6.1/
+cd ../; rm -rf alsa-lib-1.2.7/
 
 # 2 > alsa-utils
-tar xf /mss/work/sauces/alsa-utils-1.2.6.tar.bz2
-cd     alsa-utils-1.2.6/
+tar xf /mss/work/sauces/alsa-utils-1.2.7.tar.bz2
+cd     alsa-utils-1.2.7/
 
 ./configure \
  --build=$CBUILD    \
@@ -39,7 +40,7 @@ make V=0
 
 make DESTDIR=/mss/work/alsaFUCK install
 doas -- make install
-cd ../; rm -rf alsa-utils-1.2.6/
+cd ../; rm -rf alsa-utils-1.2.7/
 
 doas -- rm -rfv \
  /usr/share/man \
