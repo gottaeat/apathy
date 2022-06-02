@@ -39,7 +39,7 @@ i  2  .      vim                  8.2.2549
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  2  .      linux                5.18.0
+i  1  .      linux                5.18.1
 i  2  ..     initramfs            6
 i  7  ...    cryptsetup           2.4.3
 i  5  ....   lvm2                 2.2.02.187
@@ -100,7 +100,7 @@ i  2  .      libXxf86vm           1.1.4
 i  2  .      libpciaccess         0.16
 i  2  .      libxkbfile           1.1.0
 i  2  .      libxshmfence         1.3
-i  1  .      mesa                 22.1.0
+i  1  .      mesa                 22.1.1
 i  2  ..     libdrm               2.4.109
 i  2  .      setxkbmap            1.3.2
 i  2  .      xauth                1.1
@@ -134,10 +134,10 @@ i  1  ..     tiff                 4.1.0
 i  2  .      imlib2               1.6.1
 i  1  ..     giflib               5.2.1
 i  1  ..     libid3tag            0.15.1b
-i  1  .      alsa-lib             1.2.6.1
+i  1  .      alsa-lib             1.2.7
 i  1  .      libvorbis            1.3.7
 i  1  ..     libogg               1.3.5
-i  1  .      alsa-utils           1.2.6
+i  1  .      alsa-utils           1.2.7
 i  1  .      flac                 1.3.3
 i  2  .      libass               0.15.0
 i  2  .      libvpx               1.10.0
@@ -181,7 +181,7 @@ i  2  .      libunwind            14.0.4
 i  2  .      lld                  14.0.4
 i  2  .      llvm                 14.0.4
 i  2  .      openmp               14.0.4
-i  2  .      firefox              100.0.2
+i  1  .      firefox              101.0
 i  2  ..     node.js              18.0.0
 i  1  ..     cbindgen             0.23.0
 i  2  ...    rust                 1.61.0

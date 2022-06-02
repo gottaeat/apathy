@@ -1,7 +1,6 @@
 /usr/bin/aconnect
 /usr/bin/alsaloop
 /usr/bin/alsamixer
-/usr/bin/alsatplg
 /usr/bin/alsaucm
 /usr/bin/amidi
 /usr/bin/amixer
@@ -24,10 +23,6 @@
 /usr/lib/libasound.so
 /usr/lib/libasound.so.2
 /usr/lib/libasound.so.2.0.0
-/usr/lib/libatopology.la
-/usr/lib/libatopology.so
-/usr/lib/libatopology.so.2
-/usr/lib/libatopology.so.2.0.0
 
 /usr/lib/pkgconfig/alsa-topology.pc
 /usr/lib/pkgconfig/alsa.pc
