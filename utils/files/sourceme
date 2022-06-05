@@ -12,6 +12,7 @@ mypath="$mypath:/opt/wlanshit/bin"
 mypath="$mypath:/opt/cryptshit/bin"
 mypath="$mypath:/opt/tor/bin"
 mypath="$mypath:/opt/spoofshit/bin"
+mypath="$mypath:/opt/go-1.18.3/bin"
 
 mylibpath="/opt/llvm-14.0.4/lib"
 mylibpath="$mylibpath:/opt/rustc-1.61.0/lib"

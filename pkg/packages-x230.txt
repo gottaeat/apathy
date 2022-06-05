@@ -218,3 +218,4 @@ i  2  .      tor                  0.4.6.10
 i  2  .      proxychains-ng       4.16
 i  2  .      dsniff               2.4b1
 i  2  .      bettercap            2.32.0
+i  1  .      go                   1.18.3
