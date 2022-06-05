@@ -1,0 +1,79 @@
+# 1 > no lto
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+
+# 2 > bootstrap
+cdt1
+
+tar xf /mss/work/sauces/go1.4-bootstrap-20171003.tar.gz
+cd     go/
+
+export GOROOT_FINAL="/mss/work/table/bootstrapgo"
+export       GOROOT="${PWD}"
+export        GOBIN="${GOROOT}/bin"
+
+cd src/
+
+sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' make.bash
+
+./make.bash
+
+cd ../../
+
+mkdir                     "${GOROOT_FINAL}"/bin
+mv    go/bin/*            "${GOROOT_FINAL}"/bin
+mv    go/{lib/,pkg/,src/} "${GOROOT_FINAL}"
+chmod -R +x               "${GOROOT_FINAL}"/pkg/tool
+
+export PATH="${PATH}:${GOROOT_FINAL}/bin"
+
+rm -rfv go/
+
+unset GOROOT_FINAL GOROOT GOBIN
+
+# 3 > cum
+export GOROOT_BOOTSTRAP="${PWD}/bootstrapgo"
+export             PATH="${PATH}:${PWD}/bootstrapgo/bin"
+
+tar xf /mss/work/sauces/go1.18.3.src.tar.gz
+cd     go/
+
+export         GOOS="linux"
+export        GOARCH="amd64"
+
+export CC_FOR_TARGET="${CC}"
+export    GO_LDFLAGS="-buildmode=pie -w -s"
+
+export GOROOT_FINAL="/opt/go-1.18.3"
+export       GOROOT="${PWD}"
+export        GOBIN="${GOROOT}/bin"
+
+cd src/
+
+sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
+ make.bash
+
+./make.bash -v
+
+cd ../../
+
+instdir="${PWD}/go-1.18.3"
+
+mkdir                 "${instdir}"/bin
+mv     go/bin/*       "${instdir}"/bin
+mv     go/{pkg/,src/} "${instdir}"/
+
+rm -rfv \
+ "${instdir}"/pkg/bootstrap \
+ "${instdir}"/pkg/obj       \
+ "${instdir}"/pkg/tool/*/api
+
+find "${instdir}"/src/ -type f -name \*_test.go     -exec rm -rfv {} +
+find "${instdir}"/src/ -type d -name testdata       -exec rm -rfv {} +
+find "${instdir}"/src/ -type f \( -name "*.rc"   \
+                               -o -name "*.bat"  \
+                               -o -name "*.bash" \) -exec rm -rfv {} +
