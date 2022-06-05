@@ -2,7 +2,7 @@
 penis="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-101.0/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.0b3/lib,--enable-new-dtags"
 
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
@@ -107,35 +107,40 @@ make prefix="${penis}"     -f unix/Makefile install
 cd ../; rm -rf zip30/
 
 # 7 > extraction
-tar xf /mss/work/sauces/firefox-101.0.source.tar.xz
-cd     firefox-101.0/
+tar xf /mss/work/sauces/firefox-102.0b3.source.tar.xz
+cd     firefox-102.0/
 
 # 8 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 9 > nuke addons and pocket
+# 9 > nuke undesried requests
+for i in `grep firefox\\.settings\\.services\\.mozilla\\.com -r . -l 2>/dev/null`; do
+ sed -i -e 's/firefox\.settings\.services\.mozilla\.com/f.s.s.m.c.qjz9zk/g' "${i}"
+done
+
+# 10 > nuke addons and pocket
 rm -rf \
  browser/components/pocket                                           \
  browser/extensions/{doh-rollout,pictureinpicture,report-site-issue} \
  browser/extensions/{screenshots,search-detection,webcompat}
 
-# 10 > clear sums
+# 11 > clear sums
 for sum in target-lexicon-0.9.0; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
-# 11 > clear the default bookmarks
+# 12 > clear the default bookmarks
 fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/default-bookmarks.html browser/base/content/default-bookmarks.html
 
-# 12 > clear search engines
+# 13 > clear search engines
 cp -vf "${fdir}"/search-config.json services/settings/dumps/main/search-config.json
 
-# 13 > remove prebuilt binaries
+# 14 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 14 > start the build
+# 15 > start the build
 cp -v "${fdir}"/mozconfig .
 _echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
 sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g;s/JOBCOUNTREPLACE/${ajobcount}/g" \
@@ -147,12 +152,12 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 
 time ./mach build
 
-# 15 > install
-instdir="${PWD}/KEK/opt/firefox-101.0"
+# 16 > install
+instdir="${PWD}/KEK/opt/firefox-102.0b3"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-101.0/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox-102.0b3/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd
