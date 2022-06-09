@@ -8,7 +8,7 @@
 /usr/bin/json_pp
 /usr/bin/libnetcfg
 /usr/bin/perl
-/usr/bin/perl5.34.0
+/usr/bin/perl5.36.0
 /usr/bin/perlbug
 /usr/bin/perldoc
 /usr/bin/perlivp

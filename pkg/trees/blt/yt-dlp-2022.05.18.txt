@@ -1,0 +1,4 @@
+/usr/bin/yt-dlp
+
+/usr/lib/python3.10/site-packages/yt_dlp
+/usr/lib/python3.10/site-packages/yt_dlp-2022.5.18-py3.10.egg-info
