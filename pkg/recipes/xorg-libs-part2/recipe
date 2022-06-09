@@ -52,8 +52,8 @@ doas -- make install
 cd ../; rm -rf pcre-8.45/
 
 # 4 > system glib
-tar xf /mss/work/sauces/glib-2.72.1.tar.xz
-cd     glib-2.72.1/
+tar xf /mss/work/sauces/glib-2.73.0.tar.xz
+cd     glib-2.73.0/
 
 find . -type f -name meson.build -exec \
  sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
@@ -65,7 +65,6 @@ cd    build
 
 meson --buildtype=plain \
  --prefix=/usr           \
- -Dfam=false             \
  -Dgtk_doc=false         \
  -Dinstalled_tests=false \
  -Dlibmount=disabled     \
@@ -79,7 +78,7 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.72.1/
+cd ../../; rm -rf glib-2.73.0/
 
 # 5 > penis freetype (w/o harfbuzz)
 tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
