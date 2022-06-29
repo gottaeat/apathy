@@ -7,13 +7,13 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 statdir="/mnt/mss/stuff/techy-bits/packaged-software/${amachine}"
-tar xf "${statdir}"-openssl-3.0.3-static-libs.tar.zst
+tar xf "${statdir}"-openssl-3.0.4-static-libs.tar.zst
 tar xf "${statdir}"-util-linux-2.37.2-static-libs.tar.zst
 
 mkdir "${penis}"/lib
 
 mv \
- openssl-3.0.3-static-libs/*     \
+ openssl-3.0.4-static-libs/*     \
  util-linux-2.37.2-static-libs/* \
  "${penis}"/lib
 
