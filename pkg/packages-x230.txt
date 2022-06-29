@@ -40,9 +40,9 @@ i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                5.18.6
-i  2  ..     initramfs            6
-i  7  ...    cryptsetup           2.4.3
-i  5  ....   lvm2                 2.2.02.187
+i  3  ..     initramfs            6
+i  8  ...    cryptsetup           2.4.3
+i  6  ....   lvm2                 2.2.02.187
 i  1  .      init                 22
 i  1  ..     utils                18
 i  1  .      opendoas             6.8.2
@@ -171,7 +171,7 @@ i  1  .      lz4                  1.9.3
 i  1  .      links                2.20.2
 i  1  .      wpa-supplicant       2.10
 i  1  ..     libnl3               3.5.0
-i  5  .      lilo                 24.2
+i  6  .      lilo                 24.2
 i  1  .      irssi                1.2.3
 i  1  .      clang                14.0.6
 i  1  .      compiler-rt          14.0.6
