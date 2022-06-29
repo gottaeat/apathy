@@ -1,4 +1,4 @@
 /lib
 /usr/lib
-/opt/llvm-14.0.5/lib
+/opt/llvm-14.0.6/lib
 /opt/rustc-1.61.0/lib
