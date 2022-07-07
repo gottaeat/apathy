@@ -36,7 +36,7 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.61.0'
+prefix                = '/opt/rustc-1.62.0'
 
 [rust]
 channel               = 'stable'
@@ -73,7 +73,7 @@ debuginfo-level-tools = 0
 debuginfo-level-tests = 0
 
 [target.x86_64-apathy-linux-musl]
-llvm-config           = '/opt/llvm-14.0.4/bin/llvm-config'
+llvm-config           = '/opt/llvm-14.0.6/bin/llvm-config'
 crt-static            = false
 
 cc                    = 'clang'

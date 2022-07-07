@@ -1,0 +1,250 @@
+diff -up firefox-102.0/gfx/gl/GLContextProviderEGL.cpp.D148946.diff firefox-102.0/gfx/gl/GLContextProviderEGL.cpp
+--- firefox-102.0/gfx/gl/GLContextProviderEGL.cpp.D148946.diff	2022-06-23 09:08:47.000000000 +0200
++++ firefox-102.0/gfx/gl/GLContextProviderEGL.cpp	2022-06-28 14:47:40.904700050 +0200
+@@ -1182,42 +1182,16 @@ RefPtr<GLContextEGL> GLContextEGL::Creat
+ }
+ 
+ /*static*/
+-RefPtr<GLContextEGL> GLContextEGL::CreateEGLSurfacelessContext(
+-    const std::shared_ptr<EglDisplay> display, const GLContextCreateDesc& desc,
+-    nsACString* const out_failureId) {
+-  const EGLConfig config = {};
+-  auto fullDesc = GLContextDesc{desc};
+-  fullDesc.isOffscreen = true;
+-  RefPtr<GLContextEGL> gl = GLContextEGL::CreateGLContext(
+-      display, fullDesc, config, EGL_NO_SURFACE, false, out_failureId);
+-  if (!gl) {
+-    NS_WARNING("Failed to create surfaceless GL context");
+-    return nullptr;
+-  }
+-  return gl;
+-}
+-
+-/*static*/
+ already_AddRefed<GLContext> GLContextProviderEGL::CreateHeadless(
+     const GLContextCreateDesc& desc, nsACString* const out_failureId) {
+   const auto display = DefaultEglDisplay(out_failureId);
+   if (!display) {
+     return nullptr;
+   }
+-  RefPtr<GLContextEGL> gl;
+-#ifdef MOZ_WAYLAND
+-  if (!gdk_display_get_default() &&
+-      display->IsExtensionSupported(EGLExtension::MESA_platform_surfaceless)) {
+-    gl =
+-        GLContextEGL::CreateEGLSurfacelessContext(display, desc, out_failureId);
+-  } else
+-#endif
+-  {
+-    mozilla::gfx::IntSize dummySize = mozilla::gfx::IntSize(16, 16);
+-    gl = GLContextEGL::CreateEGLPBufferOffscreenContext(
+-        display, desc, dummySize, out_failureId);
+-  }
+-  return gl.forget();
++  mozilla::gfx::IntSize dummySize = mozilla::gfx::IntSize(16, 16);
++  auto ret = GLContextEGL::CreateEGLPBufferOffscreenContext(
++      display, desc, dummySize, out_failureId);
++  return ret.forget();
+ }
+ 
+ // Don't want a global context on Android as 1) share groups across 2 threads
+diff -up firefox-102.0/gfx/gl/GLDefs.h.D148946.diff firefox-102.0/gfx/gl/GLDefs.h
+--- firefox-102.0/gfx/gl/GLDefs.h.D148946.diff	2022-06-23 09:08:47.000000000 +0200
++++ firefox-102.0/gfx/gl/GLDefs.h	2022-06-28 14:47:40.904700050 +0200
+@@ -104,9 +104,6 @@ bool CheckContextLost(const GLContext* g
+ // EGL_ANGLE_image_d3d11_texture
+ #define LOCAL_EGL_D3D11_TEXTURE_ANGLE                   0x3484
+ 
+-// EGL_MESA_platform_surfaceless
+-#define LOCAL_EGL_PLATFORM_SURFACELESS_MESA             0x31DD
+-
+ // clang-format on
+ 
+ #endif
+diff -up firefox-102.0/gfx/gl/GLLibraryEGL.cpp.D148946.diff firefox-102.0/gfx/gl/GLLibraryEGL.cpp
+--- firefox-102.0/gfx/gl/GLLibraryEGL.cpp.D148946.diff	2022-06-28 14:47:40.900699918 +0200
++++ firefox-102.0/gfx/gl/GLLibraryEGL.cpp	2022-06-28 14:49:47.810911199 +0200
+@@ -54,9 +54,15 @@ StaticRefPtr<GLLibraryEGL> GLLibraryEGL:
+ 
+ // should match the order of EGLExtensions, and be null-terminated.
+ static const char* sEGLLibraryExtensionNames[] = {
+-    "EGL_ANDROID_get_native_client_buffer", "EGL_ANGLE_device_creation",
+-    "EGL_ANGLE_device_creation_d3d11",      "EGL_ANGLE_platform_angle",
+-    "EGL_ANGLE_platform_angle_d3d",         "EGL_EXT_device_query"};
++    "EGL_ANDROID_get_native_client_buffer",
++    "EGL_ANGLE_device_creation",
++    "EGL_ANGLE_device_creation_d3d11",
++    "EGL_ANGLE_platform_angle",
++    "EGL_ANGLE_platform_angle_d3d",
++    "EGL_EXT_device_enumeration",
++    "EGL_EXT_device_query",
++    "EGL_EXT_platform_device",
++    "EGL_MESA_platform_surfaceless"};
+ 
+ // should match the order of EGLExtensions, and be null-terminated.
+ static const char* sEGLExtensionNames[] = {
+@@ -84,7 +90,6 @@ static const char* sEGLExtensionNames[]
+     "EGL_EXT_buffer_age",
+     "EGL_KHR_partial_update",
+     "EGL_NV_robustness_video_memory_purge",
+-    "EGL_MESA_platform_surfaceless",
+     "EGL_EXT_image_dma_buf_import",
+     "EGL_EXT_image_dma_buf_import_modifiers",
+     "EGL_MESA_image_dma_buf_export"};
+@@ -157,8 +162,52 @@ static std::shared_ptr<EglDisplay> GetAn
+ }
+ 
+ #ifdef MOZ_WAYLAND
++static std::shared_ptr<EglDisplay> GetAndInitDeviceDisplay(
++    GLLibraryEGL& egl, const StaticMutexAutoLock& aProofOfLock) {
++  nsAutoCString drmRenderDevice(gfx::gfxVars::DrmRenderDevice());
++  if (drmRenderDevice.IsEmpty() ||
++      !egl.IsExtensionSupported(EGLLibExtension::EXT_platform_device) ||
++      !egl.IsExtensionSupported(EGLLibExtension::EXT_device_enumeration)) {
++    return nullptr;
++  }
++
++  EGLint maxDevices;
++  if (!egl.fQueryDevicesEXT(0, nullptr, &maxDevices)) {
++    return nullptr;
++  }
++
++  std::vector<EGLDeviceEXT> devices(maxDevices);
++  EGLint numDevices;
++  if (!egl.fQueryDevicesEXT(devices.size(), devices.data(), &numDevices)) {
++    return nullptr;
++  }
++  devices.resize(numDevices);
++
++  EGLDisplay display = EGL_NO_DISPLAY;
++  for (const auto& device : devices) {
++    const char* renderNodeString =
++        egl.fQueryDeviceStringEXT(device, LOCAL_EGL_DRM_RENDER_NODE_FILE_EXT);
++    if (renderNodeString &&
++        strcmp(renderNodeString, drmRenderDevice.get()) == 0) {
++      const EGLAttrib attrib_list[] = {LOCAL_EGL_NONE};
++      display = egl.fGetPlatformDisplay(LOCAL_EGL_PLATFORM_DEVICE_EXT, device,
++                                        attrib_list);
++      break;
++    }
++  }
++  if (!display) {
++    return nullptr;
++  }
++
++  return EglDisplay::Create(egl, display, true, aProofOfLock);
++}
++
+ static std::shared_ptr<EglDisplay> GetAndInitSurfacelessDisplay(
+     GLLibraryEGL& egl, const StaticMutexAutoLock& aProofOfLock) {
++  if (!egl.IsExtensionSupported(EGLLibExtension::MESA_platform_surfaceless)) {
++    return nullptr;
++  }
++
+   const EGLAttrib attrib_list[] = {LOCAL_EGL_NONE};
+   const EGLDisplay display = egl.fGetPlatformDisplay(
+       LOCAL_EGL_PLATFORM_SURFACELESS_MESA, EGL_DEFAULT_DISPLAY, attrib_list);
+@@ -611,9 +660,9 @@ bool GLLibraryEGL::Init(nsACString* cons
+     (void)fnLoadSymbols(symbols);
+   }
+   {
+-    const SymLoadStruct symbols[] = {SYMBOL(QueryDisplayAttribEXT),
+-                                     SYMBOL(QueryDeviceAttribEXT),
+-                                     END_OF_SYMBOLS};
++    const SymLoadStruct symbols[] = {
++        SYMBOL(QueryDisplayAttribEXT), SYMBOL(QueryDeviceAttribEXT),
++        SYMBOL(QueryDeviceStringEXT), END_OF_SYMBOLS};
+     (void)fnLoadSymbols(symbols);
+   }
+   {
+@@ -658,6 +707,10 @@ bool GLLibraryEGL::Init(nsACString* cons
+                                      END_OF_SYMBOLS};
+     (void)fnLoadSymbols(symbols);
+   }
++  {
++    const SymLoadStruct symbols[] = {SYMBOL(QueryDevicesEXT), END_OF_SYMBOLS};
++    (void)fnLoadSymbols(symbols);
++  }
+ 
+   return true;
+ }
+@@ -835,7 +888,10 @@ std::shared_ptr<EglDisplay> GLLibraryEGL
+ #ifdef MOZ_WAYLAND
+     GdkDisplay* gdkDisplay = gdk_display_get_default();
+     if (!gdkDisplay) {
+-      ret = GetAndInitSurfacelessDisplay(*this, aProofOfLock);
++      ret = GetAndInitDeviceDisplay(*this, aProofOfLock);
++      if (!ret) {
++        ret = GetAndInitSurfacelessDisplay(*this, aProofOfLock);
++      }
+     } else if (widget::GdkIsWaylandDisplay(gdkDisplay)) {
+       // Wayland does not support EGL_DEFAULT_DISPLAY
+       nativeDisplay = widget::WaylandDisplayGetWLDisplay(gdkDisplay);
+diff -up firefox-102.0/gfx/gl/GLLibraryEGL.h.D148946.diff firefox-102.0/gfx/gl/GLLibraryEGL.h
+--- firefox-102.0/gfx/gl/GLLibraryEGL.h.D148946.diff	2022-06-28 14:47:40.899699885 +0200
++++ firefox-102.0/gfx/gl/GLLibraryEGL.h	2022-06-28 14:47:40.904700050 +0200
+@@ -71,7 +71,10 @@ enum class EGLLibExtension {
+   ANGLE_device_creation_d3d11,
+   ANGLE_platform_angle,
+   ANGLE_platform_angle_d3d,
++  EXT_device_enumeration,
+   EXT_device_query,
++  EXT_platform_device,
++  MESA_platform_surfaceless,
+   Max
+ };
+ 
+@@ -107,7 +110,6 @@ enum class EGLExtension {
+   EXT_buffer_age,
+   KHR_partial_update,
+   NV_robustness_video_memory_purge,
+-  MESA_platform_surfaceless,
+   EXT_image_dma_buf_import,
+   EXT_image_dma_buf_import_modifiers,
+   MESA_image_dma_buf_export,
+@@ -436,6 +438,10 @@ class GLLibraryEGL final {
+     WRAP(fQueryDeviceAttribEXT(device, attribute, value));
+   }
+ 
++  const char* fQueryDeviceStringEXT(EGLDeviceEXT device, EGLint name) {
++    WRAP(fQueryDeviceStringEXT(device, name));
++  }
++
+  private:
+   // NV_stream_consumer_gltexture_yuv
+   EGLBoolean fStreamConsumerGLTextureExternalAttribsNV(
+@@ -478,6 +484,13 @@ class GLLibraryEGL final {
+     WRAP(fExportDMABUFImageMESA(dpy, image, fds, strides, offsets));
+   }
+ 
++ public:
++  // EGL_EXT_device_enumeration
++  EGLBoolean fQueryDevicesEXT(EGLint max_devices, EGLDeviceEXT* devices,
++                              EGLint* num_devices) {
++    WRAP(fQueryDevicesEXT(max_devices, devices, num_devices));
++  }
++
+ #undef WRAP
+ 
+ #undef WRAP
+@@ -586,6 +599,9 @@ class GLLibraryEGL final {
+     EGLBoolean(GLAPIENTRY* fQueryDeviceAttribEXT)(EGLDeviceEXT device,
+                                                   EGLint attribute,
+                                                   EGLAttrib* value);
++    const char*(GLAPIENTRY* fQueryDeviceStringEXT)(EGLDeviceEXT device,
++                                                   EGLint name);
++
+     // NV_stream_consumer_gltexture_yuv
+     EGLBoolean(GLAPIENTRY* fStreamConsumerGLTextureExternalAttribsNV)(
+         EGLDisplay dpy, EGLStreamKHR stream, const EGLAttrib* attrib_list);
+@@ -623,6 +639,10 @@ class GLLibraryEGL final {
+                                                    EGLint* strides,
+                                                    EGLint* offsets);
+ 
++    EGLBoolean(GLAPIENTRY* fQueryDevicesEXT)(EGLint max_devices,
++                                             EGLDeviceEXT* devices,
++                                             EGLint* num_devices);
++
+   } mSymbols = {};
+ };
+ 
