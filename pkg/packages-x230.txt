@@ -43,7 +43,7 @@ i  2  .      linux                5.18.9
 i  4  ..     initramfs            6
 i  8  ...    cryptsetup           2.4.3
 i  6  ....   lvm2                 2.2.02.187
-i  1  .      init                 22
+i  1  .      init                 23
 i  1  ..     utils                18
 i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
