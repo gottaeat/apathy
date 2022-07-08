@@ -12,35 +12,12 @@
 #include <unistd.h>
 #include <utmp.h>
 
-#include "config.h"
 #include "passwd.h"
 #include "util.h"
 
-/* Write utmp entry */
-static void
-writeutmp(const char *user, const char *tty)
-{
-	struct utmp usr;
-	FILE *fp;
-
-	memset(&usr, 0, sizeof(usr));
-
-	usr.ut_type = USER_PROCESS;
-	usr.ut_pid = getpid();
-	strlcpy(usr.ut_user, user, sizeof(usr.ut_user));
-	strlcpy(usr.ut_line, tty, sizeof(usr.ut_line));
-	usr.ut_tv.tv_sec = time(NULL);
-
-	fp = fopen(UTMP_PATH, "a");
-	if (fp) {
-		if (fwrite(&usr, sizeof(usr), 1, fp) != 1)
-			if (ferror(fp))
-				weprintf("%s: write error:", UTMP_PATH);
-		fclose(fp);
-	} else {
-		weprintf("fopen %s:", UTMP_PATH);
-	}
-}
+#define ENV_SUPATH "/mss/init/bin"
+#define ENV_PATH   "/mss/init/bin"
+#define PW_CIPHER  "$6$"
 
 static int
 dologin(struct passwd *pw, int preserve)
@@ -116,8 +93,6 @@ main(int argc, char *argv[])
 	tty = ttyname(0);
 	if (!tty)
 		eprintf("ttyname:");
-
-	writeutmp(user, tty);
 
 	if (initgroups(user, gid) < 0)
 		eprintf("initgroups:");

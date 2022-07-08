@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include <utmp.h>
 
-#include "config.h"
 #include "util.h"
 
 static char *tty = "/dev/tty1";
@@ -87,27 +86,6 @@ main(int argc, char *argv[])
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGHUP, &sa, NULL);
-
-	/* Clear all utmp entries for this tty */
-	fp = fopen(UTMP_PATH, "r+");
-	if (fp) {
-		do {
-			pos = ftell(fp);
-			if (fread(&usr, sizeof(usr), 1, fp) != 1)
-				break;
-			if (usr.ut_line[0] == '\0')
-				continue;
-			if (strcmp(usr.ut_line, tty) != 0)
-				continue;
-			memset(&usr, 0, sizeof(usr));
-			fseek(fp, pos, SEEK_SET);
-			if (fwrite(&usr, sizeof(usr), 1, fp) != 1)
-				break;
-		} while (1);
-		if (ferror(fp))
-			weprintf("%s: I/O error:", UTMP_PATH);
-		fclose(fp);
-	}
 
 	if (argc > 2)
 		return execvp(argv[2], argv + 2);

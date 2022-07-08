@@ -1,5 +1,5 @@
 project('init', 'c',
- version: '22',
+ version: '23',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -51,11 +51,10 @@ executable('halt',       'src/halt.c',       link_with: libutil, install: true)
 executable('killall5',   'src/killall5.c',   link_with: libutil, install: true)
 executable('login',      'src/login.c',      link_with: libutil, install: true)
 executable('respawn',    'src/respawn.c',    link_with: libutil, install: true)
-executable('init',       'src/init.c',                           install: true)
 
 # 3 > files
 files_bin = [
- 'files/rc',
+ 'files/init',
  'files/ainitmgr'
 ]
 

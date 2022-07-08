@@ -140,9 +140,10 @@ goingdown(){
 poweroffboi(){ goingdown && sync; sync; sync; halt -p;}
 rebootboi(){   goingdown && sync; sync; sync; halt -r;}
 
-case "${1}" in
- init)      initboi     ;;
- reboot)    rebootboi   ;;
- poweroff)  poweroffboi ;;
- *)         ainitusage "{init|reboot|poweroff}"; exit 1 ;;
-esac
+# 2 > action
+initboi
+
+trap rebootboi   INT
+trap poweroffboi USR1
+
+while :; do wait; done
