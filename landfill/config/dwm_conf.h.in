@@ -38,6 +38,7 @@ static const float smfact           = 0.0f; // default stack mfact
 static const unsigned int minwsz    = 30;   // min mfact value
 static const int nmaster            = 1;    // number of clients in master
 static const int resizehints        = 0;    // do not respect resize hints
+static const int lockfullscreen     = 0;    // force focus on fullscreened windows
 
 // key definitions
 #define MODKEY Mod4Mask

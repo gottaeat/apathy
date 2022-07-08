@@ -1,5 +1,5 @@
 project('landfill', 'c',
- version: '3',
+ version: '4',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -111,7 +111,7 @@ dmenu_extra = [
 ]
 
 dwm_extra = [
- '-DVERSION="6.2-landfill"',
+ '-DVERSION="6.3-landfill"',
  '-DXINERAMA',
  '-D_BSD_SOURCE',
  '-D_DEFAULT_SOURCE',
