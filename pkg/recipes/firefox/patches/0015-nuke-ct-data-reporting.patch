@@ -1,7 +1,7 @@
-From 5fbf2e9a93fae7348aa9864f9c7e0a66da10d6a5 Mon Sep 17 00:00:00 2001
+From 287b2bbe7cb901669e6cb24ba6787a4b49a190d9 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Fri, 13 May 2022 12:49:26 +0300
-Subject: [PATCH 09/10] nuke ct data reporting.
+Date: Fri, 8 Jul 2022 01:52:43 +0300
+Subject: [PATCH 15/16] nuke ct data reporting.
 
 ---
  browser/moz.configure | 4 ++--
@@ -26,5 +26,5 @@ index 8653bcbb16..935af4065a 100644
  with only_when(target_is_linux & compile_environment):
      option(env="MOZ_NO_PIE_COMPAT", help="Enable non-PIE wrapper")
 -- 
-2.36.0
+2.37.0
 

@@ -1,14 +1,14 @@
-From 12feb1696b03a01766b2950172a1b1a2815251bc Mon Sep 17 00:00:00 2001
+From 90106208a625adcde646f257afa37d75b43c3e0e Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Fri, 13 May 2022 12:46:32 +0300
-Subject: [PATCH 07/10] nuke mozilla vpn ad.
+Date: Fri, 8 Jul 2022 01:51:42 +0300
+Subject: [PATCH 14/16] nuke mozilla vpn ad.
 
 ---
  .../privatebrowsing/content/aboutPrivateBrowsing.html         | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
-index 2de873e8f8..8b3ca9f764 100644
+index b546616453..29473837ae 100644
 --- a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
 +++ b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
 @@ -56,10 +56,11 @@
@@ -23,7 +23,7 @@ index 2de873e8f8..8b3ca9f764 100644
 +    <!--
      <div class="promo" hidden>
        <div class="promo-image-large">
-         <img src="" alt="" />
+         <img src="" alt="" role="presentation" />
 @@ -76,5 +77,6 @@
        </div>
        <button data-l10n-id="about-private-browsing-promo-close-button" id="dismiss-btn" class="promo-dismiss"></button>
@@ -32,5 +32,5 @@ index 2de873e8f8..8b3ca9f764 100644
    </body>
  </html>
 -- 
-2.36.0
+2.37.0
 

@@ -1,18 +1,15 @@
-From a1395e97ffdbc9404a343b76fd731dc7ef385ffc Mon Sep 17 00:00:00 2001
-From: "Jory A. Pratt" <anarchy@gentoo.org>
-Date: Mon, 6 Apr 2020 19:16:36 +0200
-Subject: [PATCH 02/30] Fortify sources properly
+From c598c599684498942ecc3437b74eef0123d14776 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Thu, 7 Jul 2022 23:16:56 +0300
+Subject: [PATCH 05/16] do not wrap features.h.
 
-Ensure we fortify properly, features.h is pulled in via fortification.
-
-Signed-off-by: Thomas Deutschmann <whissi@gentoo.org>
 ---
  config/system-headers.mozbuild  | 1 -
  third_party/sipcc/sdp_os_defs.h | 3 ---
  2 files changed, 4 deletions(-)
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
-index a1b58eb59b..ae0c9d6d7c 100644
+index 38fbca657e..212c0124fe 100644
 --- a/config/system-headers.mozbuild
 +++ b/config/system-headers.mozbuild
 @@ -229,7 +229,6 @@ system_headers = [
@@ -37,5 +34,5 @@ index 16c9b33329..df38d9336c 100644
  
  #endif /* _SDP_OS_DEFS_H_ */
 -- 
-2.34.1
+2.37.0
 

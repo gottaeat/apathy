@@ -1,7 +1,7 @@
-From cb8825be9e9200bd9f4d627467dac022e322ed21 Mon Sep 17 00:00:00 2001
+From 8e01f04c270a6928d68398efbbaa5228b8155ec6 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Fri, 13 May 2022 11:09:08 +0300
-Subject: [PATCH 02/10] nuke discoverystream and topsites.
+Date: Fri, 8 Jul 2022 00:39:47 +0300
+Subject: [PATCH 10/16] nuke discoverystream and topsites.
 
 ---
  .../newtab/lib/AboutPreferences.jsm           |  29 +----
@@ -12,7 +12,7 @@ Subject: [PATCH 02/10] nuke discoverystream and topsites.
  5 files changed, 37 insertions(+), 204 deletions(-)
 
 diff --git a/browser/components/newtab/lib/AboutPreferences.jsm b/browser/components/newtab/lib/AboutPreferences.jsm
-index 62f8257b3c..82fa7fe65a 100644
+index ad7af31cc4..0baf675d15 100644
 --- a/browser/components/newtab/lib/AboutPreferences.jsm
 +++ b/browser/components/newtab/lib/AboutPreferences.jsm
 @@ -36,15 +36,7 @@ const PREFS_BEFORE_SECTIONS = () => [
@@ -31,7 +31,7 @@ index 62f8257b3c..82fa7fe65a 100644
 +        return [];
        },
      },
-     icon: "topsites",
+     icon: "chrome://browser/skin/topsites.svg",
 @@ -135,7 +127,6 @@ this.AboutPreferences = class AboutPreferences {
      this.renderPreferences(window, [
        ...PREFS_BEFORE_SECTIONS(featureConfig),
@@ -360,10 +360,10 @@ index 522aa94c57..03c1414e51 100644
  ];
  
 diff --git a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-index 11d2be118f..b3ad75c795 100644
+index ddedf429fa..b646f1d5bb 100644
 --- a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
 +++ b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-@@ -1909,7 +1909,7 @@ getHardcodedLayout = ({
+@@ -1937,7 +1937,7 @@ getHardcodedLayout = ({
  }) => ({
    lastUpdate: Date.now(),
    spocs: {
@@ -372,7 +372,7 @@ index 11d2be118f..b3ad75c795 100644
    },
    layout: [
      {
-@@ -2010,7 +2010,7 @@ getHardcodedLayout = ({
+@@ -2046,7 +2046,7 @@ getHardcodedLayout = ({
            feed: {
              embed_reference: null,
              url:
@@ -381,7 +381,7 @@ index 11d2be118f..b3ad75c795 100644
            },
            spocs: {
              probability: 1,
-@@ -2025,47 +2025,8 @@ getHardcodedLayout = ({
+@@ -2061,47 +2061,8 @@ getHardcodedLayout = ({
            properties: {
              alignment: "left-align",
              links: [
@@ -515,5 +515,5 @@ index a02be7fc94..533c3827dd 100644
      // Now, get a tippy top icon, a rich icon, or screenshot for every item
      for (const link of withPinned) {
 -- 
-2.36.0
+2.37.0
 

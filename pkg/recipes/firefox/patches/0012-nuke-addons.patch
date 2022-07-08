@@ -1,0 +1,310 @@
+From 00aca6804dd7e839a596f9ac57d4d28e718b2cea Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Fri, 8 Jul 2022 01:50:30 +0300
+Subject: [PATCH 12/16] nuke addons.
+
+---
+ browser/components/BrowserGlue.jsm | 172 -----------------------------
+ browser/extensions/moz.build       |   6 -
+ browser/locales/Makefile.in        |   2 -
+ browser/locales/filter.py          |   1 -
+ browser/locales/l10n.ini           |   1 -
+ browser/locales/l10n.toml          |   4 -
+ 6 files changed, 186 deletions(-)
+
+diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
+index 75856e0c2f..2510b01a21 100644
+--- a/browser/components/BrowserGlue.jsm
++++ b/browser/components/BrowserGlue.jsm
+@@ -674,16 +674,6 @@ let JSWINDOWACTORS = {
+     enablePreference: "accessibility.blockautorefresh",
+   },
+ 
+-  ScreenshotsComponent: {
+-    parent: {
+-      moduleURI: "resource:///modules/ScreenshotsUtils.jsm",
+-    },
+-    child: {
+-      moduleURI: "resource:///actors/ScreenshotsComponentChild.jsm",
+-    },
+-    enablePreference: "screenshots.browser.component.enabled",
+-  },
+-
+   SearchSERPTelemetry: {
+     parent: {
+       moduleURI: "resource:///actors/SearchSERPTelemetryParent.jsm",
+@@ -2010,77 +2000,6 @@ BrowserGlue.prototype = {
+     }
+   },
+ 
+-  // Set up a listener to enable/disable the screenshots extension
+-  // based on its preference.
+-  _monitorScreenshotsPref() {
+-    const SCREENSHOTS_PREF = "extensions.screenshots.disabled";
+-    const COMPONENT_PREF = "screenshots.browser.component.enabled";
+-    const ID = "screenshots@mozilla.org";
+-    const _checkScreenshotsPref = async () => {
+-      let addon = await AddonManager.getAddonByID(ID);
+-      if (!addon) {
+-        return;
+-      }
+-      let screenshotsDisabled = Services.prefs.getBoolPref(
+-        SCREENSHOTS_PREF,
+-        false
+-      );
+-      let componentEnabled = Services.prefs.getBoolPref(COMPONENT_PREF, false);
+-      if (screenshotsDisabled) {
+-        if (componentEnabled) {
+-          ScreenshotsUtils.uninitialize();
+-        } else {
+-          await addon.disable({ allowSystemAddons: true });
+-        }
+-      } else if (componentEnabled) {
+-        ScreenshotsUtils.initialize();
+-        await addon.disable({ allowSystemAddons: true });
+-      } else {
+-        await addon.enable({ allowSystemAddons: true });
+-        ScreenshotsUtils.uninitialize();
+-      }
+-    };
+-    Services.prefs.addObserver(SCREENSHOTS_PREF, _checkScreenshotsPref);
+-    Services.prefs.addObserver(COMPONENT_PREF, _checkScreenshotsPref);
+-    _checkScreenshotsPref();
+-  },
+-
+-  _monitorWebcompatReporterPref() {
+-    const PREF = "extensions.webcompat-reporter.enabled";
+-    const ID = "webcompat-reporter@mozilla.org";
+-    Services.prefs.addObserver(PREF, async () => {
+-      let addon = await AddonManager.getAddonByID(ID);
+-      if (!addon) {
+-        return;
+-      }
+-      let enabled = Services.prefs.getBoolPref(PREF, false);
+-      if (enabled && !addon.isActive) {
+-        await addon.enable({ allowSystemAddons: true });
+-      } else if (!enabled && addon.isActive) {
+-        await addon.disable({ allowSystemAddons: true });
+-      }
+-    });
+-  },
+-
+-  async _setupSearchDetection() {
+-    // There is no pref for this add-on because it shouldn't be disabled.
+-    const ID = "addons-search-detection@mozilla.com";
+-
+-    let addon = await AddonManager.getAddonByID(ID);
+-
+-    // first time install of addon and install on firefox update
+-    addon =
+-      (await AddonManager.maybeInstallBuiltinAddon(
+-        ID,
+-        "2.0.0",
+-        "resource://builtin-addons/search-detection/"
+-      )) || addon;
+-
+-    if (!addon.isActive) {
+-      addon.enable();
+-    }
+-  },
+-
+   _monitorHTTPSOnlyPref() {
+     const PREF_ENABLED = "dom.security.https_only_mode";
+     const PREF_WAS_ENABLED = "dom.security.https_only_mode_ever_enabled";
+@@ -2565,16 +2484,6 @@ BrowserGlue.prototype = {
+         },
+       },
+ 
+-      {
+-        task: () => {
+-          if (
+-            Services.prefs.getBoolPref("screenshots.browser.component.enabled")
+-          ) {
+-            ScreenshotsUtils.initialize();
+-          }
+-        },
+-      },
+-
+       {
+         task: () => {
+           let { setTimeout } = ChromeUtils.import(
+@@ -2632,33 +2541,6 @@ BrowserGlue.prototype = {
+         },
+       },
+ 
+-      // Run TRR performance measurements for DoH.
+-      {
+-        task: () => {
+-          let enabledPref = "doh-rollout.trrRace.enabled";
+-          let completePref = "doh-rollout.trrRace.complete";
+-
+-          if (Services.prefs.getBoolPref(enabledPref, false)) {
+-            if (!Services.prefs.getBoolPref(completePref, false)) {
+-              new TRRRacer().run(() => {
+-                Services.prefs.setBoolPref(completePref, true);
+-              });
+-            }
+-          } else {
+-            Services.prefs.addObserver(enabledPref, function observer() {
+-              if (Services.prefs.getBoolPref(enabledPref, false)) {
+-                Services.prefs.removeObserver(enabledPref, observer);
+-
+-                if (!Services.prefs.getBoolPref(completePref, false)) {
+-                  new TRRRacer().run(() => {
+-                    Services.prefs.setBoolPref(completePref, true);
+-                  });
+-                }
+-              }
+-            });
+-          }
+-        },
+-      },
+ 
+       // FOG doesn't need to be initialized _too_ early because it has a
+       // pre-init buffer.
+@@ -4150,24 +4032,6 @@ BrowserGlue.prototype = {
+       Services.prefs.clearUserPref(oldCreditCardsAvailable);
+     }
+ 
+-    if (currentUIVersion < 125) {
+-      // Bug 1756243 - Clear PiP cached coordinates since we changed their
+-      // coordinate space.
+-      const PIP_PLAYER_URI =
+-        "chrome://global/content/pictureinpicture/player.xhtml";
+-      try {
+-        for (let value of ["left", "top", "width", "height"]) {
+-          Services.xulStore.removeValue(
+-            PIP_PLAYER_URI,
+-            "picture-in-picture",
+-            value
+-          );
+-        }
+-      } catch (ex) {
+-        Cu.reportError("Failed to clear XULStore PiP values: " + ex);
+-      }
+-    }
+-
+     if (currentUIVersion < 126) {
+       // Bug 1747343 - Add a pref to set the default download action to "Always
+       // ask" so the UCT dialog will be opened for mime types that are not
+@@ -4644,42 +4508,6 @@ BrowserGlue.prototype = {
+     }
+   },
+ 
+-  _collectTelemetryPiPEnabled() {
+-    Services.telemetry.setEventRecordingEnabled(
+-      "pictureinpicture.settings",
+-      true
+-    );
+-    Services.telemetry.setEventRecordingEnabled("pictureinpicture", true);
+-
+-    const TOGGLE_ENABLED_PREF =
+-      "media.videocontrols.picture-in-picture.video-toggle.enabled";
+-
+-    const observe = (subject, topic, data) => {
+-      const enabled = Services.prefs.getBoolPref(TOGGLE_ENABLED_PREF, false);
+-      Services.telemetry.scalarSet("pictureinpicture.toggle_enabled", enabled);
+-
+-      // Record events when preferences change
+-      if (topic === "nsPref:changed") {
+-        if (enabled) {
+-          Services.telemetry.recordEvent(
+-            "pictureinpicture.settings",
+-            "enable",
+-            "player"
+-          );
+-        } else {
+-          Services.telemetry.recordEvent(
+-            "pictureinpicture.settings",
+-            "disable",
+-            "player"
+-          );
+-        }
+-      }
+-    };
+-
+-    Services.prefs.addObserver(TOGGLE_ENABLED_PREF, observe);
+-    observe();
+-  },
+-
+   QueryInterface: ChromeUtils.generateQI([
+     "nsIObserver",
+     "nsISupportsWeakReference",
+diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
+index 0d4b9c3561..dab7c04363 100644
+--- a/browser/extensions/moz.build
++++ b/browser/extensions/moz.build
+@@ -5,11 +5,5 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ DIRS += [
+-    "doh-rollout",
+     "formautofill",
+-    "screenshots",
+-    "webcompat",
+-    "report-site-issue",
+-    "pictureinpicture",
+-    "search-detection",
+ ]
+diff --git a/browser/locales/Makefile.in b/browser/locales/Makefile.in
+index e4b60a0399..c38fdd2cf5 100644
+--- a/browser/locales/Makefile.in
++++ b/browser/locales/Makefile.in
+@@ -55,7 +55,6 @@ l10n-%:
+ ifneq (,$(wildcard ../extensions/formautofill/locales))
+ 	@$(MAKE) -C ../extensions/formautofill/locales AB_CD=$* XPI_NAME=locale-$*
+ endif
+-	@$(MAKE) -C ../extensions/report-site-issue/locales AB_CD=$* XPI_NAME=locale-$*
+ 	@$(MAKE) -C ../../devtools/client/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
+ 	@$(MAKE) -C ../../devtools/startup/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
+ 	@$(MAKE) l10n AB_CD=$* XPI_NAME=locale-$* PREF_DIR=$(PREF_DIR)
+@@ -76,7 +75,6 @@ endif
+ 	@$(MAKE) -C ../../devtools/startup/locales chrome AB_CD=$*
+ 	@$(MAKE) chrome AB_CD=$*
+ 	@$(MAKE) -C $(DEPTH)/$(MOZ_BRANDING_DIRECTORY)/locales chrome AB_CD=$*
+-	@$(MAKE) -C ../extensions/report-site-issue/locales chrome AB_CD=$*
+ 
+ package-win32-installer: $(SUBMAKEFILES)
+ 	$(MAKE) -C ../installer/windows CONFIG_DIR=l10ngen ZIP_IN='$(ZIP_OUT)' installer
+diff --git a/browser/locales/filter.py b/browser/locales/filter.py
+index 22eb5cbdb1..5e1f09ff38 100644
+--- a/browser/locales/filter.py
++++ b/browser/locales/filter.py
+@@ -17,7 +17,6 @@ def test(mod, path, entity=None):
+         "devtools/startup",
+         "browser",
+         "browser/extensions/formautofill",
+-        "browser/extensions/report-site-issue",
+         "extensions/spellcheck",
+         "other-licenses/branding/firefox",
+         "browser/branding/official",
+diff --git a/browser/locales/l10n.ini b/browser/locales/l10n.ini
+index 7a6599740b..7f976679ee 100644
+--- a/browser/locales/l10n.ini
++++ b/browser/locales/l10n.ini
+@@ -13,7 +13,6 @@ dirs = browser
+      devtools/client
+      devtools/startup
+      browser/extensions/formautofill
+-     browser/extensions/report-site-issue
+ 
+ [includes]
+ # non-central apps might want to use %(topsrcdir)s here, or other vars
+diff --git a/browser/locales/l10n.toml b/browser/locales/l10n.toml
+index e9d50107cb..914a2f1a63 100644
+--- a/browser/locales/l10n.toml
++++ b/browser/locales/l10n.toml
+@@ -133,10 +133,6 @@ locales = [
+     reference = "browser/extensions/formautofill/locales/en-US/**"
+     l10n = "{l}browser/extensions/formautofill/**"
+ 
+-[[paths]]
+-    reference = "browser/extensions/report-site-issue/locales/en-US/**"
+-    l10n = "{l}browser/extensions/report-site-issue/**"
+-
+ [[paths]]
+     reference = "services/sync/locales/en-US/**"
+     l10n = "{l}services/sync/**"
+-- 
+2.37.0
+
