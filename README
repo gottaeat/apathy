@@ -2,50 +2,48 @@ apathy
 ======
 apathy is an independent operating system featuring linux in its core.
 
-musl is utilized as the libc implementation of choice, coupled with a standalone
-llvm suite without anything gcc or binutils in it. firefox being the fastest
-modern standards compliant browser and it having a hard-dependency on clang and
-rust makes llvm a must. i see no point in having two things serving the same
-purpose when clang, libc++ and the rest are mature enough to build anything i
-use.
+musl is utilized as the libc implementation of choice and it is coupled with a
+standalone llvm suite without anything gcc or binutils in it. firefox being the
+fastest building modern standards compliant browser (chromium 88 with just -O2
+took me 22 hours while thinlto'ing a -march=native + -O3 firefox takes just 2)
+and it having a hard dep on clang and rust makes llvm a must. i see no point in
+having two things that serve the same purpose when clang, libc++ and the rest of
+the boys are mature enough to build everything i use.
 
-busybox applets are used where possible if they are not creating a scenario
-where the user experience is crippled solely to achieve minimalism. if it works,
-it works.
+the system features busybox applets wherever possible unless they are creating a
+scenario where i have to settle for less just to achieve muh minimalism.
 
-the package building and management is done all by hand. all the packages are
-built using homegrown recipes. the list and the build order of all built
-packages are kept in a parsable plain text file. the directory listing of a
-package is saved by doing a destdir install prior to the installation to the
-rootfs occurs, then used when removing or updating the package.
+on the package management front, everything is done by hand using homegrown
+recipes. all the packages currently residing on a machine running a build of
+apathy are listed in a parsable plain text file with their dependencies and
+build order. to make things cleaner when updating or removing a package, the
+directory listings of packages are saved through making a destdir install first.
 
-the init of the system is written in posix shell. services reside in a single
-file in the format of shell functions. `init` is a shell script that traps USR1
-and INT, and does the talking for booting up and going down. there's basic fool-
-proofing mechanisms developed through the proccess of dogfooding. each machine
-that runs a build of apathy has a tailored init configuration. there also exists
-`ainitmgr`, a shell script to manually start|stop|restart services. as shell is
-hairy enough on its own, no watchdoggery is going on.
+the init used in apathy is written in posix shell. the "services" reside in a
+single file as individual shell functions. `init` is a shell script that traps
+USR1 and INT signals, and does the talking for booting up and going down. there
+is basic failproofing for cases that came to the surface through the proccess
+of dogfooding. for manually manipulating the state of a service, `ainitmgr` is
+used. there is no watchdoggery.
 
-alongside the init configuration, for every machine that runs apathy has a
-device and acpi profile to aid with using all the features of the machine in an
-automated manner.
+each machine has an init, acpi and device configuration custom tailored for it
+to aid with using all the features of the puter.
 
 as this whole thing is intended for my use only, this repo does not contain an
-image to boot from or a stage{1..4} tarball to unpack.
+image to boot from or a stage{1..4} tarball to unpack and go from.
 
 basic repository tree
 =====================
 ├ dir/             -> base system configuration files.
 ├ init/[1]         -> in-house init system written in posix shell, complemented
 │                     with getty, ctrlaltdel, halt, killall5, login and respawn
-│                     from ubase with {b,u,w}tmp functionality removed.
+│                     from ubase with the {b,u,w}tmp functionality removed.
 ├ landfill/[2]     -> modified versions of dwm, st and dmenu cobbled together
 │                     under a single meson project as an attempt to create a
 │                     desktop environment type of thing.
 ├ misc/            -> miscellaneous notes and images.
 ├ pkg/
-│ ├ recipes/       -> in-house build recipes for a variety of software.
+│ ├ recipes/       -> in-house build recipes for all the software that i use.
 │ ├ trees/         -> directory listings for installed and removed programs.
 │ └ packages-*.txt -> parsable lists of "packages" installed in each machine
 │                     running apathy.
