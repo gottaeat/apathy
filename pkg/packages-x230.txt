@@ -39,7 +39,7 @@ i  1  .      vim                  9.0.0004
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  2  .      linux                5.18.9
+i  3  .      linux                5.18.9
 i  4  ..     initramfs            6
 i  8  ...    cryptsetup           2.4.3
 i  6  ....   lvm2                 2.2.02.187
