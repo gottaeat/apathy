@@ -1,18 +1,7 @@
-From 587145e3f65f9e59028da3428321cbb90271a8a9 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
-Date: Wed, 13 Apr 2022 09:39:36 +0300
-Subject: [PATCH] tinify-git.
-
----
- Makefile   | 28 ++++++++--------------------
- shared.mak |  2 +-
- 2 files changed, 9 insertions(+), 21 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index f8bccfa..8cca33c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -829,10 +829,7 @@ export PYTHON_PATH
+diff -uraN a/Makefile b/Makefile
+--- a/Makefile	2022-06-27 19:17:55.000000000 +0300
++++ b/Makefile	2022-07-09 01:07:38.209945141 +0300
+@@ -839,10 +839,7 @@
  
  TEST_SHELL_PATH = $(SHELL_PATH)
  
@@ -24,7 +13,7 @@ index f8bccfa..8cca33c 100644
  
  GENERATED_H += command-list.h
  GENERATED_H += config-list.h
-@@ -1240,7 +1237,7 @@ THIRD_PARTY_SOURCES += sha1collisiondetection/%
+@@ -1252,7 +1249,7 @@
  THIRD_PARTY_SOURCES += sha1dc/%
  
  # xdiff and reftable libs may in turn depend on what is in libgit.a
@@ -33,7 +22,7 @@ index f8bccfa..8cca33c 100644
  EXTLIBS =
  
  GIT_USER_AGENT = git/$(GIT_VERSION)
-@@ -1299,7 +1296,7 @@ ALL_COMMANDS_TO_INSTALL += git-upload-pack$(X)
+@@ -1312,7 +1309,7 @@
  endif
  
  ALL_CFLAGS = $(DEVELOPER_CFLAGS) $(CPPFLAGS) $(CFLAGS)
@@ -42,7 +31,7 @@ index f8bccfa..8cca33c 100644
  
  ifdef SANITIZE
  SANITIZERS := $(foreach flag,$(subst $(comma),$(space),$(SANITIZE)),$(flag))
-@@ -2242,7 +2239,7 @@ git.sp git.s git.o: EXTRA_CPPFLAGS = \
+@@ -2262,7 +2259,7 @@
  	'-DGIT_MAN_PATH="$(mandir_relative_SQ)"' \
  	'-DGIT_INFO_PATH="$(infodir_relative_SQ)"'
  
@@ -51,7 +40,7 @@ index f8bccfa..8cca33c 100644
  	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
  		$(filter %.o,$^) $(LIBS)
  
-@@ -2662,17 +2659,8 @@ contrib/scalar/scalar$X: $(SCALAR_OBJECTS) GIT-LDFLAGS $(GITLIBS)
+@@ -2682,17 +2679,8 @@
  	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
  		$(filter %.o,$^) $(LIBS)
  
@@ -71,17 +60,16 @@ index f8bccfa..8cca33c 100644
  
  export DEFAULT_EDITOR DEFAULT_PAGER
  
-@@ -3073,7 +3061,7 @@ install: all
- 	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(bindir_SQ)'
+@@ -3190,6 +3178,7 @@
  	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(PROGRAMS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
--	$(INSTALL) $(SCRIPTS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
+ 	$(INSTALL) $(SCRIPTS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
 +	$(INSTALL) $(LIB_FILE) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) -m 644 $(SCRIPT_LIB) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(install_bindir_xprograms) '$(DESTDIR_SQ)$(bindir_SQ)'
  	$(INSTALL) $(BINDIR_PROGRAMS_NO_X) '$(DESTDIR_SQ)$(bindir_SQ)'
-@@ -3292,7 +3280,7 @@ cocciclean:
- clean: profile-clean coverage-clean cocciclean
+@@ -3410,7 +3399,7 @@
+ 	$(RM) po/git.pot po/git-core.pot
  	$(RM) *.res
  	$(RM) $(OBJECTS)
 -	$(RM) $(LIB_FILE) $(XDIFF_LIB) $(REFTABLE_LIB) $(REFTABLE_TEST_LIB)
@@ -89,11 +77,10 @@ index f8bccfa..8cca33c 100644
  	$(RM) $(ALL_PROGRAMS) $(SCRIPT_LIB) $(BUILT_INS) git$X
  	$(RM) $(TEST_PROGRAMS)
  	$(RM) $(FUZZ_PROGRAMS)
-diff --git a/shared.mak b/shared.mak
-index 50d4596..ece1225 100644
---- a/shared.mak
-+++ b/shared.mak
-@@ -58,7 +58,7 @@ ifndef V
+diff -uraN a/shared.mak b/shared.mak
+--- a/shared.mak	2022-06-27 19:17:55.000000000 +0300
++++ b/shared.mak	2022-07-09 01:06:47.952945706 +0300
+@@ -58,7 +58,7 @@
  ## Used in "Makefile"
  	QUIET_CC       = @echo '   ' CC $@;
  	QUIET_AR       = @echo '   ' AR $@;
@@ -102,6 +89,3 @@ index 50d4596..ece1225 100644
  	QUIET_BUILT_IN = @echo '   ' BUILTIN $@;
  	QUIET_LNCP     = @echo '   ' LN/CP $@;
  	QUIET_XGETTEXT = @echo '   ' XGETTEXT $@;
--- 
-2.35.1
-
