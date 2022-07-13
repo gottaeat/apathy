@@ -1,4 +1,4 @@
-i  1  .      linux-headers        5.17.3
+i  1  .      linux-headers        5.18.0
 i  2  .      musl                 1.2.3
 i  1  .      zlib                 1.2.12
 i  2  .      file                 5.40
@@ -47,7 +47,7 @@ i  1  .      init                 23
 i  1  ..     utils                18
 i  1  .      opendoas             6.8.2
 i  2  .      iptables             1.8.7
-i  1  .      curl                 7.83.1
+i  1  .      curl                 7.84.0
 i  2  .      git                  2.37.0
 i  1  .      openssh              9.0p1
 i  1  .      libssh2              1.9.0
