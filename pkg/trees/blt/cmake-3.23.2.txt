@@ -1,0 +1,11 @@
+/usr/bin/cmake
+/usr/bin/cpack
+/usr/bin/ctest
+
+/usr/share/aclocal/cmake.m4
+/usr/share/cmake-3.23
+
+/usr/doc
+/usr/share/bash-completion
+/usr/share/emacs
+/usr/share/vim/vimfiles

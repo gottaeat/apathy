@@ -10,7 +10,7 @@ mypath="$mypath:/opt/node.js-18.0.0/bin"
 mypath="$mypath:/opt/firefox-102.0esr/bin"
 mypath="$mypath:/opt/wlanshit/bin"
 mypath="$mypath:/opt/cryptshit/bin"
-mypath="$mypath:/opt/tor/bin"
+mypath="$mypath:/opt/torshit/bin"
 mypath="$mypath:/opt/spoofshit/bin"
 mypath="$mypath:/opt/go-1.18.3/bin"
 

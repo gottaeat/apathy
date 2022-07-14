@@ -1,0 +1,6 @@
+/etc/irssi.conf
+
+/usr/bin/irssi
+
+/usr/lib/irssi
+/usr/share/irssi
