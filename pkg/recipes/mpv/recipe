@@ -51,8 +51,8 @@ install -Dm644 "${fdir}"/lua.pc  "${penis}"/lib/pkgconfig/lua52.pc
 cd ../; rm -rf lua-5.2.4/
 
 # 4 > mpv
-tar xf /mss/work/sauces/mpv-0.34.0.tar.gz
-cd      mpv-0.34.0/
+gcd1 https://github.com/mpv-player/mpv
+cd   mpv/
 
 ./bootstrap.py
 
@@ -65,12 +65,14 @@ cd      mpv-0.34.0/
 
 # 5
 ./waf install --destdir="${PWD}/KEK"
+cd "${PWD}/KEK"
 
 doas -s
-./waf install
-rm -rfv \
- /usr/share/applications    \
- /usr/share/bash-completion \
- /usr/share/doc             \
- /usr/share/icons/hicolor   \
- /usr/share/zsh
+for i in usr/bin/mpv; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+mv etc/mpv /etc/
+chown root:root /etc/mpv

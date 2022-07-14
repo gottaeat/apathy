@@ -8,3 +8,13 @@
  --without-x          \
  --without-ipv6       \
  --disable-nls
+
+make
+
+# 2
+doas -s
+for i in links; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

@@ -54,6 +54,7 @@ doas -s
 samu install
 rm -rfv \
  /usr/doc                   \
- /usr/share/cmake-3.20/Help \
+ /usr/share/cmake-3.23/Help \
  /usr/share/bash-completion \
- /usr/share/emacs
+ /usr/share/emacs           \
+ /usr/share/vim/vimfiles

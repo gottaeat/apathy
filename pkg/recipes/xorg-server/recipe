@@ -64,8 +64,8 @@ samu install
 cd ../../; rm -rf libxcvt-0.1.1/
 
 # 5 > xorg-server
-tar xf /mss/work/sauces/xorg-server-21.1.3.tar.xz
-cd     xorg-server-21.1.3/
+tar xf /mss/work/sauces/xorg-server-21.1.4.tar.xz
+cd     xorg-server-21.1.4/
 
 ./configure \
  --build=$CBUILD                                      \

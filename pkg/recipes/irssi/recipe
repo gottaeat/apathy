@@ -1,30 +1,4 @@
 # 1
-penis="/mss/work/table/KEK"
-export           CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -fPIC"
-export         CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -fPIC"
-export PKG_BUILD_CONFIG="${penis}/lib/pkgconfig"
-export     LIBRARY_PATH="${penis}/lib"
-
-tar xf /mss/work/sauces/libotr-4.1.1.tar.gz
-cd     libotr-4.1.1/
-
-configtomusl
-
-./configure \
- --build=$CBUILD     \
- --host=$CHOST       \
- --prefix="${penis}" \
- --disable-shared    \
- --enable-static
-
-make
-make install
-cd ../; rm -rf libotr-4.1.1/
-
-# 2
-tar xf /mss/work/sauces/irssi-1.2.3.tar.xz
-cd     irssi-1.2.3/
-
 ./configure \
  --build=$CBUILD         \
  --host=$CHOST           \
@@ -33,7 +7,7 @@ cd     irssi-1.2.3/
  --mandir=/usr/share/man \
  --without-perl          \
  --with-proxy            \
- --with-otr=static       \
+ --with-otr=no           \
  --enable-true-color
 
 make
@@ -42,13 +16,15 @@ make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install
 rm -rfv \
- "${instdir}"/usr/share/doc \
- "${instdir}"/usr/share/man \
- "${instdir}"/usr/include/irssi
+ "${instdir}"/usr/share/doc     \
+ "${instdir}"/usr/share/man     \
+ "${instdir}"/usr/include/irssi \
+ "${instdir}"/usr/lib/pkgconfig/irssi-1.pc
  
 doas -s
 make install
 rm -rfv \
- /usr/share/doc \
- /usr/share/man \
- /usr/include/irssi
+ /usr/share/doc     \
+ /usr/share/man     \
+ /usr/include/irssi \
+ /usr/lib/pkgconfig/irssi-1.pc

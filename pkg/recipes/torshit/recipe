@@ -1,6 +1,6 @@
 # 1
-tar xf /mss/work/sauces/tor-0.4.6.10.tar.gz
-cd     tor-tor-0.4.6.10/
+tar xf /mss/work/sauces/tor-0.4.7.8.tar.gz
+cd     tor-0.4.7.8/
 
 autoreconf -fvi
 
@@ -9,7 +9,7 @@ export   CFLAGS="$(echo "${CFLAGS}"   \
 export CXXFLAGS="$(echo "${CXXFLAGS}" \
  | sed 's/-DNDEBUG//g;')"
 
-findir="/opt/tor"
+findir="/opt/torshit"
 
 ./configure \
  --build=$CHOST            \
@@ -35,7 +35,7 @@ instdir_t="${PWD}/KEK"
 make DESTDIR="${instdir_t}" install
 mv           "${instdir_t}/${findir}" ../
 
-cd ../; rm -rf tor-tor-0.4.6.10/
+cd ../; rm -rf tor-0.4.7.8/
 
 # 2
 tar xf /mss/work/sauces/proxychains-ng-4.16.tar.xz
@@ -50,15 +50,15 @@ make
 instdir_p="${PWD}/KEK"
 make DESTDIR="${instdir_p}" install install-config
 
-mv "${instdir_p}/${findir}"/bin/* ../tor/bin/
-mv "${instdir_p}/${findir}"/lib/  ../tor/
+mv "${instdir_p}/${findir}"/bin/* ../torshit/bin/
+mv "${instdir_p}/${findir}"/lib/  ../torshit/
 
 cd ../; rm -rf proxychains-ng-4.16/
 
 # 3
-mv tor/tor/{torrc.sample,torrc}; > tor/tor/torrc
+mv torshit/tor/{torrc.sample,torrc}; > torshit/tor/torrc
 
-cat << EOF > tor/tor/proxychains.conf
+cat << EOF > torshit/tor/proxychains.conf
 proxy_dns
 quiet_mode
 strict_chain
@@ -71,8 +71,8 @@ tcp_read_time_out    15000
 socks5               127.0.0.1 9050
 EOF
 
-for i in tor/bin/*; do strip --strip-all $i; done
-strip --strip-unneeded tor/lib/libproxychains4.so
+for i in torshit/bin/*; do strip --strip-all $i; done
+strip --strip-unneeded torshit/lib/libproxychains4.so
 
-pkgup tor/ "${amachine}"-tor-`dn`
-mv    "${amachine}"-tor-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
+pkgup torshit/ "${amachine}"-torshit-`dn`
+mv    "${amachine}"-torshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
