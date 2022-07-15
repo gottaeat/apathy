@@ -1,7 +1,7 @@
 # 1
 penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC"
-export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC"
+export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC -fno-builtin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
@@ -25,7 +25,28 @@ make install
 
 cd ../; rm -rf libXScrnSaver-1.2.3/
 
-# 3 > liblua52
+# 3 > libXpresent
+tar xf /mss/work/sauces/libXpresent-1.0.0.tar.gz
+cd     libxpresent-libXpresent-1.0.0/
+
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix="${penis}"  \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+ --enable-static      \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf libxpresent-libXpresent-1.0.0/
+
+
+# 4 > liblua52
 tar xf /mss/work/sauces/lua-5.2.4.tar.gz
 cd     lua-5.2.4/
 
