@@ -39,7 +39,7 @@ i  2  .      vim                  9.0.0004
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  3  .      linux                5.18.9
+i  3  .      linux                5.18.11
 i  5  ..     initramfs            6
 i  9  ...    cryptsetup           2.4.3
 i  7  ....   lvm2                 2.2.02.187
@@ -152,7 +152,7 @@ i  1  ..     libva                2.14.0
 i  1  ..     v4l-utils            1.20.0
 i  1  ..     lame                 3.100
 i  1  ..     openjpeg             2.4.0
-i  1  .      mpv                  0044c19
+i  2  .      mpv                  0044c19
 i  1  ..     intel-vaapi-driver   2.4.1
 i  3  .      mpd                  0.21.10
 i  2  ..     libmpdclient         2.18
