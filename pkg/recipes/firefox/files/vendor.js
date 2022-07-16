@@ -1,4 +1,5 @@
 pref("accessibility.force_disabled", 1);
+pref("media.ffmpeg.vaapi.enabled", true);
 pref("browser.aboutConfig.showWarning", false);
 pref("browser.cache.disk.enable", false);
 pref("browser.cache.memory.enable", true);

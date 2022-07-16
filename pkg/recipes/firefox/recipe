@@ -1,15 +1,15 @@
 # 1 > env vars
 penis="/mss/work/table/KEK"
-export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include"
-export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.0esr/lib,--enable-new-dtags"
+export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
+export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.0.1esr/lib,--enable-new-dtags"
 
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
 export                   PATH="${penis}/bin:${PATH}"
-export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
 export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
@@ -42,7 +42,112 @@ myxconf(){
   --disable-unit-tests
 }
 
-# 2 > static libXt
+# 2 > retard wayland
+tar xf /mss/work/sauces/wayland-1.21.0.tar.xz
+cd     wayland-1.21.0/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"    \
+ -Ddefault_library=both \
+ -Dtests=false          \
+ -Ddocumentation=false  \
+ -Ddtd_validation=false \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf wayland-1.21.0/
+
+# 3 > retard wayland-protocols
+tar xf /mss/work/sauces/wayland-protocols-1.26.tar.xz
+cd     wayland-protocols-1.26/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"    \
+ -Dtests=false          \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf wayland-protocols-1.26/
+
+# 4 > retard libxkbcommon
+tar xf /mss/work/sauces/libxkbcommon-1.4.1.tar.xz
+cd     libxkbcommon-1.4.1/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"        \
+ -Ddefault_library=both     \
+ -Denable-docs=false        \
+ -Denable-wayland=true      \
+ -Denable-x11=false         \
+ -Denable-xkbregistry=false \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf libxkbcommon-1.4.1/
+
+# 5 > dummy gtk3
+tar xf /mss/work/sauces/gtk%2B-3.24.34.tar.xz
+cd     gtk+-3.24.34/
+
+sed -i -e '/atkbridge_dep/d;/atk-bridge-2.0/d'           meson.build
+sed -i -e '/atkbridge_dep,/d'                            gtk/meson.build
+sed -i -e '/<atk-bridge.h>/d;/atk_bridge_adaptor_init/d' gtk/a11y/gtkaccessibility.c
+
+cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained.css
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"      \
+\
+ -Dx11_backend=true       \
+ -Dwayland_backend=true   \
+ -Dbroadway_backend=false \
+ -Dwin32_backend=false    \
+ -Dquartz_backend=false   \
+\
+ -Dxinerama=yes           \
+ -Dcloudproviders=false   \
+ -Dprofiler=false         \
+ -Dtracker3=false         \
+\
+ -Dprint_backends=file    \
+ -Dcolord=no              \
+\
+ -Dgtk_doc=false          \
+ -Dman=false              \
+ -Dintrospection=false    \
+\
+ -Ddemos=false            \
+ -Dexamples=false         \
+ -Dtests=false            \
+ -Dinstalled_tests=false  \
+\
+ -Dbuiltin_immodules=yes  \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf gtk+-3.24.34/
+
+# 6 > static libXt
 tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
 cd     libXt-1.2.1/
 
@@ -53,7 +158,7 @@ make install
 
 cd ../; rm -rf libXt-1.2.1/
 
-# 3 > static libXtst
+# 7 > static libXtst
 tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
 cd     libXtst-1.2.3/
 
@@ -64,7 +169,7 @@ make install
 
 cd ../; rm -rf libXtst-1.2.3/
 
-# 4 > autoconf 2.13
+# 8 > autoconf 2.13
 tar xf /mss/work/sauces/autoconf-2.13.tar.gz
 cd     autoconf-2.13/
 
@@ -81,7 +186,7 @@ make install
 
 cd ../; rm -rf autoconf-2.13/
 
-# 5 > yasm
+# 9 > yasm
 tar xf /mss/work/sauces/yasm-1.3.0.tar.gz
 cd     yasm-1.3.0/
 
@@ -97,7 +202,7 @@ make install
 
 cd ../; rm -rf yasm-1.3.0/
 
-# 6 > zip
+# 10 > zip
 tar xf /mss/work/sauces/zip30.tar.gz
 cd     zip30/
 
@@ -106,41 +211,41 @@ make prefix="${penis}"     -f unix/Makefile install
 
 cd ../; rm -rf zip30/
 
-# 7 > extraction
-tar xf /mss/work/sauces/firefox-102.0esr.source.tar.xz
-cd     firefox-102.0/
+# 11 > extraction
+tar xf /mss/work/sauces/firefox-102.0.1esr.source.tar.xz
+cd     firefox-102.0.1/
 
-# 8 > apply patches
+# 12 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 9 > nuke undesried requests
+# 13 > nuke undesried requests
 for i in `grep firefox\\.settings\\.services\\.mozilla\\.com -r . -l 2>/dev/null`; do
  sed -i -e 's/firefox\.settings\.services\.mozilla\.com/f.s.s.m.c.qjz9zk/g' "${i}"
 done
 
-# 10 > nuke addons and pocket
+# 14 > nuke addons and pocket
 rm -rf \
  browser/components/pocket                                           \
  browser/extensions/{doh-rollout,pictureinpicture,report-site-issue} \
  browser/extensions/{screenshots,search-detection,webcompat}
 
-# 11 > clear sums
+# 15 > clear sums
 for sum in target-lexicon-0.9.0; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
-# 12 > clear the default bookmarks
+# 16 > clear the default bookmarks
 fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/default-bookmarks.html browser/base/content/default-bookmarks.html
 
-# 13 > clear search engines
+# 17 > clear search engines
 cp -vf "${fdir}"/search-config.json services/settings/dumps/main/search-config.json
 
-# 14 > remove prebuilt binaries
+# 18 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 15 > start the build
+# 19 > start the build
 cp -v "${fdir}"/mozconfig .
 _echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
 sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g;s/JOBCOUNTREPLACE/${ajobcount}/g" \
@@ -152,15 +257,19 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 
 time ./mach build
 
-# 16 > install
-instdir="${PWD}/KEK/opt/firefox-102.0esr"
+# 20 > install
+instdir="${PWD}/KEK/opt/firefox-102.0.1esr"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-102.0esr/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox-102.0.1esr/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd
+
+${CC} -c ${CFLAGS} "${fdir}"/libmozwayland.c
+${CC} -o libmozwayland.so -shared ${LDFLAGS} libmozwayland.o
+mv       libmozwayland.so "${instdir}"/lib/libmozwayland.so
 
 install -v -Dm644 "${fdir}"/vendor.js     \
  "${instdir}"/lib/browser/defaults/preferences/vendor.js
