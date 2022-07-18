@@ -45,7 +45,6 @@ make install
 
 cd ../; rm -rf libxpresent-libXpresent-1.0.0/
 
-
 # 4 > liblua52
 tar xf /mss/work/sauces/lua-5.2.4.tar.gz
 cd     lua-5.2.4/
