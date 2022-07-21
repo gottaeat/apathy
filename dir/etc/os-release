@@ -3,5 +3,5 @@ ID=apathy
 VARIANT=musl
 VERSION_ID=1.2
 PRETTY_NAME="apathy musl 1.2"
-HOME_URL=https://git.sr.ht/~mssx86/apathy
-BUG_REPORT_URL=https://git.sr.ht/~mssx86/apathy
+HOME_URL=https://github.com/mssx86/apathy
+BUG_REPORT_URL=https://github.com/mssx86/apathy
