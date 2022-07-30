@@ -1,6 +1,0 @@
-Name: libpulse-mainloop-glib
-Description: PulseAudio GLib 2.0 Main Loop Wrapper
-Version: 13.0
-Libs: -L/usr/lib/apulse -lpulse-mainloop-glib -pthread
-Cflags: -L/usr/lib/apulse -D_REENTRANT
-Requires: libpulse glib-2.0

@@ -34,12 +34,14 @@ ac_add_options --with-branding=browser/branding/unofficial
 ac_add_options --with-distribution-id=us.among.mssx86
 
 # > 6
-ac_add_options --enable-audio-backends="alsa"
+ac_add_options --enable-audio-backends="pulseaudio"
 ac_add_options --enable-default-toolkit=cairo-gtk3-x11-wayland
+
 ac_add_options --enable-ffmpeg
 ac_add_options --enable-negotiateauth
 ac_add_options --enable-new-pass-manager
-ac_add_options --enable-sandbox
+ac_add_options --enable-smoosh
+ac_add_options --enable-webrtc
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
 ac_add_options --disable-crashreporter
@@ -49,12 +51,11 @@ ac_add_options --disable-gpsd
 ac_add_options --disable-libproxy
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-parental-controls
-ac_add_options --disable-smoosh
+ac_add_options --disable-sandbox
 ac_add_options --disable-synth-speechd
 ac_add_options --disable-system-extension-dirs
 ac_add_options --disable-updater
 ac_add_options --disable-vtune
-ac_add_options --disable-webrtc
 ac_add_options --disable-webspeech
 ac_add_options --without-wasm-sandboxed-libraries
 

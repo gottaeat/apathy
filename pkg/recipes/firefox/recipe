@@ -10,7 +10,7 @@ export         BINDGEN_CFLAGS="${CFLAGS}"
 
 export                   PATH="${penis}/bin:${PATH}"
 export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib:${penis}/lib/apulse"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 export              CXXSTDLIB="c++"
@@ -42,7 +42,47 @@ myxconf(){
   --disable-unit-tests
 }
 
-# 2 > retard wayland
+# 2 > apulse
+tar xf /mss/work/sauces/apulse-6c4ce36b.tar.zst
+cd     apulse-6c4ce36b/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf apulse-6c4ce36b/
+
+mkdir "${penis}"/lib/pkgconfig
+
+fdir="/mss/repo/pkg/recipes/firefox/files"
+cp "${fdir}"/*.pc "${penis}"/lib/pkgconfig
+
+# 3 > retard wayland
 tar xf /mss/work/sauces/wayland-1.21.0.tar.xz
 cd     wayland-1.21.0/
 
@@ -62,7 +102,7 @@ samu install
 
 cd ../../; rm -rf wayland-1.21.0/
 
-# 3 > retard wayland-protocols
+# 4 > retard wayland-protocols
 tar xf /mss/work/sauces/wayland-protocols-1.26.tar.xz
 cd     wayland-protocols-1.26/
 
@@ -79,7 +119,7 @@ samu install
 
 cd ../../; rm -rf wayland-protocols-1.26/
 
-# 4 > retard libxkbcommon
+# 5 > retard libxkbcommon
 tar xf /mss/work/sauces/libxkbcommon-1.4.1.tar.xz
 cd     libxkbcommon-1.4.1/
 
@@ -100,7 +140,7 @@ samu install
 
 cd ../../; rm -rf libxkbcommon-1.4.1/
 
-# 5 > dummy gtk3
+# 6 > dummy gtk3
 tar xf /mss/work/sauces/gtk%2B-3.24.34.tar.xz
 cd     gtk+-3.24.34/
 
@@ -147,7 +187,7 @@ samu install
 
 cd ../../; rm -rf gtk+-3.24.34/
 
-# 6 > static libXt
+# 7 > static libXt
 tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
 cd     libXt-1.2.1/
 
@@ -158,7 +198,7 @@ make install
 
 cd ../; rm -rf libXt-1.2.1/
 
-# 7 > static libXtst
+# 8 > static libXtst
 tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
 cd     libXtst-1.2.3/
 
@@ -169,7 +209,7 @@ make install
 
 cd ../; rm -rf libXtst-1.2.3/
 
-# 8 > autoconf 2.13
+# 9 > autoconf 2.13
 tar xf /mss/work/sauces/autoconf-2.13.tar.gz
 cd     autoconf-2.13/
 
@@ -186,7 +226,7 @@ make install
 
 cd ../; rm -rf autoconf-2.13/
 
-# 9 > yasm
+# 10 > yasm
 tar xf /mss/work/sauces/yasm-1.3.0.tar.gz
 cd     yasm-1.3.0/
 
@@ -202,7 +242,7 @@ make install
 
 cd ../; rm -rf yasm-1.3.0/
 
-# 10 > zip
+# 11 > zip
 tar xf /mss/work/sauces/zip30.tar.gz
 cd     zip30/
 
@@ -211,41 +251,40 @@ make prefix="${penis}"     -f unix/Makefile install
 
 cd ../; rm -rf zip30/
 
-# 11 > extraction
+# 12 > extraction
 tar xf /mss/work/sauces/firefox-102.0.1esr.source.tar.xz
 cd     firefox-102.0.1/
 
-# 12 > apply patches
+# 13 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 13 > nuke undesried requests
+# 14 > nuke undesried requests
 for i in `grep firefox\\.settings\\.services\\.mozilla\\.com -r . -l 2>/dev/null`; do
  sed -i -e 's/firefox\.settings\.services\.mozilla\.com/f.s.s.m.c.qjz9zk/g' "${i}"
 done
 
-# 14 > nuke addons and pocket
+# 15 > nuke addons and pocket
 rm -rf \
  browser/components/pocket                                           \
  browser/extensions/{doh-rollout,pictureinpicture,report-site-issue} \
  browser/extensions/{screenshots,search-detection,webcompat}
 
-# 15 > clear sums
+# 16 > clear sums
 for sum in target-lexicon-0.9.0; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
-# 16 > clear the default bookmarks
-fdir="/mss/repo/pkg/recipes/firefox/files"
+# 17 > clear the default bookmarks
 cp -vf "${fdir}"/default-bookmarks.html browser/base/content/default-bookmarks.html
 
-# 17 > clear search engines
+# 18 > clear search engines
 cp -vf "${fdir}"/search-config.json services/settings/dumps/main/search-config.json
 
-# 18 > remove prebuilt binaries
+# 19 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 19 > start the build
+# 20 > start the build
 cp -v "${fdir}"/mozconfig .
 _echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
 sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g;s/JOBCOUNTREPLACE/${ajobcount}/g" \
@@ -257,7 +296,7 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 
 time ./mach build
 
-# 20 > install
+# 21 > install
 instdir="${PWD}/KEK/opt/firefox-102.0.1esr"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
@@ -270,6 +309,8 @@ popd
 ${CC} -c ${CFLAGS} "${fdir}"/libmozwayland.c
 ${CC} -o libmozwayland.so -shared ${LDFLAGS} libmozwayland.o
 mv       libmozwayland.so "${instdir}"/lib/libmozwayland.so
+
+mv "${penis}"/lib/apulse/libpulse.so.0 "${instdir}"/lib/
 
 install -v -Dm644 "${fdir}"/vendor.js     \
  "${instdir}"/lib/browser/defaults/preferences/vendor.js

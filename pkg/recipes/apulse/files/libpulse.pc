@@ -1,5 +1,0 @@
-Name: libpulse
-Description: PulseAudio Client Interface
-Version: 13.0
-Libs: -L/usr/lib/apulse -lpulse -pthread
-Cflags: -L/usr/lib/apulse -D_REENTRANT
