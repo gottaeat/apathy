@@ -1,14 +1,14 @@
-From 265e6e2465f66f2b578f276603bbef1f32ec3244 Mon Sep 17 00:00:00 2001
+From cb92bd02c0cf70fb3a28bc836b5b4f1ddf3e01e5 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 25 May 2022 18:32:20 +0300
-Subject: [PATCH 11/12] bbr2: fix non-ipv6 build, (skc_v6_daddr error). (mss)
+Date: Wed, 3 Aug 2022 22:02:42 +0300
+Subject: [PATCH 11/12] bbr2: fix non-ipv6 build (skc_v6_daddr error).
 
 ---
  net/ipv4/tcp_bbr2.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/net/ipv4/tcp_bbr2.c b/net/ipv4/tcp_bbr2.c
-index fa49e17c4..120c41add 100644
+index 488429f0f..883b11527 100644
 --- a/net/ipv4/tcp_bbr2.c
 +++ b/net/ipv4/tcp_bbr2.c
 @@ -533,10 +533,11 @@ static void bbr_debug(struct sock *sk, u32 acked,
@@ -25,5 +25,5 @@ index fa49e17c4..120c41add 100644
  			"BBR %s cwnd alert: %u "
  			"snd_una: %u ca: %d pacing_gain: %u cwnd_gain: %u "
 -- 
-2.36.0
+2.37.1
 

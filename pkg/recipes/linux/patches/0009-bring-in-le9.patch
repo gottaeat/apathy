@@ -1,7 +1,7 @@
-From 717b734897aeed2bd96945a7262030b6ba3d6898 Mon Sep 17 00:00:00 2001
+From 48adbab9f1cb463dc97e35c9d2947b2fa65af394 Mon Sep 17 00:00:00 2001
 From: mssx86 <mss@tutanota.de>
-Date: Wed, 25 May 2022 18:31:27 +0300
-Subject: [PATCH 09/12] bring in le9. (xanmod5.17/mm/le9)
+Date: Wed, 3 Aug 2022 22:00:48 +0300
+Subject: [PATCH 09/12] bring in le9.
 
 ---
  Documentation/admin-guide/sysctl/vm.rst | 66 ++++++++++++++++++
@@ -12,7 +12,7 @@ Subject: [PATCH 09/12] bring in le9. (xanmod5.17/mm/le9)
  5 files changed, 245 insertions(+)
 
 diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index f4804ce37..ff449610d 100644
+index 5c9aa171a..6b581e64a 100644
 --- a/Documentation/admin-guide/sysctl/vm.rst
 +++ b/Documentation/admin-guide/sysctl/vm.rst
 @@ -25,6 +25,9 @@ files can be found in mm/swap.c.
@@ -25,7 +25,7 @@ index f4804ce37..ff449610d 100644
  - compact_memory
  - compaction_proactiveness
  - compact_unevictable_allowed
-@@ -105,6 +108,61 @@ On x86_64 this is about 128MB.
+@@ -106,6 +109,61 @@ On x86_64 this is about 128MB.
  Changing this takes effect whenever an application requests memory.
  
  
@@ -87,7 +87,7 @@ index f4804ce37..ff449610d 100644
  compact_memory
  ==============
  
-@@ -864,6 +922,14 @@ be 133 (x + 2x = 200, 2x = 133.33).
+@@ -912,6 +970,14 @@ be 133 (x + 2x = 200, 2x = 133.33).
  At 0, the kernel will not initiate swap until the amount of free and
  file-backed pages is less than the high watermark in a zone.
  
@@ -103,7 +103,7 @@ index f4804ce37..ff449610d 100644
  unprivileged_userfaultfd
  ========================
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 4e8ab4ad4..55cff3a7a 100644
+index 7ee1a5e44..425755adc 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
 @@ -196,6 +196,10 @@ static inline void __mm_zero_struct_page(struct page *page)
@@ -118,10 +118,10 @@ index 4e8ab4ad4..55cff3a7a 100644
  extern unsigned long sysctl_admin_reserve_kbytes;
  
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 830aaf8ca..ec31769e3 100644
+index 35d034219..f68b83525 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -2752,6 +2752,27 @@ static struct ctl_table vm_table[] = {
+@@ -2367,6 +2367,27 @@ static struct ctl_table vm_table[] = {
  		.extra2		= SYSCTL_ONE,
  	},
  #endif
@@ -150,10 +150,10 @@ index 830aaf8ca..ec31769e3 100644
  		.procname	= "user_reserve_kbytes",
  		.data		= &sysctl_user_reserve_kbytes,
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 052916970..862d07801 100644
+index a0f7b6e66..5b35722aa 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -89,6 +89,69 @@ config SPARSEMEM_VMEMMAP
+@@ -441,6 +441,69 @@ config SPARSEMEM_VMEMMAP
  	  pfn_to_page and page_to_pfn operations.  This is the most
  	  efficient option when sufficient kernel resources are available.
  
@@ -224,10 +224,10 @@ index 052916970..862d07801 100644
  	bool
  
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index aef71c45c..7f3f67933 100644
+index 7096ff783..0ec44c3fd 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -127,6 +127,15 @@ struct scan_control {
+@@ -128,6 +128,15 @@ struct scan_control {
  	/* The file pages on the current node are dangerously low */
  	unsigned int file_is_tiny:1;
  
@@ -243,7 +243,7 @@ index aef71c45c..7f3f67933 100644
  	/* Always discard instead of demoting to lower tier memory */
  	unsigned int no_demotion:1;
  
-@@ -183,6 +192,10 @@ struct scan_control {
+@@ -184,6 +193,10 @@ struct scan_control {
  #define prefetchw_prev_lru_page(_page, _base, _field) do { } while (0)
  #endif
  
@@ -254,7 +254,7 @@ index aef71c45c..7f3f67933 100644
  /*
   * From 0 .. 200.  Higher means more swappy.
   */
-@@ -2662,6 +2675,54 @@ enum scan_balance {
+@@ -2688,6 +2701,54 @@ enum scan_balance {
  	SCAN_FILE,
  };
  
@@ -309,7 +309,7 @@ index aef71c45c..7f3f67933 100644
  static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
  {
  	unsigned long file;
-@@ -2766,6 +2827,8 @@ static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
+@@ -2792,6 +2853,8 @@ static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
  			!(sc->may_deactivate & DEACTIVATE_ANON) &&
  			anon >> sc->priority;
  	}
@@ -318,7 +318,7 @@ index aef71c45c..7f3f67933 100644
  }
  
  /*
-@@ -2826,6 +2889,15 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+@@ -2850,6 +2913,15 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
  		goto out;
  	}
  
@@ -334,7 +334,7 @@ index aef71c45c..7f3f67933 100644
  	/*
  	 * If there is enough inactive page cache, we do not reclaim
  	 * anything from the anonymous working right now.
-@@ -2970,6 +3042,25 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+@@ -2994,6 +3066,25 @@ out:
  			BUG();
  		}
  
@@ -361,5 +361,5 @@ index aef71c45c..7f3f67933 100644
  	}
  }
 -- 
-2.36.0
+2.37.1
 
