@@ -29,12 +29,14 @@
 /usr/include/asm-generic/stat.h
 /usr/include/asm-generic/statfs.h
 /usr/include/asm-generic/swab.h
+/usr/include/asm-generic/termbits-common.h
 /usr/include/asm-generic/termbits.h
 /usr/include/asm-generic/termios.h
 /usr/include/asm-generic/types.h
 /usr/include/asm-generic/ucontext.h
 /usr/include/asm-generic/unistd.h
 /usr/include/asm/a.out.h
+/usr/include/asm/amd_hsmp.h
 /usr/include/asm/auxvec.h
 /usr/include/asm/bitsperlong.h
 /usr/include/asm/boot.h
@@ -149,7 +151,6 @@
 /usr/include/linux/atm_idt77105.h
 /usr/include/linux/atm_nicstar.h
 /usr/include/linux/atm_tcp.h
-/usr/include/linux/atm_zatm.h
 /usr/include/linux/atmapi.h
 /usr/include/linux/atmarp.h
 /usr/include/linux/atmbr2684.h
@@ -188,6 +189,7 @@
 /usr/include/linux/btrfs_tree.h
 /usr/include/linux/byteorder/big_endian.h
 /usr/include/linux/byteorder/little_endian.h
+/usr/include/linux/cachefiles.h
 /usr/include/linux/caif/caif_socket.h
 /usr/include/linux/caif/if_caif.h
 /usr/include/linux/can.h
@@ -710,6 +712,7 @@
 /usr/include/linux/serial_core.h
 /usr/include/linux/serial_reg.h
 /usr/include/linux/serio.h
+/usr/include/linux/sev-guest.h
 /usr/include/linux/shm.h
 /usr/include/linux/signal.h
 /usr/include/linux/signalfd.h
@@ -931,6 +934,7 @@
 /usr/include/scsi/fc/fc_gs.h
 /usr/include/scsi/fc/fc_ns.h
 /usr/include/scsi/scsi_bsg_fc.h
+/usr/include/scsi/scsi_bsg_mpi3mr.h
 /usr/include/scsi/scsi_bsg_ufs.h
 /usr/include/scsi/scsi_netlink.h
 /usr/include/scsi/scsi_netlink_fc.h
@@ -944,6 +948,7 @@
 /usr/include/sound/firewire.h
 /usr/include/sound/hdsp.h
 /usr/include/sound/hdspm.h
+/usr/include/sound/intel/avs/tokens.h
 /usr/include/sound/sb16_csp.h
 /usr/include/sound/sfnt_info.h
 /usr/include/sound/skl-tplg-interface.h

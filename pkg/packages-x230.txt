@@ -1,5 +1,5 @@
-i  1  .      linux-headers        5.18.0
-i  2  .      musl                 1.2.3
+i  1  .      linux-headers        5.19.0
+i  3  .      musl                 1.2.3
 i  1  .      zlib                 1.2.12
 i  2  .      file                 5.40
 i  2  .      readline             8.1
@@ -39,7 +39,7 @@ i  2  .      vim                  9.0.0004
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  1  .      linux                5.18.12
+i  1  .      linux                5.19.0
 i  5  ..     initramfs            6
 i  9  ...    cryptsetup           2.4.3
 i  7  ....   lvm2                 2.2.02.187
@@ -147,7 +147,7 @@ i  1  .      x265                 3.5
 i  2  .      xtrlock              2.12
 i  1  .      yt-dlp               2022.06.29
 i  1  .      picom                9
-i  1  .      ffmpeg               5.0.1
+i  1  .      ffmpeg               5.1
 i  1  ..     libva                2.14.0
 i  1  ..     v4l-utils            1.20.0
 i  1  ..     lame                 3.100
