@@ -56,3 +56,9 @@ cl_whi="\033[0;37m" cb_whi="\033[1;37m"
 # 2 > functions
 cdo()  { cd - >/dev/null 2>&1;}
 tarup(){ tar cfp "${1}".tar "${1}";}
+ytmusic(){
+ yt-dlp \
+  -o "${PWD}/%(playlist_title)s/%(playlist_index)s %(title)s.%(ext)s" \
+  -f bestaudio                                                        \
+ ${@}
+}
