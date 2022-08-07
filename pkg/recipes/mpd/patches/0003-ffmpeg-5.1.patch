@@ -1,0 +1,13 @@
+--- a/src/decoder/plugins/FfmpegIo.cxx	2019-06-05 23:32:32.000000000 +0300
++++ b/src/decoder/plugins/FfmpegIo.cxx	2022-08-07 02:52:42.337663950 +0300
+@@ -26,6 +26,10 @@
+ 
+ #include <exception>
+ 
++extern "C" {
++#include <libavutil/mem.h>
++}
++
+ AvioStream::~AvioStream()
+ {
+ 	if (io != nullptr) {
