@@ -1,0 +1,13 @@
+# 1
+gcd1 https://codeberg.org/elomatreb/listenbrainz-mpd
+cd   listenbrainz-mpd/
+
+cargo fetch --locked
+cargo build --release --frozen
+
+doas -s
+for i in target/release/listenbrainz-mpd; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
