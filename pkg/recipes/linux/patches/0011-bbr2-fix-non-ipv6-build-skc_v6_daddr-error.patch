@@ -1,5 +1,5 @@
 From cb92bd02c0cf70fb3a28bc836b5b4f1ddf3e01e5 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 3 Aug 2022 22:02:42 +0300
 Subject: [PATCH 11/12] bbr2: fix non-ipv6 build (skc_v6_daddr error).
 

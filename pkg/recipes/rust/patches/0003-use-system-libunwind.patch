@@ -1,5 +1,5 @@
 From d50a6dccb27e1eacb723ac51eb1c086fc428a783 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 25 May 2022 12:07:16 +0300
 Subject: [PATCH 3/6] use system libunwind.
 

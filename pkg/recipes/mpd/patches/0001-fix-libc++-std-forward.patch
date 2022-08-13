@@ -1,5 +1,5 @@
 From dcf3eb281f23ff1da90ae6527a5fcc569f3c56de Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Sat, 12 Feb 2022 01:52:37 +0300
 Subject: [PATCH] src/lib/expat/ExpatParser.hxx: fix libc++ std::forward.
 

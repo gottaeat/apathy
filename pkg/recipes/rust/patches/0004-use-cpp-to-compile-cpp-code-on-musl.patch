@@ -1,5 +1,5 @@
 From ad2446f4629b2278416eeefedd645cfe7e7ee8a4 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 25 May 2022 12:07:41 +0300
 Subject: [PATCH 4/6] use cpp to compile cpp code on musl.
 

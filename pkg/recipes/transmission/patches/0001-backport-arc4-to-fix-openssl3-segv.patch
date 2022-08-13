@@ -1,5 +1,5 @@
 From 29cf70ece6fc4869be9cdc36b468bff274051af5 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Thu, 23 Sep 2021 10:01:35 +0300
 Subject: [PATCH] backport arc4 to fix openssl3 segv.
 

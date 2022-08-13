@@ -1,5 +1,5 @@
 From 93ae658e83ed490a027afc9920f61ccec42edff9 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Sat, 12 Feb 2022 15:17:00 +0300
 Subject: [PATCH 4/5] unzip: exit with 0 after printing usage.
 

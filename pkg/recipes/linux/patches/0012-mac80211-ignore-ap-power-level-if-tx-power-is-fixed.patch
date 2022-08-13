@@ -1,5 +1,5 @@
 From 7aac3ae2341f4edd7d35c02ff504dcdaa720e1f1 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 3 Aug 2022 22:03:17 +0300
 Subject: [PATCH 12/12] mac80211: ignore ap power level if tx power is fixed.
 

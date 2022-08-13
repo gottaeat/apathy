@@ -1,5 +1,5 @@
 From c598c599684498942ecc3437b74eef0123d14776 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Thu, 7 Jul 2022 23:16:56 +0300
 Subject: [PATCH 05/16] do not wrap features.h.
 

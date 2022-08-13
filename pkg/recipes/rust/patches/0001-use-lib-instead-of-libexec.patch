@@ -1,5 +1,5 @@
 From 6563ef4705576f49fef2a4ccca73ba5ffdb58606 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 25 May 2022 12:06:27 +0300
 Subject: [PATCH 1/6] use lib instead of libexec.
 

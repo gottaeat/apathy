@@ -1,5 +1,5 @@
 From 141943bffe5a80831c2281488b2e1d08a54ce978 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Wed, 25 May 2022 12:08:10 +0300
 Subject: [PATCH 5/6] fix curl cert error with cargo.
 

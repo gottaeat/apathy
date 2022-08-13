@@ -1,5 +1,5 @@
 From 34669284ee97e5025399554485157ac1385a85e6 Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Thu, 7 Jul 2022 23:19:23 +0300
 Subject: [PATCH 07/16] set GDK_FOCUS_CHANGE_MASK.
 

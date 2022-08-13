@@ -1,5 +1,5 @@
 From 3b8fe3de26193192003603273e3ccd5ff7dabf5b Mon Sep 17 00:00:00 2001
-From: mssx86 <mss@tutanota.de>
+From: must_eat <mss@tutanota.de>
 Date: Thu, 28 Apr 2022 13:14:28 +0300
 Subject: [PATCH 2/8] libcxx: force link against compiler-rt.
 
