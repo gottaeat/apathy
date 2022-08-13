@@ -31,7 +31,7 @@ ac_add_options --enable-lto="cross"
 ac_add_options --disable-official-branding
 ac_add_options --enable-application=browser
 ac_add_options --with-branding=browser/branding/unofficial
-ac_add_options --with-distribution-id=us.among.mssx86
+ac_add_options --with-distribution-id=us.among.gottaeat
 
 # > 6
 ac_add_options --enable-audio-backends="pulseaudio"

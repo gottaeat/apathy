@@ -303,7 +303,7 @@ samu install
 cd ../../; rm -rf osg/
 
 # 9 > openmw
-gcd1 --recursive https://github.com/mssx86/openmw
+gcd1 --recursive https://github.com/gottaeat/openmw
 cd     openmw/
 
 cleancmake

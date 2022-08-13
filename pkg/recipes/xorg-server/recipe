@@ -68,61 +68,61 @@ tar xf /mss/work/sauces/xorg-server-21.1.4.tar.xz
 cd     xorg-server-21.1.4/
 
 ./configure \
- --build=$CBUILD                                      \
- --host=$CHOST                                        \
- --prefix=/usr                                        \
- --sysconfdir=/etc                                    \
- --localstatedir=/var                                 \
- --with-xkb-output=/var/lib/xkb                       \
- --with-fontrootdir=/usr/share/fonts                  \
+ --build=$CBUILD                                        \
+ --host=$CHOST                                          \
+ --prefix=/usr                                          \
+ --sysconfdir=/etc                                      \
+ --localstatedir=/var                                   \
+ --with-xkb-output=/var/lib/xkb                         \
+ --with-fontrootdir=/usr/share/fonts                    \
 \
- --with-builder-addr="mss@tutanota.de"                \
- --with-builderstring="mss"                           \
- --with-vendor-name-short="apathy"                    \
- --with-vendor-name="apathy 1.2"                      \
- --with-vendor-web="https://github.com/mssx86/apathy" \
+ --with-builder-addr="mss@tutanota.de"                  \
+ --with-builderstring="mss"                             \
+ --with-vendor-name-short="apathy"                      \
+ --with-vendor-name="apathy 1.2"                        \
+ --with-vendor-web="https://github.com/gottaeat/apathy" \
 \
- --with-int10="stub"                                  \
- --with-sha1="libcrypto"                              \
- --without-doxygen                                    \
- --without-dtrace                                     \
- --without-fop                                        \
- --without-systemd-daemon                             \
- --without-xmlto                                      \
- --without-xsltproc                                   \
+ --with-int10="stub"                                    \
+ --with-sha1="libcrypto"                                \
+ --without-doxygen                                      \
+ --without-dtrace                                       \
+ --without-fop                                          \
+ --without-systemd-daemon                               \
+ --without-xmlto                                        \
+ --without-xsltproc                                     \
 \
- --enable-config-udev                                 \
- --enable-config-udev-kms                             \
- --enable-dri                                         \
- --enable-dri2                                        \
- --enable-dri3                                        \
- --enable-glamor                                      \
- --enable-glx                                         \
- --enable-install-setuid                              \
- --enable-libdrm                                      \
- --enable-shared                                      \
- --enable-xorg                                        \
- --disable-config-hal                                 \
- --disable-debug                                      \
- --disable-devel-docs                                 \
- --disable-docs                                       \
- --disable-int10-module                               \
- --disable-ipv6                                       \
- --disable-kdrive                                     \
- --disable-libunwind                                  \
- --disable-linux-acpi                                 \
- --disable-linux-apm                                  \
- --disable-record                                     \
- --disable-secure-rpc                                 \
- --disable-static                                     \
- --disable-suid-wrapper                               \
- --disable-systemd-logind                             \
- --disable-unit-tests                                 \
- --disable-xcsecurity                                 \
- --disable-xephyr                                     \
- --disable-xf86-input-inputtest                       \
- --disable-xfree86-utils                              \
- --disable-xnest                                      \
+ --enable-config-udev                                   \
+ --enable-config-udev-kms                               \
+ --enable-dri                                           \
+ --enable-dri2                                          \
+ --enable-dri3                                          \
+ --enable-glamor                                        \
+ --enable-glx                                           \
+ --enable-install-setuid                                \
+ --enable-libdrm                                        \
+ --enable-shared                                        \
+ --enable-xorg                                          \
+ --disable-config-hal                                   \
+ --disable-debug                                        \
+ --disable-devel-docs                                   \
+ --disable-docs                                         \
+ --disable-int10-module                                 \
+ --disable-ipv6                                         \
+ --disable-kdrive                                       \
+ --disable-libunwind                                    \
+ --disable-linux-acpi                                   \
+ --disable-linux-apm                                    \
+ --disable-record                                       \
+ --disable-secure-rpc                                   \
+ --disable-static                                       \
+ --disable-suid-wrapper                                 \
+ --disable-systemd-logind                               \
+ --disable-unit-tests                                   \
+ --disable-xcsecurity                                   \
+ --disable-xephyr                                       \
+ --disable-xf86-input-inputtest                         \
+ --disable-xfree86-utils                                \
+ --disable-xnest                                        \
  --disable-xvfb
 
 sed -i -e 's/libxcvt //' xorg-server.pc

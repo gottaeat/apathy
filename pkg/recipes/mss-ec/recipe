@@ -1,5 +1,5 @@
 # 1
-gcd1 https://github.com/mssx86/mss-ec
+gcd1 https://github.com/gottaeat/mss-ec
 cd   mss-ec/
 
 doas -- cp -rfv fonts/ icons/ \
