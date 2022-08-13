@@ -127,8 +127,10 @@ svc_mpd(){
       doas -u mss ympd >/dev/null 2>&1 &
      evalret
 
-     ainitsvc "mpd" "starting mpdas"
-      doas -u mss mpdas >/dev/null 2>&1 &
+     ainitsvc "mpd" "starting listenbrainz-mpd"
+      doas -u mss -- listenbrainz-mpd \
+                      -c /home/mss/.config/listenbrainz-mpd/config.toml \
+                       >/dev/null 2>&1 &
      evalret
     else
      ainitsvc "mpd" "music_directory does not exist"; failprompt
@@ -139,8 +141,8 @@ svc_mpd(){
    ainitsvc "mpd" "stopping ympd"
    ainit_kill ympd
 
-   ainitsvc "mpd" "stopping mpdas"
-   ainit_kill mpdas
+   ainitsvc "mpd" "stopping listenbrainz-mpd"
+   ainit_kill listenbrainz-mpd
 
    ainitsvc "mpd" "stopping mpd"
    ainit_kill mpd
