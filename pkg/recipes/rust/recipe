@@ -1,6 +1,6 @@
 # 1
-tar xf /mss/work/sauces/rustc-1.62.1-src.tar.gz
-cd     rustc-1.62.1-src/
+tar xf /mss/work/sauces/rustc-1.63.0-src.tar.gz
+cd     rustc-1.63.0-src/
 
 pdir="/mss/repo/pkg/recipes/rust/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
@@ -25,24 +25,24 @@ DESTDIR="${instdir}" python3 ./x.py install
 
 rm -rfv \
  "${instdir}"/etc                                                 \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/components             \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/etc                    \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/install.log            \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/manifest-*             \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/rust-installer-version \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/uninstall.sh           \
- "${instdir}"/opt/rustc-1.62.1/share
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/components             \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/etc                    \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/install.log            \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/manifest-*             \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/rust-installer-version \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/uninstall.sh           \
+ "${instdir}"/opt/rustc-1.63.0/share
 
 strip --strip-all \
- "${instdir}"/opt/rustc-1.62.1/bin/*                              \
- "${instdir}"/opt/rustc-1.62.1/lib/cargo-credential-1password     \
- "${instdir}"/opt/rustc-1.62.1/lib/rustlib/x86_64-apathy-linux-musl/bin/*
+ "${instdir}"/opt/rustc-1.63.0/bin/*                              \
+ "${instdir}"/opt/rustc-1.63.0/lib/cargo-credential-1password     \
+ "${instdir}"/opt/rustc-1.63.0/lib/rustlib/x86_64-apathy-linux-musl/bin/*
 
-find "${instdir}"/opt/rustc-1.62.1/lib -name \*.so   \
+find "${instdir}"/opt/rustc-1.63.0/lib -name \*.so   \
  -exec strip --strip-unneeded {} ';'
 
-find "${instdir}"/opt/rustc-1.62.1/lib -name \*.rlib \
+find "${instdir}"/opt/rustc-1.63.0/lib -name \*.rlib \
  -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/rustc-1.62.1/lib -name \*.rlib \
+find "${instdir}"/opt/rustc-1.63.0/lib -name \*.rlib \
  -exec ${RANLIB}              {} ';'
