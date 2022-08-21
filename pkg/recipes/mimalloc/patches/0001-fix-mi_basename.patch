@@ -1,0 +1,14 @@
+diff -uraN a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2022-04-15 02:54:04.000000000 +0300
++++ b/CMakeLists.txt	2022-08-20 17:17:36.710653661 +0300
+@@ -257,10 +257,6 @@
+   set(mi_basename "mimalloc")
+ endif()
+ 
+-string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LC)
+-if(NOT(CMAKE_BUILD_TYPE_LC MATCHES "^(release|relwithdebinfo|minsizerel|none)$"))
+-  set(mi_basename "${mi_basename}-${CMAKE_BUILD_TYPE_LC}") #append build type (e.g. -debug) if not a release version
+-endif()
+ if(MI_BUILD_SHARED)
+   list(APPEND mi_build_targets "shared")
+ endif()

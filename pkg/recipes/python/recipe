@@ -1,6 +1,6 @@
 # 1
-tar xf /mss/work/sauces/python-3.10.5.tar.xz
-cd     Python-3.10.5/
+tar xf /mss/work/sauces/python-3.10.6.tar.xz
+cd     Python-3.10.6/
 
 pdir="/mss/repo/pkg/recipes/python/patches"
 patch -p1 < "${pdir}"/0001-always-pip.patch
@@ -19,16 +19,17 @@ export CXXFLAGS="${CXXFLAGS} -fno-semantic-interposition"
 
 ax_cv_c_float_words_bigendian=no \
 ./configure \
- --build=$CBUILD      \
- --host=$CHOST        \
- --prefix=/usr        \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix=/usr          \
 \
- --enable-shared      \
- --with-system-expat  \
- --with-system-ffi    \
- --with-ensurepip=yes \
- --disable-ipv6       \
- --without-doc-strings
+ --enable-shared        \
+ --disable-ipv6         \
+ --disable-test-modules \
+ --with-doc-strings     \
+ --with-ensurepip=yes   \
+ --with-system-expat    \
+ --with-system-ffi
 
 make
 
@@ -38,17 +39,13 @@ make DESTDIR="${instdir}" install
 
 ln -sfv python3 "${instdir}"/usr/bin/python
 ln -sfv pip3    "${instdir}"/usr/bin/pip
+ln -sfv pydoc3  "${instdir}"/usr/bin/pydoc
 
 rm -rfv \
- "${instdir}"/usr/lib/python3.10/test      \
- "${instdir}"/usr/lib/python3.10/*/test    \
- "${instdir}"/usr/lib/python3.10/*/tests   \
- "${instdir}"/usr/lib/python3.10/pydoc*    \
  "${instdir}"/usr/lib/python3.10/idlelib   \
  "${instdir}"/usr/lib/python3.10/turtle*   \
  "${instdir}"/usr/lib/python3.10/config-*  \
  "${instdir}"/usr/lib/python3.10/ensurepip \
- "${instdir}"/usr/bin/pydoc*              \
  "${instdir}"/usr/bin/idle*
 
 find "${instdir}" -type f -name \*.exe -exec rm -rfv {} ';'
@@ -59,17 +56,13 @@ make install
 
 ln -sfv python3 /usr/bin/python
 ln -sfv pip3    /usr/bin/pip
+ln -sfv pydoc3  /usr/bin/pydoc
 
 rm -rfv \
- /usr/lib/python3.10/test      \
- /usr/lib/python3.10/*/test    \
- /usr/lib/python3.10/*/tests   \
- /usr/lib/python3.10/pydoc*    \
  /usr/lib/python3.10/idlelib   \
  /usr/lib/python3.10/turtle*   \
  /usr/lib/python3.10/config-*  \
  /usr/lib/python3.10/ensurepip \
- /usr/bin/pydoc*              \
  /usr/bin/idle*
 
 find /usr/lib/python3.10 -type f -name \*.exe -exec rm -rfv {} ';'

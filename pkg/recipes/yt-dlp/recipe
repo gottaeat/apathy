@@ -3,6 +3,7 @@ a2 https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp
 
 doas -s
 for i in yt-dlp; do
- chmod +x $i
- mv       $i /usr/bin/
+ chmod +x        $i
+ chown root:root $i
+ mv              $i /usr/bin/
 done
