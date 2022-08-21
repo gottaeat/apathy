@@ -1,0 +1,4 @@
+/usr/bin/meson
+
+/usr/lib/python3.10/site-packages/meson-0.63.1-py3.10.egg-info
+/usr/lib/python3.10/site-packages/mesonbuild

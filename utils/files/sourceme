@@ -16,6 +16,7 @@ mypath="$mypath:/opt/go-1.18.3/bin"
 
 mylibpath="/opt/llvm-14.0.6/lib"
 mylibpath="$mylibpath:/opt/rustc-1.63.0/lib"
+mylibpath="$mylibpath:/opt/mimalloc-2.0.2/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 
 # 1.2 > essentials
