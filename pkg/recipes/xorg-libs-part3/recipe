@@ -178,15 +178,18 @@ doas -- make install
 cd ../; rm -rf libXdamage-1.1.5/
 
 # 14 > libXft
-tar xf /mss/work/sauces/xorg-libs/libXft-2.3.3.tar.bz2
-cd     libXft-2.3.3/
+tar xf /mss/work/sauces/xorg-libs/libXft-2.3.4.tar.bz2
+cd     libXft-2.3.4/
+
+pdir="/mss/repo/pkg/recipes/xorg-libs-part3/patches"
+patch -p1 < "${pdir}"/0001-libXft-bgra.patch
 
 mylibsconfig /usr n
 make
 make DESTDIR=/mss/work/XORG-libs install
 doas -- make install
 
-cd ../; rm -rf libXft-2.3.3/
+cd ../; rm -rf libXft-2.3.4/
 
 # 15 > libXi
 tar xf /mss/work/sauces/xorg-libs/libXi-1.7.10.tar.bz2

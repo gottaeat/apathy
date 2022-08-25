@@ -4,13 +4,8 @@ instdir="/mss/work/XorgLIBS2"
 ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
 export          CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
 export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
-export            PATH="${penis}/bin:${PATH}"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
-
-tar xf /mss/work/sauces/busybox-1.31.0-full.tar.zst
-mkdir                  "${penis}"/bin
-mv    ./busybox-x86_64 "${penis}"/bin/grep
 
 # 2 > system libpng
 tar xf /mss/work/sauces/libpng-1.6.37.tar.xz
@@ -52,8 +47,8 @@ doas -- make install
 cd ../; rm -rf pcre-8.45/
 
 # 4 > system glib
-tar xf /mss/work/sauces/glib-2.73.0.tar.xz
-cd     glib-2.73.0/
+tar xf /mss/work/sauces/glib-2.72.3.tar.xz
+cd     glib-2.72.3/
 
 find . -type f -name meson.build -exec \
  sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
@@ -78,7 +73,7 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.73.0/
+cd ../../; rm -rf glib-2.72.3/
 
 # 5 > penis freetype (w/o harfbuzz)
 tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
@@ -99,8 +94,8 @@ make install
 cd ../; rm -rf freetype-2.12.1/
 
 # 6 > penis harfbuzz
-tar xf /mss/work/sauces/harfbuzz-4.3.0.tar.xz
-cd     harfbuzz-4.3.0/
+tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
+cd     harfbuzz-5.1.0/
 
 mkdir build
 cd    build
@@ -124,7 +119,7 @@ meson --buildtype=plain \
 samu
 samu install
 
-cd ../../; rm -rf harfbuzz-4.3.0/
+cd ../../; rm -rf harfbuzz-5.1.0/
 
 # 7 > system freetype (w/ harfbuzz)
 tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
@@ -202,8 +197,8 @@ doas -- samu install
 cd ../../; rm -rf pixman-0.40.0/
 
 # 10 > system cairo
-tar xf /mss/work/sauces/cairo-1.16.0.tar.xz
-cd     cairo-1.16.0/
+tar xf /mss/work/sauces/cairo-1.17.6.tar.xz
+cd     cairo-1.17.6/
 
 sed -i "s/BUILD_SPHINX_TRUE=/BUILD_SPHINX_TRUE='#'/"   configure
 sed -i "s/BUILD_SPHINX_FALSE='#'/BUILD_SPHINX_FALSE=/" configure
@@ -230,11 +225,11 @@ make
 make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../; rm -rf cairo-1.16.0/
+cd ../; rm -rf cairo-1.17.6/
 
 # 11 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-4.3.0.tar.xz
-cd     harfbuzz-4.3.0/
+tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
+cd     harfbuzz-5.1.0/
 
 mkdir build
 cd    build
@@ -259,7 +254,7 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-4.3.0/
+cd ../../; rm -rf harfbuzz-5.1.0/
 
 # 12 > cleanup
 doas -- rm -rfv \
