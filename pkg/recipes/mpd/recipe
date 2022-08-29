@@ -1,45 +1,87 @@
 # 1
-tar xf /mss/work/sauces/mpd-0.21.10.tar.gz
-cd     MPD-0.21.10/
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export      BOOST_ROOT="${penis}"
+
+# 2 > boost
+tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
+
+mv boost-1.76.0/ "${penis}"
+
+# 3 > libfmt
+unzip -q /mss/work/sauces/fmt-9.1.0.zip
+cd       fmt-9.1.0/
+
+cleancmake
+
+mkdir builderoo
+cd    builderoo
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DFMT_DOC=OFF                          \
+ -DFMT_TEST=OFF                         \
+ ../
+
+samu
+samu install
+
+cd ../../; rm -rf fmt-9.1.0/
+
+# 2
+tar xf /mss/work/sauces/mpd-0.23.9.tar.gz
+cd     MPD-0.23.9/
 
 pdir="/mss/repo/pkg/recipes/mpd/patches"
-patch -p1 < "${pdir}"/0001-fix-libc++-std-forward.patch
-patch -p1 < "${pdir}"/0002-ffmpeg-5-const.patch
-patch -p1 < "${pdir}"/0003-ffmpeg-5.1.patch
+patch -p1 < "${pdir}"/0001-stacksize.patch
 
 mkdir mybuild
 cd    mybuild
 
-pushd /opt
-doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
-popd
-
-export       CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
-export     CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include"
-export   BOOST_ROOT="/opt/boost-1.76.0"
-export LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib"
-
 meson --buildtype=plain \
  --prefix=/usr          \
 \
- -Ddebug=false          \
- -Dipv6=disabled        \
- -Dtest=false           \
- -Ddocumentation=false  \
+ -Ddebug=false            \
+ -Dipv6=disabled          \
+ -Dtest=false             \
+ -Ddocumentation=disabled \
 \
- -Dcue=true             \
- -Ddsd=true             \
- -Dtcp=true             \
- -Dfifo=true            \
- -Dpipe=true            \
- -Dhttpd=true           \
- -Dcurl=enabled         \
- -Ddatabase=true        \
- -Dffmpeg=enabled       \
- -Did3tag=enabled       \
- -Dwebdav=enabled       \
- -Dlibmpdclient=enabled \
+ -Dcue=true               \
+ -Ddsd=true               \
+ -Dtcp=true               \
+ -Dfifo=true              \
+ -Dpipe=true              \
+ -Dhttpd=true             \
+ -Dcurl=enabled           \
+ -Ddatabase=true          \
+ -Dffmpeg=enabled         \
+ -Did3tag=enabled         \
+ -Dwebdav=enabled         \
+ -Dlibmpdclient=enabled   \
 ..
 
 time samu
