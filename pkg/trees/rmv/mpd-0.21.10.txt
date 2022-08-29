@@ -1,0 +1,3 @@
+/etc/mpd.conf
+
+/usr/bin/mpd

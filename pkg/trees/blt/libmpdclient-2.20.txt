@@ -1,0 +1,10 @@
+/usr/include/mpd
+
+/usr/lib/libmpdclient.so
+/usr/lib/libmpdclient.so.2
+/usr/lib/libmpdclient.so.2.20
+
+/usr/lib/pkgconfig/libmpdclient.pc
+
+/usr/share/doc
+/usr/share/vala
