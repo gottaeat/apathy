@@ -41,7 +41,6 @@ unset mypath mylibpath mypkgconfigpath
 
 # 1.4 > extra
 export        MPD_HOST="/mnt/mss/stuff/media/music/mpd/socket"
-export      LD_PRELOAD="/opt/mimalloc-2.0.2/lib/libmimalloc.so"
 export MOZ_USE_XINPUT2="1"
 
 # 1.5 > colors
@@ -64,3 +63,4 @@ ytmusic(){
   -f bestaudio                                                        \
  ${@}
 }
+mimup(){ export LD_PRELOAD="/opt/mimalloc-2.0.2/lib/libmimalloc.so";}
