@@ -1,0 +1,34 @@
+# 1
+tar xf /mss/work/sauces/pcre2-10.40.tar.gz
+cd     pcre2-10.40/
+
+./configure \
+ --build=$CBUILD               \
+ --host=$CHOST                 \
+ --prefix=/usr                 \
+ --with-match-limit-depth=8192 \
+ --enable-jit                  \
+ --enable-pcre2-16             \
+ --enable-pcre2-32             \
+ --enable-shared               \
+ --enable-static
+
+make
+
+# 2
+doas -s
+make install
+
+rm -rfv \
+ /usr/share/doc \
+ /usr/share/man
+
+mkdir pcre2-static/
+
+for i in libpcre2-16.a libpcre2-32.a libpcre2-8.a libpcre2-posix.a; do
+ mv -v /usr/lib/"${i}" pcre2-static/
+done
+
+pkgup pcre2-static/ "${amachine}"-pcre2-10.40-static/
+mv "${amachine}"-pcre2-*-static.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software
