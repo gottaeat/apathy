@@ -27,37 +27,17 @@ doas -- make install
 
 cd ../; rm -rf libpng-1.6.37/
 
-# 3 > system pcre
-tar xf /mss/work/sauces/pcre-8.45.tar.gz
-cd     pcre-8.45/
-
-./configure \
- --build=$CBUILD  \
- --host=$CHOST    \
- --prefix=/usr    \
- --disable-static \
- --enable-shared  \
- --enable-utf8    \
- --enable-unicode-properties
-
-make
-make DESTDIR="${instdir}" install
-doas -- make install
-
-cd ../; rm -rf pcre-8.45/
-
-# 4 > system glib
-tar xf /mss/work/sauces/glib-2.72.3.tar.xz
-cd     glib-2.72.3/
-
-find . -type f -name meson.build -exec \
- sed -i "/subdir('tests')/d;/subdir('fuzzing')/d" {} +
+# 3 > system glib
+tar xf /mss/work/sauces/glib-2.73.3.tar.xz
+cd     glib-2.73.3/
 
 sed -i -e 's/libmount_dep.found()/false/' meson.build
+touch fuzzing/meson.build
 
 mkdir build
 cd    build
 
+CFLAGS="${CFLAGS} -std=gnu11" \
 meson --buildtype=plain \
  --prefix=/usr           \
  -Dgtk_doc=false         \
@@ -73,9 +53,9 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.72.3/
+cd ../../; rm -rf glib-2.73.3/
 
-# 5 > penis freetype (w/o harfbuzz)
+# 4 > penis freetype (w/o harfbuzz)
 tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
 cd     freetype-2.12.1/
 
@@ -93,7 +73,7 @@ make
 make install
 cd ../; rm -rf freetype-2.12.1/
 
-# 6 > penis harfbuzz
+# 5 > penis harfbuzz
 tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
 cd     harfbuzz-5.1.0/
 
@@ -121,7 +101,7 @@ samu install
 
 cd ../../; rm -rf harfbuzz-5.1.0/
 
-# 7 > system freetype (w/ harfbuzz)
+# 6 > system freetype (w/ harfbuzz)
 tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
 cd     freetype-2.12.1/
 
@@ -141,7 +121,7 @@ doas -- make install
 
 cd ../ && rm -rf freetype-2.12.1/
 
-# 8 > system fontconfig
+# 7 > system fontconfig
 tar xf /mss/work/sauces/fontconfig-2.14.0.tar.xz
 cd     fontconfig-2.14.0/
 
@@ -161,7 +141,7 @@ doas -- make install
 
 cd ../; rm -rf fontconfig-2.14.0/
 
-# 9 > system pixman
+# 8 > system pixman
 tar xf /mss/work/sauces/pixman-0.40.0.tar.gz
 cd     pixman-0.40.0/
 
@@ -196,7 +176,7 @@ doas -- samu install
 
 cd ../../; rm -rf pixman-0.40.0/
 
-# 10 > system cairo
+# 9 > system cairo
 tar xf /mss/work/sauces/cairo-1.17.6.tar.xz
 cd     cairo-1.17.6/
 
@@ -227,7 +207,7 @@ doas -- make install
 
 cd ../; rm -rf cairo-1.17.6/
 
-# 11 > system harfbuzz
+# 10 > system harfbuzz
 tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
 cd     harfbuzz-5.1.0/
 
@@ -256,7 +236,7 @@ doas -- samu install
 
 cd ../../; rm -rf harfbuzz-5.1.0/
 
-# 12 > cleanup
+# 11 > cleanup
 doas -- rm -rfv \
  /etc/fonts                 \
  /usr/share/bash-completion \
@@ -270,6 +250,6 @@ doas -- rm -rfv \
 
 doas -- cleanup
 
-# 13 > copy the clean fontconfig config
+# 12 > copy the clean fontconfig config
 doas -- cp -rv \
  /mss/repo/dir/etc/fonts /etc/fonts

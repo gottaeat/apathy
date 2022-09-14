@@ -1,33 +1,20 @@
 # 1
 penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export       CFLAGS="${CFLAGS}   -L${penis}/lib -fPIC"
+export     CXXFLAGS="${CXXFLAGS} -L${penis}/lib -fPIC"
+export LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-pcre2-10.40-static.tar.zst
+
+mkdir "${penis}"/
+mv pcre2-static/ "${penis}"/lib
 
 # 2
-tar xf /mss/work/sauces/pcre-8.45.tar.gz
-cd     pcre-8.45/
-
-./configure \
- --build=$CBUILD     \
- --host=$CHOST       \
- --prefix="${penis}" \
- --enable-static     \
- --disable-shared    \
- --enable-utf8       \
- --enable-unicode-properties
-
-make
-make install
-
-cd ../; rm -rf pcre-8.45/
+tar xf /mss/work/sauces/grep-3.8.tar.xz
+cd     grep-3.8/
 
 export LDFLAGS="${LDFLAGS} -static"
-
-# 3
-tar xf /mss/work/sauces/grep-3.7.tar.xz
-cd     grep-3.7/
 
 ./configure \
  --build=$CBUILD           \
@@ -40,6 +27,8 @@ cd     grep-3.7/
  --disable-nls
 
 make
+
+# 3
 doas -s
 make install
 

@@ -88,34 +88,6 @@ make install
 cd ../; rm -rf brotli-1.0.9/
 
 # 5
-tar xf /mss/work/sauces/pcre2-10.36.tar.gz
-cd     pcre2-10.36/
-
-./configure \
- --build=$CBUILD               \
- --host=$CHOST                 \
- --prefix="${penis}"           \
- --enable-jit                  \
- --enable-static               \
- --enable-pcre2-16             \
- --enable-pcre2-32             \
- --with-match-limit-depth=8192 \
- --disable-shared
-
-make
-make install
-
-cd ..
-rm -rf pcre2-10.36/
-
-# 6
-tar xf /mss/work/sauces/go-1.15.2-alpine.tar.zst
-mv     go-1.15.2-alpine/ KEK/lib/go
-
-ln -sfv "${penis}"/lib/go/bin/go    "${penis}"/bin/go
-ln -sfv "${penis}"/lib/go/bin/gofmt "${penis}"/bin/gofmt
-
-# 7
 tar xf /mss/work/sauces/android-tools-31.0.2.tar.xz
 cd     android-tools-31.0.2/
 
@@ -150,7 +122,7 @@ cmake -Wno-dev -GNinja \
 
 samu fastboot adb
 
-# 8
+# 6
 doas -s
 for i in vendor/adb vendor/fastboot; do
  strip --strip-all "${i}"
