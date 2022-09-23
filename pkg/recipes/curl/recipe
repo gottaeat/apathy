@@ -10,7 +10,6 @@
  --enable-hidden-symbols \
  --enable-unix-sockets   \
  --without-icu           \
- --without-libidn        \
  --without-libidn2       \
  --without-libpsl        \
  --without-librtmp       \
