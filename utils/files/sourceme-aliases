@@ -31,7 +31,7 @@ alias        tl="tmux ls"
 # 1.4 > git
 alias        gs="git status -s"
 alias        gl="git log --oneline"
-alias      gcd1="git clone --depth=1 --recursive"
+alias      gcd1="git clone --depth=1 --recursive --shallow-submodules"
 
 # 1.5 > media
 alias       ytmp3="yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 0"

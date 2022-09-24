@@ -555,3 +555,27 @@ case "$1" in
  ;;
 esac
 }
+
+# 2.12 > tor
+svc_tor(){
+ case "$1" in
+  start)
+   ainitsvc "tor" "starting"
+    doas -u mss tor >/dev/null 2>&1 &
+   evalret
+  ;;
+  reload)
+   ainitsvc "tor" "cleaning"
+    rm -rf /home/mss/.tor 2>&1
+   evalret
+  ;;
+  stop)
+   ainitsvc "tor" "stopping"
+   ainit_kill tor
+  ;;
+  *)
+   ainitusage "{start|stop}"
+   exit 1
+  ;;
+ esac
+}
