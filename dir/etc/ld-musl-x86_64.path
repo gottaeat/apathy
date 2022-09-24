@@ -1,5 +1,5 @@
 /lib
 /usr/lib
-/opt/llvm-15.0.0/lib
-/opt/rustc-1.65.0-nightly-228710758/lib
+/opt/llvm-14.0.6/lib
+/opt/rustc-1.64.0/lib
 /opt/mimalloc-2.0.2/lib
