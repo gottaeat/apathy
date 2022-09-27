@@ -9,8 +9,8 @@ build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
 
-cargo                 = '/opt/rustc-1.63.0/bin/cargo'
-rustc                 = '/opt/rustc-1.63.0/bin/rustc'
+cargo                 = '/opt/rustc-1.64.0/bin/cargo'
+rustc                 = '/opt/rustc-1.64.0/bin/rustc'
 python                = 'python3'
 
 extended              = true
@@ -73,7 +73,7 @@ debuginfo-level-tools = 0
 debuginfo-level-tests = 0
 
 [target.x86_64-apathy-linux-musl]
-llvm-config           = '/opt/llvm-14.0.6/bin/llvm-config'
+llvm-config           = '/opt/llvm-15.0.1/bin/llvm-config'
 crt-static            = false
 
 cc                    = 'clang'

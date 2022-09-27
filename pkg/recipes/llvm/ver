@@ -1,8 +1,8 @@
-clang       14.0.6
-compiler-rt 14.0.6
-libcxx      14.0.6
-libcxxabi   14.0.6
-libunwind   14.0.6
-lld         14.0.6
-llvm        14.0.6
-openmp      14.0.6
+clang       15.0.1
+compiler-rt 15.0.1
+libcxx      15.0.1
+libcxxabi   15.0.1
+libunwind   15.0.1
+lld         15.0.1
+llvm        15.0.1
+openmp      15.0.1

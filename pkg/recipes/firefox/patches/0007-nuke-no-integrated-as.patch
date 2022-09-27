@@ -1,7 +1,7 @@
-From a1f2a077ce78566c4d0f058347e0218dcb82ab75 Mon Sep 17 00:00:00 2001
+From e9cf661ece935c5093d10e7460209dab19b33c9f Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Thu, 7 Jul 2022 23:23:20 +0300
-Subject: [PATCH 09/16] nuke -no-integrated-as.
+Date: Mon, 26 Sep 2022 10:12:51 +0300
+Subject: [PATCH 07/15] nuke -no-integrated-as.
 
 ---
  security/nss/lib/freebl/Makefile         |  9 --------
@@ -98,5 +98,5 @@ index 34b6b3c81a..5bbd35e51d 100644
          [ 'target_arch=="ia32"', {
            'sources': [
 -- 
-2.37.0
+2.37.1
 
