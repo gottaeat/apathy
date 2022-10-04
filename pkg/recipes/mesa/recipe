@@ -27,34 +27,34 @@ mkdir build
 cd    build
 
 meson --buildtype=plain \
- --prefix=/usr                \
+ --prefix=/usr                  \
 \
- -Dplatforms=x11              \
- -Ddri3=enabled               \
- -Dshader-cache=enabled       \
- -Dshader-cache-max-size=256M \
- -Dshared-glapi=enabled       \
+ -Dplatforms=x11                \
+ -Ddri3=enabled                 \
+ -Dshader-cache=enabled         \
+ -Dshader-cache-max-size=1G     \
+ -Dshared-glapi=enabled         \
 \
- -Dopengl=true                \
- -Dgbm=enabled                \
- -Dglx=dri                    \
- -Degl=enabled                \
+ -Dopengl=true                  \
+ -Dgbm=enabled                  \
+ -Dglx=dri                      \
+ -Degl=enabled                  \
 \
- -Ddri-drivers=               \
- -Dgallium-drivers=crocus     \
- -Dvulkan-drivers=            \
+ -Ddri-drivers=                 \
+ -Dgallium-drivers=crocus,virgl \
+ -Dvulkan-drivers=              \
 \
- -Dgallium-extra-hud=false    \
- -Dgallium-vdpau=disabled     \
- -Dgallium-xvmc=disabled      \
- -Dgallium-omx=disabled       \
- -Dgallium-va=disabled        \
- -Dgallium-xa=disabled        \
+ -Dgallium-extra-hud=false      \
+ -Dgallium-vdpau=disabled       \
+ -Dgallium-xvmc=disabled        \
+ -Dgallium-omx=disabled         \
+ -Dgallium-va=disabled          \
+ -Dgallium-xa=disabled          \
 \
- -Dgles1=disabled             \
- -Dgles2=disabled             \
- -Dllvm=disabled              \
- -Dvalgrind=disabled          \
- -Dlibunwind=disabled         \
- -Dlmsensors=disabled         \
+ -Dgles1=disabled               \
+ -Dgles2=disabled               \
+ -Dllvm=disabled                \
+ -Dvalgrind=disabled            \
+ -Dlibunwind=disabled           \
+ -Dlmsensors=disabled           \
 ..

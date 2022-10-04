@@ -1,0 +1,11 @@
+--- a/meson.build	2022-08-30 19:41:57.000000000 +0300
++++ b/meson.build	2022-09-30 20:40:22.021977771 +0300
+@@ -35,7 +35,7 @@
+ endif
+ 
+ qemu_confdir = get_option('sysconfdir') / get_option('qemu_suffix')
+-qemu_datadir = get_option('datadir') / get_option('qemu_suffix')
++qemu_datadir = 'qemu'
+ qemu_docdir = get_option('docdir') / get_option('qemu_suffix')
+ qemu_moddir = get_option('libdir') / get_option('qemu_suffix')
+ 

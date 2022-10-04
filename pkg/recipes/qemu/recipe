@@ -1,0 +1,101 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/virglrenderer-0.10.3.tar.gz
+cd     virglrenderer-0.10.3/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}"      \
+\
+ -Dvideo=true             \
+ -Ddefault_library=static \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf virglrenderer-0.10.3/
+
+# 3
+tar xf /mss/work/sauces/qemu-7.1.0.tar.xz
+cd     qemu-7.1.0/
+
+export   CFLAGS="$(echo "${CFLAGS}"   \
+ | sed "s/-DNDEBUG//g;s/-flto-jobs=${ajobcount}/-flto-jobs=1/g")"
+export CXXFLAGS="$(echo "${CXXFLAGS}" \
+ | sed "s/-DNDEBUG//g;s/-flto-jobs=${ajobcount}/-flto-jobs=1/g")"
+export  LDFLAGS="$(echo "${LDFLAGS}"  \
+ | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
+
+export LDFLAGS="${LDFLAGS} -Wl,--push-state,/opt/mimalloc-2.0.2/lib/libmimalloc.a,--pop-state"
+
+sed -i -e 's/SHELL = bash -o pipefail/SHELL = sh/g' Makefile
+
+pdir="/mss/repo/pkg/recipes/qemu/patches"
+patch -p1 < "${pdir}"/0001-fix-datadir.patch
+
+./configure \
+ --prefix=/opt/qemu-7.1.0         \
+ --libexecdir=/opt/qemu-7.1.0/bin \
+ --localstatedir=/var             \
+\
+ --audio-drv-list=alsa            \
+ --enable-avx2                    \
+ --enable-curses                  \
+ --enable-gtk                     \
+ --enable-kvm                     \
+ --enable-opengl                  \
+ --enable-virglrenderer           \
+\
+ --disable-werror                 \
+ --enable-lto                     \
+ --enable-stack-protector         \
+ --extra-cflags="${CFLAGS}"       \
+ --extra-cxxflags="${CXXFLAGS}"   \
+ --extra-ldflags="${LDFLAGS}"     \
+\
+ --disable-linux-user             \
+ --disable-user                   \
+ --enable-system                  \
+ --target-list=x86_64-softmmu     \
+\
+ --disable-bsd-user               \
+ --disable-cfi                    \
+ --disable-cfi-debug              \
+ --disable-containers             \
+ --disable-debug-info             \
+ --disable-debug-mutex            \
+ --disable-debug-stack-usage      \
+ --disable-debug-tcg              \
+ --disable-docs                   \
+ --disable-fuzzing                \
+ --disable-gcov                   \
+ --disable-gettext                \
+ --disable-gprof                  \
+ --disable-guest-agent            \
+ --disable-oss                    \
+ --disable-plugins                \
+ --disable-png                    \
+ --disable-profiler               \
+ --disable-qom-cast-debug         \
+ --disable-sanitizers             \
+ --disable-tsan                   \
+ --disable-vhost-user             \
+ --disable-vnc                    \
+ --disable-vnc-jpeg               \
+ --disable-vnc-sasl
+
+time make
+
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+rm -rf "${instdir}"/opt/qemu-7.1.0/share

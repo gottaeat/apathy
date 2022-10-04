@@ -88,14 +88,14 @@ aprint "applying ${cl_grn}patches${c_res}."
   evalretkill
  done
 
-# 10 > run menuconfig
+# 10 > run nconfig
 aprint_nc
-aprint_ask "run menuconfig for manual config? (y/n): "
+aprint_ask "run nconfig for manual config? (y/n): "
 read answermenuconf
 
 case "${answermenuconf}" in
- yes|Y|y) aprint "running menuconfig.";     mymake menuconfig ;;
- *)       aprint "not running menuconfig."; aprint_nc         ;;
+ yes|Y|y) aprint "running nconfig.";     mymake nconfig ;;
+ *)       aprint "not running nconfig."; aprint_nc      ;;
 esac
 
 # 11 > run make
