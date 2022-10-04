@@ -1,0 +1,102 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
+cd openal-soft-1.21.1/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_AR="$AR"                       \
+ -DCMAKE_NM="$NM"                       \
+ -DCMAKE_STRIP="$STRIP"                 \
+ -DCMAKE_RANLIB="$RANLIB"               \
+ -DCMAKE_LINKER="$LD"                   \
+ -DCMAKE_OBJCOPY="$OBJCOPY"             \
+ -DCMAKE_OBJDUMP="$OBJDUMP"             \
+ -DCMAKE_READELF="$READELF"             \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
+ -DCMAKE_C_COMPILER="$CC"               \
+ -DCMAKE_CXX_COMPILER="$CXX"            \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DLIBTYPE=STATIC                       \
+ -DALSOFT_EXAMPLES=OFF                  \
+ -DALSOFT_UTILS=OFF                     \
+ -DALSOFT_TESTS=OFF                     \
+ ../
+
+samu
+samu install
+cd ../../; rm -rf openal-soft-1.21.1/
+
+#3
+tar xf /mss/work/sauces/irrlichtmt-1.9.0mt8.tar.gz
+tar xf /mss/work/sauces/minetest-5.6.1.tar.gz
+
+mv irrlicht-1.9.0mt8/ minetest-5.6.1/lib/irrlichtmt
+
+cd minetest-5.6.1/
+
+cleancmake
+
+mkdir build
+cd    build
+
+gamedir="/mnt/mss/stuff/media/games/minetest"
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${gamedir}"         \
+ -DCMAKE_C_FLAGS="$CFLAGS"                   \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"               \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"         \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"      \
+ -DCMAKE_AR="$AR"                            \
+ -DCMAKE_NM="$NM"                            \
+ -DCMAKE_STRIP="$STRIP"                      \
+ -DCMAKE_RANLIB="$RANLIB"                    \
+ -DCMAKE_LINKER="$LD"                        \
+ -DCMAKE_OBJCOPY="$OBJCOPY"                  \
+ -DCMAKE_OBJDUMP="$OBJDUMP"                  \
+ -DCMAKE_READELF="$READELF"                  \
+ -DCMAKE_ADDR2LINE="$ADDR2LINE"              \
+ -DCMAKE_C_COMPILER="$CC"                    \
+ -DCMAKE_CXX_COMPILER="$CXX"                 \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"          \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"        \
+\
+ -DBUILD_CLIENT=ON                           \
+ -DBUILD_SERVER=OFF                          \
+ -DBUILD_UNITTESTS=OFF                       \
+ -DENABLE_GETTEXT=OFF                        \
+ -DENABLE_CURSES=OFF                         \
+ -DENABLE_CURL=ON                            \
+ -DENABLE_POSTGRESQL=OFF                     \
+ -DENABLE_REDIS=OFF                          \
+ -DENABLE_SPATIAL=OFF                        \
+ -DENABLE_SYSTEM_GMP=OFF                     \
+ -DENABLE_SYSTEM_JSONCPP=OFF                 \
+ -DENABLE_UPDATE_CHECKER=OFF                 \
+ -DWARN_ALL=OFF                              \
+\
+ -DOPENAL_LIBRARY="${penis}"/lib/libopenal.a \
+ -DOPENAL_INCLUDE_DIR="${penis}"/include     \
+..
+
+samu
+samu install
