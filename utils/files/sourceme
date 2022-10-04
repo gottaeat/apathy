@@ -13,6 +13,7 @@ mypath="$mypath:/opt/cryptshit/bin"
 mypath="$mypath:/opt/torshit/bin"
 mypath="$mypath:/opt/spoofshit/bin"
 mypath="$mypath:/opt/go-1.18.3/bin"
+mypath="$mypath:/opt/qemu-7.1.0/bin"
 
 mylibpath="/opt/llvm-15.0.1/lib"
 mylibpath="$mylibpath:/opt/rustc-1.64.0/lib"
