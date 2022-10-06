@@ -3,5 +3,5 @@
 /dev/apathy/stuff               /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
 
 # boot + home
-/dev/sda3                       /boot           ext4  defaults,noatime                  0  2
+/dev/sda1                       /boot           ext4  defaults,noatime                  0  2
 /mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind   0  0
