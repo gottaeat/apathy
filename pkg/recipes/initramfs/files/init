@@ -20,7 +20,7 @@ rshell(){
  exec setsid cttyhack /bin/sh
 }
 
-cryptsetup open /dev/sda4 x230 || rshell
+cryptsetup open /dev/sda2 x230 || rshell
 
 lvm vgchange -ay >/dev/null 2>&1
 
