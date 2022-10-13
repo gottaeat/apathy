@@ -4,6 +4,7 @@
 /usr/bin/git-shell
 /usr/bin/git-upload-archive
 /usr/bin/git-upload-pack
+/usr/bin/scalar
 
 /usr/libexec/git-core
 /usr/share/git-core
