@@ -1,7 +1,4 @@
 # 1
-pdir="/mss/repo/pkg/recipes/xz/patches"
-patch -p1 < "${pdir}"/0001-xzgrep-ZDI-CAN-16587.patch
-
 ./configure \
  --build=$CBUILD \
  --host=$CHOST   \

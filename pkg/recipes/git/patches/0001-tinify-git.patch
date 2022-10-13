@@ -1,7 +1,7 @@
 diff -uraN a/Makefile b/Makefile
---- a/Makefile	2022-06-27 19:17:55.000000000 +0300
-+++ b/Makefile	2022-07-09 01:07:38.209945141 +0300
-@@ -839,10 +839,7 @@
+--- a/Makefile	2022-10-03 02:02:46.000000000 +0300
++++ b/Makefile	2022-10-07 20:27:53.104257100 +0300
+@@ -851,10 +851,7 @@
  
  TEST_SHELL_PATH = $(SHELL_PATH)
  
@@ -13,7 +13,7 @@ diff -uraN a/Makefile b/Makefile
  
  GENERATED_H += command-list.h
  GENERATED_H += config-list.h
-@@ -1252,7 +1249,7 @@
+@@ -1267,7 +1264,7 @@
  THIRD_PARTY_SOURCES += sha1dc/%
  
  # xdiff and reftable libs may in turn depend on what is in libgit.a
@@ -22,7 +22,7 @@ diff -uraN a/Makefile b/Makefile
  EXTLIBS =
  
  GIT_USER_AGENT = git/$(GIT_VERSION)
-@@ -1312,7 +1309,7 @@
+@@ -1327,7 +1324,7 @@
  endif
  
  ALL_CFLAGS = $(DEVELOPER_CFLAGS) $(CPPFLAGS) $(CFLAGS)
@@ -31,7 +31,7 @@ diff -uraN a/Makefile b/Makefile
  
  ifdef SANITIZE
  SANITIZERS := $(foreach flag,$(subst $(comma),$(space),$(SANITIZE)),$(flag))
-@@ -2262,7 +2259,7 @@
+@@ -2282,7 +2279,7 @@
  	'-DGIT_MAN_PATH="$(mandir_relative_SQ)"' \
  	'-DGIT_INFO_PATH="$(infodir_relative_SQ)"'
  
@@ -40,7 +40,7 @@ diff -uraN a/Makefile b/Makefile
  	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
  		$(filter %.o,$^) $(LIBS)
  
-@@ -2682,17 +2679,8 @@
+@@ -2693,17 +2690,8 @@
  	$(QUIET_LINK)$(CC) $(ALL_CFLAGS) -o $@ $(ALL_LDFLAGS) \
  		$(filter %.o,$^) $(LIBS)
  
@@ -60,7 +60,7 @@ diff -uraN a/Makefile b/Makefile
  
  export DEFAULT_EDITOR DEFAULT_PAGER
  
-@@ -3190,6 +3178,7 @@
+@@ -3236,6 +3224,7 @@
  	$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(PROGRAMS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(SCRIPTS) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
@@ -68,18 +68,18 @@ diff -uraN a/Makefile b/Makefile
  	$(INSTALL) -m 644 $(SCRIPT_LIB) '$(DESTDIR_SQ)$(gitexec_instdir_SQ)'
  	$(INSTALL) $(INSTALL_STRIP) $(install_bindir_xprograms) '$(DESTDIR_SQ)$(bindir_SQ)'
  	$(INSTALL) $(BINDIR_PROGRAMS_NO_X) '$(DESTDIR_SQ)$(bindir_SQ)'
-@@ -3410,7 +3399,7 @@
+@@ -3454,7 +3443,7 @@
  	$(RM) po/git.pot po/git-core.pot
- 	$(RM) *.res
+ 	$(RM) git.res
  	$(RM) $(OBJECTS)
 -	$(RM) $(LIB_FILE) $(XDIFF_LIB) $(REFTABLE_LIB) $(REFTABLE_TEST_LIB)
 +	$(RM) $(LIB_FILE)
- 	$(RM) $(ALL_PROGRAMS) $(SCRIPT_LIB) $(BUILT_INS) git$X
+ 	$(RM) $(ALL_PROGRAMS) $(SCRIPT_LIB) $(BUILT_INS) $(OTHER_PROGRAMS)
  	$(RM) $(TEST_PROGRAMS)
  	$(RM) $(FUZZ_PROGRAMS)
 diff -uraN a/shared.mak b/shared.mak
---- a/shared.mak	2022-06-27 19:17:55.000000000 +0300
-+++ b/shared.mak	2022-07-09 01:06:47.952945706 +0300
+--- a/shared.mak	2022-10-03 02:02:46.000000000 +0300
++++ b/shared.mak	2022-10-07 20:27:02.705257666 +0300
 @@ -58,7 +58,7 @@
  ## Used in "Makefile"
  	QUIET_CC       = @echo '   ' CC $@;
