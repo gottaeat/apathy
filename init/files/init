@@ -56,11 +56,6 @@ initboi(){
   ip link set up dev lo
  evalret
 
- ainitmes "enabling ${cb_cyn}bbr ${cb_red}v2${c_res}."
-  echo "fq"   > /proc/sys/net/core/default_qdisc &&
-  echo "bbr2" > /proc/sys/net/ipv4/tcp_congestion_control
- evalret
-
  ainitmes "setting up procfs/${cb_cyn}net.ipv4${c_res}."
   echo "1"   > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts      &&
   echo "0"   > /proc/sys/net/ipv4/conf/all/accept_source_route     &&
