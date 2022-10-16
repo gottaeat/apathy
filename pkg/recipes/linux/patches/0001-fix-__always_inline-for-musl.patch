@@ -1,14 +1,14 @@
-From 494871b719c75481c9a2183bac0ec7a0489d32b3 Mon Sep 17 00:00:00 2001
+From e9703c5d20786892b98252c5701529ee2bde211c Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Wed, 3 Aug 2022 21:52:29 +0300
-Subject: [PATCH 01/12] fix __always_inline.
+Date: Fri, 14 Oct 2022 15:24:07 +0300
+Subject: [PATCH 1/8] fix __always_inline for musl.
 
 ---
  include/uapi/linux/swab.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/uapi/linux/swab.h b/include/uapi/linux/swab.h
-index 7272f85d6..3736f2fe1 100644
+index 0723a9cce..017171813 100644
 --- a/include/uapi/linux/swab.h
 +++ b/include/uapi/linux/swab.h
 @@ -3,7 +3,7 @@
@@ -21,5 +21,5 @@ index 7272f85d6..3736f2fe1 100644
  #include <asm/swab.h>
  
 -- 
-2.37.1
+2.38.0
 
