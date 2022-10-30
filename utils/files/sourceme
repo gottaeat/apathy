@@ -1,7 +1,8 @@
 # 1 > vars
 # 1.1 > set before export
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"
-mypath="$mypath:/mss/bin:/home/mss/execs"
+mypath="$mypath:/mss/bin"
+mypath="$mypath:/mnt/mss/stuff/techy-bits/bin"
 mypath="$mypath:/opt/llvm-15.0.2/bin"
 mypath="$mypath:/opt/llvm-15.0.2/compat"
 mypath="$mypath:/opt/rustc-1.64.0/bin"
