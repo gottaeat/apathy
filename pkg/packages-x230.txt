@@ -182,7 +182,7 @@ i  1  .      libunwind            15.0.2
 i  1  .      lld                  15.0.2
 i  1  .      llvm                 15.0.2
 i  1  .      openmp               15.0.2
-i  1  .      firefox              105.0.2
+i  1  .      firefox              106.0.1
 i  2  ..     node.js              18.0.0
 i  1  ..     cbindgen             0.24.3
 i  1  ...    rust                 1.64.0
