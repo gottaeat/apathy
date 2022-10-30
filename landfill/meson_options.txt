@@ -2,7 +2,15 @@ option('fontname',
  type: 'string',
  value: 'xos4 Terminus'
 )
-option('fontsize',
+option('dmenufontsize',
+ type: 'integer',
+ value: 14
+)
+option('dwmfontsize',
  type: 'integer',
  value: 10
+)
+option('stfontsize',
+ type: 'integer',
+ value: 14
 )

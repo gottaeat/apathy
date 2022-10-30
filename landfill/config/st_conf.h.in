@@ -4,7 +4,7 @@ static char *shell                  = "/bin/yash";
 static int borderpx                 = 0;
 float alpha                         = 0.85f;
 
-static char *font                   = "@fontname@:size=@fontsize@";
+static char *font                   = "@fontname@:size=@stfontsize@";
 static float cwscale                = 1.0f;
 static float chscale                = 1.0f;
 int disablebold                     = 1;

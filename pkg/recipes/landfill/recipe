@@ -1,6 +1,11 @@
 # 1
 case "${amachine}" in
- x230) fname="xos4 Terminus" fsize="10" ;;
+ x230)
+  fname="xos4 Terminus"
+  dmsz="14"
+  dwsz="10"
+  stsz="14"
+ ;;
 esac
 
 mkdir /mss/repo/landfill/build
@@ -8,5 +13,7 @@ cd    /mss/repo/landfill/build
 
 meson \
  -Dfontname="${fname}" \
- -Dfontsize="${fsize}" \
+ -Ddmenufontsize="${dmsz}" \
+ -Ddwmfontsize="${dwsz}"   \
+ -Dstfontsize="${stsz}"    \
  ..

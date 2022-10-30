@@ -1,10 +1,11 @@
 #include <X11/XF86keysym.h>
+#include <string.h>
 
 // bar
 static const int showbar            = 1;
 static const int topbar             = 1;
 static const char *tags[]           = { "a", "b", "c", "d", "e", "f", "g", "h", "i" };
-static const char *fonts[]          = { "@fontname@:size=@fontsize@"                };
+static const char *fonts[]          = { "@fontname@:size=@dwmfontsize@"             };
 static const Layout layouts[]       = {
  { "T",     tile    },
  { "F",     NULL    },
@@ -55,6 +56,10 @@ static const int lockfullscreen     = 0;    // force focus on fullscreened windo
 static const char *termcmd[]  = { "st", NULL };
 static const char *tmuxcmd[]  = { "st", "-e", "tmux", NULL };
 
+#define HOMEDIR   "/home/mss"
+#define SCRIPTDIR "/mnt/mss/stuff/techy-bits/scripts"
+#define CUSTDIR   "/mnt/mss/stuff/media/wallpapers"
+
 // keyboard binds
 static Key keys[] = {
  // workspace binds
@@ -75,11 +80,11 @@ static Key keys[] = {
  { MODKEY|ShiftMask,  XK_p,                     spawn,           SHCMD("/mss/bin/maimclip")                       },
  { MODKEY,            XK_o,                     spawn,           SHCMD("/mss/bin/maimcrop")                       },
  { MODKEY,            XK_d,                     spawn,           SHCMD("dmenu_run -b")                            },
- { MODKEY|ShiftMask,  XK_d,                     spawn,           SHCMD("/home/mss/.config/scripts/menuboi")       },
- { MODKEY,            XK_c,                     spawn,           SHCMD("/home/mss/.config/scripts/chrootmenu")    },
+ { MODKEY|ShiftMask,  XK_d,                     spawn,           SHCMD(SCRIPTDIR "/menuboi")                      },
+ { MODKEY,            XK_c,                     spawn,           SHCMD(SCRIPTDIR "/chrootmenu")                   },
  // wallpapery
- { MODKEY,            XK_m,                     spawn,           SHCMD("feh --bg-fill --randomize /home/mss/cust")},
- { Mod1Mask,          XK_m,                     spawn,           SHCMD("/home/mss/.fehb.def")                     },
+ { MODKEY,            XK_m,                     spawn,           SHCMD("feh --bg-fill --randomize " CUSTDIR)      },
+ { Mod1Mask,          XK_m,                     spawn,           SHCMD(HOMEDIR "/.fehb.def")                      },
  // dwm
  { MODKEY,            XK_Return,                spawn,           {.v = termcmd }                                  }, // spawn term
  { MODKEY|ShiftMask,  XK_Return,                spawn,           {.v = tmuxcmd }                                  }, // spawn term+tmux

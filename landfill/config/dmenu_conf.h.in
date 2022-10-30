@@ -1,5 +1,5 @@
 static int topbar                        = 1;
-static const char *fonts[]               = { "@fontname@:size=@fontsize@"};
+static const char *fonts[]               = { "@fontname@:size=@dmenufontsize@"};
 static const char *prompt                = NULL;
 static unsigned int lines                = 0;
 static const char worddelimiters[]       = " ";

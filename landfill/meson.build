@@ -1,5 +1,5 @@
 project('landfill', 'c',
- version: '4',
+ version: '5',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -10,8 +10,10 @@ project('landfill', 'c',
 
 # 1 > set the baked in font name and size
 conf = configuration_data()
-conf.set('fontname', get_option('fontname'))
-conf.set('fontsize', get_option('fontsize'))
+conf.set('fontname',      get_option('fontname'))
+conf.set('dmenufontsize', get_option('dmenufontsize'))
+conf.set('dwmfontsize',   get_option('dwmfontsize'))
+conf.set('stfontsize',    get_option('stfontsize'))
 
 configure_file(
  input:         'config/dmenu_conf.h.in',
