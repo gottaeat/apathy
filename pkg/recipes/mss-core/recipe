@@ -17,7 +17,7 @@ meson ..; samu; doas -- samu install
 # 3 > set up /mss
 doas -s
 
-ln -sfv /mnt/mss/stuff/personal/networks     /mss/files/networks
+ln -sfv /mnt/mss/stuff/techy-bits/networks   /mss/files/networks
 ln -sfv /mnt/mss/stuff/techy-bits/git/apathy /mss/repo
 ln -sfv /mnt/mss/stuff/techy-bits/work       /mss/work
 
