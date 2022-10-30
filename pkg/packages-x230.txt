@@ -45,7 +45,7 @@ i  7  ..     initramfs            6
 i  9  ...    cryptsetup           2.4.3
 i  7  ....   lvm2                 2.2.02.187
 i  1  .      init                 29
-i  1  ..     utils                22
+i  1  ..     utils                23
 i  1  .      opendoas             6.8.2
 i  1  .      iptables             1.8.8
 i  1  .      curl                 7.85.0
@@ -121,7 +121,7 @@ i  1  ..     libepoxy             1.5.8
 i  4  .      xf86-input-libinput  1.2.1
 i  1  ..     libinput             1.20.1
 i  1  .      xinit                1.4.1
-i  1  .      landfill             4
+i  1  .      landfill             5
 i  1  .      atk                  2.38.0
 i  2  .      freeglut             3.2.1
 i  1  ..     glu                  9.0.1
