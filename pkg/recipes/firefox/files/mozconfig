@@ -5,8 +5,8 @@ mk_add_options MOZ_MAKE_FLAGS="-jJOBCOUNTREPLACE"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix="/opt/firefox-105.0.2"
-ac_add_options --libdir="/opt/firefox-105.0.2/lib"
+ac_add_options --prefix="/opt/firefox-106.0.1"
+ac_add_options --libdir="/opt/firefox-106.0.1/lib"
 ac_add_options --with-libclang-path="/opt/llvm-15.0.2/lib"
 ac_add_options --with-clang-path="/opt/llvm-15.0.2/bin/clang"
 
@@ -40,7 +40,6 @@ ac_add_options --enable-default-toolkit=cairo-gtk3-x11-wayland
 ac_add_options --enable-ffmpeg
 ac_add_options --enable-negotiateauth
 ac_add_options --enable-new-pass-manager
-ac_add_options --enable-smoosh
 ac_add_options --enable-webrtc
 ac_add_options --disable-accessibility
 ac_add_options --disable-callgrind
@@ -52,6 +51,7 @@ ac_add_options --disable-libproxy
 ac_add_options --disable-necko-wifi
 ac_add_options --disable-parental-controls
 ac_add_options --disable-sandbox
+ac_add_options --disable-smoosh
 ac_add_options --disable-synth-speechd
 ac_add_options --disable-system-extension-dirs
 ac_add_options --disable-updater
@@ -69,8 +69,8 @@ ac_add_options --with-system-libevent
 ac_add_options --with-system-libvpx
 ac_add_options --with-system-pixman
 ac_add_options --with-system-png
+ac_add_options --with-system-webp
 ac_add_options --with-system-zlib
 ac_add_options --without-system-icu
 ac_add_options --without-system-nspr
 ac_add_options --without-system-nss
-ac_add_options --without-system-webp

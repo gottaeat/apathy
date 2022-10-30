@@ -1,31 +1,31 @@
-From 60428814fd7608c904ae22d63a56688ab49fd7a0 Mon Sep 17 00:00:00 2001
+From 71f649d4dc062f8da2e583291a449b5dacf87e6b Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:20:19 +0300
-Subject: [PATCH 10/15] nuke addons.
+Date: Tue, 25 Oct 2022 06:42:27 +0300
+Subject: [PATCH 10/16] nuke addons.
 
 ---
- browser/components/BrowserGlue.jsm | 173 -----------------------------
+ browser/components/BrowserGlue.jsm | 172 -----------------------------
  browser/extensions/moz.build       |   5 -
  browser/locales/Makefile.in        |   2 -
  browser/locales/filter.py          |   1 -
  browser/locales/l10n.ini           |   1 -
  browser/locales/l10n.toml          |   4 -
- 6 files changed, 186 deletions(-)
+ 6 files changed, 185 deletions(-)
 
 diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
-index 37a6d58ee6..66bff29d8c 100644
+index 36d0e2033e..364fa3388f 100644
 --- a/browser/components/BrowserGlue.jsm
 +++ b/browser/components/BrowserGlue.jsm
-@@ -688,16 +688,6 @@ let JSWINDOWACTORS = {
+@@ -694,16 +694,6 @@ let JSWINDOWACTORS = {
      enablePreference: "accessibility.blockautorefresh",
    },
  
 -  ScreenshotsComponent: {
 -    parent: {
--      moduleURI: "resource:///modules/ScreenshotsUtils.jsm",
+-      esModuleURI: "resource:///modules/ScreenshotsUtils.sys.mjs",
 -    },
 -    child: {
--      moduleURI: "resource:///actors/ScreenshotsComponentChild.jsm",
+-      esModuleURI: "resource:///actors/ScreenshotsComponentChild.sys.mjs",
 -    },
 -    enablePreference: "screenshots.browser.component.enabled",
 -  },
@@ -33,7 +33,7 @@ index 37a6d58ee6..66bff29d8c 100644
    SearchSERPTelemetry: {
      parent: {
        moduleURI: "resource:///actors/SearchSERPTelemetryParent.jsm",
-@@ -2023,77 +2013,6 @@ BrowserGlue.prototype = {
+@@ -2035,76 +2025,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -107,11 +107,10 @@ index 37a6d58ee6..66bff29d8c 100644
 -      addon.enable();
 -    }
 -  },
--
+ 
    _monitorHTTPSOnlyPref() {
      const PREF_ENABLED = "dom.security.https_only_mode";
-     const PREF_WAS_ENABLED = "dom.security.https_only_mode_ever_enabled";
-@@ -2649,16 +2568,6 @@ BrowserGlue.prototype = {
+@@ -2664,16 +2584,6 @@ BrowserGlue.prototype = {
          },
        },
  
@@ -128,7 +127,7 @@ index 37a6d58ee6..66bff29d8c 100644
        {
          task: () => {
            let { setTimeout } = ChromeUtils.import(
-@@ -2716,34 +2625,6 @@ BrowserGlue.prototype = {
+@@ -2731,34 +2641,6 @@ BrowserGlue.prototype = {
          },
        },
  
@@ -163,7 +162,7 @@ index 37a6d58ee6..66bff29d8c 100644
        // FOG doesn't need to be initialized _too_ early because it has a
        // pre-init buffer.
        {
-@@ -4217,24 +4098,6 @@ BrowserGlue.prototype = {
+@@ -4233,24 +4115,6 @@ BrowserGlue.prototype = {
        Services.prefs.clearUserPref(oldCreditCardsAvailable);
      }
  
@@ -188,7 +187,7 @@ index 37a6d58ee6..66bff29d8c 100644
      if (currentUIVersion < 126) {
        // Bug 1747343 - Add a pref to set the default download action to "Always
        // ask" so the UCT dialog will be opened for mime types that are not
-@@ -4714,42 +4577,6 @@ BrowserGlue.prototype = {
+@@ -4766,42 +4630,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -305,5 +304,5 @@ index e9d50107cb..914a2f1a63 100644
      reference = "services/sync/locales/en-US/**"
      l10n = "{l}services/sync/**"
 -- 
-2.37.1
+2.38.0
 

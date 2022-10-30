@@ -1,7 +1,7 @@
-From 0ca5a216872e39ceb3565c7ba8ee24e0736a32d1 Mon Sep 17 00:00:00 2001
+From 061e74517bb445250ad4c0d43830de2a80d0c122 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:25:22 +0300
-Subject: [PATCH 14/15] nuke handlers.
+Date: Tue, 25 Oct 2022 06:44:11 +0300
+Subject: [PATCH 15/16] nuke handlers.
 
 ---
  uriloader/exthandler/HandlerList.jsm | 223 +--------------------------
@@ -242,5 +242,5 @@ index bfc7f21e3b..64afb9f3a7 100644
        },
      },
 -- 
-2.37.1
+2.38.0
 

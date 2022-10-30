@@ -1,52 +1,21 @@
-From 3e29b22aa1b279332ed84a4bc09237398bd63991 Mon Sep 17 00:00:00 2001
+From 8519e67531e39641c6c1dde0a3733bb460e33de0 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:11:25 +0300
-Subject: [PATCH 03/15] allow system harfbuzz.
+Date: Tue, 25 Oct 2022 02:13:45 +0300
+Subject: [PATCH 03/16] allow system harfbuzz.
 
 ---
- build/moz.configure/rust.configure | 8 +++++---
- config/system-headers.mozbuild     | 7 +++++++
- dom/base/moz.build                 | 3 +++
- gfx/moz.build                      | 4 +++-
- gfx/skia/generate_mozbuild.py      | 3 +++
- gfx/skia/moz.build                 | 3 +++
- gfx/thebes/moz.build               | 3 +++
- intl/unicharutil/util/moz.build    | 3 +++
- netwerk/dns/moz.build              | 3 +++
- toolkit/library/moz.build          | 3 +++
- toolkit/moz.configure              | 9 +++++++++
- 11 files changed, 45 insertions(+), 4 deletions(-)
+ config/system-headers.mozbuild  | 7 +++++++
+ dom/base/moz.build              | 3 +++
+ gfx/moz.build                   | 4 +++-
+ gfx/skia/generate_mozbuild.py   | 3 +++
+ gfx/skia/moz.build              | 3 +++
+ gfx/thebes/moz.build            | 3 +++
+ intl/unicharutil/util/moz.build | 3 +++
+ netwerk/dns/moz.build           | 3 +++
+ toolkit/library/moz.build       | 3 +++
+ toolkit/moz.configure           | 9 +++++++++
+ 10 files changed, 40 insertions(+), 1 deletion(-)
 
-diff --git a/build/moz.configure/rust.configure b/build/moz.configure/rust.configure
-index e64dc5d5ec..2134ed2fea 100644
---- a/build/moz.configure/rust.configure
-+++ b/build/moz.configure/rust.configure
-@@ -274,7 +274,9 @@ def rust_supported_targets(rustc):
-         data.setdefault(key, []).append(namespace(rust_target=t, target=info))
-     return data
- 
--
-+@imports('os')
-+@imports(_from='mozbuild.util', _import='ensure_unicode')
-+@imports(_from='mozbuild.util', _import='system_encoding')
- def detect_rustc_target(
-     host_or_target, compiler_info, arm_target, rust_supported_targets
- ):
-@@ -396,12 +398,12 @@ def detect_rustc_target(
- 
-         return None
- 
--    rustc_target = find_candidate(candidates)
-+    rustc_target = os.environ['RUST_TARGET']
- 
-     if rustc_target is None:
-         die("Don't know how to translate {} for rustc".format(host_or_target.alias))
- 
--    return rustc_target
-+    return ensure_unicode(rustc_target, system_encoding)
- 
- 
- @imports("os")
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
 index 9c07dba2f4..38fbca657e 100644
 --- a/config/system-headers.mozbuild
@@ -80,7 +49,7 @@ index f4f772e852..fe6a9c6f76 100644
      "UseCounterList.h",
      script="gen-usecounters.py",
 diff --git a/gfx/moz.build b/gfx/moz.build
-index 4d6d63da9d..8222b72333 100644
+index c09fcbf3ce..4c88ac6ad8 100644
 --- a/gfx/moz.build
 +++ b/gfx/moz.build
 @@ -10,6 +10,9 @@ with Files("**"):
@@ -130,7 +99,7 @@ index 524bd28dac..615c93b266 100755
      LOCAL_INCLUDES += [
          "/gfx/cairo/cairo/src",
 diff --git a/gfx/thebes/moz.build b/gfx/thebes/moz.build
-index e49d1d8c0c..59440d0095 100644
+index 03e6ed009b..eb48357cc6 100644
 --- a/gfx/thebes/moz.build
 +++ b/gfx/thebes/moz.build
 @@ -293,6 +293,9 @@ LOCAL_INCLUDES += CONFIG["SKIA_INCLUDES"]
@@ -184,10 +153,10 @@ index 0f9d7e95bf..a6c079d252 100644
      OS_LIBS += CONFIG["MOZ_JPEG_LIBS"]
  
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index d118bfee5c..c6b0858324 100644
+index 40dc1df24a..164b518a93 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
-@@ -609,6 +609,15 @@ def freetype2_combined_info(fontconfig_info, freetype2_info):
+@@ -611,6 +611,15 @@ def freetype2_combined_info(fontconfig_info, freetype2_info):
  
  set_define("MOZ_HAVE_FREETYPE2", depends_if(freetype2_info)(lambda _: True))
  
@@ -204,5 +173,5 @@ index d118bfee5c..c6b0858324 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.37.1
+2.38.0
 

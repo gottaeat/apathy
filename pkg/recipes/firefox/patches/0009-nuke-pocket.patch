@@ -1,7 +1,7 @@
-From 864204041d9b86280234ad00f12cd61eb075faa9 Mon Sep 17 00:00:00 2001
+From 495dad88a42895032471e8c1ee764adac9019ad8 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:16:36 +0300
-Subject: [PATCH 09/15] nuke pocket.
+Date: Tue, 25 Oct 2022 06:38:41 +0300
+Subject: [PATCH 09/16] nuke pocket.
 
 ---
  browser/base/content/browser-context.inc | 6 ------
@@ -35,10 +35,10 @@ index 0b1397ee03..9e83b7080c 100644
              class="sync-ui-item"
              data-l10n-id="main-context-menu-send-to-device"
 diff --git a/browser/base/content/browser.js b/browser/base/content/browser.js
-index da99e7d6b6..8ad9103d8f 100644
+index dcb65db8bf..d7350637f8 100644
 --- a/browser/base/content/browser.js
 +++ b/browser/base/content/browser.js
-@@ -5471,8 +5471,6 @@ var XULBrowserWindow = {
+@@ -5459,8 +5459,6 @@ var XULBrowserWindow = {
  
      SafeBrowsingNotificationBox.onLocationChange(aLocationURI);
  
@@ -48,7 +48,7 @@ index da99e7d6b6..8ad9103d8f 100644
        window,
        aLocationURI,
 diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
-index d727eefd18..37a6d58ee6 100644
+index cee46e6341..36d0e2033e 100644
 --- a/browser/components/BrowserGlue.jsm
 +++ b/browser/components/BrowserGlue.jsm
 @@ -87,7 +87,6 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
@@ -56,10 +56,10 @@ index d727eefd18..37a6d58ee6 100644
    SafeBrowsing: "resource://gre/modules/SafeBrowsing.jsm",
    Sanitizer: "resource:///modules/Sanitizer.jsm",
 -  SaveToPocket: "chrome://pocket/content/SaveToPocket.jsm",
-   ScreenshotsUtils: "resource:///modules/ScreenshotsUtils.jsm",
    SessionStartup: "resource:///modules/sessionstore/SessionStartup.jsm",
    SessionStore: "resource:///modules/sessionstore/SessionStore.jsm",
-@@ -1278,8 +1277,6 @@ BrowserGlue.prototype = {
+   ShellService: "resource:///modules/ShellService.jsm",
+@@ -1286,8 +1285,6 @@ BrowserGlue.prototype = {
        lazy.Normandy.init();
      }
  
@@ -69,17 +69,17 @@ index d727eefd18..37a6d58ee6 100644
  
      Services.obs.notifyObservers(null, "browser-ui-startup-complete");
 diff --git a/browser/components/moz.build b/browser/components/moz.build
-index 7e1140dfe2..afdc23ed1a 100644
+index 3b2126e66e..32b78313c8 100644
 --- a/browser/components/moz.build
 +++ b/browser/components/moz.build
-@@ -43,7 +43,6 @@ DIRS += [
+@@ -44,7 +44,6 @@ DIRS += [
      "originattributes",
-     "ion",
+     "pagedata",
      "places",
 -    "pocket",
      "preferences",
      "privatebrowsing",
      "prompts",
 -- 
-2.37.1
+2.38.0
 

@@ -1,7 +1,7 @@
-From e9cf661ece935c5093d10e7460209dab19b33c9f Mon Sep 17 00:00:00 2001
+From 6d1b981b50f86a2cdb622635307a9d336b873c58 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:12:51 +0300
-Subject: [PATCH 07/15] nuke -no-integrated-as.
+Date: Tue, 25 Oct 2022 06:24:20 +0300
+Subject: [PATCH 07/16] nuke -no-integrated-as.
 
 ---
  security/nss/lib/freebl/Makefile         |  9 --------
@@ -10,10 +10,10 @@ Subject: [PATCH 07/15] nuke -no-integrated-as.
  3 files changed, 48 deletions(-)
 
 diff --git a/security/nss/lib/freebl/Makefile b/security/nss/lib/freebl/Makefile
-index 7673357304..1d2fe12c67 100644
+index 228549ede7..2569226de7 100644
 --- a/security/nss/lib/freebl/Makefile
 +++ b/security/nss/lib/freebl/Makefile
-@@ -746,15 +746,6 @@ ifdef INTEL_GCM
+@@ -728,15 +728,6 @@ ifdef INTEL_GCM
  # GCM binary needs -mssse3
  #
  $(OBJDIR)/$(PROG_PREFIX)intel-gcm-wrap$(OBJ_SUFFIX): CFLAGS += -mssse3
@@ -98,5 +98,5 @@ index 34b6b3c81a..5bbd35e51d 100644
          [ 'target_arch=="ia32"', {
            'sources': [
 -- 
-2.37.1
+2.38.0
 

@@ -1,7 +1,7 @@
-From db6298da83cd8fa1b8659753fac55f7edca85e18 Mon Sep 17 00:00:00 2001
+From 74efb614bf04fb39d589d119b995d09efaad4224 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:09:27 +0300
-Subject: [PATCH 02/15] libc fixes.
+Date: Tue, 25 Oct 2022 02:13:26 +0300
+Subject: [PATCH 02/16] libc++ fixes.
 
 ---
  memory/mozalloc/throw_gcc.h | 16 ++++++++++++++++
@@ -79,5 +79,5 @@ index aeeb770ba7..a03447f977 100644
  MOZ_THROW_NORETURN MOZ_THROW_EXPORT MOZ_THROW_INLINE void __throw_ios_failure(
      const char* msg) {
 -- 
-2.37.1
+2.38.0
 

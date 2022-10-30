@@ -1,16 +1,16 @@
-From a33235da53fb8c4160d7cc12d8f21a9edd1134d8 Mon Sep 17 00:00:00 2001
+From 16abee80ca6d63166fa30f3c0921dad3035a5770 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:12:01 +0300
-Subject: [PATCH 05/15] openh264 fixes.
+Date: Tue, 25 Oct 2022 06:23:26 +0300
+Subject: [PATCH 05/16] openh264 fixes.
 
 ---
  dom/media/gmp/GMPSharedMemManager.h               |  2 +-
  dom/media/mp4/MP4Demuxer.cpp                      |  8 ++++++++
  dom/media/platforms/PDMFactory.cpp                | 15 ++++++++++-----
  dom/media/platforms/PDMFactory.h                  |  2 ++
- .../platforms/agnostic/gmp/GMPDecoderModule.cpp   |  1 +
+ .../platforms/agnostic/gmp/GMPDecoderModule.cpp   |  3 +++
  .../platforms/agnostic/gmp/GMPVideoDecoder.cpp    |  2 ++
- 6 files changed, 24 insertions(+), 6 deletions(-)
+ 6 files changed, 26 insertions(+), 6 deletions(-)
 
 diff --git a/dom/media/gmp/GMPSharedMemManager.h b/dom/media/gmp/GMPSharedMemManager.h
 index ad4c3d39c2..1a04bdde14 100644
@@ -52,10 +52,10 @@ index 59bba16577..0304e3e89f 100644
              NS_WARNING(nsPrintfCString("Frame incorrectly marked as %skeyframe "
                                         "@ pts:%" PRId64 " dur:%" PRId64
 diff --git a/dom/media/platforms/PDMFactory.cpp b/dom/media/platforms/PDMFactory.cpp
-index 0f3fad38d8..bf3d81de9c 100644
+index 73f79d05b4..6ed72842c2 100644
 --- a/dom/media/platforms/PDMFactory.cpp
 +++ b/dom/media/platforms/PDMFactory.cpp
-@@ -68,6 +68,8 @@ using MediaCodecsSupport = mozilla::media::MediaCodecsSupport;
+@@ -70,6 +70,8 @@ using MediaCodecsSupport = mozilla::media::MediaCodecsSupport;
  using MediaCodecsSupported = mozilla::media::MediaCodecsSupported;
  using MCSInfo = mozilla::media::MCSInfo;
  
@@ -64,7 +64,7 @@ index 0f3fad38d8..bf3d81de9c 100644
  namespace mozilla {
  
  #define PDM_INIT_LOG(msg, ...) \
-@@ -638,10 +640,12 @@ void PDMFactory::CreateContentPDMs() {
+@@ -665,10 +667,12 @@ void PDMFactory::CreateContentPDMs() {
    }
  #endif
  #ifdef MOZ_FFMPEG
@@ -81,7 +81,7 @@ index 0f3fad38d8..bf3d81de9c 100644
    }
  #endif
  #ifdef MOZ_WIDGET_ANDROID
-@@ -653,8 +657,9 @@ void PDMFactory::CreateContentPDMs() {
+@@ -680,8 +684,9 @@ void PDMFactory::CreateContentPDMs() {
  
    CreateAndStartupPDM<AgnosticDecoderModule>();
  
@@ -93,10 +93,10 @@ index 0f3fad38d8..bf3d81de9c 100644
    }
  }
 diff --git a/dom/media/platforms/PDMFactory.h b/dom/media/platforms/PDMFactory.h
-index 95b5df8a09..df039f2ba1 100644
+index c56c11c506..00dd36af22 100644
 --- a/dom/media/platforms/PDMFactory.h
 +++ b/dom/media/platforms/PDMFactory.h
-@@ -103,6 +103,8 @@ class PDMFactory final {
+@@ -104,6 +104,8 @@ class PDMFactory final {
  
    DecoderDoctorDiagnostics::FlagsSet mFailureFlags;
  
@@ -106,17 +106,19 @@ index 95b5df8a09..df039f2ba1 100644
    static void EnsureInit();
  };
 diff --git a/dom/media/platforms/agnostic/gmp/GMPDecoderModule.cpp b/dom/media/platforms/agnostic/gmp/GMPDecoderModule.cpp
-index dbf0d291c7..ccb247ed0c 100644
+index dbf0d291c7..934011b7c0 100644
 --- a/dom/media/platforms/agnostic/gmp/GMPDecoderModule.cpp
 +++ b/dom/media/platforms/agnostic/gmp/GMPDecoderModule.cpp
-@@ -66,6 +66,7 @@ media::DecodeSupportSet GMPDecoderModule::SupportsMimeType(
+@@ -84,6 +84,9 @@ media::DecodeSupportSet GMPDecoderModule::SupportsMimeType(
  
-   nsCString api = nsLiteralCString(CHROMIUM_CDM_API);
+ media::DecodeSupportSet GMPDecoderModule::SupportsMimeType(
+     const nsACString& aMimeType, DecoderDoctorDiagnostics* aDiagnostics) const {
++  if (MP4Decoder::IsH264(aMimeType)) {
++    return media::DecodeSupport::SoftwareDecode;
++  }
+   return media::DecodeSupport::Unsupported;
+ }
  
-+  // TODO: Do we enable it here?
-   if (MP4Decoder::IsH264(aMimeType)) {
-     isSupported = HaveGMPFor(api, {"h264"_ns, aGMP.value()});
-   } else if (VPXDecoder::IsVP9(aMimeType)) {
 diff --git a/dom/media/platforms/agnostic/gmp/GMPVideoDecoder.cpp b/dom/media/platforms/agnostic/gmp/GMPVideoDecoder.cpp
 index d268a0a64b..bf6c7b6122 100644
 --- a/dom/media/platforms/agnostic/gmp/GMPVideoDecoder.cpp
@@ -131,5 +133,5 @@ index d268a0a64b..bf6c7b6122 100644
      mDecodedData.Clear();
      mDecodePromise.RejectIfExists(
 -- 
-2.37.1
+2.38.0
 

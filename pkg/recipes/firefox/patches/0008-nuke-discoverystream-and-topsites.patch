@@ -1,7 +1,7 @@
-From 6db0a192613c795abfe871011e10ef885ca7ece8 Mon Sep 17 00:00:00 2001
+From 7f2c83b4c3ac10c7de82e19bc7869d6887badb9f Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:15:42 +0300
-Subject: [PATCH 08/15] nuke discoverystream and topsites.
+Date: Tue, 25 Oct 2022 06:36:29 +0300
+Subject: [PATCH 08/16] nuke discoverystream and topsites.
 
 ---
  .../newtab/lib/AboutPreferences.jsm           |  29 +----
@@ -360,10 +360,10 @@ index 11be3d924c..a9f5aac2eb 100644
  ];
  
 diff --git a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-index 287ea3f541..c0ed1def76 100644
+index 8b15535b93..da6d021008 100644
 --- a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
 +++ b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-@@ -1994,7 +1994,7 @@ getHardcodedLayout = ({
+@@ -2057,7 +2057,7 @@ getHardcodedLayout = ({
  }) => ({
    lastUpdate: Date.now(),
    spocs: {
@@ -372,7 +372,7 @@ index 287ea3f541..c0ed1def76 100644
    },
    layout: [
      {
-@@ -2091,7 +2091,7 @@ getHardcodedLayout = ({
+@@ -2154,7 +2154,7 @@ getHardcodedLayout = ({
            feed: {
              embed_reference: null,
              url:
@@ -381,7 +381,7 @@ index 287ea3f541..c0ed1def76 100644
            },
            spocs: {
              probability: 1,
-@@ -2106,47 +2106,8 @@ getHardcodedLayout = ({
+@@ -2169,47 +2169,8 @@ getHardcodedLayout = ({
            properties: {
              alignment: "left-align",
              links: [
@@ -515,5 +515,5 @@ index bfff1c8092..cc509fde20 100644
      // Now, get a tippy top icon, a rich icon, or screenshot for every item
      for (const link of withPinned) {
 -- 
-2.37.1
+2.38.0
 

@@ -1,17 +1,17 @@
-From 44db4b702cfbede9c55d1d53cbe691770a9e71fa Mon Sep 17 00:00:00 2001
+From 84d022653052c499d6da60e7bb4d1ce4dcdb743c Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:25:50 +0300
-Subject: [PATCH 15/15] fix dbus.
+Date: Tue, 25 Oct 2022 06:44:35 +0300
+Subject: [PATCH 16/16] fix dbus.
 
 ---
  toolkit/moz.configure | 32 ++++++++++++++++++++------------
  1 file changed, 20 insertions(+), 12 deletions(-)
 
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index c6b0858324..c8ae802c8c 100644
+index 164b518a93..bb64c854dc 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
-@@ -2362,18 +2362,6 @@ with only_when(compile_environment & target_is_windows):
+@@ -2360,18 +2360,6 @@ with only_when(compile_environment & target_is_windows):
      )
      set_config("MOZ_D3DCOMPILER_VISTA_DLL_PATH", d3d_compiler_dll.path)
  
@@ -30,7 +30,7 @@ index c6b0858324..c8ae802c8c 100644
  
  # RLBox Library Sandboxing wasm support
  # ==============================================================
-@@ -2909,6 +2897,26 @@ with only_when(toolkit_gtk):
+@@ -2907,6 +2895,26 @@ with only_when(toolkit_gtk):
          set_config("MOZ_ENABLE_DBUS", True)
          set_define("MOZ_ENABLE_DBUS", True)
  
@@ -58,5 +58,5 @@ index c6b0858324..c8ae802c8c 100644
  # Necko's wifi scanner
  # ==============================================================
 -- 
-2.37.1
+2.38.0
 

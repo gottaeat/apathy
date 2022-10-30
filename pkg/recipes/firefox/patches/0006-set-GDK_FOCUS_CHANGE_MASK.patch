@@ -1,14 +1,14 @@
-From dd445a2dc6d79df71b2aa3f3fe7694540596704e Mon Sep 17 00:00:00 2001
+From 65253aea466478834e63a91d57d304f3b7f6e8c7 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:12:21 +0300
-Subject: [PATCH 06/15] set GDK_FOCUS_CHANGE_MASK.
+Date: Tue, 25 Oct 2022 06:23:50 +0300
+Subject: [PATCH 06/16] set GDK_FOCUS_CHANGE_MASK.
 
 ---
  widget/gtk/nsWindow.cpp | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
-index 21fc96685e..b968a3cd94 100644
+index 50f809c1b7..9e1ff328d3 100644
 --- a/widget/gtk/nsWindow.cpp
 +++ b/widget/gtk/nsWindow.cpp
 @@ -172,7 +172,8 @@ const gint kEvents = GDK_TOUCHPAD_GESTURE_MASK | GDK_EXPOSURE_MASK |
@@ -22,5 +22,5 @@ index 21fc96685e..b968a3cd94 100644
  /* utility functions */
  static bool is_mouse_in_window(GdkWindow* aWindow, gdouble aMouseX,
 -- 
-2.37.1
+2.38.0
 

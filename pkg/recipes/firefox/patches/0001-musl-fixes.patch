@@ -1,20 +1,17 @@
-From 541e85658b81cea543969cbf46e57fe75e84b219 Mon Sep 17 00:00:00 2001
+From 5338b1aea2f259069449e12d9d6498d39a2adfc6 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 26 Sep 2022 10:09:04 +0300
-Subject: [PATCH 01/15] musl fixes.
+Date: Tue, 25 Oct 2022 02:12:57 +0300
+Subject: [PATCH 01/16] musl fixes.
 
 ---
- .../nICEr/src/stun/addrs-netlink.c            |   1 +
- js/src/threading/posix/PosixThread.cpp        |   4 +-
- media/libvpx/libvpx/vpx_dsp/vpx_dsp.mk.orig   | 456 ------------------
- mozglue/misc/StackWalk.cpp                    |   6 -
- .../sandbox/linux/seccomp-bpf/trap.cc         |   6 +-
- security/sandbox/linux/SandboxFilter.cpp      |  16 +-
- .../source/cpu_features_linux.cc              |  12 +-
- .../profiler/core/platform-linux-android.cpp  |   2 +
- xpcom/base/nsMemoryReporterManager.cpp        |   4 +
- 9 files changed, 31 insertions(+), 476 deletions(-)
- delete mode 100644 media/libvpx/libvpx/vpx_dsp/vpx_dsp.mk.orig
+ .../third_party/nICEr/src/stun/addrs-netlink.c       |  1 +
+ js/src/threading/posix/PosixThread.cpp               |  4 +++-
+ .../chromium/sandbox/linux/seccomp-bpf/trap.cc       |  6 +++++-
+ security/sandbox/linux/SandboxFilter.cpp             |  4 ++++
+ .../system_wrappers/source/cpu_features_linux.cc     | 12 +++---------
+ tools/profiler/core/platform-linux-android.cpp       |  2 ++
+ xpcom/base/nsMemoryReporterManager.cpp               |  2 ++
+ 7 files changed, 20 insertions(+), 11 deletions(-)
 
 diff --git a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c b/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
 index 73e85c6ccc..9eca548638 100644
@@ -44,486 +41,6 @@ index 35532e375b..983da45326 100644
  #endif
    MOZ_RELEASE_ASSERT(!rv);
  }
-diff --git a/media/libvpx/libvpx/vpx_dsp/vpx_dsp.mk.orig b/media/libvpx/libvpx/vpx_dsp/vpx_dsp.mk.orig
-deleted file mode 100644
-index 8e0100c310..0000000000
---- a/media/libvpx/libvpx/vpx_dsp/vpx_dsp.mk.orig
-+++ /dev/null
-@@ -1,456 +0,0 @@
--##
--## Copyright (c) 2015 The WebM project authors. All Rights Reserved.
--##
--##  Use of this source code is governed by a BSD-style license
--##  that can be found in the LICENSE file in the root of the source
--##  tree. An additional intellectual property rights grant can be found
--##  in the file PATENTS.  All contributing project authors may
--##  be found in the AUTHORS file in the root of the source tree.
--##
--
--DSP_SRCS-yes += vpx_dsp.mk
--DSP_SRCS-yes += vpx_dsp_common.h
--
--DSP_SRCS-$(HAVE_MSA)    += mips/macros_msa.h
--
--DSP_SRCS-$(HAVE_AVX2)   += x86/bitdepth_conversion_avx2.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/bitdepth_conversion_sse2.h
--# This file is included in libs.mk. Including it here would cause it to be
--# compiled into an object. Even as an empty file, this would create an
--# executable section on the stack.
--#DSP_SRCS-$(HAVE_SSE2)   += x86/bitdepth_conversion_sse2$(ASM)
--
--# bit reader
--DSP_SRCS-yes += prob.h
--DSP_SRCS-yes += prob.c
--
--ifeq ($(CONFIG_ENCODERS),yes)
--DSP_SRCS-yes += bitwriter.h
--DSP_SRCS-yes += bitwriter.c
--DSP_SRCS-yes += bitwriter_buffer.c
--DSP_SRCS-yes += bitwriter_buffer.h
--DSP_SRCS-yes += psnr.c
--DSP_SRCS-yes += psnr.h
--DSP_SRCS-$(CONFIG_INTERNAL_STATS) += ssim.c
--DSP_SRCS-$(CONFIG_INTERNAL_STATS) += ssim.h
--DSP_SRCS-$(CONFIG_INTERNAL_STATS) += psnrhvs.c
--DSP_SRCS-$(CONFIG_INTERNAL_STATS) += fastssim.c
--endif
--
--ifeq ($(CONFIG_DECODERS),yes)
--DSP_SRCS-yes += bitreader.h
--DSP_SRCS-yes += bitreader.c
--DSP_SRCS-yes += bitreader_buffer.c
--DSP_SRCS-yes += bitreader_buffer.h
--endif
--
--# intra predictions
--DSP_SRCS-yes += intrapred.c
--
--DSP_SRCS-$(HAVE_SSE2) += x86/intrapred_sse2.asm
--DSP_SRCS-$(HAVE_SSSE3) += x86/intrapred_ssse3.asm
--DSP_SRCS-$(HAVE_VSX) += ppc/intrapred_vsx.c
--
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_SSE2) += x86/highbd_intrapred_sse2.asm
--DSP_SRCS-$(HAVE_SSE2) += x86/highbd_intrapred_intrin_sse2.c
--DSP_SRCS-$(HAVE_SSSE3) += x86/highbd_intrapred_intrin_ssse3.c
--DSP_SRCS-$(HAVE_NEON) += arm/highbd_intrapred_neon.c
--endif  # CONFIG_VP9_HIGHBITDEPTH
--
--ifneq ($(filter yes,$(CONFIG_POSTPROC) $(CONFIG_VP9_POSTPROC)),)
--DSP_SRCS-yes += add_noise.c
--DSP_SRCS-yes += deblock.c
--DSP_SRCS-yes += postproc.h
--DSP_SRCS-$(HAVE_MSA) += mips/add_noise_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/deblock_msa.c
--DSP_SRCS-$(HAVE_NEON) += arm/deblock_neon.c
--DSP_SRCS-$(HAVE_SSE2) += x86/add_noise_sse2.asm
--DSP_SRCS-$(HAVE_SSE2) += x86/deblock_sse2.asm
--DSP_SRCS-$(HAVE_SSE2) += x86/post_proc_sse2.c
--DSP_SRCS-$(HAVE_VSX) += ppc/deblock_vsx.c
--endif # CONFIG_POSTPROC
--
--DSP_SRCS-$(HAVE_NEON_ASM) += arm/intrapred_neon_asm$(ASM)
--DSP_SRCS-$(HAVE_NEON) += arm/intrapred_neon.c
--DSP_SRCS-$(HAVE_MSA) += mips/intrapred_msa.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/intrapred_lsx.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/intrapred4_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/intrapred8_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/intrapred16_dspr2.c
--
--DSP_SRCS-$(HAVE_DSPR2)  += mips/common_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2)  += mips/common_dspr2.c
--
--DSP_SRCS-yes += vpx_filter.h
--ifeq ($(CONFIG_VP9),yes)
--# interpolation filters
--DSP_SRCS-yes += vpx_convolve.c
--DSP_SRCS-yes += vpx_convolve.h
--
--DSP_SRCS-$(VPX_ARCH_X86)$(VPX_ARCH_X86_64) += x86/convolve.h
--
--DSP_SRCS-$(HAVE_SSE2) += x86/convolve_sse2.h
--DSP_SRCS-$(HAVE_SSSE3) += x86/convolve_ssse3.h
--DSP_SRCS-$(HAVE_AVX2) += x86/convolve_avx2.h
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_subpixel_8t_sse2.asm
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_subpixel_4t_intrin_sse2.c
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_subpixel_bilinear_sse2.asm
--DSP_SRCS-$(HAVE_SSSE3) += x86/vpx_subpixel_8t_ssse3.asm
--DSP_SRCS-$(HAVE_SSSE3) += x86/vpx_subpixel_bilinear_ssse3.asm
--DSP_SRCS-$(HAVE_AVX2)  += x86/vpx_subpixel_8t_intrin_avx2.c
--DSP_SRCS-$(HAVE_SSSE3) += x86/vpx_subpixel_8t_intrin_ssse3.c
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_high_subpixel_8t_sse2.asm
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_high_subpixel_bilinear_sse2.asm
--DSP_SRCS-$(HAVE_AVX2)  += x86/highbd_convolve_avx2.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_vpx_convolve_copy_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_vpx_convolve_avg_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_vpx_convolve8_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_vpx_convolve_neon.c
--endif
--
--DSP_SRCS-$(HAVE_SSE2)  += x86/vpx_convolve_copy_sse2.asm
--DSP_SRCS-$(HAVE_NEON)  += arm/vpx_scaled_convolve8_neon.c
--
--ifeq ($(HAVE_NEON_ASM),yes)
--DSP_SRCS-yes += arm/vpx_convolve_copy_neon_asm$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_horiz_filter_type2_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_vert_filter_type2_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_horiz_filter_type1_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_vert_filter_type1_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_avg_horiz_filter_type2_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_avg_vert_filter_type2_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_avg_horiz_filter_type1_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_avg_vert_filter_type1_neon$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve_avg_neon_asm$(ASM)
--DSP_SRCS-yes += arm/vpx_convolve8_neon_asm.c
--DSP_SRCS-yes += arm/vpx_convolve8_neon_asm.h
--DSP_SRCS-yes += arm/vpx_convolve_neon.c
--else
--ifeq ($(HAVE_NEON),yes)
--DSP_SRCS-yes += arm/vpx_convolve_copy_neon.c
--DSP_SRCS-yes += arm/vpx_convolve8_neon.c
--DSP_SRCS-yes += arm/vpx_convolve_avg_neon.c
--DSP_SRCS-yes += arm/vpx_convolve_neon.c
--endif  # HAVE_NEON
--endif  # HAVE_NEON_ASM
--
--# common (msa)
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_avg_horiz_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_avg_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_avg_vert_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_horiz_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve8_vert_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve_avg_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve_copy_msa.c
--DSP_SRCS-$(HAVE_MSA) += mips/vpx_convolve_msa.h
--DSP_SRCS-$(HAVE_MMI) += mips/vpx_convolve8_mmi.c
--
--# common (dspr2)
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve_common_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve2_avg_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve2_avg_horiz_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve2_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve2_horiz_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve2_vert_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve8_avg_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve8_avg_horiz_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve8_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve8_horiz_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/convolve8_vert_dspr2.c
--
--DSP_SRCS-$(HAVE_VSX)  += ppc/vpx_convolve_vsx.c
--
--# common (lsx)
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_avg_horiz_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_avg_vert_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_horiz_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_vert_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve8_avg_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve_avg_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve_copy_lsx.c
--DSP_SRCS-$(HAVE_LSX) += loongarch/vpx_convolve_lsx.h
--
--# loop filters
--DSP_SRCS-yes += loopfilter.c
--
--DSP_SRCS-$(HAVE_SSE2)  += x86/loopfilter_sse2.c
--DSP_SRCS-$(HAVE_AVX2)  += x86/loopfilter_avx2.c
--
--ifeq ($(HAVE_NEON_ASM),yes)
--DSP_SRCS-yes  += arm/loopfilter_16_neon$(ASM)
--DSP_SRCS-yes  += arm/loopfilter_8_neon$(ASM)
--DSP_SRCS-yes  += arm/loopfilter_4_neon$(ASM)
--else
--DSP_SRCS-$(HAVE_NEON)   += arm/loopfilter_neon.c
--endif  # HAVE_NEON_ASM
--
--DSP_SRCS-$(HAVE_MSA)    += mips/loopfilter_msa.h
--DSP_SRCS-$(HAVE_MSA)    += mips/loopfilter_16_msa.c
--DSP_SRCS-$(HAVE_MSA)    += mips/loopfilter_8_msa.c
--DSP_SRCS-$(HAVE_MSA)    += mips/loopfilter_4_msa.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_filters_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_filters_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_macros_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_masks_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_mb_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_mb_horiz_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2)  += mips/loopfilter_mb_vert_dspr2.c
--
--DSP_SRCS-$(HAVE_LSX)    += loongarch/loopfilter_lsx.h
--DSP_SRCS-$(HAVE_LSX)    += loongarch/loopfilter_16_lsx.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/loopfilter_8_lsx.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/loopfilter_4_lsx.c
--
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_NEON)   += arm/highbd_loopfilter_neon.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/highbd_loopfilter_sse2.c
--endif  # CONFIG_VP9_HIGHBITDEPTH
--endif # CONFIG_VP9
--
--DSP_SRCS-yes            += txfm_common.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/txfm_common_sse2.h
--DSP_SRCS-$(HAVE_MSA)    += mips/txfm_macros_msa.h
--DSP_SRCS-$(HAVE_LSX)    += loongarch/txfm_macros_lsx.h
--# forward transform
--ifeq ($(CONFIG_VP9_ENCODER),yes)
--DSP_SRCS-yes            += fwd_txfm.c
--DSP_SRCS-yes            += fwd_txfm.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/fwd_txfm_sse2.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/fwd_txfm_sse2.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/fwd_txfm_impl_sse2.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/fwd_dct32x32_impl_sse2.h
--ifeq ($(VPX_ARCH_X86_64),yes)
--DSP_SRCS-$(HAVE_SSSE3)  += x86/fwd_txfm_ssse3_x86_64.asm
--endif
--DSP_SRCS-$(HAVE_AVX2)   += x86/fwd_txfm_avx2.c
--DSP_SRCS-$(HAVE_AVX2)   += x86/fwd_dct32x32_impl_avx2.h
--DSP_SRCS-$(HAVE_NEON)   += arm/fdct_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/fdct16x16_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/fdct32x32_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/fdct_partial_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/fwd_txfm_neon.c
--DSP_SRCS-$(HAVE_MSA)    += mips/fwd_txfm_msa.h
--DSP_SRCS-$(HAVE_MSA)    += mips/fwd_txfm_msa.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/fwd_txfm_lsx.h
--DSP_SRCS-$(HAVE_LSX)    += loongarch/fwd_txfm_lsx.c
--
--ifneq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_MSA)    += mips/fwd_dct32x32_msa.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/fwd_dct32x32_lsx.c
--endif  # !CONFIG_VP9_HIGHBITDEPTH
--
--DSP_SRCS-$(HAVE_VSX)    += ppc/fdct32x32_vsx.c
--endif  # CONFIG_VP9_ENCODER
--
--# inverse transform
--ifeq ($(CONFIG_VP9),yes)
--DSP_SRCS-yes            += inv_txfm.h
--DSP_SRCS-yes            += inv_txfm.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/inv_txfm_sse2.h
--DSP_SRCS-$(HAVE_SSE2)   += x86/inv_txfm_sse2.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/inv_wht_sse2.asm
--DSP_SRCS-$(HAVE_SSSE3)  += x86/inv_txfm_ssse3.h
--DSP_SRCS-$(HAVE_SSSE3)  += x86/inv_txfm_ssse3.c
--
--DSP_SRCS-$(HAVE_NEON_ASM) += arm/save_reg_neon$(ASM)
--
--DSP_SRCS-$(HAVE_VSX) += ppc/inv_txfm_vsx.c
--
--ifneq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_MSA)   += mips/inv_txfm_msa.h
--DSP_SRCS-$(HAVE_MSA)   += mips/idct4x4_msa.c
--DSP_SRCS-$(HAVE_MSA)   += mips/idct8x8_msa.c
--DSP_SRCS-$(HAVE_MSA)   += mips/idct16x16_msa.c
--DSP_SRCS-$(HAVE_MSA)   += mips/idct32x32_msa.c
--
--DSP_SRCS-$(HAVE_DSPR2) += mips/inv_txfm_dspr2.h
--DSP_SRCS-$(HAVE_DSPR2) += mips/itrans4_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2) += mips/itrans8_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2) += mips/itrans16_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2) += mips/itrans32_dspr2.c
--DSP_SRCS-$(HAVE_DSPR2) += mips/itrans32_cols_dspr2.c
--
--DSP_SRCS-$(HAVE_LSX)   += loongarch/idct32x32_lsx.c
--else  # CONFIG_VP9_HIGHBITDEPTH
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct4x4_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct8x8_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct16x16_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct32x32_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct32x32_34_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct32x32_135_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct32x32_1024_add_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/highbd_idct_neon.h
--DSP_SRCS-$(HAVE_SSE2)  += x86/highbd_inv_txfm_sse2.h
--DSP_SRCS-$(HAVE_SSE2)  += x86/highbd_idct4x4_add_sse2.c
--DSP_SRCS-$(HAVE_SSE2)  += x86/highbd_idct8x8_add_sse2.c
--DSP_SRCS-$(HAVE_SSE2)  += x86/highbd_idct16x16_add_sse2.c
--DSP_SRCS-$(HAVE_SSE2)  += x86/highbd_idct32x32_add_sse2.c
--DSP_SRCS-$(HAVE_SSE4_1) += x86/highbd_inv_txfm_sse4.h
--DSP_SRCS-$(HAVE_SSE4_1) += x86/highbd_idct4x4_add_sse4.c
--DSP_SRCS-$(HAVE_SSE4_1) += x86/highbd_idct8x8_add_sse4.c
--DSP_SRCS-$(HAVE_SSE4_1) += x86/highbd_idct16x16_add_sse4.c
--DSP_SRCS-$(HAVE_SSE4_1) += x86/highbd_idct32x32_add_sse4.c
--endif  # !CONFIG_VP9_HIGHBITDEPTH
--
--ifeq ($(HAVE_NEON_ASM),yes)
--DSP_SRCS-yes += arm/idct_neon$(ASM)
--DSP_SRCS-yes += arm/idct4x4_1_add_neon$(ASM)
--DSP_SRCS-yes += arm/idct4x4_add_neon$(ASM)
--else
--DSP_SRCS-$(HAVE_NEON) += arm/idct4x4_1_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct4x4_add_neon.c
--endif  # HAVE_NEON_ASM
--DSP_SRCS-$(HAVE_NEON) += arm/idct_neon.h
--DSP_SRCS-$(HAVE_NEON) += arm/idct8x8_1_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct8x8_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct16x16_1_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct16x16_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct32x32_1_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct32x32_34_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct32x32_135_add_neon.c
--DSP_SRCS-$(HAVE_NEON) += arm/idct32x32_add_neon.c
--
--endif  # CONFIG_VP9
--
--# quantization
--ifeq ($(CONFIG_VP9_ENCODER),yes)
--DSP_SRCS-yes            += quantize.c
--DSP_SRCS-yes            += quantize.h
--
--DSP_SRCS-$(HAVE_SSE2)   += x86/quantize_sse2.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/quantize_sse2.h
--DSP_SRCS-$(HAVE_SSSE3)  += x86/quantize_ssse3.c
--DSP_SRCS-$(HAVE_SSSE3)  += x86/quantize_ssse3.h
--DSP_SRCS-$(HAVE_AVX)    += x86/quantize_avx.c
--DSP_SRCS-$(HAVE_AVX2)   += x86/quantize_avx2.c
--DSP_SRCS-$(HAVE_NEON)   += arm/quantize_neon.c
--DSP_SRCS-$(HAVE_VSX)    += ppc/quantize_vsx.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/quantize_lsx.c
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_SSE2)   += x86/highbd_quantize_intrin_sse2.c
--endif
--
--# avg
--DSP_SRCS-yes           += avg.c
--DSP_SRCS-$(HAVE_SSE2)  += x86/avg_intrin_sse2.c
--DSP_SRCS-$(HAVE_AVX2)  += x86/avg_intrin_avx2.c
--DSP_SRCS-$(HAVE_NEON)  += arm/avg_neon.c
--DSP_SRCS-$(HAVE_NEON)  += arm/hadamard_neon.c
--DSP_SRCS-$(HAVE_MSA)   += mips/avg_msa.c
--DSP_SRCS-$(HAVE_LSX)   += loongarch/avg_lsx.c
--ifeq ($(VPX_ARCH_X86_64),yes)
--DSP_SRCS-$(HAVE_SSSE3) += x86/avg_ssse3_x86_64.asm
--endif
--DSP_SRCS-$(HAVE_VSX)   += ppc/hadamard_vsx.c
--
--endif  # CONFIG_VP9_ENCODER
--
--# skin detection
--DSP_SRCS-yes            += skin_detection.h
--DSP_SRCS-yes            += skin_detection.c
--
--ifeq ($(CONFIG_ENCODERS),yes)
--DSP_SRCS-yes            += sad.c
--DSP_SRCS-yes            += subtract.c
--DSP_SRCS-yes            += sum_squares.c
--DSP_SRCS-$(HAVE_NEON)   += arm/sum_squares_neon.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/sum_squares_sse2.c
--DSP_SRCS-$(HAVE_MSA)    += mips/sum_squares_msa.c
--
--DSP_SRCS-$(HAVE_NEON)   += arm/sad4d_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/sad_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/subtract_neon.c
--
--DSP_SRCS-$(HAVE_MSA)    += mips/sad_msa.c
--DSP_SRCS-$(HAVE_MSA)    += mips/subtract_msa.c
--
--DSP_SRCS-$(HAVE_LSX)    += loongarch/sad_lsx.c
--
--DSP_SRCS-$(HAVE_MMI)    += mips/sad_mmi.c
--DSP_SRCS-$(HAVE_MMI)    += mips/subtract_mmi.c
--
--DSP_SRCS-$(HAVE_AVX2)   += x86/sad4d_avx2.c
--DSP_SRCS-$(HAVE_AVX2)   += x86/sad_avx2.c
--DSP_SRCS-$(HAVE_AVX512) += x86/sad4d_avx512.c
--
--DSP_SRCS-$(HAVE_SSE2)   += x86/sad4d_sse2.asm
--DSP_SRCS-$(HAVE_SSE2)   += x86/sad_sse2.asm
--DSP_SRCS-$(HAVE_SSE2)   += x86/subtract_sse2.asm
--
--DSP_SRCS-$(HAVE_VSX) += ppc/sad_vsx.c
--DSP_SRCS-$(HAVE_VSX) += ppc/subtract_vsx.c
--
--DSP_SRCS-$(HAVE_LSX)    += loongarch/subtract_lsx.c
--
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_SSE2) += x86/highbd_sad4d_sse2.asm
--DSP_SRCS-$(HAVE_SSE2) += x86/highbd_sad_sse2.asm
--endif  # CONFIG_VP9_HIGHBITDEPTH
--
--endif  # CONFIG_ENCODERS
--
--ifneq ($(filter yes,$(CONFIG_ENCODERS) $(CONFIG_POSTPROC) $(CONFIG_VP9_POSTPROC)),)
--DSP_SRCS-yes            += variance.c
--DSP_SRCS-yes            += variance.h
--
--DSP_SRCS-$(HAVE_NEON)   += arm/avg_pred_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/subpel_variance_neon.c
--DSP_SRCS-$(HAVE_NEON)   += arm/variance_neon.c
--
--DSP_SRCS-$(HAVE_MSA)    += mips/variance_msa.c
--DSP_SRCS-$(HAVE_MSA)    += mips/sub_pixel_variance_msa.c
--
--DSP_SRCS-$(HAVE_LSX)    += loongarch/variance_lsx.h
--DSP_SRCS-$(HAVE_LSX)    += loongarch/variance_lsx.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/sub_pixel_variance_lsx.c
--DSP_SRCS-$(HAVE_LSX)    += loongarch/avg_pred_lsx.c
--
--DSP_SRCS-$(HAVE_MMI)    += mips/variance_mmi.c
--
--DSP_SRCS-$(HAVE_SSE2)   += x86/avg_pred_sse2.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/variance_sse2.c  # Contains SSE2 and SSSE3
--DSP_SRCS-$(HAVE_AVX2)   += x86/variance_avx2.c
--DSP_SRCS-$(HAVE_VSX)    += ppc/variance_vsx.c
--
--ifeq ($(VPX_ARCH_X86_64),yes)
--DSP_SRCS-$(HAVE_SSE2)   += x86/ssim_opt_x86_64.asm
--endif  # VPX_ARCH_X86_64
--
--DSP_SRCS-$(HAVE_SSE2)   += x86/subpel_variance_sse2.asm  # Contains SSE2 and SSSE3
--
--ifeq ($(CONFIG_VP9_HIGHBITDEPTH),yes)
--DSP_SRCS-$(HAVE_SSE2)   += x86/highbd_variance_sse2.c
--DSP_SRCS-$(HAVE_SSE2)   += x86/highbd_variance_impl_sse2.asm
--DSP_SRCS-$(HAVE_SSE2)   += x86/highbd_subpel_variance_impl_sse2.asm
--endif  # CONFIG_VP9_HIGHBITDEPTH
--endif  # CONFIG_ENCODERS || CONFIG_POSTPROC || CONFIG_VP9_POSTPROC
--
--# Neon utilities
--DSP_SRCS-$(HAVE_NEON) += arm/mem_neon.h
--DSP_SRCS-$(HAVE_NEON) += arm/sum_neon.h
--DSP_SRCS-$(HAVE_NEON) += arm/transpose_neon.h
--DSP_SRCS-$(HAVE_NEON) += arm/vpx_convolve8_neon.h
--
--# PPC VSX utilities
--DSP_SRCS-$(HAVE_VSX)  += ppc/types_vsx.h
--DSP_SRCS-$(HAVE_VSX)  += ppc/txfm_common_vsx.h
--DSP_SRCS-$(HAVE_VSX)  += ppc/transpose_vsx.h
--DSP_SRCS-$(HAVE_VSX)  += ppc/bitdepth_conversion_vsx.h
--
--# X86 utilities
--DSP_SRCS-$(HAVE_SSE2) += x86/mem_sse2.h
--DSP_SRCS-$(HAVE_SSE2) += x86/transpose_sse2.h
--
--# LSX utilities
--DSP_SRCS-$(HAVE_LSX)  += loongarch/bitdepth_conversion_lsx.h
--
--DSP_SRCS-no += $(DSP_SRCS_REMOVE-yes)
--
--DSP_SRCS-yes += vpx_dsp_rtcd.c
--DSP_SRCS-yes += vpx_dsp_rtcd_defs.pl
--
--$(eval $(call rtcd_h_template,vpx_dsp_rtcd,vpx_dsp/vpx_dsp_rtcd_defs.pl))
-diff --git a/mozglue/misc/StackWalk.cpp b/mozglue/misc/StackWalk.cpp
-index 3789f8c753..750e2ccc8f 100644
---- a/mozglue/misc/StackWalk.cpp
-+++ b/mozglue/misc/StackWalk.cpp
-@@ -43,13 +43,7 @@ using namespace mozilla;
- #  define MOZ_STACKWALK_SUPPORTS_MACOSX 0
- #endif
- 
--#if (defined(linux) &&                                            \
--     ((defined(__GNUC__) && (defined(__i386) || defined(PPC))) || \
--      defined(HAVE__UNWIND_BACKTRACE)))
--#  define MOZ_STACKWALK_SUPPORTS_LINUX 1
--#else
- #  define MOZ_STACKWALK_SUPPORTS_LINUX 0
--#endif
- 
- #if __GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
- #  define HAVE___LIBC_STACK_END 1
 diff --git a/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc b/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc
 index 9884be8bb2..86d8f88e30 100644
 --- a/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc
@@ -542,25 +59,10 @@ index 9884be8bb2..86d8f88e30 100644
  
  #if defined(__mips__)
 diff --git a/security/sandbox/linux/SandboxFilter.cpp b/security/sandbox/linux/SandboxFilter.cpp
-index e23070092d..56ecd776a9 100644
+index e23070092d..e7c3efddd6 100644
 --- a/security/sandbox/linux/SandboxFilter.cpp
 +++ b/security/sandbox/linux/SandboxFilter.cpp
-@@ -69,7 +69,13 @@ using namespace sandbox::bpf_dsl;
- 
- // The headers define O_LARGEFILE as 0 on x86_64, but we need the
- // actual value because it shows up in file flags.
--#define O_LARGEFILE_REAL 00100000
-+#if defined(__x86_64__) || defined(__i386__) || defined(__mips__)
-+#define O_LARGEFILE_REAL 0100000
-+#elif defined(__powerpc__)
-+#define O_LARGEFILE_REAL 0200000
-+#else
-+#define O_LARGEFILE_REAL O_LARGEFILE
-+#endif
- 
- // Not part of UAPI, but userspace sees it in F_GETFL; see bug 1650751.
- #define FMODE_NONOTIFY 0x4000000
-@@ -1588,6 +1594,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
+@@ -1588,6 +1588,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
          // usually do something reasonable on error.
        case __NR_clone:
          return ClonePolicy(Error(EPERM));
@@ -571,21 +73,8 @@ index e23070092d..56ecd776a9 100644
  
        case __NR_clone3:
          return Error(ENOSYS);
-@@ -1733,10 +1743,10 @@ class GMPSandboxPolicy : public SandboxPolicyCommon {
-         return Allow();
-       case __NR_sched_get_priority_min:
-       case __NR_sched_get_priority_max:
-+      case __NR_sched_setscheduler:
-         return Allow();
-       case __NR_sched_getparam:
--      case __NR_sched_getscheduler:
--      case __NR_sched_setscheduler: {
-+      case __NR_sched_getscheduler: {
-         Arg<pid_t> pid(0);
-         return If(pid == 0, Allow()).Else(Trap(SchedTrap, nullptr));
-       }
 diff --git a/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc b/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
-index 335bed4da3..c2c98dae8a 100644
+index 2d79dde111..6332685c7f 100644
 --- a/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
 +++ b/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
 @@ -12,13 +12,7 @@
@@ -619,8 +108,8 @@ index 335bed4da3..c2c98dae8a 100644
 -#endif  // WEBRTC_GLIBC_PREREQ(2, 16)
 +#endif  // (__linux__)
  #if defined(__aarch64__)
+   (void)platform;
    architecture = 8;
-   if ((hwcap & HWCAP_FP) != 0)
 diff --git a/tools/profiler/core/platform-linux-android.cpp b/tools/profiler/core/platform-linux-android.cpp
 index 3bfe36ffc8..48c4e3c703 100644
 --- a/tools/profiler/core/platform-linux-android.cpp
@@ -637,26 +126,10 @@ index 3bfe36ffc8..48c4e3c703 100644
  }
  #endif
 diff --git a/xpcom/base/nsMemoryReporterManager.cpp b/xpcom/base/nsMemoryReporterManager.cpp
-index 122eae9478..b020e5798b 100644
+index 122eae9478..6e2c629bcf 100644
 --- a/xpcom/base/nsMemoryReporterManager.cpp
 +++ b/xpcom/base/nsMemoryReporterManager.cpp
-@@ -127,6 +127,7 @@ using namespace dom;
-   return GetProcSelfSmapsPrivate(aN, aPid);
- }
- 
-+#ifdef __GLIBC__
- #  ifdef HAVE_MALLINFO
- #    define HAVE_SYSTEM_HEAP_REPORTER 1
- [[nodiscard]] static nsresult SystemHeapSize(int64_t* aSizeOut) {
-@@ -146,6 +147,7 @@ using namespace dom;
-   return NS_OK;
- }
- #  endif
-+#endif
- 
- #elif defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || \
-     defined(__OpenBSD__) || defined(__FreeBSD_kernel__)
-@@ -679,6 +681,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
+@@ -679,6 +679,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
    return NS_OK;
  }
  
@@ -664,7 +137,7 @@ index 122eae9478..b020e5798b 100644
  #  define HAVE_SYSTEM_HEAP_REPORTER 1
  // Windows can have multiple separate heaps, but we should not touch non-default
  // heaps because they may be destroyed at anytime while we hold a handle.  So we
-@@ -711,6 +714,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
+@@ -711,6 +712,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
    *aSizeOut = heapSize;
    return NS_OK;
  }
@@ -673,5 +146,5 @@ index 122eae9478..b020e5798b 100644
  struct SegmentKind {
    DWORD mState;
 -- 
-2.37.1
+2.38.0
 
