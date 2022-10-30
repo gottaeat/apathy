@@ -130,8 +130,9 @@ i  2  ..     libjpeg-turbo        2.0.5
 i  1  ...    nasm                 2.15.05
 i  2  ..     pango                1.43.0
 i  2  ...    fribidi              1.0.10
-i  1  ..     tiff                 4.1.0
-i  2  .      imlib2               1.6.1
+i  2  ..     tiff                 4.1.0
+i  1  ...    libwebp              1.2.4
+i  3  .      imlib2               1.6.1
 i  1  ..     giflib               5.2.1
 i  1  ..     libid3tag            0.15.1b
 i  1  .      alsa-lib             1.2.7
@@ -147,7 +148,7 @@ i  1  .      x265                 3.5
 i  2  .      xtrlock              2.12
 i  1  .      yt-dlp               2022.08.19
 i  1  .      picom                9
-i  1  .      ffmpeg               5.1
+i  2  .      ffmpeg               5.1
 i  1  ..     libva                2.14.0
 i  1  ..     v4l-utils            1.20.0
 i  1  ..     lame                 3.100
@@ -161,7 +162,7 @@ i  2  .      mpc                  0.33
 i  1  .      ncmpcpp              0.9.2
 i  1  .      maim                 5.5.3
 i  1  .      xclip                0.13
-i  1  .      imagemagick          7.0.10.23
+i  2  .      imagemagick          7.0.10.23
 i  1  ..     lcms2                2.12
 i  1  .      feh                  3.7.1
 i  1  .      mupdf                1.16.1
