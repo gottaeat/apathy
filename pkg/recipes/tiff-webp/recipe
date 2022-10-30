@@ -1,0 +1,77 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC -fno-builtin"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC -fno-builtin"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+tar xf /mss/work/sauces/libwebp-1.2.4.tar.gz
+cd     libwebp-1.2.4/
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD          \
+ --host=$CHOST            \
+ --prefix="${penis}"      \
+ --enable-libwebpdecoder  \
+ --enable-libwebpdemux    \
+ --enable-libwebpmux      \
+ --disable-static         \
+ --disable-tiff
+
+make
+make install
+
+cd ../; rm -rf libwebp-1.2.4/
+
+# 2
+tar xf /mss/work/sauces/tiff-4.1.0.tar.gz
+cd     tiff-4.1.0/
+
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD  \
+ --host=$CHOST    \
+ --prefix=/usr    \
+ --enable-shared  \
+ --disable-static \
+ --disable-rpath  \
+ --disable-cxx
+
+make
+make DESTDIR="/mss/work/FUCKwebp" install
+doas -- make install
+
+cd ../; rm -rf tiff-4.1.0/
+
+# 3
+tar xf /mss/work/sauces/libwebp-1.2.4.tar.gz
+cd     libwebp-1.2.4/
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD          \
+ --host=$CHOST            \
+ --prefix=/usr            \
+ --enable-libwebpdecoder  \
+ --enable-libwebpdemux    \
+ --enable-libwebpmux      \
+ --enable-tiff            \
+ --disable-static
+
+make
+make DESTDIR="/mss/work/FUCKwebp" install
+doas -- make install
+
+cd ../; rm -rf libwebp-1.2.4/
+
+# 4
+doas -- rm -rfv \
+ /usr/share/doc \
+ /usr/share/man
+
+doas -- cleanup
