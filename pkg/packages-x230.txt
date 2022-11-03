@@ -24,7 +24,7 @@ i  2  .      automake             1.16.3
 i  1  .      xz                   5.2.7
 i  1  .      libelf               0.186
 i  2  .      libffi               3.3.0
-i  1  .      openssl              3.0.5
+i  1  .      openssl              3.0.7
 i  1  .      python               3.10.6
 i  2  .      samurai              1.2
 i  1  .      meson                0.63.1
@@ -41,9 +41,9 @@ i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
 i  1  .      linux                6.0.6
-i  7  ..     initramfs            6
-i  9  ...    cryptsetup           2.4.3
-i  7  ....   lvm2                 2.2.02.187
+i  8  ..     initramfs            6
+i  10 ...    cryptsetup           2.4.3
+i  8  ....   lvm2                 2.2.02.187
 i  1  .      init                 29
 i  1  ..     utils                23
 i  1  .      opendoas             6.8.2
@@ -172,7 +172,7 @@ i  1  .      lz4                  1.9.3
 i  1  .      links                2.27
 i  1  .      wpa-supplicant       2.10
 i  1  ..     libnl3               3.5.0
-i  7  .      lilo                 24.2
+i  8  .      lilo                 24.2
 i  1  .      irssi                1.4.1
 i  1  .      clang                15.0.3
 i  1  .      compiler-rt          15.0.3
