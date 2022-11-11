@@ -10,13 +10,20 @@ if [ ! "$(xrandr | awk '/VGA-1/{print $2}')" = "connected" ]
   exit 1
  else
    cur_res="$(xrandr | awk 'NR==1{print $8}')"
-  lvds_res="$(xrandr | awk '/LVDS/{sub(/x.*/,""); print $4}')"
+  lvds_res="$(xrandr | awk '/LVDS/{sub(/x.*/,""); print $3}')"
 
   if [ ! "${cur_res}" -gt "${lvds_res}" ]
    then
-    xrandr --output VGA-1 --auto --right-of LVDS-1     
+    xrandr --output VGA-1 --auto --primary --left-of LVDS-1
+    setxkbmap \
+     -option grp:switch,grp:alt_shift_toggle \
+     -layout 'us,tr'
+
+    xset r rate 200 40
+
     [ -f /home/mss/.fehbg ] && /home/mss/.fehbg
    else
+    xrandr --output VGA-1 --noprimary
     xrandr --output VGA-1 --off
   fi
 fi
