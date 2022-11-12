@@ -1,6 +1,6 @@
 i  1  .      linux-headers        5.19.0
 i  3  .      musl                 1.2.3
-i  1  .      zlib                 1.2.12
+i  1  .      zlib                 1.2.13
 i  2  .      file                 5.40
 i  2  .      readline             8.1
 i  2  .      m4                   1.4.18
@@ -13,8 +13,8 @@ i  2  .      bison                3.7.4
 i  2  .      flex                 2.6.4
 i  1  .      grep                 3.8
 i  1  ..     pcre2                10.40
-i  1  .      yash                 2.52
-i  7  .      busybox              1.35.0
+i  1  .      yash                 2.53
+i  8  .      busybox              1.35.0
 i  2  .      libtool              2.4.6
 i  1  .      gperf                3.1
 i  1  .      expat                2.4.8
@@ -40,10 +40,10 @@ i  2  .      vim                  9.0.0004
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  1  .      linux                6.0.6
-i  8  ..     initramfs            6
-i  10 ...    cryptsetup           2.4.3
-i  8  ....   lvm2                 2.2.02.187
+i  1  .      linux                6.0.8
+i  1  ..     initramfs            7
+i  1  ...    cryptsetup           2.5.0
+i  1  ....   lvm2                 2.02.188
 i  1  .      init                 29
 i  1  ..     utils                24
 i  1  .      opendoas             6.8.2
@@ -66,7 +66,7 @@ i  1  ..     libgpg-error         1.42
 i  1  ..     libassuan            2.5.5
 i  1  ..     libgcrypt            1.9.3
 i  1  ..     pinentry             1.1.1
-i  1  .      openvpn              2.5.3
+i  1  .      openvpn              2.5.8
 i  2  .      jq                   1.6
 i  4  .      util-macros          1.19.3
 i  4  .      xorgproto            2021.4.99.2
@@ -172,7 +172,7 @@ i  1  .      lz4                  1.9.3
 i  1  .      links                2.27
 i  1  .      wpa-supplicant       2.10
 i  1  ..     libnl3               3.5.0
-i  8  .      lilo                 24.2
+i  9  .      lilo                 24.2
 i  1  .      irssi                1.4.1
 i  1  .      clang                15.0.4
 i  1  .      compiler-rt          15.0.4
@@ -214,8 +214,8 @@ i  3  .      bully                3ab3bc8
 i  3  .      iw                   5.9
 i  3  .      pixiewps             1.4.2
 i  3  .      reaver-wps-fork-t6x  d6c931c
-i  2  .      tor                  0.4.7.8
-i  2  .      proxychains-ng       4.16
+i  1  .      tor                  0.4.7.11
+i  3  .      proxychains-ng       4.16
 i  2  .      dsniff               2.4b1
 i  2  .      bettercap            2.32.0
 i  1  .      go                   1.18.3
