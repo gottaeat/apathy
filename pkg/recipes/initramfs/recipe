@@ -11,11 +11,13 @@ tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-busybox-1.35.0-
 mv    ./busybox      bin/
 cp -r /opt/cryptshit opt/
 
+rm -rfv opt/cryptshit/lvm/cache
+
 fdir="/mss/repo/pkg/recipes/initramfs/files"
 cp "${fdir}"/init .
 
 cdir="/mnt/mss/stuff/techy-bits/git/mss-ec/consolefonts"
-cp "${cdir}"/ter-v14n.psf ./font.psf
+cp "${cdir}"/ter-v16n.psf ./font.psf
 
 sed -i init \
  -e "s/REPLACEDAT/`dn`/g"

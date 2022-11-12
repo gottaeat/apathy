@@ -1,6 +1,6 @@
 # 1
-tar xf /mss/work/sauces/tor-0.4.7.8.tar.gz
-cd     tor-0.4.7.8/
+tar xf /mss/work/sauces/tor-0.4.7.11.tar.gz
+cd     tor-0.4.7.11/
 
 autoreconf -fvi
 
@@ -35,7 +35,7 @@ instdir_t="${PWD}/KEK"
 make DESTDIR="${instdir_t}" install
 mv           "${instdir_t}/${findir}" ../
 
-cd ../; rm -rf tor-0.4.7.8/
+cd ../; rm -rf tor-0.4.7.11/
 
 # 2
 tar xf /mss/work/sauces/proxychains-ng-4.16.tar.xz

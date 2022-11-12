@@ -122,8 +122,8 @@ rm -rfv "${penis}"/lib/libargon2.so*
 cd ../; rm -rf phc-winner-argon2-20190702/
 
 # 6 > lvm2
-tar xf /mss/work/sauces/LVM2.2.02.187.tgz
-cd     LVM2.2.02.187/
+tar xf /mss/work/sauces/LVM2.2.02.188.tgz
+cd     LVM2.2.02.188/
 
 pdir="/mss/repo/pkg/recipes/cryptshit/patches"
 patch -p1 < "${pdir}"/0002-lvm2-mallinfo.patch
@@ -219,8 +219,8 @@ cp      "${instdir}${findir}"/include/libdevmapper.h     "${penis}"/include/
 cp      "${instdir}${findir}"/lib/libdevmapper.a         "${penis}"/lib
 cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${penis}"/lib/pkgconfig
 
-mkdir lvm2.2.02.187-static-libs/{include,lib/pkgconfig}
-pkgupdir="lvm2.2.02.187-static-libs"
+mkdir lvm2-2.02.188-static-libs/{include,lib/pkgconfig}
+pkgupdir="lvm2-2.02.188-static-libs"
 cp      "${instdir}${findir}"/include/libdevmapper.h     "${pkgupdir}"/include/
 cp      "${instdir}${findir}"/lib/libdevmapper.a         "${pkgupdir}"/lib
 cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${pkgupdir}"/lib/pkgconfig
@@ -229,11 +229,11 @@ pkgup "${pkgupdir}" "${amachine}"-"${pkgupdir}"
 mv    "${amachine}"-"${pkgupdir}".tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
 
-cd ../; rm -rf LVM2.2.02.187/
+cd ../; rm -rf LVM2.2.02.188/
 
 # 8 > cryptsetup
-tar xf /mss/work/sauces/cryptsetup-2.4.3.tar.gz
-cd     cryptsetup-2.4.3/
+tar xf /mss/work/sauces/cryptsetup-2.5.0.tar.gz
+cd     cryptsetup-2.5.0/
 
 sed -i -e 's/\/bin\/bash/\/bin\/sh/g' \
  tests/generate-symbols-list
@@ -247,6 +247,7 @@ ac_cv_lib_popt_poptGetContext=yes \
  --enable-libargon2               \
  --enable-static                  \
  --enable-static-cryptsetup       \
+ --disable-asciidoc               \
  --disable-cryptsetup-reencrypt   \
  --disable-dev-random             \
  --disable-external-tokens        \

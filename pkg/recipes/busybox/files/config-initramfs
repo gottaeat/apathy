@@ -1,7 +1,7 @@
 #
 # Automatically generated make config: don't edit
 # Busybox version: 1.35.0
-# Wed Mar 16 08:34:13 2022
+# Sat Nov 12 03:00:02 2022
 #
 CONFIG_HAVE_DOT_CONFIG=y
 
@@ -294,7 +294,7 @@ CONFIG_PRINTF=y
 # CONFIG_SEQ is not set
 # CONFIG_SHRED is not set
 # CONFIG_SHUF is not set
-# CONFIG_SLEEP is not set
+CONFIG_SLEEP=y
 # CONFIG_FEATURE_FANCY_SLEEP is not set
 # CONFIG_SORT is not set
 # CONFIG_FEATURE_SORT_BIG is not set
@@ -680,7 +680,7 @@ CONFIG_MOUNT=y
 # CONFIG_FEATURE_SETPRIV_DUMP is not set
 # CONFIG_FEATURE_SETPRIV_CAPABILITIES is not set
 # CONFIG_FEATURE_SETPRIV_CAPABILITY_NAMES is not set
-CONFIG_SETSID=y
+# CONFIG_SETSID is not set
 # CONFIG_SWAPON is not set
 # CONFIG_FEATURE_SWAPON_DISCARD is not set
 # CONFIG_FEATURE_SWAPON_PRI is not set
@@ -1128,7 +1128,7 @@ CONFIG_ASH_JOB_CONTROL=y
 # CONFIG_ASH_HELP is not set
 # CONFIG_ASH_GETOPTS is not set
 # CONFIG_ASH_CMDCMD is not set
-CONFIG_CTTYHACK=y
+# CONFIG_CTTYHACK is not set
 # CONFIG_HUSH is not set
 # CONFIG_SHELL_HUSH is not set
 # CONFIG_HUSH_BASH_COMPAT is not set
