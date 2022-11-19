@@ -2,7 +2,7 @@
 . /mss/files/funcs
 
        dat="$(date "+%Y%m%d_%H%M%S_maimscrot")"
-       loc="/home/mss/screenshots/entire/${dat}.png"
+       loc="/mnt/mss/stuff/personal/screenshots/entire/${dat}.png"
 primaryres="$(xrandr | awk '/primary/{print $4}')"
 
 [ -z "${1}" ] && savloc="${loc}" || savloc="${1}"

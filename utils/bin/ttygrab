@@ -1,7 +1,8 @@
 #!/mss/bin/sh
 . /mss/files/funcs
 
-loc="/home/mss/screenshots/tty/$(date "+%Y%m%d_%H%M%S_ttygrab").png"
+dat="$(date "+%Y%m%d_%H%M%S_ttygrab")"
+loc="/mnt/mss/stuff/personal/screenshots/tty/${dat}.png"
 
 grab_tty(){ fbcat > /tmp/tty.ppm ;}
 

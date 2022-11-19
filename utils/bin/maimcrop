@@ -1,7 +1,7 @@
 #!/mss/bin/sh
 . /mss/files/funcs
 dat="$(date "+%Y%m%d_%H%M%S_maimcrop")"
-loc="/home/mss/screenshots/grabs/${dat}.png"
+loc="/mnt/mss/stuff/personal/screenshots/grabs/${dat}.png"
 
 if [ -z "${1}" ]
  then
