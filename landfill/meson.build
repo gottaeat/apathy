@@ -1,5 +1,5 @@
 project('landfill', 'c',
- version: '10',
+ version: '11',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -104,7 +104,7 @@ st_src = [
 
 # 5 > extra cflags
 dmenu_extra = [
- '-DVERSION="4.9-landfill"',
+ '-DVERSION="5.2-landfill"',
  '-DXINERAMA',
  '-D_BSD_SOURCE',
  '-D_DEFAULT_SOURCE',
