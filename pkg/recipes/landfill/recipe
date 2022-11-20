@@ -17,3 +17,30 @@ meson \
  -Ddwmfontsize="${dwsz}"   \
  -Dstfontsize="${stsz}"    \
  ..
+
+samu
+
+# 2
+doas -s
+samu install
+
+bins="/usr/bin/dmenu
+      /usr/bin/dwm
+      /usr/bin/st
+      /usr/bin/stest"
+
+shsc="/usr/bin/dmenu_path
+      /usr/bin/dmenu_run"
+
+for i in ${bins}; do
+ strip --strip-all "${i}"
+ chown -Rh root:root "${i}"
+done
+
+for i in ${shsc}; do
+ chown -Rh root:root "${i}"
+done
+
+# 3
+cdr
+cat .gitignore | xargs rm -rfv
