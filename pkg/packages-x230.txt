@@ -121,7 +121,7 @@ i  1  ..     libepoxy             1.5.8
 i  4  .      xf86-input-libinput  1.2.1
 i  1  ..     libinput             1.20.1
 i  1  .      xinit                1.4.1
-i  1  .      landfill             10
+i  1  .      landfill             13
 i  1  .      atk                  2.38.0
 i  2  .      freeglut             3.2.1
 i  1  ..     glu                  9.0.1
