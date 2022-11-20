@@ -61,7 +61,7 @@ static void zoomreset(const Arg *);
 static void ttysend(const Arg *);
 
 /* config.h for applying patches and the configuration. */
-#include "config.h"
+#include "st_conf.h"
 
 /* XEMBED messages */
 #define XEMBED_FOCUS_IN  4
@@ -244,11 +244,6 @@ static int frccap = 0;
 static char *usedfont = NULL;
 static double usedfontsize = 0;
 static double defaultfontsize = 0;
-
-/* declared in config.h */
-extern int disablebold;
-extern int disableitalic;
-extern int disableroman;
 
 static char *opt_alpha = NULL;
 static char *opt_class = NULL;
@@ -1051,20 +1046,14 @@ xloadfonts(const char *fontstr, double fontsize)
 	win.ch = ceilf(dc.font.height * chscale);
 
 	FcPatternDel(pattern, FC_SLANT);
-	if (!disableitalic)
-		FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ITALIC);
-	if (!disableroman)
-		FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ROMAN);
 	if (xloadfont(&dc.ifont, pattern))
 		die("can't open font %s\n", fontstr);
 
 	FcPatternDel(pattern, FC_WEIGHT);
-	FcPatternAddInteger(pattern, FC_WEIGHT, FC_WEIGHT_BOLD);
 	if (xloadfont(&dc.ibfont, pattern))
 		die("can't open font %s\n", fontstr);
 
 	FcPatternDel(pattern, FC_SLANT);
-	FcPatternAddInteger(pattern, FC_SLANT, FC_SLANT_ROMAN);
 	if (xloadfont(&dc.bfont, pattern))
 		die("can't open font %s\n", fontstr);
 
