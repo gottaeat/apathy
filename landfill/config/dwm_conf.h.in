@@ -106,27 +106,29 @@ static const Key keys[] = {
  { MODKEY,           XK_m, spawn, SHCMD("feh --bg-fill --randomize " CUSTDIR)},
  { Mod1Mask,         XK_m, spawn, SHCMD(HOMEDIR "/.fehb.def")                },
  // dwm
- { MODKEY,           XK_Return, spawn,          {.v = termcmd }   }, // spawn term
- { MODKEY|ShiftMask, XK_Return, spawn,          {.v = tmuxcmd }   }, // spawn term+tmux
- { MODKEY|ShiftMask, XK_q,      killclient,     {0}               }, // kill window
- { MODKEY|ShiftMask, XK_0,      tag,            {.ui = ~0 }       }, // move window to ws
- { MODKEY,           XK_j,      focusstack,     {.i = +1 }        }, // focus to stack
- { MODKEY,           XK_k,      focusstack,     {.i = -1 }        }, // focus to master
- { MODKEY,           XK_i,      incnmaster,     {.i = +1 }        }, // move window to master
- { MODKEY,           XK_u,      incnmaster,     {.i = -1 }        }, // remove window from master
- { MODKEY,           XK_l,      setmfact,       {.f = +0.01}      }, // mfact +0.01
- { MODKEY,           XK_h,      setmfact,       {.f = -0.01}      }, // mfact -0.01
- { MODKEY,           XK_t,      setlayout,      {.v = &layouts[0]}}, // enable tiling
- { MODKEY,           XK_g,      setlayout,      {.v = &layouts[2]}}, // enable monacle
- { Mod1Mask,         XK_Tab,    zoom,           {0}               }, // switch focus
- { MODKEY,           XK_space,  setlayout,      {0}               }, // switch between layouts
- { MODKEY|ShiftMask, XK_space,  togglefloating, {0}               }, // toggle floating
- { MODKEY,           XK_f,      togglefullscr,  {0}               }, // toggle fullscreen
- { MODKEY,           XK_comma,  focusmon,       {.i = -1 }        }, // focus to monitor -1
- { MODKEY,           XK_period, focusmon,       {.i = +1 }        }, // focus to monitor +1
- { MODKEY|ShiftMask, XK_comma,  tagmon,         {.i = -1 }        }, // move window to monitor -1
- { MODKEY|ShiftMask, XK_period, tagmon,         {.i = +1 }        }, // move window to monitor +1
- { MODKEY|ShiftMask, XK_r,      quit,           {0}               }, // kill dwm
+ { MODKEY,           XK_Return,   spawn,          {.v = termcmd }   }, // spawn term
+ { MODKEY|ShiftMask, XK_Return,   spawn,          {.v = tmuxcmd }   }, // spawn term+tmux
+ { MODKEY,           XK_KP_Enter, spawn,          {.v = termcmd }   }, // spawn term (numpad return)
+ { MODKEY|ShiftMask, XK_KP_Enter, spawn,          {.v = tmuxcmd }   }, // spawn term+tmux (numpad return)
+ { MODKEY|ShiftMask, XK_q,        killclient,     {0}               }, // kill window
+ { MODKEY|ShiftMask, XK_0,        tag,            {.ui = ~0 }       }, // move window to ws
+ { MODKEY,           XK_j,        focusstack,     {.i = +1 }        }, // focus to stack
+ { MODKEY,           XK_k,        focusstack,     {.i = -1 }        }, // focus to master
+ { MODKEY,           XK_i,        incnmaster,     {.i = +1 }        }, // move window to master
+ { MODKEY,           XK_u,        incnmaster,     {.i = -1 }        }, // remove window from master
+ { MODKEY,           XK_l,        setmfact,       {.f = +0.01}      }, // mfact +0.01
+ { MODKEY,           XK_h,        setmfact,       {.f = -0.01}      }, // mfact -0.01
+ { MODKEY,           XK_t,        setlayout,      {.v = &layouts[0]}}, // enable tiling
+ { MODKEY,           XK_g,        setlayout,      {.v = &layouts[2]}}, // enable monacle
+ { Mod1Mask,         XK_Tab,      zoom,           {0}               }, // switch focus
+ { MODKEY,           XK_space,    setlayout,      {0}               }, // switch between layouts
+ { MODKEY|ShiftMask, XK_space,    togglefloating, {0}               }, // toggle floating
+ { MODKEY,           XK_f,        togglefullscr,  {0}               }, // toggle fullscreen
+ { MODKEY,           XK_comma,    focusmon,       {.i = -1 }        }, // focus to monitor -1
+ { MODKEY,           XK_period,   focusmon,       {.i = +1 }        }, // focus to monitor +1
+ { MODKEY|ShiftMask, XK_comma,    tagmon,         {.i = -1 }        }, // move window to monitor -1
+ { MODKEY|ShiftMask, XK_period,   tagmon,         {.i = +1 }        }, // move window to monitor +1
+ { MODKEY|ShiftMask, XK_r,        quit,           {0}               }, // kill dwm
 };
 
 // mouse button binds
