@@ -1,5 +1,4 @@
 #include <X11/XF86keysym.h>
-#include <string.h>
 
 // bar
 static const int showbar            = 1;
@@ -32,11 +31,9 @@ static const Rule rules[]           = {
 
 // default window sizes
 static const unsigned int borderpx  = 1;    // border thickness
-static const unsigned int gappx     = 3;    // gaps
+static const unsigned int gappx     = 3;    // gap size
 static const unsigned int snap      = 3;    // snap pixel
 static const float mfact            = 0.60; // default mfact
-static const float smfact           = 0.0f; // default stack mfact
-static const unsigned int minwsz    = 30;   // min mfact value
 static const int nmaster            = 1;    // number of clients in master
 static const int resizehints        = 0;    // do not respect resize hints
 static const int lockfullscreen     = 0;    // force focus on fullscreened windows
@@ -53,12 +50,24 @@ static const int lockfullscreen     = 0;    // force focus on fullscreened windo
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 // terms
-static const char *termcmd[]  = { "st", NULL };
-static const char *tmuxcmd[]  = { "st", "-e", "tmux", NULL };
+static const char *termcmd[] = { "st", NULL };
+static const char *tmuxcmd[] = { "st", "-e", "tmux", NULL };
 
+// paths
 #define HOMEDIR   "/home/mss"
 #define SCRIPTDIR "/mnt/mss/stuff/techy-bits/scripts"
 #define CUSTDIR   "/mnt/mss/stuff/media/wallpapers"
+
+// media control shortcuts
+#define ALSAMTOG SHCMD("amixer -q set Master  toggle")
+#define ALSACTOG SHCMD("amixer -q set Capture toggle")
+#define ALSAVOLP SHCMD("amixer -q set Master  3dB+")
+#define ALSAVOLM SHCMD("amixer -q set Master  3dB-")
+#define MPDNEXT  SHCMD("mpc -q next")
+#define MPDPREV  SHCMD("mpc -q prev")
+#define MPDTOGG  SHCMD("mpc -q toggle")
+#define MPDVOLP  SHCMD("mpc -q vol +5")
+#define MPDVOLM  SHCMD("mpc -q vol -5")
 
 // keyboard binds
 static const Key keys[] = {
@@ -83,16 +92,16 @@ static const Key keys[] = {
  { MODKEY|ShiftMask, XK_d, spawn, SHCMD(SCRIPTDIR "/menuboi.sh")            },
  { MODKEY,           XK_c, spawn, SHCMD(SCRIPTDIR "/chrootmenu.sh")         },
  // numpad alsa
- { MODKEY,           XK_KP_Divide,   spawn, SHCMD("amixer -q set Master  toggle")},
- { MODKEY,           XK_KP_Multiply, spawn, SHCMD("amixer -q set Capture toggle")},
- { MODKEY,           XK_KP_Add,      spawn, SHCMD("amixer -q set Master  3dB+")  },
- { MODKEY,           XK_KP_Subtract, spawn, SHCMD("amixer -q set Master  3dB-")  },
+ { MODKEY,           XK_KP_Divide,   spawn, ALSAMTOG},
+ { MODKEY,           XK_KP_Multiply, spawn, ALSACTOG},
+ { MODKEY,           XK_KP_Add,      spawn, ALSAVOLP},
+ { MODKEY,           XK_KP_Subtract, spawn, ALSAVOLM},
  // numpad mpd
- { MODKEY,           XK_KP_Right, spawn, SHCMD("mpc -q next")  },
- { MODKEY,           XK_KP_Left,  spawn, SHCMD("mpc -q prev")  },
- { MODKEY,           XK_KP_Begin, spawn, SHCMD("mpc -q toggle")},
- { MODKEY,           XK_KP_Up,    spawn, SHCMD("mpc -q vol +5")},
- { MODKEY,           XK_KP_Down,  spawn, SHCMD("mpc -q vol -5")},
+ { MODKEY,           XK_KP_Right, spawn, MPDNEXT},
+ { MODKEY,           XK_KP_Left,  spawn, MPDPREV},
+ { MODKEY,           XK_KP_Begin, spawn, MPDTOGG},
+ { MODKEY,           XK_KP_Up,    spawn, MPDVOLP},
+ { MODKEY,           XK_KP_Down,  spawn, MPDVOLM},
  // wallpapery
  { MODKEY,           XK_m, spawn, SHCMD("feh --bg-fill --randomize " CUSTDIR)},
  { Mod1Mask,         XK_m, spawn, SHCMD(HOMEDIR "/.fehb.def")                },
@@ -107,11 +116,6 @@ static const Key keys[] = {
  { MODKEY,           XK_u,      incnmaster,     {.i = -1 }        }, // remove window from master
  { MODKEY,           XK_l,      setmfact,       {.f = +0.01}      }, // mfact +0.01
  { MODKEY,           XK_h,      setmfact,       {.f = -0.01}      }, // mfact -0.01
- { MODKEY|ShiftMask, XK_h,      setsmfact,      {.f = +0.01}      }, // stack mfact +0.01
- { MODKEY|ShiftMask, XK_l,      setsmfact,      {.f = -0.01}      }, // stack mfact -0.01
- { MODKEY,           XK_minus,  setgaps,        {.i = -1 }        }, // gap size +1
- { MODKEY,           XK_equal,  setgaps,        {.i = +1 }        }, // gap size -1
- { MODKEY|ShiftMask, XK_equal,  setgaps,        {.i = 0  }        }, // toggle gaps
  { MODKEY,           XK_t,      setlayout,      {.v = &layouts[0]}}, // enable tiling
  { MODKEY,           XK_g,      setlayout,      {.v = &layouts[2]}}, // enable monacle
  { Mod1Mask,         XK_Tab,    zoom,           {0}               }, // switch focus
@@ -129,16 +133,16 @@ static const Key keys[] = {
 // list of actions: ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, ClkRootWin
 static const Button buttons[] = {
  // alsa
- { ClkStatusText,    MODKEY,           Button2, spawn, SHCMD("amixer -q set Master  toggle")},
- { ClkStatusText,    MODKEY|ShiftMask, Button2, spawn, SHCMD("amixer -q set Capture toggle")},
- { ClkStatusText,    MODKEY,           Button4, spawn, SHCMD("amixer -q set Master  3dB+")  },
- { ClkStatusText,    MODKEY,           Button5, spawn, SHCMD("amixer -q set Master  3dB-")  },
+ { ClkStatusText,    MODKEY,           Button2, spawn, ALSAMTOG},
+ { ClkStatusText,    MODKEY|ShiftMask, Button2, spawn, ALSACTOG},
+ { ClkStatusText,    MODKEY,           Button4, spawn, ALSAVOLP},
+ { ClkStatusText,    MODKEY,           Button5, spawn, ALSAVOLM},
  // mpd                                        
- { ClkStatusText,    0, Button1, spawn, SHCMD("mpc -q next")  },
- { ClkStatusText,    0, Button3, spawn, SHCMD("mpc -q prev")  },
- { ClkStatusText,    0, Button2, spawn, SHCMD("mpc -q toggle")},
- { ClkStatusText,    0, Button4, spawn, SHCMD("mpc -q vol +5")},
- { ClkStatusText,    0, Button5, spawn, SHCMD("mpc -q vol -5")},
+ { ClkStatusText,    0, Button1, spawn, MPDNEXT},
+ { ClkStatusText,    0, Button3, spawn, MPDPREV},
+ { ClkStatusText,    0, Button2, spawn, MPDTOGG},
+ { ClkStatusText,    0, Button4, spawn, MPDVOLP},
+ { ClkStatusText,    0, Button5, spawn, MPDVOLM},
  // dwm
  { ClkLtSymbol,      0,      Button1, setlayout,      {.v = &layouts[0]}},
  { ClkLtSymbol,      0,      Button2, setlayout,      {.v = &layouts[1]}},
