@@ -1,31 +1,31 @@
-From 71f649d4dc062f8da2e583291a449b5dacf87e6b Mon Sep 17 00:00:00 2001
+From 00aca6804dd7e839a596f9ac57d4d28e718b2cea Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Tue, 25 Oct 2022 06:42:27 +0300
-Subject: [PATCH 10/16] nuke addons.
+Date: Fri, 8 Jul 2022 01:50:30 +0300
+Subject: [PATCH 12/16] nuke addons.
 
 ---
  browser/components/BrowserGlue.jsm | 172 -----------------------------
- browser/extensions/moz.build       |   5 -
+ browser/extensions/moz.build       |   6 -
  browser/locales/Makefile.in        |   2 -
  browser/locales/filter.py          |   1 -
  browser/locales/l10n.ini           |   1 -
  browser/locales/l10n.toml          |   4 -
- 6 files changed, 185 deletions(-)
+ 6 files changed, 186 deletions(-)
 
 diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
-index 36d0e2033e..364fa3388f 100644
+index 75856e0c2f..2510b01a21 100644
 --- a/browser/components/BrowserGlue.jsm
 +++ b/browser/components/BrowserGlue.jsm
-@@ -694,16 +694,6 @@ let JSWINDOWACTORS = {
+@@ -674,16 +674,6 @@ let JSWINDOWACTORS = {
      enablePreference: "accessibility.blockautorefresh",
    },
  
 -  ScreenshotsComponent: {
 -    parent: {
--      esModuleURI: "resource:///modules/ScreenshotsUtils.sys.mjs",
+-      moduleURI: "resource:///modules/ScreenshotsUtils.jsm",
 -    },
 -    child: {
--      esModuleURI: "resource:///actors/ScreenshotsComponentChild.sys.mjs",
+-      moduleURI: "resource:///actors/ScreenshotsComponentChild.jsm",
 -    },
 -    enablePreference: "screenshots.browser.component.enabled",
 -  },
@@ -33,7 +33,7 @@ index 36d0e2033e..364fa3388f 100644
    SearchSERPTelemetry: {
      parent: {
        moduleURI: "resource:///actors/SearchSERPTelemetryParent.jsm",
-@@ -2035,76 +2025,6 @@ BrowserGlue.prototype = {
+@@ -2010,77 +2000,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -44,7 +44,7 @@ index 36d0e2033e..364fa3388f 100644
 -    const COMPONENT_PREF = "screenshots.browser.component.enabled";
 -    const ID = "screenshots@mozilla.org";
 -    const _checkScreenshotsPref = async () => {
--      let addon = await lazy.AddonManager.getAddonByID(ID);
+-      let addon = await AddonManager.getAddonByID(ID);
 -      if (!addon) {
 -        return;
 -      }
@@ -55,16 +55,16 @@ index 36d0e2033e..364fa3388f 100644
 -      let componentEnabled = Services.prefs.getBoolPref(COMPONENT_PREF, false);
 -      if (screenshotsDisabled) {
 -        if (componentEnabled) {
--          lazy.ScreenshotsUtils.uninitialize();
+-          ScreenshotsUtils.uninitialize();
 -        } else {
 -          await addon.disable({ allowSystemAddons: true });
 -        }
 -      } else if (componentEnabled) {
--        lazy.ScreenshotsUtils.initialize();
+-        ScreenshotsUtils.initialize();
 -        await addon.disable({ allowSystemAddons: true });
 -      } else {
 -        await addon.enable({ allowSystemAddons: true });
--        lazy.ScreenshotsUtils.uninitialize();
+-        ScreenshotsUtils.uninitialize();
 -      }
 -    };
 -    Services.prefs.addObserver(SCREENSHOTS_PREF, _checkScreenshotsPref);
@@ -76,7 +76,7 @@ index 36d0e2033e..364fa3388f 100644
 -    const PREF = "extensions.webcompat-reporter.enabled";
 -    const ID = "webcompat-reporter@mozilla.org";
 -    Services.prefs.addObserver(PREF, async () => {
--      let addon = await lazy.AddonManager.getAddonByID(ID);
+-      let addon = await AddonManager.getAddonByID(ID);
 -      if (!addon) {
 -        return;
 -      }
@@ -93,11 +93,11 @@ index 36d0e2033e..364fa3388f 100644
 -    // There is no pref for this add-on because it shouldn't be disabled.
 -    const ID = "addons-search-detection@mozilla.com";
 -
--    let addon = await lazy.AddonManager.getAddonByID(ID);
+-    let addon = await AddonManager.getAddonByID(ID);
 -
 -    // first time install of addon and install on firefox update
 -    addon =
--      (await lazy.AddonManager.maybeInstallBuiltinAddon(
+-      (await AddonManager.maybeInstallBuiltinAddon(
 -        ID,
 -        "2.0.0",
 -        "resource://builtin-addons/search-detection/"
@@ -107,10 +107,11 @@ index 36d0e2033e..364fa3388f 100644
 -      addon.enable();
 -    }
 -  },
- 
+-
    _monitorHTTPSOnlyPref() {
      const PREF_ENABLED = "dom.security.https_only_mode";
-@@ -2664,16 +2584,6 @@ BrowserGlue.prototype = {
+     const PREF_WAS_ENABLED = "dom.security.https_only_mode_ever_enabled";
+@@ -2565,16 +2484,6 @@ BrowserGlue.prototype = {
          },
        },
  
@@ -119,7 +120,7 @@ index 36d0e2033e..364fa3388f 100644
 -          if (
 -            Services.prefs.getBoolPref("screenshots.browser.component.enabled")
 -          ) {
--            lazy.ScreenshotsUtils.initialize();
+-            ScreenshotsUtils.initialize();
 -          }
 -        },
 -      },
@@ -127,7 +128,7 @@ index 36d0e2033e..364fa3388f 100644
        {
          task: () => {
            let { setTimeout } = ChromeUtils.import(
-@@ -2731,34 +2641,6 @@ BrowserGlue.prototype = {
+@@ -2632,33 +2541,6 @@ BrowserGlue.prototype = {
          },
        },
  
@@ -139,7 +140,7 @@ index 36d0e2033e..364fa3388f 100644
 -
 -          if (Services.prefs.getBoolPref(enabledPref, false)) {
 -            if (!Services.prefs.getBoolPref(completePref, false)) {
--              new lazy.TRRRacer().run(() => {
+-              new TRRRacer().run(() => {
 -                Services.prefs.setBoolPref(completePref, true);
 -              });
 -            }
@@ -149,7 +150,7 @@ index 36d0e2033e..364fa3388f 100644
 -                Services.prefs.removeObserver(enabledPref, observer);
 -
 -                if (!Services.prefs.getBoolPref(completePref, false)) {
--                  new lazy.TRRRacer().run(() => {
+-                  new TRRRacer().run(() => {
 -                    Services.prefs.setBoolPref(completePref, true);
 -                  });
 -                }
@@ -158,11 +159,10 @@ index 36d0e2033e..364fa3388f 100644
 -          }
 -        },
 -      },
--
+ 
        // FOG doesn't need to be initialized _too_ early because it has a
        // pre-init buffer.
-       {
-@@ -4233,24 +4115,6 @@ BrowserGlue.prototype = {
+@@ -4150,24 +4032,6 @@ BrowserGlue.prototype = {
        Services.prefs.clearUserPref(oldCreditCardsAvailable);
      }
  
@@ -187,7 +187,7 @@ index 36d0e2033e..364fa3388f 100644
      if (currentUIVersion < 126) {
        // Bug 1747343 - Add a pref to set the default download action to "Always
        // ask" so the UCT dialog will be opened for mime types that are not
-@@ -4766,42 +4630,6 @@ BrowserGlue.prototype = {
+@@ -4644,42 +4508,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -231,12 +231,14 @@ index 36d0e2033e..364fa3388f 100644
      "nsIObserver",
      "nsISupportsWeakReference",
 diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
-index 3c6e7eb886..dab7c04363 100644
+index 0d4b9c3561..dab7c04363 100644
 --- a/browser/extensions/moz.build
 +++ b/browser/extensions/moz.build
-@@ -6,9 +6,4 @@
+@@ -5,11 +5,5 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
  DIRS += [
+-    "doh-rollout",
      "formautofill",
 -    "screenshots",
 -    "webcompat",
@@ -245,10 +247,10 @@ index 3c6e7eb886..dab7c04363 100644
 -    "search-detection",
  ]
 diff --git a/browser/locales/Makefile.in b/browser/locales/Makefile.in
-index 7296ca4477..1278582e79 100644
+index e4b60a0399..c38fdd2cf5 100644
 --- a/browser/locales/Makefile.in
 +++ b/browser/locales/Makefile.in
-@@ -56,7 +56,6 @@ l10n-%:
+@@ -55,7 +55,6 @@ l10n-%:
  ifneq (,$(wildcard ../extensions/formautofill/locales))
  	@$(MAKE) -C ../extensions/formautofill/locales AB_CD=$* XPI_NAME=locale-$*
  endif
@@ -256,7 +258,7 @@ index 7296ca4477..1278582e79 100644
  	@$(MAKE) -C ../../devtools/client/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) -C ../../devtools/startup/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) l10n AB_CD=$* XPI_NAME=locale-$* PREF_DIR=$(PREF_DIR)
-@@ -78,7 +77,6 @@ endif
+@@ -76,7 +75,6 @@ endif
  	@$(MAKE) -C ../../devtools/startup/locales chrome AB_CD=$*
  	@$(MAKE) chrome AB_CD=$*
  	@$(MAKE) -C $(DEPTH)/$(MOZ_BRANDING_DIRECTORY)/locales chrome AB_CD=$*
@@ -304,5 +306,5 @@ index e9d50107cb..914a2f1a63 100644
      reference = "services/sync/locales/en-US/**"
      l10n = "{l}services/sync/**"
 -- 
-2.38.0
+2.37.0
 

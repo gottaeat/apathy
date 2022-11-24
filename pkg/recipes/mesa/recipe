@@ -14,8 +14,8 @@ cd "${curpwd}"
 unset curpwd
 
 # 2
-tar xf /mss/work/sauces/mesa-22.2.2.tar.xz
-cd     mesa-22.2.2/
+tar xf /mss/work/sauces/mesa-22.3.0-rc3.tar.xz
+cd     mesa-22.3.0-rc3/
 
 sed -i "/pre_args += '-DUSE_ELF_TLS'/d" meson.build
 python3 bin/git_sha1_gen.py --output include/git_sha1.h
@@ -43,7 +43,6 @@ meson --buildtype=plain \
 \
  -Dgallium-extra-hud=false      \
  -Dgallium-vdpau=disabled       \
- -Dgallium-xvmc=disabled        \
  -Dgallium-omx=disabled         \
  -Dgallium-va=disabled          \
  -Dgallium-xa=disabled          \
