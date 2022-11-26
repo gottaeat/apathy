@@ -28,7 +28,7 @@
 /usr/lib/liblzma.la
 /usr/lib/liblzma.so
 /usr/lib/liblzma.so.5
-/usr/lib/liblzma.so.5.2.5
+/usr/lib/liblzma.so.5.2.8
 
 /usr/lib/pkgconfig/liblzma.pc
 

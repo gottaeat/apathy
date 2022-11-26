@@ -1,6 +1,6 @@
 /usr/include/EGL/egl.h
 /usr/include/EGL/eglext.h
-/usr/include/EGL/eglextchromium.h
+/usr/include/EGL/eglext_angle.h
 /usr/include/EGL/eglmesaext.h
 /usr/include/EGL/eglplatform.h
 /usr/include/GL/gl.h
