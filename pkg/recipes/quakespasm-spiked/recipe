@@ -89,7 +89,7 @@ cd ../; rm -rf SDL2-2.0.14
 
 # 3
 gcd1 https://github.com/Shpoike/Quakespasm
-cd   Quakespasm/quakespasm/Quake
+cd   Quakespasm/Quake
 
 sed -i -e 's/CFLAGS += -O2//' Makefile
 

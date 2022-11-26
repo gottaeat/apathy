@@ -71,8 +71,8 @@ install -Dm644 "${fdir}"/lua.pc  "${penis}"/lib/pkgconfig/lua52.pc
 cd ../; rm -rf lua-5.2.4/
 
 # 4 > mpv
-gcd1 https://github.com/mpv-player/mpv
-cd   mpv/
+tar xf /mss/work/sauces/mpv-0.35.0.tar.gz
+cd     mpv-0.35.0/
 
 ./bootstrap.py
 

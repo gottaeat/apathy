@@ -41,8 +41,8 @@ make install
 cd ../; rm -rf libevdev-1.11.0/
 
 # 4
-tar xf /mss/work/sauces/libinput-1.20.1.tar.gz
-cd     libinput-1.20.1/
+tar xf /mss/work/sauces/libinput-1.22.0.tar.gz
+cd     libinput-1.22.0/
 
 mkdir build
 cd    build
@@ -62,7 +62,7 @@ samu
 DESTDIR=/mss/work/LIBINPUTfuck samu install
 doas -- samu install
 
-cd ../../; rm -rf libinput-1.20.1/
+cd ../../; rm -rf libinput-1.22.0/
 
 # 5
 tar xf /mss/work/sauces/xf86-input-libinput-1.2.1.tar.gz
