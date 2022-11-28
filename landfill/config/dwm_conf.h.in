@@ -3,7 +3,7 @@
 // bar
 static const int showbar            = 1;
 static const int topbar             = 1;
-static const char *tags[]           = { "a", "b", "c", "d", "e", "f", "g", "h", "i" };
+static const char *tags[]           = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const char *fonts[]          = { "@fontname@:size=@dwmfontsize@"             };
 static const Layout layouts[]       = {
  { "T",     tile    },
@@ -13,14 +13,14 @@ static const Layout layouts[]       = {
 
 // colors
 static const char *colors[][3]      = {
- [SchemeLayout]                     = { "#f7f7f7", "#000000",  NULL     }, // layout selector
+ [SchemeLayout]                     = { "#f7f7f7", "#252525",  NULL     }, // layout selector
  [SchemeStatus]                     = { "#ababab", "#000000",  NULL     }, // statusbar
- [SchemeTagsSel]                    = { "#6d7373", "#000000",  NULL     }, // tags, focused
- [SchemeTagsNorm]                   = { "#ababab", "#000000",  NULL     }, // tags, inactive
+ [SchemeTagsSel]                    = { "#ababab", "#000000",  NULL     }, // tags, focused
+ [SchemeTagsNorm]                   = { "#6d7373", "#000000",  NULL     }, // tags, inactive
  [SchemeInfoSel]                    = { "#555555", "#000000",  NULL     }, // window title, focused
  [SchemeInfoNorm]                   = { "#464646", "#000000",  NULL     }, // window title, inactive
- [SchemeBorderSel]                  = {  NULL,     NULL,      "#464646" }, // window border, focused
- [SchemeBorderNorm]                 = {  NULL,     NULL,      "#252525" }, // window border, inactive
+ [SchemeBorderSel]                  = {  NULL,     NULL,      "#555555" }, // window border, focused
+ [SchemeBorderNorm]                 = {  NULL,     NULL,      "#464646" }, // window border, inactive
 };
 
 // window rules
