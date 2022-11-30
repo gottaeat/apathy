@@ -729,6 +729,7 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
+	int indn;
 	int x, w, tw = 0;
 	int boxs = drw->fonts->h / 9;
 	int boxw = drw->fonts->h / 6 + 2;
@@ -755,14 +756,23 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeLayout]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 	for (i = 0; i < LENGTH(tags); i++) {
+		indn = 0;
 		if(!(occ & 1 << i || m->tagset[m->seltags] & 1 << i))
 			continue;
 		w = TEXTW(tags[i]);
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
 		drw_text(drw, x, 0, w, bh, lrpad / 2, tags[i], urg & 1 << i);
 
-		if (m->tagset[m->seltags] & 1 << i) {
-			drw_rect(drw, x + 3, bh - 1, w - 6, 1, 1, 0);
+		for (c = m->clients; c; c = c->next) {
+			if (c->tags & (1 << i)) {
+				if (m->tagset[m->seltags] & 1 << i) {
+					drw_rect(drw, x + 3, bh - 1, w - 6, 1, 1, urg & 1 << i);
+				} else {
+					drw_rect(drw, x, 1 + (indn * 2), 1, 1, 1, urg & 1 << i);
+				}
+
+				indn++;
+			}
 		}
 
 		x += w;
