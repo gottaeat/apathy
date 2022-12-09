@@ -1,10 +1,21 @@
-diff -uraN a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c	2022-06-06 09:49:00.000000000 +0300
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c	2022-06-06 20:56:27.194844505 +0300
-@@ -1150,11 +1150,10 @@
+From 2daa937f608925e8a402859fdc52f15addedb63d Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Mon, 5 Dec 2022 21:52:45 +0300
+Subject: [PATCH 9/9] iwlwifi: enable 11n + 11ac, disable mimo, force enable
+ siso.
+
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 9040da3dc..ca48faf2a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -1150,11 +1150,10 @@ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
  	if (data->valid_rx_ant)
  		rx_chains &= data->valid_rx_ant;
-
+ 
 -	data->sku_cap_mimo_disabled = false;
 +	data->sku_cap_mimo_disabled = true;
  	data->sku_cap_band_24ghz_enable = true;
@@ -15,7 +26,7 @@ diff -uraN a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wi
  	data->sku_cap_11ac_enable = true;
  	data->sku_cap_11ax_enable =
  		mei_nvm->caps & MEI_NVM_CAPS_11AX_SUPPORT;
-@@ -1221,12 +1220,9 @@
+@@ -1221,12 +1220,9 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
  	sku = iwl_get_sku(cfg, nvm_sw, phy_sku);
  	data->sku_cap_band_24ghz_enable = sku & NVM_SKU_CAP_BAND_24GHZ;
  	data->sku_cap_band_52ghz_enable = sku & NVM_SKU_CAP_BAND_52GHZ;
@@ -28,6 +39,9 @@ diff -uraN a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wi
 +	data->sku_cap_11n_enable = true;
 +	data->sku_cap_11ac_enable = true;
 +	data->sku_cap_mimo_disabled = true;
-
+ 
  	data->n_hw_addrs = iwl_get_n_hw_addrs(cfg, nvm_sw);
+ 
+-- 
+2.38.1
 

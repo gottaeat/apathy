@@ -16,6 +16,7 @@ make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install
 rm -rfv \
+ "${instdir}"/etc/irssi.conf    \
  "${instdir}"/usr/share/doc     \
  "${instdir}"/usr/share/man     \
  "${instdir}"/usr/include/irssi \
@@ -24,6 +25,7 @@ rm -rfv \
 doas -s
 make install
 rm -rfv \
+ /etc/irssi.conf    \
  /usr/share/doc     \
  /usr/share/man     \
  /usr/include/irssi \

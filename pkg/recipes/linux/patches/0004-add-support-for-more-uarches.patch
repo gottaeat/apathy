@@ -1,7 +1,7 @@
-From 876ec801759b13ff1d53c5c0386a7c6335c87fcb Mon Sep 17 00:00:00 2001
+From 1f2f0492177a822da240cdfd7c9befd4c0a712c0 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Wed, 3 Aug 2022 21:56:27 +0300
-Subject: [PATCH 07/12] add support for more uarches.
+Date: Mon, 5 Dec 2022 21:46:33 +0300
+Subject: [PATCH 4/9] add support for more uarches.
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--
@@ -439,7 +439,7 @@ index 542377cd4..22b919cdb 100644
  	default "4"
  
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index 7854685c5..ad47a4698 100644
+index bafbd905e..476ab926c 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
 @@ -150,8 +150,44 @@ else
@@ -574,5 +574,5 @@ index 75884d2cd..4e6a08d4c 100644
  #define MODULE_PROC_FAMILY "ELAN "
  #elif defined CONFIG_MCRUSOE
 -- 
-2.37.1
+2.38.1
 

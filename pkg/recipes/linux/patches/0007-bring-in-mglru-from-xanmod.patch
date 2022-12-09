@@ -1,7 +1,7 @@
-From 99653b81e9948260d60b9c49de14516dfce06071 Mon Sep 17 00:00:00 2001
+From 7639138df8dbf1a3c6abd8c1d686669762335165 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 14 Oct 2022 15:26:06 +0300
-Subject: [PATCH 6/8] mglru v15.
+Date: Mon, 5 Dec 2022 21:50:49 +0300
+Subject: [PATCH 7/9] bring in mglru from xanmod.
 
 ---
  arch/Kconfig                      |    8 +
@@ -14,7 +14,7 @@ Subject: [PATCH 6/8] mglru v15.
  include/linux/cgroup.h            |   15 +-
  include/linux/memcontrol.h        |   36 +
  include/linux/mm.h                |    5 +
- include/linux/mm_inline.h         |  231 ++-
+ include/linux/mm_inline.h         |  231 +-
  include/linux/mm_types.h          |   76 +
  include/linux/mmzone.h            |  214 ++
  include/linux/nodemask.h          |    1 +
@@ -37,9 +37,9 @@ Subject: [PATCH 6/8] mglru v15.
  mm/mmzone.c                       |    2 +
  mm/rmap.c                         |    6 +
  mm/swap.c                         |   54 +-
- mm/vmscan.c                       | 3234 +++++++++++++++++++++++++++--
+ mm/vmscan.c                       | 3235 +++++++++++++++++++++++++++--
  mm/workingset.c                   |  110 +-
- 35 files changed, 3917 insertions(+), 277 deletions(-)
+ 35 files changed, 3919 insertions(+), 276 deletions(-)
 
 diff --git a/arch/Kconfig b/arch/Kconfig
 index 8b311e400..bf19a84ff 100644
@@ -61,7 +61,7 @@ index 8b311e400..bf19a84ff 100644
  
  source "scripts/gcc-plugins/Kconfig"
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index b5df82aa9..71a1af42f 100644
+index d78e69293..edf6625ce 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
 @@ -1082,24 +1082,13 @@ static inline void update_mmu_cache(struct vm_area_struct *vma,
@@ -92,7 +92,7 @@ index b5df82aa9..71a1af42f 100644
  static inline bool pud_sect_supported(void)
  {
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index f9920f134..674d694a6 100644
+index 4728d3f5d..23f622578 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
 @@ -85,6 +85,7 @@ config X86
@@ -155,7 +155,7 @@ index a932d7712..8525f2876 100644
  			      unsigned long addr, pud_t *pudp)
  {
 diff --git a/fs/exec.c b/fs/exec.c
-index d046dbb9c..c67b12f0f 100644
+index 6f3d6fce1..b14e72e60 100644
 --- a/fs/exec.c
 +++ b/fs/exec.c
 @@ -1011,6 +1011,7 @@ static int exec_mmap(struct mm_struct *mm)
@@ -1055,7 +1055,7 @@ index 014ee8f0f..d9095251b 100644
  static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
  				       unsigned long address,
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index e7b2f8a5c..8cc46a789 100644
+index 8d82d6d32..76926a1ae 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
 @@ -914,6 +914,10 @@ struct task_struct {
@@ -1210,7 +1210,7 @@ index 0331f1461..96cd3ae25 100644
  
  endmenu
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index f42bb51e0..79e0b08b4 100644
+index 9558dbf39..970aca070 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
 @@ -2438,7 +2438,8 @@ static void __split_huge_page_tail(struct page *head, int tail,
@@ -1236,7 +1236,7 @@ index 785409805..a1fddea6b 100644
  void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *start_vma,
  		unsigned long floor, unsigned long ceiling);
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index b69979c9c..1c18d7c1c 100644
+index 6a95ea7c5..28048f30b 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
 @@ -2789,6 +2789,7 @@ static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
@@ -1303,7 +1303,7 @@ index b69979c9c..1c18d7c1c 100644
  	.post_attach = mem_cgroup_move_task,
  	.dfl_cftypes = memory_files,
 diff --git a/mm/memory.c b/mm/memory.c
-index a78814413..cd1b5bfd9 100644
+index de0dbe09b..4366349f8 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
 @@ -125,18 +125,6 @@ int randomize_va_space __read_mostly =
@@ -1325,7 +1325,7 @@ index a78814413..cd1b5bfd9 100644
  #ifndef arch_wants_old_prefaulted_pte
  static inline bool arch_wants_old_prefaulted_pte(void)
  {
-@@ -2870,7 +2858,7 @@ static inline bool __wp_page_copy_user(struct page *dst, struct page *src,
+@@ -2872,7 +2860,7 @@ static inline bool __wp_page_copy_user(struct page *dst, struct page *src,
  	 * On architectures with software "accessed" bits, we would
  	 * take a double page fault, so mark it accessed here.
  	 */
@@ -1334,7 +1334,7 @@ index a78814413..cd1b5bfd9 100644
  		pte_t entry;
  
  		vmf->pte = pte_offset_map_lock(mm, vmf->pmd, addr, &vmf->ptl);
-@@ -5120,6 +5108,27 @@ static inline void mm_account_fault(struct pt_regs *regs,
+@@ -5122,6 +5110,27 @@ static inline void mm_account_fault(struct pt_regs *regs,
  		perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS_MIN, 1, regs, address);
  }
  
@@ -1362,7 +1362,7 @@ index a78814413..cd1b5bfd9 100644
  /*
   * By the time we get here, we already hold the mm semaphore
   *
-@@ -5151,11 +5160,15 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
+@@ -5153,11 +5162,15 @@ vm_fault_t handle_mm_fault(struct vm_area_struct *vma, unsigned long address,
  	if (flags & FAULT_FLAG_USER)
  		mem_cgroup_enter_user_fault();
  
@@ -1539,7 +1539,7 @@ index 9cee7f6a3..0a3871a70 100644
  
  		folio_get(folio);
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 382dbe973..5e67dfbe1 100644
+index a69f32dd5..f03e7276a 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
 @@ -49,6 +49,10 @@
@@ -1591,7 +1591,7 @@ index 382dbe973..5e67dfbe1 100644
  		/*
  		 * The number of dirty pages determines if a node is marked
  		 * reclaim_congested. kswapd will stall and start writing
-@@ -2728,6 +2745,112 @@ enum scan_balance {
+@@ -2740,6 +2757,112 @@ enum scan_balance {
  	SCAN_FILE,
  };
  
@@ -1704,7 +1704,7 @@ index 382dbe973..5e67dfbe1 100644
  /*
   * Determine how aggressively the anon and file LRU lists should be
   * scanned.
-@@ -2947,152 +3070,2904 @@ static bool can_age_anon_pages(struct pglist_data *pgdat,
+@@ -2959,150 +3082,2905 @@ static bool can_age_anon_pages(struct pglist_data *pgdat,
  	return can_demote(pgdat->node_id, sc);
  }
  
@@ -1716,8 +1716,8 @@ index 382dbe973..5e67dfbe1 100644
 -	enum lru_list lru;
 -	unsigned long nr_reclaimed = 0;
 -	unsigned long nr_to_reclaim = sc->nr_to_reclaim;
+-	bool proportional_reclaim;
 -	struct blk_plug plug;
--	bool scan_adjusted;
 +#ifdef CONFIG_LRU_GEN
  
 -	get_scan_count(lruvec, sc, nr);
@@ -1746,8 +1746,8 @@ index 382dbe973..5e67dfbe1 100644
 -	 * abort proportional reclaim if either the file or anon lru has already
 -	 * dropped to zero at the first pass.
 -	 */
--	scan_adjusted = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
--			 sc->priority == DEF_PRIORITY);
+-	proportional_reclaim = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
+-				sc->priority == DEF_PRIORITY);
 +#define LRU_REFS_FLAGS	(BIT(PG_referenced) | BIT(PG_workingset))
  
 -	blk_start_plug(&plug);
@@ -1782,7 +1782,7 @@ index 382dbe973..5e67dfbe1 100644
 +{
 +	struct pglist_data *pgdat = NODE_DATA(nid);
  
--		if (nr_reclaimed < nr_to_reclaim || scan_adjusted)
+-		if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
 -			continue;
 +#ifdef CONFIG_MEMCG
 +	if (memcg) {
@@ -1852,16 +1852,10 @@ index 382dbe973..5e67dfbe1 100644
 -		nr_scanned = targets[lru] - nr[lru];
 -		nr[lru] = targets[lru] * (100 - percentage) / 100;
 -		nr[lru] -= min(nr[lru], nr_scanned);
-+	return mem_cgroup_swappiness(memcg);
-+}
- 
--		scan_adjusted = true;
 -	}
 -	blk_finish_plug(&plug);
 -	sc->nr_reclaimed += nr_reclaimed;
-+static int get_nr_gens(struct lruvec *lruvec, int type)
-+{
-+	return lruvec->lrugen.max_seq - lruvec->lrugen.min_seq[type] + 1;
++	return mem_cgroup_swappiness(memcg);
 +}
  
 -	/*
@@ -1872,32 +1866,37 @@ index 382dbe973..5e67dfbe1 100644
 -	    inactive_is_low(lruvec, LRU_INACTIVE_ANON))
 -		shrink_active_list(SWAP_CLUSTER_MAX, lruvec,
 -				   sc, LRU_ACTIVE_ANON);
-+static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
++static int get_nr_gens(struct lruvec *lruvec, int type)
 +{
-+	/* see the comment on lru_gen_struct */
-+	return get_nr_gens(lruvec, LRU_GEN_FILE) >= MIN_NR_GENS &&
-+	       get_nr_gens(lruvec, LRU_GEN_FILE) <= get_nr_gens(lruvec, LRU_GEN_ANON) &&
-+	       get_nr_gens(lruvec, LRU_GEN_ANON) <= MAX_NR_GENS;
++	return lruvec->lrugen.max_seq - lruvec->lrugen.min_seq[type] + 1;
  }
  
 -/* Use reclaim/compaction for costly allocs or under memory pressure */
 -static bool in_reclaim_compaction(struct scan_control *sc)
-+/******************************************************************************
-+ *                          mm_struct list
-+ ******************************************************************************/
-+
-+static struct lru_gen_mm_list *get_mm_list(struct mem_cgroup *memcg)
++static bool __maybe_unused seq_is_valid(struct lruvec *lruvec)
  {
 -	if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
 -			(sc->order > PAGE_ALLOC_COSTLY_ORDER ||
 -			 sc->priority < DEF_PRIORITY - 2))
 -		return true;
++	/* see the comment on lru_gen_struct */
++	return get_nr_gens(lruvec, LRU_GEN_FILE) >= MIN_NR_GENS &&
++	       get_nr_gens(lruvec, LRU_GEN_FILE) <= get_nr_gens(lruvec, LRU_GEN_ANON) &&
++	       get_nr_gens(lruvec, LRU_GEN_ANON) <= MAX_NR_GENS;
++}
+ 
+-	return false;
++/******************************************************************************
++ *                          mm_struct list
++ ******************************************************************************/
++
++static struct lru_gen_mm_list *get_mm_list(struct mem_cgroup *memcg)
++{
 +	static struct lru_gen_mm_list mm_list = {
 +		.fifo = LIST_HEAD_INIT(mm_list.fifo),
 +		.lock = __SPIN_LOCK_UNLOCKED(mm_list.lock),
 +	};
- 
--	return false;
++
 +#ifdef CONFIG_MEMCG
 +	if (memcg)
 +		return &memcg->mm_list;
@@ -3153,6 +3152,8 @@ index 382dbe973..5e67dfbe1 100644
 +	if (wq_has_sleeper(&lruvec->mm_state.wait))
 +		wake_up_all(&lruvec->mm_state.wait);
 +
++	wakeup_flusher_threads(WB_REASON_VMSCAN);
++
 +	return true;
 +}
 +
@@ -3816,7 +3817,7 @@ index 382dbe973..5e67dfbe1 100644
 +	DEFINE_MAX_SEQ(lruvec);
 +
 +	if (!current_is_kswapd()) {
-+		/* age each memcg at most once to ensure fairness */
++		/* age each memcg once to ensure fairness */
 +		if (max_seq - seq > 1)
 +			return true;
 +
@@ -3841,9 +3842,10 @@ index 382dbe973..5e67dfbe1 100644
 +
 +	/*
 +	 * A minimum amount of work was done under global memory pressure. For
-+	 * kswapd, it may be overshooting. For direct reclaim, the allocation
-+	 * may succeed if all suitable zones are somewhat safe. In either case,
-+	 * it's better to stop now, and restart later if necessary.
++	 * kswapd, it may be overshooting. For direct reclaim, the target isn't
++	 * met, and yet the allocation may still succeed, since kswapd may have
++	 * caught up. In either case, it's better to stop now, and restart if
++	 * necessary.
 +	 */
 +	for (i = 0; i <= sc->reclaim_idx; i++) {
 +		unsigned long wmark;
@@ -4584,8 +4586,8 @@ index 382dbe973..5e67dfbe1 100644
 +	enum lru_list lru;
 +	unsigned long nr_reclaimed = 0;
 +	unsigned long nr_to_reclaim = sc->nr_to_reclaim;
++	bool proportional_reclaim;
 +	struct blk_plug plug;
-+	bool scan_adjusted;
 +
 +	if (lru_gen_enabled()) {
 +		lru_gen_shrink_lruvec(lruvec, sc);
@@ -4608,8 +4610,8 @@ index 382dbe973..5e67dfbe1 100644
 +	 * abort proportional reclaim if either the file or anon lru has already
 +	 * dropped to zero at the first pass.
 +	 */
-+	scan_adjusted = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
-+			 sc->priority == DEF_PRIORITY);
++	proportional_reclaim = (!cgroup_reclaim(sc) && !current_is_kswapd() &&
++				sc->priority == DEF_PRIORITY);
 +
 +	blk_start_plug(&plug);
 +	while (nr[LRU_INACTIVE_ANON] || nr[LRU_ACTIVE_FILE] ||
@@ -4629,7 +4631,7 @@ index 382dbe973..5e67dfbe1 100644
 +
 +		cond_resched();
 +
-+		if (nr_reclaimed < nr_to_reclaim || scan_adjusted)
++		if (nr_reclaimed < nr_to_reclaim || proportional_reclaim)
 +			continue;
 +
 +		/*
@@ -4680,8 +4682,6 @@ index 382dbe973..5e67dfbe1 100644
 +		nr_scanned = targets[lru] - nr[lru];
 +		nr[lru] = targets[lru] * (100 - percentage) / 100;
 +		nr[lru] -= min(nr[lru], nr_scanned);
-+
-+		scan_adjusted = true;
 +	}
 +	blk_finish_plug(&plug);
 +	sc->nr_reclaimed += nr_reclaimed;
@@ -4730,7 +4730,7 @@ index 382dbe973..5e67dfbe1 100644
  	 * Stop if we failed to reclaim any pages from the last SWAP_CLUSTER_MAX
  	 * number of pages that were scanned. This will return to the caller
  	 * with the risk reclaim/compaction and the resulting allocation attempt
-@@ -3197,109 +6072,16 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
+@@ -3207,109 +6085,16 @@ static void shrink_node(pg_data_t *pgdat, struct scan_control *sc)
  	unsigned long nr_reclaimed, nr_scanned;
  	struct lruvec *target_lruvec;
  	bool reclaimable = false;
@@ -4841,7 +4841,7 @@ index 382dbe973..5e67dfbe1 100644
  
  	shrink_node_memcgs(pgdat, sc);
  
-@@ -3557,6 +6339,9 @@ static void snapshot_refaults(struct mem_cgroup *target_memcg, pg_data_t *pgdat)
+@@ -3567,6 +6352,9 @@ static void snapshot_refaults(struct mem_cgroup *target_memcg, pg_data_t *pgdat)
  	struct lruvec *target_lruvec;
  	unsigned long refaults;
  
@@ -4851,7 +4851,7 @@ index 382dbe973..5e67dfbe1 100644
  	target_lruvec = mem_cgroup_lruvec(target_memcg, pgdat);
  	refaults = lruvec_page_state(target_lruvec, WORKINGSET_ACTIVATE_ANON);
  	target_lruvec->refaults[0] = refaults;
-@@ -3923,12 +6708,16 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
+@@ -3933,12 +6721,16 @@ unsigned long try_to_free_mem_cgroup_pages(struct mem_cgroup *memcg,
  }
  #endif
  
@@ -4870,7 +4870,7 @@ index 382dbe973..5e67dfbe1 100644
  	if (!can_age_anon_pages(pgdat, sc))
  		return;
  
-@@ -4248,12 +7037,11 @@ restart:
+@@ -4258,12 +7050,11 @@ restart:
  		sc.may_swap = !nr_boost_reclaim;
  
  		/*
@@ -5038,5 +5038,5 @@ index a5e84862f..ae7e984b2 100644
  	rcu_read_lock();
  	/*
 -- 
-2.38.0
+2.38.1
 

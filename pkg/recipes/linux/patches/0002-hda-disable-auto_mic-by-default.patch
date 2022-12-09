@@ -1,7 +1,7 @@
-From 680112f98b7853c9382d8dba3702faccd405f66f Mon Sep 17 00:00:00 2001
+From 00bd0cdda2c4e2e2a8427218b646ff9a9e17e0cf Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 14 Oct 2022 15:24:32 +0300
-Subject: [PATCH 2/8] hda: disable auto_mic by default.
+Date: Mon, 5 Dec 2022 21:46:00 +0300
+Subject: [PATCH 2/9] hda: disable auto_mic by default.
 
 ---
  sound/pci/hda/hda_generic.c | 2 +-
@@ -21,5 +21,5 @@ index fc114e522..89633b2c7 100644
  		spec->suppress_auto_mic = !val;
  	val = snd_hda_get_bool_hint(codec, "line_in_auto_switch");
 -- 
-2.38.0
+2.38.1
 

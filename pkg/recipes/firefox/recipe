@@ -25,268 +25,44 @@ export    MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE="system"
 
 mimup
 
-myxconf(){
- ./configure \
-  --build=$CBUILD             \
-  --host=$CHOST               \
-  --prefix="${penis}"         \
-  --enable-static             \
-  --disable-shared            \
-  --sysconfdir=/etc           \
-  --localstatedir=/var        \
-  --enable-malloc0returnsnull \
-  --without-fop               \
-  --without-glib              \
-  --without-perl              \
-  --without-xmlto             \
-  --without-xsltproc          \
-  --disable-specs             \
-  --disable-unit-tests
-}
+# 2 > extraction
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-ff-prereq-*.tar.zst
 
-# 2 > apulse
-tar xf /mss/work/sauces/apulse-6c4ce36b.tar.zst
-cd     apulse-6c4ce36b/
-
-cleancmake
-
-mkdir build
-cd    build
-
-cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
- -DCMAKE_C_FLAGS="$CFLAGS"              \
- -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
- -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
- -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
- -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
- -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
-..
-
-samu
-samu install
-
-cd ../../; rm -rf apulse-6c4ce36b/
-
-mkdir "${penis}"/lib/pkgconfig
-
-fdir="/mss/repo/pkg/recipes/firefox/files"
-cp "${fdir}"/*.pc "${penis}"/lib/pkgconfig
-
-# 3 > retard wayland
-tar xf /mss/work/sauces/wayland-1.21.0.tar.xz
-cd     wayland-1.21.0/
-
-mkdir build
-cd    build
-
-meson --buildtype=plain \
- --prefix="${penis}"    \
- -Ddefault_library=both \
- -Dtests=false          \
- -Ddocumentation=false  \
- -Ddtd_validation=false \
- ..
-
-samu
-samu install
-
-cd ../../; rm -rf wayland-1.21.0/
-
-# 4 > retard wayland-protocols
-tar xf /mss/work/sauces/wayland-protocols-1.26.tar.xz
-cd     wayland-protocols-1.26/
-
-mkdir build
-cd    build
-
-meson --buildtype=plain \
- --prefix="${penis}"    \
- -Dtests=false          \
- ..
-
-samu
-samu install
-
-cd ../../; rm -rf wayland-protocols-1.26/
-
-# 5 > retard libxkbcommon
-tar xf /mss/work/sauces/libxkbcommon-1.4.1.tar.xz
-cd     libxkbcommon-1.4.1/
-
-mkdir build
-cd    build
-
-meson --buildtype=plain \
- --prefix="${penis}"        \
- -Ddefault_library=both     \
- -Denable-docs=false        \
- -Denable-wayland=true      \
- -Denable-x11=false         \
- -Denable-xkbregistry=false \
- ..
-
-samu
-samu install
-
-cd ../../; rm -rf libxkbcommon-1.4.1/
-
-# 6 > dummy gtk3
-tar xf /mss/work/sauces/gtk%2B-3.24.34.tar.xz
-cd     gtk+-3.24.34/
-
-sed -i -e '/atkbridge_dep/d;/atk-bridge-2.0/d'           meson.build
-sed -i -e '/atkbridge_dep,/d'                            gtk/meson.build
-sed -i -e '/<atk-bridge.h>/d;/atk_bridge_adaptor_init/d' gtk/a11y/gtkaccessibility.c
-
-cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained.css
-
-mkdir build
-cd    build
-
-meson --buildtype=plain \
- --prefix="${penis}"      \
-\
- -Dx11_backend=true       \
- -Dwayland_backend=true   \
- -Dbroadway_backend=false \
- -Dwin32_backend=false    \
- -Dquartz_backend=false   \
-\
- -Dxinerama=yes           \
- -Dcloudproviders=false   \
- -Dprofiler=false         \
- -Dtracker3=false         \
-\
- -Dprint_backends=file    \
- -Dcolord=no              \
-\
- -Dgtk_doc=false          \
- -Dman=false              \
- -Dintrospection=false    \
-\
- -Ddemos=false            \
- -Dexamples=false         \
- -Dtests=false            \
- -Dinstalled_tests=false  \
-\
- -Dbuiltin_immodules=yes  \
-..
-
-samu
-samu install
-
-cd ../../; rm -rf gtk+-3.24.34/
-
-# 7 > static libXt
-tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
-cd     libXt-1.2.1/
-
-myxconf
-
-make
-make install
-
-cd ../; rm -rf libXt-1.2.1/
-
-# 8 > static libXtst
-tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
-cd     libXtst-1.2.3/
-
-myxconf
-
-make
-make install
-
-cd ../; rm -rf libXtst-1.2.3/
-
-# 9 > autoconf 2.13
-tar xf /mss/work/sauces/autoconf-2.13.tar.gz
-cd     autoconf-2.13/
-
-configtomusl
-
-./configure \
- --build=$CBUILD     \
- --host=$CHOST       \
- --prefix="${penis}" \
- --program-suffix="-2.13"
-
-make
-make install
-
-cd ../; rm -rf autoconf-2.13/
-
-# 10 > yasm
-tar xf /mss/work/sauces/yasm-1.3.0.tar.gz
-cd     yasm-1.3.0/
-
-configtomusl
-
-./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix="${penis}"
-
-make
-make install
-
-cd ../; rm -rf yasm-1.3.0/
-
-# 11 > zip
-tar xf /mss/work/sauces/zip30.tar.gz
-cd     zip30/
-
-make LOCAL_ZIP="${CFLAGS}" -f unix/Makefile generic
-make prefix="${penis}"     -f unix/Makefile install
-
-cd ../; rm -rf zip30/
-
-# 12 > extraction
 tar xf /mss/work/sauces/firefox-102.5.0esr.source.tar.xz
 cd     firefox-102.5.0/
 
-# 13 > apply patches
+# 3 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 14 > nuke undesried requests
+# 4 > nuke undesried requests
 for i in `grep firefox\\.settings\\.services\\.mozilla\\.com -r . -l 2>/dev/null`; do
  sed -i -e 's/firefox\.settings\.services\.mozilla\.com/f.s.s.m.c.qjz9zk/g' "${i}"
 done
 
-# 15 > nuke addons and pocket
+# 5 > nuke addons and pocket
 rm -rf \
  browser/components/pocket                                           \
  browser/extensions/{doh-rollout,pictureinpicture,report-site-issue} \
  browser/extensions/{screenshots,search-detection,webcompat}
 
-# 16 > clear sums
+# 6 > clear sums
 for sum in target-lexicon-0.9.0 bindgen; do
  sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
 done
 
-# 17 > clear the default bookmarks
+# 7 > clear the default bookmarks
+fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/default-bookmarks.html browser/base/content/default-bookmarks.html
 
-# 18 > clear search engines
+# 8 > clear search engines
+fdir="/mss/repo/pkg/recipes/firefox/files"
 cp -vf "${fdir}"/search-config.json services/settings/dumps/main/search-config.json
 
-# 19 > remove prebuilt binaries
+# 9 > remove prebuilt binaries
 find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
-# 20 > start the build
+# 10 > start the build
 cp -v "${fdir}"/mozconfig .
 _echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
 sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g;s/JOBCOUNTREPLACE/${ajobcount}/g" \
@@ -298,7 +74,7 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 
 time ./mach build
 
-# 21 > install
+# 11 > install
 instdir="${PWD}/KEK/opt/firefox-102.5.0esr"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
