@@ -1,5 +1,3 @@
-/etc/irssi.conf
-
 /usr/bin/irssi
 
 /usr/lib/irssi

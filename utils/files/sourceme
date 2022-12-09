@@ -15,11 +15,14 @@ mypath="$mypath:/opt/torshit/bin"
 mypath="$mypath:/opt/spoofshit/bin"
 mypath="$mypath:/opt/go-1.18.3/bin"
 mypath="$mypath:/opt/qemu-7.1.0/bin"
+mypath="$mypath:/opt/fflibs/bin"
 
 mylibpath="/opt/llvm-15.0.5/lib"
 mylibpath="$mylibpath:/opt/rustc-1.65.0/lib"
 mylibpath="$mylibpath:/opt/mimalloc-2.0.2/lib"
+mylibpath="$mylibpath:/opt/fflibs/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
+mypkgconfigpath="${mypkgconfigpath}:/opt/fflibs/lib/pkgconfig"
 
 # 1.2 > essentials
 export            PATH="$mypath"
