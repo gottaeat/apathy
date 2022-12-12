@@ -1,6 +1,6 @@
 /lib
 /usr/lib
 /opt/fflibs/lib
-/opt/llvm-15.0.5/lib
+/opt/llvm-15.0.6/lib
 /opt/mimalloc-2.0.2/lib
 /opt/rustc-1.65.0/lib
