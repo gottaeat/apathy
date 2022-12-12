@@ -4,7 +4,7 @@ option('fontname',
 )
 option('dmenufontsize',
  type: 'integer',
- value: 14
+ value: 10
 )
 option('dwmfontsize',
  type: 'integer',
@@ -12,5 +12,5 @@ option('dwmfontsize',
 )
 option('stfontsize',
  type: 'integer',
- value: 14
+ value: 10
 )

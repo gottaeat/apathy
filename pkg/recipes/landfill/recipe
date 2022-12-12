@@ -2,9 +2,9 @@
 case "${amachine}" in
  x230)
   fname="xos4 Terminus"
-  dmsz="14"
+  dmsz="10"
   dwsz="10"
-  stsz="14"
+  stsz="10"
  ;;
 esac
 
