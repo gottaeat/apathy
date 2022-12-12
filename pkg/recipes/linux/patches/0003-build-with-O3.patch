@@ -1,7 +1,7 @@
-From da322771807eabeeb065350d362f53261fd96c97 Mon Sep 17 00:00:00 2001
+From 9fab45a5aa350c6b0b06a3b3ceb9160f1e14aa9b Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:46:17 +0300
-Subject: [PATCH 3/9] build with O3.
+Date: Mon, 12 Dec 2022 02:29:07 +0300
+Subject: [PATCH 3/7] build with O3.
 
 ---
  Makefile     | 6 +++---
@@ -9,10 +9,10 @@ Subject: [PATCH 3/9] build with O3.
  2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 9fecb094c..f6d384042 100644
+index 997b67722..cd7562fe1 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -442,13 +442,13 @@ endif
+@@ -452,7 +452,7 @@ HOSTRUSTC = rustc
  HOSTPKG_CONFIG	= pkg-config
  
  KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
@@ -21,27 +21,29 @@ index 9fecb094c..f6d384042 100644
  			 -Wdeclaration-after-statement
  KBUILD_USERCFLAGS  := $(KBUILD_USERHOSTCFLAGS) $(USERCFLAGS)
  KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+@@ -474,7 +474,7 @@ export rust_common_flags := --edition=2021 \
+ 			    -Wclippy::dbg_macro
  
  KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
 -KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
 +KBUILD_HOSTCXXFLAGS := -Wall -O3 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+ KBUILD_HOSTRUSTFLAGS := $(rust_common_flags) -O -Cstrip=debuginfo \
+ 			-Zallow-features= $(HOSTRUSTFLAGS)
  KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
- KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
- 
-@@ -757,7 +757,7 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
+@@ -821,7 +821,7 @@ KBUILD_CFLAGS	+= $(call cc-disable-warning, format-overflow)
  KBUILD_CFLAGS	+= $(call cc-disable-warning, address-of-packed-member)
  
  ifdef CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE
 -KBUILD_CFLAGS += -O2
 +KBUILD_CFLAGS += -O3
+ KBUILD_RUSTFLAGS += -Copt-level=2
  else ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
  KBUILD_CFLAGS += -Os
- endif
 diff --git a/init/Kconfig b/init/Kconfig
-index d1d779d6b..5bbe973d6 100644
+index 94125d3b6..95b8078ad 100644
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -1401,10 +1401,10 @@ choice
+@@ -1408,10 +1408,10 @@ choice
  	default CC_OPTIMIZE_FOR_PERFORMANCE
  
  config CC_OPTIMIZE_FOR_PERFORMANCE

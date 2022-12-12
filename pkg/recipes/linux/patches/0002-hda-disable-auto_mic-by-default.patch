@@ -1,7 +1,7 @@
-From 00bd0cdda2c4e2e2a8427218b646ff9a9e17e0cf Mon Sep 17 00:00:00 2001
+From 8af83b143bada3b5f4df734383fadc4e9c86c2cd Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:46:00 +0300
-Subject: [PATCH 2/9] hda: disable auto_mic by default.
+Date: Mon, 12 Dec 2022 02:25:46 +0300
+Subject: [PATCH 2/7] hda: disable auto_mic by default.
 
 ---
  sound/pci/hda/hda_generic.c | 2 +-

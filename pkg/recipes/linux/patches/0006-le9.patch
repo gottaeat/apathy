@@ -1,7 +1,7 @@
-From aaa14b0697a2932f5c3fabc44244b837da430fde Mon Sep 17 00:00:00 2001
+From 36e3d7f46d4831fc44653913300310dcde41e2cb Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:51:33 +0300
-Subject: [PATCH 8/9] le9.
+Date: Mon, 12 Dec 2022 02:33:49 +0300
+Subject: [PATCH 6/7] le9.
 
 ---
  include/linux/mm.h |  4 ++
@@ -11,7 +11,7 @@ Subject: [PATCH 8/9] le9.
  4 files changed, 179 insertions(+)
 
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 88976a521..12df27f53 100644
+index 974ccca60..5c684cf41 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
 @@ -197,6 +197,10 @@ static inline void __mm_zero_struct_page(struct page *page)
@@ -26,10 +26,10 @@ index 88976a521..12df27f53 100644
  extern unsigned long sysctl_admin_reserve_kbytes;
  
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 205d605ca..850be6952 100644
+index c6d9dec11..15591b7c0 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -2406,6 +2406,27 @@ static struct ctl_table vm_table[] = {
+@@ -2416,6 +2416,27 @@ static struct ctl_table vm_table[] = {
  		.extra2		= SYSCTL_ONE,
  	},
  #endif
@@ -58,10 +58,10 @@ index 205d605ca..850be6952 100644
  		.procname	= "user_reserve_kbytes",
  		.data		= &sysctl_user_reserve_kbytes,
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 96cd3ae25..0f0c037b4 100644
+index 57e1d8c5b..f95fb1bde 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -441,6 +441,69 @@ config SPARSEMEM_VMEMMAP
+@@ -435,6 +435,69 @@ config SPARSEMEM_VMEMMAP
  	  pfn_to_page and page_to_pfn operations.  This is the most
  	  efficient option when sufficient kernel resources are available.
  
@@ -132,11 +132,11 @@ index 96cd3ae25..0f0c037b4 100644
  	bool
  
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f03e7276a..c2e3e629d 100644
+index 8fcc5fa76..36ae78570 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -130,6 +130,15 @@ struct scan_control {
- 	/* The file pages on the current node are dangerously low */
+@@ -131,6 +131,15 @@ struct scan_control {
+ 	/* The file folios on the current node are dangerously low */
  	unsigned int file_is_tiny:1;
  
 +	/* The anonymous pages on the current node are below vm.anon_min_kbytes */
@@ -151,7 +151,7 @@ index f03e7276a..c2e3e629d 100644
  	/* Always discard instead of demoting to lower tier memory */
  	unsigned int no_demotion:1;
  
-@@ -185,6 +194,10 @@ struct scan_control {
+@@ -186,6 +195,10 @@ struct scan_control {
  #define prefetchw_prev_lru_folio(_folio, _base, _field) do { } while (0)
  #endif
  
@@ -162,7 +162,7 @@ index f03e7276a..c2e3e629d 100644
  /*
   * From 0 .. 200.  Higher means more swappy.
   */
-@@ -2757,6 +2770,54 @@ enum scan_balance {
+@@ -2782,6 +2795,54 @@ enum scan_balance {
  	SCAN_FILE,
  };
  
@@ -217,7 +217,7 @@ index f03e7276a..c2e3e629d 100644
  static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
  {
  	unsigned long file;
-@@ -2861,6 +2922,8 @@ static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
+@@ -2886,6 +2947,8 @@ static void prepare_scan_count(pg_data_t *pgdat, struct scan_control *sc)
  			!(sc->may_deactivate & DEACTIVATE_ANON) &&
  			anon >> sc->priority;
  	}
@@ -226,7 +226,7 @@ index f03e7276a..c2e3e629d 100644
  }
  
  /*
-@@ -2919,6 +2982,15 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
+@@ -2944,6 +3007,15 @@ static void get_scan_count(struct lruvec *lruvec, struct scan_control *sc,
  		goto out;
  	}
  
@@ -242,7 +242,7 @@ index f03e7276a..c2e3e629d 100644
  	/*
  	 * If there is enough inactive page cache, we do not reclaim
  	 * anything from the anonymous working right now.
-@@ -3063,6 +3135,25 @@ out:
+@@ -3088,6 +3160,25 @@ out:
  			BUG();
  		}
  

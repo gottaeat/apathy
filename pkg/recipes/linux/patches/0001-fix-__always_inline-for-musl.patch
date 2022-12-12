@@ -1,7 +1,7 @@
-From 87169b92698a9fedb6bfd2a4bd3506539ba2c9cb Mon Sep 17 00:00:00 2001
+From aaa5631366187434dd20886dd89daacfd06afcd6 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:45:34 +0300
-Subject: [PATCH 1/9] fix __always_inline for musl.
+Date: Mon, 12 Dec 2022 02:25:19 +0300
+Subject: [PATCH 1/7] fix __always_inline for musl.
 
 ---
  include/uapi/linux/swab.h | 2 +-

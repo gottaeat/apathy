@@ -1,7 +1,7 @@
-From 2daa937f608925e8a402859fdc52f15addedb63d Mon Sep 17 00:00:00 2001
+From d635197085b08ea0109659b70c1c99ad99e5b3a4 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:52:45 +0300
-Subject: [PATCH 9/9] iwlwifi: enable 11n + 11ac, disable mimo, force enable
+Date: Mon, 12 Dec 2022 02:34:22 +0300
+Subject: [PATCH 7/7] iwlwifi: enable 11n + 11ac, disable mimo, force enable
  siso.
 
 ---

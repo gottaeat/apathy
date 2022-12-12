@@ -1,7 +1,7 @@
-From 1f2f0492177a822da240cdfd7c9befd4c0a712c0 Mon Sep 17 00:00:00 2001
+From c2eae79af1864c997fae5a69e1b707f33c5f0d2d Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 5 Dec 2022 21:46:33 +0300
-Subject: [PATCH 4/9] add support for more uarches.
+Date: Mon, 12 Dec 2022 02:29:33 +0300
+Subject: [PATCH 4/7] add support for more uarches.
 
 ---
  arch/x86/Kconfig.cpu            | 332 ++++++++++++++++++++++++++++++--
@@ -439,10 +439,10 @@ index 542377cd4..22b919cdb 100644
  	default "4"
  
 diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-index bafbd905e..476ab926c 100644
+index 415a5d138..8874025e0 100644
 --- a/arch/x86/Makefile
 +++ b/arch/x86/Makefile
-@@ -150,8 +150,44 @@ else
+@@ -151,8 +151,44 @@ else
          # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
          cflags-$(CONFIG_MK8)		+= -march=k8
          cflags-$(CONFIG_MPSC)		+= -march=nocona
