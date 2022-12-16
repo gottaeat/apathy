@@ -182,7 +182,7 @@ i  1  .      libunwind            15.0.6
 i  1  .      lld                  15.0.6
 i  1  .      llvm                 15.0.6
 i  1  .      openmp               15.0.6
-i  2  .      firefox              102.5.0esr
+i  1  .      firefox              102.6.0esr
 i  1  ..     icu                  72.1
 I  1  ..     nss                  3.85
 i  1  ...    nspr                 4.35
