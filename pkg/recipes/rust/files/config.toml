@@ -36,12 +36,13 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.65.0'
+prefix                = '/opt/rustc-1.66.0'
 
 [rust]
 channel               = 'stable'
 description           = 'apathy'
 
+lto                   = 'thin'
 optimize              = true
 codegen-units         = 1
 codegen-units-std     = 1
@@ -73,7 +74,7 @@ debuginfo-level-tools = 0
 debuginfo-level-tests = 0
 
 [target.x86_64-apathy-linux-musl]
-llvm-config           = '/opt/llvm-15.0.5/bin/llvm-config'
+llvm-config           = '/opt/llvm-15.0.6/bin/llvm-config'
 crt-static            = false
 
 cc                    = 'clang'
