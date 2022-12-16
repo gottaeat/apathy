@@ -1,0 +1,25 @@
+From 0690ba61fc34b081e1d59cfd13902809dbc56362 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Mon, 12 Dec 2022 11:33:11 +0300
+Subject: [PATCH 2/3] fix includes.
+
+---
+ tools/vgimportdevices.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/vgimportdevices.c b/tools/vgimportdevices.c
+index ab359d3..e6160e3 100644
+--- a/tools/vgimportdevices.c
++++ b/tools/vgimportdevices.c
+@@ -16,6 +16,8 @@
+ #include "lib/cache/lvmcache.h"
+ #include "lib/device/device_id.h"
+ 
++#include <sys/file.h>
++
+ struct vgimportdevices_params {
+ 	uint32_t added_devices;
+ };
+-- 
+2.38.1
+

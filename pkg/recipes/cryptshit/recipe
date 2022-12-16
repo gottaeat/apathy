@@ -17,6 +17,10 @@ mv \
  util-linux-2.37.2-static-libs/* \
  "${penis}"/lib
 
+rm -rfv \
+ openssl-3.0.7-static-libs/ \
+ util-linux-2.37.2-static-libs/
+
 # 2 > libaio
 tar xf /mss/work/sauces/libaio-0.3.112.tar.gz
 cd     libaio-0.3.112/
@@ -122,16 +126,14 @@ rm -rfv "${penis}"/lib/libargon2.so*
 cd ../; rm -rf phc-winner-argon2-20190702/
 
 # 6 > lvm2
-tar xf /mss/work/sauces/LVM2.2.02.188.tgz
-cd     LVM2.2.02.188/
+tar xf /mss/work/sauces/LVM2.2.03.17.tgz
+cd     LVM2.2.03.17/
 
 pdir="/mss/repo/pkg/recipes/cryptshit/patches"
-patch -p1 < "${pdir}"/0002-lvm2-mallinfo.patch
-patch -p1 < "${pdir}"/0003-lvm2-stdio.patch
-patch -p1 < "${pdir}"/0004-lvm2-mlockall.patch
-patch -p1 < "${pdir}"/0005-lvm2-bashism.patch
+patch -p1 < "${pdir}"/0002-lvm2-fix-stdio-usage.patch
+patch -p1 < "${pdir}"/0003-lvm2-fix-includes.patch
+patch -p1 < "${pdir}"/0004-lvm2-set-cache-backup-archive-paths-to-run-lvm.patch
 
-sed -i -e 's/fmt -1/tr " " "\\n"/' make.tmpl.in
 sed -i -e "s|<libaio.h>|\"${penis}\/include\/libaio.h\"|g" lib/device/bcache.c
 
 export      MKDIR_P="install -d"
@@ -149,12 +151,19 @@ export CONFIG_SHELL=/bin/sh
  --with-usrlibdir="${findir}"/lib          \
  --with-usrsbindir="${findir}"/bin         \
 \
- --with-cluster=none                       \
- --with-snapshots=none                     \
- --with-mirrors=none                       \
- --with-thin=none                          \
+ --with-tmpfilesdir=/tmp                   \
+ --with-default-dm-run-dir=/run            \
+ --with-default-locking-dir=/run/lock/lvm  \
+ --with-default-pid-dir=/run               \
+ --with-default-run-dir=/run/lvm           \
+\
  --with-cache=none                         \
- --with-clvmd=none                         \
+ --with-integrity=none                     \
+ --with-mirrors=none                       \
+ --with-snapshots=none                     \
+ --with-thin=none                          \
+ --with-vdo=none                           \
+ --with-writecache=none                    \
 \
  --enable-ioctl                            \
  --enable-o_direct                         \
@@ -163,36 +172,35 @@ export CONFIG_SHELL=/bin/sh
  --enable-static_link                      \
  --enable-devmapper                        \
 \
- --disable-applib                          \
+ --disable-app-machineid                   \
  --disable-blkdeactivate                   \
  --disable-blkid_wiping                    \
  --disable-cmdlib                          \
  --disable-cmirrord                        \
- --disable-compat                          \
  --disable-dbus-service                    \
  --disable-debug                           \
  --disable-dmeventd                        \
  --disable-dmfilemapd                      \
  --disable-fsadm                           \
- --disable-lvmetad                         \
+ --disable-lvmimportvdo                    \
  --disable-lvmlockd-dlm                    \
+ --disable-lvmlockd-dlmcontrol             \
+ --disable-lvmlockd-idm                    \
  --disable-lvmlockd-sanlock                \
  --disable-lvmpolld                        \
  --disable-nls                             \
  --disable-notify-dbus                     \
  --disable-ocf                             \
  --disable-profiling                       \
- --disable-python2_bindings                \
- --disable-python3_bindings                \
- --disable-python_bindings                 \
  --disable-readline                        \
  --disable-selinux                         \
+ --disable-symvers                         \
+ --disable-systemd-journal                 \
  --disable-udev-rule-exec-detection        \
  --disable-udev-systemd-background-jobs    \
  --disable-udev_rules                      \
  --disable-udev_sync                       \
  --disable-units-compat                    \
- --disable-use-lvmetad                     \
  --disable-use-lvmlockd                    \
  --disable-use-lvmpolld                    \
  --disable-valgrind-pool                   \
@@ -211,16 +219,14 @@ mv      "${instdir}${findir}"/bin/lvm.static             ../cryptshit/bin/lvm
 mv      "${instdir}${findir}"/lvm                        ../cryptshit/
 ln -sfv dmsetup                                          ../cryptshit/bin/dmstats
 
-mkdir   ../cryptshit/lvm/cache
-touch   ../cryptshit/lvm/cache/.cache
-rm -rf  ../cryptshit/lvm/{profile/,lvmlocal.conf}
+rm -rf  ../cryptshit/lvm/
 
 cp      "${instdir}${findir}"/include/libdevmapper.h     "${penis}"/include/
 cp      "${instdir}${findir}"/lib/libdevmapper.a         "${penis}"/lib
 cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${penis}"/lib/pkgconfig
 
-mkdir lvm2-2.02.188-static-libs/{include,lib/pkgconfig}
-pkgupdir="lvm2-2.02.188-static-libs"
+mkdir lvm2-2.03.17-static-libs/{include,lib/pkgconfig}
+pkgupdir="lvm2-2.03.17-static-libs"
 cp      "${instdir}${findir}"/include/libdevmapper.h     "${pkgupdir}"/include/
 cp      "${instdir}${findir}"/lib/libdevmapper.a         "${pkgupdir}"/lib
 cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${pkgupdir}"/lib/pkgconfig
@@ -229,11 +235,13 @@ pkgup "${pkgupdir}" "${amachine}"-"${pkgupdir}"
 mv    "${amachine}"-"${pkgupdir}".tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
 
-cd ../; rm -rf LVM2.2.02.188/
+cd ../; rm -rf LVM2.2.03.17
 
 # 8 > cryptsetup
-tar xf /mss/work/sauces/cryptsetup-2.5.0.tar.gz
-cd     cryptsetup-2.5.0/
+tar xf /mss/work/sauces/cryptsetup-2.6.0.tar.xz
+cd     cryptsetup-2.6.0/
+
+patch -p1 < "${pdir}"/0005-cryptsetup-flush-stdout.patch
 
 sed -i -e 's/\/bin\/bash/\/bin\/sh/g' \
  tests/generate-symbols-list

@@ -1,0 +1,134 @@
+From 810c6d78030dd6888661f67bc752fb362ff5b840 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Mon, 12 Dec 2022 19:29:09 +0300
+Subject: [PATCH] set cache + backup + archive paths to /run/lvm/.
+
+---
+ lib/config/config.c | 24 ++++++++++++------------
+ libdm/make.tmpl.in  |  6 +++---
+ make.tmpl.in        |  6 +++---
+ 3 files changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/lib/config/config.c b/lib/config/config.c
+index 5986e64..241a5dc 100644
+--- a/lib/config/config.c
++++ b/lib/config/config.c
+@@ -2390,7 +2390,7 @@ const char *get_default_devices_cache_dir_CFG(struct cmd_context *cmd, struct pr
+ {
+ 	static char buf[PATH_MAX];
+ 
+-	if (dm_snprintf(buf, sizeof(buf), "%s/%s", cmd->system_dir, DEFAULT_CACHE_SUBDIR) < 0) {
++	if (dm_snprintf(buf, sizeof(buf), "%s/%s", "/run/lvm", "cache") < 0) {
+ 		log_error("Persistent cache directory name too long.");
+ 		return NULL;
+ 	}
+@@ -2400,7 +2400,7 @@ const char *get_default_devices_cache_dir_CFG(struct cmd_context *cmd, struct pr
+ 
+ const char *get_default_unconfigured_devices_cache_dir_CFG(struct cmd_context *cmd)
+ {
+-	return "@DEFAULT_SYS_DIR@/@DEFAULT_CACHE_SUBDIR@";
++	return "/run/lvm/cache";
+ }
+ 
+ const char *get_default_devices_cache_CFG(struct cmd_context *cmd, struct profile *profile)
+@@ -2419,9 +2419,9 @@ const char *get_default_devices_cache_CFG(struct cmd_context *cmd, struct profil
+ 	if (cache_dir || cache_file_prefix) {
+ 		if (dm_snprintf(buf, sizeof(buf),
+ 				"%s%s%s/%s.cache",
+-				cache_dir ? "" : cmd->system_dir,
++				cache_dir ? "" : "/run/lvm",
+ 				cache_dir ? "" : "/",
+-				cache_dir ? : DEFAULT_CACHE_SUBDIR,
++				cache_dir ? : "lvm",
+ 				cache_file_prefix ? : DEFAULT_CACHE_FILE_PREFIX) < 0) {
+ 			log_error("Persistent cache filename too long.");
+ 			return NULL;
+@@ -2429,8 +2429,8 @@ const char *get_default_devices_cache_CFG(struct cmd_context *cmd, struct profil
+ 		return dm_pool_strdup(cmd->mem, buf);
+ 	}
+ 
+-	if (dm_snprintf(buf, sizeof(buf), "%s/%s/%s.cache", cmd->system_dir,
+-			DEFAULT_CACHE_SUBDIR, DEFAULT_CACHE_FILE_PREFIX) < 0) {
++	if (dm_snprintf(buf, sizeof(buf), "%s/%s/%s.cache", "/run/lvm",
++			"cache", DEFAULT_CACHE_FILE_PREFIX) < 0) {
+ 		log_error("Persistent cache filename too long.");
+ 		return NULL;
+ 	}
+@@ -2459,9 +2459,9 @@ const char *get_default_backup_backup_dir_CFG(struct cmd_context *cmd, struct pr
+ {
+ 	static char buf[PATH_MAX];
+ 
+-	if (dm_snprintf(buf, sizeof(buf), "%s/%s", cmd->system_dir, DEFAULT_BACKUP_SUBDIR) == -1) {
++	if (dm_snprintf(buf, sizeof(buf), "%s/%s", "/run/lvm", "backup") == -1) {
+ 		log_error("Couldn't create default backup path '%s/%s'.",
+-			  cmd->system_dir, DEFAULT_BACKUP_SUBDIR);
++			  "/run/lvm", "backup");
+ 		return NULL;
+ 	}
+ 
+@@ -2470,16 +2470,16 @@ const char *get_default_backup_backup_dir_CFG(struct cmd_context *cmd, struct pr
+ 
+ const char *get_default_unconfigured_backup_backup_dir_CFG(struct cmd_context *cmd)
+ {
+-	return "@DEFAULT_SYS_DIR@/@DEFAULT_BACKUP_SUBDIR@";
++	return "/run/lvm/backup";
+ }
+ 
+ const char *get_default_backup_archive_dir_CFG(struct cmd_context *cmd, struct profile *profile)
+ {
+ 	static char buf[PATH_MAX];
+ 
+-	if (dm_snprintf (buf, sizeof(buf), "%s/%s", cmd->system_dir, DEFAULT_ARCHIVE_SUBDIR) == -1) {
++	if (dm_snprintf (buf, sizeof(buf), "%s/%s", "/run/lvm", "archive") == -1) {
+ 		log_error("Couldn't create default archive path '%s/%s'.",
+-			  cmd->system_dir, DEFAULT_ARCHIVE_SUBDIR);
++			  "/run/lvm", "archive");
+ 		return NULL;
+ 	}
+ 
+@@ -2488,7 +2488,7 @@ const char *get_default_backup_archive_dir_CFG(struct cmd_context *cmd, struct p
+ 
+ const char *get_default_unconfigured_backup_archive_dir_CFG(struct cmd_context *cmd)
+ {
+-	return "@DEFAULT_SYS_DIR@/@DEFAULT_ARCHIVE_SUBDIR@";
++	return "/run/lvm/archive";
+ }
+ 
+ const char *get_default_config_profile_dir_CFG(struct cmd_context *cmd, struct profile *profile)
+diff --git a/libdm/make.tmpl.in b/libdm/make.tmpl.in
+index f1c88fa..94d885c 100644
+--- a/libdm/make.tmpl.in
++++ b/libdm/make.tmpl.in
+@@ -118,9 +118,9 @@ USRLIB_RELPATH = $(shell echo $(abspath $(usrlibdir) $(libdir)) | \
+ 
+ SYSTEMD_GENERATOR_DIR = @systemdutildir@/system-generators
+ DEFAULT_SYS_DIR = @DEFAULT_SYS_DIR@
+-DEFAULT_ARCHIVE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_ARCHIVE_SUBDIR@
+-DEFAULT_BACKUP_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_BACKUP_SUBDIR@
+-DEFAULT_CACHE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_CACHE_SUBDIR@
++DEFAULT_ARCHIVE_DIR = /run/lvm/archive
++DEFAULT_BACKUP_DIR = /run/lvm/backup
++DEFAULT_CACHE_DIR = /run/lvm/cache
+ DEFAULT_PROFILE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_PROFILE_SUBDIR@
+ DEFAULT_LOCK_DIR = @DEFAULT_LOCK_DIR@
+ DEFAULT_RUN_DIR = @DEFAULT_RUN_DIR@
+diff --git a/make.tmpl.in b/make.tmpl.in
+index 869b87e..0c73e87 100644
+--- a/make.tmpl.in
++++ b/make.tmpl.in
+@@ -146,9 +146,9 @@ USRLIB_RELPATH = $(shell echo $(abspath $(usrlibdir) $(libdir)) | \
+ 
+ SYSTEMD_GENERATOR_DIR = @systemdutildir@/system-generators
+ DEFAULT_SYS_DIR = @DEFAULT_SYS_DIR@
+-DEFAULT_ARCHIVE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_ARCHIVE_SUBDIR@
+-DEFAULT_BACKUP_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_BACKUP_SUBDIR@
+-DEFAULT_CACHE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_CACHE_SUBDIR@
++DEFAULT_ARCHIVE_DIR = /run/lvm/archive
++DEFAULT_BACKUP_DIR = /run/lvm/backup
++DEFAULT_CACHE_DIR = /run/lvm/cache
+ DEFAULT_PROFILE_DIR = $(DEFAULT_SYS_DIR)/@DEFAULT_PROFILE_SUBDIR@
+ DEFAULT_LOCK_DIR = @DEFAULT_LOCK_DIR@
+ DEFAULT_RUN_DIR = @DEFAULT_RUN_DIR@
+-- 
+2.38.1
+
