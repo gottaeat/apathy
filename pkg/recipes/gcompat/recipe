@@ -7,8 +7,8 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 # 2
-tar xf /mss/work/sauces/musl-obstack-1.2.2.tar.gz
-cd     musl-obstack-1.2.2/
+tar xf /mss/work/sauces/musl-obstack-1.2.3.tar.gz
+cd     musl-obstack-1.2.3/
 
 ./bootstrap.sh
 
@@ -21,11 +21,11 @@ cd     musl-obstack-1.2.2/
 
 make
 make install
-cd .. && rm -rf musl-obstack-1.2.2/
+cd ../; rm -rf musl-obstack-1.2.3/
 
 # 3
-tar xf /mss/work/sauces/libucontext-1.1.tar.xz
-cd     libucontext-1.1/
+tar xf /mss/work/sauces/libucontext-1.2.tar.xz
+cd     libucontext-1.2/
 
 make ARCH=x86_64
 make ARCH=x86_64 check
@@ -36,11 +36,11 @@ rm -rfv \
  "${penis}"/lib/libucontext.so.1 \
  "${penis}"/lib/libucontext_posix.so.1
 
-cd .. && rm -rf libucontext-1.1/
+cd .. && rm -rf libucontext-1.2/
 
 # 4
-tar xf /mss/work/sauces/gcompat-1.0.0.tar.xz
-cd     gcompat-1.0.0/
+tar xf /mss/work/sauces/gcompat-1.1.0.tar.gz
+cd     gcompat-1.1.0/
 
 sed -i -e 's/-static-pie//' Makefile
 
