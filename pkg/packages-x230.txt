@@ -166,7 +166,7 @@ i  2  .      imagemagick          7.0.10.23
 i  1  ..     lcms2                2.12
 i  1  .      feh                  3.7.1
 i  1  .      mupdf                1.16.1
-i  2  .      gcompat              1.0.0
+i  1  .      gcompat              1.1.0
 i  1  .      vifm                 0.11
 i  1  .      lz4                  1.9.3
 i  1  .      links                2.27
@@ -221,5 +221,6 @@ i  1  .      tor                  0.4.7.11
 i  3  .      proxychains-ng       4.16
 i  2  .      dsniff               2.4b1
 i  2  .      bettercap            2.32.0
-i  1  .      go                   1.18.3
+i  1  .      go                   1.19.4
 i  1  .      mimalloc             2.0.2
+i  1  .      qemu                 7.2.0
