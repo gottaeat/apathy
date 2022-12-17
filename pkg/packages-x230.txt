@@ -223,4 +223,4 @@ i  2  .      dsniff               2.4b1
 i  2  .      bettercap            2.32.0
 i  1  .      go                   1.19.4
 i  1  .      mimalloc             2.0.2
-i  1  .      qemu                 7.2.0
+i  2  .      qemu                 7.2.0
