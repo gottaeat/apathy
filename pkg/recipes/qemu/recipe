@@ -13,7 +13,7 @@ mkdir build
 cd    build
 
 meson --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${penis}" \
 \
  -Dvideo=true             \
  -Ddefault_library=static \
@@ -25,6 +25,24 @@ samu install
 cd ../../; rm -rf virglrenderer-0.10.3/
 
 # 3
+tar xf /mss/work/sauces/libslirp-v4.7.0.tar.gz
+cd     libslirp-v4.7.0/
+
+mkdir build
+cd    build
+
+meson --buildtype=plain \
+ --prefix="${penis}" \
+\
+ -Ddefault_library=static \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf libslirp-v4.7.0/
+
+# 4
 tar xf /mss/work/sauces/qemu-7.2.0.tar.xz
 cd     qemu-7.2.0/
 
