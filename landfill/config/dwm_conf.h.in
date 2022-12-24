@@ -8,7 +8,6 @@ static const char *fonts[]          = { "@fontname@:size=@dwmfontsize@"         
 static const Layout layouts[]       = {
  { "T",     tile    },
  { "F",     NULL    },
- { "M",     monocle },
 };
 
 // colors
@@ -118,8 +117,6 @@ static const Key keys[] = {
  { MODKEY,           XK_u,        incnmaster,     {.i = -1 }        }, // remove window from master
  { MODKEY,           XK_l,        setmfact,       {.f = +0.01}      }, // mfact +0.01
  { MODKEY,           XK_h,        setmfact,       {.f = -0.01}      }, // mfact -0.01
- { MODKEY,           XK_t,        setlayout,      {.v = &layouts[0]}}, // enable tiling
- { MODKEY,           XK_g,        setlayout,      {.v = &layouts[2]}}, // enable monacle
  { Mod1Mask,         XK_Tab,      zoom,           {0}               }, // switch focus
  { MODKEY,           XK_space,    setlayout,      {0}               }, // switch between layouts
  { MODKEY|ShiftMask, XK_space,    togglefloating, {0}               }, // toggle floating
@@ -146,9 +143,7 @@ static const Button buttons[] = {
  { ClkStatusText,    0, Button4, spawn, MPDVOLP},
  { ClkStatusText,    0, Button5, spawn, MPDVOLM},
  // dwm
- { ClkLtSymbol,      0,      Button1, setlayout,      {.v = &layouts[0]}},
- { ClkLtSymbol,      0,      Button2, setlayout,      {.v = &layouts[1]}},
- { ClkLtSymbol,      0,      Button3, setlayout,      {.v = &layouts[2]}},
+ { ClkLtSymbol,      0,      Button1, setlayout,      {0}               },
  { ClkWinTitle,      0,      Button2, zoom,           {0}               },
  { ClkClientWin,     MODKEY, Button1, movemouse,      {0}               },
  { ClkClientWin,     MODKEY, Button2, togglefloating, {0}               },
