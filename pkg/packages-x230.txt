@@ -21,7 +21,7 @@ i  1  .      expat                2.4.8
 i  1  .      perl                 5.36.0
 i  2  .      autoconf             2.70
 i  2  .      automake             1.16.3
-i  1  .      xz                   5.2.8
+i  1  .      xz                   5.4.0
 i  1  .      libelf               0.186
 i  2  .      libffi               3.3.0
 i  1  .      openssl              3.0.7
@@ -40,7 +40,7 @@ i  2  .      vim                  9.0.0004
 i  5  .      util-linux           2.37.2
 i  2  .      e2fsprogs            1.46.4
 i  1  .      eudev                3.2.11
-i  1  .      linux                6.1
+i  1  .      linux                6.1.1
 i  2  ..     initramfs            9
 i  1  ...    cryptsetup           2.6.0
 i  1  ....   lvm2                 2.03.17
@@ -48,7 +48,7 @@ i  1  .      init                 29
 i  1  ..     utils                26
 i  1  .      opendoas             6.8.2
 i  1  .      iptables             1.8.8
-i  1  .      curl                 7.86.0
+i  1  .      curl                 7.87.0
 i  1  .      git                  2.39.0
 i  1  .      openssh              9.1p1
 i  1  .      libssh2              1.9.0
