@@ -1,0 +1,13 @@
+#!/mss/bin/sh
+. /mss/files/sourceme
+
+export DISPLAY=:0
+
+xkbcomp -w 0 /home/mss/xkbmap "${DISPLAY}"
+
+setxkbmap \
+ -option grp:switch,grp:alt_shift_toggle \
+ -layout 'us,tr'
+
+xset r rate 200 40
+xhost +

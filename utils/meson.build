@@ -1,5 +1,5 @@
 project('utils',
- version: '26',
+ version: '27',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
@@ -36,6 +36,7 @@ files_bin = [
  'bin/setgov',
  'bin/setmon',
  'bin/setrotate',
+ 'bin/setxkeeb',
  'bin/stripper',
  'bin/suspendtodisk',
  'bin/switchcompositor',
