@@ -1,0 +1,5 @@
+# thank you micaela for showing me fatrace
+SUBSYSTEM=="input", ATTR{idVendor}=="1ea7", ATTR{idProduct}=="0066", GOTO="keyboardshit"
+
+LABEL="keyboardshit"
+ACTION=="add", RUN+="/mss/bin/setxkeeb"
