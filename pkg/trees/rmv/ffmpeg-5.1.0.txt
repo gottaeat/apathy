@@ -11,28 +11,28 @@
 
 /usr/lib/libavcodec.so
 /usr/lib/libavcodec.so.59
-/usr/lib/libavcodec.so.59.18.100
+/usr/lib/libavcodec.so.59.37.100
 /usr/lib/libavdevice.so
 /usr/lib/libavdevice.so.59
-/usr/lib/libavdevice.so.59.4.100
+/usr/lib/libavdevice.so.59.7.100
 /usr/lib/libavfilter.so
 /usr/lib/libavfilter.so.8
-/usr/lib/libavfilter.so.8.24.100
+/usr/lib/libavfilter.so.8.44.100
 /usr/lib/libavformat.so
 /usr/lib/libavformat.so.59
-/usr/lib/libavformat.so.59.16.100
+/usr/lib/libavformat.so.59.27.100
 /usr/lib/libavutil.so
 /usr/lib/libavutil.so.57
-/usr/lib/libavutil.so.57.17.100
+/usr/lib/libavutil.so.57.28.100
 /usr/lib/libpostproc.so
 /usr/lib/libpostproc.so.56
-/usr/lib/libpostproc.so.56.3.100
+/usr/lib/libpostproc.so.56.6.100
 /usr/lib/libswresample.so
 /usr/lib/libswresample.so.4
-/usr/lib/libswresample.so.4.3.100
+/usr/lib/libswresample.so.4.7.100
 /usr/lib/libswscale.so
 /usr/lib/libswscale.so.6
-/usr/lib/libswscale.so.6.4.100
+/usr/lib/libswscale.so.6.7.100
 
 /usr/lib/pkgconfig/libavcodec.pc
 /usr/lib/pkgconfig/libavdevice.pc
