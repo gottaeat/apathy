@@ -47,7 +47,8 @@ cd     libinput-1.22.0/
 mkdir build
 cd    build
 
-meson --buildtype=plain   \
+meson setup \
+ --buildtype=plain        \
  --prefix=/usr            \
  -Dudev-dir=/usr/lib/udev \
  -Dlibwacom=false         \

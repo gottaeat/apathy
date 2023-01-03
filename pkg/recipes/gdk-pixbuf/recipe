@@ -4,7 +4,8 @@ sed -i "/subdir('tests')/d" meson.build
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix=/usr            \
  -Dpng=enabled            \
  -Dtiff=enabled           \

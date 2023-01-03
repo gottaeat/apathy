@@ -2,12 +2,13 @@
 mkdir build
 cd    build
 
-meson --buildtype=plain \
- --prefix=/usr          \
+meson setup \
+ --buildtype=plain \
+ --prefix=/usr     \
 \
- -Ddocs=false           \
- -Dglx=yes              \
- -Degl=yes              \
- -Dx11=true             \
- -Dtests=false          \
+ -Ddocs=false      \
+ -Dglx=yes         \
+ -Degl=yes         \
+ -Dx11=true        \
+ -Dtests=false     \
  ..

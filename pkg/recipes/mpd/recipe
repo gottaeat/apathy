@@ -62,9 +62,9 @@ patch -p1 < "${pdir}"/0001-stacksize.patch
 mkdir mybuild
 cd    mybuild
 
-meson --buildtype=plain \
- --prefix=/usr          \
-\
+meson setup \
+ --buildtype=plain        \
+ --prefix=/usr            \
  -Ddebug=false            \
  -Dipv6=disabled          \
  -Dtest=false             \

@@ -2,7 +2,8 @@
 mkdir mybuild
 cd    mybuild
 
-meson --buildtype=plain \
- --prefix=/usr          \
- -Dtest=false           \
+meson setup \
+ --buildtype=plain \
+ --prefix=/usr     \
+ -Dtest=false      \
 ..

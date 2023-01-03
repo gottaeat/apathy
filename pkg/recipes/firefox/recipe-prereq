@@ -76,7 +76,8 @@ cd     wayland-1.21.0/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain      \
  --prefix="${penis}"    \
  -Ddefault_library=both \
  -Dtests=false          \
@@ -96,9 +97,10 @@ cd     wayland-protocols-1.26/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
- --prefix="${penis}"    \
- -Dtests=false          \
+meson setup \
+ --buildtype=plain   \
+ --prefix="${penis}" \
+ -Dtests=false       \
  ..
 
 samu
@@ -113,7 +115,8 @@ cd     libxkbcommon-1.4.1/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain          \
  --prefix="${penis}"        \
  -Ddefault_library=both     \
  -Denable-docs=false        \
@@ -140,7 +143,8 @@ cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix="${penis}"      \
 \
  -Dx11_backend=true       \

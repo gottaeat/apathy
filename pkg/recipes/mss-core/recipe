@@ -4,7 +4,7 @@ cd /mnt/mss/stuff/techy-bits/git/apathy/utils
 mkdir build
 cd    build
 
-meson ..; samu; doas -- samu install
+meson setup ..; samu; doas -- samu install
 
 # 2 > init/
 cd /mnt/mss/stuff/techy-bits/git/apathy/init
@@ -12,7 +12,7 @@ cd /mnt/mss/stuff/techy-bits/git/apathy/init
 mkdir build
 cd    build
 
-meson ..; samu; doas -- samu install
+meson setup ..; samu; doas -- samu install
 
 # 3 > set up /mss
 doas -s

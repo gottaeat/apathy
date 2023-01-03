@@ -12,9 +12,9 @@ cd     virglrenderer-0.10.3/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
- --prefix="${penis}" \
-\
+meson setup \
+ --buildtype=plain        \
+ --prefix="${penis}"      \
  -Dvideo=true             \
  -Ddefault_library=static \
 ..
@@ -31,9 +31,9 @@ cd     libslirp-v4.7.0/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
- --prefix="${penis}" \
-\
+meson setup \
+ --buildtype=plain        \
+ --prefix="${penis}"      \
  -Ddefault_library=static \
 ..
 

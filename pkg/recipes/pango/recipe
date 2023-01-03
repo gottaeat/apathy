@@ -9,8 +9,9 @@ mkdir build
 cd    build
 
 # 2
-meson --buildtype=plain \
- --prefix=/usr          \
- -Dgir=false            \
- -Denable_docs=false    \
+meson setup \
+ --buildtype=plain   \
+ --prefix=/usr       \
+ -Dgir=false         \
+ -Denable_docs=false \
 ..

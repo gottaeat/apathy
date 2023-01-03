@@ -54,7 +54,8 @@ patch -p1 < "${pdir}"/0001-static-libxcvt.patch
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain   \
  --prefix="${penis}" \
 ..
 

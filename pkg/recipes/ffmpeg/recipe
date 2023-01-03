@@ -38,8 +38,8 @@ case "${amachine}" in
  x230) peen="enable"  peenlist="oss,sndio" ;;
 esac
 
-tar xf /mss/work/sauces/ffmpeg-5.1.tar.xz
-cd     ffmpeg-5.1/
+tar xf /mss/work/sauces/ffmpeg-5.1.2.tar.xz
+cd     ffmpeg-5.1.2/
 
 mkdir build
 cd    build

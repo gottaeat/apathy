@@ -11,7 +11,7 @@ esac
 mkdir /mss/repo/landfill/build
 cd    /mss/repo/landfill/build
 
-meson \
+meson setup \
  -Dfontname="${fname}" \
  -Ddmenufontsize="${dmsz}" \
  -Ddwmfontsize="${dwsz}"   \

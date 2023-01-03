@@ -8,7 +8,8 @@ cp -rfv gtk/theme/Adwaita/gtk-contained-dark.css gtk/theme/Adwaita/gtk-contained
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix=/usr            \
 \
  -Dx11_backend=true       \

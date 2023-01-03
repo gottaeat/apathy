@@ -38,7 +38,8 @@ mkdir build
 cd    build
 
 CFLAGS="${CFLAGS} -std=gnu11" \
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain       \
  --prefix=/usr           \
  -Dgtk_doc=false         \
  -Dinstalled_tests=false \
@@ -80,7 +81,8 @@ cd     harfbuzz-5.1.0/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix="${penis}"      \
  -Dcairo=disabled         \
  -Dglib=enabled           \
@@ -150,7 +152,8 @@ patch -p1 < "${pdir}"/0003-pixman-fix-clang-lto.patch
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix=/usr            \
  -Dloongson-mmi=disabled  \
  -Dmmx=enabled            \
@@ -214,7 +217,8 @@ cd     harfbuzz-5.1.0/
 mkdir build
 cd    build
 
-meson --buildtype=plain \
+meson setup \
+ --buildtype=plain        \
  --prefix="/usr"          \
  -Dcairo=enabled          \
  -Dglib=enabled           \

@@ -2,9 +2,9 @@
 mkdir build
 cd    build
 
-meson --buildtype=plain   \
+meson setup \
+ --buildtype=plain        \
  --prefix=/usr            \
-\
  -Dtest=false             \
  -Ddocumentation=disabled \
 ..
