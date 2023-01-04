@@ -140,7 +140,6 @@
 /usr/sbin/chroot
 /usr/sbin/delgroup
 /usr/sbin/deluser
-/usr/sbin/loadfont
 /usr/sbin/nologin
 /usr/sbin/ntpd
 /usr/sbin/rfkill
