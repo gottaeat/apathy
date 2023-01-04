@@ -1,6 +1,6 @@
-From c8d592cd28f836309a2889fb53ee6cd66081ee88 Mon Sep 17 00:00:00 2001
+From 39c5871a717b336b0007455376e8483ee4276982 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sat, 12 Feb 2022 15:15:11 +0300
+Date: Tue, 3 Jan 2023 20:46:32 +0300
 Subject: [PATCH 3/5] libbb: print unicode.
 
 ---
@@ -30,5 +30,5 @@ index a814fd0..f4c7b00 100644
  			d++;
  		}
 -- 
-2.35.1
+2.39.0
 

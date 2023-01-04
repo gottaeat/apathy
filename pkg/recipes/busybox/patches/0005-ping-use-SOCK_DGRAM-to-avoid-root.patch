@@ -1,14 +1,14 @@
-From c5cdfecff6aaa15299561e9b6db337855d26848c Mon Sep 17 00:00:00 2001
+From d311a959db0fc6cd84e81c70a81371238de96d78 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sat, 12 Feb 2022 15:17:39 +0300
-Subject: [PATCH 5/5] ping: work without suid.
+Date: Tue, 3 Jan 2023 20:48:33 +0300
+Subject: [PATCH 5/5] ping: use SOCK_DGRAM to avoid root.
 
 ---
  networking/ping.c | 115 +++++++++++++++++++++++++++++++++++++---------
  1 file changed, 94 insertions(+), 21 deletions(-)
 
 diff --git a/networking/ping.c b/networking/ping.c
-index 86d8088..07e8dfc 100644
+index 9805695..5e4488a 100644
 --- a/networking/ping.c
 +++ b/networking/ping.c
 @@ -208,6 +208,7 @@ enum {
@@ -205,5 +205,5 @@ index 86d8088..07e8dfc 100644
  #if ENABLE_PING6
  	{
 -- 
-2.35.1
+2.39.0
 

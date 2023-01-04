@@ -9,36 +9,6 @@ export CXXFLAGS="$(echo "${CXXFLAGS}" \
 export  LDFLAGS="$(echo "${LDFLAGS}"  \
  | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
 
-penis="/mss/work/table/KEK"
-tar xf /mss/work/sauces/busybox-1.31.0-full.tar.zst
-mkdir "${penis}"
-./busybox-x86_64 --install "${penis}"
-export PATH="${PATH}:${penis}"
-cat /mss/repo/pkg/trees/**/busybox-* | sort | uniq | xargs rm -rfv
-ln -sfv "${penis}"/sh /bin/sh
-
-tar xf /mss/work/sauces/busybox-1.35.0.tar.bz2
-cd     busybox-1.35.0/
-
-pdir="/mss/repo/pkg/recipes/busybox/patches"
-patch -p1 < "${pdir}"/0001-test-libbb-lineedit-ash-fix-clang-UB.patch
-patch -p1 < "${pdir}"/0002-install-fix-chown.patch
-patch -p1 < "${pdir}"/0003-libbb-print-unicode.patch
-patch -p1 < "${pdir}"/0004-unzip-exit-with-0-after-printing-usage.patch
-patch -p1 < "${pdir}"/0005-ping-work-without-suid.patch
-
-sed -i \
- -e "s#= g[c+][c+]#= $CC#g"              \
- -e "s#\(\$(CROSS_COMPILE)\)gcc#\1$CC#g" \
- Makefile
-
-sed -i \
- -e "s&\(\$(CC),\)clang&\1$CC&g"         \
- Makefile.flags
-
-fdir="/mss/repo/pkg/recipes/busybox/files"
-cp    -v    "${fdir}"/config ./.config
-
 mymake(){
  make V=0 \
        AS="${AS}"      \
@@ -57,14 +27,44 @@ mymake(){
  "${@}"
 }
 
+tar xf /mss/work/sauces/busybox-1.36.0.tar.bz2
+cd     busybox-1.36.0/
+
+pdir="/mss/repo/pkg/recipes/busybox/patches"
+for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
+
+sed -i \
+ -e "s#= g[c+][c+]#= $CC#g"              \
+ -e "s#\(\$(CROSS_COMPILE)\)gcc#\1$CC#g" \
+ Makefile
+
+sed -i \
+ -e "s&\(\$(CC),\)clang&\1$CC&g"         \
+ Makefile.flags
+
+mymake clean
+mymake defconfig
+mymake
+
+penis="/mss/work/table/KEK"
+mkdir "${penis}"
+
+./busybox --install "${penis}"
+export PATH="${PATH}:${penis}"
+cat /mss/repo/pkg/trees/**/busybox-* | sort | uniq | xargs rm -rfv
+ln -sfv "${penis}"/sh /bin/sh
+
+# 2
+fdir="/mss/repo/pkg/recipes/busybox/files"
+cp -v "${fdir}"/config ./.config
+
 mymake clean
 mymake
 
-# 2
+# 3
 mymake CONFIG_PREFIX="${PWD}/KEK" install
 mymake CONFIG_PREFIX=/            install
 
-# 3
 for i in bbsuid; do
  ${CC} -c "${fdir}"/"${i}".c ${CFLAGS}
  ${CC} -o "${i}"    "${i}".o ${LDFLAGS}
@@ -79,9 +79,12 @@ bbsuid --install
 
 # 4
 cp -v "${fdir}"/config-initramfs ./.config
+
 mymake clean
 mymake
-pkgup busybox "${amachine}"-busybox-1.35.0-initramfs
-chown mss:mss "${amachine}"-busybox-1.35.0-initramfs.tar.zst
-mv "${amachine}"-busybox-1.35.0-initramfs.tar.zst \
+
+pkgup busybox "${amachine}"-busybox-1.36.0-initramfs
+
+chown mss:mss "${amachine}"-busybox-1.36.0-initramfs.tar.zst
+mv "${amachine}"-busybox-1.36.0-initramfs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

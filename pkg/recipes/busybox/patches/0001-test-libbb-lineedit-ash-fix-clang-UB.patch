@@ -1,6 +1,6 @@
-From b89773e4cf6961e5ff935e88362005f0f78ba511 Mon Sep 17 00:00:00 2001
+From c4ec13e2d55d932cadf96e61329ed346e4e7552b Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sat, 12 Feb 2022 15:10:23 +0300
+Date: Tue, 3 Jan 2023 20:45:38 +0300
 Subject: [PATCH 1/5] test, libbb, lineedit, ash: fix clang UB.
 
 ---
@@ -11,7 +11,7 @@ Subject: [PATCH 1/5] test, libbb, lineedit, ash: fix clang UB.
  4 files changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/coreutils/test.c b/coreutils/test.c
-index a914c74..aaca93f 100644
+index 1d1e6d1..6252661 100644
 --- a/coreutils/test.c
 +++ b/coreutils/test.c
 @@ -435,7 +435,7 @@ struct test_statics {
@@ -24,7 +24,7 @@ index a914c74..aaca93f 100644
  #define S (*test_ptr_to_statics)
  #define args            (S.args         )
 diff --git a/include/libbb.h b/include/libbb.h
-index a487828..880fb0c 100644
+index cca33a1..edea8d0 100644
 --- a/include/libbb.h
 +++ b/include/libbb.h
 @@ -379,14 +379,14 @@ struct BUG_off_t_size_is_misdetected {
@@ -47,7 +47,7 @@ index a487828..880fb0c 100644
  # define errno (*bb_errno)
  # define bb_cached_errno_ptr 1
 diff --git a/libbb/lineedit.c b/libbb/lineedit.c
-index e14c787..cc6fb6f 100644
+index d6b2e76..31742af 100644
 --- a/libbb/lineedit.c
 +++ b/libbb/lineedit.c
 @@ -189,7 +189,7 @@ struct lineedit_statics {
@@ -60,10 +60,10 @@ index e14c787..cc6fb6f 100644
  #define S (*lineedit_ptr_to_statics)
  #define state            (S.state           )
 diff --git a/shell/ash.c b/shell/ash.c
-index 8276438..8834a20 100644
+index 18ccc13..28f4d51 100644
 --- a/shell/ash.c
 +++ b/shell/ash.c
-@@ -474,7 +474,7 @@ struct globals_misc {
+@@ -479,7 +479,7 @@ struct globals_misc {
  #endif
  	pid_t backgndpid;        /* pid of last background process */
  };
@@ -72,7 +72,7 @@ index 8276438..8834a20 100644
  #define G_misc (*ash_ptr_to_globals_misc)
  #define exitstatus        (G_misc.exitstatus )
  #define back_exitstatus   (G_misc.back_exitstatus )
-@@ -1574,7 +1574,7 @@ struct globals_memstack {
+@@ -1578,7 +1578,7 @@ struct globals_memstack {
  	size_t g_stacknleft; // = MINSIZE;
  	struct stack_block stackbase;
  };
@@ -81,7 +81,7 @@ index 8276438..8834a20 100644
  #define G_memstack (*ash_ptr_to_globals_memstack)
  #define g_stackp     (G_memstack.g_stackp    )
  #define g_stacknxt   (G_memstack.g_stacknxt  )
-@@ -2174,7 +2174,7 @@ struct globals_var {
+@@ -2178,7 +2178,7 @@ struct globals_var {
  	unsigned trap_depth;
  	bool in_trap_ERR; /* ERR cannot recurse, no need to be a counter */
  };
@@ -91,5 +91,5 @@ index 8276438..8834a20 100644
  #define shellparam    (G_var.shellparam   )
  //#define redirlist     (G_var.redirlist    )
 -- 
-2.35.1
+2.39.0
 
