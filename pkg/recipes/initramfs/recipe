@@ -7,11 +7,10 @@ mkdir bin/ opt/
 mkdir dev/ sys/ proc/ run/
 mkdir mnt/
 
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-busybox-1.35.0-initramfs.tar.zst
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/\
+"${amachine}"-busybox-1.36.0-initramfs.tar.zst
 mv    ./busybox      bin/
 cp -r /opt/cryptshit opt/
-
-rm -rfv opt/cryptshit/lvm/cache
 
 fdir="/mss/repo/pkg/recipes/initramfs/files"
 cp "${fdir}"/init .
@@ -19,14 +18,19 @@ cp "${fdir}"/init .
 cdir="/mnt/mss/stuff/techy-bits/git/mss-ec/consolefonts"
 cp "${cdir}"/ter-v14n.psf ./font.psf
 
+tstamp=`dn`
+
 sed -i init \
- -e "s/REPLACEDAT/`dn`/g"
+ -e "s/REPLACEDAT/${tstamp}/g"
 
 chmod +x init
 
 # 2
 find . | cpio -o -H newc | zstd -19 > ../initramfs.zst
+cp ../initramfs.zst /mnt/mss/stuff/techy-bits/packaged-software/\
+initramfs-"${tstamp}".zst
+
 doas -s
-mv ../initramfs.zst /boot
+cp ../initramfs.zst /boot
 chown -Rh root:root /boot
 lilo
