@@ -206,7 +206,7 @@ case "${1}" in
   esac
 
   case "${iface}" in
-   usb*)
+   usb*|eth*)
     ainitsvc "network" "bringing ${iface} up"
      ip link set "${iface}" up
     evalret
@@ -258,15 +258,17 @@ case "${1}" in
 
     if ip addr | grep ${iface} | grep inet >/dev/null 2>&1
      then
-      ainitsvc "network" "flushing ${iface}"
+      ainitsvc "network" "flushing ${iface} (ipv4)"
        ip -4 addr flush dev "${iface}"
-      evalret
-
-      ainitsvc "network" "bringing down ${iface}"
-       ip link set "${iface}" down
       evalret
      else
       ainitsvc "network" "${iface} does not have an ip assinged"; failprompt
+    fi
+
+    if [ "`cat /sys/class/net/${iface}/operstate`" == "up" ]; then
+     ainitsvc "network" "bringing down ${iface}"
+      ip link set "${iface}" down
+     evalret
     fi
 
     dhcpid="$(pidof udhcpc 2>/dev/null)"
