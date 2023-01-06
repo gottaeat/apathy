@@ -68,12 +68,12 @@ i  1  ..     libgcrypt            1.9.3
 i  1  ..     pinentry             1.1.1
 i  1  .      openvpn              2.5.8
 i  2  .      jq                   1.6
-i  4  .      util-macros          1.19.3
-i  4  .      xorgproto            2021.4.99.2
-i  4  .      libXau               1.0.9
-i  4  .      libXdmcp             1.1.3
-i  4  .      xcb-proto            1.14.1
-i  4  .      libxcb               1.14
+i  5  .      util-macros          1.19.3
+i  1  .      xorgproto            2022.2
+i  1  .      libXau               1.0.11
+i  1  .      libXdmcp             1.1.4
+i  1  .      xcb-proto            1.15.2
+i  1  .      libxcb               1.15
 i  9  .      fontconfig           2.14.0
 i  4  ..     freetype             2.12.1
 i  9  ...    libpng               1.6.37
@@ -100,7 +100,7 @@ i  4  .      libXxf86vm           1.1.4
 i  4  .      libpciaccess         0.16
 i  4  .      libxkbfile           1.1.0
 i  4  .      libxshmfence         1.3
-i  1  .      mesa                 22.3.2
+i  2  .      mesa                 22.3.2
 i  1  ..     libdrm               2.4.111
 i  2  .      setxkbmap            1.3.2
 i  2  .      xauth                1.1
@@ -116,7 +116,7 @@ i  2  .      xbitmaps             1.1.2
 i  2  .      xsetroot             1.1.2
 i  2  .      xkbcomp              1.4.5
 i  2  .      xkeyboard-config     2.33
-i  1  .      xorg-server          21.1.4
+i  1  .      xorg-server          4127776
 i  1  ..     libepoxy             1.5.8
 i  5  .      xf86-input-libinput  1.2.1
 i  1  ..     libinput             1.22.0

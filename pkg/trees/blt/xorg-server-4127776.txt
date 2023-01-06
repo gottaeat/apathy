@@ -1,9 +1,7 @@
 /usr/bin/X
 /usr/bin/Xorg
+/usr/bin/gtf
 
-/usr/include/xorg/BT.h
-/usr/include/xorg/IBM.h
-/usr/include/xorg/TI.h
 /usr/include/xorg/XIstubs.h
 /usr/include/xorg/Xprintf.h
 /usr/include/xorg/callback.h
@@ -107,11 +105,8 @@
 /usr/include/xorg/shadow.h
 /usr/include/xorg/shadowfb.h
 /usr/include/xorg/shmint.h
-/usr/include/xorg/site.h
 /usr/include/xorg/syncsdk.h
 /usr/include/xorg/validate.h
-/usr/include/xorg/vbe.h
-/usr/include/xorg/vbeModes.h
 /usr/include/xorg/vgaHW.h
 /usr/include/xorg/vndserver.h
 /usr/include/xorg/wfbrename.h
@@ -135,7 +130,6 @@
 /usr/include/xorg/xf86PciInfo.h
 /usr/include/xorg/xf86Priv.h
 /usr/include/xorg/xf86Privstr.h
-/usr/include/xorg/xf86RamDac.h
 /usr/include/xorg/xf86RandR12.h
 /usr/include/xorg/xf86VGAarbiter.h
 /usr/include/xorg/xf86Xinput.h
@@ -164,32 +158,18 @@
 
 /usr/lib/pkgconfig/xorg-server.pc
 
-/usr/lib/xorg/modules/drivers/modesetting_drv.la
 /usr/lib/xorg/modules/drivers/modesetting_drv.so
-/usr/lib/xorg/modules/extensions/libglx.la
 /usr/lib/xorg/modules/extensions/libglx.so
-/usr/lib/xorg/modules/libexa.la
 /usr/lib/xorg/modules/libexa.so
-/usr/lib/xorg/modules/libfb.la
-/usr/lib/xorg/modules/libfb.so
-/usr/lib/xorg/modules/libfbdevhw.la
 /usr/lib/xorg/modules/libfbdevhw.so
-/usr/lib/xorg/modules/libglamoregl.la
 /usr/lib/xorg/modules/libglamoregl.so
-/usr/lib/xorg/modules/libshadow.la
 /usr/lib/xorg/modules/libshadow.so
-/usr/lib/xorg/modules/libshadowfb.la
 /usr/lib/xorg/modules/libshadowfb.so
-/usr/lib/xorg/modules/libvbe.la
-/usr/lib/xorg/modules/libvbe.so
-/usr/lib/xorg/modules/libvgahw.la
 /usr/lib/xorg/modules/libvgahw.so
-/usr/lib/xorg/modules/libwfb.la
 /usr/lib/xorg/modules/libwfb.so
 /usr/lib/xorg/protocol.txt
 
 /usr/share/X11/xorg.conf.d/10-quirks.conf
 /usr/share/aclocal/xorg-server.m4
-/var/lib/xkb
 
 /usr/share/man

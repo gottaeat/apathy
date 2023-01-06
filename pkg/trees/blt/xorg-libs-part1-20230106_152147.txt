@@ -146,6 +146,7 @@
 /usr/include/X11/extensions/xtraplib.h
 /usr/include/X11/extensions/xtraplibp.h
 /usr/include/X11/extensions/xtrapproto.h
+/usr/include/X11/extensions/xwaylandproto.h
 /usr/include/X11/fonts/FS.h
 /usr/include/X11/fonts/FSproto.h
 /usr/include/X11/fonts/font.h
@@ -210,7 +211,7 @@
 /usr/lib/libxcb-dri3.la
 /usr/lib/libxcb-dri3.so
 /usr/lib/libxcb-dri3.so.0
-/usr/lib/libxcb-dri3.so.0.0.0
+/usr/lib/libxcb-dri3.so.0.1.0
 /usr/lib/libxcb-glx.la
 /usr/lib/libxcb-glx.so
 /usr/lib/libxcb-glx.so.0
@@ -259,7 +260,6 @@
 /usr/lib/pkgconfig/xcb-dri3.pc
 /usr/lib/pkgconfig/xcb-glx.pc
 /usr/lib/pkgconfig/xcb-present.pc
-/usr/lib/pkgconfig/xcb-proto.pc
 /usr/lib/pkgconfig/xcb-randr.pc
 /usr/lib/pkgconfig/xcb-render.pc
 /usr/lib/pkgconfig/xcb-shape.pc
@@ -301,6 +301,7 @@
 /usr/share/pkgconfig/videoproto.pc
 /usr/share/pkgconfig/windowswmproto.pc
 /usr/share/pkgconfig/xcalibrateproto.pc
+/usr/share/pkgconfig/xcb-proto.pc
 /usr/share/pkgconfig/xcmiscproto.pc
 /usr/share/pkgconfig/xextproto.pc
 /usr/share/pkgconfig/xf86bigfontproto.pc
@@ -313,6 +314,7 @@
 /usr/share/pkgconfig/xorg-macros.pc
 /usr/share/pkgconfig/xproto.pc
 /usr/share/pkgconfig/xproxymngproto.pc
+/usr/share/pkgconfig/xwaylandproto.pc
 
 /usr/share/xcb
 
