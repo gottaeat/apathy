@@ -1,6 +1,6 @@
-libXau      1.0.9
-libXdmcp    1.1.3
-libxcb      1.14
+libXau      1.0.11
+libXdmcp    1.1.4
+libxcb      1.15
 util-macros 1.19.3
-xcb-proto   1.14.1
-xorgproto   2021.4.99.2
+xcb-proto   1.15.2
+xorgproto   2022.2

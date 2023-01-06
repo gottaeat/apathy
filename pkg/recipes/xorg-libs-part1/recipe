@@ -14,8 +14,8 @@ doas -- make install
 cd ../; rm -rf util-macros-1.19.3/
 
 # 2 > xorgproto
-tar xf /mss/work/sauces/xorgproto-2021.4.99.2.tar.bz2
-cd     xorgproto-2021.4.99.2/
+tar xf /mss/work/sauces/xorgproto-2022.2.tar.xz
+cd     xorgproto-2022.2/
 
 ./configure \
  --build=$CBUILD \
@@ -31,11 +31,11 @@ make
 make DESTDIR=/mss/work/XORGlibsPRE install
 doas -- make install
 
-cd ../; rm -rf xorgproto-2021.4.99.2/
+cd ../; rm -rf xorgproto-2022.2/
 
 # 3 > libXau
-tar xf /mss/work/sauces/libXau-1.0.9.tar.bz2
-cd     libXau-1.0.9/
+tar xf /mss/work/sauces/libXau-1.0.11.tar.xz
+cd     libXau-1.0.11/
 
 ./configure \
  --build=$CBUILD \
@@ -47,11 +47,11 @@ make
 make DESTDIR=/mss/work/XORGlibsPRE install
 doas -- make install
 
-cd ../; rm -rf libXau-1.0.9/
+cd ../; rm -rf libXau-1.0.11/
 
 # 4 > libXdmcp
-tar xf /mss/work/sauces/libXdmcp-1.1.3.tar.bz2
-cd     libXdmcp-1.1.3/
+tar xf /mss/work/sauces/libXdmcp-1.1.4.tar.xz
+cd     libXdmcp-1.1.4/
 
 ./configure \
  --build=$CBUILD      \
@@ -68,11 +68,11 @@ make
 make DESTDIR=/mss/work/XORGlibsPRE install
 doas -- make install
 
-cd ../; rm -rf libXdmcp-1.1.3/
+cd ../; rm -rf libXdmcp-1.1.4/
 
 # 5 > xcb-proto
-tar xf /mss/work/sauces/xcb-proto-1.14.1.tar.xz
-cd     xcb-proto-1.14.1/
+tar xf /mss/work/sauces/xcb-proto-1.15.2.tar.xz
+cd     xcb-proto-1.15.2/
 
 ./configure \
  --build=$CBUILD \
@@ -83,11 +83,11 @@ make
 make DESTDIR=/mss/work/XORGlibsPRE install
 doas -- make install
 
-cd ../; rm -rf xcb-proto-1.14.1/
+cd ../; rm -rf xcb-proto-1.15.2/
 
 # 6 > libxcb
-tar xf /mss/work/sauces/libxcb-1.14.tar.xz
-cd     libxcb-1.14/
+tar xf /mss/work/sauces/libxcb-1.15.tar.xz
+cd     libxcb-1.15/
 
 ./configure \
  --build=$CBUILD       \
@@ -112,7 +112,7 @@ make
 make DESTDIR=/mss/work/XORGlibsPRE install
 doas -- make install
 
-cd ../; rm -rf libxcb-1.14/
+cd ../; rm -rf libxcb-1.15/
 
 # 7 > cleanup
 doas -- rm -rfv \
