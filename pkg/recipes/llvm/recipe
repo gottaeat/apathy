@@ -16,7 +16,7 @@ cd    build
 
 mimpath="/opt/mimalloc-2.0.2/lib/libmimalloc.a"
 mimflag="-Wl,--push-state,--whole-archive,${mimpath},--pop-state"
-myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp"
+myproj="clang;compiler-rt;libcxx;libcxxabi;libunwind;lld;llvm;openmp;lldb"
 cmake -Wno-dev -GNinja\
  -DCMAKE_INSTALL_PREFIX="/opt/llvm-15.0.6"           \
  -DCMAKE_C_FLAGS="$CFLAGS"                           \
@@ -265,6 +265,30 @@ cmake -Wno-dev -GNinja\
  -DOPENMP_ENABLE_LIBOMPTARGET_PROFILING=OFF          \
  -DOPENMP_ENABLE_OMPT_TOOLS=OFF                      \
 \
+ -DLLDB_BUILD_FRAMEWORK=OFF                          \
+ -DLLDB_BUILD_INTEL_MPX=ON                           \
+ -DLLDB_BUILD_INTEL_PT=OFF                           \
+ -DLLDB_ENABLE_CURSES=ON                             \
+ -DLLDB_ENABLE_FBSDVMCORE=OFF                        \
+ -DLLDB_ENABLE_LIBEDIT=OFF                           \
+ -DLLDB_ENABLE_LIBXML2=OFF                           \
+ -DLLDB_ENABLE_LUA=OFF                               \
+ -DLLDB_ENABLE_LZMA=ON                               \
+ -DLLDB_ENABLE_PYTHON=OFF                            \
+ -DLLDB_EXPORT_ALL_SYMBOLS=OFF                       \
+ -DLLDB_INCLUDE_TESTS=OFF                            \
+ -DLLDB_NO_INSTALL_DEFAULT_RPATH=ON                  \
+ -DLLDB_SKIP_DSYM=OFF                                \
+ -DLLDB_SKIP_STRIP=OFF                               \
+ -DLLDB_TABLEGEN=lldb-tblgen                         \
+ -DLLDB_TOOL_LLDB_INSTR_BUILD=OFF                    \
+ -DLLDB_TOOL_LLDB_SERVER_BUILD=OFF                   \
+ -DLLDB_TOOL_LLDB_VSCODE_BUILD=OFF                   \
+ -DLLDB_USE_ENTITLEMENTS=ON                          \
+ -DLLDB_USE_SYSTEM_DEBUGSERVER=ON                    \
+ -DLLDB_USE_SYSTEM_SIX=OFF                           \
+ -DLLVM_TOOL_LLDB_BUILD=ON                           \
+\
  -DCLANG_BUILD_EXAMPLES=OFF                          \
  -DCLANG_INCLUDE_DOCS=OFF                            \
  -DCLANG_INCLUDE_TESTS=OFF                           \
@@ -281,6 +305,7 @@ cmake -Wno-dev -GNinja\
  -DLLVM_INCLUDE_EXAMPLES=OFF                         \
  -DLLVM_INCLUDE_GO_TESTS=OFF                         \
  -DLLVM_INCLUDE_TESTS=OFF                            \
+\
  ../llvm
 
 time samu

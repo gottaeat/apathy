@@ -4,5 +4,6 @@ libcxx      15.0.6
 libcxxabi   15.0.6
 libunwind   15.0.6
 lld         15.0.6
+lldb        15.0.6
 llvm        15.0.6
 openmp      15.0.6
