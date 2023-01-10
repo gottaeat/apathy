@@ -282,7 +282,7 @@ cmake -Wno-dev -GNinja\
  -DLLDB_SKIP_STRIP=OFF                               \
  -DLLDB_TABLEGEN=lldb-tblgen                         \
  -DLLDB_TOOL_LLDB_INSTR_BUILD=OFF                    \
- -DLLDB_TOOL_LLDB_SERVER_BUILD=OFF                   \
+ -DLLDB_TOOL_LLDB_SERVER_BUILD=ON                    \
  -DLLDB_TOOL_LLDB_VSCODE_BUILD=OFF                   \
  -DLLDB_USE_ENTITLEMENTS=ON                          \
  -DLLDB_USE_SYSTEM_DEBUGSERVER=ON                    \
