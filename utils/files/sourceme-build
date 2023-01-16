@@ -2,7 +2,7 @@
 . /mss/files/device.conf
 
 # 1.2 > default toolchain
-# 1.2.1 > clang
+# 1.2.1 > c/cxx
 export        CC="/opt/llvm-15.0.6/bin/clang"
 export       CXX="/opt/llvm-15.0.6/bin/clang++"
 export        LD="/opt/llvm-15.0.6/bin/ld.lld"
@@ -17,11 +17,9 @@ export   OBJSIZE="/opt/llvm-15.0.6/bin/llvm-size"
 export   READELF="/opt/llvm-15.0.6/bin/llvm-readelf"
 export ADDR2LINE="/opt/llvm-15.0.6/bin/llvm-addr2line"
 
-export    CFLAGS="-DNDEBUG -g0 -s -w -pipe -O3 -march=native -mtune=native -fcommon -D_FORTIFY_SOURCE=2 -fstack-protector-strong -flto-jobs=${ajobcount} -flto=thin"
+export    CFLAGS="-DNDEBUG -g0 -s -w -pipe -O3 -march=x86-64 -mtune=generic -fcommon -D_FORTIFY_SOURCE=2 -fstack-protector-strong -flto-jobs=${ajobcount} -flto=thin"
 export  CXXFLAGS="${CFLAGS}"
 export   LDFLAGS="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all,--lto-O3,--thinlto-jobs=${ajobcount}"
 
 # 1.2.2 > rust
-       RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
-       RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
-export RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
+export RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Copt-level=3 -Lnative=/opt/llvm-15.0.6/lib -Cdebuginfo=0 -Cdebug-assertions=off -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
