@@ -2,3 +2,5 @@
 /usr/bin/mkvinfo
 /usr/bin/mkvmerge
 /usr/bin/mkvpropedit
+
+/usr/share/man

@@ -1,0 +1,6 @@
+/usr/bin/m4
+
+/usr/lib/charset.alias
+
+/usr/share/info
+/usr/share/man

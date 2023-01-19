@@ -1,3 +1,2 @@
-/usr/share/consolefonts
 /usr/share/fonts
 /usr/share/icons
