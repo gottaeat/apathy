@@ -10,7 +10,7 @@ export          TMPDIR="/mss/work/ltocache"
 # 2 > boost
 pushd /opt
 doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
 popd
 
 # 3 > openal

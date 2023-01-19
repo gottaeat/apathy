@@ -8,9 +8,7 @@ export      BOOST_ROOT="${penis}"
 
 # 2 > boost
 tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
-
-mv boost-1.76.0/ "${penis}"
+ /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
 
 # 3 > libfmt
 unzip -q /mss/work/sauces/fmt-9.1.0.zip

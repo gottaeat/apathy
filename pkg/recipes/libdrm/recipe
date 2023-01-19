@@ -5,22 +5,22 @@ cd    build
 meson setup \
  --buildtype=plain             \
  --prefix=/usr                 \
- -Dlibkms=true                 \
  -Dintel=true                  \
- -Dradeon=false                \
- -Damdgpu=false                \
- -Dnouveau=false               \
- -Dvmwgfx=false                \
- -Domap=false                  \
- -Dexynos=false                \
- -Dfreedreno=false             \
- -Dtegra=false                 \
- -Dvc4=false                   \
- -Detnaviv=false               \
- -Dcairo-tests=false           \
- -Dman-pages=false             \
- -Dvalgrind=false              \
- -Dfreedreno-kgsl=false        \
- -Dinstall-test-programs=false \
  -Dudev=true                   \
+\
+ -Damdgpu=false                \
+ -Dcairo-tests=false           \
+ -Detnaviv=false               \
+ -Dexynos=false                \
+ -Dfreedreno-kgsl=false        \
+ -Dfreedreno=false             \
+ -Dinstall-test-programs=false \
+ -Dman-pages=false             \
+ -Dnouveau=false               \
+ -Domap=false                  \
+ -Dradeon=false                \
+ -Dtegra=false                 \
+ -Dvalgrind=false              \
+ -Dvc4=false                   \
+ -Dvmwgfx=false                \
 ..

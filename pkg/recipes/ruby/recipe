@@ -1,24 +1,46 @@
 # 1
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/yaml-0.2.5.tar.gz
+cd     yaml-0.2.5/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf yaml-0.2.5/
+
+# 3
+tar xf /mss/work/sauces/ruby-3.2.0.tar.gz
+cd     ruby-3.2.0/
 
 export   CFLAGS="${CFLAGS}   -fno-omit-frame-pointer -fno-strict-aliasing"
 export CXXFLAGS="${CXXFLAGS} -fno-omit-frame-pointer -fno-strict-aliasing"
 
 pdir="/mss/repo/pkg/recipes/ruby/patches"
 patch -p1 < "${pdir}"/0001-fix-get_main_stack.patch
-patch -p1 < "${pdir}"/0002-rubygems-avoid-platform-specific-gems.patch
 
 ac_cv_func_isnan=yes \
 ac_cv_func_isinf=yes \
 ./configure \
  --build=$CBUILD          \
  --host=$CHOST            \
- --prefix=/opt/ruby-2.7.1 \
+ --prefix=/opt/ruby-3.2.0 \
  --without-gmp            \
  --enable-pthread         \
  --enable-shared          \
@@ -31,14 +53,19 @@ ac_cv_func_isinf=yes \
 
 time make
 
-# 2
+# 4
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install
 
-rm -rfv "${instdir}"/opt/ruby-2.7.1/share
+rm -rfv "${instdir}"/opt/ruby-3.2.0/share
 
-find "${instdir}"/opt/ruby-2.7.1/bin/ \
+find "${instdir}"/opt/ruby-3.2.0/bin/ \
  -type f -exec strip --strip-all      {} ';'
 
-find "${instdir}"/opt/ruby-2.7.1/lib/ \
+find "${instdir}"/opt/ruby-3.2.0/lib/ \
  -type f -exec strip --strip-unneeded {} ';'
+
+pushd "${instdir}"/opt/
+pkgup ruby-3.2.0/ ruby-3.2.0/
+mv ruby-3.2.0.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
+popd

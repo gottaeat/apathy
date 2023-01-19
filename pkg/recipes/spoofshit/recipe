@@ -190,6 +190,6 @@ cd ../; rm -rf bettercap-2.32.0/
 mkdir spoofshit/bin/
 mv    bettercap tcpnice spoofshit/bin/
 
-pkgup spoofshit "${amachine}"-spoofshit-`dn`
+pkgup spoofshit spoofshit-`dn`
 
-mv "${amachine}"-spoofshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software
+mv spoofshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software

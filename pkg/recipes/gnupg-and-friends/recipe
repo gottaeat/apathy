@@ -1,15 +1,10 @@
-# 1.1
+# 1
 penis="/mss/work/table/KEK"
 export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
 export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export            PATH="${PATH}:${penis}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
-
-# 1.2
-case "${amachine}" in
- x230) peen="enable" ;;
-esac
 
 # 2 > shared libgpg-error
 tar xf /mss/work/sauces/libgpg-error-1.42.tar.bz2
@@ -64,8 +59,8 @@ cd     libgcrypt-1.9.3/
  --disable-static          \
  --disable-doc             \
 \
- --${peen}-aesni-support   \
- --${peen}-avx-support     \
+ --disable-aesni-support   \
+ --disable-avx-support     \
  --enable-O-flag-munging   \
  --enable-sse41-support    \
  --disable-avx2-support    \

@@ -1,13 +1,11 @@
 # 1
-export          CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
-export    LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib"
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
-# 2
-pushd /opt
-doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
-popd
+tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
 
 # 3
 gcd1 https://github.com/dscharrer/innoextract
@@ -39,7 +37,9 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
- -DBoost_DIR="/opt/boost-1.76.0/"       \
+ -DBoost_DIR="${penis}"                 \
+ -DBoost_INCLUDE_DIR="${penis}"/include \
+ -DBoost_LIBRARY_DIR="${penis}"/lib     \
  -DBoost_USE_STATIC_LIBS=ON             \
 ../
 

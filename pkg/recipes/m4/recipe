@@ -3,3 +3,12 @@
  --build=$CBUILD \
  --host=$CHOST   \
  --prefix=/usr
+
+make
+
+doas -s
+for i in src/m4; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

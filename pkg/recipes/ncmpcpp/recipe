@@ -1,17 +1,15 @@
 # 1
 penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -L${penis}/lib -I${penis}/include -fPIC"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
 export            PATH="${PATH}:${penis}/bin"
-export    LIBRARY_PATH="${LIBRARY_PATH}:/opt/boost-1.76.0/lib:${penis}/lib"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 
 # 2
 cdt1
-pushd /opt
-doas -- tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-boost-1.76.0-static-libs.tar.zst
-popd
+tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
 
 # 3
 tar xf /mss/work/sauces/fftw-3.3.8.tar.gz
@@ -123,7 +121,7 @@ cd     ncmpcpp-0.9.2/
  --enable-visualizer   \
  --enable-static-boost \
 \
- --with-boost=/opt/boost-1.76.0
+ --with-boost="${penis}"
 
 time make
 

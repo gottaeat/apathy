@@ -5,7 +5,7 @@ export     CXXFLAGS="${CXXFLAGS} -L${penis}/lib -fPIC"
 export LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-pcre2-10.40-static.tar.zst
+ /mnt/mss/stuff/techy-bits/packaged-software/pcre2-10.40-static.tar.zst
 
 mkdir "${penis}"/
 mv pcre2-static/ "${penis}"/lib

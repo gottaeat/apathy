@@ -44,9 +44,9 @@ cp -v \
  openssl-3.0.7-static-libs/
 
 pkgup openssl-3.0.7-static-libs/ \
- "${amachine}"-openssl-3.0.7-static-libs/
+ openssl-3.0.7-static-libs/
 
-mv "${amachine}"-openssl-3.0.7-static-libs.tar.zst \
+mv openssl-3.0.7-static-libs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
 
 rm -rfv \

@@ -3,7 +3,7 @@ cdt1
 penis="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
 export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/share/pkgconfig"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 gcd1 https://github.com/jbeder/yaml-cpp.git
@@ -49,11 +49,8 @@ samu install
 cd ../../; rm -rf yaml-cpp/
 
 # 2
-gcd1 https://github.com/vmatare/thinkfan.git
-cd   thinkfan/
-
-pdir="/mss/repo/pkg/recipes/thinkfan/patches"
-patch -p1 < "${pdir}"/0001-fix-build-with-llvm-libc++.patch
+tar xf /mss/work/sauces/thinkfan-1.3.1.tar.gz
+cd     thinkfan-1.3.1/
 
 cleancmake
 
@@ -80,12 +77,13 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"               \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"             \
 \
+ -DDISABLE_BUGGER=ON                              \
+ -DDISABLE_EXCEPTION_CATCHING=ON                  \
+ -DDISABLE_SYSLOG=OFF                             \
  -DUSE_ATASMART=OFF                               \
  -DUSE_NVML=OFF                                   \
- -DDISABLE_BUGGER=OFF                             \
- -DDISABLE_SYSLOG=OFF                             \
- -DDISABLE_EXCEPTION_CATCHING=OFF                 \
-../
+ -DUSE_YAML=ON                                    \
+ ..
 
 samu
 

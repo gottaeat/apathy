@@ -7,7 +7,7 @@ mkdir cbindgen-0.24.3/bin
 strip --strip-all target/release/cbindgen
 mv target/release/cbindgen cbindgen-0.24.3/bin/
 
-pkgup cbindgen-0.24.3/ "${amachine}"-cbindgen-0.24.3/
+pkgup cbindgen-0.24.3/ cbindgen-0.24.3/
 
-mv "${amachine}"-cbindgen-0.24.3.tar.zst \
+mv cbindgen-0.24.3.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software

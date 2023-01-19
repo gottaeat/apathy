@@ -74,5 +74,5 @@ EOF
 for i in torshit/bin/*; do strip --strip-all $i; done
 strip --strip-unneeded torshit/lib/libproxychains4.so
 
-pkgup torshit/ "${amachine}"-torshit-`dn`
-mv    "${amachine}"-torshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
+pkgup torshit/ torshit-`dn`
+mv    torshit-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/

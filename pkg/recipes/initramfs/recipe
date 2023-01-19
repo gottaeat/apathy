@@ -7,8 +7,7 @@ mkdir bin/ opt/
 mkdir dev/ sys/ proc/ run/
 mkdir mnt/
 
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/\
-"${amachine}"-busybox-1.36.0-initramfs.tar.zst
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/busybox-1.36.0-initramfs.tar.zst
 mv    ./busybox      bin/
 cp -r /opt/cryptshit opt/
 

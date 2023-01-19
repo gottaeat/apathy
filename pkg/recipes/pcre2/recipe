@@ -29,6 +29,6 @@ for i in libpcre2-16.a libpcre2-32.a libpcre2-8.a libpcre2-posix.a; do
  mv -v /usr/lib/"${i}" pcre2-static/
 done
 
-pkgup pcre2-static/ "${amachine}"-pcre2-10.40-static/
-mv "${amachine}"-pcre2-*-static.tar.zst \
+pkgup pcre2-static/ pcre2-10.40-static/
+mv pcre2-*-static.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software

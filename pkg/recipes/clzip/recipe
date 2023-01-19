@@ -13,5 +13,5 @@ for i in clzip; do
  strip --strip-all "${i}"
  chown root:root   "${i}"
  mv "${i}" /usr/bin/
- ln -sfv clzip /usr/bin/lzip
+ ln -sfv "${i}" /usr/bin/lzip
 done

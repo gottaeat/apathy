@@ -19,3 +19,13 @@ meson setup \
  -Dinstalled_tests=false  \
  -Dgio_sniffing=false     \
 ..
+
+samu
+
+# 2
+doas -s
+samu install
+
+rm -rfv \
+ /usr/share/thumbnailers \
+ /usr/lib/gdk-pixbuf-2.0

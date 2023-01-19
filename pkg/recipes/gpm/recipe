@@ -23,7 +23,7 @@ make -j1
 
 # 2
 doas -s
-for i src/gpm; do
+for i in src/gpm; do
  strip --strip-all "${i}"
  chown root:root "${i}"
  mv "${i}" /usr/bin/

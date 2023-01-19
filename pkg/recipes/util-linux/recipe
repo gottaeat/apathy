@@ -188,7 +188,7 @@ for i in blkid smartcols uuid; do
 done
 
 pkgup util-linux-2.37.2-static-libs/ \
- "${amachine}"-util-linux-2.37.2-static-libs/
+ util-linux-2.37.2-static-libs/
 
-mv "${amachine}"-util-linux-2.37.2-static-libs.tar.zst \
+mv util-linux-2.37.2-static-libs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

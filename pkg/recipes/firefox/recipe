@@ -2,9 +2,9 @@
 penis="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
 export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.6.0esr/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.7.0esr/lib,--enable-new-dtags"
 
-                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=native -Lnative=$(llvm-config --libdir)"
+                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
@@ -26,10 +26,10 @@ export    MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE="system"
 mimup
 
 # 2 > extraction
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${amachine}"-ff-prereq-*.tar.zst
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/ff-prereq-*.tar.zst
 
-tar xf /mss/work/sauces/firefox-102.6.0esr.source.tar.xz
-cd     firefox-102.6.0/
+tar xf /mss/work/sauces/firefox-102.7.0esr.source.tar.xz
+cd     firefox-102.7.0/
 
 # 3 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
@@ -75,11 +75,11 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 time ./mach build
 
 # 11 > install
-instdir="${PWD}/KEK/opt/firefox-102.6.0esr"
+instdir="${PWD}/KEK/opt/firefox-102.7.0esr"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-102.6.0esr/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox-102.7.0esr/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd

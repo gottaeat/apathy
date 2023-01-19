@@ -9,31 +9,31 @@ export  LDFLAGS="$(echo "${LDFLAGS}"  \
 export    CFLAGS="${CFLAGS}   -fPIC"
 export  CXXFLAGS="${CXXFLAGS} -fPIC -std=c++14"
 
-instdir="${PWD}/KEK"
+instdir="/mss/work/table/KEK"
 
 ./bootstrap.sh \
- --prefix="${instdir}/opt/boost-1.76.0" \
- --with-toolset=clang                   \
+ --prefix="${instdir}" \
+ --with-toolset=clang             \
  --with-python="/usr/bin/python3"
 
 mybee2(){
-time ./b2 "$@" -j "${ajobcount}"        \
- --prefix="${instdir}/opt/boost-1.76.0" \
- --layout=system                        \
- --without-stacktrace                   \
- --without-mpi                          \
- -d+2                                   \
- -q                                     \
+time ./b2 "$@" -j "${ajobcount}"  \
+ --prefix="${instdir}"            \
+ --layout=system                  \
+ --without-stacktrace             \
+ --without-mpi                    \
+ -d+2                             \
+ -q                               \
 \
-        cflags="${CFLAGS}"              \
-      cxxflags="${CXXFLAGS}"            \
-     linkflags="${LDFLAGS}"             \
+        cflags="${CFLAGS}"        \
+      cxxflags="${CXXFLAGS}"      \
+     linkflags="${LDFLAGS}"       \
 \
-          toolset=clang                 \
-           python=3.9                   \
-          variant=release               \
-    debug-symbols=off                   \
-        threading=multi                 \
+          toolset=clang           \
+           python=3.10            \
+          variant=release         \
+    debug-symbols=off             \
+        threading=multi           \
              link=static
 }
 
@@ -41,7 +41,7 @@ mybee2 stage
 mybee2 install
 
 # 2
-find "${instdir}"/opt/boost-1.76.0/lib -type f -name \*.a \
+find "${instdir}"/lib -type f -name \*.a \
  -exec strip \
   --strip-debug                   \
   --remove-section=.comment       \
@@ -49,6 +49,12 @@ find "${instdir}"/opt/boost-1.76.0/lib -type f -name \*.a \
   --enable-deterministic-archives \
 {} ';'
 
-find "${instdir}"/opt/boost-1.76.0/lib -type f -name \*.a \
+find "${instdir}"/lib -type f -name \*.a \
  -exec ${RANLIB} \
 {} ';'
+
+cd ../
+
+pkgup KEK/ boost-1.76.0-static-libs/
+mv boost-1.76.0-static-libs.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software

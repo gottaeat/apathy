@@ -243,6 +243,5 @@ make prefix="${penis}"     -f unix/Makefile install
 cd ../; rm -rf zip30/
 
 # 12 > pkgup
-pkgup "${penis##*/}" "${amachine}"-ff-prereq-`dn`
-mv "${amachine}"-ff-prereq-*.tar.zst \
- /mnt/mss/stuff/techy-bits/packaged-software/
+pkgup "${penis##*/}" ff-prereq-`dn`
+mv ff-prereq-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/

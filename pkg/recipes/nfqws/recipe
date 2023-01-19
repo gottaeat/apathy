@@ -78,15 +78,18 @@ make install
 cd ../; rm -rf libnetfilter_queue-1.0.5/
 
 # 6
-gcd1 --recursive https://github.com/bol-van/zapret
-cd zapret/nfq/
+gcd1 https://github.com/bol-van/zapret
+cd   zapret/nfq/
+
 make clean
 
 for i in libcap.a libnfnetlink.a libnetfilter_queue.a libmnl.a; do
  cp -r "${penis}"/lib/"${i}" ./
 done
 
-${CC} ${CFLAGS} ${LDFLAGS} -std=gnu99 -o nfqws *.c \
+for i in *.c crypto/*.c; do ${CC} ${CFLAGS} -std=gnu99 -c "${i}"; done
+
+${CC} ${LDFLAGS} -std=gnu99 *.o -o nfqws \
  -lz libcap.a libmnl.a libnetfilter_queue.a libnfnetlink.a
 
 # 7

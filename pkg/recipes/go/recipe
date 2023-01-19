@@ -1,12 +1,9 @@
 # 1 > no lto
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
-
 cdt1
+
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
 
 # 2 > bootstrap
 if ! go version >/dev/null 2>&1;

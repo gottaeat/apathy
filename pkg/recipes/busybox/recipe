@@ -83,8 +83,8 @@ cp -v "${fdir}"/config-initramfs ./.config
 mymake clean
 mymake
 
-pkgup busybox "${amachine}"-busybox-1.36.0-initramfs
+pkgup busybox busybox-1.36.0-initramfs
 
-chown mss:mss "${amachine}"-busybox-1.36.0-initramfs.tar.zst
-mv "${amachine}"-busybox-1.36.0-initramfs.tar.zst \
+chown mss:mss busybox-1.36.0-initramfs.tar.zst
+mv busybox-1.36.0-initramfs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

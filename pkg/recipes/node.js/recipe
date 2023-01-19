@@ -1,12 +1,11 @@
 # 1
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
 export   CFLAGS="$(echo "${CFLAGS}"   \
  | sed 's/-O[23]/-Os/')"
 export CXXFLAGS="$(echo "${CXXFLAGS}" \
  | sed 's/-O[23]/-Os/')"
-
-# 2
-tar xf /mss/work/sauces/node-18.0.0.tar.gz
-cd     node-18.0.0/
 
 pdir="/mss/repo/pkg/recipes/node.js/patches"
 patch -p1 < "${pdir}"/0001-remove-latomic.patch
@@ -18,8 +17,6 @@ patch -p1 < "${pdir}"/0002-fix-libc++.patch
  --shared-openssl           \
  --shared-zlib              \
  --with-intl=none           \
- --without-dtrace           \
- --without-etw              \
  --without-inspector        \
  --without-node-code-cache  \
  --without-node-snapshot    \
@@ -30,18 +27,18 @@ time samu -C out/Release
 
 # 3
 instdir="${PWD}/KEK"
-tools/install.py install "${instdir}" /opt/node.js-18.0.0
+tools/install.py install "${instdir}" /opt/node.js-19.4.0
 
 rm -rfv \
- "${instdir}"/opt/node.js-18.0.0/include \
- "${instdir}"/opt/node.js-18.0.0/lib     \
- "${instdir}"/opt/node.js-18.0.0/share   \
- "${instdir}"/opt/node.js-18.0.0/bin/corepack
+ "${instdir}"/opt/node.js-19.4.0/include \
+ "${instdir}"/opt/node.js-19.4.0/lib     \
+ "${instdir}"/opt/node.js-19.4.0/share   \
+ "${instdir}"/opt/node.js-19.4.0/bin/corepack
 
-strip --strip-all "${instdir}"/opt/node.js-18.0.0/bin/node
+strip --strip-all "${instdir}"/opt/node.js-19.4.0/bin/node
 
 cd "${instdir}"/opt/
 
-pkgup node.js-18.0.0 "${amachine}"-node.js-18.0.0
-mv "${amachine}"-node.js-18.0.0.tar.zst \
+pkgup node.js-19.4.0 node.js-19.4.0
+mv node.js-19.4.0.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software
