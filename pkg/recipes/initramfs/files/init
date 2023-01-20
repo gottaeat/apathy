@@ -21,7 +21,16 @@ rshell(){
  exit 1
 }
 
-cryptsetup open /dev/sda2 x230 || rshell
+amachine="$(cut -d ' ' -f2,3- -O '' \
+             /sys/devices/virtual/dmi/id/product_family)"
+
+case "${amachine}" in
+ X230) rawpath="/dev/sda2" rootpath="/dev/x230apathy/rootfs" ;;
+  T61) rawpath="/dev/sda2" rootpath="/dev/t61apathy/rootfs"  ;;
+    *) rshell                                                ;;
+esac
+
+cryptsetup open "${rawpath}" x230 || rshell
 
 lvm vgchange -ay >/dev/null 2>&1
 
@@ -39,6 +48,6 @@ susdev_mjmn="$(printf     '%u:%u\n'    ${susdev_stat})"
 echo "${susdev_mjmn}" > /sys/power/resume
 echo "${susdev_oset}" > /sys/power/resume_offset
 
-mount /dev/apathy/rootfs /mnt
+mount "${rootpath}" /mnt
 
 exec switch_root /mnt /mss/init/bin/init
