@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 6.1 kernels, version 1, for thinkpad x230.
+# build script for 6.1 kernels, version 2, for all machines running apathy.
 
 . /mss/files/funcs
 . /mss/files/device.conf
@@ -14,7 +14,7 @@ fi
 
 # 2 > set script vars
   blddate="$(date "+%Y%m%d_%H%M%S")"
- storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel/${amachine}"
+ storepkg="/mnt/mss/stuff/techy-bits/packaged-software/kernel/unified/"
   repodir="/mss/repo/pkg/recipes/linux"
  saucedir="/mss/work/sauces"
   workdir="/mss/work/table"
@@ -25,7 +25,7 @@ fi
  patchdir="${repodir}/patches"
       rdr="${logdir}/${blddate}-linux-${kerver}.log"
 
-  useconf="${repodir}/files/${amachine}.config"
+  useconf="${repodir}/files/unified.config"
  localver="6.1$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                       print}' ${useconf})"
   bldsalt="$(awk    '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
@@ -58,7 +58,7 @@ fi
 # 5 > print details
 clear; aprint_nc
 lsdetail "release  " "${kerver}   "
-lsdetail "machine  " "${amachine} "
+lsdetail "machine  " "unified     "
 lsdetail "localver " "${localver} "
 lsdetail "details  " "${bldsalt}  "
 lsdetail "makeflags" "${MAKEFLAGS}"
@@ -150,7 +150,7 @@ read answerpkgup
 case "${answerpkgup}" in
  yes|Y|y)
   if [ ! -d "${storepkg}" ]; then
-   aprint_ret "creating storepkg dir for ${amachine}."
+   aprint_ret "creating storepkg dir for the unified kernel builds."
     mkdir -pv "${storepkg}" >> "${rdr}" 2>&1
    evalret
   fi
