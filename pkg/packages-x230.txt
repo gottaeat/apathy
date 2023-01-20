@@ -225,3 +225,8 @@ i  3  .      bettercap            2.32.0
 i  2  .      go                   1.19.4
 i  2  .      mimalloc             2.0.2
 i  3  .      qemu                 7.2.0
+
+i  1  .      dragon               0a56eb2d
+i  1  .      ookla-speedtest      1.2.0
+i  1  .      patchelf             0.17.2
+i  1  .      redshift             490ba2aa
