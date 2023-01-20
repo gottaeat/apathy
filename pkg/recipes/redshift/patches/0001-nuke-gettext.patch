@@ -1,0 +1,110 @@
+From ae7e91c081eb94e20629b48ae46ef9893f6bd6ac Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Fri, 20 Jan 2023 03:59:06 +0300
+Subject: [PATCH] nuke gettext.
+
+---
+ Makefile.am     | 20 +-------------------
+ configure.ac    | 11 -----------
+ src/Makefile.am |  2 +-
+ 3 files changed, 2 insertions(+), 31 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 7e58f08..f5cb729 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,5 +1,5 @@
+ 
+-SUBDIRS = src po
++SUBDIRS = src
+ ACLOCAL_AMFLAGS = -I m4
+ 
+ # Install systemd user unit files locally for distcheck
+@@ -70,12 +70,6 @@ install-data-hook:
+ 
+ uninstall-hook:
+ 	$(UPDATE_ICON_CACHE);
+-
+-# We would preferable use @INTLTOOL_DESKTOP_RULE@ here but
+-# sadly it is broken for out-of-tree builds.
+-%.desktop: %.desktop.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po)
+-	$(AM_V_GEN)$(MKDIR_P) $(@D);
+-	$(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
+ endif
+ 
+ 
+@@ -97,12 +91,6 @@ $(systemduserunit_DATA): $(SYSTEMD_USER_UNIT_IN_FILES) Makefile
+ if ENABLE_GUI
+ appdatadir = @datadir@/appdata
+ appdata_DATA = $(APPDATA_IN_FILES:.xml.in=.xml)
+-
+-# We would preferable use @INTLTOOL_XML_RULE@ here but
+-# sadly it is broken for out-of-tree builds.
+-%.xml: %.xml.in $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po)
+-	$(AM_V_GEN)$(MKDIR_P) $(@D);
+-	$(INTLTOOL_V_MERGE)LC_ALL=C $(INTLTOOL_MERGE) $(INTLTOOL_V_MERGE_OPTIONS) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
+ endif
+ 
+ 
+@@ -133,9 +121,3 @@ CLEANFILES = \
+ 	$(systemduserunit_DATA) \
+ 	$(appdata_DATA) \
+ 	$(apparmor_DATA)
+-
+-
+-# Update PO translations
+-.PHONY: update-po
+-update-po:
+-	cd po && $(MAKE) POTFILES redshift.pot update-po
+diff --git a/configure.ac b/configure.ac
+index b411626..d6c39a8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -16,8 +16,6 @@ AC_PROG_LIBTOOL
+ AC_PROG_OBJC # For macOS support modules
+ AC_LANG([C])
+ 
+-AC_PROG_INTLTOOL([0.50])
+-
+ AC_CANONICAL_HOST
+ 
+ # Test host platform
+@@ -52,14 +50,6 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([])], [
+ AC_LANG_POP([Objective C])
+ 
+ # Checks for libraries.
+-AM_GNU_GETTEXT_VERSION([0.17])
+-AM_GNU_GETTEXT([external])
+-
+-GETTEXT_PACKAGE=redshift
+-AC_SUBST(GETTEXT_PACKAGE)
+-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Package name for gettext])
+-
+-
+ PKG_CHECK_MODULES([DRM], [libdrm], [have_drm=yes], [have_drm=no])
+ 
+ PKG_CHECK_MODULES([X11], [x11], [have_x11=yes], [have_x11=no])
+@@ -359,7 +349,6 @@ AC_CHECK_FUNCS([setlocale strchr floor pow])
+ 
+ AC_CONFIG_FILES([
+ 	Makefile
+-	po/Makefile.in
+ 	src/Makefile
+ 	src/redshift-gtk/Makefile
+ ])
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 8aa96ea..0b4d004 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -33,7 +33,7 @@ EXTRA_redshift_SOURCES = \
+ 	windows/versioninfo.rc
+ 
+ AM_CFLAGS =
+-redshift_LDADD = @LIBINTL@
++redshift_LDADD =
+ EXTRA_DIST = windows/redshift.ico
+ 
+ if ENABLE_DRM
+-- 
+2.39.0
+

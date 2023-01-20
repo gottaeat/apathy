@@ -1,0 +1,32 @@
+# 1
+tar xf /mss/work/sauces/redshift-490ba2aa.tar.zst
+cd     redshift-490ba2aa/
+
+pdir="/mss/repo/pkg/recipes/redshift/patches"
+patch -p1 < "${pdir}"/0001-nuke-gettext.patch
+
+autoreconf -fvi
+
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix=/usr          \
+ --enable-randr         \
+ --disable-apparmor     \
+ --disable-corelocation \
+ --disable-drm          \
+ --disable-geoclue2     \
+ --disable-gui          \
+ --disable-quartz       \
+ --disable-ubuntu       \
+ --disable-vidmode      \
+ --disable-wingdi
+
+make
+
+doas -s
+for i in src/redshift; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

@@ -1,0 +1,19 @@
+# 1
+tar xf /mss/work/sauces/patchelf-0.17.2.tar.gz
+cd     patchelf-0.17.2/
+
+./configure \
+ --build=$CBUILD \
+ --host=$CHOST   \
+ --prefix=/usr   \
+ --without-asan  \
+ --without-ubsan
+
+make
+
+doas -s
+for i in src/patchelf; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

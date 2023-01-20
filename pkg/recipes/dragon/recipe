@@ -1,0 +1,12 @@
+# 1
+tar xf /mss/work/sauces/dragon-0a56eb2d.tar.zst
+cd     dragon-0a56eb2d/
+
+make
+
+doas -s
+for i in dragon; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

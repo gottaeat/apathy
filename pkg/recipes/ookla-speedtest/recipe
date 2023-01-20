@@ -1,0 +1,12 @@
+# 1
+mkdir build/
+cd    build/
+
+tar xf /mss/work/sauces/ookla-speedtest-1.2.0-linux-x86_64.tgz
+
+doas -s
+for i in speedtest; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
