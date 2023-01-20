@@ -19,7 +19,7 @@ mail:x:17:mss
 storage:x:18:mss
 scanner:x:19:
 network:x:20:mss
-kvm:x:21:
+kvm:x:21:mss
 input:x:22:mss
 nogroup:x:99:
 users:x:100:mss

@@ -1,6 +1,6 @@
 # luks -> lvm for rootfs + storage
-/dev/apathy/rootfs              /               ext4  defaults,noatime                  0  1
-/dev/apathy/stuff               /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
+/dev/x230apathy/rootfs          /               ext4  defaults,noatime                  0  1
+/dev/x230apathy/stuff           /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
 
 # boot + home
 /dev/sda1                       /boot           ext4  defaults,noatime                  0  2

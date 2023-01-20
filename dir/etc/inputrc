@@ -1,15 +1,15 @@
-set bell-style none
-set convert-meta Off
-set enable-keypad On
+set bell-style             audible
+set convert-meta           Off
+set enable-keypad          On
 set horizontal-scroll-mode Off
-set input-meta On
-set meta-flag On
-set output-meta On
+set input-meta             On
+set meta-flag              On
+set output-meta            On
 
-"\eOF": end-of-line
-"\eOH": beginning-of-line
-"\eOc": forward-word
-"\eOd": backward-word
+"\eOF":  end-of-line
+"\eOH":  beginning-of-line
+"\eOc":  forward-word
+"\eOd":  backward-word
 "\e[1~": beginning-of-line
 "\e[2~": quoted-insert
 "\e[3~": delete-char
