@@ -4,7 +4,6 @@ cdt1
 printprof vanilla > buildprof
 . buildprof; rm -rf buildprof
 
-
 # 2 > bootstrap
 if ! go version >/dev/null 2>&1;
  then
@@ -42,15 +41,16 @@ fi
 tar xf /mss/work/sauces/go1.19.4.src.tar.gz
 cd     go/
 
-export         GOOS="linux"
+export          GOOS="linux"
 export        GOARCH="amd64"
+export       GOAMD64="v1"
 
 export CC_FOR_TARGET="${CC}"
 export    GO_LDFLAGS="-buildmode=pie -w -s"
 
-export GOROOT_FINAL="/opt/go-1.19.4"
-export       GOROOT="${PWD}"
-export        GOBIN="${GOROOT}/bin"
+export  GOROOT_FINAL="/opt/go-1.19.4"
+export        GOROOT="${PWD}"
+export         GOBIN="${GOROOT}/bin"
 
 cd src/
 

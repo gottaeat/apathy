@@ -251,15 +251,14 @@ ac_cv_lib_popt_poptGetContext=yes \
  --build="$CBUILD"                \
  --host="$CHOST"                  \
  --prefix="${findir}"             \
- --enable-internal-sse-argon2     \
  --enable-libargon2               \
  --enable-static                  \
  --enable-static-cryptsetup       \
  --disable-asciidoc               \
- --disable-cryptsetup-reencrypt   \
  --disable-dev-random             \
  --disable-external-tokens        \
  --disable-internal-argon2        \
+ --disable-internal-sse-argon2    \
  --disable-luks2-reencryption     \
  --disable-nls                    \
  --disable-pwquality              \

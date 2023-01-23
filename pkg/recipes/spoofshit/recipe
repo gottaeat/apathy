@@ -2,7 +2,6 @@
 penis="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC -fPIE"
 export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC -fPIE"
-export            PATH="${PATH}:/mss/work/table/go-1.15.2-alpine/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
@@ -17,9 +16,6 @@ myconfigure(){
 }
 
 # 2
-tar xf /mss/work/sauces/go-1.15.2-alpine.tar.zst
-
-# 3
 tar xf /mss/work/sauces/libmnl-1.0.4.tar.bz2
 cd     libmnl-1.0.4/
 
@@ -32,7 +28,7 @@ make install
 
 cd ../; rm -rf libmnl-1.0.4/
 
-# 4
+# 3
 tar xf /mss/work/sauces/libnfnetlink-1.0.1.tar.bz2
 cd     libnfnetlink-1.0.1/
 
@@ -45,7 +41,7 @@ make install
 
 cd ../; rm -rf libnfnetlink-1.0.1/
 
-# 5
+# 4
 tar xf /mss/work/sauces/libnetfilter_queue-1.0.5.tar.bz2
 cd     libnetfilter_queue-1.0.5/
 
@@ -56,7 +52,7 @@ make install
 
 cd ../; rm -rf libnetfilter_queue-1.0.5/
 
-# 6
+# 5
 tar xf /mss/work/sauces/libpcap-1.10.1.tar.gz
 cd     libpcap-1.10.1/
 
@@ -77,7 +73,7 @@ make install
 
 cd ../; rm -rf libpcap-1.10.1/
 
-# 7
+# 6
 tar xf /mss/work/sauces/libnet-1.2.tar.gz
 cd     libnet-1.2/
 
@@ -96,7 +92,7 @@ make
 make install
 cd ../; rm -rf libnet-1.2/
 
-# 8
+# 7
 tar xf /mss/work/sauces/libnids-1.24.tar.gz
 cd     libnids-1.24/
 
@@ -114,7 +110,7 @@ make install
 
 cd ../; rm -rf libnids-1.24/
 
-# 9
+# 8
 tar xf /mss/work/sauces/libtirpc-1.3.1.tar.bz2
 cd     libtirpc-1.3.1/
 
@@ -131,7 +127,7 @@ make install
 
 cd ../; rm -rf libtirpc-1.3.1/
 
-# 10
+# 9
 tar xf /mss/work/sauces/dsniff-2.4b1.tar.gz
 cd     dsniff-2.4/
 
@@ -164,11 +160,14 @@ mv tcpnice ../
 
 cd ../; rm -rf dsniff-2.4/
 
-# 11
+# 10
 tar xf /mss/work/sauces/bettercap-v2.32.0.tar.gz
 cd     bettercap-2.32.0/
 
-export   GO11MODULE=on
+export          GOOS="linux"
+export        GOARCH="amd64"
+export       GOAMD64="v1"
+
 export      GOFLAGS="-buildmode=pie -ldflags=-linkmode=external -trimpath -mod=readonly -modcacherw"
 
          CGO_CFLAGS="$(echo "${CFLAGS}"   | sed 's/-flto=....//g;s/-flto-jobs=.//g;') -v"

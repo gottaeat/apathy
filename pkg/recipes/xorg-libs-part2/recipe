@@ -155,22 +155,20 @@ cd    build
 meson setup \
  --buildtype=plain        \
  --prefix=/usr            \
- -Dloongson-mmi=disabled  \
- -Dmmx=enabled            \
- -Dsse2=enabled           \
- -Dssse3=enabled          \
- -Dvmx=disabled           \
- -Darm-simd=disabled      \
- -Dneon=disabled          \
- -Diwmmxt=disabled        \
- -Diwmmxt2=false          \
- -Dmips-dspr2=disabled    \
- -Dgnu-inline-asm=enabled \
- -Dopenmp=enabled         \
- -Dtimers=false           \
+\
  -Dgnuplot=false          \
  -Dgtk=disabled           \
  -Dlibpng=enabled         \
+ -Dopenmp=enabled         \
+ -Dtimers=false           \
+\
+ -Darm-simd=disabled      \
+ -Diwmmxt=disabled        \
+ -Diwmmxt2=false          \
+ -Dloongson-mmi=disabled  \
+ -Dmips-dspr2=disabled    \
+ -Dneon=disabled          \
+ -Dvmx=disabled           \
 ..
 
 samu

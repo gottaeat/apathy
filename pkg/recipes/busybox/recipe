@@ -2,12 +2,8 @@
 cdt1
 doas -s
 
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g;')"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
 
 mymake(){
  make V=0 \

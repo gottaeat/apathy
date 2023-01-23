@@ -3,6 +3,7 @@ mkdir build
 cd    build
 
 cmake -Wno-dev -GNinja \
+ -DCMAKE_BUILD_TYPE=None                \
  -DCMAKE_INSTALL_PREFIX=/usr            \
  -DCMAKE_INSTALL_LIBDIR=/usr/lib        \
  -DCMAKE_C_FLAGS="$CFLAGS"              \

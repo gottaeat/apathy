@@ -23,6 +23,8 @@ python3 bin/git_sha1_gen.py --output include/git_sha1.h
 mkdir build
 cd    build
 
+ruanffmpeg="h264dec,h264enc,h265dec,h265enc"
+bladder="crocus,virgl"
 meson setup \
  --buildtype=plain              \
  --prefix=/usr                  \
@@ -39,8 +41,9 @@ meson setup \
  -Degl=enabled                  \
 \
  -Ddri-drivers=                 \
- -Dgallium-drivers=crocus,virgl \
+ -Dgallium-drivers="${bladder}" \
  -Dvulkan-drivers=              \
+ -Dvideo-codecs="${ruanffmpeg}" \
 \
  -Dgallium-extra-hud=false      \
  -Dgallium-vdpau=disabled       \

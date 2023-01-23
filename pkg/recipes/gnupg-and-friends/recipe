@@ -59,14 +59,8 @@ cd     libgcrypt-1.9.3/
  --disable-static          \
  --disable-doc             \
 \
- --disable-aesni-support   \
- --disable-avx-support     \
  --enable-O-flag-munging   \
- --enable-sse41-support    \
- --disable-avx2-support    \
- --disable-neon-support    \
- --disable-padlock-support \
- --disable-shaext-support
+ --disable-padlock-support
 
 make
 make DESTDIR=/mss/work/gpgFUCK install

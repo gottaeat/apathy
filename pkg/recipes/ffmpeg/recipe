@@ -1,11 +1,4 @@
 # 1
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g')"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed 's/-flto=....//g;s/-flto-jobs=.//g')"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed 's/,--lto-O.//g;s/,--thinlto-jobs=.//g')"
-
 penis="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
 export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
@@ -34,6 +27,9 @@ sed -i -e 's/-lXv/-lXv -lXext -lX11/g' \
  "${penis}"/lib/pkgconfig/xv.pc
 
 # 3 > ffmpeg
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
 tar xf /mss/work/sauces/ffmpeg-5.1.2.tar.xz
 cd     ffmpeg-5.1.2/
 
@@ -64,49 +60,15 @@ cd    build
  --optflags="${LDFLAGS}"          \
 \
  --cpu=generic                    \
+ --enable-runtime-cpudetect       \
+\
  --enable-lto                     \
  --enable-pic                     \
  --enable-shared                  \
  --disable-debug                  \
  --disable-optimizations          \
- --disable-runtime-cpudetect      \
  --disable-static                 \
  --disable-symver                 \
-\
- --enable-asm                     \
- --enable-fast-unaligned          \
- --enable-inline-asm              \
- --enable-mmx                     \
- --enable-mmxext                  \
- --enable-sse                     \
- --enable-sse2                    \
- --enable-sse3                    \
- --enable-sse4                    \
- --enable-ssse3                   \
- --enable-x86asm                  \
- --disable-aesni                  \
- --disable-altivec                \
- --disable-amd3dnow               \
- --disable-amd3dnowext            \
- --disable-armv5te                \
- --disable-armv6                  \
- --disable-armv6t2                \
- --disable-avx                    \
- --disable-avx2                   \
- --disable-avx512                 \
- --disable-fma3                   \
- --disable-fma4                   \
- --disable-mipsdsp                \
- --disable-mipsdspr2              \
- --disable-mipsfpu                \
- --disable-mmi                    \
- --disable-msa                    \
- --disable-neon                   \
- --disable-power8                 \
- --disable-sse42                  \
- --disable-vfp                    \
- --disable-vsx                    \
- --disable-xop                    \
 \
  --enable-ffmpeg                  \
  --disable-ffplay                 \
