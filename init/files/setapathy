@@ -1,0 +1,115 @@
+#!/mss/bin/sh
+. /mss/init/files/funcs
+. /mss/files/device.conf
+
+if [ "${amachine}" = "unrecognized" ]
+ then
+  ainitmes "this machine is not defined, set properties for it first."; failprompt
+  exit 1
+ else
+  ainit_nc
+  ainitmes "getting the rootfs ready for ${cb_yel}${amachine}${c_res}."; infoprompt
+  ainit_nc
+fi
+
+ainitmes "reading /etc/${cb_blu}os-release${c_res}."
+ getos && l2="${d_name} ${d_var} ${d_ver}"
+evalret
+
+ainitmes "${l2}"; armprompt
+
+ainitmes "generating a list of ${cb_blu}amachines${c_res}."
+ amachlist="$(awk '/\).[[:space:]]*amachine/{gsub(/amachine=\"|\"/,""); print $2}'\
+               /mss/files/device.conf | sed '/unrecognized/d')"
+evalret
+
+for i in ${amachlist}; do ainitmes "${i}"; armprompt; done
+
+ainitmes "generating the ${cb_blu}hosts${c_res} list."
+ hostslist="$(for i in ${amachlist}; do
+               amachine="${i}" . /mss/files/init.conf
+               echo "${dev_sip} ${hname}"
+              done | sort)"
+evalret
+
+for i in ${hostslist}; do ainitmes "${i}"; armprompt; done
+
+. /mss/files/init.conf
+
+ainit_nc
+ainitmes "${cb_red}${amachine}${c_res}"; ainit_nc
+ainitmes "${hname}"; armprompt
+ainitmes "${dev_sip}"; armprompt
+ainitmes "${dns1} ${dns2}"; armprompt
+ainit_nc
+
+ainitmes "generating /etc/${cb_blu}ssh/banner${c_res}."
+l3="${hname} (${dev_sip})"       &&
+if [ ${#l2} -lt "${#l3}" ]; then len="${#l3}"; else len="${#l2}"; fi &&
+
+l2pad="$((${len} - ${#l2}))" &&
+l3pad="$((${len} - ${#l3}))" &&
+ltb="" l2s="" l3s=""         &&
+len="$((${len} + 4))"        &&
+
+i=0; until [ "${i}" -eq "$((${len} -2 ))" ]; do
+ ltb="${ltb}─"
+ i="$((${i} + 1))"
+done &&
+
+i=0; until [ "${i}" -eq ${l2pad} ]; do
+ l2s="${l2s} "
+ i="$((${i} + 1))"
+done &&
+
+i=0; until [ "${i}" -eq ${l3pad} ]; do
+ l3s="${l3s} "
+ i="$((${i} + 1))"
+done &&
+
+cat << EOF > /etc/ssh/banner
+
+ ╔${ltb}╗
+ │ ${l2}${l2s} │
+ │ ${l3}${l3s} │
+ ╚${ltb}╝
+
+EOF
+evalret
+
+ainitmes "generating /etc/${cb_blu}resolv.conf${c_res}."
+cat << EOF > /etc/resolv.conf
+nameserver ${dns1}
+nameserver ${dns2}
+EOF
+evalret
+
+ainitmes "generating /etc/${cb_blu}hosts${c_res}."
+cat << EOF > /etc/hosts
+127.0.0.1    localhost
+127.0.1.1    ${hname} ${hname}
+
+127.0.0.1    mpdboi
+${hostslist}
+EOF
+evalret
+
+ainitmes "generating /etc/${cb_blu}hostname${c_res}."
+cat << EOF > /etc/hostname
+${hname}
+EOF
+evalret
+
+ainitmes "generating /etc/${cb_blu}fstab${c_res}."
+cat << EOF > /etc/fstab
+# luks -> lvm for rootfs + storage
+/dev/${amachine}apathy/rootfs          /               ext4  defaults,noatime                  0  1
+/dev/${amachine}apathy/stuff           /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
+
+# boot + home
+/dev/sda1                       /boot           ext4  defaults,noatime                  0  2
+/mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind   0  0
+EOF
+evalret
+
+ainit_nc

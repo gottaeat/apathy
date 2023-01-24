@@ -1,5 +1,5 @@
 project('init', 'c',
- version: '32',
+ version: '33',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -55,7 +55,8 @@ executable('respawn',    'src/respawn.c',    link_with: libutil, install: true)
 # 3 > files
 files_bin = [
  'files/init',
- 'files/ainitmgr'
+ 'files/ainitmgr',
+ 'files/setapathy'
 ]
 
 files_files = [
