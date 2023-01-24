@@ -106,7 +106,7 @@ stats(){
  [ -z "$(cd /mss/repo && git status -s)" ] \
   && gitstat="clean" || gitstat="dirty"
  
-    partsize="$(df / | awk 'NR==2 {print $3/1024"/"$2/1024"M"}')"
+    partsize="$(df -P / | awk 'NR==2 {print $3/1024"/"$2/1024"M"}')"
       c_inst="$(grep ^i "${localdb}" | wc -l)"
       c_ondm="$(grep ^o "${localdb}" | wc -l)"
 
