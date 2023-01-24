@@ -4,7 +4,7 @@ export broadcast dns domain interface ip mask metric router subnet
 
 deconfig(){ ip -4 addr flush dev $interface;}
 routes(){
- ainitmes "${c_red}routes${c_blue}()${c_reset}"; ainit_nc
+ ainitmes "${cb_red}routes${cb_blu}()${c_res}"; ainit_nc
  [ -f "/sys/class/net/${interface}/ifindex" ]              \
   && _ifindex="$(cat /sys/class/net/${interface}/ifindex)" \
   || _ifindex="$(ip -4 link show dev ${interface}          \
@@ -22,14 +22,14 @@ routes(){
 }
 
 bound(){
- ainitmes "${c_red}bound${c_blue}()${c_reset}"; ainit_nc
+ ainitmes "${cb_red}bound${cb_blu}()${c_res}"; ainit_nc
  ip -4 addr add "${ip}/${mask}" broadcast "${broadcast}" dev "${interface}"
  ip -4 link set dev "${interface}" up
  routes
 }
 
 renew() {
- ainitmes "${c_red}renew${c_blue}()${c_reset}"; ainit_nc
+ ainitmes "${cb_red}renew${cb_blu}()${c_res}"; ainit_nc
  [ "$(ip -4 addr show dev ${interface} | grep ${ip}/${mask})" ] \
   && deconfig                                                   \
   && ip -4 addr add "${ip}/${mask}" broadcast "${broadcast}" dev "${interface}"

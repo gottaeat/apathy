@@ -21,7 +21,7 @@ succprompt(){ printf "${cur_zero}${pbefore}${s_succ}\n";}
 armprompt() { printf "${cur_zero}${pbefore}${s_arm}\n";}
 
 ainitusage(){
- printf "${sbefore}${cb_grn}usage${c_blu}:${c_res} ${@}."
+ printf "${sbefore}${cb_grn}usage${cb_blu}:${c_res} ${@}."
  infoprompt
 }
 
@@ -42,7 +42,7 @@ ainit_mount(){
   || mount -o         "$1" -t "$2" "$3" "$4"
 }
 
-banner(){
+getos(){
  d_name="$(awk '/^NAME/{sub(/NAME=/,"");       print}' /etc/os-release)"
   d_var="$(awk '/^VARI/{sub(/VARIANT=/,"");    print}' /etc/os-release)"
   d_ver="$(awk '/^VERS/{sub(/VERSION_ID=/,""); print}' /etc/os-release)"
@@ -56,7 +56,12 @@ banner(){
  esac
 
  kerfmt="${cb_red}$(uname -r) ${cb_blu}(${cl_whi}${kerdat}${cb_blu})${c_res}"
-   date="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
+}
+
+banner(){
+ getos
+
+ date="$(date '+%a %d %I:%M:%S%P' | awk '{print tolower($0)}')"
 
  clear
  ainit_nc; ainit_nc
