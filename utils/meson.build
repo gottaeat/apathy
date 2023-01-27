@@ -1,5 +1,5 @@
 project('utils',
- version: '34',
+ version: '35',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
@@ -35,7 +35,6 @@ files_bin = [
  'bin/setbright',
  'bin/setgov',
  'bin/setmon',
- 'bin/setrotate',
  'bin/setxkeeb',
  'bin/stripper',
  'bin/suspendtodisk',
@@ -48,11 +47,17 @@ files_bin = [
 files_files = [
  'files/device.conf',
  'files/funcs',
- 'files/init.conf',
  'files/sourceme',
  'files/sourceme-aliases',
  'files/sourceme-build'
 ]
 
+files_files_machines = [
+ 'files/machines/t61.conf',
+ 'files/machines/unrecognized.conf',
+ 'files/machines/x230.conf'
+]
+
 install_data(files_bin,   install_dir: get_option('bindir'))
 install_data(files_files, install_dir: get_option('datadir'))
+install_data(files_files_machines, install_dir: join_paths(get_option('datadir'), 'machines'))

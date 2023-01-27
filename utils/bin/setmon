@@ -1,6 +1,5 @@
 #!/mss/bin/sh
 . /mss/files/funcs
-. /mss/files/device.conf
 
 if [ ! "$(xrandr | awk '/VGA-1/{print $2}')" = "connected" ]
  then
@@ -14,12 +13,7 @@ if [ ! "$(xrandr | awk '/VGA-1/{print $2}')" = "connected" ]
 
   if [ ! "${cur_res}" -gt "${lvds_res}" ]
    then
-    xrandr --output VGA-1 --auto --primary --left-of LVDS-1
-    setxkbmap \
-     -option grp:switch,grp:alt_shift_toggle \
-     -layout 'us,tr'
-
-    xset r rate 200 40
+    setxkeeb
 
     [ -f /home/mss/.fehbg ] && /home/mss/.fehbg
    else
