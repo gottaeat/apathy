@@ -149,12 +149,19 @@ evalret
 if [ -f "/proc/acpi/ibm/fan" ]
  then
   ainitmes "generating /etc/${cb_blu}thinkfan.conf${c_res}."
-   hwmon="$(grep Package /sys/class/hwmon/hwmon*/temp*_label -l \
-             | sed 's/label/input/g')"
 
-   cat << EOF > /etc/thinkfan.conf
+  tempfiles="$(/bin/ls -w1 /sys/class/hwmon/hwmon*/temp*_label)"
+  fintemp="$(grep -l Package ${tempfiles} || grep -l Core\ 0 ${tempfiles})"
+
+  if [ -z "${fintemp}" ]; then
+   failprompt
+   ainitmes "no hwmon file found."; failprompt
+   exit 1
+  fi
+
+  cat << EOF > /etc/thinkfan.conf
 sensors:
-  - hwmon: ${hwmon}
+  - hwmon: $(echo "${fintemp}" | sed 's/label/input/g')
 
 fans:
   - tpacpi: /proc/acpi/ibm/fan
