@@ -1,6 +1,7 @@
 #!/mss/bin/sh
 # 0 > include device specific vars
-. /mss/files/init.conf
+. /mss/files/device.conf
+. /mss/files/machines/"${amachine}".conf
 
 # 1 > service specific functions
 # 1.1 > nfs

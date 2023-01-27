@@ -1,10 +1,34 @@
 #!/mss/bin/sh
 . /mss/init/files/funcs
-. /mss/files/device.conf
 
-if [ "${amachine}" = "unrecognized" ]
+# handle args
+if [ -z "${1}" ];
  then
-  ainitmes "this machine is not defined, set properties for it first."; failprompt
+  ainitusage "{auto|amachine}"
+  exit 1
+ else
+  hostslist="$(find /mss/files/machines/ -type f -name \*.conf \
+                | awk '{gsub(/^.*\/|\.[^.]*$/,""); print}'     \
+                | grep -v unrecognized)"
+fi
+
+# handle amachine
+case "${1}" in
+ auto)
+  . /mss/files/device.conf
+ ;;
+ unrecognized)
+  ainitmes "this machine is not recognized, create a configuration for it."; failprompt
+  exit 1
+ ;;
+ *)
+  amachine="${1}"
+ ;;
+esac
+
+if ! echo "${hostslist}" | grep "${amachine}" >/dev/null 2>&1
+ then
+  ainitmes "no configuration for ${amachine} has been found."; failprompt
   exit 1
  else
   ainit_nc
@@ -12,62 +36,51 @@ if [ "${amachine}" = "unrecognized" ]
   ainit_nc
 fi
 
+# generate the os string for the ssh banner
 ainitmes "reading /etc/${cb_blu}os-release${c_res}."
  getos && l2="${d_name} ${d_var} ${d_ver}"
 evalret
 
-ainitmes "${l2}"; armprompt
-
-ainitmes "generating a list of ${cb_blu}amachines${c_res}."
- amachlist="$(awk '/\).[[:space:]]*amachine/{gsub(/amachine=\"|\"/,""); print $2}'\
-               /mss/files/device.conf | sed '/unrecognized/d')"
-evalret
-
-for i in ${amachlist}; do ainitmes "${i}"; armprompt; done
-
+# generate the hosts list for /etc/hosts
 ainitmes "generating the ${cb_blu}hosts${c_res} list."
- hostslist="$(for i in ${amachlist}; do
-               amachine="${i}" . /mss/files/init.conf
+ hostslist="$(for i in ${hostslist}; do
+               . /mss/files/machines/"${i}".conf
                echo "${dev_sip} ${hname}"
               done | sort)"
 evalret
 
-for i in ${hostslist}; do ainitmes "${i}"; armprompt; done
-
-. /mss/files/init.conf
-
-ainit_nc
-ainitmes "${cb_red}${amachine}${c_res}"; ainit_nc
-ainitmes "${hname}"; armprompt
-ainitmes "${dev_sip}"; armprompt
-ainitmes "${dns1} ${dns2}"; armprompt
+# load machine config
+ainitmes "loading the machine ${cb_blu}config${c_res}."
+ . /mss/files/machines/"${amachine}".conf
+evalret
 ainit_nc
 
-ainitmes "generating /etc/${cb_blu}ssh/banner${c_res}."
-l3="${hname} (${dev_sip})"       &&
-if [ ${#l2} -lt "${#l3}" ]; then len="${#l3}"; else len="${#l2}"; fi &&
+# /etc/ssh/banner
+ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
+ l3="${hname} (${dev_sip})"       &&
+ if [ ${#l2} -lt "${#l3}" ]; then len="${#l3}"; else len="${#l2}"; fi &&
 
-l2pad="$((${len} - ${#l2}))" &&
-l3pad="$((${len} - ${#l3}))" &&
-ltb="" l2s="" l3s=""         &&
-len="$((${len} + 4))"        &&
+ l2pad="$((${len} - ${#l2}))" &&
+ l3pad="$((${len} - ${#l3}))" &&
+ ltb="" l2s="" l3s=""         &&
+ len="$((${len} + 4))"        &&
 
-i=0; until [ "${i}" -eq "$((${len} -2 ))" ]; do
- ltb="${ltb}─"
- i="$((${i} + 1))"
-done &&
+ i=0; until [ "${i}" -eq "$((${len} -2 ))" ]; do
+  ltb="${ltb}─"
+  i="$((${i} + 1))"
+ done &&
 
-i=0; until [ "${i}" -eq ${l2pad} ]; do
- l2s="${l2s} "
- i="$((${i} + 1))"
-done &&
+ i=0; until [ "${i}" -eq ${l2pad} ]; do
+  l2s="${l2s} "
+  i="$((${i} + 1))"
+ done &&
 
-i=0; until [ "${i}" -eq ${l3pad} ]; do
- l3s="${l3s} "
- i="$((${i} + 1))"
-done &&
+ i=0; until [ "${i}" -eq ${l3pad} ]; do
+  l3s="${l3s} "
+  i="$((${i} + 1))"
+ done &&
 
-cat << EOF > /etc/ssh/banner
+ cat << EOF > /etc/ssh/banner
 
  ╔${ltb}╗
  │ ${l2}${l2s} │
@@ -77,15 +90,17 @@ cat << EOF > /etc/ssh/banner
 EOF
 evalret
 
+# /etc/resolv.conf
 ainitmes "generating /etc/${cb_blu}resolv.conf${c_res}."
-cat << EOF > /etc/resolv.conf
+ cat << EOF > /etc/resolv.conf
 nameserver ${dns1}
 nameserver ${dns2}
 EOF
 evalret
 
+# /etc/hosts
 ainitmes "generating /etc/${cb_blu}hosts${c_res}."
-cat << EOF > /etc/hosts
+ cat << EOF > /etc/hosts
 127.0.0.1    localhost
 127.0.1.1    ${hname} ${hname}
 
@@ -94,22 +109,66 @@ ${hostslist}
 EOF
 evalret
 
+# /etc/hostname
 ainitmes "generating /etc/${cb_blu}hostname${c_res}."
-cat << EOF > /etc/hostname
+ cat << EOF > /etc/hostname
 ${hname}
 EOF
 evalret
 
+# /etc/fstab
 ainitmes "generating /etc/${cb_blu}fstab${c_res}."
-cat << EOF > /etc/fstab
-# luks -> lvm for rootfs + storage
-/dev/${amachine}apathy/rootfs          /               ext4  defaults,noatime                  0  1
-/dev/${amachine}apathy/stuff           /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
+ cat << EOF > /etc/fstab
+/dev/${amachine}apathy/rootfs   /               ext4  defaults,noatime                  0  1
+/dev/${amachine}apathy/stuff    /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
 
-# boot + home
 /dev/sda1                       /boot           ext4  defaults,noatime                  0  2
 /mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind   0  0
 EOF
 evalret
+
+# /etc/lilo.conf
+ainitmes "generating /etc/${cb_blu}lilo.conf${c_res}."
+ cat << EOF > /etc/lilo.conf
+boot=${bootdev}
+map=/boot/map
+default=apathy
+
+lba32
+compact
+
+image=/boot/vmlinuz
+	root=${bootpart}
+	label=apathy
+	append="${cmdline}"
+	initrd=/boot/initramfs.zst
+EOF
+evalret
+
+# /etc/thinkfan.conf
+if [ -f "/proc/acpi/ibm/fan" ]
+ then
+  ainitmes "generating /etc/${cb_blu}thinkfan.conf${c_res}."
+   hwmon="$(grep Package /sys/class/hwmon/hwmon*/temp*_label -l \
+             | sed 's/label/input/g')"
+
+   cat << EOF > /etc/thinkfan.conf
+sensors:
+  - hwmon: ${hwmon}
+
+fans:
+  - tpacpi: /proc/acpi/ibm/fan
+
+levels:
+  - ["level 0", 0, 50]
+  - ["level 1", 50, 65]
+  - ["level 3", 65, 80]
+  - ["level disengaged", 80, 255]
+EOF
+  evalret
+ else
+  ainitmes "${cb_blu}/proc/acpi/ibm/fan${c_res} not found."; infoprompt
+  [ -f "/etc/thinkfan.conf" ] && rm -rf /etc/thinkfan.conf >/dev/null 2>&1
+fi
 
 ainit_nc

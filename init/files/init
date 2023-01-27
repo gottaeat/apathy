@@ -20,10 +20,6 @@ initboi(){
   ainit_mount gid=5,mode=620 devpts devpts /dev/pts
  evalret
 
- ainitmes "loading the ${cb_cyn}init config${c_res}."
-  . /mss/files/init.conf >/dev/null 2>&1
- evalret
-
  ainitmes "starting ${cb_cyn}udev${c_res}."
   udevd   -d                           &&
   udevadm trigger -c add -t subsystems &&
@@ -89,6 +85,11 @@ initboi(){
   syslogd && klogd
  evalret
 
+ ainitmes "loading the ${cb_cyn}device config${c_res}."
+  . /mss/files/device.conf &&
+  . /mss/files/machines/"${amachine}".conf
+ evalret
+
  ainit_nc
  ainitmes "${cb_red}services${c_res}:"; ainit_nc
 
@@ -105,8 +106,9 @@ initboi(){
 goingdown(){
  stty onlcr; reset >/dev/null 2>&1; banner
 
- ainitmes "loading the ${cb_cyn}init config${c_res}."
-  . /mss/files/init.conf >/dev/null 2>&1
+ ainitmes "loading the ${cb_cyn}device config${c_res}."
+  . /mss/files/device.conf &&
+  . /mss/files/machines/"${amachine}".conf
  evalret
 
  stopsvcs
