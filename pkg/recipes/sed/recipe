@@ -3,9 +3,24 @@ export   CFLAGS="${CFLAGS}   -fno-builtin"
 export CXXFLAGS="${CXXFLAGS} -fno-builtin"
 
 ./configure \
- --build=$CBUILD \
- --host=$CHOST   \
- --prefix=/usr   \
- --bindir=/bin   \
- --disable-i18n  \
- --disable-nls
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix=/usr          \
+ --bindir=/bin          \
+\
+ --without-selinux      \
+ --enable-acl           \
+ --enable-threads=posix \
+ --disable-assert       \
+ --disable-i18n         \
+ --disable-nls          \
+ --disable-rpath
+
+make
+
+doas -s
+for i in sed/sed; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

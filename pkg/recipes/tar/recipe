@@ -8,4 +8,16 @@ gl_cv_func_tzset_clobber=no        \
  --sysconfdir=/etc       \
  --mandir=/usr/share/man \
  --localstatedir=/var    \
+\
+ --enable-acl            \
  --disable-nls
+
+make
+
+# 2
+doas -s
+make install
+
+rm -rfv \
+ /usr/share/info \
+ /usr/share/man

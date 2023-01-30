@@ -2,4 +2,14 @@
 ./configure \
  --build=$CBUILD \
  --host=$CHOST   \
- --prefix=/usr
+ --prefix=/usr   \
+ --enable-xattr
+
+make
+
+# 2
+doas -s
+make install
+rm -rfv \
+ /usr/lib/charset.alias \
+ /usr/share/man

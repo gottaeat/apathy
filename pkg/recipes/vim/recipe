@@ -7,13 +7,13 @@ echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
  --build="${CBUILD}"               \
  --host="${CHOST}"                 \
  --prefix=/usr                     \
- --with-compiledby="retard"        \
+ --with-compiledby="gottaeat"      \
  --with-tlib=ncursesw              \
  --with-features=huge              \
 \
+ --enable-acl                      \
  --enable-cscope                   \
  --enable-multibyte                \
- --disable-acl                     \
  --disable-arabic                  \
  --disable-canberra                \
  --disable-darwin                  \
