@@ -1,0 +1,6 @@
+/usr/bin/tar
+
+/usr/libexec/rmt
+
+/usr/share/info
+/usr/share/man
