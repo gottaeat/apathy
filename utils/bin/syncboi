@@ -1,2 +1,32 @@
 #!/mss/bin/sh
-rsync -rlptgoDEh --progress ${@}
+exec rsync \
+ --compress                 \
+ --compress-choice="zstd"   \
+ --compress-level="12"      \
+\
+ --checksum                 \
+ --checksum-choice="xxh64"  \
+\
+ --delete                   \
+ --delete-delay             \
+\
+ --acls                     \
+ --devices                  \
+ --executability            \
+ --group                    \
+ --links                    \
+ --no-atimes                \
+ --no-crtimes               \
+ --no-hard-links            \
+ --no-times                 \
+ --owner                    \
+ --perms                    \
+ --specials                 \
+ --xattrs                   \
+\
+ --recursive                \
+\
+ --ipv6                     \
+ --human-readable           \
+ --progress                 \
+ "${@}"
