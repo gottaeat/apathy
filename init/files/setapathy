@@ -55,6 +55,23 @@ ainitmes "loading the machine ${cb_blu}config${c_res}."
 evalret
 ainit_nc
 
+# check if swapfile exists
+ainitmes "checking for swapfile."; infoprompt
+ if [ ! -f "${swappath}" ]
+  then
+   mkswapfile
+  else
+   ainitmes "swapfile found."; succprompt
+ fi
+
+# generate cmdline for swapfile
+ainitmes "generating cmdline args for the ${cb_blu}swapfile${c_res}."
+ swapuuid="$(blkid `mount | awk '/\/mnt\/mss\/stuff/{print $1}'` \
+             | awk '{gsub(/\"/,""); print $3}')" &&
+ swapoffs="$(filefrag -v "${swappath}" \
+             | awk '$1=="0:" {print substr($4, 1, length($4)-2)}')"
+evalret
+
 # /etc/ssh/banner
 ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
  l3="${hname} (${dev_sip})"       &&
@@ -140,7 +157,7 @@ compact
 image=/boot/vmlinuz
 	root=${bootpart}
 	label=apathy
-	append="${cmdline}"
+	append="${cmdline} resume=${swapuuid} resume_offset=${swapoffs}"
 	initrd=/boot/initramfs.zst
 EOF
 evalret

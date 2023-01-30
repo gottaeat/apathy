@@ -500,15 +500,7 @@ svc_swap(){
 
      if [ ! -f "${swappath}" ]
       then
-       ainitsvc "swap" "swapfile not found, creating"
-        for i in "${swappath}"; do
-         dd if=/dev/zero of="${i}" \
-          count="${swapsize}" bs=1M conv=notrunc >/dev/null 2>&1 &&
-         mkswap -L "apathy_swapfile"      "${i}" >/dev/null 2>&1 &&
-         chown root:root                  "${i}"            &&
-         chmod 0600                       "${i}"
-        done
-       evalret
+       mkswapfile
       else
        ainitsvc "swap" "setting up sysfs/procfs for swapfile as swap"
         echo "0"   > /proc/sys/vm/anon_min_kbytes    &&
