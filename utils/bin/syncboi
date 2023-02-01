@@ -1,32 +1,15 @@
 #!/mss/bin/sh
-exec rsync \
- --compress                 \
- --compress-choice="zstd"   \
- --compress-level="12"      \
+exec openrsync -v \
+ --delete         \
+ --numeric-ids    \
+ --recursive      \
 \
- --checksum                 \
- --checksum-choice="xxh64"  \
+ --devices        \
+ --group          \
+ --links          \
+ --owner          \
+ --perms          \
+ --specials       \
+ --times          \
 \
- --delete                   \
- --delete-delay             \
-\
- --acls                     \
- --devices                  \
- --executability            \
- --group                    \
- --links                    \
- --no-atimes                \
- --no-crtimes               \
- --no-hard-links            \
- --no-times                 \
- --owner                    \
- --perms                    \
- --specials                 \
- --xattrs                   \
-\
- --recursive                \
-\
- --ipv6                     \
- --human-readable           \
- --progress                 \
  "${@}"
