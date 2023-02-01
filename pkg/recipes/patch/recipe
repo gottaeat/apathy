@@ -3,7 +3,7 @@
  --build=$CBUILD \
  --host=$CHOST   \
  --prefix=/usr   \
- --enable-xattr
+ --disable-xattr
 
 make
 

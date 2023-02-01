@@ -9,8 +9,8 @@ export CXXFLAGS="${CXXFLAGS} -fno-builtin"
  --bindir=/bin          \
 \
  --without-selinux      \
- --enable-acl           \
  --enable-threads=posix \
+ --disable-acl          \
  --disable-assert       \
  --disable-i18n         \
  --disable-nls          \
@@ -22,5 +22,5 @@ doas -s
 for i in sed/sed; do
  strip --strip-all "${i}"
  chown root:root "${i}"
- mv "${i}" /usr/bin/
+ mv "${i}" /bin/
 done

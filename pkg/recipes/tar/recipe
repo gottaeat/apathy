@@ -9,7 +9,7 @@ gl_cv_func_tzset_clobber=no        \
  --mandir=/usr/share/man \
  --localstatedir=/var    \
 \
- --enable-acl            \
+ --disable-acl           \
  --disable-nls
 
 make
