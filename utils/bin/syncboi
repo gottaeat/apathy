@@ -1,15 +1,24 @@
 #!/mss/bin/sh
-exec openrsync -v \
- --delete         \
- --numeric-ids    \
- --recursive      \
+exec rsync -v \
+ --progress      \
+ --ipv4          \
 \
- --devices        \
- --group          \
- --links          \
- --owner          \
- --perms          \
- --specials       \
- --times          \
+ --delete        \
+ --numeric-ids   \
+\
+ --recursive     \
+ --links         \
+ --perms         \
+ --times         \
+ --group         \
+ --owner         \
+ --devices       \
+ --specials      \
+\
+ --no-acls       \
+ --no-xattrs     \
+ --no-atimes     \
+ --no-crtimes    \
+ --no-hard-links \
 \
  "${@}"
