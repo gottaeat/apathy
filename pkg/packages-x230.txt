@@ -56,7 +56,7 @@ i  2  .      cmake                3.23.2
 i  4  .      usbutils             013
 i  3  ..     libusb               1.0.24
 i  2  .      gpm                  1.20.7
-i  1  .      openrsync            f50d0f82
+i  1  .      rsync                3.2.7
 i  3  .      tmux                 3.2a
 i  2  ..     libevent             2.1.11
 i  3  .      htop                 3.0.2
