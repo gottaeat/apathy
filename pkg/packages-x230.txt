@@ -40,7 +40,7 @@ i  2  .      vim                  9.0.1261
 i  6  .      util-linux           2.37.2
 i  3  .      e2fsprogs            1.46.4
 i  2  .      eudev                3.2.11
-i  1  .      linux                6.1.9
+i  1  .      linux                6.1.10
 i  3  ..     initramfs            10
 i  3  ...    cryptsetup           2.6.0
 i  3  ....   lvm2                 2.03.17
@@ -50,7 +50,7 @@ i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
 i  2  .      curl                 7.87.0
 i  1  .      git                  2.39.1
-i  2  .      openssh              9.1p1
+i  1  .      openssh              9.2p1
 i  2  .      libssh2              1.9.0
 i  2  .      cmake                3.23.2
 i  4  .      usbutils             013
