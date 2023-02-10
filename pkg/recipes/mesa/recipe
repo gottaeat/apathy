@@ -14,8 +14,8 @@ cd "${curpwd}"
 unset curpwd
 
 # 2
-tar xf /mss/work/sauces/mesa-22.3.4.tar.xz
-cd     mesa-22.3.4/
+tar xf /mss/work/sauces/mesa-22.3.5.tar.xz
+cd     mesa-22.3.5/
 
 sed -i "/pre_args += '-DUSE_ELF_TLS'/d" meson.build
 python3 bin/git_sha1_gen.py --output include/git_sha1.h

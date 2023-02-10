@@ -1,10 +1,8 @@
 # 1
-export   CFLAGS="$(echo "${CFLAGS}"   \
- | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
-export CXXFLAGS="$(echo "${CXXFLAGS}" \
- | sed "s/-flto-jobs=${ajobcount}/-flto-jobs=1/")"
-export  LDFLAGS="$(echo "${LDFLAGS}"  \
- | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
+ajobcount="1"
+
+printprof ltothin > buildprof
+. buildprof; rm -rf buildprof
 
 # 2
 perl ./Configure linux-x86_64 \
@@ -37,16 +35,16 @@ time make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install_sw install_ssldirs
 
-mkdir openssl-3.0.7-static-libs/
+mkdir openssl-3.0.8-static-libs/
 cp -v \
  "${instdir}"/usr/lib/libssl.a    \
  "${instdir}"/usr/lib/libcrypto.a \
- openssl-3.0.7-static-libs/
+ openssl-3.0.8-static-libs/
 
-pkgup openssl-3.0.7-static-libs/ \
- openssl-3.0.7-static-libs/
+pkgup openssl-3.0.8-static-libs/ \
+ openssl-3.0.8-static-libs/
 
-mv openssl-3.0.7-static-libs.tar.zst \
+mv openssl-3.0.8-static-libs.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
 
 rm -rfv \

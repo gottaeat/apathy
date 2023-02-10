@@ -9,8 +9,8 @@ build                 = 'x86_64-apathy-linux-musl'
 host                  = ['x86_64-apathy-linux-musl']
 target                = ['x86_64-apathy-linux-musl']
 
-cargo                 = '/opt/rustc-1.66.1/bin/cargo'
-rustc                 = '/opt/rustc-1.66.1/bin/rustc'
+cargo                 = '/opt/rustc-1.67.0/bin/cargo'
+rustc                 = '/opt/rustc-1.67.0/bin/rustc'
 python                = 'python3'
 
 extended              = true
@@ -36,7 +36,7 @@ profiler              = false
 cargo-native-static   = false
 
 [install]
-prefix                = '/opt/rustc-1.67.0'
+prefix                = '/opt/rustc-1.67.1'
 
 [rust]
 channel               = 'stable'

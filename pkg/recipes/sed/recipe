@@ -1,6 +1,6 @@
 # 1
-export   CFLAGS="${CFLAGS}   -fno-builtin"
-export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+export   CFLAGS="${CFLAGS}   -fno-builtin -static"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin -static"
 
 ./configure \
  --build=$CBUILD        \
