@@ -574,3 +574,56 @@ svc_tor(){
   ;;
  esac
 }
+
+# 2.13 > nginx
+svc_nginx(){
+ case "$1" in
+  start)
+   ainitsvc "nginx" "creating tmpdir"
+    tmpdir="/tmp/nginx"
+
+    mkdir -p \
+     "${tmpdir}"/client-body/ \
+     "${tmpdir}"/fastcgi/     \
+     "${tmpdir}"/logs/        \
+     "${tmpdir}"/proxy/       \
+     "${tmpdir}"/scgi/        \
+     "${tmpdir}"/uwsgi/      &&
+
+    chown -Rh mss:mss "${tmpdir}"
+   evalret
+
+   ainitsvc "nginx" "checking config"
+    doas -u mss nginx -t >/dev/null 2>&1
+   evalret
+
+   ainitsvc "nginx" "starting"
+    doas -u mss nginx >/dev/null 2>&1
+   evalret
+  ;;
+  reload)
+   ainitsvc "nginx" "reloading"
+    doas -u mss nginx -s reload >/dev/null 2>&1
+   evalret
+  ;;
+  stop)
+   if pidof nginx >/dev/null 2>&1
+    then
+     ainitsvc "nginx" "quitting"
+      doas -u mss nginx -s quit >/dev/null 2>&1
+     evalret
+     ainitsvc "nginx" "cleaning tmpdir"
+      rm -rf /tmp/nginx >/dev/null 2>&1
+     evalret
+
+    else
+     ainitsvc "nginx" "is not running"; failprompt
+     exit 1
+   fi
+  ;;
+  *)
+   ainitusage "{start|reload|stop}"
+   exit 1
+  ;;
+ esac
+}
