@@ -627,3 +627,52 @@ svc_nginx(){
   ;;
  esac
 }
+
+# 2.13 > bind
+svc_bind(){
+ case "$1" in
+  start)
+   if pidof bind >/dev/null 2>&1
+    then
+     ainitsvc "bind" "is already running"; failprompt
+     exit 1
+    else
+     ainitsvc "bind" "checking config"
+      named-checkconf >/dev/null 2>&1
+     evalret
+
+     ainitsvc "bind" "setting nf_conntrack_udp_timeout"
+      echo 10 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout
+     evalret
+
+     ainitsvc "bind" "starting named"
+      named >/dev/null 2>&1
+     evalret
+   fi
+  ;;
+  reload)
+   ainitsvc "bind" "reloading"
+    rndc reload >/dev/null 2>&1
+   evalret
+  ;;
+  stop)
+   if pidof bind >/dev/null 2>&1
+    then
+     ainitsvc "bind" "stopping"
+      rndc stop >/dev/null 2>&1
+     evalret
+
+     ainitsvc "bind" "restoring nf_conntrack_udp_timeout"
+      echo 30 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout
+     evalret
+    else
+     ainitsvc "bind" "is not running"; failprompt
+     exit 1
+   fi
+  ;;
+  *)
+   ainitusage "{start|reload|stop}"
+   exit 1
+  ;;
+ esac
+}

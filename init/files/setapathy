@@ -111,8 +111,13 @@ evalret
 ainitmes "generating /etc/${cb_blu}resolv.conf${c_res}."
  cat << EOF > /etc/resolv.conf
 nameserver ${dns1}
+EOF
+
+ if [ ! -z "${dns2}" ]; then cat << EOF >> /etc/resolv.conf
 nameserver ${dns2}
 EOF
+ fi
+
 evalret
 
 # /etc/hosts
