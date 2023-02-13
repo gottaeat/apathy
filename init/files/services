@@ -632,7 +632,7 @@ svc_nginx(){
 svc_bind(){
  case "$1" in
   start)
-   if pidof bind >/dev/null 2>&1
+   if pidof named >/dev/null 2>&1
     then
      ainitsvc "bind" "is already running"; failprompt
      exit 1
@@ -656,7 +656,7 @@ svc_bind(){
    evalret
   ;;
   stop)
-   if pidof bind >/dev/null 2>&1
+   if pidof named >/dev/null 2>&1
     then
      ainitsvc "bind" "stopping"
       rndc stop >/dev/null 2>&1
