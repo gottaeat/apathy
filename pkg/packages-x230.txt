@@ -44,8 +44,8 @@ i  1  .      linux                6.1.11
 i  4  ..     initramfs            10
 i  4  ...    cryptsetup           2.6.0
 i  4  ....   lvm2                 2.03.17
-i  1  .      init                 37
-i  1  ..     utils                38
+i  1  .      init                 38
+i  1  ..     utils                39
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
 i  2  .      curl                 7.87.0
@@ -231,3 +231,4 @@ i  1  .      patchelf             0.17.2
 i  1  .      redshift             490ba2aa
 i  1  .      nginx                1.22.1
 i  1  ..     nginx-rtmp-module    1.2.2
+i  1  .      bind                 9.18.11
