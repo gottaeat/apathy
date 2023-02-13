@@ -17,11 +17,13 @@ mypath="$mypath:/opt/go-1.19.4/bin"
 mypath="$mypath:/opt/qemu-7.2.0/bin"
 mypath="$mypath:/opt/fflibs/bin"
 mypath="$mypath:/opt/nginx-1.22.1/bin"
+mypath="$mypath:/opt/bind-9.18.11/bin"
 
 mylibpath="/opt/llvm-15.0.7/lib"
 mylibpath="$mylibpath:/opt/rustc-1.67.1/lib"
 mylibpath="$mylibpath:/opt/mimalloc-2.0.2/lib"
 mylibpath="$mylibpath:/opt/fflibs/lib"
+mylibpath="$mylibpath:/opt/bind-9.18.11/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 mypkgconfigpath="${mypkgconfigpath}:/opt/fflibs/lib/pkgconfig"
 
