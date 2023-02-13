@@ -84,6 +84,13 @@ find "${instdir}" -type f -name \*.la \
  -exec rm -rfv {} ';'
 
 # 4
+find "${instdir}"/opt/bind-9.18.11/bin/ \
+ -type f -name \*.so -exec strip --strip-all {} ';'
+
+find "${instdir}"/opt/bind-9.18.11/lib/ \
+ -type f -name \*.so -exec strip --strip-unneeded {} ';'
+
+# 5
 cd "${instdir}"/opt/bind-9.18.11/etc/
 
 fdir="/mss/repo/pkg/recipes/bind/files"
