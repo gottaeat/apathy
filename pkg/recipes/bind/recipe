@@ -1,0 +1,115 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/libuv-v1.44.2.tar.gz
+cd     libuv-v1.44.2/
+
+./autogen.sh
+
+CFLAGS="${CFLAGS} -D__USE_MISC" \
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make BUILDTYPE=Release
+make BUILDTYPE=Release install
+
+cd ../; rm -rf libuv-v1.44.2/
+
+# 3
+tar xf /mss/work/sauces/bind-9.18.11.tar.xz
+cd     bind-9.18.11/
+
+./configure \
+ --build=$CBUILD                 \
+ --host=$CHOST                   \
+ --prefix=/opt/bind-9.18.11      \
+ --sbindir=/opt/bind-9.18.11/bin \
+ --localstatedir=/var            \
+\
+ --with-openssl                  \
+ --with-readline="readline"      \
+ --with-tuning=default           \
+ --with-zlib                     \
+ --enable-full-report            \
+ --enable-shared                 \
+\
+ --without-cmocka                \
+ --without-gssapi                \
+ --without-jemalloc              \
+ --without-json-c                \
+ --without-libidn2               \
+ --without-libnghttp2            \
+ --without-libxml2               \
+ --without-lmdb                  \
+ --without-maxminddb             \
+ --disable-auto-validation       \
+ --disable-chroot                \
+ --disable-developer             \
+ --disable-dnsrps                \
+ --disable-dnsrps-dl             \
+ --disable-dnstap                \
+ --disable-doh                   \
+ --disable-fuzzing               \
+ --disable-geoip                 \
+ --disable-linux-caps            \
+ --disable-static                \
+ --disable-tcp-fastopen          \
+ --disable-warn-error
+
+make
+
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+rm -rfv \
+ "${instdir}"/opt/bind-9.18.11/bin/{dnssec-cds,dnssec-dsfromkey,\
+dnssec-importkey,dnssec-keyfromlabel,dnssec-keygen,dnssec-revoke,\
+dnssec-settime,dnssec-signzone,dnssec-verify,nsec3hash}
+
+rm -rfv \
+ "${instdir}"/opt/bind-9.18.11/{include,share} \
+ "${instdir}"/opt/bind-9.18.11/lib/bind/       \
+ "${instdir}"/opt/bind-9.18.11/etc/bind.keys
+
+find "${instdir}" -type f -name \*.la \
+ -exec rm -rfv {} ';'
+
+# 4
+cd "${instdir}"/opt/bind-9.18.11/etc/
+
+fdir="/mss/repo/pkg/recipes/bind/files"
+for i in "${fdir}"/*; do cp -v "${i}" .; done
+
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${instdir}/opt/bind-9.18.11/lib"
+export            PATH="${PATH}:${instdir}/opt/bind-9.18.11/bin"
+
+bigsekrit="$(rndc-confgen \
+             | awk '/^\tsecret /{gsub(/^\tsecret |\"|;/,""); print}')"
+
+sed -i -e "s|REPLACESECRET|${bigsekrit}|g" \
+ named.conf \
+ rndc.conf
+
+a2 ftp://72.13.40.11/domain/named.cache
+
+cd ../../
+
+doas -s
+
+chmod 0600 bind-9.18.11/etc/{named.conf,rndc.conf}
+chown -Rh root:root bind-9.18.11/
+
+pkgup bind-9.18.11/ bind-9.18.11
+chown mss:mss bind-9.18.11.tar.zst
+
+mv bind-9.18.11.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/
