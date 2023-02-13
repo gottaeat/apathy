@@ -12,34 +12,39 @@ iptables -t nat -F
 
 # 3 > nukery
 iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # permit answers on already established
-                                                                       # connections and permit new connections
-                                                                       # related to established ones
-iptables -A INPUT -i lo -j ACCEPT                                      # allow all loopback traffic
-iptables -A INPUT ! -i lo -d 127.0.0.0/8 -j REJECT                     # block all 127/8 that doesn't use lo0
-iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT       # allow all established inbound connections
-iptables -A OUTPUT -j ACCEPT                                           # allow all outbound traffic
+                                                                       #  connections and permit new connections
+                                                                       #  related to established ones
+
+iptables -A INPUT   -i lo                                -j ACCEPT     # allow all loopback traffic
+iptables -A INPUT ! -i lo -d 127.0.0.0/8                 -j REJECT     # block all 127/8 that doesn't use lo0
+iptables -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT     # allow all established inbound connections
+iptables -A OUTPUT                                       -j ACCEPT     # allow all outbound traffic
 
 # 4 > allowed ports
-iptables -A INPUT -p tcp --dport 80   -j ACCEPT                        # http
-iptables -A INPUT -p tcp --dport 443  -j ACCEPT                        # https
 iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT              # ping
 
-iptables -A INPUT -p tcp -m state --state NEW --dport 3131 -j ACCEPT   # ssh
+iptables -A INPUT -p tcp --dport 80    -j ACCEPT                       # http
+iptables -A INPUT -p tcp --dport 443   -j ACCEPT                       # https
 
-iptables -A INPUT -p tcp --dport 8000   -j ACCEPT                      # httpd port for mpd
-iptables -A INPUT -p tcp --dport 8080   -j ACCEPT                      # httpd port for ympd
-iptables -A INPUT -p tcp --dport 9091   -j ACCEPT                      # httpd port for transmission-daemon
+iptables -A INPUT -p tcp --dport 1337  -j ACCEPT                       # nginx http
+iptables -A INPUT -p tcp --dport 1338  -j ACCEPT                       # nginx https
 
-iptables -A INPUT -p tcp --dport 111    -j ACCEPT                      # rpcbind
-iptables -A INPUT -p tcp --dport 2049   -j ACCEPT                      # rpc.nfsd   -p
-iptables -A INPUT -p tcp --dport 31310  -j ACCEPT                      # rpc.statd  -p
-iptables -A INPUT -p tcp --dport 31311  -j ACCEPT                      # rpc.statd  -o
-iptables -A INPUT -p tcp --dport 31312  -j ACCEPT                      # rpc.mountd -p
+iptables -A INPUT -p tcp --dport 53    -j ACCEPT                       # bind tcp
+iptables -A INPUT -p udp --dport 53    -j ACCEPT                       # bind udp
 
-iptables -A INPUT -p udp --dport 31313  -j ACCEPT                      # ioquake3
-iptables -A INPUT -p udp --dport 31314  -j ACCEPT                      # cs1.6
+iptables -A INPUT -p tcp --dport 3131  -j ACCEPT                       # ssh
 
-# 5 > zapret: route ports 80 and 443 through `zapret` for passing through retard dpi
+iptables -A INPUT -p tcp --dport 8000  -j ACCEPT                       # httpd port for mpd
+iptables -A INPUT -p tcp --dport 8080  -j ACCEPT                       # httpd port for ympd
+iptables -A INPUT -p tcp --dport 9091  -j ACCEPT                       # httpd port for transmission-daemon
+
+iptables -A INPUT -p tcp --dport 111   -j ACCEPT                       # rpcbind
+iptables -A INPUT -p tcp --dport 2049  -j ACCEPT                       # rpc.nfsd   -p
+iptables -A INPUT -p tcp --dport 31310 -j ACCEPT                       # rpc.statd  -p
+iptables -A INPUT -p tcp --dport 31311 -j ACCEPT                       # rpc.statd  -o
+iptables -A INPUT -p tcp --dport 31312 -j ACCEPT                       # rpc.mountd -p
+
+# 5 > push 80 and 443 through zapret for passive dpi circumvention
 iptables -t mangle -I POSTROUTING                                               \
  -p tcp -m multiport --dports 80,443                                            \
  -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:4 \
