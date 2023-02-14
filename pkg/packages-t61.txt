@@ -231,4 +231,4 @@ i  1  .      patchelf             0.17.2
 i  1  .      redshift             490ba2aa
 i  1  .      nginx                1.22.1
 i  1  ..     nginx-rtmp-module    1.2.2
-i  2  .      bind                 9.18.11
+i  3  .      bind                 9.18.11
