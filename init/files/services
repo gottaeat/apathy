@@ -42,6 +42,25 @@ checkswaps(){
  fi
 }
 
+# 1.3 > nginx
+cdnginx(){
+ nginxdir="$(nginx -h 2>&1 \
+              | awk '/-c\ filename\ /{gsub(/\/nginx\.conf)/,"");\
+                                       print $8}')"
+
+ if [ ! -d "${nginxdir}" ]
+  then
+   ainitsvc "nginx" "nginx directory does not exist."; failprompt
+
+   if [ "${1}" = "stop" ]
+    then return 69
+    else exit 1
+   fi
+  else
+   cd "${nginxdir}"
+ fi
+}
+
 # 2 > services themselves
 # 2.1 > gpm
 svc_gpm(){
@@ -579,6 +598,8 @@ svc_tor(){
 svc_nginx(){
  case "$1" in
   start)
+   cdnginx
+
    ainitsvc "nginx" "creating tmpdir"
     tmpdir="/tmp/nginx"
 
@@ -602,20 +623,35 @@ svc_nginx(){
    evalret
   ;;
   reload)
+   cdnginx
+
    ainitsvc "nginx" "reloading"
     doas -u mss nginx -s reload >/dev/null 2>&1
    evalret
   ;;
   stop)
-   if pidof nginx >/dev/null 2>&1
+   nginxpid="$(pidof nginx)"
+
+   if [ ! -z "${nginxpid}" ]
     then
+     cdnginx stop; ngexit="${?}"
+
      ainitsvc "nginx" "quitting"
-      doas -u mss nginx -s quit >/dev/null 2>&1
+      if [ "${ngexit}" -eq 69 ]
+       then
+        kill -QUIT "${nginxpid}" >/dev/null 2>&1 \
+         || kill -TERM "${nginxpid}" >/dev/null 2>&1 \
+          || kill -KILL "${nginxpid}" >/dev/null 2>&1
+       else
+        doas -u mss nginx -s quit >/dev/null 2>&1 \
+         || doas -u mss nginx -s stop >/dev/null 2>&1 \
+          || kill -KILL "${nginxpid}" >/dev/null 2>&1
+      fi
      evalret
+
      ainitsvc "nginx" "cleaning tmpdir"
       rm -rf /tmp/nginx >/dev/null 2>&1
      evalret
-
     else
      ainitsvc "nginx" "is not running"; failprompt
      exit 1
