@@ -50,7 +50,7 @@ cdnginx(){
 
  if [ ! -d "${nginxdir}" ]
   then
-   ainitsvc "nginx" "nginx directory does not exist."; failprompt
+   ainitsvc "nginx" "nginx directory does not exist"; failprompt
 
    if [ "${1}" = "stop" ]
     then return 69
@@ -639,13 +639,17 @@ svc_nginx(){
      ainitsvc "nginx" "quitting"
       if [ "${ngexit}" -eq 69 ]
        then
-        kill -QUIT "${nginxpid}" >/dev/null 2>&1 \
-         || kill -TERM "${nginxpid}" >/dev/null 2>&1 \
-          || kill -KILL "${nginxpid}" >/dev/null 2>&1
+         for i in ${nginxpid}; do
+          kill -QUIT "${i}" >/dev/null 2>&1 \
+           || kill -TERM "${i}" >/dev/null 2>&1 \
+            || kill -KILL "${i}" >/dev/null 2>&1
+         done
        else
         doas -u mss nginx -s quit >/dev/null 2>&1 \
          || doas -u mss nginx -s stop >/dev/null 2>&1 \
-          || kill -KILL "${nginxpid}" >/dev/null 2>&1
+          || for i in ${nginxpid}; do
+              kill -KILL "${i}" >/dev/null 2>&1
+             done
       fi
      evalret
 
