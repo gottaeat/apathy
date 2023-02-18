@@ -40,7 +40,7 @@ i  2  .      vim                  9.0.1261
 i  6  .      util-linux           2.37.2
 i  3  .      e2fsprogs            1.46.4
 i  2  .      eudev                3.2.11
-i  1  .      linux                6.1.11
+i  1  .      linux                6.1.12
 i  4  ..     initramfs            10
 i  4  ...    cryptsetup           2.6.0
 i  4  ....   lvm2                 2.03.17
@@ -48,8 +48,8 @@ i  1  .      init                 40
 i  1  ..     utils                39
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
-i  2  .      curl                 7.87.0
-i  1  .      git                  2.39.1
+i  1  .      curl                 7.88.0
+i  1  .      git                  2.39.2
 i  1  .      openssh              9.2p1
 i  2  .      libssh2              1.9.0
 i  2  .      cmake                3.23.2
@@ -183,7 +183,7 @@ i  2  .      lld                  15.0.7
 i  2  .      lldb                 15.0.7
 i  2  .      llvm                 15.0.7
 i  2  .      openmp               15.0.7
-i  2  .      firefox              102.7.0esr
+i  1  .      firefox              102.8.0esr
 i  3  ..     icu                  72.1
 I  3  ..     nss                  3.85
 i  3  ...    nspr                 4.35
