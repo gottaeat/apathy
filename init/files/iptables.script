@@ -28,6 +28,7 @@ iptables -A INPUT -p tcp --dport 443   -j ACCEPT                       # https
 
 iptables -A INPUT -p tcp --dport 1337  -j ACCEPT                       # nginx http
 iptables -A INPUT -p tcp --dport 1338  -j ACCEPT                       # nginx https
+iptables -A INPUT -p tcp --dport 1935  -j ACCEPT                       # nginx rtmp
 
 iptables -A INPUT -p tcp --dport 53    -j ACCEPT                       # bind tcp
 iptables -A INPUT -p udp --dport 53    -j ACCEPT                       # bind udp
@@ -44,13 +45,19 @@ iptables -A INPUT -p tcp --dport 31310 -j ACCEPT                       # rpc.sta
 iptables -A INPUT -p tcp --dport 31311 -j ACCEPT                       # rpc.statd  -o
 iptables -A INPUT -p tcp --dport 31312 -j ACCEPT                       # rpc.mountd -p
 
-# 5 > push 80 and 443 through zapret for passive dpi circumvention
+# 5 > redirect 80 and 443 to 1337 and 1338
+iptables -t nat -I OUTPUT     -p tcp -d 127.0.0.1 --dport 80  -j REDIRECT --to-ports 1337
+iptables -t nat -I OUTPUT     -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports 1338
+iptables -t nat -I PREROUTING -p tcp              --dport 80  -j REDIRECT --to-ports 1337
+iptables -t nat -I PREROUTING -p tcp              --dport 443 -j REDIRECT --to-ports 1338
+
+# 6 > push 80 and 443 through zapret for passive dpi circumvention
 iptables -t mangle -I POSTROUTING                                               \
  -p tcp -m multiport --dports 80,443                                            \
  -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:4 \
  -m mark ! --mark 0x40000000/0x40000000                                         \
  -j NFQUEUE --queue-num 200 --queue-bypass
 
-# 6 > deny unless explicitly allowed above
+# 7 > deny unless explicitly allowed above
 iptables -A INPUT   -j REJECT
 iptables -A FORWARD -j REJECT
