@@ -4,14 +4,32 @@ cdt1
 printprof vanilla > buildprof
 . buildprof; rm -rf buildprof
 
-# 2 > bootstrap
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/gobootstrap-1.19.6.tar.zst
+# 2 > c bootstrap
+tar xf /mss/work/sauces/go1.4-bootstrap-20171003.tar.gz
+cd     go/src/
 
-export GOROOT_BOOTSTRAP="${PWD}/gobootstrap-1.19.6"
-export             PATH="${PWD}/gobootstrap-1.19.6/bin:${PATH}"
+export GOROOT_FINAL="/mss/work/table/gobootstrap-1.4-20171003"
+
+sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' make.bash
+
+./make.bash -v
+
+cd ../../
+
+mkdir                     "${GOROOT_FINAL}"/bin
+mv    go/bin/*            "${GOROOT_FINAL}"/bin
+mv    go/{lib/,pkg/,src/} "${GOROOT_FINAL}"
+chmod -R +x               "${GOROOT_FINAL}"/pkg/tool
+
+export PATH="${GOROOT_FINAL}/bin:${PATH}"
+
+rm -rf go/
+
+export GOROOT_BOOTSTRAP="${PWD}/gobootstrap-1.4-20171003"
+export             PATH="${PWD}/gobootstrap-1.4-20171003/bin:${PATH}"
 
 # 3 > cum
-tar xf /mss/work/sauces/go1.20.1.src.tar.gz
+tar xf /mss/work/sauces/go1.19.6.src.tar.gz
 cd     go/src/
 
 export          GOOS="linux"
@@ -21,7 +39,7 @@ export       GOAMD64="v1"
 export    GO_LDFLAGS="-w -s"
 export CC_FOR_TARGET="${CC}"
 
-export  GOROOT_FINAL="/opt/go-1.20.1"
+export  GOROOT_FINAL="/mss/work/table/gobootstrap-1.19.6"
 
 sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
  make.bash
@@ -30,7 +48,7 @@ sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
 
 cd ../../
 
-instdir="${PWD}/go-1.20.1"
+instdir="${PWD}/gobootstrap-1.19.6"
 
 mkdir                 "${instdir}"/bin
 mv     go/bin/*       "${instdir}"/bin
@@ -47,6 +65,6 @@ find "${instdir}"/src/ -type f \( -name "*.rc"   \
                                -o -name "*.bat"  \
                                -o -name "*.bash" \) -exec rm -rfv {} +
 
-pkgup go-1.20.1/ go-1.20.1/
-mv go-1.20.1.tar.zst \
+pkgup gobootstrap-1.19.6/ gobootstrap-1.19.6/
+mv gobootstrap-1.19.6.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
