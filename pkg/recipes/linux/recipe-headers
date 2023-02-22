@@ -1,5 +1,5 @@
 # 1
-linver="6.1"
+linver="6.2"
 
 export MAKEFLAGS="$(echo "${MAKEFLAGS}" \
                     | sed 's/V=1/V=0/g')" ;
@@ -7,11 +7,8 @@ export MAKEFLAGS="$(echo "${MAKEFLAGS}" \
 clear; echo "${MAKEFLAGS}"
 
 # 2
-tar xf "/mss/work/sauces/linux-${linver}.tar.gz"
+tar xf "/mss/work/sauces/linux-${linver}.tar.xz"
 cd     linux-"${linver}"/
-
-pdir="/mss/repo/pkg/recipes/linux/patches"
-patch -p1 < "${pdir}"/0001-fix-__always_inline-for-musl.patch
 
 make mrproper
 make headers

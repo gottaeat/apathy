@@ -1,7 +1,7 @@
-From 6e9e61c91f3fec08362f01e0a6e04ef7bc5821c3 Mon Sep 17 00:00:00 2001
+From 6c9e21f886cab426e4ee15b98d043b0f5edfaad2 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 12 Dec 2022 02:30:09 +0300
-Subject: [PATCH 5/7] initialize ata before graphics.
+Date: Wed, 22 Feb 2023 11:14:43 +0300
+Subject: [PATCH 3/5] initialize ata before graphics.
 
 ---
  drivers/Makefile | 15 ++++++++-------
@@ -43,5 +43,5 @@ index bdf1c6614..1e1a0832f 100644
  obj-$(CONFIG_MTD)		+= mtd/
  obj-$(CONFIG_SPI)		+= spi/
 -- 
-2.38.1
+2.39.2
 

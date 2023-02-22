@@ -1,7 +1,7 @@
-From d635197085b08ea0109659b70c1c99ad99e5b3a4 Mon Sep 17 00:00:00 2001
+From dadfb666de80a9f7d4f2fa4eef4b2d73def69fc2 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Mon, 12 Dec 2022 02:34:22 +0300
-Subject: [PATCH 7/7] iwlwifi: enable 11n + 11ac, disable mimo, force enable
+Date: Wed, 22 Feb 2023 11:15:33 +0300
+Subject: [PATCH 5/5] iwlwifi: enable 11n + 11ac, disable mimo, force enable
  siso.
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 7/7] iwlwifi: enable 11n + 11ac, disable mimo, force enable
  1 file changed, 5 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 9040da3dc..ca48faf2a 100644
+index aa8e08487..dcf2e3e9b 100644
 --- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
 +++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1150,11 +1150,10 @@ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+@@ -1331,11 +1331,10 @@ iwl_parse_mei_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
  	if (data->valid_rx_ant)
  		rx_chains &= data->valid_rx_ant;
  
@@ -26,7 +26,7 @@ index 9040da3dc..ca48faf2a 100644
  	data->sku_cap_11ac_enable = true;
  	data->sku_cap_11ax_enable =
  		mei_nvm->caps & MEI_NVM_CAPS_11AX_SUPPORT;
-@@ -1221,12 +1220,9 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+@@ -1402,12 +1401,9 @@ iwl_parse_nvm_data(struct iwl_trans *trans, const struct iwl_cfg *cfg,
  	sku = iwl_get_sku(cfg, nvm_sw, phy_sku);
  	data->sku_cap_band_24ghz_enable = sku & NVM_SKU_CAP_BAND_24GHZ;
  	data->sku_cap_band_52ghz_enable = sku & NVM_SKU_CAP_BAND_52GHZ;
@@ -43,5 +43,5 @@ index 9040da3dc..ca48faf2a 100644
  	data->n_hw_addrs = iwl_get_n_hw_addrs(cfg, nvm_sw);
  
 -- 
-2.38.1
+2.39.2
 
