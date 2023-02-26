@@ -11,34 +11,36 @@ pdir="/mss/repo/pkg/recipes/node.js/patches"
 patch -p1 < "${pdir}"/0001-remove-latomic.patch
 patch -p1 < "${pdir}"/0002-fix-libc++.patch
 
+sed -i -e "/'-O3'/d" \
+ common.gypi node.gypi
+
 ./configure \
  --ninja                    \
  --openssl-use-def-ca-store \
  --shared-openssl           \
  --shared-zlib              \
- --with-intl=none           \
+ --with-intl=system-icu     \
  --without-inspector        \
  --without-node-code-cache  \
  --without-node-snapshot    \
- --without-npm              \
  --without-report
 
 time samu -C out/Release
 
 # 3
 instdir="${PWD}/KEK"
-tools/install.py install "${instdir}" /opt/node.js-19.4.0
+tools/install.py install "${instdir}" /opt/node.js-19.7.0
 
 rm -rfv \
- "${instdir}"/opt/node.js-19.4.0/include \
- "${instdir}"/opt/node.js-19.4.0/lib     \
- "${instdir}"/opt/node.js-19.4.0/share   \
- "${instdir}"/opt/node.js-19.4.0/bin/corepack
+ "${instdir}"/opt/node.js-19.7.0/include \
+ "${instdir}"/opt/node.js-19.7.0/lib     \
+ "${instdir}"/opt/node.js-19.7.0/share   \
+ "${instdir}"/opt/node.js-19.7.0/bin/corepack
 
-strip --strip-all "${instdir}"/opt/node.js-19.4.0/bin/node
+strip --strip-all "${instdir}"/opt/node.js-19.7.0/bin/node
 
 cd "${instdir}"/opt/
 
-pkgup node.js-19.4.0 node.js-19.4.0
-mv node.js-19.4.0.tar.zst \
+pkgup node.js-19.7.0 node.js-19.7.0
+mv node.js-19.7.0.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software
