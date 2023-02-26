@@ -1,5 +1,4 @@
 /usr/bin/transmission-cli
 /usr/bin/transmission-daemon
-/usr/bin/transmission-remote
 
 /usr/share/transmission
