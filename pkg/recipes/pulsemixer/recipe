@@ -1,0 +1,10 @@
+# 1
+python setup.py build
+python setup.py install --root=dest --optimize=1 --skip-build
+
+# 2
+doas -s
+for i in dest/usr/bin/pulsemixer; do
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
