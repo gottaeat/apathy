@@ -237,6 +237,8 @@ rm -rfv \
  /etc/alsa                   \
  /etc/pulse                  \
  /usr/bin/aserver            \
+ /usr/bin/pa-info            \
+ /usr/bin/pamon              \
  /usr/share/alsa/alsa.conf.d \
  /usr/share/bash-completion  \
  /usr/share/vala             \
@@ -253,6 +255,8 @@ rm -rfv \
  "${ldir}"/etc/alsa                   \
  "${ldir}"/etc/pulse                  \
  "${ldir}"/usr/bin/aserver            \
+ "${ldir}"/usr/bin/pa-info            \
+ "${ldir}"/usr/bin/pamon              \
  "${ldir}"/usr/share/alsa/alsa.conf.d \
  "${ldir}"/usr/share/bash-completion  \
  "${ldir}"/usr/share/vala             \
