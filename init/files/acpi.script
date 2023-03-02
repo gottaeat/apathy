@@ -2,6 +2,9 @@
 . /mss/init/files/funcs
 . /mss/files/device.conf
 
+psink="@DEFAULT_SINK@"
+ psrc="@DEFAULT_SOURCE@"
+
 case "${amachine}" in
  x230)
   case "${1}" in
@@ -19,10 +22,10 @@ case "${amachine}" in
    cd/next)              mpc -q next                              ;;
 
    # extra keys
-   button/mute)          amixer -q set Master  toggle             ;;
-   button/volumedown)    amixer -q set Master  3dB-               ;;
-   button/volumeup)      amixer -q set Master  3dB+               ;;
-   button/micmute)       amixer -q set Capture toggle             ;;
+   button/mute)          pactl set-sink-mute   "${psink}" toggle  ;;
+   button/volumedown)    pactl set-sink-volume "${psink}" -5%     ;;
+   button/volumeup)      pactl set-sink-volume "${psink}" +5%     ;;
+   button/micmute)       pactl set-source-mute "${psrc}"  toggle  ;;
    button/vendor)        printf '%s' 'mem' > /sys/power/state     ;;
 
    # lid
@@ -90,9 +93,9 @@ t61)
    cd/next)              mpc -q next                              ;;
 
    # extra keyboard
-   button/mute)          amixer -q set Master toggle              ;;
-   button/volumedown)    amixer -q set Master 3dB-                ;;
-   button/volumeup)      amixer -q set Master 3dB+                ;;
+   button/mute)          pactl set-sink-mute   "${psink}" toggle  ;;
+   button/volumedown)    pactl set-sink-volume "${psink}" -5%     ;;
+   button/volumeup)      pactl set-sink-volume "${psink}" +5%     ;;
    button/vendor)        echo 3 > /proc/sys/vm/drop_caches        ;;
 
    # lid
