@@ -44,8 +44,8 @@ i  2  .      linux                6.2
 i  4  ..     initramfs            10
 i  4  ...    cryptsetup           2.6.0
 i  4  ....   lvm2                 2.03.17
-i  1  .      init                 44
-i  1  ..     utils                41
+i  1  .      init                 45
+i  1  ..     utils                42
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
 i  1  .      curl                 7.88.1
@@ -121,7 +121,7 @@ i  2  ..     libepoxy             1.5.8
 i  6  .      xf86-input-libinput  1.2.1
 i  2  ..     libinput             1.22.0
 i  2  .      xinit                1.4.1
-i  2  .      landfill             17
+i  1  .      landfill             18
 i  2  .      atk                  2.38.0
 i  3  .      freeglut             3.2.1
 i  2  ..     glu                  9.0.1
@@ -235,3 +235,4 @@ i  1  .      redshift             490ba2aa
 i  1  .      nginx                1.22.1
 i  1  ..     nginx-rtmp-module    1.2.2
 i  3  .      bind                 9.18.11
+i  1  .      mtr                  0.95

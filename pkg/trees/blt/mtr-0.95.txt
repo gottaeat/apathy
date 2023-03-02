@@ -1,0 +1,2 @@
+/usr/bin/mtr
+/usr/bin/mtr-packet
