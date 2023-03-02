@@ -1,0 +1,44 @@
+# 1
+find \
+ /bin /lib /lib64                       \
+ /mss/bin /opt /sbin /usr               \
+ /mnt/mss/stuff/techy-bits/bin          \
+ /mnt/mss/stuff/media/games             \
+ -type f -exec file {} ';' | grep ELF\  \
+ | awk '{print $1}' | sed 's/:$//g'     \
+ > /tmp/all-files.txt
+
+aaaa="$(cat /tmp/all-files.txt)"
+
+# 2
+for file in $aaaa; do
+ meme="$(objdump -p $file 2>/dev/null \
+ | grep -e libasound\\.so)"
+ [ ! -z "${meme}" ] && printf "$file\n"
+done 2>&1 | sort | uniq | tee /tmp/linked-objdump.txt
+
+# 3
+firefox	/opt/firefox-102.8.0esr/lib/libpulse.so.0
+	/opt/firefox-102.8.0esr/lib/libxul.so
+qemu	/opt/qemu-7.2.0/bin/qemu-system-x86_64
+mdp	/usr/bin/mpd
+mpv	/usr/bin/mpv
+ffmpeg	/usr/lib/libavdevice.so.59.7.100
+
+alsa	/usr/bin/aconnect
+	/usr/bin/alsaloop
+	/usr/bin/alsamixer
+	/usr/bin/alsaucm
+	/usr/bin/amidi
+	/usr/bin/amixer
+	/usr/bin/aplay
+	/usr/bin/aplaymidi
+	/usr/bin/arecordmidi
+	/usr/bin/aseqdump
+	/usr/bin/aseqnet
+	/usr/bin/aserver
+	/usr/bin/axfer
+	/usr/bin/iecset
+	/usr/bin/speaker-test
+	/usr/lib/libasound.so.2.0.0
+	/usr/sbin/alsactl
