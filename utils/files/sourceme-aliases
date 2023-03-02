@@ -7,7 +7,6 @@ alias       lll="ls --group-directories-first --color=auto -AFHhp -l"
 alias      grep="grep --color=auto"
 
 # 1.2 > cd
-alias       cda="cd /mnt/mss/stuff/media/anime"
 alias       cde="cd /mnt/mss/externalstuff"
 alias       cdg="cd /mnt/mss/stuff/techy-bits/git"
 alias       cdl="cd /mnt/mss/stuff/media/lewd"
@@ -34,8 +33,8 @@ alias        gl="git log --oneline"
 alias      gcd1="git clone --depth=1 --recursive --shallow-submodules"
 
 # 1.5 > media
-alias       ytmp3="yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 0"
-alias      atog="amixer set Master toggle"
+alias     ytmp3="yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 0"
+alias      ptog="pactl set-sink-mute @DEFAULT_SINK@ toggle"
 alias      mtog="mpc toggle"
 alias       feh="feh -d --scale-down --auto-zoom"
 alias        nc="ncmpcpp"
