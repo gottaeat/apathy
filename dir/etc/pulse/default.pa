@@ -1,0 +1,16 @@
+.fail
+load-module module-device-restore
+load-module module-stream-restore
+load-module module-card-restore
+load-module module-augment-properties
+load-module module-switch-on-port-available
+load-module module-udev-detect
+load-module module-native-protocol-unix auth-anonymous=1 socket=/var/run/pulse/native
+load-module module-default-device-restore
+load-module module-always-sink
+load-module module-intended-roles
+load-module module-suspend-on-idle
+load-module module-position-event-sounds
+load-module module-role-cork
+load-module module-filter-heuristics
+load-module module-filter-apply
