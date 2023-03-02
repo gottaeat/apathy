@@ -1,0 +1,16 @@
+has_cancer(){
+ for i in $(find ${1} \
+             -type f -exec file {} ';' \
+             | grep 'ELF '             \
+             | awk '{print $1}' | sed 's/:$//g'); do
+  local meme=$(xed -n 10G -chip-check P4PRESCOTT -i "${i}" 2>&1 \
+         | grep INVALID-FOR-CHIP -m 1)
+  if [ ! -z "${meme}" ]; then
+   echo "${i}"
+  fi
+ done
+}
+
+has_cancer \
+ "/bin /lib /lib64 /mnt/mss/stuff/techy-bits/bin /mss/bin /opt /sbin /usr" \
+  >cancerlist.txt
