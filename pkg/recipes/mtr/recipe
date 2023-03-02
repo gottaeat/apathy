@@ -1,0 +1,24 @@
+# 1
+export   CFLAGS="${CFLAGS}   -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -fno-builtin"
+
+./bootstrap.sh
+
+./configure \
+ --build=$CBUILD           \
+ --host=$CHOST             \
+ --prefix=/usr             \
+ --sbindir=/usr/bin        \
+ --without-gtk             \
+ --disable-bash-completion \
+ --disable-ipv6
+
+make
+
+# 2
+doas -s
+for i in mtr mtr-packet; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
