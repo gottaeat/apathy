@@ -675,7 +675,6 @@ svc_bind(){
    if pidof named >/dev/null 2>&1
     then
      ainitsvc "bind" "is already running"; failprompt
-     exit 1
     else
      ainitsvc "bind" "checking config"
       named-checkconf >/dev/null 2>&1
@@ -712,6 +711,45 @@ svc_bind(){
   ;;
   *)
    ainitusage "{start|reload|stop}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.14 > pulseaudio
+svc_pulseaudio(){
+ case "$1" in
+  start)
+   if pidof pulseaudio >/dev/null 2>&1
+    then
+     ainitsvc "pulseaudio" "is already running"; failprompt
+    else
+     ainitsvc "pulseaudio" "starting"
+      su - -c 'pulseaudio' >/dev/null 2>&1
+     evalret
+   fi
+  ;;
+  status)
+   pactl info
+  ;;
+  stop)
+   pulsepid="$(pidof pulseaudio)"
+
+   if [ ! -z "${pulsepid}" ]
+    then
+     ainitsvc "pulseaudio" "stopping"
+      pulseaudio -k >/dev/null 2>&1 \
+       || for i in ${pulsepid}; do
+           kill -TERM "${i}" >/dev/null 2>&1 \
+            ||  kill -TERM "${i}" >/dev/null 2>&1
+          done
+     evalret
+    else
+     ainitsvc "pulseaudio" "is not running"; failprompt
+   fi
+  ;;
+  *)
+   ainitusage "{start|status|stop}"
    exit 1
   ;;
  esac
