@@ -58,10 +58,10 @@ static const char *tmuxcmd[] = { "st", "-e", "tmux", NULL };
 #define CUSTDIR   "/mnt/mss/stuff/media/wallpapers"
 
 // media control shortcuts
-#define ALSAMTOG SHCMD("pactl set-sink-mute   @DEFAULT_SINK@   toggle")
-#define ALSACTOG SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle")
-#define ALSAVOLP SHCMD("pactl set-sink-volume @DEFAULT_SINK@   +5%")
-#define ALSAVOLM SHCMD("pactl set-sink-volume @DEFAULT_SINK@   -5%")
+#define ALSAMTOG SHCMD("pactl set-sink-mute   \@DEFAULT_SINK\@   toggle")
+#define ALSACTOG SHCMD("pactl set-source-mute \@DEFAULT_SOURCE\@ toggle")
+#define ALSAVOLP SHCMD("pactl set-sink-volume \@DEFAULT_SINK\@   +5%")
+#define ALSAVOLM SHCMD("pactl set-sink-volume \@DEFAULT_SINK\@   -5%")
 #define MPDNEXT  SHCMD("mpc -q next")
 #define MPDPREV  SHCMD("mpc -q prev")
 #define MPDTOGG  SHCMD("mpc -q toggle")
