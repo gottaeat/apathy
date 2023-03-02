@@ -71,14 +71,16 @@ install -Dm644 "${fdir}"/lua.pc  "${penis}"/lib/pkgconfig/lua52.pc
 cd ../; rm -rf lua-5.2.4/
 
 # 4 > mpv
-tar xf /mss/work/sauces/mpv-0.35.0.tar.gz
-cd     mpv-0.35.0/
+tar xf /mss/work/sauces/mpv-0.35.1.tar.gz
+cd     mpv-0.35.1/
 
 ./bootstrap.py
 
 ./waf configure     \
  --prefix=/usr      \
  --confdir=/etc/mpv \
+ --enable-pulse     \
+ --disable-alsa     \
  --disable-libmpv-shared
 
 ./waf build

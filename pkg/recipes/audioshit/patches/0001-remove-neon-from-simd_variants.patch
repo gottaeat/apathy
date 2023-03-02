@@ -1,0 +1,24 @@
+From 1b10c91c99150fefbf11240eae3cb7a215b3fb78 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Tue, 28 Feb 2023 18:28:20 +0300
+Subject: [PATCH] remove neon from simd_variants.
+
+---
+ src/pulsecore/meson.build | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/pulsecore/meson.build b/src/pulsecore/meson.build
+index b30264b..782cb70 100644
+--- a/src/pulsecore/meson.build
++++ b/src/pulsecore/meson.build
+@@ -177,7 +177,6 @@ simd = import('unstable-simd')
+ simd_variants = [
+   { 'mmx' : ['remap_mmx.c', 'svolume_mmx.c'] },
+   { 'sse' : ['remap_sse.c', 'sconv_sse.c', 'svolume_sse.c'] },
+-  { 'neon' : ['remap_neon.c', 'sconv_neon.c', 'mix_neon.c'] },
+ ]
+ 
+ libpulsecore_simd_lib = []
+-- 
+2.39.2
+

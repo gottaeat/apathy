@@ -1,0 +1,248 @@
+# 1
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2 > libsigc++
+tar xf /mss/work/sauces/libsigc++-2.12.0.tar.xz
+cd     libsigc++-2.12.0/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-documentation=false \
+ -Dvalidation=false          \
+ -Dbuild-pdf=false           \
+ -Dbuild-examples=false      \
+ -Dbuild-tests=false         \
+ -Dbenchmark=false           \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf libsigc++-2.12.0/
+
+# 3 > glibmm
+tar xf /mss/work/sauces/glibmm-2.66.5.tar.xz
+cd     glibmm-2.66.5/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-documentation=false \
+ -Ddebug-refcounting=false   \
+ -Dbuild-examples=false      \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf glibmm-2.66.5/
+
+# 4 > cairomm
+tar xf /mss/work/sauces/cairomm-1.14.4.tar.xz
+cd     cairomm-1.14.4/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-exceptions-api=true \
+ -Dbuild-documentation=false \
+ -Dbuild-examples=false      \
+ -Dbuild-tests=false         \
+ -Dboost-shared=false        \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf cairomm-1.14.4/
+
+# 5 > pangomm
+tar xf /mss/work/sauces/pangomm-2.46.3.tar.xz
+cd     pangomm-2.46.3/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-documentation=false \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf pangomm-2.46.3/
+
+# 6 > atkmm
+tar xf /mss/work/sauces/atkmm-2.28.3.tar.xz
+cd     atkmm-2.28.3/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-documentation=false \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf atkmm-2.28.3/
+
+# 7 > gtkmm
+tar xf /mss/work/sauces/gtkmm-3.24.7.tar.xz
+cd     gtkmm-3.24.7/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dmaintainer-mode=false     \
+ -Dwarnings=no               \
+ -Ddist-warnings=no          \
+ -Dbuild-deprecated-api=true \
+ -Dbuild-atkmm-api=true      \
+ -Dbuild-x11-api=true        \
+ -Dbuild-documentation=false \
+ -Dbuild-demos=false         \
+ -Dbuild-tests=false         \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf gtkmm-3.24.7/
+
+# 8 > libcanberra
+tar xf /mss/work/sauces/libcanberra-0.30.tar.xz
+cd     libcanberra-0.30/
+
+configtomusl
+
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix="${penis}"    \
+\
+ --disable-alsa         \
+ --disable-gstreamer    \
+ --disable-gtk          \
+ --disable-gtk-doc      \
+ --disable-gtk-doc-html \
+ --disable-gtk-doc-pdf  \
+ --disable-lynx         \
+ --disable-null         \
+ --disable-oss          \
+ --disable-shared       \
+ --disable-tdb          \
+ --enable-gtk3          \
+ --enable-pulse         \
+ --enable-static        \
+ --enable-udev
+
+make
+make install
+
+cd ../; rm -rf libcanberra-0.30/
+
+# 9 > json-glib
+tar xf /mss/work/sauces/json-glib-1.6.6.tar.xz
+cd     json-glib-1.6.6/
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="${penis}"      \
+ -Ddefault_library=static \
+\
+ -Dintrospection=disabled \
+ -Dgtk_doc=disabled       \
+ -Dman=false              \
+ -Dtests=false            \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf json-glib-1.6.6/
+
+# 10 > gettext-tiny
+tar xf /mss/work/sauces/gettext-tiny-0.3.2.tar.xz
+cd     gettext-tiny-0.3.2/
+
+make LIBINTL=musl
+make LIBINTL=musl DESTDIR="${penis}" prefix=/ install
+
+cd ../; rm -rf gettext-tiny-0.3.2/
+
+# 11 > pavucontrol
+tar xf /mss/work/sauces/pavucontrol-ee77d86e.tar.zst
+cd     pavucontrol-ee77d86e/
+
+pdir="/mss/repo/pkg/recipes/pavucontrol/patches"
+patch -p1 < "${pdir}"/0001-link-against-lltdl.patch
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix="/usr" \
+\
+ -Dlynx=false \
+ ..
+
+samu
+
+doas -s
+samu install
+rm -rfv \
+ /usr/share/applications \
+ /usr/share/doc          \
+ /usr/share/locale

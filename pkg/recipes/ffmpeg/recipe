@@ -74,7 +74,9 @@ cd    build
  --disable-ffplay                 \
  --disable-ffprobe                \
 \
- --enable-alsa                    \
+ --enable-libpulse                \
+ --disable-alsa                   \
+\
  --enable-bzlib                   \
  --enable-libass                  \
  --enable-libdrm                  \
@@ -103,8 +105,8 @@ cd    build
  --enable-xlib                    \
  --enable-zlib                    \
 \
- --disable-indev="oss,sndio"      \
- --disable-outdev="oss,sndio"     \
+ --disable-indev="oss,sndio,alsa" \
+ --disable-outdev="oss,sndio,alsa"\
 \
  --disable-doc                    \
  --disable-htmlpages              \

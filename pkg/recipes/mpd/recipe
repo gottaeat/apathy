@@ -51,8 +51,8 @@ samu install
 cd ../../; rm -rf fmt-9.1.0/
 
 # 2
-tar xf /mss/work/sauces/mpd-0.23.9.tar.gz
-cd     MPD-0.23.9/
+tar xf /mss/work/sauces/mpd-0.23.12.tar.gz
+cd     MPD-0.23.12/
 
 pdir="/mss/repo/pkg/recipes/mpd/patches"
 patch -p1 < "${pdir}"/0001-stacksize.patch
@@ -67,6 +67,9 @@ meson setup \
  -Dipv6=disabled          \
  -Dtest=false             \
  -Ddocumentation=disabled \
+\
+ -Dalsa=disabled          \
+ -Dpulse=enabled          \
 \
  -Dcue=true               \
  -Ddsd=true               \

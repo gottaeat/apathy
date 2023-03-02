@@ -1,6 +1,0 @@
-Name: libpulse-simple
-Description: PulseAudio Simplified Synchronous Client Interface
-Version: 15.0
-Libs: -L/mss/work/table/KEK/lib/apulse -lpulse-simple -pthread
-Cflags: -L/mss/work/table/KEK/lib/apulse -D_REENTRANT
-Requires: libpulse

@@ -1,17 +1,23 @@
 # 1
-pdir="/mss/repo/pkg/recipes/pango/patches"
-patch -p1 < "${pdir}"/0001-fix-pc.patch
+rm -rf subprojects/
 
-sed -i "/subdir('tests')/d"    meson.build
-sed -i "/subdir('examples')/d" meson.build
+for i in tests examples docs; do
+ > "${i}"/meson.build
+done
 
 mkdir build
 cd    build
 
-# 2
-meson setup \
- --buildtype=plain   \
- --prefix=/usr       \
- -Dgir=false         \
- -Denable_docs=false \
-..
+meson setup --buildtype=plain \
+ --prefix=/usr \
+\
+ -Dgtk_doc=false          \
+ -Dintrospection=disabled \
+ -Dinstall-tests=false    \
+ -Dfontconfig=enabled     \
+ -Dsysprof=disabled       \
+ -Dlibthai=disabled       \
+ -Dcairo=enabled          \
+ -Dxft=enabled            \
+ -Dfreetype=enabled       \
+ ..

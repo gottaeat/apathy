@@ -1,5 +1,0 @@
-Name: libpulse
-Description: PulseAudio Client Interface
-Version: 15.0
-Libs: -L/mss/work/table/KEK/lib/apulse -lpulse -pthread
-Cflags: -L/mss/work/table/KEK/lib/apulse -D_REENTRANT

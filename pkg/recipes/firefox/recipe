@@ -10,7 +10,7 @@ export         BINDGEN_CFLAGS="${CFLAGS}"
 
 export                   PATH="${penis}/bin:${PATH}"
 export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib:${penis}/lib/apulse"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 export              CXXSTDLIB="c++"
@@ -87,8 +87,6 @@ popd
 ${CC} -c ${CFLAGS} "${fdir}"/libmozwayland.c
 ${CC} -o libmozwayland.so -shared ${LDFLAGS} libmozwayland.o
 mv       libmozwayland.so "${instdir}"/lib/libmozwayland.so
-
-mv "${penis}"/lib/apulse/libpulse.so.0 "${instdir}"/lib/
 
 install -v -Dm644 "${fdir}"/vendor.js     \
  "${instdir}"/lib/browser/defaults/preferences/vendor.js

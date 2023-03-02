@@ -65,8 +65,11 @@ patch -p1 < "${pdir}"/0001-fix-datadir.patch
  --libexecdir=/opt/qemu-7.2.0/bin \
  --localstatedir=/var             \
 \
+ --audio-drv-list=pa              \
+ --enable-pa                      \
+ --disable-alsa                   \
+\
  --cpu=x86_64                     \
- --audio-drv-list=alsa            \
  --enable-curses                  \
  --enable-gtk                     \
  --enable-kvm                     \

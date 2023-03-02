@@ -1,6 +1,0 @@
-Name: libpulse-mainloop-glib
-Description: PulseAudio GLib 2.0 Main Loop Wrapper
-Version: 15.0
-Libs: -L/mss/work/table/KEK/lib/apulse -lpulse-mainloop-glib -pthread
-Cflags: -L/mss/work/table/KEK/lib/apulse -D_REENTRANT
-Requires: libpulse glib-2.0

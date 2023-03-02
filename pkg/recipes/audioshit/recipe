@@ -1,0 +1,259 @@
+# 1 > env
+penis="/mss/work/table/KEK"
+ ldir="/mss/work/audioshitFUCK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2 > alsa-libs
+tar xf /mss/work/sauces/alsa-lib-1.2.7.tar.bz2
+cd     alsa-lib-1.2.7/
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --sbindir=/usr/bin   \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+\
+ --enable-rawmidi     \
+ --enable-seq         \
+ --without-debug      \
+ --without-versioned  \
+ --disable-aload      \
+ --disable-python     \
+ --disable-resmgr     \
+ --disable-static     \
+ --disable-topology
+
+make
+make DESTDIR="${ldir}" install
+doas -- make install
+
+cd ../; rm -rf alsa-lib-1.2.7/
+
+# 2 > alsa-utils
+tar xf /mss/work/sauces/alsa-utils-1.2.7.tar.bz2
+cd     alsa-utils-1.2.7/
+
+./configure \
+ --build=$CBUILD      \
+ --host=$CHOST        \
+ --prefix=/usr        \
+ --sbindir=/usr/bin   \
+ --sysconfdir=/etc    \
+ --localstatedir=/var \
+\
+ --disable-alsaconf   \
+ --disable-bat        \
+ --disable-nls        \
+ --disable-rst2man    \
+ --disable-xmlto
+
+cd alsamixer/; make; cd ../
+cd alsactl/;   make; cd ../
+
+cp -v \
+ alsamixer/alsamixer \
+ alsactl/alsactl     \
+ "${ldir}"/usr/bin/
+
+mkdir "${ldir}"/var/lib/alsa/
+
+doas -s
+for i in alsamixer/alsamixer alsactl/alsactl; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done
+
+mkdir /var/lib/alsa/
+exit
+
+cd ../; rm -rf alsa-utils-1.2.7/
+
+# 3 > static sndfile
+tar xf /mss/work/sauces/libsndfile-1.0.31.tar.bz2
+cd     libsndfile-1.0.31/
+
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix="${penis}"    \
+ --enable-external-libs \
+ --enable-static        \
+ --disable-alsa         \
+ --disable-bow-docs     \
+ --disable-full-suite   \
+ --disable-octave       \
+ --disable-ossfuzzers   \
+ --disable-shared       \
+ --disable-sqlite       \
+ --disable-test-coverage
+
+make
+make install
+
+cd ../; rm -rf libsndfile-1.0.31/
+
+sed -i \
+ -e '/Requires:$/d'                   \
+ -e 's/Requires\.private:/Requires:/' \
+ "${penis}"/lib/pkgconfig/sndfile.pc
+
+# 4 > pulseaudio
+tar xf /mss/work/sauces/pulseaudio-16.1.tar.xz
+cd     pulseaudio-16.1/
+
+pdir="/mss/repo/pkg/recipes/audioshit/patches"
+patch -p1 < "${pdir}"/0001-remove-neon-from-simd_variants.patch
+
+mkdir build
+cd    build
+
+meson setup --buildtype=plain \
+ --prefix=/usr \
+\
+ -Daccess_group="audio"                   \
+ -Dsystem_group="mss"                     \
+ -Dsystem_user="mss"                      \
+ -Ddatabase=simple                        \
+ -Dudevrulesdir="/usr/lib/udev/rules.d/"  \
+\
+ -Dalsa=enabled                           \
+ -Dclient=true                            \
+ -Ddaemon=true                            \
+ -Denable-smoother-2=true                 \
+ -Dglib=enabled                           \
+ -Dudev=enabled                           \
+\
+ -Dasyncns=disabled                       \
+ -Datomic-arm-linux-helpers=false         \
+ -Datomic-arm-memory-barrier=false        \
+ -Davahi=disabled                         \
+ -Dbluez5-gstreamer=disabled              \
+ -Dbluez5-native-headset=false            \
+ -Dbluez5-ofono-headset=false             \
+ -Dbluez5=disabled                        \
+ -Ddbus=disabled                          \
+ -Ddoxygen=false                          \
+ -Delogind=disabled                       \
+ -Dfftw=disabled                          \
+ -Dgcov=false                             \
+ -Dgsettings=disabled                     \
+ -Dgstreamer=disabled                     \
+ -Dgtk=disabled                           \
+ -Dhal-compat=false                       \
+ -Dipv6=false                             \
+ -Djack=disabled                          \
+ -Dlegacy-database-entry-format=false     \
+ -Dlirc=disabled                          \
+ -Dman=false                              \
+ -Dopenssl=disabled                       \
+ -Dorc=disabled                           \
+ -Doss-output=disabled                    \
+ -Drunning-from-build-tree=false          \
+ -Dsamplerate=disabled                    \
+ -Dsoxr=disabled                          \
+ -Dspeex=disabled                         \
+ -Dstream-restore-clear-old-devices=false \
+ -Dsystemd=disabled                       \
+ -Dtcpwrap=disabled                       \
+ -Dtests=false                            \
+ -Dvalgrind=disabled                      \
+ -Dx11=disabled                           \
+ ..
+
+samu
+DESTDIR="${ldir}" samu install
+doas -- samu install
+
+cd ../../; rm -rf pulseaudio-16.1/
+
+# 5 > alsa-plugin
+tar xf /mss/work/sauces/alsa-plugins-1.2.7.1.tar.bz2
+cd     alsa-plugins-1.2.7.1/
+
+./configure \
+ --build=$CBUILD                  \
+ --host=$CHOST                    \
+ --prefix=/usr                    \
+ --sbindir=/usr/bin               \
+ --sysconfdir=/etc                \
+ --localstatedir=/var             \
+\
+ --enable-pulseaudio              \
+ --with-speex=no                  \
+ --disable-a52                    \
+ --disable-aaf                    \
+ --disable-arcamav                \
+ --disable-jack                   \
+ --disable-lavrate                \
+ --disable-libav                  \
+ --disable-maemo-plugin           \
+ --disable-maemo-resource-manager \
+ --disable-mix                    \
+ --disable-oss                    \
+ --disable-samplerate             \
+ --disable-speexdsp               \
+ --disable-usbstream
+
+make
+make DESTDIR="${ldir}" install
+
+cat "${ldir}"/usr/share/alsa/alsa.conf.d/50-pulseaudio.conf \
+ >  /tmp/asound_temp.tmp
+
+echo "" \
+ >> /tmp/asound_temp.tmp
+
+cat "${ldir}"/etc/alsa/conf.d/99-pulseaudio-default.conf.example \
+ >> /tmp/asound_temp.tmp
+
+mv /tmp/asound_temp.tmp \
+ "${ldir}"/etc/asound.conf
+
+doas -s
+make install
+
+cat /usr/share/alsa/alsa.conf.d/50-pulseaudio.conf \
+ >  /tmp/asound_temp.tmp
+
+echo "" \
+ >> /tmp/asound_temp.tmp
+
+cat /etc/alsa/conf.d/99-pulseaudio-default.conf.example \
+ >> /tmp/asound_temp.tmp
+
+mv /tmp/asound_temp.tmp \
+ /etc/asound.conf
+
+cd ../; rm -rf alsa-plugins-1.2.7.1/
+
+# 6
+rm -rfv \
+ /etc/alsa                   \
+ /etc/pulse                  \
+ /usr/bin/aserver            \
+ /usr/share/alsa/alsa.conf.d \
+ /usr/share/bash-completion  \
+ /usr/share/vala             \
+ /usr/share/zsh
+
+cp -r /mss/repo/dir/etc/pulse \
+ /etc
+
+chown -Rh root:root /etc/pulse
+
+exit
+
+rm -rfv \
+ "${ldir}"/etc/alsa                   \
+ "${ldir}"/etc/pulse                  \
+ "${ldir}"/usr/bin/aserver            \
+ "${ldir}"/usr/share/alsa/alsa.conf.d \
+ "${ldir}"/usr/share/bash-completion  \
+ "${ldir}"/usr/share/vala             \
+ "${ldir}"/usr/share/zsh
