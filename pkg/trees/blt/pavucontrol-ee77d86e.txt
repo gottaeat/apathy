@@ -1,0 +1,7 @@
+/usr/bin/pavucontrol
+
+/usr/share/pavucontrol
+
+/usr/share/applications
+/usr/share/doc
+/usr/share/locale
