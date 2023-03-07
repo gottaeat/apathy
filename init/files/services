@@ -447,8 +447,7 @@ case "${1}" in
  evalret
 
  ainitsvc "network" "stopping udhcpd"
-  ainit_kill udhcpd
- evalret
+ ainit_kill udhcpd
 
  ainitsvc "network" "removing br0 and taps"
   for i in br0 tap0 tap1; do
