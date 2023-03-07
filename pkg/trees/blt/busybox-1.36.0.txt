@@ -49,6 +49,7 @@
 /bin/umount
 /bin/uname
 
+/sbin/arp
 /sbin/blkid
 /sbin/fdisk
 /sbin/fsck
@@ -61,9 +62,11 @@
 /sbin/mkdosfs
 /sbin/mkfs.vfat
 /sbin/mkswap
+/sbin/route
 /sbin/swapoff
 /sbin/swapon
 /sbin/syslogd
+/sbin/tunctl
 /sbin/udhcpc
 
 /usr/bin/[
@@ -90,6 +93,7 @@
 /usr/bin/logname
 /usr/bin/md5sum
 /usr/bin/mkfifo
+/usr/bin/nc
 /usr/bin/nl
 /usr/bin/nohup
 /usr/bin/nproc
@@ -115,6 +119,7 @@
 /usr/bin/tac
 /usr/bin/tail
 /usr/bin/tee
+/usr/bin/telnet
 /usr/bin/test
 /usr/bin/time
 /usr/bin/timeout
@@ -137,9 +142,11 @@
 
 /usr/sbin/addgroup
 /usr/sbin/adduser
+/usr/sbin/arping
 /usr/sbin/chroot
 /usr/sbin/delgroup
 /usr/sbin/deluser
 /usr/sbin/nologin
 /usr/sbin/ntpd
 /usr/sbin/rfkill
+/usr/sbin/udhcpd

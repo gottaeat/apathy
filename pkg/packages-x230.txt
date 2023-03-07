@@ -14,7 +14,7 @@ i  3  .      flex                 2.6.4
 i  2  .      grep                 3.8
 i  2  ..     pcre2                10.40
 i  2  .      yash                 2.53
-i  3  .      busybox              1.36.0
+i  4  .      busybox              1.36.0
 i  3  .      libtool              2.4.6
 i  2  .      gperf                3.1
 i  2  .      expat                2.4.8
@@ -40,7 +40,7 @@ i  2  .      vim                  9.0.1261
 i  6  .      util-linux           2.37.2
 i  3  .      e2fsprogs            1.46.4
 i  2  .      eudev                3.2.11
-i  2  .      linux                6.2
+i  1  .      linux                6.2.2
 i  4  ..     initramfs            10
 i  4  ...    cryptsetup           2.6.0
 i  4  ....   lvm2                 2.03.17
@@ -235,5 +235,5 @@ i  1  .      patchelf             0.17.2
 i  1  .      redshift             490ba2aa
 i  1  .      nginx                1.22.1
 i  1  ..     nginx-rtmp-module    1.2.2
-i  3  .      bind                 9.18.11
+i  4  .      bind                 9.18.11
 i  1  .      mtr                  0.95
