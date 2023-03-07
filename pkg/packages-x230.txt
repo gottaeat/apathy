@@ -41,7 +41,7 @@ i  6  .      util-linux           2.37.2
 i  3  .      e2fsprogs            1.46.4
 i  2  .      eudev                3.2.11
 i  1  .      linux                6.2.2
-i  4  ..     initramfs            10
+i  5  ..     initramfs            10
 i  4  ...    cryptsetup           2.6.0
 i  4  ....   lvm2                 2.03.17
 i  1  .      init                 47
