@@ -61,6 +61,38 @@ cdnginx(){
  fi
 }
 
+# 1.4 > nfqws
+nfqws_iptb(){
+ iptables -t mangle "-${1}" POSTROUTING    \
+  -p tcp -o "${2}"                         \
+  -m multiport --dports 80,443             \
+  -m connbytes --connbytes-dir=original    \
+  --connbytes-mode=packets --connbytes 1:4 \
+  -m mark ! --mark 0x40000000/0x40000000   \
+  -j NFQUEUE --queue-num 200 --queue-bypass >/dev/null 2>&1
+}
+
+# 1.5 > network
+checkiface(){
+ if ip addr \
+     | awk '/^[0-9]/{gsub(/:/,""); print $2}' \
+     | grep -w "${1}" >/dev/null 2>&1
+  then return 0
+  else return 1
+ fi
+}
+
+# 1.6 > iptables
+ipt_nukeall(){
+ ainitsvc "iptables" "flushing, deleting, clearing"
+  for i in ${tblist}; do
+   iptables -t "${i}" --flush        &&
+   iptables -t "${i}" --delete-chain &&
+   iptables -t "${i}" --zero
+  done
+ evalret
+}
+
 # 2 > services themselves
 # 2.1 > gpm
 svc_gpm(){
@@ -83,43 +115,103 @@ esac
 
 # 2.2 > iptables
 svc_iptables(){
+ tblist="$(cat /proc/net/ip_tables_names)"
+
  case "$1" in
   start)
+   ainitsvc "iptables" "dropping all by default"
+    for i in INPUT FORWARD OUTPUT; do
+     iptables -t filter --policy "${i}" DROP
+    done
+   evalret
+
+   ipt_nukeall
+
    ainitsvc "iptables" "setting the rules"
     . /mss/init/files/iptables.script
    evalret
-
-   ainitsvc "iptables" "starting nfqws"
-    nfqws --uid=0:0 \
-     --qnum=200 --dpi-desync-fwmark=0x40000000 --wssize=1:6 \
-     --hostcase --hostspell=hoST --hostnospace --domcase    \
-     --dpi-desync=fake           \
-     --dpi-desync-fooling=md5sig \
-     --dpi-desync-retrans=1      \
-     --dpi-desync-skip-nosni=0   \
-     --dpi-desync-ttl=6 >/dev/null 2>&1 &
-   evalret
   ;;
   stop)
-   ainitsvc "iptables" "clearing the rules"
-    iptables --policy INPUT   ACCEPT  &&
-    iptables --policy OUTPUT  ACCEPT  &&
-    iptables --policy FORWARD ACCEPT  &&
-    iptables --flush                  &&
-    iptables -t mangle --flush        &&
-    iptables --delete-chain           &&
-    iptables -t mangle --delete-chain
-   evalret
+   ipt_nukeall
 
-   ainitsvc "iptables" "stopping nfqws"
-   ainit_kill nfqws
+   ainitsvc "iptables" "accepting all"
+    for i in INPUT OUTPUT FORWARD; do
+     iptables -t filter --policy "${i}" ACCEPT
+    done
+   evalret
   ;;
   status)
-   iptables --numeric --list
-   iptables -t mangle --numeric --list
+   ainit_nc
+   for i in ${tblist}; do
+    ainitmes "${i}: "; infoprompt
+    iptables -t "${i}" -S
+    ainit_nc
+   done
   ;;
   *)
    ainitusage "{start|stop|status}"
+   exit 1
+  ;;
+ esac
+}
+
+# 2.2.1 > nfqws
+svc_nfqws(){
+ nfqwspid="$(pidof nfqws)"
+    iface="$(grep 00000000 /proc/net/route | awk 'NR==1 {print $1}')"
+
+ case "$1" in
+  start)
+   if [ ! -z "${nfqwspid}" ]
+    then
+     ainitsvc "nfqws" "already running"; failprompt
+    else
+
+     if [ -z "${iface}" ]
+      then
+       ainitsvc "nfqws" "no active iface found"; failprompt
+       exit 1
+      else
+       ainitsvc "nfqws" "going with ${iface}"; infoprompt
+     fi
+
+     ainitsvc "nfqws" "setting the rules"
+      nfqws_iptb I "${iface}"
+     evalret
+
+     ainitsvc "nfqws" "starting"
+      nfqws \
+       --uid=0:0                      \
+       --qnum=200                     \
+       --dpi-desync-fwmark=0x40000000 \
+       --wssize=1:6                   \
+       --hostcase                     \
+       --hostspell=hoST               \
+       --hostnospace                  \
+       --domcase                      \
+       --dpi-desync=fake              \
+       --dpi-desync-fooling=md5sig    \
+       --dpi-desync-retrans=1         \
+       --dpi-desync-skip-nosni=0      \
+       --dpi-desync-ttl=6 >/dev/null 2>&1 &
+     evalret
+   fi
+  ;;
+  stop)
+   if [ ! -z "${nfqwspid}" ]
+    then
+     ainitsvc "nfqws" "clearing the rules"
+      nfqws_iptb D ${iface}
+     evalret
+
+     ainitsvc "nfqws" "stopping"
+     ainit_kill nfqws
+    else
+     ainitsvc "nfqws" "not running"; failprompt
+   fi
+  ;;
+  *)
+   ainitusage "{start|stop}"
    exit 1
   ;;
  esac
@@ -169,33 +261,22 @@ svc_mpd(){
 svc_network(){
 case "${1}" in
  start)
-  if [ -z "${2}" ]
+  if [ -z "${2}" ]; then
+   ainitsvc "network" "specify an interface with \$2"; failprompt
+   exit 1
+  fi
+
+  if checkiface "${2}"
    then
-    ainitsvc "network" "specify an interface with \$2"; failprompt
-    exit 1
-   else
     iface="${2}"
+   else
+    ainitsvc "network" "interface "${1}" does not exist"; failprompt
+    exit 1
+  fi
 
-    if ! ip addr | awk '/^[0-9]/{gsub(/:/,""); print $2}' | grep -w "${iface}" >/dev/null 2>&1; then
-     ainitsvc "network" "interface ${iface} does not exist"; failprompt
-     exit 1
-    fi
-
-    case "${iface}" in wlan*)
-     if [ -z "${4}" ]
-      then
-       ainitsvc "network" "specify a wpaconf with \$4"; failprompt
-       exit 1
-      else
-       wpaconf="/mss/files/networks/${4}.conf"
-
-       if [ ! -f "${wpaconf}" ]; then
-        ainitsvc "network" "${wpaconf} does not exist"; failprompt
-        exit 1
-       fi
-     fi
-    ;;
-    esac
+  if ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
+   ainitsvc "network" "${iface} already has an ip assigned"; failprompt
+   exit 1
   fi
 
   if [ -z "${3}" ]
@@ -212,10 +293,21 @@ case "${1}" in
     esac
   fi
 
-  if ip addr | grep ${iface} | grep inet >/dev/null 2>&1; then
-   ainitsvc "network" "${iface} already has an ip assinged"; failprompt
-   exit 1
-  fi
+  case "${iface}" in wlan*)
+   if [ -z "${4}" ]
+    then
+     ainitsvc "network" "specify a wpaconf with \$4"; failprompt
+     exit 1
+    else
+     wpaconf="/mss/files/networks/${4}.conf"
+
+     if [ ! -f "${wpaconf}" ]; then
+      ainitsvc "network" "${wpaconf} does not exist"; failprompt
+      exit 1
+     fi
+   fi
+   ;;
+  esac
 
   case "${method}" in dhcp)
    randommac="$(hexdump -n3 -e'/3 "00:60:2F" 3/1 ":%02X"' /dev/urandom)"
@@ -240,16 +332,12 @@ case "${1}" in
 
   case "${method}" in
    static)
-    ainitsvc "network" "adding ${dev_sip} to ${iface}"
-     ip addr add "${dev_sip}/${dev_pref}" broadcast "${dev_bcast}" dev "${iface}"
-    evalret
-
-    ainitsvc "network" "bringing ${iface} up"
-     ip link set "${iface}" up
+    ainitsvc "network" "adding ${amach_ip} to ${iface}"
+     ip addr add "${amach_ip}" broadcast "${amach_bc}" dev "${iface}"
     evalret
 
     ainitsvc "network" "setting up the default gateway"
-     ip route add default via "${dev_gway}" dev "${iface}"
+     ip route add default via "${amach_gw}" dev "${iface}"
     evalret
    ;;
    dhcp)
@@ -267,47 +355,106 @@ case "${1}" in
     evalret
    ;;
   esac
+
+  ainitsvc "network" "creating br0"
+   ip link add br0 type bridge                                      &&
+   ip addr add "192.168.255.1/29" broadcast "192.168.255.7" dev br0 &&
+   ip link set dev br0 up
+  evalret
+
+  ainitsvc "network" "creating taps"
+   for i in tap0 tap1; do
+    tunctl -f /dev/net/tun -t "${i}" -u mss -g mss >/dev/null 2>&1 &&
+    ip link set dev "${i}" master br0                              &&
+    ip link set dev "${i}" up
+   done
+  evalret
+
+  ainitsvc "network" "applying nat rule for br0<->${iface}"
+   iptables -t filter -I FORWARD 1 -i br0 -o "${iface}" -j ACCEPT \
+    >/dev/null 2>&1 &&
+   iptables -t nat -I POSTROUTING 1 -o "${iface}" -j MASQUERADE   \
+    >/dev/null 2>&1 &&
+   iptables -t filter -I FORWARD 2 -i "${iface}" -o br0           \
+    -m state --state RELATED,ESTABLISHED -j ACCEPT >/dev/null 2>&1
+  evalret
+
+  ainitsvc "network" "starting udhcpd for 192.168.255.0/29"
+   udhcpd -f -S /mss/init/files/udhcpd.conf >/dev/null 2>&1 &
+  evalret
  ;;
  stop)
-  if [ -z "${2}" ]
-   then
-    ainitsvc "network" "specify an interface with \$2"; failprompt
-    exit 1
-   else
-    iface="${2}"
-
-    if ip addr | grep ${iface} | grep inet >/dev/null 2>&1
-     then
-      ainitsvc "network" "flushing ${iface} (ipv4)"
-       ip -4 addr flush dev "${iface}"
-      evalret
-     else
-      ainitsvc "network" "${iface} does not have an ip assinged"; failprompt
-    fi
-
-    if [ "`cat /sys/class/net/${iface}/operstate`" == "up" ]; then
-     ainitsvc "network" "bringing down ${iface}"
-      ip link set "${iface}" down
-     evalret
-    fi
-
-    dhcpid="$(pidof udhcpc 2>/dev/null)"
-    if [ ! -z "${dhcpid}" ]; then
-     ainitsvc "network" "stopping udhcpc"
-      for i in ${dhcpid}; do kill -USR2 "${i}"; done
-     evalret
-
-     sleep 1
-
-     ainitsvc "network" "killing udhcpc"
-     ainit_kill udhcpc
-    fi
-
-    if pidof wpa_supplicant >/dev/null 2>&1; then 
-     ainitsvc "network" "killing wpa_supplicant"
-     ainit_kill wpa_supplicant
-    fi
+  if [ -z "${2}" ]; then
+   ainitsvc "network" "specify an interface with \$2"; failprompt
+   exit 1
   fi
+
+  if checkiface "${2}"
+   then
+    iface="${2}"
+   else
+    ainitsvc "network" "interface "${1}" does not exist"; failprompt
+    exit 1
+  fi
+
+  if ip addr | grep ${iface} | grep inet >/dev/null 2>&1
+   then
+    ainitsvc "network" "flushing ${iface}"
+     ip addr flush dev "${iface}"
+    evalret
+   else
+    ainitsvc "network" "${iface} does not have an ip assigned"; failprompt
+    exit 1
+  fi
+
+  if [ "`cat /sys/class/net/${iface}/operstate`" == "up" ]; then
+   ainitsvc "network" "bringing down ${iface}"
+    ip link set "${iface}" down
+   evalret
+  fi
+
+  if pidof udhcpc >/dev/null 2>&1; then
+      dhcpid="$(cat /run/udhcpc.pid)"
+   dhcpiface="$(awk '{gsub(/\x00/," "); print $3}' /proc/${dhcpid}/cmdline)"
+
+   if [ "${dhcpiface}" = "${iface}" ]; then
+    ainitsvc "network" "stopping udhcpc"
+     kill -USR2 "${dhcpid}"
+    evalret
+
+    sleep 1
+
+    ainitsvc "network" "killing udhcpc"
+    ainit_kill udhcpc
+  fi
+
+  case "${iface}" in wlan*)
+   if pidof wpa_supplicant >/dev/null 2>&1; then 
+    ainitsvc "network" "killing wpa_supplicant"
+    ainit_kill wpa_supplicant
+   fi
+   ;;
+  esac
+ fi
+
+ ainitsvc "network" "removing nat rule for br0<->${iface}"
+  iptables -t filter -D FORWARD -i br0 -o "${iface}" -j ACCEPT \
+   >/dev/null 2>&1 &&
+  iptables -t nat -D POSTROUTING -o "${iface}" -j MASQUERADE   \
+   >/dev/null 2>&1 &&
+  iptables -t filter -D FORWARD -i "${iface}" -o br0           \
+   -m state --state RELATED,ESTABLISHED -j ACCEPT >/dev/null 2>&1
+ evalret
+
+ ainitsvc "network" "stopping udhcpd"
+  ainit_kill udhcpd
+ evalret
+
+ ainitsvc "network" "removing br0 and taps"
+  for i in br0 tap0 tap1; do
+   ip link del "${i}" >/dev/null 2>&1
+  done
+ evalret
  ;;
  *)
   ainitusage "{start|stop} {iface} {dhcp|static} | {wpaconf}"
