@@ -1,63 +1,53 @@
 #!/mss/bin/sh
-# 1 > set a known state
-iptables -P INPUT   DROP
-iptables -P FORWARD DROP
-iptables -P OUTPUT  DROP
+# 1
+# 1.1 > allow all outbound traffic
+iptables -A OUTPUT -j ACCEPT
+# 1.2 > allow established and new connections related to established
+iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+# 1.3 > allow loopback
+iptables -A INPUT -i lo -j ACCEPT
+# 1.4 > if packet received from lo but the dest is not in 127/0, drop it
+iptables -A INPUT ! -i lo -d 127.0.0.0/8 -j DROP
+# 1.5 > allow ping (8 is icmp echo)
+iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
 
-# 2 > remove all existing user defined rules before implementing new ones
-iptables -F
-iptables -X
-iptables -Z
-iptables -t nat -F
+# 2 > ports
+# 2.1 > http/https
+iptables -A INPUT -p tcp --dport 80    -j ACCEPT
+iptables -A INPUT -p tcp --dport 443   -j ACCEPT
+# 2.2 > nginx http/https/rtmp
+iptables -A INPUT -p tcp --dport 1337  -j ACCEPT
+iptables -A INPUT -p tcp --dport 1338  -j ACCEPT
+iptables -A INPUT -p tcp --dport 1935  -j ACCEPT
+# 2.3 > bind
+iptables -A INPUT -p tcp --dport 53    -j ACCEPT
+iptables -A INPUT -p udp --dport 53    -j ACCEPT
+# 2.4 > openssh
+iptables -A INPUT -p tcp --dport 3131  -j ACCEPT
+# 2.5 > mpd's http stream and yMPD webui
+iptables -A INPUT -p tcp --dport 8000  -j ACCEPT
+iptables -A INPUT -p tcp --dport 8080  -j ACCEPT
+# 2.6 > transmission-daemon's webui
+iptables -A INPUT -p tcp --dport 9091  -j ACCEPT
+# 2.7 > nfs (rpcbind/rpc.nfsd/rpc.statd -p/rpc.statd -o/rpc.mountd)
+iptables -A INPUT -p tcp --dport 111   -j ACCEPT
+iptables -A INPUT -p tcp --dport 2049  -j ACCEPT
+iptables -A INPUT -p tcp --dport 31310 -j ACCEPT
+iptables -A INPUT -p tcp --dport 31311 -j ACCEPT
+iptables -A INPUT -p tcp --dport 31312 -j ACCEPT
+# 2.8 > busybox udhcpd
+iptables -A INPUT -p udp --dport 67    -j ACCEPT
 
-# 3 > nukery
-iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT # permit answers on already established
-                                                                       #  connections and permit new connections
-                                                                       #  related to established ones
+# 3 > 80=>1337, 443=>1338 unless iface is br0 (for rootless http{,s})
+iptables -t nat -I OUTPUT     -p tcp ! -o br0 -d 127.0.0.1 \
+ --dport 80  -j REDIRECT --to-ports 1337
+iptables -t nat -I OUTPUT     -p tcp ! -o br0 -d 127.0.0.1 \
+ --dport 443 -j REDIRECT --to-ports 1338
+iptables -t nat -I PREROUTING -p tcp ! -i br0              \
+ --dport 80  -j REDIRECT --to-ports 1337
+iptables -t nat -I PREROUTING -p tcp ! -i br0              \
+ --dport 443 -j REDIRECT --to-ports 1338
 
-iptables -A INPUT   -i lo                                -j ACCEPT     # allow all loopback traffic
-iptables -A INPUT ! -i lo -d 127.0.0.0/8                 -j REJECT     # block all 127/8 that doesn't use lo0
-iptables -A INPUT   -m state --state ESTABLISHED,RELATED -j ACCEPT     # allow all established inbound connections
-iptables -A OUTPUT                                       -j ACCEPT     # allow all outbound traffic
-
-# 4 > allowed ports
-iptables -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT              # ping
-
-iptables -A INPUT -p tcp --dport 80    -j ACCEPT                       # http
-iptables -A INPUT -p tcp --dport 443   -j ACCEPT                       # https
-
-iptables -A INPUT -p tcp --dport 1337  -j ACCEPT                       # nginx http
-iptables -A INPUT -p tcp --dport 1338  -j ACCEPT                       # nginx https
-iptables -A INPUT -p tcp --dport 1935  -j ACCEPT                       # nginx rtmp
-
-iptables -A INPUT -p tcp --dport 53    -j ACCEPT                       # bind tcp
-iptables -A INPUT -p udp --dport 53    -j ACCEPT                       # bind udp
-
-iptables -A INPUT -p tcp --dport 3131  -j ACCEPT                       # ssh
-
-iptables -A INPUT -p tcp --dport 8000  -j ACCEPT                       # httpd port for mpd
-iptables -A INPUT -p tcp --dport 8080  -j ACCEPT                       # httpd port for ympd
-iptables -A INPUT -p tcp --dport 9091  -j ACCEPT                       # httpd port for transmission-daemon
-
-iptables -A INPUT -p tcp --dport 111   -j ACCEPT                       # rpcbind
-iptables -A INPUT -p tcp --dport 2049  -j ACCEPT                       # rpc.nfsd   -p
-iptables -A INPUT -p tcp --dport 31310 -j ACCEPT                       # rpc.statd  -p
-iptables -A INPUT -p tcp --dport 31311 -j ACCEPT                       # rpc.statd  -o
-iptables -A INPUT -p tcp --dport 31312 -j ACCEPT                       # rpc.mountd -p
-
-# 5 > redirect 80 and 443 to 1337 and 1338
-iptables -t nat -I OUTPUT     -p tcp -d 127.0.0.1 --dport 80  -j REDIRECT --to-ports 1337
-iptables -t nat -I OUTPUT     -p tcp -d 127.0.0.1 --dport 443 -j REDIRECT --to-ports 1338
-iptables -t nat -I PREROUTING -p tcp              --dport 80  -j REDIRECT --to-ports 1337
-iptables -t nat -I PREROUTING -p tcp              --dport 443 -j REDIRECT --to-ports 1338
-
-# 6 > push 80 and 443 through zapret for passive dpi circumvention
-iptables -t mangle -I POSTROUTING                                               \
- -p tcp -m multiport --dports 80,443                                            \
- -m connbytes --connbytes-dir=original --connbytes-mode=packets --connbytes 1:4 \
- -m mark ! --mark 0x40000000/0x40000000                                         \
- -j NFQUEUE --queue-num 200 --queue-bypass
-
-# 7 > deny unless explicitly allowed above
-iptables -A INPUT   -j REJECT
-iptables -A FORWARD -j REJECT
+# 4 > deny unless explicitly allowed above
+iptables -A INPUT   -j DROP
+iptables -A FORWARD -j DROP
