@@ -1,5 +1,5 @@
 project('init', 'c',
- version: '45',
+ version: '46',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
@@ -64,7 +64,8 @@ files_files = [
  'files/funcs',
  'files/iptables.script',
  'files/services',
- 'files/udhcpc.script'
+ 'files/udhcpc.script',
+ 'files/udhcpd.conf'
 ]
 
 files_files_acpi = [
