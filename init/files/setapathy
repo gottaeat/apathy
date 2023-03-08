@@ -45,7 +45,7 @@ evalret
 ainitmes "generating the ${cb_blu}hosts${c_res} list."
  hostslist="$(for i in ${hostslist}; do
                . /mss/files/machines/"${i}".conf
-               echo "${dev_sip} ${hname}"
+               echo "$(echo ${amach_ip} | sed 's/\/[^.]*$//g') ${hname}"
               done | sort)"
 evalret
 
@@ -74,7 +74,7 @@ evalret
 
 # /etc/ssh/banner
 ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
- l3="${hname} (${dev_sip})"       &&
+ l3="${hname} ($(echo ${amach_ip} | sed 's/\/[^.]*$//g'))" &&
  if [ ${#l2} -lt "${#l3}" ]; then len="${#l3}"; else len="${#l2}"; fi &&
 
  l2pad="$((${len} - ${#l2}))" &&
