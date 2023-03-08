@@ -37,7 +37,6 @@ alias     ytmp3="yt-dlp -f bestaudio -x --audio-format mp3 --audio-quality 0"
 alias      ptog="pactl set-sink-mute @DEFAULT_SINK@ toggle"
 alias      mtog="mpc toggle"
 alias       feh="feh -d --scale-down --auto-zoom"
-alias        nc="ncmpcpp"
 
 # 1.6 > verbosity
 alias        cp="cp -v"
