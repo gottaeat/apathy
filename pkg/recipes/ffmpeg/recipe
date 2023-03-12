@@ -33,6 +33,9 @@ printprof vanilla > buildprof
 tar xf /mss/work/sauces/ffmpeg-5.1.2.tar.xz
 cd     ffmpeg-5.1.2/
 
+pdir="/mss/repo/pkg/recipes/ffmpeg/patches"
+patch -p1 < "${pdir}"/0001-add-av_stream_get_first_dts-for-chromium.patch
+
 mkdir build
 cd    build
 

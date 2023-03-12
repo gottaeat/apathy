@@ -87,7 +87,7 @@ meson setup \
  -Dcairo=disabled         \
  -Dglib=enabled           \
  -Dgobject=disabled       \
- -Dicu=disabled           \
+ -Dicu=enabled            \
  -Dgraphite=disabled      \
  -Dfreetype=enabled       \
  -Dtests=disabled         \
@@ -221,7 +221,7 @@ meson setup \
  -Dcairo=enabled          \
  -Dglib=enabled           \
  -Dgobject=disabled       \
- -Dicu=disabled           \
+ -Dicu=enabled            \
  -Dgraphite=disabled      \
  -Dfreetype=enabled       \
  -Dtests=disabled         \
