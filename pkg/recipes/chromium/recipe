@@ -1,0 +1,200 @@
+# 1
+cdt1
+
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
+
+export XZ_OPT="-T0"
+export TMPDIR="/mss/work/ltocache"
+
+# 2
+tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
+cd     libXtst-1.2.3/
+
+CFLAGS="${CFLAGS} -fPIC"     \
+CXXFLAGS="${CXXFLAGS} -fPIC" \
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix="${money}"    \
+ --without-fop          \
+ --without-lint         \
+ --without-xmlto        \
+ --without-xsltproc     \
+ --enable-static        \
+ --disable-lint-library \
+ --disable-shared       \
+ --disable-specs        \
+
+make
+make install
+
+cd ../; rm -rf libXtst-1.2.3/
+
+# 3
+tar xf /mss/work/sauces/zlib-1.2.13.tar.xz
+cd     zlib-1.2.13/contrib/minizip/
+
+autoreconf -fvi
+
+CFLAGS="${CFLAGS} -fPIC"     \
+CXXFLAGS="${CXXFLAGS} -fPIC" \
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix="${money}"    \
+ --enable-static        \
+ --disable-demos        \
+ --disable-shared
+
+make
+make install
+
+cd ../../../; rm -rf zlib-1.2.13/
+
+sed -i -e 's/-lminizip/-lminizip -lz/g' \
+ "${money}"/lib/pkgconfig/minizip.pc
+
+rm -rfv \
+ "${money}"/include/minizip/crypt.h
+
+# 4
+tar xf /mss/work/sauces/gn-fe330c0a.tar.xz
+cd     gn/
+
+python3 ./build/gen.py --no-static-libstdc++
+
+cd out/
+samu gn
+
+mkdir    "${money}"/bin
+mv    gn "${money}"/bin
+
+cd ../../; rm -rf gn/
+
+# 5
+export   CFLAGS="${CFLAGS}   -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
+export CXXFLAGS="${CXXFLAGS} -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
+
+syslibs="ffmpeg
+         flac
+         fontconfig
+         freetype
+         harfbuzz-ng
+         icu
+         libdrm
+         libevent
+         libjpeg
+         libwebp
+         opus
+         zlib"
+
+# 6
+tar xf /mss/work/sauces/chromium-111.0.5563.64.tar.xz
+cd     chromium-111.0.5563.64/
+
+pdir="/mss/repo/pkg/recipes/chromium/patches"
+for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
+
+# 7
+touch chrome/test/data/webui/i18n_process_css_test.html
+
+sed -i -e \
+ 's|//third_party/usb_ids/usb.ids|/usr/share/hwdata/usb.ids|g' \
+ services/device/public/cpp/usb/BUILD.gn
+
+for i in third_party/node/linux/node-linux-x64/bin; do
+ mkdir   "${i}"
+ ln -sfv `which node` "${i}"/
+done
+
+for i in $syslibs libjpeg_turbo; do
+ find . -type f \
+    -path  "*third_party/"${i}"/*"                                            \
+ \! -path  "*third_party/"${i}"/chromium/*"                                   \
+ \! -path  "*third_party/"${i}"/google/*"                                     \
+ \! -path  './base/third_party/icu/*'                                         \
+ \! -path  './third_party/libxml/*'                                           \
+ \! -path  './third_party/pdfium/third_party/freetype/include/pstables.h'     \
+ \! -path  './third_party/harfbuzz-ng/utils/hb_scoped.h'                      \
+ \! -path  './third_party/crashpad/crashpad/third_party/zlib/zlib_crashpad.h' \
+ \! -regex '.*\.\(gn\|gni\|isolate\|py\)'                                     \
+    -delete
+done
+
+build/linux/unbundle/replace_gn_files.py --system-libraries ${syslibs}
+third_party/libaddressinput/chromium/tools/update-strings.py
+
+sed -i -e \
+ 's,^update_readme$,#update_readme,' \
+ third_party/libvpx/generate_gni.sh
+
+sed -i -e \
+ 's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
+ tools/generate_shim_headers/generate_shim_headers.py
+
+sed -i \
+ -e 's/\<xmlMalloc\>/malloc/'                                      \
+ -e 's/\<xmlFree\>/free/'                                          \
+ third_party/blink/renderer/core/xml/*.cc                          \
+ third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
+ third_party/libxml/chromium/*.cc                                  \
+ third_party/maldoca/src/maldoca/ole/oss_utils.h
+
+# 8
+fdir="/mss/repo/pkg/recipes/chromium/files"
+gn gen out/Release --args="$(cat ${fdir}/gn-args)"
+
+ulimit -n 4096
+time samu -C out/Release chrome
+
+# 9
+ findir="${PWD}/KEK"
+instdir="${PWD}/out/Release"
+
+mkdir "${findir}"/{lib/locales/,bin}
+
+mv \
+ "${instdir}"/chrome                  \
+ "${instdir}"/chrome_crashpad_handler \
+ "${instdir}"/MEIPreload/             \
+ "${instdir}"/vk_swiftshader_icd.json \
+ "${instdir}"/*.bin                   \
+ "${instdir}"/*.pak                   \
+ "${instdir}"/*.so*                   \
+ "${findir}"/lib/
+
+mv \
+ "${instdir}"/locales/en-US.pak \
+ "${findir}"/lib/locales/
+
+find "${findir}"/lib -type f -name \*\.TOC \
+ -exec rm -rfv {} ';'
+
+elfs="$(find ${findir} -type f -exec file {} ';' | grep ELF\ 64-bit)"
+libs="$(echo "${elfs}" \
+         | awk '/shared\ object/{gsub(/:/,""); \
+                print $1}' | sort | uniq)"
+bins="$(echo "${elfs}" \
+         | awk '/executable, /{gsub(/:/,""); \
+                print $1}' | sort | uniq)"
+
+for i in ${libs}; do strip --strip-unneeded "${i}"; done
+for i in ${bins}; do strip --strip-all      "${i}"; done
+
+mv "${findir}"/lib/{chrome,chromium}
+
+cp "${fdir}"/chromium \
+ "${findir}"/bin/
+
+mv KEK chromium-111.0.5563.64/
+pkgup chromium-111.0.5563.64/ chromium-111.0.5563.64
+mv chromium-111.0.5563.64.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/

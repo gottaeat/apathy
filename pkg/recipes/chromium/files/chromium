@@ -1,0 +1,12 @@
+#!/mss/bin/sh
+exec \
+ /opt/chromium-111.0.5563.64/lib/chromium \
+ --enable-features=CSSColorSchemeUARendering \
+ --enable-features=VaapiVideoDecode          \
+ --enable-features=WebUIDarkMode             \
+ --enable-gpu-rasterization                  \
+ --disable-smooth-scrolling                  \
+ --force-dark-mode                           \
+ --wm-window-animations-disabled             \
+ --animation-duration-scale=0                \
+ "${@}"
