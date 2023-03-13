@@ -1,4 +1,6 @@
 #!/mss/bin/sh
+export XDG_CONFIG_HOME=$HOME/.chromium
+
 exec \
  /opt/chromium-111.0.5563.64/lib/chromium \
  --enable-features=CSSColorSchemeUARendering \

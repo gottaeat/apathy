@@ -1,7 +1,7 @@
 # 1
 case "${amachine}" in
  x230)
-  fname="xos4 Terminus"
+  fname="Terminus"
   dmsz="10"
   dwsz="10"
   stsz="10"
