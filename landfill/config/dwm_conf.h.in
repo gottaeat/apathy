@@ -24,8 +24,8 @@ static const char *colors[][3]      = {
 
 // window rules
 static const Rule rules[]           = {
- { "Xmessage", NULL, 0, 0, 1, -1 },
- { "feh",      NULL, 0, 0, 1, -1 },
+ { "feh",         NULL, 0, 0, 1, -1 },
+ { "Pavucontrol", NULL, 0, 0, 1, -1 },
 };
 
 // default window sizes
@@ -67,6 +67,7 @@ static const char *tmuxcmd[] = { "st", "-e", "tmux", NULL };
 #define MPDTOGG  SHCMD("mpc -q toggle")
 #define MPDVOLP  SHCMD("mpc -q vol +5")
 #define MPDVOLM  SHCMD("mpc -q vol -5")
+#define AUDMIXER SHCMD("pavucontrol")
 
 // keyboard binds
 static const Key keys[] = {
@@ -142,6 +143,8 @@ static const Button buttons[] = {
  { ClkStatusText,    0, Button2, spawn, MPDTOGG},
  { ClkStatusText,    0, Button4, spawn, MPDVOLP},
  { ClkStatusText,    0, Button5, spawn, MPDVOLM},
+ //
+ { ClkStatusText,    MODKEY, Button3, spawn, AUDMIXER},
  // dwm
  { ClkLtSymbol,      0,      Button1, setlayout,      {0}               },
  { ClkWinTitle,      0,      Button2, zoom,           {0}               },

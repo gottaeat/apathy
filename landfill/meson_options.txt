@@ -1,6 +1,6 @@
 option('fontname',
  type: 'string',
- value: 'xos4 Terminus'
+ value: 'Terminus'
 )
 option('dmenufontsize',
  type: 'integer',
