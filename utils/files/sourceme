@@ -18,6 +18,7 @@ mypath="$mypath:/opt/qemu-7.2.0/bin"
 mypath="$mypath:/opt/fflibs/bin"
 mypath="$mypath:/opt/nginx-1.22.1/bin"
 mypath="$mypath:/opt/bind-9.18.11/bin"
+mypath="$mypath:/opt/chromium-111.0.5563.64/bin"
 
 mylibpath="/opt/llvm-15.0.7/lib"
 mylibpath="$mylibpath:/opt/rustc-1.67.1/lib"
