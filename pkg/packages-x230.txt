@@ -196,7 +196,7 @@ i  3  ..     cbindgen             0.24.3
 i  1  ...    rust                 1.68.0
 i  4  ..     gtk3                 3.24.34
 i  1  ...    mss-ec               376e33d2
-i  2  .      chromium             111.0.5563.64
+i  3  .      chromium             111.0.5563.64
 i  3  .      zstd                 1.5.2
 i  1  .      transmission         4.0.1
 o  1  .      ruby                 3.2.0
