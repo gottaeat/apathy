@@ -11,4 +11,6 @@ exec \
  --force-dark-mode                           \
  --wm-window-animations-disabled             \
  --animation-duration-scale=0                \
+ --disk-cache-dir=/dev/null                  \
+ --disk-cache-size=1                         \
  "${@}"

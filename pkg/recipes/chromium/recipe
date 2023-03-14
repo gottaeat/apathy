@@ -1,3 +1,12 @@
+# 0 > fuckhuge ungoogled-cringe patch hits >4096 fd's and we got no pam no
+#     shadow.
+doas -s
+ulimit -Hn 8192
+ulimit -Sn 8192
+su - mss
+
+ulimit -Sn
+
 # 1
 cdt1
 
@@ -97,6 +106,10 @@ syslibs="ffmpeg
          zlib"
 
 # 6
+tar xf /mss/work/sauces/ungoogled-chromium-111.0.5563.65-1.tar.gz
+mv ungoogled-chromium-111.0.5563.65-1/ ung
+ung="${PWD}"/ung
+
 tar xf /mss/work/sauces/chromium-111.0.5563.64.tar.xz
 cd     chromium-111.0.5563.64/
 
@@ -104,6 +117,16 @@ pdir="/mss/repo/pkg/recipes/chromium/patches"
 for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
 
 # 7
+"${ung}"/utils/prune_binaries.py ./ "${ung}"/pruning.list
+"${ung}"/utils/patches.py apply  ./ "${ung}"/patches
+
+"${ung}"/utils/domain_substitution.py apply \
+ -r "${ung}"/domain_regex.list        \
+ -f "${ung}"/domain_substitution.list \
+ -c build/domsubcache.tar.gz \
+ ./
+
+# 8
 touch chrome/test/data/webui/i18n_process_css_test.html
 
 sed -i -e \
@@ -140,22 +163,13 @@ sed -i -e \
  's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
  tools/generate_shim_headers/generate_shim_headers.py
 
-sed -i \
- -e 's/\<xmlMalloc\>/malloc/'                                      \
- -e 's/\<xmlFree\>/free/'                                          \
- third_party/blink/renderer/core/xml/*.cc                          \
- third_party/blink/renderer/core/xml/parser/xml_document_parser.cc \
- third_party/libxml/chromium/*.cc                                  \
- third_party/maldoca/src/maldoca/ole/oss_utils.h
-
-# 8
+# 9
 fdir="/mss/repo/pkg/recipes/chromium/files"
 gn gen out/Release --args="$(cat ${fdir}/gn-args)"
 
-ulimit -n 4096
 time samu -C out/Release chrome
 
-# 9
+# 10
  findir="${PWD}/KEK"
 instdir="${PWD}/out/Release"
 
@@ -163,8 +177,6 @@ mkdir "${findir}"/{lib/locales/,bin}
 
 mv \
  "${instdir}"/chrome                  \
- "${instdir}"/chrome_crashpad_handler \
- "${instdir}"/MEIPreload/             \
  "${instdir}"/vk_swiftshader_icd.json \
  "${instdir}"/*.bin                   \
  "${instdir}"/*.pak                   \
