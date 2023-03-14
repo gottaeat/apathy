@@ -1,0 +1,96 @@
+diff --git a/src/cairo-default-context.c b/src/cairo-default-context.c
+index 567c5d4d565c16c83d5eee7405f931d701dee813..87370cdc76e85f7e3d6c1f830faa587cc5c4a048 100644
+--- a/src/cairo-default-context.c
++++ b/src/cairo-default-context.c
+@@ -713,10 +713,12 @@ _cairo_default_context_move_to (void *abstract_cr, double x, double y)
+ {
+     cairo_default_context_t *cr = abstract_cr;
+     cairo_fixed_t x_fixed, y_fixed;
++    double width;
+ 
+     _cairo_gstate_user_to_backend (cr->gstate, &x, &y);
+-    x_fixed = _cairo_fixed_from_double (x);
+-    y_fixed = _cairo_fixed_from_double (y);
++    width = _cairo_gstate_get_line_width (cr->gstate);
++    x_fixed = _cairo_fixed_from_double_clamped (x, width);
++    y_fixed = _cairo_fixed_from_double_clamped (y, width);
+ 
+     return _cairo_path_fixed_move_to (cr->path, x_fixed, y_fixed);
+ }
+@@ -726,10 +728,12 @@ _cairo_default_context_line_to (void *abstract_cr, double x, double y)
+ {
+     cairo_default_context_t *cr = abstract_cr;
+     cairo_fixed_t x_fixed, y_fixed;
++    double width;
+ 
+     _cairo_gstate_user_to_backend (cr->gstate, &x, &y);
+-    x_fixed = _cairo_fixed_from_double (x);
+-    y_fixed = _cairo_fixed_from_double (y);
++    width = _cairo_gstate_get_line_width (cr->gstate);
++    x_fixed = _cairo_fixed_from_double_clamped (x, width);
++    y_fixed = _cairo_fixed_from_double_clamped (y, width);
+ 
+     return _cairo_path_fixed_line_to (cr->path, x_fixed, y_fixed);
+ }
+@@ -744,19 +748,21 @@ _cairo_default_context_curve_to (void *abstract_cr,
+     cairo_fixed_t x1_fixed, y1_fixed;
+     cairo_fixed_t x2_fixed, y2_fixed;
+     cairo_fixed_t x3_fixed, y3_fixed;
++    double width;
+ 
+     _cairo_gstate_user_to_backend (cr->gstate, &x1, &y1);
+     _cairo_gstate_user_to_backend (cr->gstate, &x2, &y2);
+     _cairo_gstate_user_to_backend (cr->gstate, &x3, &y3);
++    width = _cairo_gstate_get_line_width (cr->gstate);
+ 
+-    x1_fixed = _cairo_fixed_from_double (x1);
+-    y1_fixed = _cairo_fixed_from_double (y1);
++    x1_fixed = _cairo_fixed_from_double_clamped (x1, width);
++    y1_fixed = _cairo_fixed_from_double_clamped (y1, width);
+ 
+-    x2_fixed = _cairo_fixed_from_double (x2);
+-    y2_fixed = _cairo_fixed_from_double (y2);
++    x2_fixed = _cairo_fixed_from_double_clamped (x2, width);
++    y2_fixed = _cairo_fixed_from_double_clamped (y2, width);
+ 
+-    x3_fixed = _cairo_fixed_from_double (x3);
+-    y3_fixed = _cairo_fixed_from_double (y3);
++    x3_fixed = _cairo_fixed_from_double_clamped (x3, width);
++    y3_fixed = _cairo_fixed_from_double_clamped (y3, width);
+ 
+     return _cairo_path_fixed_curve_to (cr->path,
+ 				       x1_fixed, y1_fixed,
+diff --git a/src/cairo-fixed-private.h b/src/cairo-fixed-private.h
+index 5f9ce684c3f8d18db8e89a88a827d6552f1eaf11..2259f113b1f8166157c653a552ee64265d51bbe1 100644
+--- a/src/cairo-fixed-private.h
++++ b/src/cairo-fixed-private.h
+@@ -53,6 +53,11 @@
+ #define CAIRO_FIXED_ONE_DOUBLE ((double)(1 << CAIRO_FIXED_FRAC_BITS))
+ #define CAIRO_FIXED_EPSILON    ((cairo_fixed_t)(1))
+ 
++#define CAIRO_FIXED_MAX        INT32_MAX /* Maximum fixed point value */
++#define CAIRO_FIXED_MIN        INT32_MIN /* Minimum fixed point value */
++#define CAIRO_FIXED_MAX_DOUBLE (((double) CAIRO_FIXED_MAX) / CAIRO_FIXED_ONE_DOUBLE)
++#define CAIRO_FIXED_MIN_DOUBLE (((double) CAIRO_FIXED_MIN) / CAIRO_FIXED_ONE_DOUBLE)
++
+ #define CAIRO_FIXED_ERROR_DOUBLE (1. / (2 * CAIRO_FIXED_ONE_DOUBLE))
+ 
+ #define CAIRO_FIXED_FRAC_MASK  ((cairo_fixed_t)(((cairo_fixed_unsigned_t)(-1)) >> (CAIRO_FIXED_BITS - CAIRO_FIXED_FRAC_BITS)))
+@@ -128,6 +133,17 @@ _cairo_fixed_from_double (double d)
+ # error See cairo-fixed-private.h for details.
+ #endif
+ 
++static inline cairo_fixed_t
++_cairo_fixed_from_double_clamped (double d, double tolerance)
++{
++    if (d > CAIRO_FIXED_MAX_DOUBLE - tolerance)
++       d = CAIRO_FIXED_MAX_DOUBLE - tolerance;
++    else if (d < CAIRO_FIXED_MIN_DOUBLE + tolerance)
++       d = CAIRO_FIXED_MIN_DOUBLE + tolerance;
++
++    return _cairo_fixed_from_double (d);
++}
++
+ static inline cairo_fixed_t
+ _cairo_fixed_from_26_6 (uint32_t i)
+ {

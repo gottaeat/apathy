@@ -1,15 +1,14 @@
 # 1 > env vars
-penis="/mss/work/table/KEK"
+money="/mss/work/table/KEK"
 instdir="/mss/work/XorgLIBS2"
-ft_int="-DDEFAULT_TT_INTERPRETER_VERSION=TT_INTERPRETER_VERSION_38"
-export          CFLAGS="${CFLAGS}   -I${penis}/include -L/${penis}/lib ${ft_int}"
-export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L/${penis}/lib ${ft_int}"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export          CFLAGS="${CFLAGS}   -I${money}/include -L/${money}/lib"
+export        CXXFLAGS="${CXXFLAGS} -I${money}/include -L/${money}/lib"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2 > system libpng
-tar xf /mss/work/sauces/libpng-1.6.37.tar.xz
-cd     libpng-1.6.37/
+tar xf /mss/work/sauces/libpng-1.6.39.tar.xz
+cd     libpng-1.6.39/
 
 pdir="/mss/repo/pkg/recipes/xorg-libs-part2/patches"
 patch -p1 < "${pdir}"/0001-libpng-apng.patch
@@ -25,19 +24,18 @@ make
 make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../; rm -rf libpng-1.6.37/
+cd ../; rm -rf libpng-1.6.39/
 
 # 3 > system glib
-tar xf /mss/work/sauces/glib-2.73.3.tar.xz
-cd     glib-2.73.3/
+tar xf /mss/work/sauces/glib-2.76.0.tar.xz
+cd     glib-2.76.0/
 
-sed -i -e 's/libmount_dep.found()/false/' meson.build
-touch fuzzing/meson.build
+> fuzzing/meson.build
 
 mkdir build
 cd    build
 
-CFLAGS="${CFLAGS} -std=gnu11" \
+CFLAGS="${CFLAGS} -std=gnu11 -DG_DISABLE_CAST_CHECKS" \
 meson setup \
  --buildtype=plain       \
  --prefix=/usr           \
@@ -54,36 +52,44 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf glib-2.73.3/
+cd ../../; rm -rf glib-2.76.0/
 
-# 4 > penis freetype (w/o harfbuzz)
-tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
-cd     freetype-2.12.1/
+# 4 > money freetype (w/o harfbuzz)
+tar xf /mss/work/sauces/freetype-2.13.0.tar.xz
+cd     freetype-2.13.0/
 
-patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
+for i in "${pdir}"/*-freetype2-*; do patch -p1 < "${i}"; done
 
-./configure               \
- --build=$CBUILD          \
- --host=$CHOST            \
- --prefix="${penis}"      \
- --enable-freetype-config \
- --with-harfbuzz=no       \
- --disable-static
+mkdir build
+cd    build
 
-make
-make install
-cd ../; rm -rf freetype-2.12.1/
+meson setup \
+ --buildtype=plain   \
+ --prefix="${money}" \
+\
+ -Dbrotli=disabled   \
+ -Dbzip2=enabled     \
+ -Dharfbuzz=disabled \
+ -Dmmap=enabled      \
+ -Dpng=enabled       \
+ -Dtests=disabled    \
+ -Dzlib=system       \
+ ..
 
-# 5 > penis harfbuzz
-tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
-cd     harfbuzz-5.1.0/
+samu
+samu install
+cd ../../; rm -rf freetype-2.13.0/
+
+# 5 > system harfbuzz
+tar xf /mss/work/sauces/harfbuzz-7.1.0.tar.xz
+cd     harfbuzz-7.1.0/
 
 mkdir build
 cd    build
 
 meson setup \
  --buildtype=plain        \
- --prefix="${penis}"      \
+ --prefix=/usr            \
  -Dcairo=disabled         \
  -Dglib=enabled           \
  -Dgobject=disabled       \
@@ -99,33 +105,42 @@ meson setup \
 ..
 
 samu
-samu install
+DESTDIR="${instdir}" samu install
+doas -- samu install
 
-cd ../../; rm -rf harfbuzz-5.1.0/
+cd ../../; rm -rf harfbuzz-7.1.0/
 
 # 6 > system freetype (w/ harfbuzz)
-tar xf /mss/work/sauces/freetype-2.12.1.tar.xz
-cd     freetype-2.12.1/
+tar xf /mss/work/sauces/freetype-2.13.0.tar.xz
+cd     freetype-2.13.0/
 
-patch -p1 < "${pdir}"/0002-freetype-enable-long-pcf-family-names.patch
+for i in "${pdir}"/*-freetype2-*; do patch -p1 < "${i}"; done
 
-./configure               \
- --build=$CBUILD          \
- --host=$CHOST            \
- --prefix=/usr            \
- --enable-freetype-config \
- --with-harfbuzz=yes      \
- --disable-static
+mkdir build
+cd    build
 
-make
-make DESTDIR="${instdir}" install
-doas -- make install
+meson setup \
+ --buildtype=plain  \
+ --prefix=/usr      \
+\
+ -Dbrotli=disabled  \
+ -Dbzip2=enabled    \
+ -Dharfbuzz=enabled \
+ -Dmmap=enabled     \
+ -Dpng=enabled      \
+ -Dtests=disabled   \
+ -Dzlib=system      \
+ ..
 
-cd ../ && rm -rf freetype-2.12.1/
+samu
+DESTDIR="${instdir}" samu install
+doas -- samu install
+
+cd ../../; rm -rf freetype-2.13.0/
 
 # 7 > system fontconfig
-tar xf /mss/work/sauces/fontconfig-2.14.0.tar.xz
-cd     fontconfig-2.14.0/
+tar xf /mss/work/sauces/fontconfig-2.14.2.tar.xz
+cd     fontconfig-2.14.2/
 
 ./configure           \
  --build=$CBUILD      \
@@ -141,13 +156,13 @@ make
 make DESTDIR="${instdir}" install
 doas -- make install
 
-cd ../; rm -rf fontconfig-2.14.0/
+cd ../; rm -rf fontconfig-2.14.2/
 
 # 8 > system pixman
-tar xf /mss/work/sauces/pixman-0.40.0.tar.gz
-cd     pixman-0.40.0/
+tar xf /mss/work/sauces/pixman-0.42.2.tar.gz
+cd     pixman-0.42.2/
 
-patch -p1 < "${pdir}"/0003-pixman-fix-clang-lto.patch
+patch -p1 < "${pdir}"/0007-pixman-fix-clang-lto.patch
 
 mkdir build
 cd    build
@@ -175,83 +190,58 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf pixman-0.40.0/
+cd ../../; rm -rf pixman-0.42.2/
 
 # 9 > system cairo
-tar xf /mss/work/sauces/cairo-1.17.6.tar.xz
-cd     cairo-1.17.6/
+tar xf /mss/work/sauces/cairo-1.17.8.tar.gz
+cd     cairo-1.17.8/
 
-sed -i "s/BUILD_SPHINX_TRUE=/BUILD_SPHINX_TRUE='#'/"   configure
-sed -i "s/BUILD_SPHINX_FALSE='#'/BUILD_SPHINX_FALSE=/" configure
-sed -i 's/test perf//g' Makefile.in
-
-ax_cv_c_float_words_bigendian=no \
-./configure            \
- --build=$CBUILD       \
- --host=$CHOST         \
- --prefix=/usr         \
- --disable-static      \
- --enable-tee          \
- --enable-gl           \
- --enable-egl          \
- --enable-xlib-xcb     \
- --enable-xcb          \
- --enable-xlib-xrender \
- --enable-xlib         \
- --disable-trace       \
- --disable-valgrind    \
- --disable-gtk-doc-html
-
-make
-make DESTDIR="${instdir}" install
-doas -- make install
-
-cd ../; rm -rf cairo-1.17.6/
-
-# 10 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-5.1.0.tar.xz
-cd     harfbuzz-5.1.0/
+patch -p1 -R < "${pdir}"/0008-cairo-47a21c6e.patch
 
 mkdir build
 cd    build
 
 meson setup \
  --buildtype=plain        \
- --prefix="/usr"          \
- -Dcairo=enabled          \
- -Dglib=enabled           \
- -Dgobject=disabled       \
- -Dicu=enabled            \
- -Dgraphite=disabled      \
+ --prefix=/usr            \
+\
+ -Ddwrite=disabled        \
+ -Dfontconfig=enabled     \
  -Dfreetype=enabled       \
+ -Dglib=enabled           \
+ -Dgtk2-utils=disabled    \
+ -Dgtk_doc=false          \
+ -Dpng=enabled            \
+ -Dquartz=disabled        \
+ -Dspectre=disabled       \
+ -Dsymbol-lookup=disabled \
+ -Dtee=disabled           \
  -Dtests=disabled         \
- -Dintrospection=disabled \
- -Ddocs=disabled          \
- -Dbenchmark=disabled     \
- -Dicu_builtin=false      \
- -Dexperimental_api=false \
-..
+ -Dxcb=enabled            \
+ -Dxlib-xcb=enabled       \
+ -Dxlib=enabled           \
+ -Dxml=disabled           \
+ -Dzlib=enabled           \
+ ..
 
 samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-5.1.0/
+cd ../../; rm -rf cairo-1.17.8/
 
-# 11 > cleanup
+# 10 > cleanup
 doas -- rm -rfv \
  /etc/fonts                 \
- /usr/share/bash-completion \
  /usr/share/doc             \
  /usr/share/fontconfig      \
  /usr/share/gdb             \
  /usr/share/gettext         \
- /usr/share/gtk-doc         \
  /usr/share/man             \
  /var/cache/fontconfig
 
 doas -- cleanup
 
-# 12 > copy the clean fontconfig config
+# 11 > copy the clean fontconfig config
 doas -- cp -rv \
  /mss/repo/dir/etc/fonts /etc/fonts

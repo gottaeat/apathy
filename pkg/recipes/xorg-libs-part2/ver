@@ -1,7 +1,7 @@
-cairo      1.17.6
-fontconfig 2.14.0
-freetype   2.12.1
-glib       2.73.3
-harfbuzz   5.1.0
-libpng     1.6.37
-pixman     0.40.0
+cairo      1.17.8
+fontconfig 2.14.2
+freetype   2.13.0
+glib       2.76.0
+harfbuzz   7.1.0
+libpng     1.6.39
+pixman     0.42.2
