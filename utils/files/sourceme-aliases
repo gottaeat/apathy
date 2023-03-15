@@ -48,6 +48,5 @@ alias     mount="mount -v"
 # 1.6 > ease of access
 alias        a2="/mss/bin/cb"
 alias       poz="yash --posix"
-alias  fetchall="(clear; fetch ascii | head -13; pkg pver | head -6; pkg stats)"
 alias    reboot="doas -- kill -INT 1"
 alias  poweroff="doas -- kill -USR1 1"
