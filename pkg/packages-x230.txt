@@ -187,7 +187,7 @@ i  2  .      lld                  15.0.7
 i  2  .      lldb                 15.0.7
 i  2  .      llvm                 15.0.7
 i  2  .      openmp               15.0.7
-i  3  .      firefox              102.8.0esr
+i  4  .      firefox              102.8.0esr
 i  3  ..     icu                  72.1
 I  3  ..     nss                  3.85
 i  3  ...    nspr                 4.35
