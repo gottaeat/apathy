@@ -69,19 +69,14 @@ pver(){
  fi
 
  # rust and cargo
- if rustc -V >/dev/null 2>&1
-  then rustver="$(rustc -V | awk '{print $2}')"
-  else rustver="not found"
- fi 
+ which rustc >/dev/null 2>&1 && rustver="$(rustc -V | awk '{print $2}')"
+ which cargo >/dev/null 2>&1 && cargver="$(cargo -V | awk '{print $2}')"
 
- if cargo -V >/dev/null 2>&1
-  then cargver="$(cargo -V | awk '{print $2}')"
-  else cargver="not found"
- fi
-
- if [ "${cargver}" = "${rustver}" ]
-  then rustfin="${rustver}"
-  else rustfin="${rustver}/${cargver}"
+ if [ ! -z "${rustver}" ]; then
+  if [ "${cargver}" = "${rustver}" ]
+   then rustfin="${rustver}"
+   else rustfin="${rustver}/${cargver}"
+  fi
  fi
 
  aprint_nc
@@ -89,7 +84,8 @@ pver(){
  lsdetail "libc      " "${libc}"
  lsdetail "ssl/crypto" "${tls}"
  lsdetail "cc        " "${clangver}"
- lsdetail "rust/cargo" "${rustfin}"
+ [ ! -z "${rustfin}" ] && \
+  lsdetail "rust/cargo" "${rustfin}"
  aprint_nc
 }
 

@@ -22,4 +22,5 @@ export  CXXFLAGS="${CFLAGS}"
 export   LDFLAGS="-Wl,--as-needed,--sort-common,-z,relro,-z,now,--gc-sections,-O3,--icf=all,--lto-O3,--thinlto-jobs=${ajobcount}"
 
 # 1.2.2 > rust
-export RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Copt-level=3 -Lnative=/opt/llvm-15.0.7/lib -Cdebuginfo=0 -Cdebug-assertions=off -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
+which rustc >/dev/null 2>&1 && \
+ export RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Copt-level=3 -Lnative=/opt/llvm-15.0.7/lib -Cdebuginfo=0 -Cdebug-assertions=off -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
