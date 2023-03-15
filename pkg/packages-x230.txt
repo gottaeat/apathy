@@ -192,7 +192,7 @@ i  3  ..     icu                  72.1
 I  3  ..     nss                  3.85
 i  3  ...    nspr                 4.35
 i  2  ..     node.js              19.4.0
-i  4  ..     gtk3                 3.24.34
+i  5  ..     gtk3                 3.24.34
 i  1  ...    mss-ec               b8b60fef
 o  3  .      cbindgen             0.24.3
 o  1  .      rust                 1.68.0
