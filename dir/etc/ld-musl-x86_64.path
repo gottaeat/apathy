@@ -3,5 +3,4 @@
 /opt/fflibs/lib
 /opt/llvm-15.0.7/lib
 /opt/mimalloc-2.0.2/lib
-/opt/rustc-1.67.1/lib
 /opt/bind-9.18.11/lib
