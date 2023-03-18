@@ -32,7 +32,7 @@ case "${strippening}" in
 
   aprint_ret "running ranlib on static libraries just in case."
    find /lib /lib64 /usr/lib -type f -name \*.a -exec \
-    /usr/bin/x86_64-apathy-linux-musl-gcc-ranlib \
+    ranlib \
    {} ';' >/dev/null 2>&1
   evalret
 
