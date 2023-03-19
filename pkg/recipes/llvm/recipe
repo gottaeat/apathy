@@ -1,8 +1,4 @@
 # 1
-export CXXFLAGS="${CXXFLAGS} -fpermissive"
-export  LDFLAGS="${LDFLAGS},-z,stack-size=2097152"
-
-# 2
 tar xf /mss/work/sauces/llvmorg-16.0.0.tar.gz
 cd     llvm-project-llvmorg-16.0.0/
 
@@ -330,7 +326,7 @@ cmake -Wno-dev -GNinja\
 
 time samu
 
-# 3
+# 2
 instdir="${PWD}/KEK"
 DESTDIR="${instdir}" samu install
 
@@ -354,7 +350,7 @@ find "${instdir}"/opt/llvm-16.0.0/lib \
 find "${instdir}"/opt/llvm-16.0.0/lib \
  -type f -name \*.so* -exec strip --strip-unneeded {} ';'
 
-# 4
+# 3
 mkdir "${instdir}"/opt/llvm-16.0.0/compat
 pushd "${instdir}"/opt/llvm-16.0.0/compat
 

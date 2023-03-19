@@ -1,7 +1,7 @@
-From f2a2e4ab18e30db73bebee32fc45e867a1afe672 Mon Sep 17 00:00:00 2001
+From ecd4cee8a4ec1f755156013b948af4440d66f8c1 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 17 Mar 2023 05:39:51 +0300
-Subject: [PATCH 6/6] libunwind: disable per target runtime dir.
+Date: Sun, 19 Mar 2023 05:24:56 +0300
+Subject: [PATCH 10/10] libunwind: disable per target runtime dir.
 
 ---
  libunwind/CMakeLists.txt | 2 +-

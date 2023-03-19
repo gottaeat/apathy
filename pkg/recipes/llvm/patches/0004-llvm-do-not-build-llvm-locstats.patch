@@ -1,7 +1,7 @@
-From 91601360efb731044e5b96d4e79e417f6f7924ae Mon Sep 17 00:00:00 2001
+From eb7939683e561ee60544231a6cc9127a8a109ffa Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 17 Mar 2023 05:34:18 +0300
-Subject: [PATCH 1/6] llvm: do not build llvm-locstats.
+Date: Sun, 19 Mar 2023 05:23:11 +0300
+Subject: [PATCH 04/10] llvm: do not build llvm-locstats.
 
 ---
  llvm/CMakeLists.txt | 4 ----

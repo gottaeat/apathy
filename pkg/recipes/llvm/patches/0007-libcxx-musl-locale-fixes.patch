@@ -1,0 +1,40 @@
+From f9be15f0b43badc28fb6ba3927e24c585e321dc3 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Sun, 19 Mar 2023 05:24:16 +0300
+Subject: [PATCH 07/10] libcxx: musl locale fixes.
+
+---
+ libcxx/include/locale | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/libcxx/include/locale b/libcxx/include/locale
+index 874866f69..befed29bf 100644
+--- a/libcxx/include/locale
++++ b/libcxx/include/locale
+@@ -758,7 +758,11 @@ __num_get_signed_integral(const char* __a, const char* __a_end,
+         __libcpp_remove_reference_t<decltype(errno)> __save_errno = errno;
+         errno = 0;
+         char *__p2;
++#if defined(__linux__) && !defined(__GLIBC__)
++        long long __ll = strtoll(__a, &__p2, __base);
++#else
+         long long __ll = strtoll_l(__a, &__p2, __base, _LIBCPP_GET_C_LOCALE);
++#endif
+         __libcpp_remove_reference_t<decltype(errno)> __current_errno = errno;
+         if (__current_errno == 0)
+             errno = __save_errno;
+@@ -798,7 +802,11 @@ __num_get_unsigned_integral(const char* __a, const char* __a_end,
+         __libcpp_remove_reference_t<decltype(errno)> __save_errno = errno;
+         errno = 0;
+         char *__p2;
++#if defined(__linux__) && !defined(__GLIBC__)
++        unsigned long long __ll = strtoull(__a, &__p2, __base);
++#else
+         unsigned long long __ll = strtoull_l(__a, &__p2, __base, _LIBCPP_GET_C_LOCALE);
++#endif
+         __libcpp_remove_reference_t<decltype(errno)> __current_errno = errno;
+         if (__current_errno == 0)
+             errno = __save_errno;
+-- 
+2.39.2
+
