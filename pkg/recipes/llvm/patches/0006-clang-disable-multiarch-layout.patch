@@ -1,7 +1,7 @@
-From 89a1335e22825f11b236b885ecdcdd31bb4fb729 Mon Sep 17 00:00:00 2001
+From 950e44fd68ab48c8aa94dc23c0bded9452aa392f Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sun, 19 Mar 2023 05:23:49 +0300
-Subject: [PATCH 06/10] clang: disable multiarch layout.
+Date: Sun, 19 Mar 2023 16:03:54 +0300
+Subject: [PATCH 06/11] clang: disable multiarch layout.
 
 ---
  clang/lib/Driver/ToolChains/Linux.cpp | 5 +++++

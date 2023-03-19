@@ -1,7 +1,7 @@
-From a8c4e8d64ffce9f5158d328a66a59a72c326f724 Mon Sep 17 00:00:00 2001
+From e3791befdd79fa2b233af64608f931cd4ca1ed0a Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sun, 19 Mar 2023 05:21:49 +0300
-Subject: [PATCH 02/10] llvm: set stack size to 8M.
+Date: Sun, 19 Mar 2023 16:02:54 +0300
+Subject: [PATCH 02/11] llvm: set stack size to 8M.
 
 ---
  llvm/lib/Support/Threading.cpp | 9 ---------
