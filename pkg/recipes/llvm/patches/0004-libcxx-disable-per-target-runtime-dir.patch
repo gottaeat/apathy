@@ -1,0 +1,39 @@
+From 409c3dcce70dff5c70c8ca7c6ee0abe5cdaa0e3b Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Fri, 17 Mar 2023 05:38:45 +0300
+Subject: [PATCH 4/6] libcxx: disable per target runtime dir.
+
+---
+ libcxx/CMakeLists.txt            | 2 +-
+ libcxx/benchmarks/CMakeLists.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libcxx/CMakeLists.txt b/libcxx/CMakeLists.txt
+index f3b2c10ff..cbe971de8 100644
+--- a/libcxx/CMakeLists.txt
++++ b/libcxx/CMakeLists.txt
+@@ -408,7 +408,7 @@ set(LIBCXX_INSTALL_RUNTIME_DIR "${CMAKE_INSTALL_BINDIR}" CACHE PATH
+ set(LIBCXX_SHARED_OUTPUT_NAME "c++" CACHE STRING "Output name for the shared libc++ runtime library.")
+ set(LIBCXX_STATIC_OUTPUT_NAME "c++" CACHE STRING "Output name for the static libc++ runtime library.")
+ 
+-if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE)
++if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE AND NOT CMAKE_SYSTEM_NAME MATCHES "Linux")
+   set(LIBCXX_LIBRARY_DIR ${LLVM_LIBRARY_OUTPUT_INTDIR}/${LLVM_DEFAULT_TARGET_TRIPLE})
+   set(LIBCXX_GENERATED_INCLUDE_DIR "${LLVM_BINARY_DIR}/include/c++/v1")
+   set(LIBCXX_GENERATED_INCLUDE_TARGET_DIR "${LLVM_BINARY_DIR}/include/${LLVM_DEFAULT_TARGET_TRIPLE}/c++/v1")
+diff --git a/libcxx/benchmarks/CMakeLists.txt b/libcxx/benchmarks/CMakeLists.txt
+index 7eb76ac63..a2b707c2b 100644
+--- a/libcxx/benchmarks/CMakeLists.txt
++++ b/libcxx/benchmarks/CMakeLists.txt
+@@ -20,7 +20,7 @@ set(BENCHMARK_LIBCXX_COMPILE_FLAGS
+     -Wl,-rpath,${LIBCXX_LIBRARY_DIR}
+     ${SANITIZER_FLAGS}
+     )
+-if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE)
++if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE AND NOT CMAKE_SYSTEM_NAME MATCHES "Linux")
+   list(APPEND BENCHMARK_LIBCXX_COMPILE_FLAGS
+     -isystem "${LIBCXX_GENERATED_INCLUDE_TARGET_DIR}")
+ endif()
+-- 
+2.39.2
+

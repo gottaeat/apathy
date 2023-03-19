@@ -1,0 +1,25 @@
+From 1c65a880dc6179d993442ecb056ac6661d8de754 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Fri, 17 Mar 2023 05:39:20 +0300
+Subject: [PATCH 5/6] libcxxabi: disable per target runtime dir.
+
+---
+ libcxxabi/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libcxxabi/CMakeLists.txt b/libcxxabi/CMakeLists.txt
+index 8f48d402b..cd5e1a5ac 100644
+--- a/libcxxabi/CMakeLists.txt
++++ b/libcxxabi/CMakeLists.txt
+@@ -187,7 +187,7 @@ set(CMAKE_MODULE_PATH
+ set(LIBCXXABI_INSTALL_RUNTIME_DIR "${CMAKE_INSTALL_BINDIR}" CACHE PATH
+     "Path where built libc++abi runtime libraries should be installed.")
+ 
+-if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE)
++if(LLVM_ENABLE_PER_TARGET_RUNTIME_DIR AND NOT APPLE AND NOT CMAKE_SYSTEM_NAME MATCHES "Linux")
+   set(LIBCXXABI_HEADER_DIR ${LLVM_BINARY_DIR})
+   set(LIBCXXABI_LIBRARY_DIR ${LLVM_LIBRARY_OUTPUT_INTDIR}/${LLVM_DEFAULT_TARGET_TRIPLE})
+   set(LIBCXXABI_INSTALL_LIBRARY_DIR lib${LLVM_LIBDIR_SUFFIX}/${LLVM_DEFAULT_TARGET_TRIPLE} CACHE PATH
+-- 
+2.39.2
+

@@ -1,17 +1,51 @@
-From 6f8e007ab65dd2bb9c00188160d32d7aa177d9d6 Mon Sep 17 00:00:00 2001
+From 7f491aa37081a8ba445e171da578274c760ca527 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Thu, 8 Sep 2022 03:09:09 +0300
-Subject: [PATCH 2/2] llvm: move FeatureAES back to FeaturesSandyBridge.
+Date: Fri, 17 Mar 2023 05:34:46 +0300
+Subject: [PATCH 2/6] llvm: move FeatureAES back to FeaturesSandyBridge.
 
 ---
- llvm/lib/Support/X86TargetParser.cpp | 6 +++---
- llvm/lib/Target/X86/X86.td           | 9 ++++-----
+ llvm/lib/Target/X86/X86.td                | 9 ++++-----
+ llvm/lib/TargetParser/X86TargetParser.cpp | 6 +++---
  2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/llvm/lib/Support/X86TargetParser.cpp b/llvm/lib/Support/X86TargetParser.cpp
-index 2567f3ed8..190d69225 100644
---- a/llvm/lib/Support/X86TargetParser.cpp
-+++ b/llvm/lib/Support/X86TargetParser.cpp
+diff --git a/llvm/lib/Target/X86/X86.td b/llvm/lib/Target/X86/X86.td
+index 83bd2ff6a..50695f00c 100644
+--- a/llvm/lib/Target/X86/X86.td
++++ b/llvm/lib/Target/X86/X86.td
+@@ -739,7 +739,8 @@ def ProcessorFeatures {
+     !listconcat(NHMFeatures, WSMAdditionalFeatures);
+ 
+   // Sandybridge
+-  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAVX,
++  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAES,
++                                                  FeatureAVX,
+                                                   FeatureXSAVE,
+                                                   FeatureXSAVEOPT];
+   list<SubtargetFeature> SNBTuning = [TuningMacroFusion,
+@@ -795,8 +796,7 @@ def ProcessorFeatures {
+     !listconcat(HSWFeatures, BDWAdditionalFeatures);
+ 
+   // Skylake
+-  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureAES,
+-                                                  FeatureXSAVEC,
++  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureXSAVEC,
+                                                   FeatureXSAVES,
+                                                   FeatureCLFLUSHOPT];
+   list<SubtargetFeature> SKLTuning = [TuningFastGather,
+@@ -816,8 +816,7 @@ def ProcessorFeatures {
+     !listconcat(BDWFeatures, SKLAdditionalFeatures);
+ 
+   // Skylake-AVX512
+-  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureAES,
+-                                                  FeatureXSAVEC,
++  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureXSAVEC,
+                                                   FeatureXSAVES,
+                                                   FeatureCLFLUSHOPT,
+                                                   FeatureAVX512,
+diff --git a/llvm/lib/TargetParser/X86TargetParser.cpp b/llvm/lib/TargetParser/X86TargetParser.cpp
+index 20770a49f..ad5faaff3 100644
+--- a/llvm/lib/TargetParser/X86TargetParser.cpp
++++ b/llvm/lib/TargetParser/X86TargetParser.cpp
 @@ -155,7 +155,7 @@ constexpr FeatureBitset FeaturesNehalem =
      FeaturesPenryn | FeaturePOPCNT | FeatureCRC32 | FeatureSSE4_2;
  constexpr FeatureBitset FeaturesWestmere = FeaturesNehalem | FeaturePCLMUL;
@@ -37,40 +71,6 @@ index 2567f3ed8..190d69225 100644
      FeatureXSAVES | FeatureSGX;
  // SkylakeServer inherits all SkylakeClient features except SGX.
  // FIXME: That doesn't match gcc.
-diff --git a/llvm/lib/Target/X86/X86.td b/llvm/lib/Target/X86/X86.td
-index fa0a6bd41..73fd628e3 100644
---- a/llvm/lib/Target/X86/X86.td
-+++ b/llvm/lib/Target/X86/X86.td
-@@ -713,7 +713,8 @@ def ProcessorFeatures {
-     !listconcat(NHMFeatures, WSMAdditionalFeatures);
- 
-   // Sandybridge
--  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAVX,
-+  list<SubtargetFeature> SNBAdditionalFeatures = [FeatureAES,
-+                                                  FeatureAVX,
-                                                   FeatureXSAVE,
-                                                   FeatureXSAVEOPT];
-   list<SubtargetFeature> SNBTuning = [TuningMacroFusion,
-@@ -768,8 +769,7 @@ def ProcessorFeatures {
-     !listconcat(HSWFeatures, BDWAdditionalFeatures);
- 
-   // Skylake
--  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureAES,
--                                                  FeatureXSAVEC,
-+  list<SubtargetFeature> SKLAdditionalFeatures = [FeatureXSAVEC,
-                                                   FeatureXSAVES,
-                                                   FeatureCLFLUSHOPT];
-   list<SubtargetFeature> SKLTuning = [TuningFastGather,
-@@ -788,8 +788,7 @@ def ProcessorFeatures {
-     !listconcat(BDWFeatures, SKLAdditionalFeatures);
- 
-   // Skylake-AVX512
--  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureAES,
--                                                  FeatureXSAVEC,
-+  list<SubtargetFeature> SKXAdditionalFeatures = [FeatureXSAVEC,
-                                                   FeatureXSAVES,
-                                                   FeatureCLFLUSHOPT,
-                                                   FeatureAVX512,
 -- 
-2.37.1
+2.39.2
 
