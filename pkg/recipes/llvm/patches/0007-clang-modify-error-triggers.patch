@@ -1,14 +1,14 @@
-From 549d8531e9793e4517286d851edffab7388ddb82 Mon Sep 17 00:00:00 2001
+From ae8a9fecad8377622fd1fc9b288d8bb0986e9451 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Sun, 19 Mar 2023 16:04:08 +0300
-Subject: [PATCH 07/11] clang: do not default to error for implicit int/func.
+Date: Sun, 19 Mar 2023 18:50:31 +0300
+Subject: [PATCH 07/11] clang: modify error triggers.
 
 ---
- clang/include/clang/Basic/DiagnosticSemaKinds.td | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ clang/include/clang/Basic/DiagnosticSemaKinds.td | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/clang/include/clang/Basic/DiagnosticSemaKinds.td b/clang/include/clang/Basic/DiagnosticSemaKinds.td
-index de56e3e15..4ec399525 100644
+index de56e3e15..b182f32e9 100644
 --- a/clang/include/clang/Basic/DiagnosticSemaKinds.td
 +++ b/clang/include/clang/Basic/DiagnosticSemaKinds.td
 @@ -419,7 +419,7 @@ def warn_implicit_function_decl : Warning<
@@ -29,6 +29,15 @@ index de56e3e15..4ec399525 100644
  def note_include_header_or_declare : Note<
    "include the header <%0> or explicitly provide a declaration for '%1'">;
  def note_previous_builtin_declaration : Note<"%0 is a builtin with type %1">;
+@@ -733,7 +733,7 @@ def err_invalid_cpu_is : Error<"invalid cpu name for builtin">;
+ def err_invalid_cpu_specific_dispatch_value : Error<
+ "invalid option '%0' for %select{cpu_specific|cpu_dispatch}1">;
+ def warn_builtin_unknown : Warning<"use of unknown builtin %0">,
+-  InGroup<ImplicitFunctionDeclare>, DefaultError;
++  InGroup<ImplicitFunctionDeclare>;
+ def warn_cstruct_memaccess : Warning<
+   "%select{destination for|source of|first operand of|second operand of}0 this "
+   "%1 call is a pointer to record %2 that is not trivial to "
 @@ -4390,7 +4390,7 @@ def err_ident_list_in_fn_declaration : Error<
    "a parameter list without types is only allowed in a function definition">;
  def ext_param_not_declared : ExtWarn<
@@ -38,6 +47,33 @@ index de56e3e15..4ec399525 100644
  def err_param_default_argument : Error<
    "C does not support default arguments">;
  def err_param_default_argument_redefinition : Error<
+@@ -8112,7 +8112,7 @@ def err_typecheck_convert_pointer_int : Error<
+   "; remove &}3">;
+ def ext_typecheck_convert_pointer_int : ExtWarn<
+   err_typecheck_convert_pointer_int.Summary>,
+-  InGroup<IntConversion>, DefaultError;
++  InGroup<IntConversion>;
+ def err_typecheck_convert_int_pointer : Error<
+   "incompatible integer to pointer conversion "
+   "%select{%diff{assigning to $ from $|assigning to different types}0,1"
+@@ -8132,7 +8132,7 @@ def err_typecheck_convert_int_pointer : Error<
+   "; remove &}3">;
+ def ext_typecheck_convert_int_pointer : ExtWarn<
+   err_typecheck_convert_int_pointer.Summary>,
+-  InGroup<IntConversion>, DefaultError;
++  InGroup<IntConversion>;
+ def ext_typecheck_convert_pointer_void_func : Extension<
+   "%select{%diff{assigning to $ from $|assigning to different types}0,1"
+   "|%diff{passing $ to parameter of type $|"
+@@ -8230,7 +8230,7 @@ def err_typecheck_convert_incompatible_function_pointer : Error<
+   "; remove &}3">;
+ def ext_typecheck_convert_incompatible_function_pointer : ExtWarn<
+   err_typecheck_convert_incompatible_function_pointer.Summary>,
+-  InGroup<IncompatibleFunctionPointerTypes>, DefaultError;
++  InGroup<IncompatibleFunctionPointerTypes>;
+ def warn_typecheck_convert_incompatible_function_pointer_strict : Warning<
+   err_typecheck_convert_incompatible_function_pointer.Summary>,
+   InGroup<DiagGroup<"incompatible-function-pointer-types-strict">>, DefaultIgnore;
 @@ -10103,7 +10103,7 @@ def warn_receiver_forward_class : Warning<
  def note_method_sent_forward_class : Note<"method %0 is used for the forward class">;
  def ext_missing_type_specifier : ExtWarn<
