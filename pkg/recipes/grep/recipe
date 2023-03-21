@@ -11,8 +11,8 @@ mkdir "${penis}"/
 mv pcre2-static/ "${penis}"/lib
 
 # 2
-tar xf /mss/work/sauces/grep-3.8.tar.xz
-cd     grep-3.8/
+tar xf /mss/work/sauces/grep-3.9.tar.xz
+cd     grep-3.9/
 
 export LDFLAGS="${LDFLAGS} -static"
 

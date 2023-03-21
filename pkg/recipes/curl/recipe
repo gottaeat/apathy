@@ -1,21 +1,18 @@
 # 1
 ./configure \
- --build=$CBUILD         \
- --host=$CHOST           \
- --prefix=/usr           \
- --with-ca-fallback      \
- --with-libssh2          \
- --with-openssl          \
- --with-pic              \
- --enable-hidden-symbols \
- --enable-unix-sockets   \
- --without-icu           \
- --without-libidn        \
- --without-libidn2       \
- --without-libpsl        \
- --without-librtmp       \
- --disable-ares          \
- --disable-ipv6          \
- --disable-ldap          \
- --disable-manual        \
+ --build=$CBUILD       \
+ --host=$CHOST         \
+ --prefix=/usr         \
+ --with-ca-fallback    \
+ --with-libssh2        \
+ --with-openssl        \
+ --with-pic            \
+ --enable-unix-sockets \
+ --without-libidn2     \
+ --without-libpsl      \
+ --without-librtmp     \
+ --disable-ares        \
+ --disable-ipv6        \
+ --disable-ldap        \
+ --disable-manual      \
  --disable-static
