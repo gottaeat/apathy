@@ -7,18 +7,18 @@ export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
 
 statdir="/mnt/mss/stuff/techy-bits/packaged-software/"
-tar xf "${statdir}"openssl-3.0.8-static-libs.tar.zst
+tar xf "${statdir}"openssl-3.1.0-static-libs.tar.zst
 tar xf "${statdir}"util-linux-2.37.2-static-libs.tar.zst
 
 mkdir "${penis}"/lib
 
 mv \
- openssl-3.0.8-static-libs/*     \
+ openssl-3.1.0-static-libs/*     \
  util-linux-2.37.2-static-libs/* \
  "${penis}"/lib
 
 rm -rfv \
- openssl-3.0.8-static-libs/ \
+ openssl-3.1.0-static-libs/ \
  util-linux-2.37.2-static-libs/
 
 # 2 > libaio
