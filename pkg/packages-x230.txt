@@ -40,12 +40,12 @@ i  2  .      vim                  9.0.1261
 i  6  .      util-linux           2.37.2
 i  3  .      e2fsprogs            1.46.4
 i  2  .      eudev                3.2.11
-i  1  .      linux                6.2.7
+i  2  .      linux                6.2.7
 i  7  ..     initramfs            11
 i  6  ...    cryptsetup           2.6.0
 i  6  ....   lvm2                 2.03.17
 i  1  .      init                 48
-i  1  ..     utils                48
+i  1  ..     utils                49
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
 i  1  .      curl                 8.0.1
