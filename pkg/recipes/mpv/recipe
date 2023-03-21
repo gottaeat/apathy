@@ -97,4 +97,4 @@ for i in usr/bin/mpv; do
 done
 
 mv etc/mpv /etc/
-chown root:root /etc/mpv
+chown root:root -Rh /etc/mpv

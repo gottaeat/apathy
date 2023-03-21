@@ -30,11 +30,11 @@ sed -i -e 's/-lXv/-lXv -lXext -lX11/g' \
 printprof vanilla > buildprof
 . buildprof; rm -rf buildprof
 
-tar xf /mss/work/sauces/ffmpeg-5.1.2.tar.xz
-cd     ffmpeg-5.1.2/
+tar xf /mss/work/sauces/ffmpeg-6.0.tar.xz
+cd     ffmpeg-6.0/
 
 pdir="/mss/repo/pkg/recipes/ffmpeg/patches"
-patch -p1 < "${pdir}"/0001-add-av_stream_get_first_dts-for-chromium.patch
+for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
 
 mkdir build
 cd    build

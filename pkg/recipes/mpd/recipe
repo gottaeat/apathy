@@ -50,7 +50,8 @@ samu install
 
 cd ../../; rm -rf fmt-9.1.0/
 
-# 2
+# 4
+export CXXFLAGS="${CXXFLAGS} -DBOOST_NO_CXX98_FUNCTION_BASE"
 tar xf /mss/work/sauces/mpd-0.23.12.tar.gz
 cd     MPD-0.23.12/
 
@@ -88,7 +89,7 @@ meson setup \
 time samu
 DESTDIR="${PWD}/KEK" samu install
 
-# 4
+# 5
 doas -s
 for i in KEK/usr/bin/mpd; do
  strip --strip-all "${i}"
@@ -97,3 +98,4 @@ for i in KEK/usr/bin/mpd; do
 done
 
 cp /mss/repo/dir/etc/mpd.conf /etc
+chown root:root /etc/mpd.conf
