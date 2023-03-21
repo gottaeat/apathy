@@ -152,14 +152,14 @@ i  3  .      x265                 3.5
 i  3  .      xtrlock              2.12
 i  1  .      yt-dlp               2023.03.04
 i  2  .      picom                9
-i  5  .      ffmpeg               5.1.2
+i  1  .      ffmpeg               6.0
 i  2  ..     libva                2.14.0
 i  2  ..     v4l-utils            1.20.0
 i  2  ..     lame                 3.100
 i  2  ..     openjpeg             2.4.0
-i  1  .      mpv                  0.35.1
+i  2  .      mpv                  0.35.1
 i  2  ..     intel-vaapi-driver   2.4.1
-i  1  .      mpd                  0.23.12
+i  2  .      mpd                  0.23.12
 i  2  ..     libmpdclient         2.20
 o  3  ..     boost                1.76.0
 i  3  .      mpc                  0.33
@@ -187,7 +187,7 @@ i  2  .      lld                  16.0.0
 i  2  .      lldb                 16.0.0
 i  2  .      llvm                 16.0.0
 i  2  .      openmp               16.0.0
-i  4  .      chromium             111.0.5563.64
+i  5  .      chromium             111.0.5563.64
 i  3  ..     icu                  72.1
 I  3  ..     nss                  3.85
 i  3  ...    nspr                 4.35
