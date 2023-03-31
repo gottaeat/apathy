@@ -231,7 +231,7 @@ i  2  .      mimalloc             2.0.2
 i  5  .      qemu                 7.2.0
 i  1  .      dragon               0a56eb2d
 i  1  .      ookla-speedtest      1.2.0
-i  1  .      patchelf             0.17.2
+i  2  .      patchelf             0.17.2
 i  1  .      redshift             490ba2aa
 i  1  .      nginx                1.22.1
 i  1  ..     nginx-rtmp-module    1.2.2
