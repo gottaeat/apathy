@@ -1,4 +1,0 @@
-/usr/bin/mkvextract
-/usr/bin/mkvinfo
-/usr/bin/mkvmerge
-/usr/bin/mkvpropedit

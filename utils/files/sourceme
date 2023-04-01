@@ -3,24 +3,22 @@
 mypath="/usr/sbin:/usr/bin:/sbin:/bin"
 mypath="$mypath:/mss/bin"
 mypath="$mypath:/mnt/mss/stuff/techy-bits/bin"
-mypath="$mypath:/opt/llvm-16.0.0/bin"
-mypath="$mypath:/opt/llvm-16.0.0/compat"
-mypath="$mypath:/opt/node.js-19.4.0/bin"
+mypath="$mypath:/opt/llvm/bin"
+mypath="$mypath:/opt/llvm/compat"
 mypath="$mypath:/opt/wlanshit/bin"
 mypath="$mypath:/opt/cryptshit/bin"
 mypath="$mypath:/opt/torshit/bin"
 mypath="$mypath:/opt/spoofshit/bin"
-mypath="$mypath:/opt/go-1.20.1/bin"
-mypath="$mypath:/opt/qemu-7.2.0/bin"
+mypath="$mypath:/opt/qemu/bin"
 mypath="$mypath:/opt/fflibs/bin"
-mypath="$mypath:/opt/nginx-1.22.1/bin"
-mypath="$mypath:/opt/bind-9.18.11/bin"
-mypath="$mypath:/opt/chromium-111.0.5563.64/bin"
+mypath="$mypath:/opt/nginx/bin"
+mypath="$mypath:/opt/bind/bin"
+mypath="$mypath:/opt/chromium/bin"
 
-mylibpath="/opt/llvm-16.0.0/lib"
-mylibpath="$mylibpath:/opt/mimalloc-2.0.2/lib"
+mylibpath="/opt/llvm/lib"
+mylibpath="$mylibpath:/opt/mimalloc/lib"
 mylibpath="$mylibpath:/opt/fflibs/lib"
-mylibpath="$mylibpath:/opt/bind-9.18.11/lib"
+mylibpath="$mylibpath:/opt/bind/lib"
 mypkgconfigpath="/usr/share/pkgconfig:/usr/lib/pkgconfig"
 mypkgconfigpath="${mypkgconfigpath}:/opt/fflibs/lib/pkgconfig"
 
@@ -68,4 +66,4 @@ ytmusic(){
   -f bestaudio                                                        \
  ${@}
 }
-mimup(){ export LD_PRELOAD="/opt/mimalloc-2.0.2/lib/libmimalloc.so";}
+mimup(){ export LD_PRELOAD="/opt/mimalloc/lib/libmimalloc.so";}
