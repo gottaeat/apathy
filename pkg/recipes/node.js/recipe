@@ -29,18 +29,14 @@ time samu -C out/Release
 
 # 3
 instdir="${PWD}/KEK"
-tools/install.py install "${instdir}" /opt/node.js-19.7.0
+tools/install.py install "${instdir}" /node.js
 
-rm -rfv \
- "${instdir}"/opt/node.js-19.7.0/include \
- "${instdir}"/opt/node.js-19.7.0/lib     \
- "${instdir}"/opt/node.js-19.7.0/share   \
- "${instdir}"/opt/node.js-19.7.0/bin/corepack
+rm -rfv "${instdir}"/node.js/share
 
-strip --strip-all "${instdir}"/opt/node.js-19.7.0/bin/node
+strip --strip-all "${instdir}"/node.js/bin/node
 
-cd "${instdir}"/opt/
+cd "${instdir}"/
 
-pkgup node.js-19.7.0 node.js-19.7.0
-mv node.js-19.7.0.tar.zst \
+pkgup node.js/ node.js-19.8.1
+mv node.js-19.8.1.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software

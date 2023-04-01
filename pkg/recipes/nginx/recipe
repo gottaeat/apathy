@@ -12,7 +12,7 @@ cd nginx-1.22.1/
 
 # 2
 webshitdir="/mnt/mss/stuff/techy-bits/webshit"
-    findir="/opt/nginx-1.22.1"
+    findir="/opt/nginx"
     tmpdir="/tmp/nginx"
 
 ./configure \
@@ -91,12 +91,12 @@ webshitdir="/mnt/mss/stuff/techy-bits/webshit"
 
 make
 
-instdir="${PWD}/nginx-1.22.1"
+instdir="${PWD}/nginx"
 make DESTDIR="${instdir}" install
 
 rm -rfv "${instdir}"/{run,tmp}
-strip --strip-all "${instdir}"/opt/nginx-1.22.1/bin/nginx
+strip --strip-all "${instdir}"/opt/nginx/bin/nginx
 
-pkgup nginx-1.22.1/ nginx-1.22.1
+pkgup nginx/ nginx-1.22.1
 mv nginx-1.22.1.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

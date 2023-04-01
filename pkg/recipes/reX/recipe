@@ -1,10 +1,10 @@
 # 1 > env
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC -fPIE"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC -fPIE -std=gnu++14 -fpermissive"
-export            PATH="${PATH}:${penis}/bin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC -fPIE"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC -fPIE -std=gnu++14 -fpermissive"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2 > openal
 tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
@@ -16,23 +16,12 @@ mkdir builderoo
 cd    builderoo
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_INSTALL_LIBDIR=lib             \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -71,12 +60,12 @@ mymake(){
 }
 
 mymake
-mymake GLEW_PREFIX="${penis}" GLEW_DEST="${penis}" LIBDIR="${penis}/lib" install.all
+mymake GLEW_PREFIX="${money}" GLEW_DEST="${money}" LIBDIR="${money}/lib" install.all
 
 rm -rfv \
- "${penis}"/lib/libGLEW.so     \
- "${penis}"/lib/libGLEW.so.2.1 \
- "${penis}"/lib/libGLEW.so.2.1.0
+ "${money}"/lib/libGLEW.so     \
+ "${money}"/lib/libGLEW.so.2.1 \
+ "${money}"/lib/libGLEW.so.2.1.0
 
 cd ../; rm -rf glew-2.1.0/
 
@@ -90,23 +79,12 @@ mkdir builderoo
 cd    builderoo
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_INSTALL_LIBDIR=lib             \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -115,8 +93,8 @@ cmake -Wno-dev -GNinja \
 samu
 samu install
 
-mv -v "${penis}"/lib/libglfw3.a \
-      "${penis}"/lib/libglfw.a
+mv -v "${money}"/lib/libglfw3.a \
+      "${money}"/lib/libglfw.a
 
 cd ../../; rm -rf glfw-3.3.4/
 
@@ -127,7 +105,7 @@ cd     libsndfile-1.0.31/
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --disable-shared    \
  --enable-static
 
@@ -143,7 +121,7 @@ cd     mpg123-1.27.2/
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \
- --prefix="${penis}"           \
+ --prefix="${money}"           \
  --disable-dependency-tracking \
  --with-pic                    \
  --with-optimization=0         \

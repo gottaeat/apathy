@@ -1,9 +1,9 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -fPIC -fno-builtin"
-export        CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -fPIC -fno-builtin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -I${money}/include -L${money}/lib -fPIC -fno-builtin"
+export        CXXFLAGS="${CXXFLAGS} -I${money}/include -L${money}/lib -fPIC -fno-builtin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2
 tar xf /mss/work/sauces/mtdev-1.1.6.tar.bz2
@@ -14,7 +14,7 @@ configtomusl
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --disable-shared    \
  --enable-static
 
@@ -30,7 +30,7 @@ cd     libevdev-1.11.0/
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --disable-shared    \
  --disable-gcov      \
  --enable-static

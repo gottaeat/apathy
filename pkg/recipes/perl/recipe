@@ -2,10 +2,10 @@
 export BUILD_ZLIB=0
 export BUILD_BZIP2=0
 
-penisflags="-pthread -DNO_POSIX_2008_LOCALE -D_GNU_SOURCE"
-export   CFLAGS="${CFLAGS}   ${penisflags}"
-export CXXFLAGS="${CXXFLAGS} ${penisflags}"
-export  LDFLAGS="${LDFLAGS}  ${penisflags}"
+moneyflags="-pthread -DNO_POSIX_2008_LOCALE -D_GNU_SOURCE"
+export   CFLAGS="${CFLAGS}   ${moneyflags}"
+export CXXFLAGS="${CXXFLAGS} ${moneyflags}"
+export  LDFLAGS="${LDFLAGS}  ${moneyflags}"
 
 ./Configure \
  -des                             \

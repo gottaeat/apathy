@@ -1,9 +1,9 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2
 tar xf /mss/work/sauces/virglrenderer-0.10.3.tar.gz
@@ -14,7 +14,7 @@ cd    build
 
 meson setup \
  --buildtype=plain        \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Dvideo=true             \
  -Ddefault_library=static \
 ..
@@ -33,7 +33,7 @@ cd    build
 
 meson setup \
  --buildtype=plain        \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 ..
 
@@ -53,7 +53,7 @@ export CXXFLAGS="$(echo "${CXXFLAGS}" \
 export  LDFLAGS="$(echo "${LDFLAGS}"  \
  | sed "s/--thinlto-jobs=${ajobcount}/--thinlto-jobs=1/g")"
 
-export LDFLAGS="${LDFLAGS} -Wl,--push-state,/opt/mimalloc-2.0.2/lib/libmimalloc.a,--pop-state"
+export LDFLAGS="${LDFLAGS} -Wl,--push-state,/opt/mimalloc/lib/libmimalloc.a,--pop-state"
 
 sed -i -e 's/SHELL = bash -o pipefail/SHELL = sh/g' Makefile
 
@@ -61,57 +61,57 @@ pdir="/mss/repo/pkg/recipes/qemu/patches"
 patch -p1 < "${pdir}"/0001-fix-datadir.patch
 
 ./configure \
- --prefix=/opt/qemu-7.2.0         \
- --libexecdir=/opt/qemu-7.2.0/bin \
- --localstatedir=/var             \
+ --prefix=/opt/qemu             \
+ --libexecdir=/opt/qemu/bin     \
+ --localstatedir=/var           \
 \
- --audio-drv-list=pa              \
- --enable-pa                      \
- --disable-alsa                   \
+ --audio-drv-list=pa            \
+ --enable-pa                    \
+ --disable-alsa                 \
 \
- --cpu=x86_64                     \
- --enable-curses                  \
- --enable-gtk                     \
- --enable-kvm                     \
- --enable-opengl                  \
- --enable-virglrenderer           \
+ --cpu=x86_64                   \
+ --enable-curses                \
+ --enable-gtk                   \
+ --enable-kvm                   \
+ --enable-opengl                \
+ --enable-virglrenderer         \
 \
- --disable-werror                 \
- --enable-lto                     \
- --enable-stack-protector         \
- --extra-cflags="${CFLAGS}"       \
- --extra-cxxflags="${CXXFLAGS}"   \
- --extra-ldflags="${LDFLAGS}"     \
+ --disable-werror               \
+ --enable-lto                   \
+ --enable-stack-protector       \
+ --extra-cflags="${CFLAGS}"     \
+ --extra-cxxflags="${CXXFLAGS}" \
+ --extra-ldflags="${LDFLAGS}"   \
 \
- --disable-linux-user             \
- --disable-user                   \
- --enable-system                  \
- --target-list=x86_64-softmmu     \
+ --disable-linux-user           \
+ --disable-user                 \
+ --enable-system                \
+ --target-list=x86_64-softmmu   \
 \
- --disable-bsd-user               \
- --disable-cfi                    \
- --disable-cfi-debug              \
- --disable-containers             \
- --disable-debug-info             \
- --disable-debug-mutex            \
- --disable-debug-stack-usage      \
- --disable-debug-tcg              \
- --disable-docs                   \
- --disable-fuzzing                \
- --disable-gcov                   \
- --disable-gettext                \
- --disable-gprof                  \
- --disable-guest-agent            \
- --disable-oss                    \
- --disable-plugins                \
- --disable-png                    \
- --disable-profiler               \
- --disable-qom-cast-debug         \
- --disable-sanitizers             \
- --disable-tsan                   \
- --disable-vhost-user             \
- --disable-vnc                    \
- --disable-vnc-jpeg               \
+ --disable-bsd-user             \
+ --disable-cfi                  \
+ --disable-cfi-debug            \
+ --disable-containers           \
+ --disable-debug-info           \
+ --disable-debug-mutex          \
+ --disable-debug-stack-usage    \
+ --disable-debug-tcg            \
+ --disable-docs                 \
+ --disable-fuzzing              \
+ --disable-gcov                 \
+ --disable-gettext              \
+ --disable-gprof                \
+ --disable-guest-agent          \
+ --disable-oss                  \
+ --disable-plugins              \
+ --disable-png                  \
+ --disable-profiler             \
+ --disable-qom-cast-debug       \
+ --disable-sanitizers           \
+ --disable-tsan                 \
+ --disable-vhost-user           \
+ --disable-vnc                  \
+ --disable-vnc-jpeg             \
  --disable-vnc-sasl
 
 time make
@@ -119,4 +119,4 @@ time make
 instdir="${PWD}/KEK"
 make DESTDIR="${instdir}" install
 
-rm -rf "${instdir}"/opt/qemu-7.2.0/share
+rm -rf "${instdir}"/opt/qemu/share

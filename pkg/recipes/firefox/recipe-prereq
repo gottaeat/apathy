@@ -1,11 +1,11 @@
 # 1 > env vars
-penis="/mss/work/table/KEK"
-export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
-export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
+money="/mss/work/table/KEK"
+export                 CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
+export               CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
 
-export                   PATH="${penis}/bin:${PATH}"
-export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export                   PATH="${money}/bin:${PATH}"
+export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${money}/share/pkgconfig"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 mimup
@@ -14,7 +14,7 @@ myxconf(){
  ./configure \
   --build=$CBUILD             \
   --host=$CHOST               \
-  --prefix="${penis}"         \
+  --prefix="${money}"         \
   --enable-static             \
   --disable-shared            \
   --sysconfdir=/etc           \
@@ -38,7 +38,7 @@ cd    build
 
 meson setup \
  --buildtype=plain      \
- --prefix="${penis}"    \
+ --prefix="${money}"    \
  -Ddefault_library=both \
  -Dtests=false          \
  -Ddocumentation=false  \
@@ -59,7 +59,7 @@ cd    build
 
 meson setup \
  --buildtype=plain   \
- --prefix="${penis}" \
+ --prefix="${money}" \
  -Dtests=false       \
  ..
 
@@ -77,7 +77,7 @@ cd    build
 
 meson setup \
  --buildtype=plain          \
- --prefix="${penis}"        \
+ --prefix="${money}"        \
  -Ddefault_library=both     \
  -Denable-docs=false        \
  -Denable-wayland=true      \
@@ -105,7 +105,7 @@ cd    build
 
 meson setup \
  --buildtype=plain        \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
 \
  -Dx11_backend=true       \
  -Dwayland_backend=true   \
@@ -169,7 +169,7 @@ configtomusl
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --program-suffix="-2.13"
 
 make
@@ -186,7 +186,7 @@ configtomusl
 ./configure \
  --build=$CBUILD \
  --host=$CHOST   \
- --prefix="${penis}"
+ --prefix="${money}"
 
 make
 make install
@@ -198,10 +198,10 @@ tar xf /mss/work/sauces/zip30.tar.gz
 cd     zip30/
 
 make LOCAL_ZIP="${CFLAGS}" -f unix/Makefile generic
-make prefix="${penis}"     -f unix/Makefile install
+make prefix="${money}"     -f unix/Makefile install
 
 cd ../; rm -rf zip30/
 
 # 11 > pkgup
-pkgup "${penis##*/}" ff-prereq-`dn`
+pkgup "${money##*/}" ff-prereq-`dn`
 mv ff-prereq-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/

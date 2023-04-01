@@ -1,12 +1,12 @@
 # 1
-  penis="/mss/work/table/KEK"
+  money="/mss/work/table/KEK"
 instdir="/mss/work/table/wlanshit"
  findir="/opt/wlanshit"
 
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 mkdir -pv        "${instdir}"/bin
 ln -sfv ./reaver "${instdir}"/bin/wash
@@ -21,7 +21,7 @@ patch -p1 < "${pdir}"/0001-libpcap-fix-headers.patch
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --enable-static     \
  --disable-shared    \
  --disable-ipv6      \

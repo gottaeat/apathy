@@ -1,10 +1,10 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export            PATH="${PATH}:${penis}/bin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2 > libsigc++
 tar xf /mss/work/sauces/libsigc++-2.12.0.tar.xz
@@ -14,7 +14,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -42,7 +42,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -67,7 +67,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -94,7 +94,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -117,7 +117,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -140,7 +140,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dmaintainer-mode=false     \
@@ -168,7 +168,7 @@ configtomusl
 ./configure \
  --build=$CBUILD        \
  --host=$CHOST          \
- --prefix="${penis}"    \
+ --prefix="${money}"    \
 \
  --disable-alsa         \
  --disable-gstreamer    \
@@ -199,7 +199,7 @@ mkdir build
 cd    build
 
 meson setup --buildtype=plain \
- --prefix="${penis}"      \
+ --prefix="${money}"      \
  -Ddefault_library=static \
 \
  -Dintrospection=disabled \
@@ -218,7 +218,7 @@ tar xf /mss/work/sauces/gettext-tiny-0.3.2.tar.xz
 cd     gettext-tiny-0.3.2/
 
 make LIBINTL=musl
-make LIBINTL=musl DESTDIR="${penis}" prefix=/ install
+make LIBINTL=musl DESTDIR="${money}" prefix=/ install
 
 cd ../; rm -rf gettext-tiny-0.3.2/
 

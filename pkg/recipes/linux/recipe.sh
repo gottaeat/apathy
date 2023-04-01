@@ -44,7 +44,7 @@ if [ -z "${MAKEFLAGS}" ];
   esac
 fi
 
-export LD_PRELOAD="/opt/mimalloc-2.0.2/lib/libmimalloc.so"
+export LD_PRELOAD="/opt/mimalloc/lib/libmimalloc.so"
 
 mymake(){ make LLVM=1 LLVM_IAS=1 "$@";}
 

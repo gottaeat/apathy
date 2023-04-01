@@ -1,10 +1,10 @@
 # 1 > env
-penis="/mss/work/table/KEK"
+money="/mss/work/table/KEK"
  ldir="/mss/work/audioshitFUCK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2 > alsa-libs
 tar xf /mss/work/sauces/alsa-lib-1.2.7.tar.bz2
@@ -81,7 +81,7 @@ cd     libsndfile-1.0.31/
 ./configure \
  --build=$CBUILD        \
  --host=$CHOST          \
- --prefix="${penis}"    \
+ --prefix="${money}"    \
  --enable-external-libs \
  --enable-static        \
  --disable-alsa         \
@@ -101,7 +101,7 @@ cd ../; rm -rf libsndfile-1.0.31/
 sed -i \
  -e '/Requires:$/d'                   \
  -e 's/Requires\.private:/Requires:/' \
- "${penis}"/lib/pkgconfig/sndfile.pc
+ "${money}"/lib/pkgconfig/sndfile.pc
 
 # 4 > pulseaudio
 tar xf /mss/work/sauces/pulseaudio-16.1.tar.xz

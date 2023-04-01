@@ -1,9 +1,9 @@
 # 1
-penis="/mss/work/table/KEK"
-export   CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC -fno-builtin"
-export CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/lua5.2 -fPIC -fno-builtin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export   CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/lua5.2 -fPIC -fno-builtin"
+export CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/lua5.2 -fPIC -fno-builtin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 export MAKEFLAGS="$(echo "${MAKEFLAGS}" | sed 's/V=1//g;s/V=0//g')"
 
@@ -14,7 +14,7 @@ cd     libXScrnSaver-1.2.3/
 ./configure \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${penis}"  \
+ --prefix="${money}"  \
  --sysconfdir=/etc    \
  --localstatedir=/var \
  --enable-static      \
@@ -34,7 +34,7 @@ autoreconf -fvi
 ./configure \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${penis}"  \
+ --prefix="${money}"  \
  --sysconfdir=/etc    \
  --localstatedir=/var \
  --enable-static      \
@@ -60,13 +60,13 @@ make \
  TO_BIN='lua5.2 luac5.2' \
  TO_LIB="liblua5.2.a"                  \
  INSTALL_DATA='cp -d'                  \
- INSTALL_TOP="${penis}"/               \
- INSTALL_INC="${penis}"/include/lua5.2 \
- INSTALL_MAN="${penis}"/share/man/man1 \
+ INSTALL_TOP="${money}"/               \
+ INSTALL_INC="${money}"/include/lua5.2 \
+ INSTALL_MAN="${money}"/share/man/man1 \
  install
 
 fdir="/mss/repo/pkg/recipes/mpv/files"
-install -Dm644 "${fdir}"/lua.pc  "${penis}"/lib/pkgconfig/lua52.pc
+install -Dm644 "${fdir}"/lua.pc  "${money}"/lib/pkgconfig/lua52.pc
 
 cd ../; rm -rf lua-5.2.4/
 

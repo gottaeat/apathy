@@ -1,15 +1,15 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC -fPIE"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC -fPIE"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC -fPIE"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC -fPIE"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 myconfigure(){
  ./configure \
   --build=$CBUILD     \
   --host=$CHOST       \
-  --prefix="${penis}" \
+  --prefix="${money}" \
   --enable-static     \
   --disable-shared
 }
@@ -17,11 +17,11 @@ myconfigure(){
 mymake(){
  make \
   GOLANG=no                       \
-  exec_prefix=${penis}/bin        \
-  lib_prefix=${penis}/lib         \
-  inc_prefix=${penis}/            \
-  man_prefix=${penis}/man         \
-  PKGCONFIGDIR=${penis}/pkgconfig \
+  exec_prefix=${money}/bin        \
+  lib_prefix=${money}/lib         \
+  inc_prefix=${money}/            \
+  man_prefix=${money}/man         \
+  PKGCONFIGDIR=${money}/pkgconfig \
   RAISE_SETFCAP=no                \
   DYNAMIC=no                      \
   INDENT=" "                      \
@@ -84,7 +84,7 @@ cd   zapret/nfq/
 make clean
 
 for i in libcap.a libnfnetlink.a libnetfilter_queue.a libmnl.a; do
- cp -r "${penis}"/lib/"${i}" ./
+ cp -r "${money}"/lib/"${i}" ./
 done
 
 for i in *.c crypto/*.c; do ${CC} ${CFLAGS} -std=gnu99 -c "${i}"; done

@@ -7,12 +7,14 @@ printprof vanilla > buildprof
 # 2 > bootstrap
 tar xf /mnt/mss/stuff/techy-bits/packaged-software/gobootstrap-1.19.6.tar.zst
 
-export GOROOT_BOOTSTRAP="${PWD}/gobootstrap-1.19.6"
-export             PATH="${PWD}/gobootstrap-1.19.6/bin:${PATH}"
+export GOROOT_BOOTSTRAP="${PWD}/gobootstrap"
+export             PATH="${PWD}/gobootstrap/bin:${PATH}"
 
-# 3 > cum
+# 3
+findir="/mss/work/table/go"
 tar xf /mss/work/sauces/go1.20.1.src.tar.gz
-cd     go/src/
+mv     go/ gosrc/
+cd     gosrc/src/
 
 export          GOOS="linux"
 export        GOARCH="amd64"
@@ -21,7 +23,7 @@ export       GOAMD64="v1"
 export    GO_LDFLAGS="-w -s"
 export CC_FOR_TARGET="${CC}"
 
-export  GOROOT_FINAL="/opt/go-1.20.1"
+export  GOROOT_FINAL="${findir}"
 
 sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
  make.bash
@@ -30,11 +32,11 @@ sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
 
 cd ../../
 
-instdir="${PWD}/go-1.20.1"
+instdir="${PWD}/go"
 
-mkdir                 "${instdir}"/bin
-mv     go/bin/*       "${instdir}"/bin
-mv     go/{pkg/,src/} "${instdir}"/
+mkdir                   "${instdir}"/bin
+mv    gosrc/bin/*       "${instdir}"/bin
+mv    gosrc/{pkg/,src/} "${instdir}"/
 
 rm -rfv \
  "${instdir}"/pkg/bootstrap \
@@ -47,6 +49,6 @@ find "${instdir}"/src/ -type f \( -name "*.rc"   \
                                -o -name "*.bat"  \
                                -o -name "*.bash" \) -exec rm -rfv {} +
 
-pkgup go-1.20.1/ go-1.20.1/
+pkgup go/ go-1.20.1
 mv go-1.20.1.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

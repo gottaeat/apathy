@@ -1,21 +1,21 @@
 # 1
-  penis="/mss/work/table/KEK"
+  money="/mss/work/table/KEK"
  findir="/opt/cryptshit"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib  -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib  -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+export          CFLAGS="${CFLAGS}   -L${money}/lib  -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib  -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 statdir="/mnt/mss/stuff/techy-bits/packaged-software/"
 tar xf "${statdir}"openssl-3.1.0-static-libs.tar.zst
 tar xf "${statdir}"util-linux-2.37.2-static-libs.tar.zst
 
-mkdir "${penis}"/lib
+mkdir "${money}"/lib
 
 mv \
  openssl-3.1.0-static-libs/*     \
  util-linux-2.37.2-static-libs/* \
- "${penis}"/lib
+ "${money}"/lib
 
 rm -rfv \
  openssl-3.1.0-static-libs/ \
@@ -32,15 +32,15 @@ mymake(){
  CC=${CC}                \
  AR=${AR}                \
  RANLIB=${RANLIB}        \
- ABI_LIBDIR=${penis}/lib \
+ ABI_LIBDIR=${money}/lib \
  make \
-  prefix="${penis}"      \
+  prefix="${money}"      \
   ${@}
 }
 mymake
 mymake install
 
-rm -rfv "${penis}"/lib/libaio.so*
+rm -rfv "${money}"/lib/libaio.so*
 
 cd ../; rm -rf libaio-0.3.112/
 
@@ -51,7 +51,7 @@ cd     popt-1.18/
 ./configure \
  --build="$CBUILD"   \
  --host="$CHOST"     \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --disable-shared    \
  --enable-static
 
@@ -70,23 +70,12 @@ mkdir build
 cd    build
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_INSTALL_LIBDIR=lib             \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -112,7 +101,7 @@ sed -i Makefile  \
 mymake(){
  make \
   OPTTEST="1"                 \
-  PREFIX="${penis}/"          \
+  PREFIX="${money}/"          \
   LIBRARY_REL="lib"           \
   ARGON2_VERSION="0~20190702" \
   ${@}
@@ -121,7 +110,7 @@ mymake(){
 mymake
 mymake install
 
-rm -rfv "${penis}"/lib/libargon2.so*
+rm -rfv "${money}"/lib/libargon2.so*
 
 cd ../; rm -rf phc-winner-argon2-20190702/
 
@@ -134,7 +123,7 @@ patch -p1 < "${pdir}"/0002-lvm2-fix-stdio-usage.patch
 patch -p1 < "${pdir}"/0003-lvm2-fix-includes.patch
 patch -p1 < "${pdir}"/0004-lvm2-set-cache-backup-archive-paths-to-run-lvm.patch
 
-sed -i -e "s|<libaio.h>|\"${penis}\/include\/libaio.h\"|g" lib/device/bcache.c
+sed -i -e "s|<libaio.h>|\"${money}\/include\/libaio.h\"|g" lib/device/bcache.c
 
 export      MKDIR_P="install -d"
 export CONFIG_SHELL=/bin/sh
@@ -221,9 +210,9 @@ ln -sfv dmsetup                                          ../cryptshit/bin/dmstat
 
 rm -rf  ../cryptshit/lvm/
 
-cp      "${instdir}${findir}"/include/libdevmapper.h     "${penis}"/include/
-cp      "${instdir}${findir}"/lib/libdevmapper.a         "${penis}"/lib
-cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${penis}"/lib/pkgconfig
+cp      "${instdir}${findir}"/include/libdevmapper.h     "${money}"/include/
+cp      "${instdir}${findir}"/lib/libdevmapper.a         "${money}"/lib
+cp      "${instdir}${findir}"/lib/pkgconfig/devmapper.pc "${money}"/lib/pkgconfig
 
 mkdir lvm2-2.03.17-static-libs/{include,lib/pkgconfig}
 pkgupdir="lvm2-2.03.17-static-libs"

@@ -10,29 +10,18 @@ cleancmake
 mkdir build
 cd    build
 
-mimpath="/opt/mimalloc-2.0.2/lib/libmimalloc.a"
+mimpath="/opt/mimalloc/lib/libmimalloc.a"
 mimflag="-Wl,--push-state,--whole-archive,${mimpath},--pop-state"
 
   myrt="libunwind;libcxxabi;libcxx"
 myproj="clang;compiler-rt;lld;lldb;openmp"
 
-cmake -Wno-dev -GNinja\
- -DCMAKE_INSTALL_PREFIX="/opt/llvm-16.0.0"           \
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="/opt/llvm"                  \
  -DCMAKE_C_FLAGS="$CFLAGS"                           \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                       \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS ${mimflag}"      \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"              \
- -DCMAKE_AR="$AR"                                    \
- -DCMAKE_NM="$NM"                                    \
- -DCMAKE_STRIP="$STRIP"                              \
- -DCMAKE_RANLIB="$RANLIB"                            \
- -DCMAKE_LINKER="$LD"                                \
- -DCMAKE_OBJCOPY="$OBJCOPY"                          \
- -DCMAKE_OBJDUMP="$OBJDUMP"                          \
- -DCMAKE_READELF="$READELF"                          \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"                      \
- -DCMAKE_C_COMPILER="$CC"                            \
- -DCMAKE_CXX_COMPILER="$CXX"                         \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"                \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"                  \
 \
@@ -336,23 +325,23 @@ find "${instdir}" -type f \
   ! -name libunwind.a \) \
  -exec rm -rfv {} ';'
 
-rm -rfv "${instdir}"/opt/llvm-16.0.0/share
+rm -rfv "${instdir}"/opt/llvm/share
 
-find "${instdir}"/opt/llvm-16.0.0/bin \
+find "${instdir}"/opt/llvm/bin \
  -type f              -exec strip --strip-all      {} ';'
 
-find "${instdir}"/opt/llvm-16.0.0/lib \
+find "${instdir}"/opt/llvm/lib \
  -type f -name \*.a   -exec strip --strip-debug    {} ';'
 
-find "${instdir}"/opt/llvm-16.0.0/lib \
+find "${instdir}"/opt/llvm/lib \
  -type f -name \*.a   -exec "${RANLIB}" {} ';'
 
-find "${instdir}"/opt/llvm-16.0.0/lib \
+find "${instdir}"/opt/llvm/lib \
  -type f -name \*.so* -exec strip --strip-unneeded {} ';'
 
 # 3
-mkdir "${instdir}"/opt/llvm-16.0.0/compat
-pushd "${instdir}"/opt/llvm-16.0.0/compat
+mkdir "${instdir}"/opt/llvm/compat
+pushd "${instdir}"/opt/llvm/compat
 
 ln -sfv ../bin/llvm-symbolizer addr2line
 ln -sfv ../bin/llvm-ar         ar

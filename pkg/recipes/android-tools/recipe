@@ -1,10 +1,10 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export            PATH="${PATH}:${penis}/bin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2
 tar xf /mss/work/sauces/protobuf-3.15.7.tar.gz
@@ -18,7 +18,7 @@ patch -p1 < "${pdir}"/0001-protobuf-musl-fix.patch
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --enable-static     \
  --disable-shared
 
@@ -39,22 +39,11 @@ mkdir build
 cd    build
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -78,7 +67,7 @@ cd     brotli-1.0.9/
 ./configure \
  --build=$CBUILD     \
  --host=$CHOST       \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --enable-static     \
  --disable-shared
 
@@ -102,22 +91,11 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"                     \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"               \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"            \
- -DCMAKE_AR="$AR"                                  \
- -DCMAKE_NM="$NM"                                  \
- -DCMAKE_STRIP="$STRIP"                            \
- -DCMAKE_RANLIB="$RANLIB"                          \
- -DCMAKE_LINKER="$LD"                              \
- -DCMAKE_OBJCOPY="$OBJCOPY"                        \
- -DCMAKE_OBJDUMP="$OBJDUMP"                        \
- -DCMAKE_READELF="$READELF"                        \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"                    \
- -DCMAKE_C_COMPILER="$CC"                          \
- -DCMAKE_CXX_COMPILER="$CXX"                       \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"                \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"              \
 \
- -DProtobuf_LIBRARIES="${penis}"/lib/libprotobuf.a \
- -DProtobuf_INCLUDE_DIR="${penis}"/include         \
+ -DProtobuf_LIBRARIES="${money}"/lib/libprotobuf.a \
+ -DProtobuf_INCLUDE_DIR="${money}"/include         \
  ..
 
 samu fastboot adb

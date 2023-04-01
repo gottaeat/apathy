@@ -1,17 +1,15 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC"
-export        CXXFLAGS="${CFLAGS} -L${penis}/lib -I${penis}/include -L/opt/boost-1.76.0/lib -I/opt/boost-1.76.0/include -fPIC -std=c++11"
-export            PATH="${PATH}:${penis}/bin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CFLAGS} -L${money}/lib -I${money}/include -fPIC -std=c++11"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 export          TMPDIR="/mss/work/ltocache"
 
 # 2 > boost
-pushd /opt
-doas -- tar xf \
+tar xf \
  /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
-popd
 
 # 3 > openal
 tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
@@ -23,23 +21,12 @@ mkdir builderoo
 cd    builderoo
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_INSTALL_LIBDIR=lib             \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -69,7 +56,7 @@ CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \
- --prefix="${penis}"           \
+ --prefix="${money}"           \
  --enable-static               \
  --disable-shared              \
 \
@@ -142,7 +129,7 @@ cd     SDL2_image-2.0.5/
 ./configure \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${penis}"  \
+ --prefix="${money}"  \
  --enable-static      \
  --disable-shared
 
@@ -160,23 +147,12 @@ mkdir builderoo
 cd    builderoo
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"      \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
  -DCMAKE_INSTALL_LIBDIR=lib             \
  -DCMAKE_C_FLAGS="$CFLAGS"              \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
- -DCMAKE_AR="$AR"                       \
- -DCMAKE_NM="$NM"                       \
- -DCMAKE_STRIP="$STRIP"                 \
- -DCMAKE_RANLIB="$RANLIB"               \
- -DCMAKE_LINKER="$LD"                   \
- -DCMAKE_OBJCOPY="$OBJCOPY"             \
- -DCMAKE_OBJDUMP="$OBJDUMP"             \
- -DCMAKE_READELF="$READELF"             \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"         \
- -DCMAKE_C_COMPILER="$CC"               \
- -DCMAKE_CXX_COMPILER="$CXX"            \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
@@ -208,23 +184,12 @@ mkdir build
 cd    build
 
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"        \
+ -DCMAKE_INSTALL_PREFIX="${money}"        \
  -DCMAKE_INSTALL_LIBDIR=lib               \
  -DCMAKE_C_FLAGS="$CFLAGS"                \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS"            \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"      \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"   \
- -DCMAKE_AR="$AR"                         \
- -DCMAKE_NM="$NM"                         \
- -DCMAKE_STRIP="$STRIP"                   \
- -DCMAKE_RANLIB="$RANLIB"                 \
- -DCMAKE_LINKER="$LD"                     \
- -DCMAKE_OBJCOPY="$OBJCOPY"               \
- -DCMAKE_OBJDUMP="$OBJDUMP"               \
- -DCMAKE_READELF="$READELF"               \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"           \
- -DCMAKE_C_COMPILER="$CC"                 \
- -DCMAKE_CXX_COMPILER="$CXX"              \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"       \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"     \
 \
@@ -264,7 +229,7 @@ cd    builderoo
 
 _xfl="-D__STDC_CONSTANT_MACROS -Wno-narrowing"
 cmake -Wno-dev -GNinja \
- -DCMAKE_INSTALL_PREFIX="${penis}"              \
+ -DCMAKE_INSTALL_PREFIX="${money}"              \
  -DCMAKE_INSTALL_LIBDIR=lib                     \
  -DINSTALL_LIBDIR=lib                           \
  -DLIB_POSTFIX=""                               \
@@ -272,17 +237,6 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_CXX_FLAGS="$CXXFLAGS ${_xfl}"          \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"            \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"         \
- -DCMAKE_AR="$AR"                               \
- -DCMAKE_NM="$NM"                               \
- -DCMAKE_STRIP="$STRIP"                         \
- -DCMAKE_RANLIB="$RANLIB"                       \
- -DCMAKE_LINKER="$LD"                           \
- -DCMAKE_OBJCOPY="$OBJCOPY"                     \
- -DCMAKE_OBJDUMP="$OBJDUMP"                     \
- -DCMAKE_READELF="$READELF"                     \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"                 \
- -DCMAKE_C_COMPILER="$CC"                       \
- -DCMAKE_CXX_COMPILER="$CXX"                    \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"             \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"           \
 \
@@ -317,20 +271,9 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_LIBDIR=lib                                      \
  -DCMAKE_BUILD_TYPE=Release                                      \
  -DCMAKE_C_FLAGS="$CFLAGS"                                       \
- -DCMAKE_CXX_FLAGS="$CXXFLAGS"                                   \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS -DBOOST_NO_CXX98_FUNCTION_BASE"    \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"                             \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"                          \
- -DCMAKE_AR="$AR"                                                \
- -DCMAKE_NM="$NM"                                                \
- -DCMAKE_STRIP="$STRIP"                                          \
- -DCMAKE_RANLIB="$RANLIB"                                        \
- -DCMAKE_LINKER="$LD"                                            \
- -DCMAKE_OBJCOPY="$OBJCOPY"                                      \
- -DCMAKE_OBJDUMP="$OBJDUMP"                                      \
- -DCMAKE_READELF="$READELF"                                      \
- -DCMAKE_ADDR2LINE="$ADDR2LINE"                                  \
- -DCMAKE_C_COMPILER="$CC"                                        \
- -DCMAKE_CXX_COMPILER="$CXX"                                     \
 \
  -DBINDIR="${gamedir}"                                           \
  -DSYSCONFDIR="${gamedir}"/config                                \
@@ -362,42 +305,42 @@ cmake -Wno-dev -GNinja \
  -DOSG_STATIC=ON                                                 \
  -DSDL2_STATIC=ON                                                \
 \
- -DOPENTHREADS_LIBRARY_RELEASE="${penis}"/lib/libOpenThreads.a   \
- -DOSGANIMATION_LIBRARY_RELEASE="${penis}"/lib/libosgAnimation.a \
- -DOSGDB_LIBRARY_RELEASE="${penis}"/lib/libosgDB.a               \
- -DOSGFX_LIBRARY_RELEASE="${penis}"/lib/libosgFX.a               \
- -DOSGGA_LIBRARY_RELEASE="${penis}"/lib/libosgGA.a               \
- -DOSGPARTICLE_LIBRARY_RELEASE="${penis}"/lib/libosgParticle.a   \
- -DOSGSHADOW_LIBRARY_RELEASE="${penis}"/lib/libosgShadow.a       \
- -DOSGTEXT_LIBRARY_RELEASE="${penis}"/lib/libosgText.a           \
- -DOSGUTIL_LIBRARY_RELEASE="${penis}"/lib/libosgUtil.a           \
- -DOSGVIEWER_LIBRARY_RELEASE="${penis}"/lib/libosgViewer.a       \
- -DOSG_LIBRARY_RELEASE="${penis}"/lib/libosg.a                   \
- -DOPENTHREADS_INCLUDE_DIR="${penis}"/include                    \
- -DOSGANIMATION_INCLUDE_DIR="${penis}"/include                   \
- -DOSGDB_INCLUDE_DIR="${penis}"/include                          \
- -DOSGFX_INCLUDE_DIR="${penis}"/include                          \
- -DOSGGA_INCLUDE_DIR="${penis}"/include                          \
- -DOSGPARTICLE_INCLUDE_DIR="${penis}"/include                    \
- -DOSGPlugins_LIB_DIR="${penis}"/lib/osgPlugins-3.4.2            \
- -DOSGSHADOW_INCLUDE_DIR="${penis}"/include                      \
- -DOSGTEXT_INCLUDE_DIR="${penis}"/include                        \
- -DOSGUTIL_INCLUDE_DIR="${penis}"/include                        \
- -DOSGVIEWER_INCLUDE_DIR="${penis}"/include                      \
- -DOSG_INCLUDE_DIR="${penis}"/include                            \
+ -DOPENTHREADS_LIBRARY_RELEASE="${money}"/lib/libOpenThreads.a   \
+ -DOSGANIMATION_LIBRARY_RELEASE="${money}"/lib/libosgAnimation.a \
+ -DOSGDB_LIBRARY_RELEASE="${money}"/lib/libosgDB.a               \
+ -DOSGFX_LIBRARY_RELEASE="${money}"/lib/libosgFX.a               \
+ -DOSGGA_LIBRARY_RELEASE="${money}"/lib/libosgGA.a               \
+ -DOSGPARTICLE_LIBRARY_RELEASE="${money}"/lib/libosgParticle.a   \
+ -DOSGSHADOW_LIBRARY_RELEASE="${money}"/lib/libosgShadow.a       \
+ -DOSGTEXT_LIBRARY_RELEASE="${money}"/lib/libosgText.a           \
+ -DOSGUTIL_LIBRARY_RELEASE="${money}"/lib/libosgUtil.a           \
+ -DOSGVIEWER_LIBRARY_RELEASE="${money}"/lib/libosgViewer.a       \
+ -DOSG_LIBRARY_RELEASE="${money}"/lib/libosg.a                   \
+ -DOPENTHREADS_INCLUDE_DIR="${money}"/include                    \
+ -DOSGANIMATION_INCLUDE_DIR="${money}"/include                   \
+ -DOSGDB_INCLUDE_DIR="${money}"/include                          \
+ -DOSGFX_INCLUDE_DIR="${money}"/include                          \
+ -DOSGGA_INCLUDE_DIR="${money}"/include                          \
+ -DOSGPARTICLE_INCLUDE_DIR="${money}"/include                    \
+ -DOSGPlugins_LIB_DIR="${money}"/lib/osgPlugins-3.4.2            \
+ -DOSGSHADOW_INCLUDE_DIR="${money}"/include                      \
+ -DOSGTEXT_INCLUDE_DIR="${money}"/include                        \
+ -DOSGUTIL_INCLUDE_DIR="${money}"/include                        \
+ -DOSGVIEWER_INCLUDE_DIR="${money}"/include                      \
+ -DOSG_INCLUDE_DIR="${money}"/include                            \
 \
- -DBULLET_COLLISION_LIBRARY="${penis}"/lib/libBulletCollision.a  \
- -DBULLET_DYNAMICS_LIBRARY="${penis}"/lib/libBulletDynamics.a    \
- -DBULLET_INCLUDE_DIR="${penis}"/include/bullet                  \
- -DBULLET_MATH_LIBRARY="${penis}"/lib/libLinearMath.a            \
- -DBULLET_SOFTBODY_LIBRARY="${penis}"/lib/libBulletSoftBody.a    \
+ -DBULLET_COLLISION_LIBRARY="${money}"/lib/libBulletCollision.a  \
+ -DBULLET_DYNAMICS_LIBRARY="${money}"/lib/libBulletDynamics.a    \
+ -DBULLET_INCLUDE_DIR="${money}"/include/bullet                  \
+ -DBULLET_MATH_LIBRARY="${money}"/lib/libLinearMath.a            \
+ -DBULLET_SOFTBODY_LIBRARY="${money}"/lib/libBulletSoftBody.a    \
  -DBoost_INCLUDE_DIR=/opt/boost-1.76.0/include                   \
  -DBoost_LIBRARY_DIR=/opt/boost-1.76.0/lib                       \
- -DMyGUI_INCLUDE_DIR="${penis}"/include/MYGUI                    \
- -DMyGUI_LIBRARY="${penis}"/lib/libMyGUIEngineStatic.a           \
- -DOPENAL_INCLUDE_DIR="${penis}"/include/AL                      \
- -DOPENAL_LIBRARY="${penis}"/lib/libopenal.a                     \
- -DSDL2_LIBRARY="${penis}"/lib/libSDL2.a                         \
+ -DMyGUI_INCLUDE_DIR="${money}"/include/MYGUI                    \
+ -DMyGUI_LIBRARY="${money}"/lib/libMyGUIEngineStatic.a           \
+ -DOPENAL_INCLUDE_DIR="${money}"/include/AL                      \
+ -DOPENAL_LIBRARY="${money}"/lib/libopenal.a                     \
+ -DSDL2_LIBRARY="${money}"/lib/libSDL2.a                         \
 ..
 
 time samu

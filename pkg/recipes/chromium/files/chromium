@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 exec \
- /opt/chromium-111.0.5563.64/lib/chromium \
+ /opt/chromium/lib/chromium \
  --enable-features=CSSColorSchemeUARendering \
  --enable-features=VaapiVideoDecode          \
  --enable-features=WebUIDarkMode             \

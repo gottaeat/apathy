@@ -1,9 +1,9 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2 > libXv
 tar xf /mss/work/sauces/xorg-libs/libXv-1.0.11.tar.bz2
@@ -12,7 +12,7 @@ cd     libXv-1.0.11/
 ./configure  \
  --build=$CBUILD      \
  --host=$CHOST        \
- --prefix="${penis}" \
+ --prefix="${money}" \
  --sysconfdir=/etc    \
  --localstatedir=/var \
  --enable-static      \
@@ -24,7 +24,7 @@ make install
 cd ../; rm -rf libXv-1.0.11/
 
 sed -i -e 's/-lXv/-lXv -lXext -lX11/g' \
- "${penis}"/lib/pkgconfig/xv.pc
+ "${money}"/lib/pkgconfig/xv.pc
 
 # 3 > ffmpeg
 printprof vanilla > buildprof

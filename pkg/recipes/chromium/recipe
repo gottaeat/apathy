@@ -16,7 +16,7 @@ printprof vanilla > buildprof
 money="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include"
 export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include"
-export            PATH="${PATH}:${money}/bin"
+export            PATH="${PATH}:${money}/bin:${PWD}/node.js/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
@@ -24,6 +24,9 @@ export XZ_OPT="-T0"
 export TMPDIR="/mss/work/ltocache"
 
 # 2
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/node.js-19.8.1.tar.zst
+
+# 3
 tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
 cd     libXtst-1.2.3/
 
@@ -47,7 +50,7 @@ make install
 
 cd ../; rm -rf libXtst-1.2.3/
 
-# 3
+# 4
 tar xf /mss/work/sauces/zlib-1.2.13.tar.xz
 cd     zlib-1.2.13/contrib/minizip/
 
@@ -74,7 +77,7 @@ sed -i -e 's/-lminizip/-lminizip -lz/g' \
 rm -rfv \
  "${money}"/include/minizip/crypt.h
 
-# 4
+# 5
 tar xf /mss/work/sauces/gn-fe330c0a.tar.xz
 cd     gn/
 
@@ -88,7 +91,7 @@ mv    gn "${money}"/bin
 
 cd ../../; rm -rf gn/
 
-# 5
+# 6
 export   CFLAGS="${CFLAGS}   -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
 export CXXFLAGS="${CXXFLAGS} -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
 
@@ -105,7 +108,7 @@ syslibs="ffmpeg
          opus
          zlib"
 
-# 6
+# 7
 tar xf /mss/work/sauces/ungoogled-chromium-111.0.5563.65-1.tar.gz
 mv ungoogled-chromium-111.0.5563.65-1/ ung
 ung="${PWD}"/ung
@@ -116,7 +119,7 @@ cd     chromium-111.0.5563.64/
 pdir="/mss/repo/pkg/recipes/chromium/patches"
 for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
 
-# 7
+# 8
 "${ung}"/utils/prune_binaries.py ./ "${ung}"/pruning.list
 "${ung}"/utils/patches.py apply  ./ "${ung}"/patches
 
@@ -126,7 +129,7 @@ for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
  -c build/domsubcache.tar.gz \
  ./
 
-# 8
+# 9
 touch chrome/test/data/webui/i18n_process_css_test.html
 
 sed -i -e \
@@ -163,13 +166,13 @@ sed -i -e \
  's/OFFICIAL_BUILD/GOOGLE_CHROME_BUILD/' \
  tools/generate_shim_headers/generate_shim_headers.py
 
-# 9
+# 10
 fdir="/mss/repo/pkg/recipes/chromium/files"
 gn gen out/Release --args="$(cat ${fdir}/gn-args)"
 
 time samu -C out/Release chrome
 
-# 10
+# 11
  findir="${PWD}/KEK"
 instdir="${PWD}/out/Release"
 
@@ -206,7 +209,7 @@ mv "${findir}"/lib/{chrome,chromium}
 cp "${fdir}"/chromium \
  "${findir}"/bin/
 
-mv KEK chromium-111.0.5563.64/
-pkgup chromium-111.0.5563.64/ chromium-111.0.5563.64
+mv KEK chromium/
+pkgup chromium/ chromium-111.0.5563.64
 mv chromium-111.0.5563.64.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

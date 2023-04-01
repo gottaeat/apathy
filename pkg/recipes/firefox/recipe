@@ -1,16 +1,16 @@
 # 1 > env vars
-penis="/mss/work/table/KEK"
-export                 CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
-export               CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -I${penis}/include/gtk-3.0/"
+money="/mss/work/table/KEK"
+export                 CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
+export               CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
 export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.8.0esr/lib,--enable-new-dtags"
 
                     RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Lnative=$(llvm-config --libdir)"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
-export                   PATH="${penis}/bin:${PATH}"
-export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig:${penis}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${penis}/lib"
+export                   PATH="${money}/bin:${PATH}"
+export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${money}/share/pkgconfig"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 export              CXXSTDLIB="c++"

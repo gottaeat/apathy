@@ -1,5 +1,5 @@
 # 1
-penis="/mss/work/table/KEK"
+money="/mss/work/table/KEK"
 
 tar xf /mss/work/sauces/argp-standalone-1.3.tar.gz
 cd     argp-standalone-1.3/
@@ -14,21 +14,21 @@ CFLAGS="${CFLAGS} -fPIC -fno-builtin" \
 ./configure      \
  --build=$CBUILD \
  --host=$CHOST   \
- --prefix="${penis}"
+ --prefix="${money}"
 
 make
 
-mkdir -pv "${penis}"/{include,lib}
-cp    -rf argp.h    "${penis}"/include
-cp    -rf libargp.a "${penis}"/lib
+mkdir -pv "${money}"/{include,lib}
+cp    -rf argp.h    "${money}"/include
+cp    -rf libargp.a "${money}"/lib
 
 cd ../; rm -rf argp-standalone-1.3/
 
 # 2
-export       CFLAGS="${CFLAGS}   -I${penis}/include -L${penis}/lib -D__off_t=off_t"
-export     CXXFLAGS="${CXXFLAGS} -I${penis}/include -L${penis}/lib -D__off_t=off_t"
+export       CFLAGS="${CFLAGS}   -I${money}/include -L${money}/lib -D__off_t=off_t"
+export     CXXFLAGS="${CXXFLAGS} -I${money}/include -L${money}/lib -D__off_t=off_t"
 export      LDFLAGS="${LDFLAGS}  -largp"
-export LIBRARY_PATH="${penis}/lib"
+export LIBRARY_PATH="${money}/lib"
 
 tar xf /mss/work/sauces/v4l-utils-1.20.0.tar.bz2
 cd     v4l-utils-1.20.0/

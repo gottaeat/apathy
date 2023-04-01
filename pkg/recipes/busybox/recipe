@@ -42,13 +42,13 @@ mymake clean
 mymake defconfig
 mymake
 
-penis="/mss/work/table/KEK"
-mkdir "${penis}"
+money="/mss/work/table/KEK"
+mkdir "${money}"
 
-./busybox --install "${penis}"
-export PATH="${PATH}:${penis}"
+./busybox --install "${money}"
+export PATH="${PATH}:${money}"
 cat /mss/repo/pkg/trees/**/busybox-* | sort | uniq | xargs rm -rfv
-ln -sfv "${penis}"/sh /bin/sh
+ln -sfv "${money}"/sh /bin/sh
 
 # 2
 fdir="/mss/repo/pkg/recipes/busybox/files"

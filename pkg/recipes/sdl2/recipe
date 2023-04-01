@@ -1,10 +1,10 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export            PATH="${PATH}:${penis}/bin"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 # 2
 tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
@@ -21,7 +21,7 @@ CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
 ./configure \
  --build=$CBUILD               \
  --host=$CHOST                 \
- --prefix="${penis}"           \
+ --prefix="${money}"           \
  --enable-static               \
  --disable-shared              \
 \

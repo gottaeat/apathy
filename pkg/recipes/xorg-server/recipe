@@ -1,9 +1,9 @@
 # 1
-penis="/mss/work/table/KEK"
-export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
-export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
-export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
-export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 
 case "${LDFLAGS}" in
  *,-z,now*)
@@ -17,7 +17,7 @@ mylibsconfig(){
  ./configure \
   --build=$CBUILD      \
   --host=$CHOST        \
-  --prefix="${penis}"  \
+  --prefix="${money}"  \
   --sysconfdir=/etc    \
   --localstatedir=/var \
   --enable-static      \
@@ -45,7 +45,7 @@ make install
 cd ../; rm -rf libXfont2-2.0.4/
 
 sed -i -e 's/-lXfont2/-lfreetype -lz -lfontenc -lXfont2/g' \
- "${penis}"/lib/pkgconfig/xfont2.pc
+ "${money}"/lib/pkgconfig/xfont2.pc
 
 # 4 > libxcvt
 tar xf /mss/work/sauces/libxcvt-0.1.1.tar.xz
@@ -59,7 +59,7 @@ cd    build
 
 meson setup \
  --buildtype=plain   \
- --prefix="${penis}" \
+ --prefix="${money}" \
 ..
 
 samu

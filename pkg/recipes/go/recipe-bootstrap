@@ -8,7 +8,7 @@ printprof vanilla > buildprof
 tar xf /mss/work/sauces/go1.4-bootstrap-20171003.tar.gz
 cd     go/src/
 
-export GOROOT_FINAL="/mss/work/table/gobootstrap-1.4-20171003"
+export GOROOT_FINAL="/mss/work/table/gobootstrap-pre"
 
 sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' make.bash
 
@@ -25,10 +25,10 @@ export PATH="${GOROOT_FINAL}/bin:${PATH}"
 
 rm -rf go/
 
-export GOROOT_BOOTSTRAP="${PWD}/gobootstrap-1.4-20171003"
-export             PATH="${PWD}/gobootstrap-1.4-20171003/bin:${PATH}"
+export GOROOT_BOOTSTRAP="${PWD}/gobootstrap-pre"
+export             PATH="${PWD}/gobootstrap-pre/bin:${PATH}"
 
-# 3 > cum
+# 3
 tar xf /mss/work/sauces/go1.19.6.src.tar.gz
 cd     go/src/
 
@@ -39,7 +39,7 @@ export       GOAMD64="v1"
 export    GO_LDFLAGS="-w -s"
 export CC_FOR_TARGET="${CC}"
 
-export  GOROOT_FINAL="/mss/work/table/gobootstrap-1.19.6"
+export  GOROOT_FINAL="/mss/work/table/gobootstrap"
 
 sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
  make.bash
@@ -48,11 +48,11 @@ sed -i -e 's/\#\!\/usr\/bin\/env\ bash/\#\!\/bin\/sh/g' \
 
 cd ../../
 
-instdir="${PWD}/gobootstrap-1.19.6"
+instdir="${PWD}/gobootstrap"
 
-mkdir                 "${instdir}"/bin
-mv     go/bin/*       "${instdir}"/bin
-mv     go/{pkg/,src/} "${instdir}"/
+mkdir                "${instdir}"/bin
+mv    go/bin/*       "${instdir}"/bin
+mv    go/{pkg/,src/} "${instdir}"/
 
 rm -rfv \
  "${instdir}"/pkg/bootstrap \
@@ -65,6 +65,6 @@ find "${instdir}"/src/ -type f \( -name "*.rc"   \
                                -o -name "*.bat"  \
                                -o -name "*.bash" \) -exec rm -rfv {} +
 
-pkgup gobootstrap-1.19.6/ gobootstrap-1.19.6/
+pkgup gobootstrap/ gobootstrap-1.19.6
 mv gobootstrap-1.19.6.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
