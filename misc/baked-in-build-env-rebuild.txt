@@ -1,0 +1,46 @@
+# 1
+grep -l -a -i \/opt\/llvm-......\/ -r \
+ bin/  \
+ boot/ \
+ etc/  \
+ home/ \
+ lib/  \
+ mnt/  \
+ mss/  \
+ opt/  \
+ root/ \
+ run/  \
+ sbin/ \
+ usr/  \
+ var/  \
+ 2>&1 | tee /tmp/fucked.txt
+
+# 2 > fucked.txt
+chromium      opt/chromium/lib/chromium:
+ffmpeg        usr/bin/ffmpeg
+              usr/lib/libavcodec.so.60.3.100
+              usr/lib/libavdevice.so.60.1.100
+              usr/lib/libavfilter.so.9.3.100
+              usr/lib/libavformat.so.60.3.100
+              usr/lib/libavutil.so.58.2.100
+              usr/lib/libpostproc.so.57.1.100
+              usr/lib/libswresample.so.5.0.100
+              usr/lib/libswscale.so.7.1.100
+perl          usr/lib/perl5/5.36.0/x86_64-linux-thread-multi/CORE/config.h
+              usr/lib/perl5/5.36.0/x86_64-linux-thread-multi/Config.pm
+              usr/lib/perl5/5.36.0/x86_64-linux-thread-multi/Config_heavy.pl
+
+python        usr/lib/python3.10/__pycache__/_sysconfigdata__linux_x86_64-linux-gnu.cpython-310.opt-1.pyc
+              usr/lib/python3.10/__pycache__/_sysconfigdata__linux_x86_64-linux-gnu.cpython-310.opt-2.pyc
+              usr/lib/python3.10/__pycache__/_sysconfigdata__linux_x86_64-linux-gnu.cpython-310.pyc
+              usr/lib/python3.10/_sysconfigdata__linux_x86_64-linux-gnu.py
+
+openssl       usr/lib/libcrypto.so.3
+
+curl          usr/bin/curl-config
+libtool       usr/bin/libtool
+imagemagick   usr/bin/magick
+make          usr/bin/make
+smartmontools usr/bin/smartctl
+vim           usr/bin/vim
+xorgs-apps    usr/bin/xrdb
