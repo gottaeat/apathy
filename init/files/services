@@ -224,7 +224,7 @@ svc_mpd(){
    if [ -d "$(awk '/music_directory/{gsub(/\"/,""); print $2}' /etc/mpd.conf)" ]
     then
      ainitsvc "mpd" "starting mpd"
-      doas -u mss mpd /etc/mpd.conf >/dev/null 2>&1
+      doas -u mss mpd /opt/muzak/etc/mpd.conf >/dev/null 2>&1
      evalret
 
      ainitsvc "mpd" "setting up"
