@@ -1,9 +1,0 @@
-# 1
-mkdir mybuild
-cd    mybuild
-
-meson setup \
- --buildtype=plain \
- --prefix=/usr     \
- -Dtest=false      \
-..

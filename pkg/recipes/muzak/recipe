@@ -1,0 +1,259 @@
+# 1
+ money="/mss/work/table/KEK"
+findir="/opt/muzak"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export            PATH="${PATH}:${money}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${findir}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
+
+# 2 > boost
+tar xf \
+ /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
+
+export BOOST_ROOT="${money}"
+         CXXFLAGS="${CXXFLAGS} -DBOOST_NO_CXX98_FUNCTION_BASE"
+export   CXXFLAGS="${CXXFLAGS} -Wno-enum-constexpr-conversion"
+
+# 3 > libfmt
+unzip -q /mss/work/sauces/fmt-9.1.0.zip
+cd       fmt-9.1.0/
+
+cleancmake
+
+mkdir builderoo
+cd    builderoo
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DFMT_DOC=OFF                          \
+ -DFMT_TEST=OFF                         \
+ ../
+
+samu
+samu install
+
+cd ../../; rm -rf fmt-9.1.0/
+
+# 4 > fftw
+tar xf /mss/work/sauces/fftw-3.3.8.tar.gz
+cd     fftw-3.3.8/
+
+cleancmake
+
+mkdir mybuild
+cd    mybuild
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DBUILD_TESTS=OFF                      \
+ -DDISABLE_FORTRAN=ON                   \
+ -DENABLE_AVX=OFF                       \
+ -DENABLE_AVX2=OFF                      \
+ -DENABLE_FLOAT=OFF                     \
+ -DENABLE_LONG_DOUBLE=OFF               \
+ -DENABLE_OPENMP=OFF                    \
+ -DENABLE_QUAD_PRECISION=OFF            \
+ -DENABLE_SSE=ON                        \
+ -DENABLE_SSE2=ON                       \
+ -DENABLE_THREADS=OFF                   \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf fftw-3.3.8/
+
+mv "${money}"/lib/pkgconfig/{fftw.pc,fftw3.pc}
+
+# 5 > taglib
+tar xf /mss/work/sauces/taglib-1.11.1.tar.gz
+cd     taglib-1.11.1/
+
+cleancmake
+
+mkdir mybuild
+cd    mybuild
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${money}"      \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DBUILD_SHARED_LIBS=OFF                \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf taglib-1.11.1/
+
+sed -i -e 's/-ltag/-ltag -lz/' "${money}"/bin/taglib-config
+
+# 6 > libmpdclient
+tar xf /mss/work/sauces/libmpdclient-2.20.tar.gz
+cd     libmpdclient-2.20/
+
+mkdir mybuild
+cd    mybuild
+
+meson setup \
+ --buildtype=plain        \
+ --prefix="${money}"      \
+ -Ddefault_library=static \
+\
+ -Dtest=false \
+..
+
+samu
+samu install
+
+cd ../../; rm -rf libmpdclient-2.20/
+
+# 7 > mpd
+tar xf /mss/work/sauces/mpd-0.23.12.tar.gz
+cd     MPD-0.23.12/
+
+pdir="/mss/repo/pkg/recipes/muzak/patches"
+patch -p1 < "${pdir}"/0001-mpd-stacksize.patch
+
+mkdir mybuild
+cd    mybuild
+
+meson setup \
+ --buildtype=plain        \
+ --prefix="${findir}"     \
+ -Ddebug=false            \
+ -Dipv6=disabled          \
+ -Dtest=false             \
+ -Ddocumentation=disabled \
+\
+ -Dalsa=disabled          \
+ -Dpulse=enabled          \
+\
+ -Dcue=true               \
+ -Ddsd=true               \
+ -Dtcp=true               \
+ -Dfifo=true              \
+ -Dpipe=true              \
+ -Dhttpd=true             \
+ -Dcurl=enabled           \
+ -Ddatabase=true          \
+ -Dffmpeg=enabled         \
+ -Did3tag=enabled         \
+ -Dwebdav=enabled         \
+ -Dlibmpdclient=enabled   \
+..
+
+time samu
+
+mkdir     ../../muzak/bin/
+mv    mpd ../../muzak/bin/
+
+cd ../../; rm -rf MPD-0.23.12/
+
+# 8 > mpc
+tar xf /mss/work/sauces/mpc-0.33.tar.xz
+cd     mpc-0.33/
+
+mkdir build
+cd    build
+
+meson setup \
+ --buildtype=plain        \
+ --prefix="${findir}"     \
+ -Dtest=false             \
+ -Ddocumentation=disabled \
+..
+
+samu
+
+mv mpc ../../muzak/bin/
+
+cd ../../; rm -rf mpc-0.33/
+
+# 9 > ncmpcpp
+tar xf /mss/work/sauces/ncmpcpp-0.9.2.tar.gz
+cd     ncmpcpp-0.9.2/
+
+./autogen.sh
+
+./configure \
+ --build=$CBUILD       \
+ --host=$CHOST         \
+ --prefix="${findir}"  \
+\
+ --enable-clock        \
+ --with-fftw           \
+ --with-taglib         \
+ --enable-outputs      \
+ --enable-visualizer   \
+ --enable-static-boost \
+\
+ --with-boost="${money}"
+
+time make
+
+mv src/ncmpcpp ../muzak/bin/
+
+cd ../; rm -rf ncmpcpp-0.9.2/
+
+# 10 > ympd
+tar xf /mss/work/sauces/ympd-612f8fc0.tar.zst
+cd     ympd/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${findir}"     \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+\
+ -DWITH_MPD_HOST_CHANGE=ON              \
+ -DWITH_DYNAMIC_ASSETS=OFF              \
+ -DWITH_IPV6=OFF                        \
+ -DWITH_SSL=ON                          \
+\
+ ..
+
+samu
+
+mv ympd ../../muzak/bin/
+
+cd ../../; rm -rf ympd/
+
+# 11
+strip --strip-all muzak/bin/*
+
+mkdir muzak/etc
+fdir="/mss/repo/pkg/recipes/muzak/files"
+cp "${fdir}"/mpd.conf muzak/etc/
