@@ -68,24 +68,11 @@ pver(){
   else clangver="not found"
  fi
 
- # rust and cargo
- which rustc >/dev/null 2>&1 && rustver="$(rustc -V | awk '{print $2}')"
- which cargo >/dev/null 2>&1 && cargver="$(cargo -V | awk '{print $2}')"
-
- if [ ! -z "${rustver}" ]; then
-  if [ "${cargver}" = "${rustver}" ]
-   then rustfin="${rustver}"
-   else rustfin="${rustver}/${cargver}"
-  fi
- fi
-
  aprint_nc
  lsdetail "host      " "${trpl}"
  lsdetail "libc      " "${libc}"
  lsdetail "ssl/crypto" "${tls}"
  lsdetail "cc        " "${clangver}"
- [ ! -z "${rustfin}" ] && \
-  lsdetail "rust/cargo" "${rustfin}"
  aprint_nc
 }
 

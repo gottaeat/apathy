@@ -44,7 +44,6 @@ _profa(){
  export    CFLAGS="${cfbase}"
  export  CXXFLAGS="\${CFLAGS}"
  export   LDFLAGS="${ldfbase}"
- export RUSTFLAGS="${rfbase}"
 }
 
 # 1.3.2 > clang plain
@@ -53,7 +52,6 @@ _profb(){
  export    CFLAGS="${cfbase}"
  export  CXXFLAGS="\${CFLAGS}"
  export   LDFLAGS="${ldfbase}"
- export RUSTFLAGS="${rfbase}"
 }
 
 # 1.3.3 > clang full lto
@@ -62,7 +60,6 @@ _profc(){
  export    CFLAGS="${cflto_full}"
  export  CXXFLAGS="\${CFLAGS}"
  export   LDFLAGS="${ldflto_full}"
- export RUSTFLAGS="${rfbase_lto}"
 }
 
 # 1.3.4  > clang thin lto
@@ -71,7 +68,6 @@ _profd(){
  export    CFLAGS="${cflto_thin}"
  export  CXXFLAGS="\${CFLAGS}"
  export   LDFLAGS="${ldflto_thin}"
- export RUSTFLAGS="${rfbase_lto}"
 }
 
 # 1.4 > final print
@@ -92,11 +88,10 @@ printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n" \
  "export   READELF=\"${READELF}\""  \
  "export ADDR2LINE=\"${ADDR2LINE}\""
 aprint_nc
-printf "%s\n%s\n%s\n%s\n" \
+printf "%s\n%s\n%s\n" \
  "export    CFLAGS=\"${CFLAGS}\""   \
  "export  CXXFLAGS=\"${CXXFLAGS}\"" \
- "export   LDFLAGS=\"${LDFLAGS}\""  \
- "export RUSTFLAGS=\"${RUSTFLAGS}\""
+ "export   LDFLAGS=\"${LDFLAGS}\""
 aprint_nc
 }
 
@@ -118,15 +113,6 @@ ldflto_full="${ldfbase_lto}"
 # 2.2.3 > thin
  cflto_thin="${cfbase_lto} -flto=thin"
 ldflto_thin="${ldfbase_lto},--thinlto-jobs=\${ajobcount}"
-
-# 2.3 > rust
-# 2.3.1 > base
-     rfbase="-Clinker=\${CC} -Ctarget-cpu=x86-64 -Copt-level=3"
-     rfbase="${rfbase} -Lnative=$(llvm-config --libdir)"
-     rfbase="${rfbase} -Cdebuginfo=0 -Cdebug-assertions=off"
-
-# 2.3.1 > lto
- rfbase_lto="${rfbase} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
 
 # 3 > action
 case "${1}" in
