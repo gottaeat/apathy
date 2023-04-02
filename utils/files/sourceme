@@ -14,6 +14,7 @@ mypath="$mypath:/opt/fflibs/bin"
 mypath="$mypath:/opt/nginx/bin"
 mypath="$mypath:/opt/bind/bin"
 mypath="$mypath:/opt/chromium/bin"
+mypath="$mypath:/opt/muzak/bin"
 
 mylibpath="/opt/llvm/lib"
 mylibpath="$mylibpath:/opt/mimalloc/lib"
