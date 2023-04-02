@@ -44,7 +44,7 @@ i  1  .      linux                6.2.8
 i  8  ..     initramfs            11
 i  7  ...    cryptsetup           2.6.0
 i  7  ....   lvm2                 2.03.17
-i  1  .      init                 48
+i  1  .      init                 49
 i  1  ..     utils                49
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
