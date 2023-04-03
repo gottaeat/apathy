@@ -1,6 +1,6 @@
-From 96a191d73fc02c8c9842343bdb8d25be7fb41a16 Mon Sep 17 00:00:00 2001
+From 8a76e24fe31fea7f0a2a28033642cdd638d0c93b Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 27 Jan 2023 10:53:19 +0300
+Date: Sun, 2 Apr 2023 07:47:32 +0300
 Subject: [PATCH 5/6] fix curl cert error with cargo.
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH 5/6] fix curl cert error with cargo.
  1 file changed, 2 insertions(+)
 
 diff --git a/vendor/curl-sys/build.rs b/vendor/curl-sys/build.rs
-index 821959488..44a564a03 100644
+index 332fe9ead..13ab94534 100644
 --- a/vendor/curl-sys/build.rs
 +++ b/vendor/curl-sys/build.rs
 @@ -117,6 +117,8 @@ fn main() {
@@ -21,5 +21,5 @@ index 821959488..44a564a03 100644
          .define("CURL_DISABLE_GOPHER", None)
          .define("CURL_DISABLE_IMAP", None)
 -- 
-2.39.0
+2.40.0
 

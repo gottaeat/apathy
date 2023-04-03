@@ -1,6 +1,6 @@
-From afb73770a5e391264f55d10ae6262fdd36c5d2be Mon Sep 17 00:00:00 2001
+From fd94213ed31981cf689d1b89395862d1b9db77aa Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 27 Jan 2023 10:52:09 +0300
+Date: Sun, 2 Apr 2023 07:46:18 +0300
 Subject: [PATCH 3/6] use system libunwind.
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH 3/6] use system libunwind.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 87f748c14..71a1ee579 100644
+index db4108816..0cd37e38f 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
-@@ -888,7 +888,7 @@ impl Step for Src {
+@@ -912,7 +912,7 @@ impl Step for Src {
          copy_src_dirs(
              builder,
              &builder.src,
@@ -21,5 +21,5 @@ index 87f748c14..71a1ee579 100644
                  // not needed and contains symlinks which rustup currently
                  // chokes on when unpacking.
 -- 
-2.39.0
+2.40.0
 

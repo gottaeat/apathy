@@ -5,9 +5,9 @@ link-shared           = true
 static-libstdcpp      = false
 
 [build]
-build                 = 'x86_64-apathy-linux-musl'
-host                  = ['x86_64-apathy-linux-musl']
-target                = ['x86_64-apathy-linux-musl']
+build                 = 'x86_64-unknown-linux-musl'
+host                  = ['x86_64-unknown-linux-musl']
+target                = ['x86_64-apathy-linux-musl', 'x86_64-unknown-linux-musl']
 
 cargo                 = '/mss/work/table/rust/bin/cargo'
 rustc                 = '/mss/work/table/rust/bin/rustc'
@@ -43,6 +43,8 @@ prefix                = '/mss/work/table/rust'
 channel               = 'stable'
 description           = 'apathy'
 
+musl-root             = '/usr'
+
 lto                   = 'thin'
 optimize              = true
 codegen-units         = 1
@@ -73,6 +75,16 @@ debuginfo-level-rustc = 0
 debuginfo-level-std   = 0
 debuginfo-level-tools = 0
 debuginfo-level-tests = 0
+
+[target.x86_64-unknown-linux-musl]
+llvm-config           = '/opt/llvm/bin/llvm-config'
+crt-static            = false
+
+cc                    = 'clang'
+cxx                   = 'clang++'
+ar                    = 'llvm-ar'
+ranlib                = 'llvm-ranlib'
+linker                = 'clang'
 
 [target.x86_64-apathy-linux-musl]
 llvm-config           = '/opt/llvm/bin/llvm-config'

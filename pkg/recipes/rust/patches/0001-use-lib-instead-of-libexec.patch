@@ -1,6 +1,6 @@
-From 5a4d9ba81ac80a042f6fa436103d6b38a8c729b5 Mon Sep 17 00:00:00 2001
+From 8eee4f08584b2d5904f2a2d5dcc5a2ce9a6ce3b6 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 27 Jan 2023 10:51:33 +0300
+Date: Sun, 2 Apr 2023 07:45:32 +0300
 Subject: [PATCH 1/6] use lib instead of libexec.
 
 ---
@@ -9,10 +9,10 @@ Subject: [PATCH 1/6] use lib instead of libexec.
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/bootstrap/dist.rs b/src/bootstrap/dist.rs
-index 3cb0eccd3..87f748c14 100644
+index 2ce54d9a3..db4108816 100644
 --- a/src/bootstrap/dist.rs
 +++ b/src/bootstrap/dist.rs
-@@ -1046,7 +1046,7 @@ impl Step for Cargo {
+@@ -1070,7 +1070,7 @@ impl Step for Cargo {
          for dirent in fs::read_dir(cargo.parent().unwrap()).expect("read_dir") {
              let dirent = dirent.expect("read dir entry");
              if dirent.file_name().to_str().expect("utf8").starts_with("cargo-credential-") {
@@ -22,10 +22,10 @@ index 3cb0eccd3..87f748c14 100644
          }
  
 diff --git a/src/tools/cargo/src/cargo/util/auth.rs b/src/tools/cargo/src/cargo/util/auth.rs
-index d67f874f1..407da5a25 100644
+index f7d0fc8c4..d296da754 100644
 --- a/src/tools/cargo/src/cargo/util/auth.rs
 +++ b/src/tools/cargo/src/cargo/util/auth.rs
-@@ -476,7 +476,7 @@ fn sysroot_credential(
+@@ -816,7 +816,7 @@ fn sysroot_credential(
          .parent()
          .and_then(|p| p.parent())
          .ok_or_else(|| format_err!("expected cargo path {}", cargo.display()))?;
@@ -35,5 +35,5 @@ index d67f874f1..407da5a25 100644
          cred_name,
          std::env::consts::EXE_SUFFIX
 -- 
-2.39.0
+2.40.0
 
