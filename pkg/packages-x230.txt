@@ -194,7 +194,7 @@ o  1  ..     node.js              19.8.1
 i  5  ..     gtk3                 3.24.34
 i  1  ...    mss-ec               b8b60fef
 o  3  .      cbindgen             0.24.3
-o  1  .      rust                 1.68.0
+o  1  .      rust                 0599b6b9
 i  3  .      zstd                 1.5.2
 i  1  .      transmission         4.0.1
 i  5  .      pciutils             3.7.0
