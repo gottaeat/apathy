@@ -1,0 +1,154 @@
+# 1 > icu
+tar xf /mss/work/sauces/icu4c-72_1-src.tgz
+cd     icu/source/
+
+CXXFLAGS="${CXXFLAGS} -std=c++14"
+./configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix="/opt/browserlibs" \
+ --enable-release            \
+ --enable-shared             \
+ --disable-debug             \
+ --disable-extras            \
+ --disable-icu-config        \
+ --disable-icuio             \
+ --disable-rpath             \
+ --disable-samples           \
+ --disable-static            \
+ --disable-tests
+
+make
+
+doas -s
+make install
+
+for i in bin/ sbin/ share/ lib/icu; do
+ rm -rfv /opt/browserlibs/"${i}"
+done
+
+find /opt/browserlibs/lib \
+ \( -name "libicutest.*" \
+ -o -name "libicutu.*" \)\
+ -exec rm -rfv {} ';'
+
+exit
+
+cd ../../; rm -rf icu/
+
+# 2 > nspr
+tar xf /mss/work/sauces/nss-3.89-with-nspr-4.35.tar.gz
+
+mkdir build/
+cd    build/
+
+mv ../nss-3.89/nspr/configure.{in,ac}
+
+pushd ../nss-3.89/nspr/
+
+pdir="/mss/repo/pkg/recipes/browserlibs/patches/"
+for i in "${pdir}"/*-nspr-*.patch; do patch -p1 < "${i}"; done
+
+autoreconf -fvi
+
+popd
+
+sed -i \
+ -e "s/perl5//g" \
+ ../nss-3.89/nspr/configure
+
+sed -i \
+ -e 's/\$(MKSHLIB) \$(OBJS)/\$(MKSHLIB) \$(LDFLAGS) \$(OBJS)/g' \
+ ../nss-3.89/nspr/config/rules.mk
+
+../nss-3.89/nspr/configure \
+ --build=$CBUILD             \
+ --host=$CHOST               \
+ --prefix="/opt/browserlibs" \
+ --with-mozilla              \
+ --with-pthreads             \
+ --enable-64bit              \
+ --enable-optimize           \
+ --enable-strip              \
+ --disable-debug             \
+ --disable-ipv6
+
+make
+
+doas -s
+make install
+
+rm -rfv \
+ /opt/browserlibs/bin/{compile-et.pl,prerr.properties} \
+ /opt/browserlibs/lib/*.a                              \
+ /opt/browserlibs/share/
+
+exit
+
+cd ../; rm -rf build/
+
+# 3 > nss
+export       CFLAGS="${CFLAGS} -I/opt/browserlibs/include -L/opt/browserlibs/lib"
+export LIBRARY_PATH="${LIBRARY_PATH}:/opt/browserlibs/lib"
+
+cd nss-3.89/nss/
+
+sed -i \
+ -e 's/\$(MKSHLIB) -o/\$(MKSHLIB) \$(LDFLAGS) -o/g' \
+ coreconf/rules.mk
+
+sed -i \
+ -e 's/-no-integrated-as/-integrated-as/g' \
+ ./lib/freebl/freebl_base.gypi             \
+ ./lib/freebl/Makefile                     \
+ ./lib/freebl/freebl.gyp
+
+export CCC="${CXX}"
+export XCFLAGS="${CFLAGS}"
+export CC_IS_CLANG=1
+export NSPR_INCLUDE_DIR="/opt/browserlibs/include/nspr"
+
+export USE_64=1
+export BUILD_OPT=1
+export NSS_USE_SYSTEM_SQLITE=1
+export USE_SYSTEM_ZLIB=1
+export ZLIB_LIBS=-lz
+
+export FREEBL_NO_DEPEND=0
+export NSS_DISABLE_DEPRECATED_RC2=1
+export NSS_DISABLE_DEPRECATED_SEED=1
+export NSS_DISABLE_GTESTS=1
+export NSS_ENABLE_WERROR=0
+export NSS_SEED_ONLY_DEV_URANDOM=1
+
+make all
+
+doas -s
+mkdir /opt/browserlibs/include/nss/private
+
+cp ../dist/public/nss/*.h                  /opt/browserlibs/include/nss/
+cp ../dist/private/nss/{blapi.h,alghmac.h} /opt/browserlibs/include/nss/private/
+cp ../dist/Linux*/lib/*.so                 /opt/browserlibs/lib/
+cp ../dist/Linux*/lib/*.chk                /opt/browserlibs/lib/
+
+sed -i \
+ -e "s,%libdir%,/opt/browserlibs/lib,g"                               \
+ -e "s,%prefix%,/opt/browserlibs,g"                                   \
+ -e "s,%exec_prefix%,/opt/browserlibs/bin,g"                          \
+ -e "s,%includedir%,/opt/browserlibs/include/nss,g"                   \
+ -e "s,%NSPR_VERSION%,`/opt/browserlibs/bin/nspr-config --version`,g" \
+ -e "s,%NSS_VERSION%,3.89,g" > "/opt/browserlibs/lib/pkgconfig/nss.pc"
+ pkg/pkg-config/nss.pc.in
+
+rm -rf /opt/browserlibs/bin/
+
+exit
+
+cd ../../; rm -rf nss-3.89/
+
+# 4
+doas -s
+elfbois="$(find /opt/browserlibs/ -type f -exec file {} ';' \
+            | grep ELF\  | awk '{print $1}' | sed 's/:$//g')"
+
+for i in ${elfbois}; do strip --strip-all "${i}"; done
