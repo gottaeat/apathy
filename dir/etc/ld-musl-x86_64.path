@@ -1,6 +1,6 @@
 /lib
 /usr/lib
-/opt/fflibs/lib
+/opt/bind/lib
+/opt/browserlibs/lib
 /opt/llvm/lib
 /opt/mimalloc/lib
-/opt/bind/lib
