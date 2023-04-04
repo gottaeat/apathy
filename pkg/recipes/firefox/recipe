@@ -93,7 +93,8 @@ popd
 
 ${CC} -c ${CFLAGS} "${fdir}"/libmozwayland.c
 ${CC} -o libmozwayland.so -shared ${LDFLAGS} libmozwayland.o
-mv       libmozwayland.so "${instdir}"/lib/libmozwayland.so
+strip --strip-all libmozwayland.so
+mv libmozwayland.so "${instdir}"/lib/libmozwayland.so
 
 install -v -Dm644 "${fdir}"/vendor.js     \
  "${instdir}"/lib/browser/defaults/preferences/vendor.js
