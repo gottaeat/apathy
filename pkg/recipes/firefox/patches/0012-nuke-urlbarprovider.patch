@@ -1,25 +1,25 @@
-From 48afc0081d7810cf81e0e9c48fa2f80be2c9d44c Mon Sep 17 00:00:00 2001
+From 7ec2d522eb588aa6de0cd9c402e4a66f945e0af0 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 8 Jul 2022 01:51:15 +0300
-Subject: [PATCH 13/16] nuke urlbarprovider.
+Date: Tue, 4 Apr 2023 19:10:58 +0300
+Subject: [PATCH 12/15] nuke urlbarprovider.
 
 ---
- browser/components/urlbar/UrlbarProviderInterventions.jsm | 2 +-
+ browser/components/urlbar/UrlbarProviderInterventions.sys.mjs | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/browser/components/urlbar/UrlbarProviderInterventions.jsm b/browser/components/urlbar/UrlbarProviderInterventions.jsm
-index ad1468c5fe..9134aae2f9 100644
---- a/browser/components/urlbar/UrlbarProviderInterventions.jsm
-+++ b/browser/components/urlbar/UrlbarProviderInterventions.jsm
-@@ -452,7 +452,7 @@ class ProviderInterventions extends UrlbarProvider {
+diff --git a/browser/components/urlbar/UrlbarProviderInterventions.sys.mjs b/browser/components/urlbar/UrlbarProviderInterventions.sys.mjs
+index 33859050d5..b443336668 100644
+--- a/browser/components/urlbar/UrlbarProviderInterventions.sys.mjs
++++ b/browser/components/urlbar/UrlbarProviderInterventions.sys.mjs
+@@ -458,7 +458,7 @@ class ProviderInterventions extends UrlbarProvider {
          ]),
        });
        for (let [id, phrases] of Object.entries(DOCUMENTS)) {
 -        queryScorer.addDocument({ id, phrases });
-+      // queryScorer.addDocument({ id, phrases });
++//        queryScorer.addDocument({ id, phrases });
        }
        return queryScorer;
      });
 -- 
-2.37.0
+2.40.0
 

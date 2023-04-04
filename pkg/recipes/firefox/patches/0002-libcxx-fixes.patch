@@ -1,7 +1,7 @@
-From 2cf4494366d0f31841885f9417c74654b33cfddc Mon Sep 17 00:00:00 2001
+From 5c4a8fd90c9e23e9f72fdbb0185e1e67e81bf9eb Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Thu, 7 Jul 2022 23:14:05 +0300
-Subject: [PATCH 02/16] libc++ fixes.
+Date: Tue, 4 Apr 2023 19:05:01 +0300
+Subject: [PATCH 02/15] libcxx fixes.
 
 ---
  memory/mozalloc/throw_gcc.h | 16 ++++++++++++++++
@@ -79,5 +79,5 @@ index aeeb770ba7..a03447f977 100644
  MOZ_THROW_NORETURN MOZ_THROW_EXPORT MOZ_THROW_INLINE void __throw_ios_failure(
      const char* msg) {
 -- 
-2.37.0
+2.40.0
 

@@ -1,21 +1,21 @@
-From 8e01f04c270a6928d68398efbbaa5228b8155ec6 Mon Sep 17 00:00:00 2001
+From c209fbabc520d4b7d82b48be41931532fd281f3e Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 8 Jul 2022 00:39:47 +0300
-Subject: [PATCH 10/16] nuke discoverystream and topsites.
+Date: Tue, 4 Apr 2023 19:10:21 +0300
+Subject: [PATCH 09/15] nuke discoverystream and topsites.
 
 ---
  .../newtab/lib/AboutPreferences.jsm           |  29 +----
  .../components/newtab/lib/ActivityStream.jsm  | 120 ++++--------------
  .../newtab/lib/DiscoveryStreamFeed.jsm        |  43 +------
  .../components/newtab/lib/SectionsManager.jsm |   8 --
- .../components/newtab/lib/TopSitesFeed.jsm    |  41 +-----
- 5 files changed, 37 insertions(+), 204 deletions(-)
+ .../components/newtab/lib/TopSitesFeed.jsm    |  45 +------
+ 5 files changed, 37 insertions(+), 208 deletions(-)
 
 diff --git a/browser/components/newtab/lib/AboutPreferences.jsm b/browser/components/newtab/lib/AboutPreferences.jsm
-index ad7af31cc4..0baf675d15 100644
+index 4906728eb2..a6dbadb99a 100644
 --- a/browser/components/newtab/lib/AboutPreferences.jsm
 +++ b/browser/components/newtab/lib/AboutPreferences.jsm
-@@ -36,15 +36,7 @@ const PREFS_BEFORE_SECTIONS = () => [
+@@ -37,15 +37,7 @@ const PREFS_BEFORE_SECTIONS = () => [
        titleString: "home-prefs-shortcuts-header",
        descString: "home-prefs-shortcuts-description",
        get nestedPrefs() {
@@ -32,7 +32,7 @@ index ad7af31cc4..0baf675d15 100644
        },
      },
      icon: "chrome://browser/skin/topsites.svg",
-@@ -135,7 +127,6 @@ this.AboutPreferences = class AboutPreferences {
+@@ -136,7 +128,6 @@ class AboutPreferences {
      this.renderPreferences(window, [
        ...PREFS_BEFORE_SECTIONS(featureConfig),
        ...sections,
@@ -40,7 +40,7 @@ index ad7af31cc4..0baf675d15 100644
      ]);
    }
  
-@@ -195,6 +186,11 @@ this.AboutPreferences = class AboutPreferences {
+@@ -196,6 +187,11 @@ class AboutPreferences {
        const { feed: name, titleString = {}, descString, nestedPrefs = [] } =
          prefData || {};
  
@@ -52,7 +52,7 @@ index ad7af31cc4..0baf675d15 100644
        // Don't show any sections that we don't want to expose in preferences UI
        if (shouldHidePref) {
          return;
-@@ -223,19 +219,6 @@ this.AboutPreferences = class AboutPreferences {
+@@ -224,19 +220,6 @@ class AboutPreferences {
  
        linkPref(checkbox, name, "bool");
  
@@ -73,10 +73,10 @@ index ad7af31cc4..0baf675d15 100644
        const detailVbox = createAppend("vbox", sectionVbox);
        detailVbox.classList.add("indent");
 diff --git a/browser/components/newtab/lib/ActivityStream.jsm b/browser/components/newtab/lib/ActivityStream.jsm
-index 522aa94c57..03c1414e51 100644
+index 81764ba977..7596cbadf8 100644
 --- a/browser/components/newtab/lib/ActivityStream.jsm
 +++ b/browser/components/newtab/lib/ActivityStream.jsm
-@@ -117,10 +117,7 @@ const LOCALE_LIST_CONFIG =
+@@ -113,10 +113,7 @@ const LOCALE_LIST_CONFIG =
  
  // Determine if spocs should be shown for a geo/locale
  function showSpocs({ geo }) {
@@ -88,7 +88,7 @@ index 522aa94c57..03c1414e51 100644
  }
  
  // Configure default Activity Stream prefs with a plain `value` or a `getValue`
-@@ -147,15 +144,10 @@ const PREFS_CONFIG = new Map([
+@@ -143,15 +140,10 @@ const PREFS_CONFIG = new Map([
            hidden: !PREFS_CONFIG.get("feeds.system.topstories").getValue(args),
            provider_icon: "chrome://global/skin/icons/pocket.svg",
            provider_name: "Pocket",
@@ -108,7 +108,7 @@ index 522aa94c57..03c1414e51 100644
            show_spocs: showSpocs(args),
          }),
      },
-@@ -164,7 +156,7 @@ const PREFS_CONFIG = new Map([
+@@ -160,7 +152,7 @@ const PREFS_CONFIG = new Map([
      "feeds.topsites",
      {
        title: "Displays Top Sites on the New Tab Page",
@@ -117,7 +117,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -180,14 +172,14 @@ const PREFS_CONFIG = new Map([
+@@ -176,14 +168,14 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Show sponsored cards in spoc experiment (show_spocs in topstories.options has to be set to true as well)",
@@ -134,7 +134,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -206,7 +198,7 @@ const PREFS_CONFIG = new Map([
+@@ -202,7 +194,7 @@ const PREFS_CONFIG = new Map([
      "showSearch",
      {
        title: "Show the Search bar",
@@ -143,7 +143,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -227,7 +219,7 @@ const PREFS_CONFIG = new Map([
+@@ -223,7 +215,7 @@ const PREFS_CONFIG = new Map([
      "telemetry",
      {
        title: "Enable system error and usage data collection",
@@ -152,7 +152,7 @@ index 522aa94c57..03c1414e51 100644
        value_local_dev: false,
      },
    ],
-@@ -235,7 +227,7 @@ const PREFS_CONFIG = new Map([
+@@ -231,7 +223,7 @@ const PREFS_CONFIG = new Map([
      "telemetry.ut.events",
      {
        title: "Enable Unified Telemetry event data collection",
@@ -161,7 +161,7 @@ index 522aa94c57..03c1414e51 100644
        value_local_dev: false,
      },
    ],
-@@ -243,7 +235,7 @@ const PREFS_CONFIG = new Map([
+@@ -239,7 +231,7 @@ const PREFS_CONFIG = new Map([
      "telemetry.structuredIngestion.endpoint",
      {
        title: "Structured Ingestion telemetry server endpoint",
@@ -170,7 +170,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -251,7 +243,7 @@ const PREFS_CONFIG = new Map([
+@@ -247,7 +239,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show visited pages in highlights.",
@@ -179,7 +179,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -259,7 +251,7 @@ const PREFS_CONFIG = new Map([
+@@ -255,7 +247,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show bookmarks in highlights.",
@@ -188,7 +188,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -267,7 +259,7 @@ const PREFS_CONFIG = new Map([
+@@ -263,7 +255,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show saved Pocket stories in highlights.",
@@ -197,7 +197,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -275,7 +267,7 @@ const PREFS_CONFIG = new Map([
+@@ -271,7 +263,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Boolean flag that decides whether or not to show saved recent Downloads in highlights.",
@@ -206,7 +206,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -296,7 +288,7 @@ const PREFS_CONFIG = new Map([
+@@ -292,7 +284,7 @@ const PREFS_CONFIG = new Map([
      "sectionOrder",
      {
        title: "The rendering order for the sections",
@@ -215,7 +215,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -313,21 +305,7 @@ const PREFS_CONFIG = new Map([
+@@ -309,21 +301,7 @@ const PREFS_CONFIG = new Map([
          "An ordered, comma-delimited list of search shortcuts that we should try and pin",
        // This pref is dynamic as the shortcuts vary depending on the region
        getValue: ({ geo }) => {
@@ -238,7 +238,7 @@ index 522aa94c57..03c1414e51 100644
        },
      },
    ],
-@@ -377,12 +355,12 @@ const PREFS_CONFIG = new Map([
+@@ -373,12 +351,12 @@ const PREFS_CONFIG = new Map([
          return JSON.stringify({
            api_key_pref: "extensions.pocket.oAuthConsumerKey",
            collapsible: true,
@@ -253,7 +253,7 @@ index 522aa94c57..03c1414e51 100644
          });
        },
      },
-@@ -392,7 +370,7 @@ const PREFS_CONFIG = new Map([
+@@ -388,7 +366,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Endpoint prefixes (comma-separated) that are allowed to be requested",
@@ -262,7 +262,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -445,7 +423,7 @@ const PREFS_CONFIG = new Map([
+@@ -433,7 +411,7 @@ const PREFS_CONFIG = new Map([
      {
        title:
          "Endpoint for when a user opts-out of sponsored content to delete the user's data from the ad server.",
@@ -271,7 +271,7 @@ index 522aa94c57..03c1414e51 100644
      },
    ],
    [
-@@ -504,49 +482,7 @@ const FEEDS_DATA = [
+@@ -499,49 +477,7 @@ const FEEDS_DATA = [
        "System pref that fetches content recommendations from a configurable content provider",
      // Dynamically determine if Pocket should be shown for a geo / locale
      getValue: ({ geo, locale }) => {
@@ -308,7 +308,7 @@ index 522aa94c57..03c1414e51 100644
 -        AT: ["de"],
 -        IT: ["it"],
 -        FR: ["fr"],
--        ES: ["es"],
+-        ES: ["es-ES"],
 -        PL: ["pl"],
 -        JP: ["ja", "ja-JP-mac"],
 -      }[geo];
@@ -322,37 +322,37 @@ index 522aa94c57..03c1414e51 100644
      },
    },
    {
-@@ -559,31 +495,31 @@ const FEEDS_DATA = [
+@@ -554,31 +490,31 @@ const FEEDS_DATA = [
      name: "telemetry",
-     factory: () => new TelemetryFeed(),
+     factory: () => new lazy.TelemetryFeed(),
      title: "Relays telemetry-related actions to PingCentre",
 -    value: true,
 +    value: false,
    },
    {
      name: "favicon",
-     factory: () => new FaviconFeed(),
+     factory: () => new lazy.FaviconFeed(),
      title: "Fetches tippy top manifests from remote service",
 -    value: true,
 +    value: false,
    },
    {
      name: "system.topsites",
-     factory: () => new TopSitesFeed(),
+     factory: () => new lazy.TopSitesFeed(),
      title: "Queries places and gets metadata for Top Sites section",
 -    value: true,
 +    value: false,
    },
    {
      name: "recommendationprovider",
-     factory: () => new RecommendationProvider(),
+     factory: () => new lazy.RecommendationProvider(),
      title: "Handles setup and interaction for the personality provider",
 -    value: true,
 +    value: false,
    },
    {
      name: "discoverystreamfeed",
-     factory: () => new DiscoveryStreamFeed(),
+     factory: () => new lazy.DiscoveryStreamFeed(),
      title: "Handles new pocket ui for the new tab page",
 -    value: true,
 +    value: false,
@@ -360,19 +360,19 @@ index 522aa94c57..03c1414e51 100644
  ];
  
 diff --git a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-index ddedf429fa..b646f1d5bb 100644
+index 2aa56f598a..ee4f5e6aa2 100644
 --- a/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
 +++ b/browser/components/newtab/lib/DiscoveryStreamFeed.jsm
-@@ -1937,7 +1937,7 @@ getHardcodedLayout = ({
- }) => ({
-   lastUpdate: Date.now(),
-   spocs: {
--    url: "https://spocs.getpocket.com/spocs",
-+    url: "",
-   },
-   layout: [
-     {
-@@ -2046,7 +2046,7 @@ getHardcodedLayout = ({
+@@ -40,7 +40,7 @@ const DEFAULT_RECS_EXPIRE_TIME = 60 * 60 * 1000; // 1 hour
+ const MIN_PERSONALIZATION_UPDATE_TIME = 12 * 60 * 60 * 1000; // 12 hours
+ const MAX_LIFETIME_CAP = 500; // Guard against misconfiguration on the server
+ const FETCH_TIMEOUT = 45 * 1000;
+-const SPOCS_URL = "https://spocs.getpocket.com/spocs";
++const SPOCS_URL = "";
+ const PREF_CONFIG = "discoverystream.config";
+ const PREF_ENDPOINTS = "discoverystream.endpoints";
+ const PREF_IMPRESSION_ID = "browser.newtabpage.activity-stream.impressionId";
+@@ -2293,7 +2293,7 @@ getHardcodedLayout = ({
            feed: {
              embed_reference: null,
              url:
@@ -381,7 +381,7 @@ index ddedf429fa..b646f1d5bb 100644
            },
            spocs: {
              probability: 1,
-@@ -2061,47 +2061,8 @@ getHardcodedLayout = ({
+@@ -2308,47 +2308,8 @@ getHardcodedLayout = ({
            properties: {
              alignment: "left-align",
              links: [
@@ -430,10 +430,10 @@ index ddedf429fa..b646f1d5bb 100644
              privacyNoticeURL: {
                url:
 diff --git a/browser/components/newtab/lib/SectionsManager.jsm b/browser/components/newtab/lib/SectionsManager.jsm
-index f1a86c6070..ebe625b60d 100644
+index 81c052397e..1f29b0c781 100644
 --- a/browser/components/newtab/lib/SectionsManager.jsm
 +++ b/browser/components/newtab/lib/SectionsManager.jsm
-@@ -113,14 +113,6 @@ const BUILT_IN_SECTIONS = () => ({
+@@ -130,14 +130,6 @@ const BUILT_IN_SECTIONS = ({ newtab, pocketNewtab }) => ({
            name: "section.highlights.includeDownloads",
            titleString: "home-prefs-highlights-option-most-recent-download",
          },
@@ -449,10 +449,10 @@ index f1a86c6070..ebe625b60d 100644
      },
      shouldHidePref: false,
 diff --git a/browser/components/newtab/lib/TopSitesFeed.jsm b/browser/components/newtab/lib/TopSitesFeed.jsm
-index a02be7fc94..533c3827dd 100644
+index 0967a435bd..be950ad9b4 100644
 --- a/browser/components/newtab/lib/TopSitesFeed.jsm
 +++ b/browser/components/newtab/lib/TopSitesFeed.jsm
-@@ -416,24 +416,6 @@ this.TopSitesFeed = class TopSitesFeed {
+@@ -421,24 +421,6 @@ class TopSitesFeed {
        }
        if (siteData.search_shortcut) {
          link = await this.topSiteToSearchTopSite(link);
@@ -477,7 +477,7 @@ index a02be7fc94..533c3827dd 100644
        }
        DEFAULT_TOP_SITES.push(link);
      }
-@@ -741,14 +723,7 @@ this.TopSitesFeed = class TopSitesFeed {
+@@ -816,14 +798,7 @@ class TopSitesFeed {
          continue;
        }
        if (link.sponsored_position) {
@@ -493,7 +493,7 @@ index a02be7fc94..533c3827dd 100644
        } else {
          notBlockedDefaultSites.push(
            searchShortcutsExperiment
-@@ -837,20 +812,6 @@ this.TopSitesFeed = class TopSitesFeed {
+@@ -916,24 +891,6 @@ class TopSitesFeed {
  
      // Insert the original pinned sites into the deduped frecent and defaults.
      let withPinned = insertPinned(checkedAdult, pinned);
@@ -503,17 +503,21 @@ index a02be7fc94..533c3827dd 100644
 -        return;
 -      }
 -      let index = link.sponsored_position - 1;
--      if (index > withPinned.length) {
+-      if (index >= withPinned.length) {
+-        withPinned[index] = link;
+-      } else if (withPinned[index]?.sponsored_position) {
+-        // We currently want DiscoveryStream spocs to replace existing spocs.
 -        withPinned[index] = link;
 -      } else {
 -        withPinned.splice(index, 0, link);
 -      }
 -    });
+-
 -    // Remove excess items after we inserted sponsored ones.
 -    withPinned = withPinned.slice(0, numItems);
  
      // Now, get a tippy top icon, a rich icon, or screenshot for every item
      for (const link of withPinned) {
 -- 
-2.37.0
+2.40.0
 

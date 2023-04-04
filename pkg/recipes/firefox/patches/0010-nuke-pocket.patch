@@ -1,20 +1,20 @@
-From d6564dad27d2f924bc2fc35817a517d7752923c9 Mon Sep 17 00:00:00 2001
+From baff628bc11e9612d4ce917e6b83343642fd2392 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 8 Jul 2022 00:55:20 +0300
-Subject: [PATCH 11/16] nuke pocket.
+Date: Tue, 4 Apr 2023 19:10:33 +0300
+Subject: [PATCH 10/15] nuke pocket.
 
 ---
  browser/base/content/browser-context.inc | 6 ------
- browser/base/content/browser.js          | 2 --
- browser/components/BrowserGlue.jsm       | 3 ---
+ browser/base/content/browser.js          | 1 -
+ browser/components/BrowserGlue.sys.mjs   | 1 -
  browser/components/moz.build             | 1 -
- 4 files changed, 12 deletions(-)
+ 4 files changed, 9 deletions(-)
 
 diff --git a/browser/base/content/browser-context.inc b/browser/base/content/browser-context.inc
-index 39a139fe9d..c565bce9a2 100644
+index 35ed4d43d8..f35b878306 100644
 --- a/browser/base/content/browser-context.inc
 +++ b/browser/base/content/browser-context.inc
-@@ -100,9 +100,6 @@
+@@ -99,9 +99,6 @@
        <menuitem id="context-savelink"
                  data-l10n-id="main-context-menu-save-link"
                  oncommand="gContextMenu.saveLink();"/>
@@ -24,7 +24,7 @@ index 39a139fe9d..c565bce9a2 100644
        <menuitem id="context-copyemail"
                  data-l10n-id="main-context-menu-copy-email"
                  oncommand="gContextMenu.copyEmail();"/>
-@@ -256,9 +253,6 @@
+@@ -258,9 +255,6 @@
        <menuitem id="context-savepage"
                  data-l10n-id="main-context-menu-page-save"
                  oncommand="gContextMenu.savePageAs();"/>
@@ -35,51 +35,41 @@ index 39a139fe9d..c565bce9a2 100644
              class="sync-ui-item"
              data-l10n-id="main-context-menu-send-to-device"
 diff --git a/browser/base/content/browser.js b/browser/base/content/browser.js
-index 801bab733b..1f75e6efb8 100644
+index fa722ea1a2..797ab83e9c 100644
 --- a/browser/base/content/browser.js
 +++ b/browser/base/content/browser.js
-@@ -5418,8 +5418,6 @@ var XULBrowserWindow = {
+@@ -5324,7 +5324,6 @@ var XULBrowserWindow = {
  
      SafeBrowsingNotificationBox.onLocationChange(aLocationURI);
  
 -    SaveToPocket.onLocationChange(window);
--
-     UrlbarProviderSearchTips.onLocationChange(
-       window,
-       aLocationURI,
-diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
-index 70334e638c..75856e0c2f 100644
---- a/browser/components/BrowserGlue.jsm
-+++ b/browser/components/BrowserGlue.jsm
-@@ -79,7 +79,6 @@ XPCOMUtils.defineLazyModuleGetters(this, {
-   RFPHelper: "resource://gre/modules/RFPHelper.jsm",
-   SafeBrowsing: "resource://gre/modules/SafeBrowsing.jsm",
-   Sanitizer: "resource:///modules/Sanitizer.jsm",
--  SaveToPocket: "chrome://pocket/content/SaveToPocket.jsm",
-   ScreenshotsUtils: "resource:///modules/ScreenshotsUtils.jsm",
-   SearchSERPTelemetry: "resource:///modules/SearchSERPTelemetry.jsm",
-   SessionStartup: "resource:///modules/sessionstore/SessionStartup.jsm",
-@@ -1262,8 +1261,6 @@ BrowserGlue.prototype = {
-       Normandy.init();
+ 
+     let originalURI;
+     if (aRequest instanceof Ci.nsIChannel) {
+diff --git a/browser/components/BrowserGlue.sys.mjs b/browser/components/BrowserGlue.sys.mjs
+index 7713424cb9..59153b984f 100644
+--- a/browser/components/BrowserGlue.sys.mjs
++++ b/browser/components/BrowserGlue.sys.mjs
+@@ -1299,7 +1299,6 @@ BrowserGlue.prototype = {
+       lazy.Normandy.init();
      }
  
--    SaveToPocket.init();
--
+-    lazy.SaveToPocket.init();
+ 
      AboutHomeStartupCache.init();
  
-     Services.obs.notifyObservers(null, "browser-ui-startup-complete");
 diff --git a/browser/components/moz.build b/browser/components/moz.build
-index 71a1b859c9..ed3b6d15f1 100644
+index e91daf0c9c..02500547b0 100644
 --- a/browser/components/moz.build
 +++ b/browser/components/moz.build
-@@ -42,7 +42,6 @@ DIRS += [
+@@ -45,7 +45,6 @@ DIRS += [
      "originattributes",
-     "ion",
+     "pagedata",
      "places",
 -    "pocket",
      "preferences",
      "privatebrowsing",
      "prompts",
 -- 
-2.37.0
+2.40.0
 

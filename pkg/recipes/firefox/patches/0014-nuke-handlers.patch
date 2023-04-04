@@ -1,17 +1,17 @@
-From d7a09c90f3cb407b90a29e1a3ed5ab23192ce123 Mon Sep 17 00:00:00 2001
+From f68836bc081e0ee231e51cceb5855195c6c458b5 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 8 Jul 2022 01:53:36 +0300
-Subject: [PATCH 16/16] nuke handlers.
+Date: Tue, 4 Apr 2023 19:11:31 +0300
+Subject: [PATCH 14/15] nuke handlers.
 
 ---
- uriloader/exthandler/HandlerList.jsm | 223 +--------------------------
+ uriloader/exthandler/HandlerList.sys.mjs | 223 +----------------------
  1 file changed, 1 insertion(+), 222 deletions(-)
 
-diff --git a/uriloader/exthandler/HandlerList.jsm b/uriloader/exthandler/HandlerList.jsm
-index 04b92059ff..40a7a5d419 100644
---- a/uriloader/exthandler/HandlerList.jsm
-+++ b/uriloader/exthandler/HandlerList.jsm
-@@ -13,228 +13,7 @@ this.kHandlerList = {
+diff --git a/uriloader/exthandler/HandlerList.sys.mjs b/uriloader/exthandler/HandlerList.sys.mjs
+index ab92b360a7..cd0096ee32 100644
+--- a/uriloader/exthandler/HandlerList.sys.mjs
++++ b/uriloader/exthandler/HandlerList.sys.mjs
+@@ -9,228 +9,7 @@ export const kHandlerList = {
      schemes: {
        mailto: {
          handlers: [
@@ -242,5 +242,5 @@ index 04b92059ff..40a7a5d419 100644
        },
      },
 -- 
-2.37.0
+2.40.0
 

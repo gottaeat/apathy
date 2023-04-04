@@ -1,0 +1,88 @@
+From 841062c499d60bdc3a668c571776890733e74a27 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Tue, 4 Apr 2023 19:11:54 +0300
+Subject: [PATCH 15/15] nuke dbus and atk.
+
+---
+ toolkit/components/remote/moz.build           |  2 +-
+ toolkit/components/remote/nsRemoteService.cpp | 14 ++++++++++----
+ widget/gtk/nsWindow.cpp                       |  2 ++
+ 3 files changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/toolkit/components/remote/moz.build b/toolkit/components/remote/moz.build
+index d3bab6cf9a..656b32c7fa 100644
+--- a/toolkit/components/remote/moz.build
++++ b/toolkit/components/remote/moz.build
+@@ -26,7 +26,7 @@ if CONFIG["MOZ_WIDGET_TOOLKIT"] == "gtk":
+             "nsUnixRemoteServer.h",
+             "RemoteUtils.h",
+         ]
+-    else:
++    elif CONFIG["MOZ_X11"]:
+         SOURCES += [
+             "nsGTKRemoteServer.cpp",
+             "nsXRemoteClient.cpp",
+diff --git a/toolkit/components/remote/nsRemoteService.cpp b/toolkit/components/remote/nsRemoteService.cpp
+index 3e8e4b5cb8..ee964b9c83 100644
+--- a/toolkit/components/remote/nsRemoteService.cpp
++++ b/toolkit/components/remote/nsRemoteService.cpp
+@@ -6,12 +6,14 @@
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+ #ifdef MOZ_WIDGET_GTK
+-#  ifdef MOZ_ENABLE_DBUS
++#  if defined(MOZ_ENABLE_DBUS)
+ #    include "nsDBusRemoteServer.h"
+ #    include "nsDBusRemoteClient.h"
+-#  else
++#  elif defined(MOZ_X11)
+ #    include "nsGTKRemoteServer.h"
+ #    include "nsXRemoteClient.h"
++#  else
++#    include "nsRemoteClient.h"
+ #  endif
+ #elif defined(XP_WIN)
+ #  include "nsWinRemoteServer.h"
+@@ -101,8 +103,10 @@ RemoteResult nsRemoteService::StartClient(const char* aStartupToken) {
+ #ifdef MOZ_WIDGET_GTK
+ #  if defined(MOZ_ENABLE_DBUS)
+   client = MakeUnique<nsDBusRemoteClient>();
+-#  else
++#  elif defined(MOZ_X11)
+   client = MakeUnique<nsXRemoteClient>();
++#  else
++  return REMOTE_NOT_FOUND;
+ #  endif
+ #elif defined(XP_WIN)
+   client = MakeUnique<nsWinRemoteClient>();
+@@ -145,8 +149,10 @@ void nsRemoteService::StartupServer() {
+ #ifdef MOZ_WIDGET_GTK
+ #  if defined(MOZ_ENABLE_DBUS)
+   mRemoteServer = MakeUnique<nsDBusRemoteServer>();
+-#  else
++#  elif defined(MOZ_X11)
+   mRemoteServer = MakeUnique<nsGTKRemoteServer>();
++#  else
++  return;
+ #  endif
+ #elif defined(XP_WIN)
+   mRemoteServer = MakeUnique<nsWinRemoteServer>();
+diff --git a/widget/gtk/nsWindow.cpp b/widget/gtk/nsWindow.cpp
+index b620e56627..131bf654ad 100644
+--- a/widget/gtk/nsWindow.cpp
++++ b/widget/gtk/nsWindow.cpp
+@@ -659,9 +659,11 @@ void nsWindow::Destroy() {
+   // We need to detach accessible object here because mContainer is a custom
+   // widget and doesn't call gtk_widget_real_destroy() from destroy handler
+   // as regular widgets.
++#ifdef ACCESSIBILITY
+   if (AtkObject* ac = gtk_widget_get_accessible(GTK_WIDGET(mContainer))) {
+     gtk_accessible_set_widget(GTK_ACCESSIBLE(ac), nullptr);
+   }
++#endif
+ 
+   gtk_widget_destroy(mShell);
+   mShell = nullptr;
+-- 
+2.40.0
+

@@ -1,7 +1,7 @@
-From a9a429b5b9a9d203ff0832fa4be455ecddcea3bc Mon Sep 17 00:00:00 2001
+From ee9601e0302c59659cb578c2f6bd98e632e1ba90 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Thu, 7 Jul 2022 23:15:19 +0300
-Subject: [PATCH 04/16] allow system harfbuzz.
+Date: Tue, 4 Apr 2023 19:09:27 +0300
+Subject: [PATCH 06/15] allow system harfbuzz.
 
 ---
  config/system-headers.mozbuild  | 7 +++++++
@@ -17,10 +17,10 @@ Subject: [PATCH 04/16] allow system harfbuzz.
  10 files changed, 40 insertions(+), 1 deletion(-)
 
 diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
-index 9c07dba2f4..38fbca657e 100644
+index 04ca57ae8d..212c0124fe 100644
 --- a/config/system-headers.mozbuild
 +++ b/config/system-headers.mozbuild
-@@ -1237,6 +1237,13 @@ if CONFIG['OS_TARGET'] == 'Android':
+@@ -1236,6 +1236,13 @@ if CONFIG['OS_TARGET'] == 'Android':
          'vr/gvr/capi/include/gvr.h',
      ]
  
@@ -35,10 +35,10 @@ index 9c07dba2f4..38fbca657e 100644
      system_headers += [
          'jack/jack.h',
 diff --git a/dom/base/moz.build b/dom/base/moz.build
-index 229e06a545..b69566b1c3 100644
+index 7bcf1e6317..1d5f8896f9 100644
 --- a/dom/base/moz.build
 +++ b/dom/base/moz.build
-@@ -577,6 +577,9 @@ FINAL_LIBRARY = "xul"
+@@ -599,6 +599,9 @@ FINAL_LIBRARY = "xul"
  if CONFIG["MOZ_WIDGET_TOOLKIT"] == "gtk":
      CXXFLAGS += CONFIG["MOZ_GTK3_CFLAGS"]
  
@@ -49,7 +49,7 @@ index 229e06a545..b69566b1c3 100644
      "UseCounterList.h",
      script="gen-usecounters.py",
 diff --git a/gfx/moz.build b/gfx/moz.build
-index 4d6d63da9d..8222b72333 100644
+index c09fcbf3ce..4c88ac6ad8 100644
 --- a/gfx/moz.build
 +++ b/gfx/moz.build
 @@ -10,6 +10,9 @@ with Files("**"):
@@ -71,10 +71,10 @@ index 4d6d63da9d..8222b72333 100644
      "thebes",
      "ipc",
 diff --git a/gfx/skia/generate_mozbuild.py b/gfx/skia/generate_mozbuild.py
-index 5e0fd17d79..860b80af4f 100755
+index 20e2929733..256e68e292 100755
 --- a/gfx/skia/generate_mozbuild.py
 +++ b/gfx/skia/generate_mozbuild.py
-@@ -96,6 +96,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
+@@ -91,6 +91,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
          '-Wno-unused-private-field',
      ]
  
@@ -85,10 +85,10 @@ index 5e0fd17d79..860b80af4f 100755
      LOCAL_INCLUDES += [
          "/gfx/cairo/cairo/src",
 diff --git a/gfx/skia/moz.build b/gfx/skia/moz.build
-index 524bd28dac..615c93b266 100755
+index 52966211bd..cdf81adf86 100644
 --- a/gfx/skia/moz.build
 +++ b/gfx/skia/moz.build
-@@ -488,6 +488,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
+@@ -487,6 +487,9 @@ if CONFIG['CC_TYPE'] in ('clang', 'clang-cl'):
          '-Wno-unused-private-field',
      ]
  
@@ -99,19 +99,19 @@ index 524bd28dac..615c93b266 100755
      LOCAL_INCLUDES += [
          "/gfx/cairo/cairo/src",
 diff --git a/gfx/thebes/moz.build b/gfx/thebes/moz.build
-index 248aa36b3d..db1954effc 100644
+index 176cc3c7e5..34ac0598ac 100644
 --- a/gfx/thebes/moz.build
 +++ b/gfx/thebes/moz.build
-@@ -286,6 +286,9 @@ LOCAL_INCLUDES += CONFIG["SKIA_INCLUDES"]
+@@ -294,6 +294,9 @@ LOCAL_INCLUDES += CONFIG["SKIA_INCLUDES"]
  
  DEFINES["GRAPHITE2_STATIC"] = True
  
 +if CONFIG["MOZ_SYSTEM_HARFBUZZ"]:
 +    CXXFLAGS += CONFIG["MOZ_HARFBUZZ_CFLAGS"]
 +
- if CONFIG["CC_TYPE"] in ("clang", "clang-cl"):
-     # Suppress warnings from Skia header files.
-     SOURCES["gfxPlatform.cpp"].flags += ["-Wno-implicit-fallthrough"]
+ CXXFLAGS += ["-Werror=switch"]
+ 
+ include("/tools/fuzzing/libfuzzer-config.mozbuild")
 diff --git a/intl/unicharutil/util/moz.build b/intl/unicharutil/util/moz.build
 index b52920725e..5272100b3e 100644
 --- a/intl/unicharutil/util/moz.build
@@ -127,10 +127,10 @@ index b52920725e..5272100b3e 100644
  
  GeneratedFile(
 diff --git a/netwerk/dns/moz.build b/netwerk/dns/moz.build
-index 5d81059ed8..3534be2685 100644
+index a83d2720c4..56097323c2 100644
 --- a/netwerk/dns/moz.build
 +++ b/netwerk/dns/moz.build
-@@ -109,4 +109,7 @@ LOCAL_INCLUDES += [
+@@ -111,4 +111,7 @@ LOCAL_INCLUDES += [
      "/netwerk/protocol/http",
  ]
  
@@ -153,10 +153,10 @@ index 0f9d7e95bf..a6c079d252 100644
      OS_LIBS += CONFIG["MOZ_JPEG_LIBS"]
  
 diff --git a/toolkit/moz.configure b/toolkit/moz.configure
-index 0dd52bd520..980f2dc524 100644
+index ce97db43fd..bab2de1d9f 100644
 --- a/toolkit/moz.configure
 +++ b/toolkit/moz.configure
-@@ -605,6 +605,15 @@ def freetype2_combined_info(fontconfig_info, freetype2_info):
+@@ -629,6 +629,15 @@ def freetype2_combined_info(fontconfig_info, freetype2_info):
  
  set_define("MOZ_HAVE_FREETYPE2", depends_if(freetype2_info)(lambda _: True))
  
@@ -173,5 +173,5 @@ index 0dd52bd520..980f2dc524 100644
  # ==============================================================
  @depends(toolkit)
 -- 
-2.37.0
+2.40.0
 

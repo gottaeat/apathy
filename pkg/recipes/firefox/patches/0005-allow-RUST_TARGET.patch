@@ -1,0 +1,42 @@
+From 91c3a65dc3cd5582c2c21a552fd09101c885b634 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Tue, 4 Apr 2023 19:08:32 +0300
+Subject: [PATCH 05/15] allow RUST_TARGET.
+
+---
+ build/moz.configure/rust.configure | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/build/moz.configure/rust.configure b/build/moz.configure/rust.configure
+index 06c0778f5e..63682bbcf3 100644
+--- a/build/moz.configure/rust.configure
++++ b/build/moz.configure/rust.configure
+@@ -279,7 +279,9 @@ def rust_supported_targets(rustc):
+         data.setdefault(key, []).append(namespace(rust_target=t, target=info))
+     return data
+ 
+-
++@imports('os')
++@imports(_from='mozbuild.util', _import='ensure_unicode')
++@imports(_from='mozbuild.util', _import='system_encoding')
+ def detect_rustc_target(
+     host_or_target, compiler_info, arm_target, rust_supported_targets
+ ):
+@@ -411,12 +413,12 @@ def detect_rustc_target(
+ 
+         return None
+ 
+-    rustc_target = find_candidate(candidates)
++    rustc_target = os.environ['RUST_TARGET']
+ 
+     if rustc_target is None:
+         die("Don't know how to translate {} for rustc".format(host_or_target.alias))
+ 
+-    return rustc_target
++    return ensure_unicode(rustc_target, system_encoding)
+ 
+ 
+ @imports("os")
+-- 
+2.40.0
+

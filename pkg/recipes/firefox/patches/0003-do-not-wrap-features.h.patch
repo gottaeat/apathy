@@ -1,0 +1,24 @@
+From 51417ce4b085618f1d2d7913e6762df4f0283a68 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Tue, 4 Apr 2023 19:05:16 +0300
+Subject: [PATCH 03/15] do not wrap features.h.
+
+---
+ config/system-headers.mozbuild | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/config/system-headers.mozbuild b/config/system-headers.mozbuild
+index 9c07dba2f4..04ca57ae8d 100644
+--- a/config/system-headers.mozbuild
++++ b/config/system-headers.mozbuild
+@@ -229,7 +229,6 @@ system_headers = [
+     'execinfo.h',
+     'extras.h',
+     'fcntl.h',
+-    'features.h',
+     'fenv.h',
+     'ffi.h',
+     'fibdef.h',
+-- 
+2.40.0
+

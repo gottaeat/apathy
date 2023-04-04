@@ -5,10 +5,10 @@ mk_add_options MOZ_MAKE_FLAGS="-jJOBCOUNTREPLACE"
 # > 2
 ac_add_options --host="x86_64-apathy-linux-musl"
 ac_add_options --target="x86_64-apathy-linux-musl"
-ac_add_options --prefix="/opt/firefox-102.8.0esr"
-ac_add_options --libdir="/opt/firefox-102.8.0esr/lib"
-ac_add_options --with-libclang-path="/opt/llvm-15.0.7/lib"
-ac_add_options --with-clang-path="/opt/llvm-15.0.7/bin/clang"
+ac_add_options --prefix="/opt/firefox"
+ac_add_options --libdir="/opt/firefox/lib"
+ac_add_options --with-libclang-path="/opt/llvm/lib"
+ac_add_options --with-clang-path="/opt/llvm/bin/clang"
 
 # > 3
 ac_add_options --enable-hardening

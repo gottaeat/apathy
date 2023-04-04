@@ -1,55 +1,61 @@
 # 1 > env vars
+cdt1
+
 money="/mss/work/table/KEK"
 export                 CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
 export               CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
-export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox-102.8.0esr/lib,--enable-new-dtags"
+export                LDFLAGS="${LDFLAGS},-rpath=/opt/firefox/lib,--enable-new-dtags"
+export              CXXSTDLIB="c++"
 
-                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Lnative=$(llvm-config --libdir)"
+                    RUSTFLAGS="-Clinker=${CC} -Ctarget-cpu=x86-64 -Lnative=/opt/llvm/lib"
 export              RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
+export            RUST_TARGET="${CHOST}"
 export         BINDGEN_CFLAGS="${CFLAGS}"
 
-export                   PATH="${money}/bin:${PATH}"
+export                   PATH="${PATH}:${money}/bin:${PWD}/rust/bin:${PWD}/node.js/bin"
 export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${money}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib"
+export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib:${PWD}/rust/lib"
 export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
-export              CXXSTDLIB="c++"
-export            RUST_TARGET="${CHOST}"
-export             MOZ_NOSPAM=1
-export        MOZ_DEBUG_FLAGS="-g0"
-
-export     MOZBUILD_STATE_PATH="${PWD}/state"
-
-export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS="mach"
+export                                 MOZ_NOSPAM=1
+export                            MOZ_DEBUG_FLAGS="-g0"
+export                        MOZBUILD_STATE_PATH="${PWD}/state"
 export    MACH_BUILD_PYTHON_NATIVE_PACKAGE_SOURCE="system"
+export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS="mach"
 
 mimup
 
 # 2 > extraction
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/ff-prereq-*.tar.zst
+for i in node.js-19.8.1 rust-0599b6b9 ff-prereq-20230404_054539; do
+ tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${i}".tar.zst
+done
 
-tar xf /mss/work/sauces/firefox-102.8.0esr.source.tar.xz
-cd     firefox-102.8.0/
+tar xf /mss/work/sauces/firefox-112.0b9.source.tar.xz
+cd     firefox-112.0/
 
 # 3 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
 
-# 4 > nuke undesried requests
+# 4 > nuke undesired requests
 for i in `grep firefox\\.settings\\.services\\.mozilla\\.com -r . -l 2>/dev/null`; do
  sed -i -e 's/firefox\.settings\.services\.mozilla\.com/f.s.s.m.c.qjz9zk/g' "${i}"
 done
 
 # 5 > nuke addons and pocket
-rm -rf \
- browser/components/pocket                                           \
- browser/extensions/{doh-rollout,pictureinpicture,report-site-issue} \
- browser/extensions/{screenshots,search-detection,webcompat}
+addonlist="screenshots
+           webcompat
+           report-site-issue
+           pictureinpicture
+           search-detection"
+
+for i in ${addonlist}; do rm -rf browser/extensions/"${i}"; done
+rm -rf browser/components/pocket
 
 # 6 > clear sums
-for sum in target-lexicon-0.9.0 bindgen; do
- sed -i 's/\("files":{\)[^}]*/\1/'  third_party/rust/${sum}/.cargo-checksum.json
-done
+#for sum in ; do
+# sed -i 's/\("files":{\)[^}]*/\1/' third_party/rust/${sum}/.cargo-checksum.json
+#done
 
 # 7 > clear the default bookmarks
 fdir="/mss/repo/pkg/recipes/firefox/files"
@@ -64,10 +70,11 @@ find ./third_party -type f \( -name '*.so' -o -name '*.o' \) -print -delete
 
 # 10 > start the build
 cp -v "${fdir}"/mozconfig .
-_echoflags="$(echo ${CXXFLAGS} | sed 's/\//\\\//g')"
-sed -i -e "s/REPLACEMEYOUWONT/${_echoflags}/g;s/JOBCOUNTREPLACE/${ajobcount}/g" \
+
+sed -i \
+ -e "s/REPLACEMEYOUWONT/$(echo ${CXXFLAGS} | sed 's/\//\\\//g')/g" \
+ -e "s/JOBCOUNTREPLACE/${ajobcount}/g"   \
  mozconfig
-unset _echoflags
 
 sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
  python/mach/mach/site.py
@@ -75,11 +82,11 @@ sed -i -e 's/pip\ +\ \[\"check\"\],/pip + \[\"--version\"\],/g' \
 time ./mach build
 
 # 11 > install
-instdir="${PWD}/KEK/opt/firefox-102.8.0esr"
+instdir="${PWD}/KEK/opt/firefox"
 DESTDIR="${PWD}/dummyinstall" ./mach install
 
 mkdir "${instdir}"/bin
-mv    "${PWD}/dummyinstall"/opt/firefox-102.8.0esr/lib/firefox "${instdir}"/lib
+mv    "${PWD}/dummyinstall"/opt/firefox/lib/firefox "${instdir}"/lib
 pushd "${instdir}"/bin
 ln -sfv ../lib/firefox firefox
 popd

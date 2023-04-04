@@ -1,18 +1,13 @@
-From 04d20a4a61c201f1d5a72dd0ad376e1580c9cb49 Mon Sep 17 00:00:00 2001
+From e1a620f11cd34b7fd9b118ec30ac1e97de74ec90 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Thu, 7 Jul 2022 23:13:15 +0300
-Subject: [PATCH 01/16] musl fixes.
+Date: Tue, 4 Apr 2023 19:04:47 +0300
+Subject: [PATCH 01/15] musl fixes.
 
 ---
- .../third_party/nICEr/src/stun/addrs-netlink.c   |  1 +
- js/src/threading/posix/PosixThread.cpp           |  4 +++-
- mozglue/misc/StackWalk.cpp                       |  6 ------
- .../chromium/sandbox/linux/seccomp-bpf/trap.cc   |  6 +++++-
- security/sandbox/linux/SandboxFilter.cpp         | 16 +++++++++++++---
- .../system_wrappers/source/cpu_features_linux.cc | 12 +++---------
- tools/profiler/core/platform-linux-android.cpp   |  2 ++
- xpcom/base/nsMemoryReporterManager.cpp           |  4 ++++
- 8 files changed, 31 insertions(+), 20 deletions(-)
+ .../transport/third_party/nICEr/src/stun/addrs-netlink.c  | 1 +
+ security/sandbox/linux/SandboxFilter.cpp                  | 8 ++++++--
+ .../system_wrappers/source/cpu_features_linux.cc          | 4 ++--
+ 3 files changed, 9 insertions(+), 4 deletions(-)
 
 diff --git a/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c b/dom/media/webrtc/transport/third_party/nICEr/src/stun/addrs-netlink.c
 index 73e85c6ccc..9eca548638 100644
@@ -26,88 +21,22 @@ index 73e85c6ccc..9eca548638 100644
  #include "addrs-netlink.h"
  #include <csi_platform.h>
  #include <assert.h>
-diff --git a/js/src/threading/posix/PosixThread.cpp b/js/src/threading/posix/PosixThread.cpp
-index 35532e375b..983da45326 100644
---- a/js/src/threading/posix/PosixThread.cpp
-+++ b/js/src/threading/posix/PosixThread.cpp
-@@ -115,8 +115,10 @@ void ThisThread::SetName(const char* name) {
-   rv = 0;
- #elif defined(__NetBSD__)
-   rv = pthread_setname_np(pthread_self(), "%s", (void*)name);
--#else
-+#elif defined(__GLIBC__)
-   rv = pthread_setname_np(pthread_self(), name);
-+#else
-+  rv = 0;
- #endif
-   MOZ_RELEASE_ASSERT(!rv);
- }
-diff --git a/mozglue/misc/StackWalk.cpp b/mozglue/misc/StackWalk.cpp
-index 0fc0da51bf..e5541dfc7c 100644
---- a/mozglue/misc/StackWalk.cpp
-+++ b/mozglue/misc/StackWalk.cpp
-@@ -44,13 +44,7 @@ using namespace mozilla;
- #  define MOZ_STACKWALK_SUPPORTS_MACOSX 0
- #endif
- 
--#if (defined(linux) &&                                            \
--     ((defined(__GNUC__) && (defined(__i386) || defined(PPC))) || \
--      defined(HAVE__UNWIND_BACKTRACE)))
--#  define MOZ_STACKWALK_SUPPORTS_LINUX 1
--#else
- #  define MOZ_STACKWALK_SUPPORTS_LINUX 0
--#endif
- 
- #if __GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
- #  define HAVE___LIBC_STACK_END 1
-diff --git a/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc b/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc
-index 9884be8bb2..86d8f88e30 100644
---- a/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc
-+++ b/security/sandbox/chromium/sandbox/linux/seccomp-bpf/trap.cc
-@@ -174,7 +174,11 @@ void Trap::SigSys(int nr, LinuxSigInfo* info, ucontext_t* ctx) {
-   // If the version of glibc doesn't include this information in
-   // siginfo_t (older than 2.17), we need to explicitly copy it
-   // into an arch_sigsys structure.
--  memcpy(&sigsys, &info->_sifields, sizeof(sigsys));
-+#if defined(__GLIBC__)
-+   memcpy(&sigsys, &info->_sifields, sizeof(sigsys));
-+#else
-+  memcpy(&sigsys, &info->__si_fields, sizeof(sigsys));
-+#endif
- #endif
- 
- #if defined(__mips__)
 diff --git a/security/sandbox/linux/SandboxFilter.cpp b/security/sandbox/linux/SandboxFilter.cpp
-index 5f6f9bcad8..57b14e8ace 100644
+index 03c6a5f6b6..f7bc5ddb8d 100644
 --- a/security/sandbox/linux/SandboxFilter.cpp
 +++ b/security/sandbox/linux/SandboxFilter.cpp
-@@ -69,7 +69,13 @@ using namespace sandbox::bpf_dsl;
- 
- // The headers define O_LARGEFILE as 0 on x86_64, but we need the
- // actual value because it shows up in file flags.
--#define O_LARGEFILE_REAL 00100000
-+#if defined(__x86_64__) || defined(__i386__) || defined(__mips__)
-+#define O_LARGEFILE_REAL 0100000
-+#elif defined(__powerpc__)
-+#define O_LARGEFILE_REAL 0200000
-+#else
-+#define O_LARGEFILE_REAL O_LARGEFILE
-+#endif
- 
- // Not part of UAPI, but userspace sees it in F_GETFL; see bug 1650751.
- #define FMODE_NONOTIFY 0x4000000
-@@ -1592,6 +1598,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
+@@ -1600,6 +1600,10 @@ class ContentSandboxPolicy : public SandboxPolicyCommon {
          // usually do something reasonable on error.
        case __NR_clone:
          return ClonePolicy(Error(EPERM));
-+#  ifdef __NR_fork
++#ifdef __NR_fork
 +      case __NR_fork:
 +        return Error(ENOSYS);
-+#  endif
++#endif
  
        case __NR_clone3:
          return Error(ENOSYS);
-@@ -1733,10 +1743,10 @@ class GMPSandboxPolicy : public SandboxPolicyCommon {
+@@ -1745,10 +1749,10 @@ class GMPSandboxPolicy : public SandboxPolicyCommon {
          return Allow();
        case __NR_sched_get_priority_min:
        case __NR_sched_get_priority_max:
@@ -121,93 +50,27 @@ index 5f6f9bcad8..57b14e8ace 100644
          return If(pid == 0, Allow()).Else(Trap(SchedTrap, nullptr));
        }
 diff --git a/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc b/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
-index 335bed4da3..c2c98dae8a 100644
+index 2d79dde111..fa0824904a 100644
 --- a/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
 +++ b/third_party/libwebrtc/system_wrappers/source/cpu_features_linux.cc
-@@ -12,13 +12,7 @@
- #include <stdlib.h>
- #include <string.h>
+@@ -18,7 +18,7 @@
+ #define WEBRTC_GLIBC_PREREQ(a, b) 0
+ #endif
  
--#ifdef __GLIBC_PREREQ
--#define WEBRTC_GLIBC_PREREQ(a, b) __GLIBC_PREREQ(a, b)
--#else
--#define WEBRTC_GLIBC_PREREQ(a, b) 0
--#endif
--
 -#if WEBRTC_GLIBC_PREREQ(2, 16)
-+#if defined(__linux__)
++#if !__GLIBC__ || WEBRTC_GLIBC_PREREQ(2, 16)
  #include <sys/auxv.h>
  #else
  #include <errno.h>
-@@ -40,7 +34,7 @@ uint64_t GetCPUFeaturesARM(void) {
+@@ -40,7 +40,7 @@ uint64_t GetCPUFeaturesARM(void) {
    int architecture = 0;
    uint64_t hwcap = 0;
    const char* platform = NULL;
 -#if WEBRTC_GLIBC_PREREQ(2, 16)
-+#if defined(__linux__)
++#if !__GLIBC__ || WEBRTC_GLIBC_PREREQ(2, 16)
    hwcap = getauxval(AT_HWCAP);
    platform = (const char*)getauxval(AT_PLATFORM);
  #else
-@@ -64,7 +58,7 @@ uint64_t GetCPUFeaturesARM(void) {
-     }
-     close(fd);
-   }
--#endif  // WEBRTC_GLIBC_PREREQ(2, 16)
-+#endif  // (__linux__)
- #if defined(__aarch64__)
-   architecture = 8;
-   if ((hwcap & HWCAP_FP) != 0)
-diff --git a/tools/profiler/core/platform-linux-android.cpp b/tools/profiler/core/platform-linux-android.cpp
-index 3bfe36ffc8..48c4e3c703 100644
---- a/tools/profiler/core/platform-linux-android.cpp
-+++ b/tools/profiler/core/platform-linux-android.cpp
-@@ -630,8 +630,10 @@ static void PlatformInit(PSLockRef aLock) {}
- 
- #if defined(HAVE_NATIVE_UNWIND)
- void Registers::SyncPopulate() {
-+#if defined(__GLIBC__)
-   if (!getcontext(&mContextSyncStorage)) {
-     PopulateRegsFromContext(*this, &mContextSyncStorage);
-   }
-+#endif
- }
- #endif
-diff --git a/xpcom/base/nsMemoryReporterManager.cpp b/xpcom/base/nsMemoryReporterManager.cpp
-index 30bc60e01a..56d0ed00fa 100644
---- a/xpcom/base/nsMemoryReporterManager.cpp
-+++ b/xpcom/base/nsMemoryReporterManager.cpp
-@@ -127,6 +127,7 @@ using namespace dom;
-   return GetProcSelfSmapsPrivate(aN, aPid);
- }
- 
-+#ifdef __GLIBC__
- #  ifdef HAVE_MALLINFO
- #    define HAVE_SYSTEM_HEAP_REPORTER 1
- [[nodiscard]] static nsresult SystemHeapSize(int64_t* aSizeOut) {
-@@ -146,6 +147,7 @@ using namespace dom;
-   return NS_OK;
- }
- #  endif
-+#endif
- 
- #elif defined(__DragonFly__) || defined(__FreeBSD__) || defined(__NetBSD__) || \
-     defined(__OpenBSD__) || defined(__FreeBSD_kernel__)
-@@ -653,6 +655,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
-   return NS_OK;
- }
- 
-+#ifdef __GLIBC__
- #  define HAVE_SYSTEM_HEAP_REPORTER 1
- // Windows can have multiple separate heaps, but we should not touch non-default
- // heaps because they may be destroyed at anytime while we hold a handle.  So we
-@@ -685,6 +688,7 @@ static bool InSharedRegion(mach_vm_address_t aAddr, cpu_type_t aType) {
-   *aSizeOut = heapSize;
-   return NS_OK;
- }
-+#endif
- 
- struct SegmentKind {
-   DWORD mState;
 -- 
-2.37.0
+2.40.0
 

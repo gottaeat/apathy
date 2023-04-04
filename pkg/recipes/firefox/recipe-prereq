@@ -1,12 +1,14 @@
 # 1 > env vars
-money="/mss/work/table/KEK"
-export                 CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
-export               CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
+cdt1
 
-export                   PATH="${money}/bin:${PATH}"
-export        PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${money}/share/pkgconfig"
-export        LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib"
-export           LIBRARY_PATH="${LD_LIBRARY_PATH}"
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -I${money}/include/gtk-3.0/"
+
+export            PATH="${PATH}:${money}/bin:${PWD}/rust/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig:${money}/share/pkgconfig"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib:${PWD}/rust/lib"
+export    LIBRARY_PATH="${LD_LIBRARY_PATH}"
 
 mimup
 
@@ -29,7 +31,30 @@ myxconf(){
   --disable-unit-tests
 }
 
-# 2 > retard wayland
+# 2 > cbindgen
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/rust-bootstrap-0599b6b9.tar.zst
+
+       RUSTFLAGS="-Clinker=${CC} -Lnative=/opt/llvm/lib"
+       RUSTFLAGS="${RUSTFLAGS} -Ctarget-cpu=x86-64 -Copt-level=3"
+       RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
+export RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
+
+tar xf /mss/work/sauces/cbindgen-0.24.3.tar.gz
+cd     cbindgen-0.24.3/
+
+cargo fetch --locked
+cargo build --release --frozen
+
+mkdir "${money}"/bin
+
+for i in target/release/cbindgen; do
+ strip --strip-all "${i}"
+ mv                "${i}" "${money}"/bin
+done
+
+cd ../; rm -rf cbindgen-0.24.3/
+
+# 3 > dummy wayland
 tar xf /mss/work/sauces/wayland-1.21.0.tar.xz
 cd     wayland-1.21.0/
 
@@ -50,7 +75,7 @@ samu install
 
 cd ../../; rm -rf wayland-1.21.0/
 
-# 3 > retard wayland-protocols
+# 4 > dummy wayland-protocols
 tar xf /mss/work/sauces/wayland-protocols-1.26.tar.xz
 cd     wayland-protocols-1.26/
 
@@ -68,7 +93,7 @@ samu install
 
 cd ../../; rm -rf wayland-protocols-1.26/
 
-# 4 > retard libxkbcommon
+# 5 > dummy libxkbcommon
 tar xf /mss/work/sauces/libxkbcommon-1.4.1.tar.xz
 cd     libxkbcommon-1.4.1/
 
@@ -90,7 +115,7 @@ samu install
 
 cd ../../; rm -rf libxkbcommon-1.4.1/
 
-# 5 > dummy gtk3
+# 6 > dummy gtk3
 tar xf /mss/work/sauces/gtk%2B-3.24.34.tar.xz
 cd     gtk+-3.24.34/
 
@@ -138,7 +163,7 @@ samu install
 
 cd ../../; rm -rf gtk+-3.24.34/
 
-# 6 > static libXt
+# 7 > static libXt
 tar xf /mss/work/sauces/xorg-libs/libXt-1.2.1.tar.bz2
 cd     libXt-1.2.1/
 
@@ -149,7 +174,7 @@ make install
 
 cd ../; rm -rf libXt-1.2.1/
 
-# 7 > static libXtst
+# 8 > static libXtst
 tar xf /mss/work/sauces/libXtst-1.2.3.tar.bz2
 cd     libXtst-1.2.3/
 
@@ -160,7 +185,7 @@ make install
 
 cd ../; rm -rf libXtst-1.2.3/
 
-# 8 > autoconf 2.13
+# 9 > autoconf 2.13
 tar xf /mss/work/sauces/autoconf-2.13.tar.gz
 cd     autoconf-2.13/
 
@@ -177,7 +202,7 @@ make install
 
 cd ../; rm -rf autoconf-2.13/
 
-# 9 > yasm
+# 10 > yasm
 tar xf /mss/work/sauces/yasm-1.3.0.tar.gz
 cd     yasm-1.3.0/
 
@@ -193,7 +218,7 @@ make install
 
 cd ../; rm -rf yasm-1.3.0/
 
-# 10 > zip
+# 11 > zip
 tar xf /mss/work/sauces/zip30.tar.gz
 cd     zip30/
 
@@ -202,6 +227,6 @@ make prefix="${money}"     -f unix/Makefile install
 
 cd ../; rm -rf zip30/
 
-# 11 > pkgup
+# 12 > pkgup
 pkgup "${money##*/}" ff-prereq-`dn`
 mv ff-prereq-*.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/

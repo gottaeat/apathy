@@ -1,31 +1,31 @@
-From 00aca6804dd7e839a596f9ac57d4d28e718b2cea Mon Sep 17 00:00:00 2001
+From cac2c5c7ac9cbc5f11801303151e303d6066d8c3 Mon Sep 17 00:00:00 2001
 From: must_eat <mss@tutanota.de>
-Date: Fri, 8 Jul 2022 01:50:30 +0300
-Subject: [PATCH 12/16] nuke addons.
+Date: Tue, 4 Apr 2023 19:10:45 +0300
+Subject: [PATCH 11/15] nuke addons.
 
 ---
- browser/components/BrowserGlue.jsm | 172 -----------------------------
- browser/extensions/moz.build       |   6 -
- browser/locales/Makefile.in        |   2 -
- browser/locales/filter.py          |   1 -
- browser/locales/l10n.ini           |   1 -
- browser/locales/l10n.toml          |   4 -
- 6 files changed, 186 deletions(-)
+ browser/components/BrowserGlue.sys.mjs | 175 -------------------------
+ browser/extensions/moz.build           |   5 -
+ browser/locales/Makefile.in            |   2 -
+ browser/locales/filter.py              |   1 -
+ browser/locales/l10n.ini               |   1 -
+ browser/locales/l10n.toml              |   4 -
+ 6 files changed, 188 deletions(-)
 
-diff --git a/browser/components/BrowserGlue.jsm b/browser/components/BrowserGlue.jsm
-index 75856e0c2f..2510b01a21 100644
---- a/browser/components/BrowserGlue.jsm
-+++ b/browser/components/BrowserGlue.jsm
-@@ -674,16 +674,6 @@ let JSWINDOWACTORS = {
+diff --git a/browser/components/BrowserGlue.sys.mjs b/browser/components/BrowserGlue.sys.mjs
+index 59153b984f..bc0e4d2e95 100644
+--- a/browser/components/BrowserGlue.sys.mjs
++++ b/browser/components/BrowserGlue.sys.mjs
+@@ -717,16 +717,6 @@ let JSWINDOWACTORS = {
      enablePreference: "accessibility.blockautorefresh",
    },
  
 -  ScreenshotsComponent: {
 -    parent: {
--      moduleURI: "resource:///modules/ScreenshotsUtils.jsm",
+-      esModuleURI: "resource:///modules/ScreenshotsUtils.sys.mjs",
 -    },
 -    child: {
--      moduleURI: "resource:///actors/ScreenshotsComponentChild.jsm",
+-      esModuleURI: "resource:///actors/ScreenshotsComponentChild.sys.mjs",
 -    },
 -    enablePreference: "screenshots.browser.component.enabled",
 -  },
@@ -33,7 +33,7 @@ index 75856e0c2f..2510b01a21 100644
    SearchSERPTelemetry: {
      parent: {
        moduleURI: "resource:///actors/SearchSERPTelemetryParent.jsm",
-@@ -2010,77 +2000,6 @@ BrowserGlue.prototype = {
+@@ -1986,77 +1976,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -44,7 +44,7 @@ index 75856e0c2f..2510b01a21 100644
 -    const COMPONENT_PREF = "screenshots.browser.component.enabled";
 -    const ID = "screenshots@mozilla.org";
 -    const _checkScreenshotsPref = async () => {
--      let addon = await AddonManager.getAddonByID(ID);
+-      let addon = await lazy.AddonManager.getAddonByID(ID);
 -      if (!addon) {
 -        return;
 -      }
@@ -55,16 +55,16 @@ index 75856e0c2f..2510b01a21 100644
 -      let componentEnabled = Services.prefs.getBoolPref(COMPONENT_PREF, false);
 -      if (screenshotsDisabled) {
 -        if (componentEnabled) {
--          ScreenshotsUtils.uninitialize();
+-          lazy.ScreenshotsUtils.uninitialize();
 -        } else {
 -          await addon.disable({ allowSystemAddons: true });
 -        }
 -      } else if (componentEnabled) {
--        ScreenshotsUtils.initialize();
+-        lazy.ScreenshotsUtils.initialize();
 -        await addon.disable({ allowSystemAddons: true });
 -      } else {
 -        await addon.enable({ allowSystemAddons: true });
--        ScreenshotsUtils.uninitialize();
+-        lazy.ScreenshotsUtils.uninitialize();
 -      }
 -    };
 -    Services.prefs.addObserver(SCREENSHOTS_PREF, _checkScreenshotsPref);
@@ -76,7 +76,7 @@ index 75856e0c2f..2510b01a21 100644
 -    const PREF = "extensions.webcompat-reporter.enabled";
 -    const ID = "webcompat-reporter@mozilla.org";
 -    Services.prefs.addObserver(PREF, async () => {
--      let addon = await AddonManager.getAddonByID(ID);
+-      let addon = await lazy.AddonManager.getAddonByID(ID);
 -      if (!addon) {
 -        return;
 -      }
@@ -93,11 +93,11 @@ index 75856e0c2f..2510b01a21 100644
 -    // There is no pref for this add-on because it shouldn't be disabled.
 -    const ID = "addons-search-detection@mozilla.com";
 -
--    let addon = await AddonManager.getAddonByID(ID);
+-    let addon = await lazy.AddonManager.getAddonByID(ID);
 -
 -    // first time install of addon and install on firefox update
 -    addon =
--      (await AddonManager.maybeInstallBuiltinAddon(
+-      (await lazy.AddonManager.maybeInstallBuiltinAddon(
 -        ID,
 -        "2.0.0",
 -        "resource://builtin-addons/search-detection/"
@@ -111,36 +111,38 @@ index 75856e0c2f..2510b01a21 100644
    _monitorHTTPSOnlyPref() {
      const PREF_ENABLED = "dom.security.https_only_mode";
      const PREF_WAS_ENABLED = "dom.security.https_only_mode_ever_enabled";
-@@ -2565,16 +2484,6 @@ BrowserGlue.prototype = {
+@@ -2620,17 +2539,6 @@ BrowserGlue.prototype = {
          },
        },
  
 -      {
+-        name: "ScreenshotsUtils.initialize",
 -        task: () => {
 -          if (
 -            Services.prefs.getBoolPref("screenshots.browser.component.enabled")
 -          ) {
--            ScreenshotsUtils.initialize();
+-            lazy.ScreenshotsUtils.initialize();
 -          }
 -        },
 -      },
 -
        {
+         name: "trackStartupCrashEndSetTimeout",
          task: () => {
-           let { setTimeout } = ChromeUtils.import(
-@@ -2632,33 +2541,6 @@ BrowserGlue.prototype = {
+@@ -2681,35 +2589,6 @@ BrowserGlue.prototype = {
          },
        },
  
 -      // Run TRR performance measurements for DoH.
 -      {
+-        name: "doh-rollout.trrRacer.run",
 -        task: () => {
 -          let enabledPref = "doh-rollout.trrRace.enabled";
 -          let completePref = "doh-rollout.trrRace.complete";
 -
 -          if (Services.prefs.getBoolPref(enabledPref, false)) {
 -            if (!Services.prefs.getBoolPref(completePref, false)) {
--              new TRRRacer().run(() => {
+-              new lazy.TRRRacer().run(() => {
 -                Services.prefs.setBoolPref(completePref, true);
 -              });
 -            }
@@ -150,7 +152,7 @@ index 75856e0c2f..2510b01a21 100644
 -                Services.prefs.removeObserver(enabledPref, observer);
 -
 -                if (!Services.prefs.getBoolPref(completePref, false)) {
--                  new TRRRacer().run(() => {
+-                  new lazy.TRRRacer().run(() => {
 -                    Services.prefs.setBoolPref(completePref, true);
 -                  });
 -                }
@@ -159,10 +161,11 @@ index 75856e0c2f..2510b01a21 100644
 -          }
 -        },
 -      },
- 
+-
        // FOG doesn't need to be initialized _too_ early because it has a
        // pre-init buffer.
-@@ -4150,24 +4032,6 @@ BrowserGlue.prototype = {
+       {
+@@ -4244,24 +4123,6 @@ BrowserGlue.prototype = {
        Services.prefs.clearUserPref(oldCreditCardsAvailable);
      }
  
@@ -180,14 +183,14 @@ index 75856e0c2f..2510b01a21 100644
 -          );
 -        }
 -      } catch (ex) {
--        Cu.reportError("Failed to clear XULStore PiP values: " + ex);
+-        console.error("Failed to clear XULStore PiP values: ", ex);
 -      }
 -    }
 -
      if (currentUIVersion < 126) {
        // Bug 1747343 - Add a pref to set the default download action to "Always
        // ask" so the UCT dialog will be opened for mime types that are not
-@@ -4644,42 +4508,6 @@ BrowserGlue.prototype = {
+@@ -4863,42 +4724,6 @@ BrowserGlue.prototype = {
      }
    },
  
@@ -231,14 +234,12 @@ index 75856e0c2f..2510b01a21 100644
      "nsIObserver",
      "nsISupportsWeakReference",
 diff --git a/browser/extensions/moz.build b/browser/extensions/moz.build
-index 0d4b9c3561..dab7c04363 100644
+index 3c6e7eb886..dab7c04363 100644
 --- a/browser/extensions/moz.build
 +++ b/browser/extensions/moz.build
-@@ -5,11 +5,5 @@
- # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+@@ -6,9 +6,4 @@
  
  DIRS += [
--    "doh-rollout",
      "formautofill",
 -    "screenshots",
 -    "webcompat",
@@ -247,10 +248,10 @@ index 0d4b9c3561..dab7c04363 100644
 -    "search-detection",
  ]
 diff --git a/browser/locales/Makefile.in b/browser/locales/Makefile.in
-index e4b60a0399..c38fdd2cf5 100644
+index 7296ca4477..1278582e79 100644
 --- a/browser/locales/Makefile.in
 +++ b/browser/locales/Makefile.in
-@@ -55,7 +55,6 @@ l10n-%:
+@@ -56,7 +56,6 @@ l10n-%:
  ifneq (,$(wildcard ../extensions/formautofill/locales))
  	@$(MAKE) -C ../extensions/formautofill/locales AB_CD=$* XPI_NAME=locale-$*
  endif
@@ -258,7 +259,7 @@ index e4b60a0399..c38fdd2cf5 100644
  	@$(MAKE) -C ../../devtools/client/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) -C ../../devtools/startup/locales AB_CD=$* XPI_NAME=locale-$* XPI_ROOT_APPID='$(XPI_ROOT_APPID)'
  	@$(MAKE) l10n AB_CD=$* XPI_NAME=locale-$* PREF_DIR=$(PREF_DIR)
-@@ -76,7 +75,6 @@ endif
+@@ -78,7 +77,6 @@ endif
  	@$(MAKE) -C ../../devtools/startup/locales chrome AB_CD=$*
  	@$(MAKE) chrome AB_CD=$*
  	@$(MAKE) -C $(DEPTH)/$(MOZ_BRANDING_DIRECTORY)/locales chrome AB_CD=$*
@@ -267,10 +268,10 @@ index e4b60a0399..c38fdd2cf5 100644
  package-win32-installer: $(SUBMAKEFILES)
  	$(MAKE) -C ../installer/windows CONFIG_DIR=l10ngen ZIP_IN='$(ZIP_OUT)' installer
 diff --git a/browser/locales/filter.py b/browser/locales/filter.py
-index 22eb5cbdb1..5e1f09ff38 100644
+index 9155947e43..8a4401ba58 100644
 --- a/browser/locales/filter.py
 +++ b/browser/locales/filter.py
-@@ -17,7 +17,6 @@ def test(mod, path, entity=None):
+@@ -15,7 +15,6 @@ def test(mod, path, entity=None):
          "devtools/startup",
          "browser",
          "browser/extensions/formautofill",
@@ -291,10 +292,10 @@ index 7a6599740b..7f976679ee 100644
  [includes]
  # non-central apps might want to use %(topsrcdir)s here, or other vars
 diff --git a/browser/locales/l10n.toml b/browser/locales/l10n.toml
-index e9d50107cb..914a2f1a63 100644
+index 2519a9a627..c332484efd 100644
 --- a/browser/locales/l10n.toml
 +++ b/browser/locales/l10n.toml
-@@ -133,10 +133,6 @@ locales = [
+@@ -135,10 +135,6 @@ locales = [
      reference = "browser/extensions/formautofill/locales/en-US/**"
      l10n = "{l}browser/extensions/formautofill/**"
  
@@ -306,5 +307,5 @@ index e9d50107cb..914a2f1a63 100644
      reference = "services/sync/locales/en-US/**"
      l10n = "{l}services/sync/**"
 -- 
-2.37.0
+2.40.0
 
