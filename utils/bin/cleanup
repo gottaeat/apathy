@@ -15,7 +15,7 @@ for log in /var/log/*; do
  done
 
 aprint_ret "nuking ${cl_grn}.la${c_res} files."
- find /lib /lib64 /usr/lib /opt -type f -name \*.la \
+ find /lib /usr/lib /opt -type f -name \*.la \
   -exec rm -rf {} ';'
 evalret
 aprint_nc
