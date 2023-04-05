@@ -17,7 +17,7 @@ case "${strippening}" in
  y|Y|yes)
   aprint_nc
   aprint_ret "stripping static libraries."
-   find /lib /lib64 /usr/lib -type f -name \*.a -exec \
+   find /lib /usr/lib -type f -name \*.a -exec \
     strip \
      --strip-debug                   \
      --remove-section=.comment       \
@@ -31,7 +31,7 @@ case "${strippening}" in
   evalret
 
   aprint_ret "running ranlib on static libraries just in case."
-   find /lib /lib64 /usr/lib -type f -name \*.a -exec \
+   find /lib /usr/lib -type f -name \*.a -exec \
     ranlib \
    {} ';' >/dev/null 2>&1
   evalret
@@ -47,7 +47,7 @@ case "${strippening}" in
   evalret
 
   aprint_ret "stripping shared libraries."
-   find /lib /lib64 /usr/lib -type f -name \*.so\* -exec \
+   find /lib /usr/lib -type f -name \*.so\* -exec \
     strip \
      --strip-unneeded          \
      --remove-section=.comment \
