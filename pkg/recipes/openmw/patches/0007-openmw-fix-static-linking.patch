@@ -1,0 +1,22 @@
+From ddbba34e5d3930ea7f22dbadd3a7dd6b96175205 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 2 Jun 2021 15:07:17 +0300
+Subject: [PATCH 1/4] upd: (components/) CMakeLists.txt, fix linkery.
+
+---
+ components/CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/components/CMakeLists.txt b/components/CMakeLists.txt
+index 06ae079..81db9af 100644
+--- a/components/CMakeLists.txt
++++ b/components/CMakeLists.txt
+@@ -290,3 +290,5 @@ endif()
+ set(COMPONENT_FILES ${COMPONENT_FILES} PARENT_SCOPE)
+ 
+ target_compile_definitions(components PUBLIC BT_USE_DOUBLE_PRECISION)
++
++target_link_libraries(components "z" "X11" "Xrandr" "Xinerama" "fontconfig")
+-- 
+2.40.0
+

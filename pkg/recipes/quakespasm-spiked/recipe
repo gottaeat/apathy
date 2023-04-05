@@ -1,4 +1,6 @@
 # 1
+cdt1
+
 money="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
 export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
@@ -6,88 +8,9 @@ export            PATH="${PATH}:${money}/bin"
 export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
 export    LIBRARY_PATH="${LD_LIBRARY_PATH}:${money}/lib"
 
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/gamelibs-20230405_002418.tar.zst
+
 # 2
-tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
-cd     SDL2-2.0.14/
-
-pdir="/mss/repo/pkg/recipes/sdl2/patches"
-patch -p1 < "${pdir}"/0001-fix-static-libs.patch
-patch -p1 < "${pdir}"/0002-replace-echo-en-with-printf.patch
-
-autoreconf -fvi
-
-  CFLAGS="${CFLAGS}   -D__LINUX__" \
-CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
-./configure \
- --build=$CBUILD               \
- --host=$CHOST                 \
- --prefix="${money}"           \
- --enable-static               \
- --disable-shared              \
-\
- --enable-alsa                 \
- --enable-assembly             \
- --enable-atomic               \
- --enable-audio                \
- --enable-cpuinfo              \
- --enable-events               \
- --enable-file                 \
- --enable-filesystem           \
- --enable-ibus                 \
- --enable-libudev              \
- --enable-loadso               \
- --enable-mmx                  \
- --enable-power                \
- --enable-render               \
- --enable-sse                  \
- --enable-sse2                 \
- --enable-ssemath              \
- --enable-threads              \
- --enable-timers               \
- --enable-video-kmsdrm         \
- --enable-video-opengl         \
- --enable-video-opengles2      \
- --enable-video-x11            \
- --enable-video-x11-vm         \
- --enable-video-x11-xcursor    \
- --enable-video-x11-xdbe       \
- --enable-video-x11-xinerama   \
- --enable-video-x11-xinput     \
- --enable-video-x11-xrandr     \
- --enable-video-x11-xshape     \
- --disable-3dnow               \
- --disable-altivec             \
- --disable-arts                \
- --disable-dbus                \
- --disable-directx             \
- --disable-diskaudio           \
- --disable-dummyaudio          \
- --disable-esd                 \
- --disable-fcitx               \
- --disable-fusionsound         \
- --disable-haptic              \
- --disable-jack                \
- --disable-joystick            \
- --disable-libsamplerate       \
- --disable-nas                 \
- --disable-oss                 \
- --disable-pulseaudio          \
- --disable-render-d3d          \
- --disable-rpath               \
- --disable-sndio               \
- --disable-video-cocoa         \
- --disable-video-directfb      \
- --disable-video-dummy         \
- --disable-video-opengles1     \
- --disable-video-rpi           \
- --disable-video-vulkan        \
- --disable-video-x11-scrnsaver
-
-make
-make install
-cd ../; rm -rf SDL2-2.0.14
-
-# 3
 gcd1 https://github.com/Shpoike/Quakespasm
 cd   Quakespasm/Quake
 

@@ -1,0 +1,222 @@
+# 1
+cdt1
+
+findir="/mss/work/table/KEK"
+export   CFLAGS="${CFLAGS}   -fPIC"
+export CXXFLAGS="${CXXFLAGS} -fPIC"
+
+# 2
+tar xf /mss/work/sauces/SDL2-2.26.4.tar.gz
+cd     SDL2-2.26.4/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${findir}"     \
+ -DCMAKE_INSTALL_LIBDIR=lib             \
+ -DCMAKE_C_FLAGS="$CFLAGS"              \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"          \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS" \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
+\
+ -DSDL_3DNOW=OFF                        \
+ -DSDL_ALSA=OFF                         \
+ -DSDL_ALTIVEC=OFF                      \
+ -DSDL_ARMNEON=OFF                      \
+ -DSDL_ARMSIMD=OFF                      \
+ -DSDL_ARTS=OFF                         \
+ -DSDL_ASAN=OFF                         \
+ -DSDL_ASSEMBLY=ON                      \
+ -DSDL_ASSERTIONS=disabled              \
+ -DSDL_ATOMIC=ON                        \
+ -DSDL_AUDIO=ON                         \
+ -DSDL_BACKGROUNDING_SIGNAL=OFF         \
+ -DSDL_CCACHE=OFF                       \
+ -DSDL_CLOCK_GETTIME=ON                 \
+ -DSDL_COCOA=OFF                        \
+ -DSDL_CPUINFO=ON                       \
+ -DSDL_DBUS=OFF                         \
+ -DSDL_DIRECTFB=OFF                     \
+ -DSDL_DIRECTX=OFF                      \
+ -DSDL_DISKAUDIO=OFF                    \
+ -DSDL_DUMMYAUDIO=OFF                   \
+ -DSDL_DUMMYVIDEO=OFF                   \
+ -DSDL_ESD=OFF                          \
+ -DSDL_EVENTS=ON                        \
+ -DSDL_FILE=ON                          \
+ -DSDL_FILESYSTEM=ON                    \
+ -DSDL_FOREGROUNDING_SIGNAL=OFF         \
+ -DSDL_FUSIONSOUND=OFF                  \
+ -DSDL_GCC_ATOMICS=OFF                  \
+ -DSDL_HAPTIC=OFF                       \
+ -DSDL_HIDAPI=ON                        \
+ -DSDL_HIDAPI_JOYSTICK=ON               \
+ -DSDL_HIDAPI_LIBUSB=OFF                \
+ -DSDL_IBUS=ON                          \
+ -DSDL_INSTALL_TESTS=OFF                \
+ -DSDL_JACK=OFF                         \
+ -DSDL_JOYSTICK=ON                      \
+ -DSDL_KMSDRM=ON                        \
+ -DSDL_KMSDRM_SHARED=ON                 \
+ -DSDL_LIBC=ON                          \
+ -DSDL_LIBSAMPLERATE=OFF                \
+ -DSDL_LOADSO=ON                        \
+ -DSDL_LOCALE=ON                        \
+ -DSDL_METAL=OFF                        \
+ -DSDL_MISC=ON                          \
+ -DSDL_MMX=ON                           \
+ -DSDL_NAS=OFF                          \
+ -DSDL_OFFSCREEN=ON                     \
+ -DSDL_OPENGL=ON                        \
+ -DSDL_OPENGLES=ON                      \
+ -DSDL_OSS=OFF                          \
+ -DSDL_PIPEWIRE=OFF                     \
+ -DSDL_POWER=ON                         \
+ -DSDL_PTHREADS=ON                      \
+ -DSDL_PTHREADS_SEM=ON                  \
+ -DSDL_PULSEAUDIO=ON                    \
+ -DSDL_PULSEAUDIO_SHARED=ON             \
+ -DSDL_RENDER=ON                        \
+ -DSDL_RENDER_D3D=OFF                   \
+ -DSDL_RENDER_METAL=OFF                 \
+ -DSDL_RPATH=OFF                        \
+ -DSDL_RPI=OFF                          \
+ -DSDL_SENSOR=ON                        \
+ -DSDL_SHARED=OFF                       \
+ -DSDL_SNDIO=OFF                        \
+ -DSDL_SSE2=ON                          \
+ -DSDL_SSE3=ON                          \
+ -DSDL_SSE=ON                           \
+ -DSDL_SSEMATH=ON                       \
+ -DSDL_STATIC=ON                        \
+ -DSDL_STATIC_PIC=ON                    \
+ -DSDL_SYSTEM_ICONV=ON                  \
+ -DSDL_TEST=ON                          \
+ -DSDL_TESTS=OFF                        \
+ -DSDL_THREADS=ON                       \
+ -DSDL_TIMERS=ON                        \
+ -DSDL_VENDOR_INFO="apathy"             \
+ -DSDL_VIDEO=ON                         \
+ -DSDL_VIRTUAL_JOYSTICK=OFF             \
+ -DSDL_VIVANTE=OFF                      \
+ -DSDL_VULKAN=OFF                       \
+ -DSDL_WASAPI=OFF                       \
+ -DSDL_WAYLAND=OFF                      \
+ -DSDL_WAYLAND_LIBDECOR=OFF             \
+ -DSDL_WAYLAND_LIBDECOR_SHARED=OFF      \
+ -DSDL_WAYLAND_QT_TOUCH=OFF             \
+ -DSDL_WAYLAND_SHARED=OFF               \
+ -DSDL_WERROR=OFF                       \
+ -DSDL_X11=ON                           \
+ -DSDL_X11_SHARED=ON                    \
+ -DSDL_X11_XCURSOR=ON                   \
+ -DSDL_X11_XDBE=OFF                     \
+ -DSDL_X11_XFIXES=ON                    \
+ -DSDL_X11_XINPUT=ON                    \
+ -DSDL_X11_XRANDR=ON                    \
+ -DSDL_X11_XSCRNSAVER=OFF               \
+ -DSDL_X11_XSHAPE=OFF                   \
+ -DSDL_XINPUT=ON                        \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf SDL2-2.26.4/
+
+# 3
+tar xf /mss/work/sauces/openal-1.23.0.tar.gz
+cd     openal-soft-1.23.0/
+
+cleancmake
+
+mkdir build
+cd    build
+
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${findir}"        \
+ -DCMAKE_INSTALL_LIBDIR=lib                \
+ -DCMAKE_C_FLAGS="$CFLAGS"                 \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"             \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"       \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"    \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"      \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"        \
+\
+ -DALSOFT_BACKEND_ALSA=OFF                 \
+ -DALSOFT_BACKEND_OSS=OFF                  \
+ -DALSOFT_BACKEND_PULSEAUDIO=ON            \
+ -DALSOFT_BACKEND_SDL2=OFF                 \
+ -DALSOFT_BACKEND_WAVE=OFF                 \
+ -DALSOFT_CPUEXT_SSE2=ON                   \
+ -DALSOFT_CPUEXT_SSE3=ON                   \
+ -DALSOFT_CPUEXT_SSE4_1=ON                 \
+ -DALSOFT_CPUEXT_SSE=ON                    \
+ -DALSOFT_DLOPEN=ON                        \
+ -DALSOFT_EAX=OFF                          \
+ -DALSOFT_EMBED_HRTF_DATA=ON               \
+ -DALSOFT_EXAMPLES=OFF                     \
+ -DALSOFT_INSTALL=ON                       \
+ -DALSOFT_INSTALL_AMBDEC_PRESETS=OFF       \
+ -DALSOFT_INSTALL_CONFIG=OFF               \
+ -DALSOFT_INSTALL_EXAMPLES=OFF             \
+ -DALSOFT_INSTALL_HRTF_DATA=OFF            \
+ -DALSOFT_INSTALL_UTILS=OFF                \
+ -DALSOFT_NO_CONFIG_UTIL=ON                \
+ -DALSOFT_REQUIRE_ALSA=OFF                 \
+ -DALSOFT_REQUIRE_COREAUDIO=OFF            \
+ -DALSOFT_REQUIRE_DSOUND=OFF               \
+ -DALSOFT_REQUIRE_JACK=OFF                 \
+ -DALSOFT_REQUIRE_NEON=OFF                 \
+ -DALSOFT_REQUIRE_OBOE=OFF                 \
+ -DALSOFT_REQUIRE_OPENSL=OFF               \
+ -DALSOFT_REQUIRE_OSS=OFF                  \
+ -DALSOFT_REQUIRE_PIPEWIRE=OFF             \
+ -DALSOFT_REQUIRE_PORTAUDIO=OFF            \
+ -DALSOFT_REQUIRE_PULSEAUDIO=ON            \
+ -DALSOFT_REQUIRE_RTKIT=OFF                \
+ -DALSOFT_REQUIRE_SDL2=OFF                 \
+ -DALSOFT_REQUIRE_SNDIO=OFF                \
+ -DALSOFT_REQUIRE_SOLARIS=OFF              \
+ -DALSOFT_REQUIRE_SSE2=OFF                 \
+ -DALSOFT_REQUIRE_SSE3=OFF                 \
+ -DALSOFT_REQUIRE_SSE4_1=OFF               \
+ -DALSOFT_REQUIRE_SSE=OFF                  \
+ -DALSOFT_REQUIRE_WASAPI=OFF               \
+ -DALSOFT_REQUIRE_WINMM=OFF                \
+ -DALSOFT_SEARCH_INSTALL_DATADIR=OFF       \
+ -DALSOFT_STATIC_LIBGCC=OFF                \
+ -DALSOFT_STATIC_STDCXX=OFF                \
+ -DALSOFT_TESTS=OFF                        \
+ -DALSOFT_UPDATE_BUILD_VERSION=OFF         \
+ -DALSOFT_UTILS=OFF                        \
+ -DALSOFT_WERROR=OFF                       \
+ -DLIBTYPE=STATIC                          \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf openal-soft-1.23.0/
+
+# 4
+cd "${findir}"
+
+rm -rf share/
+
+ars="$(find . -type f -name \*.a)"
+for i in ${ars}; do
+ ${STRIP}  --strip-debug "${i}"
+ ${RANLIB}               "${i}"
+done
+
+cd ../
+
+pkgup KEK gamelibs-`dn`
+mv gamelibs-*.tar.zst \
+ /mnt/mss/stuff/techy-bits/packaged-software/

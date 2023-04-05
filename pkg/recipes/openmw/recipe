@@ -1,4 +1,6 @@
 # 1
+cdt1
+
 money="/mss/work/table/KEK"
 export          CFLAGS="${CFLAGS} -L${money}/lib -I${money}/include -fPIC"
 export        CXXFLAGS="${CFLAGS} -L${money}/lib -I${money}/include -fPIC -std=c++11"
@@ -8,17 +10,18 @@ export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
 export          TMPDIR="/mss/work/ltocache"
 
 # 2 > boost
-tar xf \
- /mnt/mss/stuff/techy-bits/packaged-software/boost-1.76.0-static-libs.tar.zst
+for i in gamelibs-20230405_002418 boost-1.76.0-static-libs; do
+ tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${i}".tar.zst
+done
 
-# 3 > openal
-tar xf /mss/work/sauces/openal-soft-1.21.1.tar.gz
-cd     openal-soft-1.21.1/
+# 3 > sdl2_image
+tar xf /mss/work/sauces/SDL2_image-2.6.3.tar.gz
+cd     SDL2_image-2.6.3/
 
 cleancmake
 
-mkdir builderoo
-cd    builderoo
+mkdir build
+cd    build
 
 cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_PREFIX="${money}"      \
@@ -30,121 +33,26 @@ cmake -Wno-dev -GNinja \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"     \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"   \
 \
- -DLIBTYPE=STATIC                       \
- -DALSOFT_EXAMPLES=OFF                  \
- -DALSOFT_UTILS=OFF                     \
- -DALSOFT_TESTS=OFF                     \
-\
- ../
+ -DBUILD_SHARED_LIBS=OFF                \
+ -DSDL2IMAGE_DEPS_SHARED=ON             \
+ -DSDL2IMAGE_SAMPLES=ON                 \
+ -DSDL2IMAGE_SAMPLES_INSTALL=OFF        \
+ -DSDL2IMAGE_TESTS=OFF                  \
+ ..
 
 samu
 samu install
-cd ../../; rm -rf openal-soft-1.21.1/
 
-# 4 > sdl2
-tar xf /mss/work/sauces/SDL2-2.0.14.tar.gz
-cd     SDL2-2.0.14/
+cd ../../; rm -rf SDL2_image-2.6.3/
 
-pdir="/mss/repo/pkg/recipes/sdl2/patches"
-patch -p1 < "${pdir}"/0001-fix-static-libs.patch
-patch -p1 < "${pdir}"/0002-replace-echo-en-with-printf.patch
-
-autoreconf -fvi
-
-  CFLAGS="${CFLAGS}   -D__LINUX__" \
-CXXFLAGS="${CXXFLAGS} -D__LINUX__" \
-./configure \
- --build=$CBUILD               \
- --host=$CHOST                 \
- --prefix="${money}"           \
- --enable-static               \
- --disable-shared              \
-\
- --enable-alsa                 \
- --enable-assembly             \
- --enable-atomic               \
- --enable-audio                \
- --enable-cpuinfo              \
- --enable-events               \
- --enable-file                 \
- --enable-filesystem           \
- --enable-ibus                 \
- --enable-joystick             \
- --enable-libudev              \
- --enable-loadso               \
- --enable-mmx                  \
- --enable-power                \
- --enable-render               \
- --enable-sse                  \
- --enable-sse2                 \
- --enable-ssemath              \
- --enable-threads              \
- --enable-timers               \
- --enable-video-kmsdrm         \
- --enable-video-opengl         \
- --enable-video-opengles2      \
- --enable-video-x11            \
- --enable-video-x11-vm         \
- --enable-video-x11-xcursor    \
- --enable-video-x11-xdbe       \
- --enable-video-x11-xinerama   \
- --enable-video-x11-xinput     \
- --enable-video-x11-xrandr     \
- --enable-video-x11-xshape     \
- --disable-3dnow               \
- --disable-altivec             \
- --disable-arts                \
- --disable-dbus                \
- --disable-directx             \
- --disable-diskaudio           \
- --disable-dummyaudio          \
- --disable-esd                 \
- --disable-fcitx               \
- --disable-fusionsound         \
- --disable-haptic              \
- --disable-jack                \
- --disable-libsamplerate       \
- --disable-nas                 \
- --disable-oss                 \
- --disable-pulseaudio          \
- --disable-render-d3d          \
- --disable-rpath               \
- --disable-sndio               \
- --disable-video-cocoa         \
- --disable-video-directfb      \
- --disable-video-dummy         \
- --disable-video-opengles1     \
- --disable-video-rpi           \
- --disable-video-vulkan        \
- --disable-video-x11-scrnsaver
-
-make
-make install
-cd ../; rm -rf SDL2-2.0.14
-
-# 5 > sdl2_image
-tar xf /mss/work/sauces/SDL2_image-2.0.5.tar.gz
-cd     SDL2_image-2.0.5/
-
-./configure \
- --build=$CBUILD      \
- --host=$CHOST        \
- --prefix="${money}"  \
- --enable-static      \
- --disable-shared
-
-make
-make install
-cd ../; rm -rf SDL2_image-2.0.5/
-
-# 6 > mygui
+# 4 > mygui
 tar xf /mss/work/sauces/MyGUI3.4.1.tar.gz
 cd     mygui-MyGUI3.4.1/
 
 cleancmake
 
-mkdir builderoo
-cd    builderoo
+mkdir build
+cd    build
 
 cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_PREFIX="${money}"      \
@@ -172,9 +80,10 @@ cmake -Wno-dev -GNinja \
 
 samu
 samu install
+
 cd ../../; rm -rf mygui-MyGUI3.4.1/
 
-# 7 > bullet
+# 5 > bullet
 tar xf /mss/work/sauces/bullet3-3.17.tar.gz
 cd     bullet3-3.17/
 
@@ -210,60 +119,147 @@ cmake -Wno-dev -GNinja \
 
 samu
 samu install
+
 cd ../../; rm -rf bullet3-3.17/
 
-# 8 > openscenegraph
-tar xf /mss/work/sauces/openmw-osg-3.4-8b07809f.tar.zst
-cd     osg/
+# 8 > libxml2
+tar xf /mss/work/sauces/libxml2-2.9.10.tar.gz
+cd     libxml2-2.9.10/
+
+./configure \
+  --build=$CBUILD     \
+  --host=$CHOST       \
+  --prefix="${money}" \
+  --with-threads      \
+  --with-history      \
+  --without-python    \
+  --without-icu       \
+  --disable-shared    \
+  --enable-static
+
+make
+make install
+
+cd ../; rm -rf libxml2-2.9.10/
+
+# 9 > collada-dom
+tar xf /mss/work/sauces/collada-dom-2.5.0.tar.gz
+cd     collada-dom-2.5.0/
 
 pdir="/mss/repo/pkg/recipes/openmw/patches"
-patch -p1 < "${pdir}"/0001-openscenegraph-cmake.patch
-patch -p1 < "${pdir}"/0002-openscenegraph-docdir.patch
-patch -p1 < "${pdir}"/0003-openscenegraph-musl-fixes.patch
-patch -p1 < "${pdir}"/0004-openscenegraph-clang-fixes.patch
+patch -p1 < "${pdir}"/0001-collada-dom-fix-libcxx16.patch
 
 cleancmake
 
-mkdir builderoo
-cd    builderoo
+mkdir build
+cd    build
 
-_xfl="-D__STDC_CONSTANT_MACROS -Wno-narrowing"
+cmake -Wno-dev -GNinja \
+ -DCMAKE_INSTALL_PREFIX="${money}"          \
+ -DCMAKE_INSTALL_LIBDIR=lib                 \
+ -DCMAKE_C_FLAGS="$CFLAGS"                  \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS -std=gnu++14" \
+ -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"        \
+ -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"     \
+ -DCMAKE_C_COMPILER_TARGET="$CHOST"         \
+ -DCMAKE_CXX_COMPILER_TARGET="$CHOST"       \
+\
+ -DBUILD_SHARED_LIBS:BOOL=OFF               \
+ ..
+
+samu
+samu install
+
+cd ../../; rm -rf collada-dom-2.5.0/
+
+# 8 > openscenegraph
+tar xf /mss/work/sauces/openmw-osg-3.6-69cfeceb.tar.gz
+cd     osg-69cfecebfb6dc703b42e8de39eed750a84a87489/
+
+patch -p1 < "${pdir}"/0002-openscenegraph-cmake.patch
+patch -p1 < "${pdir}"/0003-openscenegraph-docdir.patch
+patch -p1 < "${pdir}"/0004-openscenegraph-musl-fixes.patch
+
+cleancmake
+
+mkdir build
+cd    build
+
 cmake -Wno-dev -GNinja \
  -DCMAKE_INSTALL_PREFIX="${money}"              \
  -DCMAKE_INSTALL_LIBDIR=lib                     \
  -DINSTALL_LIBDIR=lib                           \
  -DLIB_POSTFIX=""                               \
- -DCMAKE_C_FLAGS="$CFLAGS ${_xfl}"              \
- -DCMAKE_CXX_FLAGS="$CXXFLAGS ${_xfl}"          \
+ -DCMAKE_C_FLAGS="$CFLAGS"                      \
+ -DCMAKE_CXX_FLAGS="$CXXFLAGS"                  \
  -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS"            \
  -DCMAKE_SHARED_LINKER_FLAGS="$LDFLAGS"         \
  -DCMAKE_C_COMPILER_TARGET="$CHOST"             \
  -DCMAKE_CXX_COMPILER_TARGET="$CHOST"           \
 \
- -DDYNAMIC_OPENSCENEGRAPH=OFF                   \
- -DDYNAMIC_OPENTHREADS=OFF                      \
- -DOPENGL_PROFILE=GL1                           \
- -DOSG_PROVIDE_READFILE=ON                      \
- -DOSG_USE_LOCAL_LUA_SOURCE=ON                  \
  -DBUILD_DOCUMENTATION=OFF                      \
  -DBUILD_OSG_APPLICATIONS=OFF                   \
  -DBUILD_OSG_EXAMPLES=OFF                       \
+ -DCMAKE_RELWITHDEBINFO_POSTFIX=                \
+ -DDYNAMIC_OPENSCENEGRAPH=OFF                   \
+ -DDYNAMIC_OPENTHREADS=OFF                      \
+ -DLIB_POSTFIX=""                               \
+ -DOPENGL_PROFILE=GL1                           \
  -DOSGVIEWER_USE_XRANDR=ON                      \
+ -DOSG_PROVIDE_READFILE=ON                      \
+ -DOSG_USE_LOCAL_LUA_SOURCE=ON                  \
  -DOSG_USE_QT=OFF                               \
-..
+ -DCMAKE_DISABLE_FIND_CURL=ON                   \
+ -DCMAKE_DISABLE_FIND_DCMTK=ON                  \
+ -DCMAKE_DISABLE_FIND_EGL=ON                    \
+ -DCMAKE_DISABLE_FIND_PACKAGE_COLLADA=OFF       \
+ -DCMAKE_DISABLE_FIND_PACKAGE_FFmpeg=ON         \
+ -DCMAKE_DISABLE_FIND_PACKAGE_FLTK=ON           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_FOX=ON            \
+ -DCMAKE_DISABLE_FIND_PACKAGE_Freetype=OFF      \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GDAL=ON           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GIFLIB=ON         \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GLIB=ON           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GLUT=ON           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GStreamer=ON      \
+ -DCMAKE_DISABLE_FIND_PACKAGE_GtkGl=ON          \
+ -DCMAKE_DISABLE_FIND_PACKAGE_Inventor=ON       \
+ -DCMAKE_DISABLE_FIND_PACKAGE_JPEG=OFF          \
+ -DCMAKE_DISABLE_FIND_PACKAGE_Jasper=ON         \
+ -DCMAKE_DISABLE_FIND_PACKAGE_LIBLAS=ON         \
+ -DCMAKE_DISABLE_FIND_PACKAGE_LibVNCServer=ON   \
+ -DCMAKE_DISABLE_FIND_PACKAGE_Lua=ON            \
+ -DCMAKE_DISABLE_FIND_PACKAGE_OpenCascade=ON    \
+ -DCMAKE_DISABLE_FIND_PACKAGE_OpenEXR=ON        \
+ -DCMAKE_DISABLE_FIND_PACKAGE_PNG=OFF           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_Poppler-glib=ON   \
+ -DCMAKE_DISABLE_FIND_PACKAGE_RSVG=OFF          \
+ -DCMAKE_DISABLE_FIND_PACKAGE_SDL2=OFF          \
+ -DCMAKE_DISABLE_FIND_PACKAGE_SDL=ON            \
+ -DCMAKE_DISABLE_FIND_PACKAGE_TIFF=ON           \
+ -DCMAKE_DISABLE_FIND_PACKAGE_ZLIB=OFF          \
+ -DCMAKE_DISABLE_FIND_PACKAGE_wxWidgets=ON      \
+ ..
 
 time samu
 samu install
-cd ../../; rm -rf osg/
+
+cd ../../; rm -rf osg-69cfecebfb6dc703b42e8de39eed750a84a87489/
 
 # 9 > openmw
-gcd1 --recursive https://github.com/gottaeat/openmw
-cd     openmw/
+tar xf /mss/work/sauces/openmw-0.47.0.tar.gz
+cd     openmw-openmw-0.47.0/
+
+patch -p1 < "${pdir}"/0005-openmw-fix-includes.patch
+patch -p1 < "${pdir}"/0006-openmw-fix-ffmpeg.patch
+patch -p1 < "${pdir}"/0007-openmw-fix-static-linking.patch
+patch -p1 < "${pdir}"/0008-openmw-autism-paths-1.patch
+patch -p1 < "${pdir}"/0009-openmw-autism-paths-2.patch
 
 cleancmake
 
-mkdir builderoo
-cd    builderoo
+mkdir build
+cd    build
 
 gamedir="/mnt/mss/stuff/media/games/openmw"
 cmake -Wno-dev -GNinja \
@@ -322,7 +318,7 @@ cmake -Wno-dev -GNinja \
  -DOSGFX_INCLUDE_DIR="${money}"/include                          \
  -DOSGGA_INCLUDE_DIR="${money}"/include                          \
  -DOSGPARTICLE_INCLUDE_DIR="${money}"/include                    \
- -DOSGPlugins_LIB_DIR="${money}"/lib/osgPlugins-3.4.2            \
+ -DOSGPlugins_LIB_DIR="${money}"/lib/osgPlugins-3.6.5            \
  -DOSGSHADOW_INCLUDE_DIR="${money}"/include                      \
  -DOSGTEXT_INCLUDE_DIR="${money}"/include                        \
  -DOSGUTIL_INCLUDE_DIR="${money}"/include                        \
@@ -334,8 +330,8 @@ cmake -Wno-dev -GNinja \
  -DBULLET_INCLUDE_DIR="${money}"/include/bullet                  \
  -DBULLET_MATH_LIBRARY="${money}"/lib/libLinearMath.a            \
  -DBULLET_SOFTBODY_LIBRARY="${money}"/lib/libBulletSoftBody.a    \
- -DBoost_INCLUDE_DIR=/opt/boost-1.76.0/include                   \
- -DBoost_LIBRARY_DIR=/opt/boost-1.76.0/lib                       \
+ -DBoost_INCLUDE_DIR="${money}"/include                          \
+ -DBoost_LIBRARY_DIR="${money}"/lib                              \
  -DMyGUI_INCLUDE_DIR="${money}"/include/MYGUI                    \
  -DMyGUI_LIBRARY="${money}"/lib/libMyGUIEngineStatic.a           \
  -DOPENAL_INCLUDE_DIR="${money}"/include/AL                      \

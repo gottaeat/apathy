@@ -1,0 +1,131 @@
+From 88cb79b21bc3c27e6363dc49ce98e139f05e46ba Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Wed, 5 Apr 2023 01:06:01 +0300
+Subject: [PATCH] PedAttractor.cpp: convert NULL to false to allow build with
+ libc++16.
+
+---
+ src/peds/PedAttractor.cpp | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/src/peds/PedAttractor.cpp b/src/peds/PedAttractor.cpp
+index 91139def..eb92a842 100644
+--- a/src/peds/PedAttractor.cpp
++++ b/src/peds/PedAttractor.cpp
+@@ -505,9 +505,9 @@ bool CPedAttractorManager::DeRegisterPed(CPed* pPed, CPedAttractor* pAttractor)
+ 	if (!pAttractor)
+ 		return false;
+ 	if (pAttractor->GetEffect()->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	if (!IsPedRegisteredWithEffect(pPed))
+-		return nil;
++		return false;
+ 	switch (pAttractor->GetEffect()->pedattr.type) {
+ 	case ATTRACTOR_ATM: return DeRegisterPed(pPed, pAttractor, vAtmAttractors);
+ 	case ATTRACTOR_SEAT: return DeRegisterPed(pPed, pAttractor, vSeatAttractors);
+@@ -516,7 +516,7 @@ bool CPedAttractorManager::DeRegisterPed(CPed* pPed, CPedAttractor* pAttractor)
+ 	case ATTRACTOR_SHELTER: return DeRegisterPed(pPed, pAttractor, vShelterAttractors);
+ 	case ATTRACTOR_ICECREAM: return DeRegisterPed(pPed, pAttractor, vIceCreamAttractors);
+ 	}
+-	return nil;
++	return false;
+ }
+ 
+ bool CPedAttractorManager::BroadcastArrival(CPed* pPed, CPedAttractor* pAttractor)
+@@ -524,9 +524,9 @@ bool CPedAttractorManager::BroadcastArrival(CPed* pPed, CPedAttractor* pAttracto
+ 	if (!pAttractor)
+ 		return false;
+ 	if (pAttractor->GetEffect()->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	if (!IsPedRegisteredWithEffect(pPed))
+-		return nil;
++		return false;
+ 	switch (pAttractor->GetEffect()->pedattr.type) {
+ 	case ATTRACTOR_ATM: return BroadcastArrival(pPed, pAttractor, vAtmAttractors);
+ 	case ATTRACTOR_SEAT: return BroadcastArrival(pPed, pAttractor, vSeatAttractors);
+@@ -535,7 +535,7 @@ bool CPedAttractorManager::BroadcastArrival(CPed* pPed, CPedAttractor* pAttracto
+ 	case ATTRACTOR_SHELTER: return BroadcastArrival(pPed, pAttractor, vShelterAttractors);
+ 	case ATTRACTOR_ICECREAM: return BroadcastArrival(pPed, pAttractor, vIceCreamAttractors);
+ 	}
+-	return nil;
++	return false;
+ }
+ 
+ bool CPedAttractorManager::BroadcastDeparture(CPed* pPed, CPedAttractor* pAttractor)
+@@ -543,9 +543,9 @@ bool CPedAttractorManager::BroadcastDeparture(CPed* pPed, CPedAttractor* pAttrac
+ 	if (!pAttractor)
+ 		return false;
+ 	if (pAttractor->GetEffect()->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	if (!IsPedRegisteredWithEffect(pPed))
+-		return nil;
++		return false;
+ 	switch (pAttractor->GetEffect()->pedattr.type) {
+ 	case ATTRACTOR_ATM: return BroadcastDeparture(pPed, pAttractor, vAtmAttractors);
+ 	case ATTRACTOR_SEAT: return BroadcastDeparture(pPed, pAttractor, vSeatAttractors);
+@@ -554,7 +554,7 @@ bool CPedAttractorManager::BroadcastDeparture(CPed* pPed, CPedAttractor* pAttrac
+ 	case ATTRACTOR_SHELTER: return BroadcastDeparture(pPed, pAttractor, vShelterAttractors);
+ 	case ATTRACTOR_ICECREAM: return BroadcastDeparture(pPed, pAttractor, vIceCreamAttractors);
+ 	}
+-	return nil;
++	return false;
+ }
+ 
+ bool CPedAttractorManager::IsAtHeadOfQueue(CPed* pPed, CPedAttractor* pAttractor)
+@@ -562,9 +562,9 @@ bool CPedAttractorManager::IsAtHeadOfQueue(CPed* pPed, CPedAttractor* pAttractor
+ 	if (!pAttractor)
+ 		return false;
+ 	if (pAttractor->GetEffect()->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	if (!IsPedRegisteredWithEffect(pPed))
+-		return nil;
++		return false;
+ 	switch (pAttractor->GetEffect()->pedattr.type) {
+ 	case ATTRACTOR_ATM: return IsAtHeadOfQueue(pPed, pAttractor, vAtmAttractors);
+ 	case ATTRACTOR_SEAT: return IsAtHeadOfQueue(pPed, pAttractor, vSeatAttractors);
+@@ -573,7 +573,7 @@ bool CPedAttractorManager::IsAtHeadOfQueue(CPed* pPed, CPedAttractor* pAttractor
+ 	case ATTRACTOR_SHELTER: return IsAtHeadOfQueue(pPed, pAttractor, vShelterAttractors);
+ 	case ATTRACTOR_ICECREAM: return IsAtHeadOfQueue(pPed, pAttractor, vIceCreamAttractors);
+ 	}
+-	return nil;
++	return false;
+ }
+ 
+ bool CPedAttractorManager::IsInQueue(CPed* pPed, CPedAttractor* pAttractor)
+@@ -581,9 +581,9 @@ bool CPedAttractorManager::IsInQueue(CPed* pPed, CPedAttractor* pAttractor)
+ 	if (!pAttractor)
+ 		return false;
+ 	if (pAttractor->GetEffect()->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	if (!IsPedRegisteredWithEffect(pPed))
+-		return nil;
++		return false;
+ 	switch (pAttractor->GetEffect()->pedattr.type) {
+ 	case ATTRACTOR_ATM: return IsInQueue(pPed, pAttractor, vAtmAttractors);
+ 	case ATTRACTOR_SEAT: return IsInQueue(pPed, pAttractor, vSeatAttractors);
+@@ -592,7 +592,7 @@ bool CPedAttractorManager::IsInQueue(CPed* pPed, CPedAttractor* pAttractor)
+ 	case ATTRACTOR_SHELTER: return IsInQueue(pPed, pAttractor, vShelterAttractors);
+ 	case ATTRACTOR_ICECREAM: return IsInQueue(pPed, pAttractor, vIceCreamAttractors);
+ 	}
+-	return nil;
++	return false;
+ }
+ 
+ bool CPedAttractorManager::HasEmptySlot(const C2dEffect* pEffect)
+@@ -600,7 +600,7 @@ bool CPedAttractorManager::HasEmptySlot(const C2dEffect* pEffect)
+ 	if (!pEffect)
+ 		return false;
+ 	if (pEffect->type != EFFECT_PED_ATTRACTOR)
+-		return nil;
++		return false;
+ 	const CPedAttractor* pAttractor;
+ 	switch (pEffect->pedattr.type) {
+ 	case ATTRACTOR_ATM: pAttractor = FindAssociatedAttractor(pEffect, vAtmAttractors); break;
+-- 
+2.40.0
+

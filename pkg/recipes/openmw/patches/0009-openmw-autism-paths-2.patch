@@ -1,0 +1,35 @@
+From b62d1e4d75bb60bd3f4caa6aff24c8fda5d03678 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 2 Jun 2021 15:14:23 +0300
+Subject: [PATCH 3/4] upd: (components/) files/linuxpath.cpp;
+ getGlobalDataPath() + getGlobalConfigPath(), remove  / mName''.
+
+---
+ components/files/linuxpath.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/components/files/linuxpath.cpp b/components/files/linuxpath.cpp
+index c3dead2..48e6364 100644
+--- a/components/files/linuxpath.cpp
++++ b/components/files/linuxpath.cpp
+@@ -74,7 +74,7 @@ boost::filesystem::path LinuxPath::getCachePath() const
+ boost::filesystem::path LinuxPath::getGlobalConfigPath() const
+ {
+     boost::filesystem::path globalPath(GLOBAL_CONFIG_PATH);
+-    return globalPath / mName;
++    return globalPath;
+ }
+ 
+ boost::filesystem::path LinuxPath::getLocalPath() const
+@@ -98,7 +98,7 @@ boost::filesystem::path LinuxPath::getLocalPath() const
+ boost::filesystem::path LinuxPath::getGlobalDataPath() const
+ {
+     boost::filesystem::path globalDataPath(GLOBAL_DATA_PATH);
+-    return globalDataPath / mName;
++    return globalDataPath;
+ }
+ 
+ boost::filesystem::path LinuxPath::getInstallPath() const
+-- 
+2.40.0
+

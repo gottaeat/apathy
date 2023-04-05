@@ -1,0 +1,93 @@
+From eeacf528caa569ddece36b0981b0a1f9785ca500 Mon Sep 17 00:00:00 2001
+From: mssx86 <mss@tutanota.de>
+Date: Wed, 2 Jun 2021 15:12:56 +0300
+Subject: [PATCH 2/4] upd: (/) CMakeLists.txt, change paths.
+
+---
+ CMakeLists.txt | 55 +++++++++++++++++---------------------------------
+ 1 file changed, 18 insertions(+), 37 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8e1f0a0..d36eb73 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -162,31 +162,24 @@ if (MSVC)
+ endif()
+ 
+ # Set up common paths
+-if (APPLE)
+-    set(MORROWIND_DATA_FILES "./data" CACHE PATH "location of Morrowind data files")
+-    set(OPENMW_RESOURCE_FILES "../Resources/resources" CACHE PATH "location of OpenMW resources files")
+-elseif(UNIX)
++if (UNIX)
+     # Paths
+-    SET(BINDIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Where to install binaries")
+-    SET(LIBDIR "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE PATH "Where to install libraries")
+-    SET(DATAROOTDIR "${CMAKE_INSTALL_PREFIX}/share" CACHE PATH "Sets the root of data directories to a non-default location")
+-    SET(GLOBAL_DATA_PATH "${DATAROOTDIR}/games/" CACHE PATH "Set data path prefix")
+-    SET(DATADIR "${GLOBAL_DATA_PATH}/openmw" CACHE PATH "Sets the openmw data directories to a non-default location")
+-    SET(ICONDIR "${DATAROOTDIR}/pixmaps" CACHE PATH "Set icon dir")
+-    SET(LICDIR "${DATAROOTDIR}/licenses/openmw" CACHE PATH "Sets the openmw license directory to a non-default location.")
+-    IF("${CMAKE_INSTALL_PREFIX}" STREQUAL "/usr")
+-        SET(GLOBAL_CONFIG_PATH "/etc/" CACHE PATH "Set config dir prefix")
+-    ELSE()
+-        SET(GLOBAL_CONFIG_PATH "${CMAKE_INSTALL_PREFIX}/etc/" CACHE PATH "Set config dir prefix")
+-    ENDIF()
+-    SET(SYSCONFDIR "${GLOBAL_CONFIG_PATH}/openmw" CACHE PATH "Set config dir")
+-
+-    set(MORROWIND_DATA_FILES "${DATADIR}/data" CACHE PATH "location of Morrowind data files")
+-    set(OPENMW_RESOURCE_FILES "${DATADIR}/resources" CACHE PATH "location of OpenMW resources files")
+-else()
+-    set(MORROWIND_DATA_FILES "data" CACHE PATH "location of Morrowind data files")
+-    set(OPENMW_RESOURCE_FILES "resources" CACHE PATH "location of OpenMW resources files")
+-endif(APPLE)
++    SET(BINDIR                "${CMAKE_INSTALL_PREFIX}"        CACHE PATH "Where to install binaries")
++    SET(LIBDIR                "${CMAKE_INSTALL_PREFIX}/lib"    CACHE PATH "Where to install libraries")
++
++    SET(GLOBAL_DATA_PATH      "${CMAKE_INSTALL_PREFIX}"        CACHE PATH "Set data path prefix")
++
++    SET(DATAROOTDIR           "${CMAKE_INSTALL_PREFIX}/delete" CACHE PATH "Sets the root of data directories to a non-default location")
++    SET(ICONDIR               "${DATAROOTDIR}"                 CACHE PATH "Set icon dir")
++    SET(LICDIR                "${DATAROOTDIR}"                 CACHE PATH "Sets the openmw license directory to a non-default location.")
++
++    SET(GLOBAL_CONFIG_PATH    "${CMAKE_INSTALL_PREFIX}/config" CACHE PATH "Set config dir prefix")
++    SET(SYSCONFDIR            "${GLOBAL_CONFIG_PATH}"          CACHE PATH "Set config dir")
++
++    SET(DATADIR               "${CMAKE_INSTALL_PREFIX}"        CACHE PATH "Sets the openmw data directories to a non-default location")
++    set(MORROWIND_DATA_FILES  "${DATADIR}/morrowind"           CACHE PATH "location of Morrowind data files")
++    set(OPENMW_RESOURCE_FILES "${DATADIR}/resources"           CACHE PATH "location of OpenMW resources files")
++endif(UNIX)
+ 
+ if (WIN32)
+     option(USE_DEBUG_CONSOLE "whether a debug console should be enabled for debug builds, if false debug output is redirected to Visual Studio output" ON)
+@@ -905,18 +898,6 @@ elseif(NOT APPLE)
+             INSTALL(PROGRAMS "${INSTALL_SOURCE}/openmw-wizard" DESTINATION "${BINDIR}" )
+         ENDIF(BUILD_WIZARD)
+ 
+-        # Install licenses
+-        INSTALL(FILES "files/mygui/DejaVuFontLicense.txt" DESTINATION "${LICDIR}" )
+-
+-        # Install icon and desktop file
+-        INSTALL(FILES "${OpenMW_BINARY_DIR}/org.openmw.launcher.desktop" DESTINATION "${DATAROOTDIR}/applications" COMPONENT "openmw")
+-        INSTALL(FILES "${OpenMW_SOURCE_DIR}/files/launcher/images/openmw.png" DESTINATION "${ICONDIR}" COMPONENT "openmw")
+-        INSTALL(FILES "${OpenMW_BINARY_DIR}/openmw.appdata.xml" DESTINATION "${DATAROOTDIR}/metainfo" COMPONENT "openmw")
+-        IF(BUILD_OPENCS)
+-            INSTALL(FILES "${OpenMW_BINARY_DIR}/org.openmw.cs.desktop" DESTINATION "${DATAROOTDIR}/applications" COMPONENT "opencs")
+-            INSTALL(FILES "${OpenMW_SOURCE_DIR}/files/opencs/openmw-cs.png" DESTINATION "${ICONDIR}" COMPONENT "opencs")
+-        ENDIF(BUILD_OPENCS)
+-
+         # Install global configuration files
+         INSTALL(FILES "${INSTALL_SOURCE}/defaults.bin" DESTINATION "${SYSCONFDIR}" COMPONENT "openmw")
+         INSTALL(FILES "${INSTALL_SOURCE}/openmw.cfg.install" DESTINATION "${SYSCONFDIR}" RENAME "openmw.cfg" COMPONENT "openmw")
+@@ -929,7 +910,7 @@ elseif(NOT APPLE)
+ 
+         # Install resources
+         INSTALL(DIRECTORY "${INSTALL_SOURCE}/resources" DESTINATION "${DATADIR}" COMPONENT "Resources")
+-        INSTALL(DIRECTORY DESTINATION "${DATADIR}/data" COMPONENT "Resources")
++        INSTALL(DIRECTORY DESTINATION "${DATADIR}/morrowind" COMPONENT "Resources")
+     endif(WIN32)
+ endif(OPENMW_OSX_DEPLOYMENT AND APPLE)
+ 
+-- 
+2.40.0
+
