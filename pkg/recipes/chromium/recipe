@@ -1,5 +1,5 @@
-# 0 > fuckhuge ungoogled-cringe patch hits >4096 fd's and we got no pam no
-#     shadow.
+# 0 > ungoogled chromium patches often hit >4096 fd's, plus the final chrome
+#     linking requires a lot, we don't have pam/shadow.
 doas -s
 ulimit -Hn 8192
 ulimit -Sn 8192
@@ -92,8 +92,8 @@ mv    gn "${money}"/bin
 cd ../../; rm -rf gn/
 
 # 6
-export   CFLAGS="${CFLAGS}   -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
-export CXXFLAGS="${CXXFLAGS} -D__DATE__=  -D__TIME__=  -D__TIMESTAMP__="
+export   CFLAGS="${CFLAGS} -D__DATE__= -D__TIME__= -D__TIMESTAMP__="
+export CXXFLAGS="${CXXFLAGS} -D__DATE__= -D__TIME__= -D__TIMESTAMP__="
 
 syslibs="ffmpeg
          flac
@@ -109,12 +109,12 @@ syslibs="ffmpeg
          zlib"
 
 # 7
-tar xf /mss/work/sauces/ungoogled-chromium-111.0.5563.65-1.tar.gz
-mv ungoogled-chromium-111.0.5563.65-1/ ung
+tar xf /mss/work/sauces/ungoogled-chromium-112.0.5615.49-1.tar.gz
+mv ungoogled-chromium-112.0.5615.49-1/ ung
 ung="${PWD}"/ung
 
-tar xf /mss/work/sauces/chromium-111.0.5563.64.tar.xz
-cd     chromium-111.0.5563.64/
+tar xf /mss/work/sauces/chromium-112.0.5615.49.tar.xz
+cd     chromium-112.0.5615.49/
 
 pdir="/mss/repo/pkg/recipes/chromium/patches"
 for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
@@ -170,6 +170,9 @@ sed -i -e \
 fdir="/mss/repo/pkg/recipes/chromium/files"
 gn gen out/Release --args="$(cat ${fdir}/gn-args)"
 
+time samu -C out/Release \
+ gen/components/feed/core/proto/v2/wire/chrome_feed_response_metadata.pb.h
+
 time samu -C out/Release chrome
 
 # 11
@@ -210,6 +213,6 @@ cp "${fdir}"/chromium \
  "${findir}"/bin/
 
 mv KEK chromium/
-pkgup chromium/ chromium-111.0.5563.64
-mv chromium-111.0.5563.64.tar.zst \
+pkgup chromium/ chromium-112.0.5615.49
+mv chromium-112.0.5615.49.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
