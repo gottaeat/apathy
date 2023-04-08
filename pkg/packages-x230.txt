@@ -186,7 +186,7 @@ i  1  .      lld                  16.0.1
 i  1  .      lldb                 16.0.1
 i  1  .      llvm                 16.0.1
 i  1  .      openmp               16.0.1
-i  6  .      chromium             111.0.5563.64
+i  1  .      chromium             112.0.5615.49
 i  4  ..     icu                  72.1
 I  1  ..     nss                  3.89
 i  4  ...    nspr                 4.35
