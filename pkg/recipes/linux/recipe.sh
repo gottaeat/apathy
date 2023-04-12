@@ -1,14 +1,11 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 6.2 kernels, version 2, for all machines running apathy.
+# build script for 6.2 kernels, version 3, for all machines running apathy.
 
 . /mss/files/funcs
-. /mss/files/device.conf
 
 # 1 > first stage checks
-if [ "${amachine}" = "unrecognized" ]; then
- aprint_fail "host is not recognized, exiting."; exit 1
-elif [ -z "${1}" ]; then
+if [ -z "${1}" ]; then
  aprint_fail "specify a linux tarball with \$1."; exit 1
 fi
 
@@ -130,13 +127,8 @@ read answerkinst
 
 case "${answerkinst}" in
  yes|Y|y)
-  aprint "installing the built kernel."
-   doas cp -v arch/x86/boot/bzImage /boot/vmlinuz    >> "${rdr}" 2>&1 &&
-   doas cp -v System.map            /boot/System.map >> "${rdr}" 2>&1 &&
-   doas cp -v .config               /boot/config     >> "${rdr}" 2>&1
-
-  aprint_ret "running ${cl_grn}lilo${c_res}."
-   doas -- lilo >> "${rdr}" 2>&1
+  aprint "calling ${cl_grn}kinst${c_res}."
+   kinst y >/dev/null 2>&1
   evalret
  ;;
  *) aprint "not installing the built kernel." ;;

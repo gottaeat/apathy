@@ -1,0 +1,39 @@
+diff -uraN a/Makefile b/Makefile
+--- a/Makefile	2022-01-14 22:29:35.000000000 +0300
++++ b/Makefile	2023-04-12 01:54:04.823612819 +0300
+@@ -7,7 +7,7 @@
+ include $(TOPDIR)/src/include/coverity.mk
+ include $(TOPDIR)/src/include/scan-build.mk
+ 
+-SUBDIRS := src docs
++SUBDIRS := src
+ 
+ all : | efivar.spec src/include/version.mk prep
+ all clean install prep :
+diff -uraN a/src/include/defaults.mk b/src/include/defaults.mk
+--- a/src/include/defaults.mk	2023-04-12 01:53:25.298615476 +0300
++++ b/src/include/defaults.mk	2023-04-12 01:53:51.547613711 +0300
+@@ -104,7 +104,6 @@
+ RANLIB	:= $(CROSS_COMPILE)$(COMPILER)-ranlib
+ ABIDW	:= abidw
+ ABIDIFF := abidiff
+-MANDOC	:= mandoc
+ 
+ LDLIBS=$(foreach lib,$(LIBS),-l$(lib)) $(call pkg-config-ldlibs)
+ 
+diff -uraN a/src/include/rules.mk b/src/include/rules.mk
+--- a/src/include/rules.mk	2023-04-12 01:53:25.296615476 +0300
++++ b/src/include/rules.mk	2023-04-12 01:53:51.547613711 +0300
+@@ -19,12 +19,6 @@
+ %.a :
+ 	$(AR) -cvqs $@ $^
+ 
+-%.1 : %.1.mdoc
+-	$(MANDOC) -mdoc -Tman -Ios=Linux $^ > $@
+-
+-%.3 : %.3.mdoc
+-	$(MANDOC) -mdoc -Tman -Ios=Linux $^ > $@
+-
+ % : %.c
+ 
+ % : %.o

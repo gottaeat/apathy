@@ -28,8 +28,3 @@ chmod +x init
 find . | cpio -o -H newc | zstd -19 > ../initramfs.zst
 cp ../initramfs.zst /mnt/mss/stuff/techy-bits/packaged-software/\
 initramfs-"${tstamp}".zst
-
-doas -s
-cp ../initramfs.zst /boot
-chown -Rh root:root /boot
-lilo

@@ -1,0 +1,48 @@
+# 1
+cdt1
+
+money="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${money}/lib -I${money}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${money}/lib -I${money}/include -fPIC"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${money}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${money}/lib"
+
+# 2 > efivar
+tar xf /mss/work/sauces/efivar-38.tar.bz2
+cd     efivar-38/
+
+pdir="/mss/repo/pkg/recipes/efibootmgr/patches"
+for i in "${pdir}"/*-efivar-*.patch; do
+ patch -p1 < "${i}"
+done
+
+mymake(){
+ make \
+  AR="${AR}"                    \
+  libdir="${money}/lib"         \
+  bindir="${money}/bin"         \
+  mandir="${money}/share/man"   \
+  includedir="${money}/include" \
+  "${@}"
+}
+
+mymake static all
+mymake install
+
+rm -rfv "${money}"/lib/libefi*
+find src/ -type f -name \*.a -exec mv -v {} "${money}"/lib/ ';'
+
+cd ../; rm -rf efivar-38/
+
+# 3 > efibootmgr
+tar xf /mss/work/sauces/efibootmgr-18.tar.gz
+cd     efibootmgr-18/
+
+EFIDIR="/boot/efi" make efibootmgr
+
+doas -s
+for i in src/efibootmgr; do
+ strip --strip-all "${i}"
+ chown root:root "${i}"
+ mv "${i}" /usr/bin/
+done

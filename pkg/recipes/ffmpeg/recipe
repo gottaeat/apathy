@@ -104,6 +104,7 @@ cd    build
  --enable-openssl                 \
  --enable-pthreads                \
  --enable-v4l2-m2m                \
+ --enable-vdpau                   \
  --enable-vaapi                   \
  --enable-xlib                    \
  --enable-zlib                    \

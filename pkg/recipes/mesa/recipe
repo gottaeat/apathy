@@ -23,16 +23,17 @@ python3 bin/git_sha1_gen.py --output include/git_sha1.h
 mkdir build
 cd    build
 
-ruanffmpeg="h264dec,h264enc,h265dec,h265enc"
-bladder="crocus,virgl"
+ruanffmpeg="h264dec,h264enc,h265dec,h265enc,vc1dec"
+bladder="crocus,virgl,radeonsi"
 meson setup \
  --buildtype=plain              \
  --prefix=/usr                  \
 \
- -Dplatforms=x11                \
  -Ddri3=enabled                 \
- -Dshader-cache=enabled         \
+ -Dllvm=enabled                 \
+ -Dplatforms=x11                \
  -Dshader-cache-max-size=1G     \
+ -Dshader-cache=enabled         \
  -Dshared-glapi=enabled         \
 \
  -Dopengl=true                  \
@@ -46,14 +47,13 @@ meson setup \
  -Dvideo-codecs="${ruanffmpeg}" \
 \
  -Dgallium-extra-hud=false      \
- -Dgallium-vdpau=disabled       \
+ -Dgallium-vdpau=enabled        \
+ -Dgallium-va=enabled           \
  -Dgallium-omx=disabled         \
- -Dgallium-va=disabled          \
  -Dgallium-xa=disabled          \
 \
  -Dgles1=disabled               \
  -Dgles2=disabled               \
- -Dllvm=disabled                \
  -Dvalgrind=disabled            \
  -Dlibunwind=disabled           \
  -Dlmsensors=disabled           \

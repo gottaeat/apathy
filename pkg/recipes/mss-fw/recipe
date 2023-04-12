@@ -1,0 +1,11 @@
+# 1
+cdt1
+
+gcd1 https://github.com/gottaeat/mss-fw
+
+rm -rfv \
+ mss-fw/LICEN*E* \
+ mss-fw/README*  \
+ mss-fw/.git*
+
+doas -- mv mss-fw /lib/firmware

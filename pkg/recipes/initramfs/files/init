@@ -21,13 +21,11 @@ rshell(){
  exit 1
 }
 
-amachine="$(cut -d ' ' -f2,3- -O '' \
-             /sys/devices/virtual/dmi/id/product_family)"
-
-case "${amachine}" in
- X230) rawpath="/dev/sda2" rootpath="/dev/x230apathy/rootfs" ;;
-  T61) rawpath="/dev/sda2" rootpath="/dev/t61apathy/rootfs"  ;;
-    *) rshell                                                ;;
+case "$(cat /sys/devices/virtual/dmi/id/product_name)" in
+ 64669MG) rawpath="/dev/sda2" rootpath="/dev/t61apathy/rootfs"   ;;
+ 2324KT9) rawpath="/dev/sda2" rootpath="/dev/x230apathy/rootfs"  ;;
+ MS-7C95) rawpath="/dev/sda2" rootpath="/dev/desk1apathy/rootfs" ;;
+ *)       rshell
 esac
 
 cryptsetup open "${rawpath}" x230 || rshell
