@@ -24,6 +24,7 @@ ln -sfv /mnt/mss/stuff/techy-bits/work       /mss/work
 ln -sfv /bin/yash                            /mss/bin/sh
 ln -sfv /mss/init/bin/ainitmgr               /mss/bin/ainitmgr
 ln -sfv /mss/init/bin/setapathy              /mss/bin/setapathy
+ln -sfv /mss/init/bin/setefi                 /mss/bin/setefi
 
 touch /mss/files/packages.txt
 pkg sync

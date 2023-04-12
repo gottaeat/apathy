@@ -1,0 +1,33 @@
+#!/mss/bin/sh
+. /mss/init/files/funcs
+. /mss/files/device.conf
+. /mss/files/machines/${amachine}.conf
+. /etc/efibootmgr.conf
+
+ainit_nc
+ainitmes "amachine: ${cb_yel}${amachine}${c_res}."; infoprompt
+ainit_nc
+
+
+entries="$(efibootmgr -v \
+           | awk '/Boot[0-9][0-9][0-9][0-9].\ apathy/{gsub(/Boot|\*/,"");print $1}')"
+
+if [ "$(echo "${entries}" | wc -l)" -gt 0 ]; then
+ ainitmes "found entries labeled apathy, nuking them."
+  for i in ${entries}; do
+   efibootmgr -b "${i}" -B "${i}" >/dev/null 2>&1
+  done
+ evalret
+fi
+
+ainitmes "installing efi entry."
+ efibootmgr \
+  -c \
+  -d "${espdev}"     \
+  -p "${esppart}"    \
+  -L "${esplabel}"   \
+  -l "${espfile}"    \
+  -u "${espcmdline}" \
+ >/dev/null 2>&1
+evalret
+ainit_nc

@@ -72,6 +72,12 @@ ainitmes "generating cmdline args for the ${cb_blu}swapfile${c_res}."
              | awk '$1=="0:" {print substr($4, 1, length($4)-2)}')"
 evalret
 
+# set /boot fstype
+case "${boottype}" in
+ uefi) bootfs="vfat" bootfsopts="defaults"         checkboot="0" ;;
+ bios) bootfs="ext4" bootfsopts="defaults,noatime" checkboot="1" ;;
+esac
+
 # /etc/ssh/banner
 ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
  l3="${hname} ($(echo ${amach_ip} | sed 's/\/[^.]*$//g'))" &&
@@ -141,17 +147,54 @@ evalret
 # /etc/fstab
 ainitmes "generating /etc/${cb_blu}fstab${c_res}."
  cat << EOF > /etc/fstab
-/dev/${amachine}apathy/rootfs   /               ext4  defaults,noatime                  0  1
-/dev/${amachine}apathy/stuff    /mnt/mss/stuff  ext4  rw,relatime,noatime,data=ordered  0  2
+/dev/${amachine}apathy/rootfs  /              ext4      defaults,noatime                 0 1
+/dev/${amachine}apathy/stuff   /mnt/mss/stuff ext4      rw,relatime,noatime,data=ordered 0 2
 
-/dev/sda1                       /boot           ext4  defaults,noatime                  0  2
-/mnt/mss/stuff/techy-bits/home  /home/mss       auto  defaults,nofail,nobootwait,bind   0  0
+/dev/sda1                      /boot          ${bootfs} ${bootfsopts}                    0 ${checkboot}
+/mnt/mss/stuff/techy-bits/home /home/mss      auto      defaults,nofail,nobootwait,bind  0 0
 EOF
 evalret
 
-# /etc/lilo.conf
-ainitmes "generating /etc/${cb_blu}lilo.conf${c_res}."
- cat << EOF > /etc/lilo.conf
+if [ "${amachine}" = "desk1" ]; then
+ ainitmes "adding ${cb_blu}desk1${c_res} specific fstab entry."
+  cat << EOF >> /etc/fstab
+/dev/mapper/wdarchive /mnt/mss/archive ext4 rw,relatime,noatime,nofail 0 2
+EOF
+ evalret
+fi
+
+ainitmes "organizing /etc/${cb_blu}fstab${c_res}."
+ cat /etc/fstab | column -t > /tmp/fstab &&
+ mv /tmp/fstab /etc/fstab
+evalret
+
+# bootloader
+case "${boottype}" in
+ uefi)
+  # /etc/efibootmgr.conf
+  ainitmes "generating /etc/${cb_blu}efibootmgr.conf${c_res}."
+cat << EOF > /etc/efibootmgr.conf
+#!/mss/bin/sh
+    espdev="${bootdev}"
+   esppart="$(echo ${bootpart} | sed "s|${bootdev}||g")"
+  esplabel="apathy"
+   espfile="\\EFI\\apathy\\bzImage.efi"
+ espinitrd="\\EFI\\apathy\\initramfs.zst"
+espcmdline="initrd=\${espinitrd} ${cmdline}"
+EOF
+  evalret
+
+  if [ -f "/etc/lilo.conf" ]; then
+   ainitmes "nuking lilo.conf."
+    rm -rf "/etc/lilo.conf"
+   evalret
+  fi
+
+ ;;
+ bios)
+  # /etc/lilo.conf
+  ainitmes "generating /etc/${cb_blu}lilo.conf${c_res}."
+   cat << EOF > /etc/lilo.conf
 boot=${bootdev}
 map=/boot/map
 default=apathy
@@ -165,7 +208,15 @@ image=/boot/vmlinuz
 	append="${cmdline} resume=${swapuuid} resume_offset=${swapoffs}"
 	initrd=/boot/initramfs.zst
 EOF
-evalret
+  evalret
+
+  if [ -f "/etc/efibootmgr.conf" ]; then
+   ainitmes "nuking efibootmgr.conf."
+    rm -rf "/etc/efibootmgr.conf"
+   evalret
+  fi
+ ;;
+esac
 
 # /etc/thinkfan.conf
 if [ -f "/proc/acpi/ibm/fan" ]
