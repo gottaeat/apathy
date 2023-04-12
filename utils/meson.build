@@ -1,5 +1,5 @@
 project('utils',
- version: '52',
+ version: '53',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
@@ -18,7 +18,6 @@ files_bin = [
  'bin/cleancmake',
  'bin/cleanup',
  'bin/colortest',
- 'bin/compressthinelogs',
  'bin/configtomusl',
  'bin/dn',
  'bin/fetch',
@@ -53,6 +52,7 @@ files_files = [
 ]
 
 files_files_machines = [
+ 'files/machines/desk1.conf',
  'files/machines/t61.conf',
  'files/machines/unrecognized.conf',
  'files/machines/x230.conf'

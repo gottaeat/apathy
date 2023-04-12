@@ -2,45 +2,63 @@
 . /mss/files/funcs
 rootcheck
 
-if   [ ! -f ./arch/x86/boot/bzImage ]; then
- aprint_nc
- aprint_fail "bzImage doesn't exist."
- aprint_nc
- exit 1
-elif [ ! -f ./System.map ]; then
- aprint_nc
- aprint_fail "System.map doesn't exist."
- aprint_nc
- exit 1
-elif [ ! -f ./.config ]; then
- aprint_nc
- aprint_fail ".config doesn't exist."
- aprint_nc
- exit 1
+if [ -z "${1}" ]
+ then
+  aprint_nc
+  aprint_ask "replace the kernel? (y/Y/yes|n/N/no): "
+  read answer
+ else
+  answer="${1}"
 fi
-
-aprint_nc
-aprint_ask "replace the kernel? (y/Y/yes|n/N/no): "
-read answer
 
 case "${answer}" in
  y|Y|yes)
-  aprint_nc
-  aprint_ret "copying ${cl_grn}bzImage${c_res} to ${cl_grn}/boot/vmlinuz${c_res}."
-   cp arch/x86/boot/bzImage /boot/vmlinuz
-  evalretkill
+  if   [ ! -f ./arch/x86/boot/bzImage ]; then
+   aprint_nc
+   aprint_fail "bzImage doesn't exist."
+   aprint_nc
+   exit 1
+  elif [ ! -f ./System.map ]; then
+   aprint_nc
+   aprint_fail "System.map doesn't exist."
+   aprint_nc
+   exit 1
+  fi
 
-  aprint_ret "copying ${cl_grn}System.map${c_res} to ${cl_grn}/boot/System.map${c_res}."
-   cp System.map /boot/System.map
-  evalretkill
+  . /mss/files/device.conf
+  . /mss/files/machines/${amachine}.conf
 
-  aprint_ret "copying kernel ${cl_grn}config${c_res} to ${cl_grn}/boot/config${c_res}."
-   cp .config /boot/config
-  evalretkill
+  case "${boottype}" in
+   uefi)
+    if [ ! -d "/boot/EFI/apathy/" ]; then
+     aprint_ret "creating ${cl_grn}/boot/EFI/apathy/${c_res}."
+      mkdir -p "/boot/EFI/apathy" >/dev/null 2>&1
+     evalretkill
+    fi
 
-  aprint_ret "running ${cl_grn}lilo${c_res}."
-   lilo >/dev/null 2>&1
-  evalretkill
+    aprint_ret "copying ${cl_grn}bzImage${c_res} to ${cl_grn}/boot/EFI/apathy/${c_res}."
+     cp arch/x86/boot/bzImage /boot/EFI/apathy/bzImage.efi
+    evalretkill
+
+    aprint_ret "running ${cl_grn}setefi${c_res}."
+     setefi >/dev/null 2>&1
+    evalretkill
+   ;;
+   bios)
+    aprint_nc
+    aprint_ret "copying ${cl_grn}bzImage${c_res} to ${cl_grn}/boot/vmlinuz${c_res}."
+     cp arch/x86/boot/bzImage /boot/vmlinuz
+    evalretkill
+
+    aprint_ret "copying ${cl_grn}System.map${c_res} to ${cl_grn}/boot/System.map${c_res}."
+     cp System.map /boot/System.map
+    evalretkill
+
+    aprint_ret "running ${cl_grn}lilo${c_res}."
+     lilo >/dev/null 2>&1
+    evalretkill
+   ;;
+  esac
   aprint_nc
  ;;
  n|N|no)

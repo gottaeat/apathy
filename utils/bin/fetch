@@ -13,13 +13,17 @@
                  {mcachefin=int((mcached+mbuffers+mrecl)/1024)}; \
                  END{print mavail"m","("mfree"+"mcachefin")"}' /proc/meminfo)"
 
- cpu_pre="$(awk '/model name/{gsub(/model name[[:space:]]: |Intel\(R\) |\(TM\)|CPU|@/,"");
-                 a=$0}; END{print tolower(a)}' /proc/cpuinfo)"
+# cpu
+cpu_pre="$(grep -m1 model\ name /proc/cpuinfo \
+           | awk '{gsub(/model\ name[[:space:]]:|with.*|@.*|AMD|Intel|\(R\)|\(TM\)|CPU/,""); \
+                   print}')"
 
-case "${cpu_pre}" in
- *core2*) cpu="$(echo "${cpu_pre}" | awk '{print $1,$2,$3,"@"$4}')" ;;
- *)       cpu="$(echo "${cpu_pre}" | awk '{print $1,$2,"@"$3}')"    ;;
-esac
+while [ "$(echo "${cpu_pre}" | grep \ \ )" ]; do
+ cpu_pre="$(echo "${cpu_pre}" | sed 's/  / /g')"
+done
+
+cpu_pre="$(echo "${cpu_pre}" | awk '{gsub(/^ | $/,""); print}')"
+cpu="${cpu_pre} ($(nproc))"
 
 # shell
  intshell=$(basename $(grep ${LOGNAME} /etc/passwd | cut -d: -f7))
