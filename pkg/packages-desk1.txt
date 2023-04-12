@@ -47,7 +47,7 @@ i  16 ..     lilo                 24.2
 i  1  ..     initramfs            12
 i  7  ...    cryptsetup           2.6.0
 i  7  ....   lvm2                 2.03.17
-i  1  .      init                 51
+i  1  .      init                 52
 i  1  ..     utils                53
 i  2  .      opendoas             6.8.2
 i  2  .      iptables             1.8.8
