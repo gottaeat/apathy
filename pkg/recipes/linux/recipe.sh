@@ -128,8 +128,7 @@ read answerkinst
 case "${answerkinst}" in
  yes|Y|y)
   aprint "calling ${cl_grn}kinst${c_res}."
-   kinst y >/dev/null 2>&1
-  evalret
+  doas -- kinst y >/dev/null 2>&1
  ;;
  *) aprint "not installing the built kernel." ;;
 esac
