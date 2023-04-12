@@ -43,10 +43,11 @@ initboi(){
   mount -a                  >/dev/null 2>&1
  evalret
 
- [ -d "/sys/firmware/efi/efivars" ] &&
+ if [ -d "/sys/firmware/efi/efivars" ]; then
   ainitmes "mounting ${cb_cyn}efivarfs${c_res}."
    mount -t efivarfs none /sys/firmware/efi/efivars
   evalret
+ fi
 
  ainitmes "seeding ${cb_cyn}random${c_res}."
   [ -f /var/tmp/random-seed ] && cat /var/tmp/random-seed > /dev/urandom &&
