@@ -180,7 +180,7 @@ cat << EOF > /etc/efibootmgr.conf
   esplabel="apathy"
    espfile="\\EFI\\apathy\\bzImage.efi"
  espinitrd="\\EFI\\apathy\\initramfs.zst"
-espcmdline="initrd=\${espinitrd} ${cmdline}"
+espcmdline="initrd=\${espinitrd} ${cmdline} resume=${swapuuid} resume_offset=${swapoffs}"
 EOF
   evalret
 
