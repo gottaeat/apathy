@@ -1,5 +1,6 @@
 /usr/bin/X
 /usr/bin/Xorg
+/usr/bin/gtf
 
 /usr/include/xorg/XIstubs.h
 /usr/include/xorg/Xprintf.h
@@ -157,28 +158,18 @@
 
 /usr/lib/pkgconfig/xorg-server.pc
 
-/usr/lib/xorg/modules/drivers/modesetting_drv.la
 /usr/lib/xorg/modules/drivers/modesetting_drv.so
-/usr/lib/xorg/modules/extensions/libglx.la
 /usr/lib/xorg/modules/extensions/libglx.so
-/usr/lib/xorg/modules/libexa.la
 /usr/lib/xorg/modules/libexa.so
-/usr/lib/xorg/modules/libfbdevhw.la
 /usr/lib/xorg/modules/libfbdevhw.so
-/usr/lib/xorg/modules/libglamoregl.la
 /usr/lib/xorg/modules/libglamoregl.so
-/usr/lib/xorg/modules/libshadow.la
 /usr/lib/xorg/modules/libshadow.so
-/usr/lib/xorg/modules/libshadowfb.la
 /usr/lib/xorg/modules/libshadowfb.so
-/usr/lib/xorg/modules/libvgahw.la
 /usr/lib/xorg/modules/libvgahw.so
-/usr/lib/xorg/modules/libwfb.la
 /usr/lib/xorg/modules/libwfb.so
 /usr/lib/xorg/protocol.txt
 
 /usr/share/X11/xorg.conf.d/10-quirks.conf
 /usr/share/aclocal/xorg-server.m4
-/var/lib/xkb
 
 /usr/share/man

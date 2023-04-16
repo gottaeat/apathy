@@ -2,11 +2,9 @@
 
 /usr/bin/alsactl
 /usr/bin/alsamixer
-/usr/bin/pa-info
 /usr/bin/pacat
 /usr/bin/pacmd
 /usr/bin/pactl
-/usr/bin/pamon
 /usr/bin/paplay
 /usr/bin/parec
 /usr/bin/parecord
