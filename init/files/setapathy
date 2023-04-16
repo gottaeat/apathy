@@ -248,7 +248,7 @@ evalret
 
 # 2.9 > /etc/X11/xorg.conf.d/01-machine.conf
 ainitmes "generating /etc/X11/xorg.conf.d/${cb_blu}01-machine.conf${c_res}."
- [ ! -d [ "/etc/X11/xorg.conf.d" ] \
+ [ ! -d "/etc/X11/xorg.conf.d" ] \
   && mkdir -pv /etc/X11/xorg.conf.d/ >/dev/null 2>&1
  echo "${x_gpu}\n\n${x_mon}\n\n${x_input}" > /etc/X11/xorg.conf.d/01-machine.conf
 evalret
