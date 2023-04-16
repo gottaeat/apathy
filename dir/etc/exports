@@ -1,2 +1,0 @@
-/mnt/mss/stuff *(rw,sync,no_root_squash,insecure,crossmnt)
-/mnt/mss/externalstuff *(rw,sync,no_root_squash,insecure,crossmnt)
