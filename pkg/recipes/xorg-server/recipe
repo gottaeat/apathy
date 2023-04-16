@@ -68,8 +68,8 @@ samu install
 cd ../../; rm -rf libxcvt-0.1.1/
 
 # 5 > xorg-server
-tar xf /mss/work/sauces/xorg-server-4127776.tar.zst
-cd     xorg-server-4127776/
+tar xf /mss/work/sauces/xorg-server-636c9aa.tar.zst
+cd     xorg-server-636c9aa/
 
 mkdir build/
 cd    build/
@@ -145,3 +145,5 @@ samu install
 chmod u+s /usr/bin/Xorg
 
 rm -rfv /usr/share/man
+
+setapathy auto
