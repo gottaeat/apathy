@@ -1,7 +1,8 @@
 #!/mss/bin/sh
 . /mss/init/files/funcs
 
-# handle args
+# 1 > pre genereation
+# 1.1 > handle args
 if [ -z "${1}" ];
  then
   ainitusage "{auto|amachine}"
@@ -12,7 +13,7 @@ if [ -z "${1}" ];
                 | grep -v unrecognized)"
 fi
 
-# handle amachine
+# 1.2 > handle amachine
 case "${1}" in
  auto)
   . /mss/files/device.conf
@@ -36,7 +37,7 @@ if ! echo "${hostslist}" | grep "${amachine}" >/dev/null 2>&1
   ainit_nc
 fi
 
-# generate the os string for the ssh banner
+# 1.3 > generate the os string for the ssh banner
 ainitmes "reading /etc/${cb_blu}os-release${c_res}."
  getos && l2="${d_name} ${d_var} ${d_ver}"
 evalret
@@ -49,13 +50,13 @@ ainitmes "generating the ${cb_blu}hosts${c_res} list."
               done | sort)"
 evalret
 
-# load machine config
+# 1.4 > load machine config
 ainitmes "loading the machine ${cb_blu}config${c_res}."
  . /mss/files/machines/"${amachine}".conf
 evalret
 ainit_nc
 
-# check if swapfile exists
+# 1.5 > check if swapfile exists
 ainitmes "checking for swapfile."; infoprompt
  if [ ! -f "${swappath}" ]
   then
@@ -64,7 +65,7 @@ ainitmes "checking for swapfile."; infoprompt
    ainitmes "swapfile found."; succprompt
  fi
 
-# generate cmdline for swapfile
+# 1.6 > generate cmdline for swapfile
 ainitmes "generating cmdline args for the ${cb_blu}swapfile${c_res}."
  swapuuid="$(blkid `mount | awk '/\/mnt\/mss\/stuff/{print $1}'` \
              | awk '{gsub(/\"/,""); print $3}')" &&
@@ -72,13 +73,15 @@ ainitmes "generating cmdline args for the ${cb_blu}swapfile${c_res}."
              | awk '$1=="0:" {print substr($4, 1, length($4)-2)}')"
 evalret
 
-# set /boot fstype
+# 1.7 > set /boot fstype
 case "${boottype}" in
  uefi) bootfs="vfat" bootfsopts="defaults"         checkboot="0" ;;
  bios) bootfs="ext4" bootfsopts="defaults,noatime" checkboot="1" ;;
 esac
 
-# /etc/ssh/banner
+# 2 > generation
+# 2.1 > /etc/ssh/banner
+ainit_nc
 ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
  l3="${hname} ($(echo ${amach_ip} | sed 's/\/[^.]*$//g'))" &&
  if [ ${#l2} -lt "${#l3}" ]; then len="${#l3}"; else len="${#l2}"; fi &&
@@ -113,7 +116,7 @@ ainitmes "generating /etc/ssh/${cb_blu}banner${c_res}."
 EOF
 evalret
 
-# /etc/resolv.conf
+# 2.2 > /etc/resolv.conf
 ainitmes "generating /etc/${cb_blu}resolv.conf${c_res}."
  cat << EOF > /etc/resolv.conf
 nameserver ${dns1}
@@ -126,7 +129,7 @@ EOF
 
 evalret
 
-# /etc/hosts
+# 2.3 > /etc/hosts
 ainitmes "generating /etc/${cb_blu}hosts${c_res}."
  cat << EOF > /etc/hosts
 127.0.0.1    localhost
@@ -137,41 +140,39 @@ ${hostslist}
 EOF
 evalret
 
-# /etc/hostname
+# 2.4 > /etc/hostname
 ainitmes "generating /etc/${cb_blu}hostname${c_res}."
  cat << EOF > /etc/hostname
 ${hname}
 EOF
 evalret
 
-# /etc/fstab
+# 2.5 > /etc/fstab
 ainitmes "generating /etc/${cb_blu}fstab${c_res}."
- cat << EOF > /etc/fstab
+ cat << EOF | column -t > /etc/fstab
 /dev/${amachine}apathy/rootfs  /              ext4      defaults,noatime                 0 1
 /dev/${amachine}apathy/stuff   /mnt/mss/stuff ext4      rw,relatime,noatime,data=ordered 0 2
 
 /dev/sda1                      /boot          ${bootfs} ${bootfsopts}                    0 ${checkboot}
 /mnt/mss/stuff/techy-bits/home /home/mss      auto      defaults,nofail,nobootwait,bind  0 0
+${fstab_extra}
 EOF
 evalret
 
-if [ "${amachine}" = "desk1" ]; then
- ainitmes "adding ${cb_blu}desk1${c_res} specific fstab entry."
-  cat << EOF >> /etc/fstab
-/dev/mapper/wdarchive /mnt/mss/archive ext4 rw,relatime,noatime,nofail 0 2
+# 2.6 > /etc/exports
+ainitmes "generating /etc/${cb_blu}exports${c_res}."
+ > /tmp/exports &&
+ for i in ${nfs_exports}; do
+  cat << EOF >> /tmp/exports
+${i} *(rw,sync,no_root_squash,insecure,crossmnt)
 EOF
- evalret
-fi
-
-ainitmes "organizing /etc/${cb_blu}fstab${c_res}."
- cat /etc/fstab | column -t > /tmp/fstab &&
- mv /tmp/fstab /etc/fstab
+ done
 evalret
 
-# bootloader
+# 2.7 > bootloader
 case "${boottype}" in
  uefi)
-  # /etc/efibootmgr.conf
+  # 2.7.1 > /etc/efibootmgr.conf
   ainitmes "generating /etc/${cb_blu}efibootmgr.conf${c_res}."
 cat << EOF > /etc/efibootmgr.conf
 #!/mss/bin/sh
@@ -192,7 +193,7 @@ EOF
 
  ;;
  bios)
-  # /etc/lilo.conf
+  # 2.7.2 > /etc/lilo.conf
   ainitmes "generating /etc/${cb_blu}lilo.conf${c_res}."
    cat << EOF > /etc/lilo.conf
 boot=${bootdev}
@@ -218,13 +219,51 @@ EOF
  ;;
 esac
 
-# /etc/thinkfan.conf
-if [ -f "/proc/acpi/ibm/fan" ]
+# 2.8 > /etc/pulse/daemon.conf
+ainitmes "generating /etc/pulse/${cb_blu}daemon.conf${c_res}."
+ cat << EOF > /etc/pulse/daemon.conf
+daemonize               = yes
+system-instance         = yes
+exit-idle-time          = -1
+fail                    = yes
+allow-exit              = no
+allow-module-loading    = yes
+use-pid-file            = no
+
+log-target              = syslog
+log-level               = warn
+log-meta                = no
+log-time                = yes
+log-backtrace           = 0
+
+avoid-resampling        = ${pulse_avoid}
+resample-method         = ${pulse_method}
+
+default-sample-format   = ${pulse_format}
+default-sample-rate     = ${pulse_rate}
+default-sample-channels = 2
+default-channel-map     = front-left,front-right
+EOF
+evalret
+
+# 2.9 > /etc/X11/xorg.conf.d/01-machine.conf
+ainitmes "generating /etc/X11/xorg.conf.d/${cb_blu}01-machine.conf${c_res}."
+ [ ! -d [ "/etc/X11/xorg.conf.d" ] \
+  && mkdir -pv /etc/X11/xorg.conf.d/ >/dev/null 2>&1
+ echo "${x_gpu}\n\n${x_mon}\n\n${x_input}" > /etc/X11/xorg.conf.d/01-machine.conf
+evalret
+
+# 2.10 > /etc/thinkfan.conf
+if awk '/^ ainitmgr/{gsub(/^#/,""); print}' \
+    /mss/files/machines/${amachine}.conf \
+    | grep thinkfan >/dev/null 2>&1
  then
   ainitmes "generating /etc/${cb_blu}thinkfan.conf${c_res}."
 
   tempfiles="$(/bin/ls -w1 /sys/class/hwmon/hwmon*/temp*_label)"
-  fintemp="$(grep -l Package ${tempfiles} || grep -l Core\ 0 ${tempfiles})"
+  fintemp="$(grep -l Package    ${tempfiles} \
+             || grep -l Core\ 0 ${tempfiles} \
+             || grep -l Tctl    ${tempfiles} )"
 
   if [ -z "${fintemp}" ]; then
    failprompt
@@ -247,8 +286,13 @@ levels:
 EOF
   evalret
  else
-  ainitmes "${cb_blu}/proc/acpi/ibm/fan${c_res} not found."; infoprompt
+  ainitmes "${cb_blu}thinkfan${c_res} is not requested."; infoprompt
   [ -f "/etc/thinkfan.conf" ] && rm -rf /etc/thinkfan.conf >/dev/null 2>&1
 fi
+
+ainit_nc
+ainitmes "organizing /etc/${cb_blu}exports${c_res}."
+ cat /tmp/exports | sed '/^$/d' | column -t > /etc/exports
+evalret
 
 ainit_nc
