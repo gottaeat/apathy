@@ -32,7 +32,7 @@ myxconf(){
 }
 
 # 2 > cbindgen
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/rust-bootstrap-0599b6b9.tar.zst
+tar xf /mnt/mss/stuff/techy-bits/packaged-software/rust-7908a1d6.tar.zst
 
        RUSTFLAGS="-Clinker=${CC} -Lnative=/opt/llvm/lib"
        RUSTFLAGS="${RUSTFLAGS} -Ctarget-cpu=x86-64 -Copt-level=3"

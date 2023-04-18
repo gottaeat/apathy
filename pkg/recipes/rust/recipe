@@ -1,6 +1,5 @@
-# 1
+# 1 > env
 cdt1
-tar xf /mnt/mss/stuff/techy-bits/packaged-software/rust-bootstrap-0599b6b9.tar.zst
 
 export            PATH="${PATH}:${PWD}/rust/bin"
 export    LIBRARY_PATH="${LIBRARY_PATH}:${PWD}/rust/lib"
@@ -11,9 +10,64 @@ export LD_LIBRARY_PATH="${LIBRARY_PATH}"
        RUSTFLAGS="${RUSTFLAGS} -Cdebuginfo=0 -Cdebug-assertions=off"
 export RUSTFLAGS="${RUSTFLAGS} -Cembed-bitcode=yes -Clinker-plugin-lto -Clto=thin"
 
-# 2
-tar xf /mss/work/sauces/rustc-nightly-src.tar.xz
+export PKG_CONFIG_ALLOW_CROSS=1
+export       LLVM_LINK_SHARED=1
+
+# 2 > stage 1
+tar xf /mss/work/sauces/rust-nightly-7908a1d6-x86_64-unknown-linux-musl.tar.xz
+cd     rust-nightly-x86_64-unknown-linux-musl/
+
+mkdir ../rust/
+
+syncboi \
+ cargo/                              \
+ rust-std-x86_64-unknown-linux-musl/ \
+ rustc/                              \
+ rustfmt*/                           \
+\
+ ../rust
+
+sync
+
+cd ../; rm -rf rust-nightly-x86_64-unknown-linux-musl/
+
+cd rust/
+
+rm -rfv \
+ etc/             \
+ share/           \
+ lib/rustlib/etc/ \
+ manifest.in
+
+    elfs="$(find . -type f -exec file {} ';' | grep 'ELF ')"
+elfs_exe="$(echo "${elfs}" | awk '/executable, /   {gsub(/:/,""); print $1}')"
+elfs_dyn="$(echo "${elfs}" | awk '/shared object, /{gsub(/:/,""); print $1}')"
+elfs_rel="$(echo "${elfs}" | awk '/relocatable, /  {gsub(/:/,""); print $1}')"
+
+for i in ${elfs_exe}; do strip --strip-all      "${i}"; done
+for i in ${elfs_dyn}; do strip --strip-unneeded "${i}"; done
+for i in ${elfs_rel}; do strip --strip-debug    "${i}"; done
+
+rlibs="$(find . -type f -name \*.rlib)"
+  ars="$(find . -type f -name \*.a)"
+
+for i in ${rlibs} ${ars}; do
+ ${STRIP}  --strip-debug "${i}"
+ ${RANLIB}               "${i}"
+done
+
+unset elfs elfs_exe elfs_dyn elfs_rel rlibs ars
+
+printf 'INPUT(-lunwind)\n'                      > lib/libgcc_s.so
+ln -sf "$(${CC} -print-file-name=libunwind.so)"   lib/libgcc_s.so.1
+
+cd ../
+
+# 3 > stage 2
+tar xf /mss/work/sauces/rustc-nightly-7908a1d6-src.tar.xz
 cd     rustc-nightly-src/
+
+touch .gitmodules
 
 pdir="/mss/repo/pkg/recipes/rust/patches"
 for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
@@ -26,14 +80,10 @@ for i in curl-sys libc; do
 done
 
 fdir="/mss/repo/pkg/recipes/rust/files"
-cp -rv "${fdir}"/config.toml ./config.toml
-
-export PKG_CONFIG_ALLOW_CROSS=1
-export       LLVM_LINK_SHARED=1
+cp -rv "${fdir}"/config-bootstrap.toml ./config.toml
 
 time python3 ./x.py build -j "${ajobcount}"
 
-# 3
 instdir="${PWD}"/KEK
 DESTDIR="${instdir}" python3 ./x.py install
 
@@ -66,12 +116,76 @@ for i in ${rlibs} ${ars}; do
  ${RANLIB}               "${i}"
 done
 
+unset elfs elfs_exe elfs_dyn elfs_rel rlibs ars
+
 rm -rf ../../rust/
 
 mv mss/work/table/rust/ ../../
 
 cd ../../; rm -rf rustc-nightly-src/
 
-pkgup rust/ rust-0599b6b9
-mv rust-0599b6b9.tar.zst \
+# 4 > stage 3
+tar xf /mss/work/sauces/rustc-nightly-7908a1d6-src.tar.xz
+cd     rustc-nightly-src/
+
+touch .gitmodules
+
+pdir="/mss/repo/pkg/recipes/rust/patches"
+for file in "${pdir}"/*.patch; do patch -p1 < "${file}"; done
+
+sed -i 's/crt_static_default = true/crt_static_default = false/' \
+ ./compiler/rustc_target/src/spec/linux_musl_base.rs
+
+for i in curl-sys libc; do
+ sed -i 's/\("files":{\)[^}]*/\1/' vendor/${i}/.cargo-checksum.json
+done
+
+fdir="/mss/repo/pkg/recipes/rust/files"
+cp -rv "${fdir}"/config.toml ./config.toml
+
+time python3 ./x.py build -j "${ajobcount}"
+
+instdir="${PWD}"/KEK
+DESTDIR="${instdir}" python3 ./x.py install
+
+cd "${instdir}"/
+
+rm -rf \
+ etc/                                                   \
+ mss/work/table/rust/lib/rustlib/components             \
+ mss/work/table/rust/lib/rustlib/etc/                   \
+ mss/work/table/rust/lib/rustlib/install.log            \
+ mss/work/table/rust/lib/rustlib/manifest-*             \
+ mss/work/table/rust/lib/rustlib/rust-installer-version \
+ mss/work/table/rust/lib/rustlib/uninstall.sh           \
+ mss/work/table/rust/share/
+
+    elfs="$(find . -type f -exec file {} ';' | grep 'ELF ')"
+elfs_exe="$(echo "${elfs}" | awk '/executable, /   {gsub(/:/,""); print $1}')"
+elfs_dyn="$(echo "${elfs}" | awk '/shared object, /{gsub(/:/,""); print $1}')"
+elfs_rel="$(echo "${elfs}" | awk '/relocatable, /  {gsub(/:/,""); print $1}')"
+
+for i in ${elfs_exe}; do strip --strip-all      "${i}"; done
+for i in ${elfs_dyn}; do strip --strip-unneeded "${i}"; done
+for i in ${elfs_rel}; do strip --strip-debug    "${i}"; done
+
+rlibs="$(find . -type f -name \*.rlib)"
+  ars="$(find . -type f -name \*.a)"
+
+for i in ${rlibs} ${ars}; do
+ ${STRIP}  --strip-debug "${i}"
+ ${RANLIB}               "${i}"
+done
+
+unset elfs elfs_exe elfs_dyn elfs_rel rlibs ars
+
+rm -rf ../../rust/
+
+mv mss/work/table/rust/ ../../
+
+cd ../../; rm -rf rustc-nightly-src/
+
+# 5
+pkgup rust rust-7908a1d6
+mv rust-7908a1d6.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/

@@ -26,12 +26,12 @@ export PIP_NETWORK_INSTALL_RESTRICTED_VIRTUALENVS="mach"
 mimup
 
 # 2 > extraction
-for i in node.js-19.8.1 rust-0599b6b9 ff-prereq-20230404_054539; do
+for i in node.js-19.8.1 rust-7908a1d6 ff-prereq-20230418_161959; do
  tar xf /mnt/mss/stuff/techy-bits/packaged-software/"${i}".tar.zst
 done
 
-tar xf /mss/work/sauces/firefox-112.0b9.source.tar.xz
-cd     firefox-112.0/
+tar xf /mss/work/sauces/firefox-112.0.1.source.tar.xz
+cd     firefox-112.0.1/
 
 # 3 > apply patches
 pdir="/mss/repo/pkg/recipes/firefox/patches"
