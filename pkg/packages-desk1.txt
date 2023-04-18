@@ -196,8 +196,8 @@ i  4  ...    nspr                 4.35
 o  1  ..     node.js              19.8.1
 i  5  ..     gtk3                 3.24.34
 i  1  ...    mss-ec               b8b60fef
-o  1  .      firefox              112.0b9
-o  1  ..     rust                 0599b6b9
+o  1  .      firefox              112.0.1
+o  1  ..     rust                 7908a1d6
 i  1  .      zstd                 1.5.5
 i  1  .      transmission         4.0.1
 i  5  .      pciutils             3.7.0
