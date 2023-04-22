@@ -1,0 +1,24 @@
+From 4898f9c770db8875c472d836ad8804ca348f5108 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Wed, 19 Apr 2023 14:46:10 +0300
+Subject: [PATCH 4/7] llvm: do not build llvm-locstats.
+
+---
+ llvm/CMakeLists.txt | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
+index aa88246fc..fe9ba1e24 100644
+--- a/llvm/CMakeLists.txt
++++ b/llvm/CMakeLists.txt
+@@ -1284,7 +1284,3 @@ if (LLVM_INCLUDE_BENCHMARKS)
+     ${CMAKE_CURRENT_BINARY_DIR}/third-party/benchmark)
+   add_subdirectory(benchmarks)
+ endif()
+-
+-if (LLVM_INCLUDE_UTILS AND LLVM_INCLUDE_TOOLS)
+-  add_subdirectory(utils/llvm-locstats)
+-endif()
+-- 
+2.40.0
+

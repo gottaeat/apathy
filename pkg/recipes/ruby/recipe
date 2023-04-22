@@ -1,0 +1,73 @@
+# 1
+printprof vanilla > buildprof
+. buildprof; rm -rf buildprof
+
+penis="/mss/work/table/KEK"
+export          CFLAGS="${CFLAGS}   -L${penis}/lib -I${penis}/include -fPIC"
+export        CXXFLAGS="${CXXFLAGS} -L${penis}/lib -I${penis}/include -fPIC"
+export            PATH="${PATH}:${penis}/bin"
+export PKG_CONFIG_PATH="${PKG_CONFIG_PATH}:${penis}/lib/pkgconfig"
+export    LIBRARY_PATH="${LIBRARY_PATH}:${penis}/lib"
+
+# 2
+tar xf /mss/work/sauces/yaml-0.2.5.tar.gz
+cd     yaml-0.2.5/
+
+./configure \
+ --build=$CBUILD     \
+ --host=$CHOST       \
+ --prefix="${penis}" \
+ --enable-static     \
+ --disable-shared
+
+make
+make install
+
+cd ../; rm -rf yaml-0.2.5/
+
+# 3
+tar xf /mss/work/sauces/ruby-3.2.0.tar.gz
+cd     ruby-3.2.0/
+
+export   CFLAGS="${CFLAGS}   -fno-omit-frame-pointer -fno-strict-aliasing"
+export CXXFLAGS="${CXXFLAGS} -fno-omit-frame-pointer -fno-strict-aliasing"
+
+pdir="/mss/repo/pkg/recipes/ruby/patches"
+patch -p1 < "${pdir}"/0001-fix-get_main_stack.patch
+
+findir="/mss/work/table/ruby"
+
+ac_cv_func_isnan=yes \
+ac_cv_func_isinf=yes \
+./configure \
+ --build=$CBUILD        \
+ --host=$CHOST          \
+ --prefix="${findir}"   \
+ --without-gmp          \
+ --enable-pthread       \
+ --enable-shared        \
+ --disable-debug        \
+ --disable-install-doc  \
+ --disable-install-rdoc \
+ --disable-ipv6         \
+ --disable-rpath        \
+ --disable-rubygems
+
+time make
+
+# 4
+instdir="${PWD}/KEK"
+make DESTDIR="${instdir}" install
+
+rm -rfv "${instdir}${findir}"/share
+
+find "${instdir}${findir}"/bin/ \
+ -type f -exec strip --strip-all      {} ';'
+
+find "${instdir}${findir}"/lib/ \
+ -type f -exec strip --strip-unneeded {} ';'
+
+pushd "${instdir}${findir}"/../
+pkgup ruby/ ruby-3.2.2/
+mv ruby-3.2.2.tar.zst /mnt/mss/stuff/techy-bits/packaged-software/
+popd

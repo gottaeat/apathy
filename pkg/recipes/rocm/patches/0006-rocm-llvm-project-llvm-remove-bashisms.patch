@@ -1,0 +1,54 @@
+diff -uraN a/llvm/lib/OffloadArch/make_generated_offload_arch_h.sh b/llvm/lib/OffloadArch/make_generated_offload_arch_h.sh
+--- a/llvm/lib/OffloadArch/make_generated_offload_arch_h.sh	2023-01-27 20:11:54.000000000 +0300
++++ b/llvm/lib/OffloadArch/make_generated_offload_arch_h.sh	2023-04-19 17:12:47.201686640 +0300
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env bash
++#!/bin/sh
+ #
+ #  make_generated_offload_arch_h.sh - Create the fle generated_offload_arch.h
+ #
+@@ -71,7 +71,7 @@
+   echo "typedef enum {" >> $AOT_DOTH_FILE
+   cat $AOT_CODENAME2OFFLOADARCH | cut -d" " -f2 | sort -u > $aot_tmpfile
+   while read -r line ; do
+-    echo "  AOT_${line^^}," >> $AOT_DOTH_FILE
++    echo "  AOT_${line}," | awk '{print toupper($0)}' >> $AOT_DOTH_FILE
+   done < $aot_tmpfile
+   echo "} AOT_OFFLOADARCH;" >> $AOT_DOTH_FILE
+ }
+@@ -81,7 +81,7 @@
+   echo "typedef enum {" >> $AOT_DOTH_FILE
+   cat $AOT_CODENAME2OFFLOADARCH | while read -r line ; do
+     codename=`echo $line | cut -d" " -f1`
+-    echo "  AOT_CN_${codename^^}," >> $AOT_DOTH_FILE
++    echo "  AOT_CN_${codename}," | awk '{print toupper($0)}' >> $AOT_DOTH_FILE
+   done
+   echo "} AOT_CODENAME;" >> $AOT_DOTH_FILE
+ }
+@@ -90,7 +90,7 @@
+   echo "extern const AOT_CODENAME_ID_TO_STRING AOT_CODENAMES[] =  {" >>$AOT_DOTH_FILE
+   cat $AOT_CODENAME2OFFLOADARCH | while read -r line ; do
+     codename=`echo $line | cut -d" " -f1`
+-    echo "  {AOT_CN_${codename^^}, \"${codename}\"}," >> $AOT_DOTH_FILE
++    echo $(echo "  {AOT_CN_${codename}, " | awk '{print toupper($0)}') "\"${codename}\"}," >> $AOT_DOTH_FILE
+   done
+   echo "};" >> $AOT_DOTH_FILE
+ }
+@@ -99,7 +99,7 @@
+   echo "extern const AOT_OFFLOADARCH_TO_STRING AOT_OFFLOADARCHS[] =  {" >>$AOT_DOTH_FILE
+   cat $AOT_CODENAME2OFFLOADARCH | cut -d" " -f2 | sort -u > $aot_tmpfile
+   while read -r line ; do
+-    echo "  {AOT_${line^^}, \"${line}\"}," >> $AOT_DOTH_FILE
++    echo $(echo "  {AOT_${line}, " | awk '{print toupper($0)}') "\"${line}\"}," >> $AOT_DOTH_FILE
+   done < $aot_tmpfile
+   echo "};" >> $AOT_DOTH_FILE
+ }
+@@ -151,7 +151,7 @@
+        vid=`echo $line | cut -d":" -f1`
+        devid=`echo $line | cut -d" " -f1 | cut -d":" -f2`
+        offloadarchid=$(get_offloadarch_id_from_codename $codename)
+-       echo "{ 0x${vid}, 0x${devid}, AOT_CN_${codename^^}, AOT_${offloadarchid^^} }," >>$AOT_DOTH_FILE
++       echo "{ 0x${vid}, 0x${devid}, " "$(echo AOT_CN_${codename}, AOT_${offloadarchid} }, | awk '{print toupper($0)}')" >>$AOT_DOTH_FILE
+     fi
+   done < $aot_tmpfile
+   echo "};" >> $AOT_DOTH_FILE

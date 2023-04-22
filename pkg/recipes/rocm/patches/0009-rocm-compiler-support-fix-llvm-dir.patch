@@ -1,0 +1,16 @@
+diff -uraN a/lib/comgr/CMakeLists.txt b/lib/comgr/CMakeLists.txt
+--- a/lib/comgr/CMakeLists.txt	2022-11-15 21:37:50.000000000 +0300
++++ b/lib/comgr/CMakeLists.txt	2023-04-20 18:05:01.237357094 +0300
+@@ -69,8 +69,10 @@
+ 
+ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+   find_package(AMDDeviceLibs REQUIRED CONFIG)
+-  find_package(Clang REQUIRED CONFIG)
+-  find_package(LLD REQUIRED CONFIG)
++  find_package(Clang REQUIRED CONFIG HINTS ${LLVM_DIR}/../clang)
++  find_package(LLD REQUIRED CONFIG HINTS ${LLVM_DIR}/../lld)
++
++  list(APPEND CMAKE_MODULE_PATH ${LLVM_DIR})
+ 
+   target_include_directories(amd_comgr
+     PRIVATE

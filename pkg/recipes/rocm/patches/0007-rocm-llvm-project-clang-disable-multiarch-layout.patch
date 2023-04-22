@@ -1,0 +1,28 @@
+From 8fda9426031bf14d1701f11c6fe99019e545d01f Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Wed, 19 Apr 2023 14:48:56 +0300
+Subject: [PATCH 6/7] clang: disable multiarch layout.
+
+---
+ clang/lib/Driver/ToolChains/Linux.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/clang/lib/Driver/ToolChains/Linux.cpp b/clang/lib/Driver/ToolChains/Linux.cpp
+index 6bb54f4e5..46c8e390f 100644
+--- a/clang/lib/Driver/ToolChains/Linux.cpp
++++ b/clang/lib/Driver/ToolChains/Linux.cpp
+@@ -48,6 +48,11 @@ std::string Linux::getMultiarchTriple(const Driver &D,
+   bool IsMipsR6 = TargetTriple.getSubArch() == llvm::Triple::MipsSubArch_r6;
+   bool IsMipsN32Abi = TargetTriple.getEnvironment() == llvm::Triple::GNUABIN32;
+ 
++  /* we are not multiarch */
++  if (TargetTriple.isMusl()) {
++    return "";
++  }
++
+   // For most architectures, just use whatever we have rather than trying to be
+   // clever.
+   switch (TargetTriple.getArch()) {
+-- 
+2.40.0
+

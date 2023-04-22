@@ -1,0 +1,35 @@
+From 1659379179e55ff82048e8df7aca3560131873b7 Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Wed, 19 Apr 2023 14:48:10 +0300
+Subject: [PATCH 5/7] llvm: do not enforce CMAKE_BUILD_TYPE.
+
+---
+ llvm/CMakeLists.txt | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/llvm/CMakeLists.txt b/llvm/CMakeLists.txt
+index fe9ba1e24..ca1cf85e0 100644
+--- a/llvm/CMakeLists.txt
++++ b/llvm/CMakeLists.txt
+@@ -71,18 +71,6 @@ else()
+   set(CMAKE_CXX_EXTENSIONS NO)
+ endif()
+ 
+-if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+-  message(FATAL_ERROR "
+-No build type selected. You need to pass -DCMAKE_BUILD_TYPE=<type> in order to configure LLVM.
+-Available options are:
+-  * -DCMAKE_BUILD_TYPE=Release - For an optimized build with no assertions or debug info.
+-  * -DCMAKE_BUILD_TYPE=Debug - For an unoptimized build with assertions and debug info.
+-  * -DCMAKE_BUILD_TYPE=RelWithDebInfo - For an optimized build with no assertions but with debug info.
+-  * -DCMAKE_BUILD_TYPE=MinSizeRel - For a build optimized for size instead of speed.
+-Learn more about these options in our documentation at https://llvm.org/docs/CMake.html#cmake-build-type
+-")
+-endif()
+-
+ # Side-by-side subprojects layout: automatically set the
+ # LLVM_EXTERNAL_${project}_SOURCE_DIR using LLVM_ALL_PROJECTS
+ # This allows an easy way of setting up a build directory for llvm and another
+-- 
+2.40.0
+

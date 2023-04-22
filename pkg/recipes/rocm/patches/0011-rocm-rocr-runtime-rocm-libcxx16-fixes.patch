@@ -1,0 +1,67 @@
+From f8c2c69b70bb21a02efba8d6e10b7cd303f9650a Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Thu, 20 Apr 2023 19:40:03 +0300
+Subject: [PATCH 1/4] rocm-rocr-runtime-rocm libcxx16 fixes.
+
+---
+ src/core/inc/checked.h              | 2 +-
+ src/core/runtime/default_signal.cpp | 2 +-
+ src/core/util/utils.h               | 2 +-
+ src/image/util.h                    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/core/inc/checked.h b/src/core/inc/checked.h
+index 93793bc..fb5cff6 100644
+--- a/src/core/inc/checked.h
++++ b/src/core/inc/checked.h
+@@ -58,7 +58,7 @@ template <uint64_t code, bool multiProcess = false> class Check final {
+   Check(const Check&) { object_ = uintptr_t(this) ^ uintptr_t(code); }
+   Check(Check&&) { object_ = uintptr_t(this) ^ uintptr_t(code); }
+ 
+-  ~Check() { object_ = NULL; }
++  ~Check() { object_ = 0; }
+ 
+   const Check& operator=(Check&& rhs) { return *this; }
+   const Check& operator=(const Check& rhs) { return *this; }
+diff --git a/src/core/runtime/default_signal.cpp b/src/core/runtime/default_signal.cpp
+index 281b295..3638ba4 100644
+--- a/src/core/runtime/default_signal.cpp
++++ b/src/core/runtime/default_signal.cpp
+@@ -52,7 +52,7 @@ int BusyWaitSignal::rtti_id_ = 0;
+ BusyWaitSignal::BusyWaitSignal(SharedSignal* abi_block, bool enableIPC)
+     : Signal(abi_block, enableIPC) {
+   signal_.kind = AMD_SIGNAL_KIND_USER;
+-  signal_.event_mailbox_ptr = NULL;
++  signal_.event_mailbox_ptr = 0;
+ }
+ 
+ hsa_signal_value_t BusyWaitSignal::LoadRelaxed() {
+diff --git a/src/core/util/utils.h b/src/core/util/utils.h
+index ab536ba..2a476e4 100644
+--- a/src/core/util/utils.h
++++ b/src/core/util/utils.h
+@@ -74,7 +74,7 @@ static __forceinline void* _aligned_malloc(size_t size, size_t alignment) {
+   return aligned_alloc(alignment, size);
+ #else
+   void *mem = NULL;
+-  if (NULL != posix_memalign(&mem, alignment, size))
++  if (0 != posix_memalign(&mem, alignment, size))
+     return NULL;
+   return mem;
+ #endif
+diff --git a/src/image/util.h b/src/image/util.h
+index 8c0faaa..2c6819f 100644
+--- a/src/image/util.h
++++ b/src/image/util.h
+@@ -95,7 +95,7 @@ static __forceinline void* _aligned_malloc(size_t size, size_t alignment) {
+   return aligned_alloc(alignment, size);
+ #else
+   void* mem = NULL;
+-  if (NULL != posix_memalign(&mem, alignment, size)) return NULL;
++  if (0 != posix_memalign(&mem, alignment, size)) return NULL;
+   return mem;
+ #endif
+ }
+-- 
+2.40.0
+

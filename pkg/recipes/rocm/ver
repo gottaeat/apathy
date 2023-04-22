@@ -1,0 +1,8 @@
+clinfo                    3.0.23.01.25
+hashcat                   6.2.6
+numactl                   2.0.16
+ocl-icd                   2.3.1
+rocm-compiler-support     5.4.4
+rocm-rocm-opencl-runtime  5.4.4
+rocm-rocr-runtime         5.4.3
+rocm-roct-thunk-interface 5.4.3
