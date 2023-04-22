@@ -109,12 +109,12 @@ syslibs="ffmpeg
          zlib"
 
 # 7
-tar xf /mss/work/sauces/ungoogled-chromium-112.0.5615.121-1.tar.gz
-mv ungoogled-chromium-112.0.5615.121-1/ ung
+tar xf /mss/work/sauces/ungoogled-chromium-112.0.5615.165-1.tar.gz
+mv ungoogled-chromium-112.0.5615.165-1/ ung
 ung="${PWD}"/ung
 
-tar xf /mss/work/sauces/chromium-112.0.5615.121.tar.xz
-cd     chromium-112.0.5615.121/
+tar xf /mss/work/sauces/chromium-112.0.5615.165.tar.xz
+cd     chromium-112.0.5615.165/
 
 pdir="/mss/repo/pkg/recipes/chromium/patches"
 for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
@@ -213,6 +213,6 @@ cp "${fdir}"/chromium \
  "${findir}"/bin/
 
 mv KEK chromium/
-pkgup chromium/ chromium-112.0.5615.121
-mv chromium-112.0.5615.121.tar.zst \
+pkgup chromium/ chromium-112.0.5615.165
+mv chromium-112.0.5615.165.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
