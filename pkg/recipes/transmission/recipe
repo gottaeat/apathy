@@ -15,6 +15,7 @@ cmake -Wno-dev -GNinja \
 \
  -DENABLE_CLI=ON                        \
  -DENABLE_DAEMON=ON                     \
+ -DENABLE_UTILS=ON                      \
  -DINSTALL_WEB=ON                       \
  -DUSE_SYSTEM_EVENT2=ON                 \
  -DWITH_CRYPTO=openssl                  \
@@ -25,7 +26,6 @@ cmake -Wno-dev -GNinja \
  -DENABLE_NLS=OFF                       \
  -DENABLE_QT=OFF                        \
  -DENABLE_TESTS=OFF                     \
- -DENABLE_UTILS=OFF                     \
  -DENABLE_UTP=ON                        \
  -DENABLE_WERROR=OFF                    \
  -DINSTALL_DOC=OFF                      \
