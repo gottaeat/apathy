@@ -1,5 +1,5 @@
 project('landfill', 'c',
- version: '20',
+ version: '21',
  license: 'MIT',
  default_options: [
   'buildtype=plain',
