@@ -1,21 +1,8 @@
 # 1
-case "${amachine}" in
- x230)
-  fname="Terminus"
-  dmsz="10"
-  dwsz="10"
-  stsz="10"
- ;;
-esac
-
 mkdir /mss/repo/landfill/build
 cd    /mss/repo/landfill/build
 
 meson setup \
- -Dfontname="${fname}" \
- -Ddmenufontsize="${dmsz}" \
- -Ddwmfontsize="${dwsz}"   \
- -Dstfontsize="${stsz}"    \
  ..
 
 samu
