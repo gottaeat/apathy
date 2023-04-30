@@ -75,30 +75,30 @@ cp -fv include/* "${money}"/include
 cd ../; rm -rf uthash-2.3.0/
 
 # 7
-tar xf /mss/work/sauces/picom-9.tar.gz
-cd     picom-9/
+tar xf /mss/work/sauces/picom-10.2.tar.gz
+cd     picom-10.2/
 
 mkdir build
 cd    build
 
+
 meson setup --buildtype=plain \
- --prefix=/usr          \
- -Dcompton=false        \
- -Dconfig_file=false    \
- -Ddbus=false           \
- -Dmodularize=false     \
- -Dopengl=true          \
- -Dregex=false          \
- -Dsanitize=false       \
- -Dunittest=false       \
- -Dvsync_drm=false      \
- -Dwith_docs=false      \
- -Dxrescheck=false      \
+ -Dcompton=false     \
+ -Dconfig_file=false \
+ -Ddbus=false        \
+ -Dmodularize=false  \
+ -Dopengl=true       \
+ -Dregex=false       \
+ -Dsanitize=false    \
+ -Dunittest=false    \
+ -Dvsync_drm=true    \
+ -Dwith_docs=false   \
+ -Dxrescheck=false   \
 ..
 
 samu
 
-# 7
+# 8
 doas -s
 for i in src/picom; do
  strip --strip-all "${i}"

@@ -68,8 +68,8 @@ samu install
 cd ../../; rm -rf libxcvt-0.1.1/
 
 # 5 > xorg-server
-tar xf /mss/work/sauces/xorg-server-636c9aa.tar.zst
-cd     xorg-server-636c9aa/
+tar xf /mss/work/sauces/xorg-server-21.1.8.tar.xz
+cd     xorg-server-21.1.8/
 
 mkdir build/
 cd    build/
@@ -79,7 +79,7 @@ meson setup \
  --prefix=/usr                                     \
  --sysconfdir=/etc                                 \
  --localstatedir=/var                              \
- -Dfontrootdir="/usr/share/fonts"                  \
+ -Ddefault_font_path="/usr/share/fonts"            \
  -Dxkb_output_dir="/var/lib/xkb"                   \
 \
  -Dbuilder_addr="mss@tutanota.de"                  \
@@ -133,8 +133,6 @@ meson setup \
  -Dxquartz=false                                   \
  -Dxselinux=false                                  \
  -Dxvfb=false                                      \
- -Dxwayland=false                                  \
- -Dxwayland_eglstream=false                        \
  -Dxwin=false                                      \
  ..
 

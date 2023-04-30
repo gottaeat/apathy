@@ -2,6 +2,6 @@ cairo      1.17.8
 fontconfig 2.14.2
 freetype   2.13.0
 glib       2.76.0
-harfbuzz   7.1.0
+harfbuzz   7.2.0
 libpng     1.6.39
 pixman     0.42.2

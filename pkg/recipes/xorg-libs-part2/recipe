@@ -81,8 +81,8 @@ samu install
 cd ../../; rm -rf freetype-2.13.0/
 
 # 5 > system harfbuzz
-tar xf /mss/work/sauces/harfbuzz-7.1.0.tar.xz
-cd     harfbuzz-7.1.0/
+tar xf /mss/work/sauces/harfbuzz-7.2.0.tar.gz
+cd     harfbuzz-7.2.0/
 
 mkdir build
 cd    build
@@ -108,7 +108,7 @@ samu
 DESTDIR="${instdir}" samu install
 doas -- samu install
 
-cd ../../; rm -rf harfbuzz-7.1.0/
+cd ../../; rm -rf harfbuzz-7.2.0/
 
 # 6 > system freetype (w/ harfbuzz)
 tar xf /mss/work/sauces/freetype-2.13.0.tar.xz
