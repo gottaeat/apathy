@@ -1,0 +1,23 @@
+#!/mss/bin/sh
+. /mss/files/device.conf
+. /mss/files/machines/"${amachine}".conf
+
+mypicom(){
+ picom \
+  ${picom_args}          \
+  --unredir-if-possible  \
+  --use-damage           \
+  ${@} & disown
+
+ exit 0
+}
+
+picompid="$(pidof picom)"
+if [ ! -z "${picompid}" ]
+ then
+  for i in ${picompid}; do
+   kill -15 "${i}"
+  done
+ else
+  mypicom
+fi

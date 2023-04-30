@@ -1,5 +1,5 @@
 project('utils',
- version: '56',
+ version: '57',
  license: 'GPL3',
  default_options: [
   'buildtype=plain',
@@ -37,7 +37,7 @@ files_bin = [
  'bin/setxkeeb',
  'bin/stripper',
  'bin/suspendtodisk',
- 'bin/switchcompositor',
+ 'bin/comptoggle',
  'bin/syncboi',
  'bin/trimall',
  'bin/ttygrab'
