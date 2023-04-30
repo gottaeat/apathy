@@ -1,0 +1,6 @@
+/usr/lib/xorg/modules/drivers/amdgpu_drv.la
+/usr/lib/xorg/modules/drivers/amdgpu_drv.so
+
+/usr/share/X11/xorg.conf.d/10-amdgpu.conf
+
+/usr/share/man
