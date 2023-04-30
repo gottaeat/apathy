@@ -236,12 +236,3 @@ i  2   .     nginx                      1.22.1
 i  2   ..    nginx-rtmp-module          1.2.2
 i  6   .     bind                       9.18.11
 i  1   .     mtr                        0.95
-o  1   .     ruby                       3.2.2
-o  1   .     rocm-rocm-opencl-runtime   5.4.4
-o  1   ..    ocl-icd                    2.3.1
-o  1   ..    rocm-compiler-support      5.4.4
-o  1   ..    rocm-roct-thunk-interface  5.4.3
-o  1   ...   numactl                    2.0.16
-o  1   ..    rocm-rocr-runtime          5.4.3
-o  1   .     clinfo                     3.0.23.01.25
-o  1   .     hashcat                    6.2.6
