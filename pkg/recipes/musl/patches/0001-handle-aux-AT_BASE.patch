@@ -1,11 +1,17 @@
-This is required to make the gcompat ELF interpreter stub work with some
-packed binaries.
+From aea6233a0f19aea0310900bae7bd659010e75c7e Mon Sep 17 00:00:00 2001
+From: must_eat <mss@tutanota.de>
+Date: Sat, 6 May 2023 16:54:32 +0300
+Subject: [PATCH 1/2] handle aux[AT_BASE].
+
+---
+ src/env/__init_tls.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/src/env/__init_tls.c b/src/env/__init_tls.c
-index b125eb1..616c6a6 100644
+index a93141e..fd51ff3 100644
 --- a/src/env/__init_tls.c
 +++ b/src/env/__init_tls.c
-@@ -66,8 +66,10 @@ void *__copy_tls(unsigned char *mem)
+@@ -72,8 +72,10 @@ void *__copy_tls(unsigned char *mem)
  }
  
  #if ULONG_MAX == 0xffffffff
@@ -16,7 +22,7 @@ index b125eb1..616c6a6 100644
  typedef Elf64_Phdr Phdr;
  #endif
  
-@@ -77,15 +79,23 @@ extern const size_t _DYNAMIC[];
+@@ -82,15 +84,23 @@ extern weak hidden const size_t _DYNAMIC[];
  static void static_init_tls(size_t *aux)
  {
  	unsigned char *p;
@@ -44,3 +50,6 @@ index b125eb1..616c6a6 100644
  		if (phdr->p_type == PT_DYNAMIC && _DYNAMIC)
  			base = (size_t)_DYNAMIC - phdr->p_vaddr;
  		if (phdr->p_type == PT_TLS)
+-- 
+2.40.1
+

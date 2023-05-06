@@ -2,11 +2,13 @@
 printprof vanilla > buildprof
 . buildprof; rm -rf buildprof
 
+ulimit -Sn 4096
+
 tar xf /mss/work/sauces/musl-1.2.4.tar.gz
 cd     musl-1.2.4/
 
 pdir="/mss/repo/pkg/recipes/musl/patches"
-patch -p1 < "${pdir}"/0001-handle-aux-at_base.patch
+for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
 
 ./configure \
   CFLAGS="${CFLAGS}"  \
