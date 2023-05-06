@@ -107,24 +107,20 @@
 /usr/include/drm/drm_sarea.h
 /usr/include/drm/etnaviv_drm.h
 /usr/include/drm/exynos_drm.h
-/usr/include/drm/i810_drm.h
+/usr/include/drm/habanalabs_accel.h
 /usr/include/drm/i915_drm.h
+/usr/include/drm/ivpu_accel.h
 /usr/include/drm/lima_drm.h
-/usr/include/drm/mga_drm.h
 /usr/include/drm/msm_drm.h
 /usr/include/drm/nouveau_drm.h
 /usr/include/drm/omap_drm.h
 /usr/include/drm/panfrost_drm.h
 /usr/include/drm/qxl_drm.h
-/usr/include/drm/r128_drm.h
 /usr/include/drm/radeon_drm.h
-/usr/include/drm/savage_drm.h
-/usr/include/drm/sis_drm.h
 /usr/include/drm/tegra_drm.h
 /usr/include/drm/v3d_drm.h
 /usr/include/drm/vc4_drm.h
 /usr/include/drm/vgem_drm.h
-/usr/include/drm/via_drm.h
 /usr/include/drm/virtgpu_drm.h
 /usr/include/drm/vmwgfx_drm.h
 /usr/include/linux/a.out.h
@@ -144,6 +140,7 @@
 /usr/include/linux/arm_sdei.h
 /usr/include/linux/aspeed-lpc-ctrl.h
 /usr/include/linux/aspeed-p2a-ctrl.h
+/usr/include/linux/aspeed-video.h
 /usr/include/linux/atalk.h
 /usr/include/linux/atm.h
 /usr/include/linux/atm_eni.h
@@ -151,6 +148,7 @@
 /usr/include/linux/atm_idt77105.h
 /usr/include/linux/atm_nicstar.h
 /usr/include/linux/atm_tcp.h
+/usr/include/linux/atm_zatm.h
 /usr/include/linux/atmapi.h
 /usr/include/linux/atmarp.h
 /usr/include/linux/atmbr2684.h
@@ -242,7 +240,6 @@
 /usr/include/linux/dm-log-userspace.h
 /usr/include/linux/dma-buf.h
 /usr/include/linux/dma-heap.h
-/usr/include/linux/dn.h
 /usr/include/linux/dns_resolver.h
 /usr/include/linux/dqblk_xfs.h
 /usr/include/linux/dvb/audio.h
@@ -253,6 +250,7 @@
 /usr/include/linux/dvb/osd.h
 /usr/include/linux/dvb/version.h
 /usr/include/linux/dvb/video.h
+/usr/include/linux/dw100.h
 /usr/include/linux/edd.h
 /usr/include/linux/efs_fs_sb.h
 /usr/include/linux/elf-em.h
@@ -367,6 +365,7 @@
 /usr/include/linux/ioam6_iptunnel.h
 /usr/include/linux/ioctl.h
 /usr/include/linux/iommu.h
+/usr/include/linux/iommufd.h
 /usr/include/linux/ioprio.h
 /usr/include/linux/ip.h
 /usr/include/linux/ip6_tunnel.h
@@ -375,6 +374,7 @@
 /usr/include/linux/ipmi.h
 /usr/include/linux/ipmi_bmc.h
 /usr/include/linux/ipmi_msgdefs.h
+/usr/include/linux/ipmi_ssif_bmc.h
 /usr/include/linux/ipsec.h
 /usr/include/linux/ipv6.h
 /usr/include/linux/ipv6_route.h
@@ -407,6 +407,7 @@
 /usr/include/linux/limits.h
 /usr/include/linux/lirc.h
 /usr/include/linux/llc.h
+/usr/include/linux/loadpin.h
 /usr/include/linux/loop.h
 /usr/include/linux/lp.h
 /usr/include/linux/lwtunnel.h
@@ -424,7 +425,6 @@
 /usr/include/linux/membarrier.h
 /usr/include/linux/memfd.h
 /usr/include/linux/mempolicy.h
-/usr/include/linux/meye.h
 /usr/include/linux/mii.h
 /usr/include/linux/minix_fs.h
 /usr/include/linux/misc/bcm_vk.h
@@ -453,6 +453,7 @@
 /usr/include/linux/net_namespace.h
 /usr/include/linux/net_tstamp.h
 /usr/include/linux/netconf.h
+/usr/include/linux/netdev.h
 /usr/include/linux/netdevice.h
 /usr/include/linux/netfilter.h
 /usr/include/linux/netfilter/ipset/ip_set.h
@@ -570,7 +571,6 @@
 /usr/include/linux/netfilter_bridge/ebt_stp.h
 /usr/include/linux/netfilter_bridge/ebt_vlan.h
 /usr/include/linux/netfilter_bridge/ebtables.h
-/usr/include/linux/netfilter_decnet.h
 /usr/include/linux/netfilter_ipv4.h
 /usr/include/linux/netfilter_ipv4/ip_tables.h
 /usr/include/linux/netfilter_ipv4/ipt_CLUSTERIP.h
@@ -771,6 +771,7 @@
 /usr/include/linux/tc_ematch/tc_em_text.h
 /usr/include/linux/tcp.h
 /usr/include/linux/tcp_metrics.h
+/usr/include/linux/tdx-guest.h
 /usr/include/linux/tee.h
 /usr/include/linux/termios.h
 /usr/include/linux/thermal.h
@@ -789,6 +790,7 @@
 /usr/include/linux/tty.h
 /usr/include/linux/tty_flags.h
 /usr/include/linux/types.h
+/usr/include/linux/ublk_cmd.h
 /usr/include/linux/udf_fs_i.h
 /usr/include/linux/udmabuf.h
 /usr/include/linux/udp.h
@@ -890,7 +892,6 @@
 /usr/include/linux/zorro_ids.h
 /usr/include/misc/cxl.h
 /usr/include/misc/fastrpc.h
-/usr/include/misc/habanalabs.h
 /usr/include/misc/ocxl.h
 /usr/include/misc/pvpanic.h
 /usr/include/misc/uacce/hisi_qm.h
@@ -904,6 +905,7 @@
 /usr/include/rdma/bnxt_re-abi.h
 /usr/include/rdma/cxgb4-abi.h
 /usr/include/rdma/efa-abi.h
+/usr/include/rdma/erdma-abi.h
 /usr/include/rdma/hfi/hfi1_ioctl.h
 /usr/include/rdma/hfi/hfi1_user.h
 /usr/include/rdma/hns-abi.h
@@ -913,6 +915,7 @@
 /usr/include/rdma/ib_user_sa.h
 /usr/include/rdma/ib_user_verbs.h
 /usr/include/rdma/irdma-abi.h
+/usr/include/rdma/mana-abi.h
 /usr/include/rdma/mlx4-abi.h
 /usr/include/rdma/mlx5-abi.h
 /usr/include/rdma/mlx5_user_ioctl_cmds.h
