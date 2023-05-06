@@ -109,12 +109,12 @@ syslibs="ffmpeg
          zlib"
 
 # 7
-tar xf /mss/work/sauces/ungoogled-chromium-112.0.5615.165-1.tar.gz
-mv ungoogled-chromium-112.0.5615.165-1/ ung
+tar xf /mss/work/sauces/ungoogled-chromium-113.0.5672.63-1.tar.gz
+mv ungoogled-chromium-113.0.5672.63-1/ ung
 ung="${PWD}"/ung
 
-tar xf /mss/work/sauces/chromium-112.0.5615.165.tar.xz
-cd     chromium-112.0.5615.165/
+tar xf /mss/work/sauces/chromium-113.0.5672.63.tar.xz
+cd     chromium-113.0.5672.63/
 
 pdir="/mss/repo/pkg/recipes/chromium/patches"
 for i in "${pdir}"/*.patch; do patch -p1 < "${i}"; done
@@ -170,9 +170,6 @@ sed -i -e \
 fdir="/mss/repo/pkg/recipes/chromium/files"
 gn gen out/Release --args="$(cat ${fdir}/gn-args)"
 
-time samu -C out/Release \
- gen/components/feed/core/proto/v2/wire/chrome_feed_response_metadata.pb.h
-
 time samu -C out/Release chrome
 
 # 11
@@ -213,6 +210,6 @@ cp "${fdir}"/chromium \
  "${findir}"/bin/
 
 mv KEK chromium/
-pkgup chromium/ chromium-112.0.5615.165
-mv chromium-112.0.5615.165.tar.zst \
+pkgup chromium/ chromium-113.0.5672.63
+mv chromium-113.0.5672.63.tar.zst \
  /mnt/mss/stuff/techy-bits/packaged-software/
