@@ -1,5 +1,5 @@
 # 1
-linver="6.2"
+linver="6.3.1"
 
 export MAKEFLAGS="$(echo "${MAKEFLAGS}" \
                     | sed 's/V=1/V=0/g')" ;

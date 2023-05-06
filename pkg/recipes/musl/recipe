@@ -2,8 +2,8 @@
 printprof vanilla > buildprof
 . buildprof; rm -rf buildprof
 
-tar xf /mss/work/sauces/musl-1.2.3.tar.gz
-cd     musl-1.2.3/
+tar xf /mss/work/sauces/musl-1.2.4.tar.gz
+cd     musl-1.2.4/
 
 pdir="/mss/repo/pkg/recipes/musl/patches"
 patch -p1 < "${pdir}"/0001-handle-aux-at_base.patch

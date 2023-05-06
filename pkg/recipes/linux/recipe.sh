@@ -1,6 +1,6 @@
 #!/mss/bin/sh
 # apathy musl 1.2 - mss@tutanota.de
-# build script for 6.2 kernels, version 3, for all machines running apathy.
+# build script for 6.3 kernels, version 1, for all machines running apathy.
 
 . /mss/files/funcs
 
@@ -23,7 +23,7 @@ fi
       rdr="${logdir}/${blddate}-linux-${kerver}.log"
 
   useconf="${repodir}/files/unified.config"
- localver="6.2$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
+ localver="6.3$(awk '/LOCALVERSION=/{gsub(/CONFIG_LOCALVERSION=|\"/,"");\
                       print}' ${useconf})"
   bldsalt="$(awk    '/BUILD_SALT=/{gsub(/CONFIG_BUILD_SALT=|\"/,"");    \
                       print}' ${useconf})"
