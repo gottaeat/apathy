@@ -6,8 +6,8 @@ repodir="/mss/repo"
 localdb="/mss/files/packages.txt"
 
 case "${amachine}" in
- desk1|t61|x230) repodb="${repodir}/pkg/packages-${amachine}.txt"     ;;
- *)              aprint_fail "${amachine} is not recognized."; exit 1 ;;
+ t61|x230) repodb="${repodir}/pkg/packages-${amachine}.txt"     ;;
+ *)        aprint_fail "${amachine} is not recognized."; exit 1 ;;
 esac
 
 if   [ ! -f "${localdb}" ]; then

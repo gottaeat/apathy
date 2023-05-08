@@ -52,7 +52,6 @@ files_files = [
 ]
 
 files_files_machines = [
- 'files/machines/desk1.conf',
  'files/machines/t61.conf',
  'files/machines/unrecognized.conf',
  'files/machines/x230.conf'
