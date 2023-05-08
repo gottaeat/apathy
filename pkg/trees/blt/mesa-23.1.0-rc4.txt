@@ -13,10 +13,7 @@
 /usr/include/gbm.h
 
 /usr/lib/dri/crocus_dri.so
-/usr/lib/dri/radeonsi_dri.so
-/usr/lib/dri/radeonsi_drv_video.so
 /usr/lib/dri/virtio_gpu_dri.so
-/usr/lib/dri/virtio_gpu_drv_video.so
 /usr/lib/libEGL.so
 /usr/lib/libEGL.so.1
 /usr/lib/libEGL.so.1.0.0
@@ -34,14 +31,5 @@
 /usr/lib/pkgconfig/egl.pc
 /usr/lib/pkgconfig/gbm.pc
 /usr/lib/pkgconfig/gl.pc
-
-/usr/lib/vdpau/libvdpau_radeonsi.so
-/usr/lib/vdpau/libvdpau_radeonsi.so.1
-/usr/lib/vdpau/libvdpau_radeonsi.so.1.0
-/usr/lib/vdpau/libvdpau_radeonsi.so.1.0.0
-/usr/lib/vdpau/libvdpau_virtio_gpu.so
-/usr/lib/vdpau/libvdpau_virtio_gpu.so.1
-/usr/lib/vdpau/libvdpau_virtio_gpu.so.1.0
-/usr/lib/vdpau/libvdpau_virtio_gpu.so.1.0.0
 
 /usr/share/drirc.d/00-mesa-defaults.conf
