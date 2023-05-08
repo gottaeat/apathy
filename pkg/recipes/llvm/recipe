@@ -35,7 +35,7 @@ cmake -Wno-dev -GNinja \
 \
  -DLLVM_DEFAULT_TARGET_TRIPLE="$CHOST"               \
  -DLLVM_HOST_TRIPLE="$CHOST"                         \
- -DLLVM_TARGETS_TO_BUILD="host;AMDGPU"               \
+ -DLLVM_TARGETS_TO_BUILD="host"                      \
  -DLLVM_TARGET_ARCH="host"                           \
  -DLLVM_VERSION_SUFFIX=""                            \
 \
@@ -165,7 +165,7 @@ cmake -Wno-dev -GNinja \
  -DCLANG_LINK_CLANG_DYLIB=ON                         \
  -DCLANG_PLUGIN_SUPPORT=ON                           \
  -DCLANG_TOOLING_BUILD_AST_INTROSPECTION=OFF         \
- -DCLANG_TOOL_AMDGPU_ARCH_BUILD=ON                   \
+ -DCLANG_TOOL_AMDGPU_ARCH_BUILD=OFF                  \
  -DCLANG_TOOL_APINOTES_TEST_BUILD=OFF                \
  -DCLANG_TOOL_ARCMT_TEST_BUILD=OFF                   \
  -DCLANG_TOOL_CLANG_CHECK_BUILD=OFF                  \

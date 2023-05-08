@@ -5,11 +5,10 @@ cd    build
 meson setup \
  --buildtype=plain             \
  --prefix=/usr                 \
- -Damdgpu=true                 \
  -Dintel=true                  \
- -Dradeon=true                 \
  -Dudev=true                   \
 \
+ -Damdgpu=false                \
  -Dcairo-tests=false           \
  -Detnaviv=false               \
  -Dexynos=false                \
@@ -19,6 +18,7 @@ meson setup \
  -Dman-pages=false             \
  -Dnouveau=false               \
  -Domap=false                  \
+ -Dradeon=false                \
  -Dtegra=false                 \
  -Dvalgrind=false              \
  -Dvc4=false                   \
